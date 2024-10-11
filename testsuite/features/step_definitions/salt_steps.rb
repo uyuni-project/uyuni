@@ -107,8 +107,9 @@ When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
 end
 
-When(/^I wait until Salt master is active and ready$/) do
-  get_target('server').run_until_ok('bash -c \'until timeout 5s salt-key; do :; done\'')
+When(/^I wait until Salt master can reach "([^"]*)"$/) do |minion|
+  system_name = get_system_name(minion)
+  get_target('server').run_until_ok("bash -c 'until timeout 5s salt #{system_name} test.ping; do :; done'")
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
