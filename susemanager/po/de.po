@@ -8,24 +8,24 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2024-06-01 12:46+0000\n"
+"PO-Revision-Date: 2024-10-12 03:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/susemanager/"
-"de/>\n"
+"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/"
+"susemanager-5-0/de/>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.5.5\n"
+"X-Generator: Weblate 5.7.2\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
-msgstr ""
+msgstr "#{@product_name} von Grund auf neu einrichten"
 
 #: ../yast/susemanager_ask.rb:48
 msgid "Migrate a #{@product_name} compatible server"
-msgstr ""
+msgstr "Einen #{@product_name}-kompatiblen Server migrieren"
 
 #: ../yast/susemanager_ask.rb:60
 msgid ""
@@ -75,6 +75,10 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
+"<p>Hier geben Sie die Daten ein, die für die Erstellung eines SSL-"
+"Zertifikats erforderlich sind. Das Zertifikat wird für eine Reihe von "
+"Zwecken verwendet, z. B. für Verbindungen zu einem SUSE Manager Proxy-"
+"Server, das HTTPS-Protokoll in Browsern und vieles mehr.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
@@ -146,9 +150,8 @@ msgid "&IP Address of the #{@product_name} Server"
 msgstr "&IP-Adresse des #{@product_name}-Servers"
 
 #: ../yast/susemanager_manager.rb:94
-#, fuzzy
 msgid "#{@product_name} &Administrator e-mail address"
-msgstr "#{@product_name} &Administrator E-Mail Adresse"
+msgstr "E-Mail-Adresse des #{@product_name}-&Administrators"
 
 #: ../yast/susemanager_manager.rb:101
 msgid "Advertise #{@product_name} via SLP"
@@ -159,6 +162,8 @@ msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
+"<p>Tragen Sie die <b>Administrator-E-Mail-Adresse</b> ein. Sie wird für "
+"Benachrichtigungen von #{@product_name} verwendet.</p>"
 
 #: ../yast/susemanager_manager.rb:152
 msgid "The Administrator e-mail address is not valid."
@@ -166,7 +171,7 @@ msgstr "Die E-Mail-Adresse des Administrators ist ungültig."
 
 #: ../yast/susemanager_migration.rb:73
 msgid "&Hostname of source #{@product_name} Server"
-msgstr ""
+msgstr "&Hostname der Quelle #{@product_name} Server"
 
 #: ../yast/susemanager_migration.rb:80
 msgid "&Domain name"
@@ -174,11 +179,11 @@ msgstr "&Domainname"
 
 #: ../yast/susemanager_migration.rb:87
 msgid "Source #{@product_name} Database &User Name"
-msgstr ""
+msgstr "Quelle #{@product_name} Datenbank-&Benutzername"
 
 #: ../yast/susemanager_migration.rb:94
 msgid "Source #{@product_name} Database &Password"
-msgstr ""
+msgstr "Quelle #{@product_name} Datenbank-&Passwort"
 
 #: ../yast/susemanager_migration.rb:101
 msgid "&Repeat Password"
@@ -186,11 +191,11 @@ msgstr "Passwort &wiederholen"
 
 #: ../yast/susemanager_migration.rb:108
 msgid "Source #{@product_name} Database &Name"
-msgstr ""
+msgstr "Quelle #{@product_name} Datenbank-&Name"
 
 #: ../yast/susemanager_migration.rb:121
 msgid "Migration from previous #{@product_name} to new #{@product_name}"
-msgstr ""
+msgstr "Migration vom vorherigen #{@product_name} zum neuen #{@product_name}"
 
 #: ../yast/susemanager_migration.rb:138
 msgid "Hostname is missing."
@@ -250,12 +255,18 @@ msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
+"#{@product_name} benötigt 100 GB freien Speicherplatz in /var/spacewalk, um "
+"installiert werden zu können. Wenn Sie fortfahren, wird das Produkt nicht "
+"korrekt funktionieren."
 
 #: ../yast/susemanager_reqs.rb:142
 msgid ""
 "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
+"#{@product_name} benötigt 50 GB freien Speicherplatz in /var/lib/pgsql, um "
+"installiert werden zu können. Wenn Sie fortfahren, wird das Produkt nicht "
+"korrekt funktionieren."
 
 #: ../yast/susemanager_reqs.rb:158
 msgid "Hostname command failed"
@@ -272,25 +283,31 @@ msgstr ""
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
 msgid "Illegal FQHN"
-msgstr ""
+msgstr "Unzulässiges FQHN"
 
 #: ../yast/susemanager_reqs.rb:180
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
 msgstr ""
+"Das FQHN muss mindestens 2 Punkte enthalten. Das Produkt wird nicht richtig "
+"funktionieren."
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
+"Das FQHN darf nicht das Zeichen „_“ (Unterstrich) enthalten. Das Produkt "
+"wird nicht richtig funktionieren."
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
+"Die Ausgabe von „hostname -f“ stimmt nicht mit dem echten Hostnamen überein. "
+"Das Produkt wird nicht korrekt installiert."
 
 #: ../yast/susemanager_reqs.rb:254
 msgid "Illegal Hostname"
@@ -328,6 +345,10 @@ msgid ""
 "<p>The script output and possible error output can be watched on the screen."
 "</p>"
 msgstr ""
+"<p>Jetzt läuft das Konfigurationsskript, was einige Zeit in Anspruch nehmen "
+"wird.</p>\n"
+"<p>Die Skriptausgabe und mögliche Fehlerausgaben können auf dem Bildschirm "
+"beobachtet werden.</p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
