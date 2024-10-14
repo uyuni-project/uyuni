@@ -47,7 +47,7 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only

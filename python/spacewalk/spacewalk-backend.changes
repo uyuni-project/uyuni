@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Oct 14 15:44:04 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Ignore 'buildorder' parsing errors when parsing entries in module
+    metadata (bsc#1230274)
+  * Provide http_headers also to Debian repository syncer
+  * Make spacewalk-data-fsck aware of orphaned RPMs (bsc#1227882)
+  * reposync: import GPG keys to RPM DB individually (bsc#1217003)
+  * Bump version to 5.1.0
+  * Add log string to the journal when services are stopped
+    because of insufficent disk space
+
+-------------------------------------------------------------------
 Thu Aug 01 09:36:37 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0
