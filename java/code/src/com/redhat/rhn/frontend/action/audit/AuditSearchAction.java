@@ -24,6 +24,8 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
 import com.redhat.rhn.manager.audit.AuditManager;
 
+import com.suse.utils.Json;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -32,7 +34,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
-import org.stringtree.json.JSONWriter;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -167,7 +168,6 @@ public class AuditSearchAction extends RhnAction {
         DateRangePicker.DatePickerResults dpresults;
         DynaActionForm dform = (DynaActionForm)form;
         HttpSession session = request.getSession(true);
-        JSONWriter jsonwr = new JSONWriter();
         List<AuditDto> result = null;
         long start, end;
         Map<String, String[]> typemap;
@@ -280,7 +280,7 @@ public class AuditSearchAction extends RhnAction {
         // or this is what they asked for
         if (result == null) {
             typemap = AuditManager.getAuditTypeMap();
-            request.setAttribute("auJsonTypes", jsonwr.write(typemap));
+            request.setAttribute("auJsonTypes", Json.GSON.toJson(typemap));
             request.setAttribute("machines", AuditManager.getMachines());
             request.setAttribute("types", prepareAuditTypes());
 
