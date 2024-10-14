@@ -682,6 +682,14 @@ fi
 /usr/sbin/spacewalk-service start >> $LOG 2>&1
 print_status 0  # just simulate end
 
+echo "Performing spacecmd authentication ... "
+if spacecmd -q login; then
+    echo "You must provide valid credentials!"
+    bye
+else
+    echo "OK"
+fi
+
 # Refresh the minion pillar data since they contain the repos URLs with the old hostname
 refresh_pillar
 
