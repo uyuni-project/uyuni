@@ -97,7 +97,7 @@ BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
-BuildRequires:  glassfish-jaxb-api
+BuildRequires:  jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
 BuildRequires:  hibernate-commons-annotations >= 6

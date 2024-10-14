@@ -308,7 +308,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: velocity-engine-core
     repository: Uyuni_Other
-
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
@@ -341,8 +340,9 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap
-  - artifact: glassfish-jaxb-api
-    repository: Uyuni_Other
+  - artifact: jaxb-api
+    repository: MicheleBussolotto_Java
+    jar: jaxb-api/jakarta.xml.bind-api.jar
   - artifact: jaxb-runtime
     package: glassfish-jaxb-runtime
     repository: Uyuni_Other
