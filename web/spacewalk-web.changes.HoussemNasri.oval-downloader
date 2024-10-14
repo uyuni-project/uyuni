@@ -1,2 +1,0 @@
-- Add a column to the CVE auditing result table to show the data
-  source (OVAL or channels) used for auditing the system
