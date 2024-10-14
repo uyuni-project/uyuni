@@ -20,7 +20,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           uyuni-reportdb-schema
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Report DB SQL schema for Spacewalk server
 License:        GPL-2.0-only
