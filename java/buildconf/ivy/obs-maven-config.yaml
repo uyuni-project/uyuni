@@ -8,6 +8,9 @@ repositories:
   MicheleBussolotto_Other:
     project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  MicheleBussolotto_Java:
+    project: home:mbussolotto:branches:Java:packages
+    repository: openSUSE_Factory
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -95,9 +98,9 @@ artifacts:
   - artifact: ehcache-core
     package: ehcache
     repository: Uyuni_Other
-  - artifact: geronimo-jta-1.1-api
-    package: geronimo-jta-1_1-api
-    repository: Leap
+  - artifact: jakarta.transaction-api
+    package: jakarta-transactions
+    repository: MicheleBussolotto_Java
   - artifact: google-gson
     jar: gson.jar
     repository: Leap
