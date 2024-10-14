@@ -168,6 +168,9 @@ import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
 import com.suse.manager.model.attestation.CoCoResultTypeConverter;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.manager.model.hub.IssHub;
+import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 
@@ -241,7 +244,10 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InternalState.class,
             InventoryPath.class,
+            IssHub.class,
             IssMaster.class,
+            IssPeripheral.class,
+            IssPeripheralChannels.class,
             KiwiProfile.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
