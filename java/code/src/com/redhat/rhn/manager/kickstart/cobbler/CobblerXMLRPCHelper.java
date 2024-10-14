@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.integration.IntegrationService;
 import com.redhat.rhn.frontend.xmlrpc.util.XMLRPCInvoker;
@@ -41,8 +41,8 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class CobblerXMLRPCHelper implements XMLRPCInvoker {
 
-    private XmlRpcClient client;
-    private static Logger log = LogManager.getLogger(CobblerXMLRPCHelper.class);
+    private final XmlRpcClient client;
+    private static final Logger log = LogManager.getLogger(CobblerXMLRPCHelper.class);
     /**
      * Constructor
      */
@@ -51,7 +51,7 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
             client = new XmlRpcClient(getCobblerUrl(), false);
         }
         catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
@@ -70,7 +70,7 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
             retval = client.invoke(procedureName, args);
         }
         catch (XmlRpcException e) {
-            throw new RuntimeException("XmlRpcException calling cobbler.", e);
+            throw new RhnRuntimeException("XmlRpcException calling cobbler.", e);
         }
         return retval;
     }
@@ -90,17 +90,12 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      * @return the autehnticated cobbler connection
      */
     public static CobblerConnection getConnection(String userName) {
-        String token =
-            IntegrationService.get().getAuthToken(userName);
-        return (CobblerConnection)MethodUtil.getClassFromConfig(
-                                CobblerConnection.class.getName(),
-                                ConfigDefaults.get().getCobblerServerUrl(), token);
+        String token = IntegrationService.get().getAuthToken(userName);
+        return new CobblerConnection(ConfigDefaults.get().getCobblerServerUrl(), token);
     }
 
     private static String getCobblerUrl() {
-        CobblerConnection conn = (CobblerConnection)MethodUtil.getClassFromConfig(
-                CobblerConnection.class.getName(),
-                ConfigDefaults.get().getCobblerServerUrl());
+        CobblerConnection conn = new CobblerConnection(ConfigDefaults.get().getCobblerServerUrl());
         return conn.getUrl();
     }
 
@@ -111,16 +106,5 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      */
     public static CobblerConnection getAutomatedConnection() {
         return getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
-    }
-
-    /**
-     * Returns the cobbler version number
-     * @return the cobbler version number
-     */
-    public static Double getCobblerVersion() {
-        CobblerConnection connection =
-            getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
-
-        return connection.getVersion();
     }
 }
