@@ -1,1 +1,0 @@
-- add HANA and cluster formulas to server image (bsc#1230536)
