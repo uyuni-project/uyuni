@@ -799,7 +799,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning nor an error sign$/) do
+Then(/^I should only see success signs in the product list$/) do
   raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
   raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
   raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
