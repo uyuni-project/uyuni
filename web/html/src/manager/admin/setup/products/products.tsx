@@ -343,15 +343,16 @@ class ProductsPageWrapper extends React.Component {
           <Button
             id="addProducts"
             icon={this.state.addingProducts ? "fa-plus-circle fa-spin" : "fa-plus"}
-            className="btn-default text-muted"
+            className="btn btn-primary"
             title={submitButtonTitle}
             text={t("Add products")}
+            disabled
           />
         ) : (
           <Button
             id="addProducts"
             icon="fa-plus"
-            className={"btn-primary"}
+            className={"btn btn-primary"}
             text={
               t("Add products") +
               (this.state.selectedItems.length > 0 ? " (" + this.state.selectedItems.length + ")" : "")
@@ -371,10 +372,11 @@ class ProductsPageWrapper extends React.Component {
                     <Button
                       id="clearSelection"
                       icon="fa-eraser"
-                      className={"btn-default " + (this.state.selectedItems.length === 0 ? "text-muted" : "")}
+                      className={"btn-default"}
                       title={t("Clear products selection")}
                       text={t("Clear")}
                       handler={this.clearSelection}
+                      disabled={this.state.selectedItems.length === 0}
                     />
                     {addProductButton}
                   </div>
