@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.persistence.Transient;
-
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
