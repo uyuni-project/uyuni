@@ -25,7 +25,6 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
 import org.jose4j.lang.JoseException;
 
 import java.time.Duration;
@@ -58,12 +57,10 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return optional of AccessToken
      */
     public static Optional<AccessToken> lookupById(long id) {
-        return Optional.ofNullable(
-                (AccessToken)HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult()
-        );
+        String sql = "SELECT * FROM suseChannelAccessToken WHERE id = :id";
+        AccessToken accessToken = HibernateFactory.getSession().createNativeQuery(sql, AccessToken.class)
+                .setParameter("id", id).uniqueResult();
+        return Optional.ofNullable(accessToken);
     }
 
     /**
@@ -71,9 +68,10 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return list of AccessTokens
      */
     public static List<AccessToken> all() {
-        return (List<AccessToken>) HibernateFactory.getSession()
-                .createCriteria(AccessToken.class)
-                .list();
+        String sql = "SELECT * FROM suseChannelAccessToken";
+        List<AccessToken> accessTokens =
+                HibernateFactory.getSession().createNativeQuery(sql, AccessToken.class).getResultList();
+        return accessTokens;
     }
 
     /**
@@ -82,12 +80,10 @@ public class AccessTokenFactory extends HibernateFactory {
      * @return optional of AccessToken
      */
     public static Optional<AccessToken> lookupByToken(String token) {
-        return Optional.ofNullable(
-            (AccessToken)HibernateFactory.getSession()
-            .createCriteria(AccessToken.class)
-            .add(Restrictions.eq("token", token))
-            .uniqueResult()
-        );
+        String sql = "SELECT * FROM suseChannelAccessToken WHERE token = :token";
+        AccessToken accessToken = HibernateFactory.getSession().createNativeQuery(sql, AccessToken.class)
+                .setParameter("token", token).uniqueResult();
+        return Optional.ofNullable(accessToken);
     }
 
     /**

@@ -67,8 +67,8 @@
   <available file="${java.lib.dir}/log4j/log4j-jcl.jar" type="file" property="log4j-jcl" value="log4j/log4j-jcl" />
   <property name="log4j-jars" value="${log4j-core} ${log4j-api} ${log4j-jcl}"/>
 
-  <condition property="jta11-jars" value="geronimo-jta-1.1-api" else="jta">
-    <available file="${java.lib.dir}/geronimo-jta-1.1-api.jar" />
+  <condition property="jta-jars" value="jakarta-transactions/jakarta.transaction-api" else="jta">
+    <available file="${java.lib.dir}/jakarta-transactions/jakarta.transaction-api.jar" />
   </condition>
 
   <condition property="javamail" value="javax.mail" else="javamail">
@@ -97,9 +97,6 @@
   <condition property="jaxb-api" value="jaxb-api" else="">
     <available file="${java.lib.dir}/jaxb-api.jar" />
   </condition>
-  <condition property="glassfish-jaxb-api" value="glassfish-jaxb-api" else="">
-    <available file="${java.lib.dir}/glassfish-jaxb-api.jar" />
-  </condition>
   <condition property="jaxb-impl" value="glassfish-jaxb/jaxb-impl" else="">
     <available file="${java.lib.dir}/glassfish-jaxb/jaxb-impl.jar" />
   </condition>
@@ -112,14 +109,14 @@
   <condition property="istack-commons" value="istack-commons-runtime" else="">
     <available file="${java.lib.dir}/istack-commons-runtime.jar" />
   </condition>
-  <property name="jaxb" value="${jaxb-api} ${glassfish-jaxb-api} ${jaxb-impl} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
+  <property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${jaxb-runtime} ${txw2} ${istack-commons}"/>
 
 
-  <condition property="hibernate5files" value="hibernate5/hibernate-core hibernate5/hibernate-c3p0 hibernate5/hibernate-ehcache" else="hibernate-ehcache-5 hibernate-c3p0-5 hibernate-core-5">
-    <available file="${java.lib.dir}/hibernate5/hibernate-core.jar" type="file"/>
+  <condition property="hibernate6files" value="hibernate6/hibernate-core hibernate6/hibernate-c3p0 hibernate6/hibernate-jcache">
+    <available file="${java.lib.dir}/hibernate6/hibernate-core.jar" type="file"/>
   </condition>
 
-  <property name="hibernate5deps" value="${hibernate5files} ${hibernate-commons-annotations} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hibernate-types/hibernate-types-52 jackson-databind jackson-core jackson-annotations"/>
+  <property name="hibernate6deps" value="${hibernate6files} ${hibernate-commons-annotations} slf4j/api jpa-api/jakarta.persistence-api ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl ${ehcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-63 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
@@ -154,7 +151,7 @@
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
-      value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
+      value="antlr checkstyle dom4j emma emma_ant jdom ${jta-jars} junit
              ${log4j-jars}
              regexp ${jmock-jars}
              postgresql-jdbc" />
@@ -169,7 +166,7 @@
        concurrent xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 

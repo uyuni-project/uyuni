@@ -22,23 +22,23 @@ import com.suse.scc.model.SCCRepositoryJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * This is a SUSE repository as parsed from JSON coming in from SCC.
@@ -182,7 +182,7 @@ public class SCCRepository extends BaseDomainHelper {
      * @return the autorefresh
      */
     @Column(name = "autorefresh")
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isAutorefresh() {
         return autorefresh;
     }
@@ -218,7 +218,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return the signed
      */
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public boolean isSigned() {
         return signed;
     }
@@ -233,7 +233,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Return true if this is for installer updates
      */
-    @Type(type = "yes_no")
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     @Column(name = "installer_updates")
     public boolean isInstallerUpdates() {
         return installerUpdates;

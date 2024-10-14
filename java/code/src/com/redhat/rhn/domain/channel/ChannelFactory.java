@@ -23,7 +23,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -34,11 +33,7 @@ import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,6 +46,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 /**
  * ChannelFactory
@@ -393,8 +395,11 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ChannelArch> getChannelArchitectures() {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
-        return criteria.list();
+        String sql = "SELECT * FROM rhnChannelArch"; // Adjust the SQL query as
+        // needed
+        List<ChannelArch> channelArchList
+                = session.createNativeQuery(sql, ChannelArch.class).getResultList();
+        return channelArchList;
     }
 
     /**
@@ -427,9 +432,11 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelArch findArchByLabel(String label) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
-        criteria.add(Restrictions.eq(LABEL, label));
-        return (ChannelArch) criteria.uniqueResult();
+        String sql = "SELECT * FROM rhnChannelArch WHERE label = :label";
+        ChannelArch channelArch
+                = (ChannelArch) session.createNativeQuery(sql, ChannelArch.class)
+                        .setParameter("label", label).uniqueResult();
+        return channelArch;
     }
 
     /**
@@ -452,9 +459,10 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupByLabel(String label) {
         Session session = getSession();
-        Criteria c = session.createCriteria(Channel.class);
-        c.add(Restrictions.eq(LABEL, label));
-        return (Channel) c.uniqueResult();
+        String sql = "SELECT * FROM rhnChannel WHERE label = :label";
+        Channel channel = (Channel) session.createNativeQuery(sql, Channel.class)
+                .setParameter("label", label).uniqueResult();
+        return channel;
     }
 
     /**
@@ -1063,8 +1071,8 @@ public class ChannelFactory extends HibernateFactory {
 
         List<Package> pkgs = HibernateFactory.getSession()
           .getNamedQuery("Channel.packageByFileName")
-          .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId())
+          .setParameter("pathlike", "%/" + fileName)
+          .setParameter("channel_id", channel.getId())
           .list();
         if (pkgs.isEmpty()) {
             return null;
@@ -1084,12 +1092,11 @@ public class ChannelFactory extends HibernateFactory {
             String fileName, int headerStart, int headerEnd) {
 
         List<Package> pkgs = HibernateFactory.getSession()
-          .getNamedQuery("Channel.packageByFileNameAndRange")
-          .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId())
-          .setInteger("headerStart", headerStart)
-          .setInteger("headerEnd", headerEnd)
-          .list();
+                .getNamedQuery("Channel.packageByFileNameAndRange")
+                .setParameter("pathlike", "%/" + fileName)
+                .setParameter("channel_id", channel.getId())
+                .setParameter("headerStart", headerStart)
+                .setParameter("headerEnd", headerEnd).list();
         if (pkgs.isEmpty()) {
             return null;
         }
@@ -1105,10 +1112,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return true of the channels contains any distros
      */
     public static boolean containsDistributions(Channel ch) {
-        Criteria criteria = getSession().createCriteria(KickstartableTree.class);
-        criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.eq("channel", ch));
-        return ((Number)criteria.uniqueResult()).intValue() > 0;
+        Session session = getSession();
+        String sql
+                = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
+        Number count = (Number) session.createNativeQuery(sql)
+                .setParameter("channelId", ch.getId()).getSingleResult();
+        return count.intValue() > 0;
     }
 
     /**
@@ -1221,9 +1230,11 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
-        criteria.add(Restrictions.isNull("org"));
-        return criteria.list();
+        Session session = getSession();
+        String sql = "SELECT * FROM rhnContentSource WHERE org IS NULL";
+        List<ContentSource> contentSources
+                = session.createNativeQuery(sql, ContentSource.class).getResultList();
+        return contentSources;
     }
 
     /**
@@ -1232,23 +1243,42 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
-        criteria.add(Restrictions.isNull("org"));
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentSource> cq = cb.createQuery(ContentSource.class);
+        Root<ContentSource> root = cq.from(ContentSource.class);
+
+        // Create predicates for the query
+        Predicate isOrgNull = cb.isNull(root.get("org"));
+        Predicate sourceUrlPredicate;
+
         if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org")) {
-            criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+            sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrl);
         }
         else {
-            String [] parts = repoUrl.split("\\?");
+            String[] parts = repoUrl.split("\\?");
             String repoUrlPrefix = parts[0];
             if (parts.length > 1) {
-                criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
-                        MatchMode.START));
+                sourceUrlPredicate = cb.like(root.get("sourceUrl"), repoUrlPrefix + '%');
             }
             else {
-                criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+                sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrlPrefix);
             }
         }
-        return (ContentSource) criteria.uniqueResult();
+
+        // Combine predicates
+        cq.where(cb.and(isOrgNull, sourceUrlPredicate));
+
+        // Create and execute the query
+        TypedQuery<ContentSource> query = getSession().createQuery(cq);
+        ContentSource contentSource;
+        try {
+            contentSource = query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            contentSource = null;
+        }
+
+        return contentSource;
     }
 
     /**
@@ -1275,10 +1305,21 @@ public class ChannelFactory extends HibernateFactory {
      * @return channel product
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
-        Criteria criteria = getSession().createCriteria(ChannelProduct.class);
-        criteria.add(Restrictions.eq("product", product));
-        criteria.add(Restrictions.eq("version", version));
-        return (ChannelProduct) criteria.uniqueResult();
+        String sql
+                = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
+        TypedQuery<ChannelProduct> query
+                = getSession().createNativeQuery(sql, ChannelProduct.class);
+        query.setParameter("product", product);
+        query.setParameter("version", version);
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error retrieving ChannelProduct", e);
+        }
     }
 
     /**

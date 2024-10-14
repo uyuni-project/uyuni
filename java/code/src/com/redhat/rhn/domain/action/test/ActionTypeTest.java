@@ -70,7 +70,7 @@ public class ActionTypeTest extends RhnBaseTestCase {
     private ActionType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ActionType) session.getNamedQuery("ActionType.findByLabel")
-                                .setString("label", label)
+                                .setParameter("label", label)
                                 //Retrieve from cache if there
                                 .setCacheable(true)
                                 .uniqueResult();

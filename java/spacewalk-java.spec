@@ -97,11 +97,11 @@ BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
-BuildRequires:  glassfish-jaxb-api
+BuildRequires:  jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
 BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate-types
+BuildRequires:  hibernate-commons-annotations >= 6
+BuildRequires:  hypersistence-utils >= 3.8.2
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
@@ -116,7 +116,7 @@ BuildRequires:  jboss-logging
 BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
-BuildRequires:  jpa-api
+BuildRequires:  jpa-api >= 3.1
 BuildRequires:  jsch
 BuildRequires:  jta
 BuildRequires:  libxml2
@@ -150,9 +150,9 @@ BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
-BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
-BuildRequires:  mvn(org.hibernate:hibernate-core)
-BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
+BuildRequires:  mvn(org.hibernate:hibernate-c3p0) >= 6
+BuildRequires:  mvn(org.hibernate:hibernate-core) >= 6
+BuildRequires:  mvn(org.hibernate:hibernate-ehcache) >= 6
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -188,8 +188,8 @@ Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
 Requires:       glassfish-jaxb-txw2
-Requires:       hibernate-commons-annotations
-Requires:       hibernate-types
+Requires:       hibernate-commons-annotations >= 6
+Requires:       hypersistence-utils >= 3.8.2
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
@@ -203,7 +203,7 @@ Requires:       jboss-logging
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
-Requires:       jpa-api
+Requires:       jpa-api >= 3.1
 Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
@@ -241,9 +241,9 @@ Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       mvn(org.hibernate:hibernate-c3p0) >= 6
+Requires:       mvn(org.hibernate:hibernate-core) >= 6
+Requires:       mvn(org.hibernate:hibernate-ehcache) >= 6
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
@@ -364,7 +364,7 @@ Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
-Requires:       hibernate-commons-annotations
+Requires:       hibernate-commons-annotations >= 6
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 Requires:       java-%{java_version}-openjdk
@@ -385,9 +385,9 @@ Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       mvn(org.hibernate:hibernate-c3p0) >= 6
+Requires:       mvn(org.hibernate:hibernate-core) >= 6
+Requires:       mvn(org.hibernate:hibernate-ehcache) >= 6
 
 Conflicts:      quartz < 2.0
 
