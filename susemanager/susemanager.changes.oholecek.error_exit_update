@@ -1,2 +1,0 @@
-- use different exit codes for different failures in mgr-setup
-  (bsc#1230139)
