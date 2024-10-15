@@ -42,7 +42,7 @@ public class SubscriptionWarning implements NotificationData {
 
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.warning;
+        return NotificationMessage.NotificationMessageSeverity.WARNING;
     }
 
     @Override
