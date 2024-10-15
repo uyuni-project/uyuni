@@ -1,8 +1,14 @@
 -------------------------------------------------------------------
+Tue Oct 15 12:21:47 CEST 2024 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Bump to next version
+
+-------------------------------------------------------------------
 Mon Oct 14 17:08:57 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
-  * Bump version to 5.1.0
+  * Bump version to 5.1.1
 
 -------------------------------------------------------------------
 Thu Aug 01 17:49:53 CEST 2024 - marina.latini@suse.com
