@@ -126,6 +126,7 @@ const ListFilters = (props: Props) => {
           initialFilterForm={initialFilterForm}
           icon="fa-plus"
           buttonText="Create Filter"
+          className="btn-primary"
           openFilterId={openFilterId}
           projectLabel={projectLabel}
           onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
@@ -205,6 +206,7 @@ const ListFilters = (props: Props) => {
                 initialFilterForm={row}
                 icon="fa-edit"
                 buttonText="Edit Filter"
+                className="btn-link"
                 onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}
