@@ -645,11 +645,9 @@ public class ColumnTag extends TagSupport {
         // check for obj.getUrl().startsWith(this.getUrl()), because that
         // breaks the rules for equals, naming obj.equals(this) must ==
         // this.equals(obj).  So, just remove that test and all works well.
-        if (obj == null || !(obj instanceof ColumnTag)) {
+        if (!(obj instanceof ColumnTag c)) {
             return false;
         }
-
-        ColumnTag c = (ColumnTag) obj;
 
         if (header != null) {
             if (!header.equals(c.getHeader())) {

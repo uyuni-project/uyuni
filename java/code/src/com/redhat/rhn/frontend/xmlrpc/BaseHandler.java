@@ -107,15 +107,14 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         WebSession session = null;
         User user = null;
 
-        if (!params.isEmpty() && params.get(0) instanceof String &&
-                isSessionKey((String)params.get(0))) {
-            if (!myClass.getName().endsWith("AuthHandler") &&
-                !myClass.getName().endsWith("SearchHandler")) {
+        if (!params.isEmpty() && params.get(0) instanceof String p0 && isSessionKey(p0) &&
+                !myClass.getName().endsWith("AuthHandler") && !myClass.getName().endsWith("SearchHandler")) {
+
                 session = SessionManager.loadSession((String)params.get(0));
                 user = getLoggedInUser((String) params.get(0));
                 params.set(0, user);
             }
-        }
+
 
         //we've found all the methods that have the same number of parameters
         List<Method> matchedMethods = findMethods(methods, params, beanifiedMethod);
@@ -146,10 +145,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
 
-            if (cause instanceof FaultException) {
+            if (cause instanceof FaultException fault) {
                 // FaultExceptions are "bad request" type of exceptions
                 // Normally they should be thrown as response to the client but there's no need to log them as errors.
-                FaultException fault = (FaultException) cause;
                 log.debug("'{}' returned: [{}] {}", methodCalled, fault.getErrorCode(), fault.getMessage());
             }
             else {
@@ -208,10 +206,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 }).collect(Collectors.partitioningBy(x -> x.isRight()));
 
         List<Tuple2<Method, Object[]>> candidates = collect.get(true).stream()
-                .flatMap(x -> x.right().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.right().stream()).toList();
 
         List<TranslationException> exceptions = collect.get(false).stream()
-                .flatMap(x -> x.left().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.left().stream()).toList();
 
         if (candidates.isEmpty()) {
            throw exceptions.get(0);

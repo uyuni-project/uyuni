@@ -41,7 +41,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class PackageManagerPtfTest extends BaseTestCaseWithUser {
     private Server server;
@@ -134,7 +133,7 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
                                                    .flatMap(e -> PackageFactory.lookupByNevraIds(user.getOrg(),
                                                        e.getNameId(), e.getEvrId(), e.getArchId()).stream())
                                                    .filter(Objects::nonNull)
-                                                   .collect(Collectors.toList());
+                                                   .toList();
 
         // There should be still two packages
         assertEquals(2, packages.size());

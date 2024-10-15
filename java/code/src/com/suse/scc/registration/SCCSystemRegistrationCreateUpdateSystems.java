@@ -27,7 +27,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -68,6 +67,6 @@ public class SCCSystemRegistrationCreateUpdateSystems implements SCCSystemRegist
     private List<List<SCCRegisterSystemJson>> splitListIntoBatches(List<SCCRegisterSystemJson> list, int batchSize) {
         return IntStream.range(0, (list.size() + batchSize - 1) / batchSize)
                 .mapToObj(i -> list.subList(i * batchSize, Math.min((i + 1) * batchSize, list.size())))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

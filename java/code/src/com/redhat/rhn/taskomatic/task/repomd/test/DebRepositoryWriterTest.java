@@ -41,7 +41,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
@@ -77,7 +76,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         Path channelRepodataDir = tmpDir.resolve("rhn/repodata/" + channel.getLabel());
         List<String> fileNames = Files.list(channelRepodataDir)
                 .map(path -> path.getFileName().toString())
-                .collect(Collectors.toList());
+                .toList();
         assertTrue(fileNames.contains("Release"));
         assertTrue(fileNames.contains("Packages"));
         assertTrue(fileNames.contains("Packages.gz"));

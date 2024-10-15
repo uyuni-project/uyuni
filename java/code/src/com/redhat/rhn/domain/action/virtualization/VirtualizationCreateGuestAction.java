@@ -78,8 +78,7 @@ public class VirtualizationCreateGuestAction extends BaseVirtualizationGuestActi
     @Override
     public boolean equals(Object other) {
         boolean result = false;
-        if (other instanceof VirtualizationCreateGuestAction) {
-            VirtualizationCreateGuestAction otherAction = (VirtualizationCreateGuestAction)other;
+        if (other instanceof VirtualizationCreateGuestAction otherAction) {
             result = Objects.equals(getDetailsAsString(), otherAction.getDetailsAsString());
         }
         return result;

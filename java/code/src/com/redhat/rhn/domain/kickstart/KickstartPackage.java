@@ -164,11 +164,10 @@ public class KickstartPackage
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartPackage)) {
+        if (!(other instanceof KickstartPackage that)) {
             return false;
         }
-        KickstartPackage that = (KickstartPackage) other;
-        return this.hashCode() == other.hashCode();
+        return this.hashCode() == that.hashCode();
     }
 
     /**

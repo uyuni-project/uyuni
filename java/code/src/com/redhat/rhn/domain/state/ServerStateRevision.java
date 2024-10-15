@@ -60,10 +60,9 @@ public class ServerStateRevision extends StateRevision {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ServerStateRevision)) {
+        if (!(other instanceof ServerStateRevision otherRevision)) {
             return false;
         }
-        ServerStateRevision otherRevision = (ServerStateRevision) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(otherRevision))
                 .append(getServer(), otherRevision.getServer())

@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Used to schedule actions from Recurring action schedules
@@ -81,21 +80,21 @@ public class RecurringActionJob extends RhnJavaJob {
 
         try {
             RecurringActionType actionType = action.getRecurringActionType();
-            if (actionType instanceof RecurringHighstate) {
+            if (actionType instanceof RecurringHighstate highstateType) {
                 ActionChainManager.scheduleApplyStates(action.getCreator(), minionIds,
-                        Optional.of(((RecurringHighstate) actionType).isTestMode()), context.getFireTime(), null);
+                        Optional.of(highstateType.isTestMode()), context.getFireTime(), null);
             }
-            else if (actionType instanceof RecurringState) {
-                Set<RecurringStateConfig> configs = ((RecurringState) action.getRecurringActionType()).getStateConfig();
+            else if (actionType instanceof RecurringState stateType) {
+                Set<RecurringStateConfig> configs = stateType.getStateConfig();
                 List<String> mods = configs.stream()
                         .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
                         .map(RecurringStateConfig::getStateName)
-                        .collect(Collectors.toList());
+                        .toList();
                 Action a = ActionManager.scheduleApplyStates(action.getCreator(),
                         minionIds, mods,
                         Optional.of(Map.of("rec_id", action.getId().toString())),
                         context.getFireTime(),
-                        Optional.of(((RecurringState) action.getRecurringActionType()).isTestMode()),
+                        Optional.of(stateType.isTestMode()),
                         true);
                 ActionFactory.save(a);
                 new TaskomaticApi().scheduleActionExecution(a);

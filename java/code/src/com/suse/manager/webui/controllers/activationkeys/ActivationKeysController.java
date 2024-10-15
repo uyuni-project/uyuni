@@ -36,7 +36,6 @@ import com.google.gson.reflect.TypeToken;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -103,7 +102,7 @@ public class ActivationKeysController {
                             group.setBase(b);
                             return group;
                         })
-                        .collect(Collectors.toList())
+                        .toList()
         ), new TypeToken<>() { });
     }
 

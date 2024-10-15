@@ -99,7 +99,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ChannelManagerTest
@@ -471,7 +470,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<String> expectedNames = new ArrayList<>(List.of(
                 "Channel for SUSE Liberty Linux 7 x86_64",
                 "Channel for SUSE Liberty Linux LTSS 7 x86_64"));
-        List<String> names = channels.stream().map(EssentialChannelDto::getName).collect(Collectors.toList());
+        List<String> names = channels.stream().map(EssentialChannelDto::getName).toList();
         expectedNames.removeAll(names);
         assertTrue(expectedNames.isEmpty(), "Missing expected channel names: " + expectedNames);
     }

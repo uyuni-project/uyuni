@@ -83,7 +83,7 @@ public class AutoErrataTask extends RhnJavaJob {
             Org org = OrgFactory.lookupById(orgId);
             List<Map<String, Long>> orgErrata = results.stream().filter(
                     result -> result.get("org_id").equals(orgId)
-            ).collect(Collectors.toList());
+            ).toList();
             Map<Long, List<Long>> serverApplicableErrataMap = orgErrata.stream().collect(
                     Collectors.groupingBy(errata -> errata.get("server_id"),
                             Collectors.mapping(errata -> errata.get("errata_id") , Collectors.toList()))
@@ -111,7 +111,7 @@ public class AutoErrataTask extends RhnJavaJob {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_AUTO_ERRATA_SYSTEMS);
         List<Map<String, Long>> results = select.execute();
-        return results.stream().map(system -> system.get("id")).collect(Collectors.toList());
+        return results.stream().map(system -> system.get("id")).toList();
     }
 
     /**
@@ -125,7 +125,7 @@ public class AutoErrataTask extends RhnJavaJob {
         return ServerFactory.lookupByIds(systems).stream()
                 .filter(mm::isSystemInMaintenanceMode)
                 .map(Server::getId)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

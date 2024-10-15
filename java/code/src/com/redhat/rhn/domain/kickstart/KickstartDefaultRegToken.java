@@ -101,10 +101,9 @@ public class KickstartDefaultRegToken implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartDefaultRegToken)) {
+        if (!(other instanceof KickstartDefaultRegToken castOther)) {
             return false;
         }
-        KickstartDefaultRegToken castOther = (KickstartDefaultRegToken) other;
         return new EqualsBuilder().append(ksdata, castOther.ksdata)
                                   .append(token, castOther.token)
                                   .isEquals();

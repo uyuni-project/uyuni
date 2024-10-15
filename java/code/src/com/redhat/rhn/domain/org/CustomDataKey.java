@@ -136,10 +136,9 @@ public class CustomDataKey {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof CustomDataKey)) {
+        if (!(other instanceof CustomDataKey castOther)) {
             return false;
         }
-        CustomDataKey castOther = (CustomDataKey) other;
         return new EqualsBuilder()
                 .append(org, castOther.getOrg())
                 .append(label, castOther.getLabel())

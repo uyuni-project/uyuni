@@ -851,7 +851,7 @@ public class MaintenanceManager {
 
          List<MinionServer> logList = minions.stream()
                  .filter(m -> !minionsInMaintMode.contains(m.getId()))
-                 .collect(Collectors.toList());
+                 .toList();
          logSkippedMinions(logList);
 
          return minionsInMaintMode;

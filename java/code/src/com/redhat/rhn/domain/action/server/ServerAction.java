@@ -218,11 +218,9 @@ public class ServerAction extends ActionChild implements Serializable {
      */
     @Override
     public boolean equals(final Object otherObject) {
-        if (otherObject == null || !(otherObject instanceof ServerAction)) {
+        if (!(otherObject instanceof ServerAction other)) {
             return false;
         }
-        ServerAction other = (ServerAction) otherObject;
-
         // HACK: if object are fully populated, only look at IDs to avoid costly
         // compare hash operations
         Action thisAction = getParentAction();

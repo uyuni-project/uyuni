@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.action.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,12 +52,12 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
         addRequestParameter("ccid", "" + ccid);
         actionPerform();
         assertNotNull(request.getAttribute("ccid"));
-        assertTrue(request.getAttribute("ccid") instanceof Long);
+        assertInstanceOf(Long.class, request.getAttribute("ccid"));
         assertEquals(ccid, ((Long)request.getAttribute("ccid")).longValue());
         assertNotNull(request.getAttribute("channel"));
         assertNotNull(request.getAttribute("summary"));
-        assertTrue(request.getAttribute("channel") instanceof ConfigChannel);
-        assertTrue(request.getAttribute("summary") instanceof ChannelSummary);
+        assertInstanceOf(ConfigChannel.class, request.getAttribute("channel"));
+        assertInstanceOf(ChannelSummary.class, request.getAttribute("summary"));
     }
 
     @Test

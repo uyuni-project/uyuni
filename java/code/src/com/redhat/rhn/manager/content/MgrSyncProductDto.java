@@ -249,10 +249,9 @@ public class MgrSyncProductDto implements Comparable<MgrSyncProductDto> {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MgrSyncProductDto)) {
+        if (!(other instanceof MgrSyncProductDto otherProduct)) {
             return false;
         }
-        MgrSyncProductDto otherProduct = (MgrSyncProductDto) other;
         return new EqualsBuilder()
                 .append(getNormalizedName(), otherProduct.getNormalizedName())
                 .append(getVersion(), otherProduct.getVersion())

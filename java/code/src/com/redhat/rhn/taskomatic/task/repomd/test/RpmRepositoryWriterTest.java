@@ -54,7 +54,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
@@ -186,7 +185,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         List<String> createdFiles = Files.list(metadataPath)
                 .map(Path::toFile)
                 .map(File::getName)
-                .collect(Collectors.toList());
+                .toList();
 
         assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-primary.xml.gz")));
         assertTrue(createdFiles.stream().anyMatch(f -> f.endsWith("-filelists.xml.gz")));

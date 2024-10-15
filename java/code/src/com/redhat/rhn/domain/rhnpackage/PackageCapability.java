@@ -87,10 +87,9 @@ public class PackageCapability extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PackageCapability)) {
+        if (!(obj instanceof PackageCapability cap)) {
             return false;
         }
-        PackageCapability cap = (PackageCapability) obj;
         return getVersion().equals(cap.getVersion()) && getName().equals(cap.getName());
     }
 }

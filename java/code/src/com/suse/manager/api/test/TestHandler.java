@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * API handler with multiple methods for unit testing
@@ -96,7 +95,7 @@ public class TestHandler extends BaseHandler {
      * @return the sorted list of longs
      */
     public List<Long> sortLongList(List<Long> myList) {
-        return myList.stream().sorted().collect(Collectors.toList());
+        return myList.stream().sorted().toList();
     }
 
     /**
@@ -105,7 +104,7 @@ public class TestHandler extends BaseHandler {
      * @return the sorted list of strings
      */
     public List<String> sortStringList(List<String> myList) {
-        return myList.stream().sorted().collect(Collectors.toList());
+        return myList.stream().sorted().toList();
     }
 
     /**
@@ -151,7 +150,7 @@ public class TestHandler extends BaseHandler {
      */
     @ReadOnly
     public List<Object> listOfMaps(List<Map<String, Object>> myList) {
-        return myList.stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
+        return myList.stream().flatMap(m -> m.values().stream()).toList();
     }
 
     /**

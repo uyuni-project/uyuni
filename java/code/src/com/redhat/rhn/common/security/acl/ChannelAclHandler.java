@@ -45,11 +45,11 @@ public class ChannelAclHandler extends BaseHandler {
     protected Channel getChannel(User usr, Map<String, Object> ctx) {
         Object cidObj = ctx.get(CID);
         String cidStr = null;
-        if (cidObj instanceof String) {
-            cidStr = (String)cidObj;
+        if (cidObj instanceof String str) {
+            cidStr = str;
         }
-        else if (cidObj instanceof String[]) {
-            cidStr = ((String[])cidObj)[0];
+        else if (cidObj instanceof String[] sarr) {
+            cidStr = sarr[0];
         }
 
         Long cid = null;

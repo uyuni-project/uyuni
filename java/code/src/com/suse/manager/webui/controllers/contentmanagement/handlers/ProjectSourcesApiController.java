@@ -29,7 +29,6 @@ import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourc
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -68,7 +67,7 @@ public class ProjectSourcesApiController {
         List<String> sourceLabelsToDetach = dbContentProject.getSources().stream()
                 .flatMap(source -> stream(source.asSoftwareSource()))
                 .map(softwareSource -> softwareSource.getChannel().getLabel())
-                .collect(Collectors.toList());
+                .toList();
         sourceLabelsToDetach.forEach(sourceLabel -> CONTENT_MGR.detachSource(
                 projectLabel,
                 ProjectSource.Type.SW_CHANNEL,
@@ -79,7 +78,7 @@ public class ProjectSourcesApiController {
         List<String> sourceLabelsToAttach = createSourceRequest.getSoftwareSources()
                 .stream()
                 .map(ProjectSoftwareSourceRequest::getLabel)
-                .collect(Collectors.toList());
+                .toList();
         Collections.reverse(sourceLabelsToAttach);
         sourceLabelsToAttach.forEach(sourceLabel -> CONTENT_MGR.attachSource(
                 projectLabel,

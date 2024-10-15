@@ -183,19 +183,13 @@ public class EssentialChannelDto extends BaseDto {
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof EssentialChannelDto)) {
+        if (!(obj instanceof EssentialChannelDto other)) {
             return false;
         }
-        EssentialChannelDto other = (EssentialChannelDto) obj;
         if (id == null) {
-            if (other.id != null) {
-                return false;
-            }
+            return other.id == null;
         }
-        else if (!id.equals(other.id)) {
-            return false;
-        }
-        return true;
+        return id.equals(other.id);
     }
 
     /**

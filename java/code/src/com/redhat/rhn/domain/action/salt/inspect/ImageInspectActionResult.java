@@ -74,12 +74,9 @@ public class ImageInspectActionResult implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ImageInspectActionResult)) {
+        if (!(obj instanceof ImageInspectActionResult result)) {
             return false;
         }
-
-        ImageInspectActionResult result = (ImageInspectActionResult) obj;
-
         return new EqualsBuilder()
                 .append(this.getActionImageInspectId(), result.getActionImageInspectId())
                 .append(this.getServerId(), result.getServerId())

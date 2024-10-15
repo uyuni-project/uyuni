@@ -100,10 +100,9 @@ public class PrivateChannelFamily implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof PrivateChannelFamily)) {
+        if (!(other instanceof PrivateChannelFamily castOther)) {
             return false;
         }
-        PrivateChannelFamily castOther = (PrivateChannelFamily) other;
         return new EqualsBuilder().append(this.getChannelFamily(),
                 castOther.getChannelFamily()).append(this.getOrg(),
                         castOther.getOrg()).isEquals();

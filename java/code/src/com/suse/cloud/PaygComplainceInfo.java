@@ -120,11 +120,10 @@ public class PaygComplainceInfo {
             return true;
         }
 
-        if (!(o instanceof PaygComplainceInfo)) {
+        if (!(o instanceof PaygComplainceInfo that)) {
             return false;
         }
 
-        PaygComplainceInfo that = (PaygComplainceInfo) o;
         return new EqualsBuilder()
             .append(paygInstance, that.paygInstance)
             .append(compliant, that.compliant)

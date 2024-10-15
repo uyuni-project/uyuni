@@ -69,8 +69,7 @@ public class PackageName implements Comparable<PackageName> {
      */
     @Override
     public boolean equals(Object other) {
-        if (other instanceof PackageName) {
-            PackageName otherPack = (PackageName) other;
+        if (other instanceof PackageName otherPack) {
             return new EqualsBuilder().append(this.getName(), otherPack.getName()).append(
                     this.getId(), otherPack.getId()).isEquals();
         }

@@ -1286,6 +1286,7 @@ public class ChannelManager extends BaseManager {
      * @param expectOne if true, throws exception, if more child channels are returned
      * @return List of child channel ids
      */
+    @SuppressWarnings("java:S6204")
     public static List<Long> findChildChannelsWithPackage(Org org, Long parent, String
             packageName, boolean expectOne) {
 

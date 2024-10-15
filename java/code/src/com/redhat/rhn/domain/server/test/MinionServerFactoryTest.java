@@ -35,7 +35,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -116,7 +115,7 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
 
         List<MinionSummary> allSummariesExpected = Stream.of(minion1, minion2, minion3)
                                                          .map(MinionSummary::new)
-                                                         .collect(Collectors.toList());
+                                                         .toList();
         List<MinionSummary> allSummariesActual = MinionServerFactory.findAllMinionSummaries(action.getId());
 
         assertEquals(allSummariesExpected.size(), allSummariesActual.size());

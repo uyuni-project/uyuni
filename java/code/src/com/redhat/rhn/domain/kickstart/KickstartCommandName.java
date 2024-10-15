@@ -121,10 +121,9 @@ public class KickstartCommandName {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof KickstartCommandName)) {
+        if (!(obj instanceof KickstartCommandName that)) {
             return false;
         }
-        KickstartCommandName that = (KickstartCommandName) obj;
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(getName(), that.getName());
         builder.append(getArgs(), that.getArgs());
