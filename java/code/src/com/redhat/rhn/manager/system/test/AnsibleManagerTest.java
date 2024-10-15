@@ -39,10 +39,8 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -464,12 +462,11 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, groupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+                new SystemUnentitler(monitoringManager, groupManager),
+                new SystemEntitler(saltApi, monitoringManager, groupManager)
         );
 
         context.checking(new Expectations() {{

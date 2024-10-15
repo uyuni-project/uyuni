@@ -35,7 +35,6 @@ import Highstate from "./state";
 import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
-import Virtualization from "./virtualization";
 
 const pages = {
   ...ActivationKeys,
@@ -61,7 +60,6 @@ const pages = {
   ...Shared,
   ...Systems,
   ...Storybook,
-  ...Virtualization,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {

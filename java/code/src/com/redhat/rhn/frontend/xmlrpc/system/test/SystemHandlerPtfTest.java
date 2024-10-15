@@ -49,13 +49,11 @@ import com.redhat.rhn.testing.PackageTestUtils;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
@@ -116,11 +114,10 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         XmlRpcSystemHelper xmlRpcHelper = new XmlRpcSystemHelper(regularBootstrapper, sshBootstrapper);
 
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
 
-        SystemUnentitler unentitler = new SystemUnentitler(virtManager, monitoringManager, groupManager);
-        SystemEntitler entitler = new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager);
+        SystemUnentitler unentitler = new SystemUnentitler(monitoringManager, groupManager);
+        SystemEntitler entitler = new SystemEntitler(saltApi, monitoringManager, groupManager);
 
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(unentitler, entitler);
         SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
