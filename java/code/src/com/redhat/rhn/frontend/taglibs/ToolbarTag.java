@@ -18,6 +18,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.manager.acl.AclManager;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -505,11 +507,11 @@ public class ToolbarTag extends TagSupport {
             buf.append(baseTag.renderOpenTag());
             buf.append(toolbarDivTag.renderOpenTag());
 
-            buf.append(renderCreationLink());
             buf.append(renderCloneLink());
             buf.append(renderUploadLink());
             buf.append(renderDeletionLink());
             buf.append(renderMiscLink());
+            buf.append(renderCreationLink());
             buf.append(toolbarDivTag.renderCloseTag());
 
 
@@ -593,8 +595,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getCreationUrl())) {
 
             String create = "toolbar.create." + getCreationType();
-            String className = "btn btn-primary";
-            return renderActionLink(getCreationUrl(), create, className,
+            return renderActionLink(getCreationUrl(), create, "btn btn-primary",
                                     create, "item-add", null, false);
         }
         return "";
@@ -605,8 +606,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getCloneUrl())) {
 
             String clone = "toolbar.clone." + getCloneType();
-            String className = "btn btn-default";
-            return renderActionLink(getCloneUrl(), clone, className,
+            return renderActionLink(getCloneUrl(), clone, "btn btn-default",
                                     clone, "item-clone", null, false);
         }
         return "";
@@ -617,8 +617,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getDeletionUrl())) {
 
             String del = "toolbar.delete." + getDeletionType();
-            String className = "btn btn-danger";
-            return renderActionLink(getDeletionUrl(), del, className, del, "item-del", null, false);
+            return renderActionLink(getDeletionUrl(), del, "btn btn-danger", del, "item-del", null, false);
         }
         return "";
     }
@@ -628,8 +627,7 @@ public class ToolbarTag extends TagSupport {
                 assertNotEmpty(getUploadUrl())) {
 
             String del = "toolbar.upload." + getUploadType();
-            String className = "btn btn-default";
-            return renderActionLink(getUploadUrl(), del, className, del, "item-upload", null, false);
+            return renderActionLink(getUploadUrl(), del, "btn btn-default", del, "item-upload", null, false);
         }
         return "";
     }
@@ -646,8 +644,7 @@ public class ToolbarTag extends TagSupport {
             return "";
         }
 
-        String className = "btn btn-default";
-        return renderActionLink(getMiscUrl(), getMiscText(), className,
+        return renderActionLink(getMiscUrl(), getMiscText(), "btn btn-default",
                                  getMiscAlt(), getMiscIcon(), getMiscImg(), isMiscSpaOff());
     }
 
@@ -662,9 +659,13 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
-        a.setAttribute("class", className);
+    
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
+        }
+
+        if (StringUtils.isNotBlank(className)) {
+            a.setAttribute("class", className);
         }
 
         if (assertNotEmpty(imgName)) {
