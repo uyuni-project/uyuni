@@ -406,6 +406,9 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
       log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
+  rescue Timeout::Error => e
+    log e.message
+    raise ScriptError, "Timeout occured while syncing channel: #{channel}"
   rescue StandardError => e
     log e.message
     unless $build_validation
@@ -445,6 +448,9 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{os_product_version}' channels to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
     end
+  rescue Timeout::Error => e
+    log e.message
+    raise ScriptError, "Timeout occured while syncing channels for: #{os_product_version}"
   rescue StandardError => e
     log e.message
     unless $build_validation
