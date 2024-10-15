@@ -67,13 +67,16 @@ def __virtual__():
     return HAS_POSTGRES
 
 
-def _is_salt_ssh(opts):
-    """Check if this pillar is computed for Salt SSH.
+def _is_salt_ssh_or_runner(opts):
+    """Check if this pillar is computed for Salt SSH or Salt runner execution
 
     Only in salt/client/ssh/__init__.py, the master_opts are moved into
     opts[__master_opts__], which we use to detect Salt SSH usage.
+
+    During a Salt runner execution, the "_master" suffix is appended to the
+    master_minion id.
     """
-    return "__master_opts__" in opts
+    return "__master_opts__" in opts or opts.get("id", "").endswith("_master")
 
 
 def _get_cursor(func):
@@ -105,7 +108,7 @@ def _get_cursor(func):
             cnx = _connect_db()
             log.debug("Connected to the DB")
             # pylint: disable-next=undefined-variable
-            if not _is_salt_ssh(__opts__):
+            if not _is_salt_ssh_or_runner(__opts__):
                 # pylint: disable-next=undefined-variable
                 __context__["suma_minion_cnx"] = cnx
         except psycopg2.OperationalError as err:
@@ -119,7 +122,7 @@ def _get_cursor(func):
             cnx = _connect_db()
             log.debug("Reconnected to the DB")
             # pylint: disable-next=undefined-variable
-            if not _is_salt_ssh(__opts__):
+            if not _is_salt_ssh_or_runner(__opts__):
                 # pylint: disable-next=undefined-variable
                 __context__["suma_minion_cnx"] = cnx
             cursor = cnx.cursor()
@@ -134,7 +137,7 @@ def _get_cursor(func):
                 cnx = _connect_db()
                 log.debug("Reconnected to the DB")
                 # pylint: disable-next=undefined-variable
-                if not _is_salt_ssh(__opts__):
+                if not _is_salt_ssh_or_runner(__opts__):
                     # pylint: disable-next=undefined-variable
                     __context__["suma_minion_cnx"] = cnx
                 cursor = cnx.cursor()
@@ -152,7 +155,7 @@ def _get_cursor(func):
                 )
         finally:
             # pylint: disable-next=undefined-variable
-            if _is_salt_ssh(__opts__):
+            if _is_salt_ssh_or_runner(__opts__):
                 cnx.close()
 
 

@@ -1,0 +1,1 @@
+- suma_minion: prevent issues when calling Salt runners (bsc#1228232)
