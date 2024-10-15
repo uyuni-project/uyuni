@@ -1,0 +1,18 @@
+// SPDX-FileCopyrightText: 2024 SUSE LLC
+//
+// SPDX-License-Identifier: Apache-2.0
+{
+    "name": "Prebuilt",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "uyuni",
+    "workspaceFolder": "",
+    "remoteUser": "root",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": ["vscjava.vscode-java-pack","nickheap.vscode-ant","ms-azuretools.vscode-docker"]
+        }
+    },
+  
+    "postAttachCommand": "mv /repository /workspaces/uyuni/java/buildconf/ivy/ && mkdir -p /workspaces/uyuni/java/lib && mv /uyuni-lib/* /workspaces/uyuni/java/lib/"
+}

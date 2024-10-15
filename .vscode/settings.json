@@ -12,4 +12,7 @@
     "css.lint.emptyRules": "ignore",
     "less.lint.emptyRules": "ignore",
     "scss.lint.emptyRules": "ignore",
+    "githubPullRequests.ignoredPullRequestBranches": [
+        "master"
+    ],
 }
