@@ -19,6 +19,7 @@
     <!-- Other properties -->
     <property name="container.backend" value=""/>
 
+    <property name="deploy.mode" value="remote"/>
     <property name="deploy.host" value="deployhost"/>
     <property name="deploy.port" value="22"/>
     <property name="deploy.dir" value="/usr/share/susemanager/www/tomcat/webapps/rhn"/>
@@ -44,19 +45,108 @@
     <!-- Taskdefs -->
     <taskdef name="ivy-retrieve" classname="org.apache.ivy.ant.IvyRetrieve"/>
 
-  <!-- Paths -->
-  <path id="libjars">
-    <fileset dir="${lib.dir}">
-      <include name="**/*.jar"/>
-      <!-- Exclude checkstyle and jacoco -->
-      <exclude name="all-10.12.7.jar" />
-      <exclude name="nodeps-0.8.7.jar" />
-    </fileset>
-  </path>
-  <path id="managertestjars">
-    <path refid="libjars" />
-    <fileset file="${build.dir}/rhn.jar" />
-  </path>
+    <!-- Paths -->
+    <path id="libjars">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+            <!-- Exclude checkstyle and jacoco -->
+            <exclude name="all-10.12.7.jar"/>
+            <exclude name="nodeps-0.8.7.jar"/>
+        </fileset>
+    </path>
+    <path id="managertestjars">
+        <path refid="libjars"/>
+        <fileset file="${build.dir}/rhn.jar"/>
+    </path>
+
+    <!-- Conditions to define the correct deployment parameters -->
+    <condition property="mgrctl.backend.parameter" value="--backend ${container.backend}" else="">
+        <and>
+            <isset property="container.backend" />
+            <matches string="${container.backend}" pattern="^(podman|podman-remote|kubectl)$" />
+        </and>
+    </condition>
+
+    <condition property="deploy.executor.command" value="sh">
+        <equals arg1="${deploy.mode}" arg2="local"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="-c">
+        <equals arg1="${deploy.mode}" arg2="local"/>
+    </condition>
+
+    <condition property="deploy.executor.command" value="ssh">
+        <equals arg1="${deploy.mode}" arg2="remote"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="${ssh.command.args}">
+        <equals arg1="${deploy.mode}" arg2="remote"/>
+    </condition>
+
+    <condition property="deploy.executor.command" value="mgrctl">
+        <equals arg1="${deploy.mode}" arg2="container"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="exec ${mgrctl.backend.parameter} -i --">
+        <equals arg1="${deploy.mode}" arg2="container"/>
+    </condition>
+
+    <condition property="deploy.executor.command" value="ssh">
+        <equals arg1="${deploy.mode}" arg2="remote-container"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="${ssh.command.args} mgrctl exec ${mgrctl.backend.parameter} -i --">
+        <equals arg1="${deploy.mode}" arg2="remote-container"/>
+    </condition>
+
+    <condition property="deploy.requires.ssh" value="true">
+        <equals arg1="${deploy.mode}" arg2="remote"/>
+    </condition>
+
+    <condition property="deploy.requires.mgrctl" value="true">
+        <equals arg1="${deploy.mode}" arg2="container"/>
+    </condition>
+
+    <condition property="deploy.requires.remote-mgrctl" value="true">
+        <equals arg1="${deploy.mode}" arg2="remote-container"/>
+    </condition>
+
+    <!-- macros for deployment -->
+    <macrodef name="deploy-directory">
+        <attribute name="source"/>
+        <attribute name="destination"/>
+        <attribute name="syncParameters" default=""/>
+        <sequential>
+            <!-- Define a temporary directory or fallback to /tmp/deploy-dir -->
+            <local name="deploy.temp.dir" />
+            <deploy-execute outputProperty="deploy.temp.dir" command="mktemp -d" />
+            <property name="deploy.temp.dir" value="/tmp/deploy-temp-dir" />
+
+            <echo message="Deploying directory @{source} to @{destination} using ${deploy.temp.dir}" />
+
+            <!-- Extract to the temporary directory -->
+            <echo message="Executing sh -c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;" level="verbose"/>
+            <exec failonerror="true" executable="sh" logerror="true">
+                <arg line="-c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;"/>
+            </exec>
+            <!-- Use rsync to synchronize the folder -->
+            <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
+            <!-- Remove the temporary stuff -->
+            <deploy-execute command="rm -rf ${deploy.temp.dir}" />
+        </sequential>
+    </macrodef>
+
+    <macrodef name="deploy-execute">
+        <attribute name="command"/>
+        <attribute name="outputProperty" default="" />
+        <attribute name="resultProperty" default="" />
+        <sequential>
+            <echo message="${deploy.executor.command} ${deploy.executor.parameters} '@{command}'" level="verbose" />
+            <exec failonerror="true" executable="${deploy.executor.command}" outputproperty="@{outputProperty}" resultproperty="@{resultProperty}" logerror="true">
+                <arg line="${deploy.executor.parameters} '@{command}'"/>
+            </exec>
+        </sequential>
+    </macrodef>
 
     <!-- Tasks -->
     <target name="clean" description="Cleans up all generated files">
@@ -188,32 +278,31 @@
         </exec>
     </target>
 
-    <target name="deploy" depends="webapp, open-ssh-socket" description="Deploy a new copy of SUSE Manager">
-        <echo message="Copying files to remote host..."/>
-        <exec failonerror="true" executable="rsync">
-            <arg line="-a --delete --rsh '${rsync.arg.rsh}' --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.user}@${deploy.host}:${deploy.dir}/"/>
-        </exec>
+    <target name="check-deploy-mode">
+        <fail message="The deploy mode ${deploy.mode} is invalid">
+            <condition>
+                <not>
+                    <matches string="${deploy.mode}" pattern="^(local|remote|container|remote-container)$" />
+                </not>
+            </condition>
+        </fail>
+    </target>
+
+    <target name="deploy" depends="check-deploy-mode, ensure-server-access, webapp"
+            description="Deploy the webapp to a server">
+        <echo message="Deploying webapp on server..."/>
+        <deploy-directory source="${build.dir}/webapp" destination="${deploy.dir}"
+                          syncParameters="--delete --exclude=log4j2.xml"/>
 
         <echo message="Linking the branding jar..."/>
-        <exec failonerror="true" executable="ssh">
-            <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-        </exec>
-
-        <exec failonerror="true" executable="ssh">
-            <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-        </exec>
+        <deploy-execute command="mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
+        <deploy-execute
+                command="ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
 
         <echo message="Linking jars for Taskomatic..."/>
-        <exec failonerror="true" executable="ssh">
-            <arg line="${ssh.command.args} ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-        </exec>
-        <exec failonerror="true" executable="ssh">
-            <arg line="${ssh.command.args} mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-        </exec>
-        <exec failonerror="true" executable="ssh">
-            <arg line="${ssh.command.args} ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-        </exec>
-
+        <deploy-execute command="ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
+        <deploy-execute command="mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
+        <deploy-execute command="ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
     </target>
 
     <target name="is-yarn-installed">
@@ -233,8 +322,8 @@
         </exec>
     </target>
 
-    <target name="deploy-static-resources" depends="open-ssh-socket,build-js"
-            description="Deploy css/js/img/font files">
+    <target name="deploy-static-resources" depends="check-deploy-mode, ensure-server-access, build-js"
+            description="Deploy css/js/img/font files to a server">
         <condition property="spacewalk.upstream">
             <not>
                 <available file="${basedir}/../susemanager" type="dir"/>
@@ -244,194 +333,89 @@
             <isset property="spacewalk.upstream"/>
         </condition>
 
-        <echo message="Copying frontend files to remote host...${static.files.dir}"/>
-        <exec failonerror="true" executable="rsync">
-            <arg line="-a --rsh '${rsync.arg.rsh}' ${frontend.dist.dir}/ ${deploy.user}@${deploy.host}:${static.files.dir}/"/>
-        </exec>
+        <echo message="Deploying frontend files to remote host...${static.files.dir}"/>
+        <deploy-directory source="${frontend.dist.dir}" destination="${static.files.dir}"/>
     </target>
 
-    <target name="deploy-salt-files" depends="open-ssh-socket" description="Deploy Salt files">
+    <target name="deploy-salt-files" depends="check-deploy-mode, ensure-server-access"
+            description="Deploy Salt files to a server">
         <condition property="spacewalk.upstream">
             <not>
                 <available file="${basedir}/../susemanager" type="dir"/>
             </not>
         </condition>
+
         <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
         <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
 
-    <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/salt/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/" />
-    </exec>
-    <echo message="Copying Salt grains, beacons, modules and pillars to remote host...${salt.state.files.dir}"/>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/grains/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_grains/" />
-    </exec>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/beacons/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_beacons/" />
-    </exec>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/src/modules/ ${deploy.user}@${deploy.host}:${salt.state.files.dir}/_modules/" />
-    </exec>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/modules/ ${deploy.user}@${deploy.host}:/usr/share/susemanager/modules/" />
-    </exec>
-    <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
-    <exec executable="rsync">
-      <arg line="-a --rsh '${rsync.arg.rsh}' ${basedir}/../susemanager-utils/susemanager-sls/reactor/ ${deploy.user}@${deploy.host}:${salt.reactor.files.dir}/" />
-    </exec>
-  </target>
+        <echo message="Copying Salt sls files to remote host...${salt.state.files.dir}"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
+                          destination="${salt.state.files.dir}"/>
 
-    <target name="restart-tomcat" depends="open-ssh-socket" description="Restart the tomcat process">
+        <echo message="Copying Salt grains, beacons, modules and pillars to remote host...${salt.state.files.dir}"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
+                          destination="${salt.state.files.dir}/_grains/"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
+                          destination="${salt.state.files.dir}/_beacons/"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
+                          destination="${salt.state.files.dir}/_modules/"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/modules/"
+                          destination="/usr/share/susemanager/modules/"/>
+
+        <echo message="Copying Salt reactor to remote host...${salt.reactor.files.dir}"/>
+        <deploy-directory source="${basedir}/../susemanager-utils/susemanager-sls/reactor/"
+                          destination="${salt.reactor.files.dir}"/>
+    </target>
+
+    <target name="restart" depends="restart-tomcat, restart-taskomatic" description="Restart the tomcat and taskomatic processes" />
+
+    <target name="restart-tomcat" depends="check-deploy-mode, ensure-server-access" description="Restart the tomcat process">
         <echo message="Launching Tomcat restart..."/>
-        <exec executable="ssh">
-            <arg line="${ssh.command.args} nohup rctomcat restart > /dev/null 2>&amp;1 &amp;"/>
-        </exec>
+        <deploy-execute command="nohup rctomcat restart"/>
     </target>
 
-    <target name="restart-taskomatic" depends="open-ssh-socket" description="Restart the taskomatic process">
+    <target name="restart-taskomatic" depends="check-deploy-mode, ensure-server-access" description="Restart the taskomatic process">
         <echo message="Launching Taskomatic restart..."/>
-        <exec executable="ssh">
-            <arg line="${ssh.command.args}  nohup rctaskomatic restart > /dev/null 2>&amp;1 &amp;"/>
-        </exec>
+        <deploy-execute command="nohup rctaskomatic restart"/>
     </target>
 
-    <target name="deploy-restart" depends="deploy, restart-tomcat, restart-taskomatic"/>
+    <target name="deploy-restart" depends="deploy, restart"
+            description="Deploys the java webapp then restarts tomcat and taskomatic" />
 
-    <!-- container related -->
-    <target name="is-mgrctl-installed" description="Checks if mgrctl is installed">
+    <target name="check-mgrctl-installed">
         <exec failifexecutionfails="false" resultproperty="mgrctl.installed" executable="mgrctl">
             <arg line="--version"/>
         </exec>
+        <fail unless="mgrctl.installed" message="mgrctl is not in the PATH. Please install mgrctl first."/>
     </target>
 
-    <target name="warn-if-mgrctl-not-installed" depends="is-mgrctl-installed" unless="mgrctl.installed">
-        <fail>mgrctl is not in the PATH. Please install mgrctl first.</fail>
-    </target>
-
-    <target name="deploy-container" depends="webapp, warn-if-mgrctl-not-installed"
-            description="Deploy a new copy of SUSE Manager in a running container">
-        <echo message="Copying files to container..."/>
-
-        <exec failonerror="true" executable="sh">
-            <arg line="-c 'tar c -C ${build.dir}/webapp -f - --exclude=log4j2.xml . | mgrctl exec -i -- tar xf - -C ${deploy.dir}'"/>
+    <target name="check-remote-mgrctl-installed">
+        <exec failifexecutionfails="false" resultproperty="exitCode" executable="ssh">
+            <arg line="${ssh.command.args} mgrctl --version"/>
         </exec>
-
-        <echo message="Linking the branding jar..."/>
-        <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-        <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-
-        <echo message="Linking jars for Taskomatic..."/>
-        <mgrctl argline="exec -- ln -sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-        <mgrctl argline="exec -- mv ${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-        <mgrctl argline="exec -- ln -sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-
-    </target>
-
-
-    <target name="deploy-static-resources-container" depends="build-js,warn-if-mgrctl-not-installed"
-            description="Deploy css/js/img/font files in a running container">
-        <echo message="Copying frontend files to container... "/>
-        <copy-to-container
-                source="${frontend.dist.dir}"
-                target="/usr/share/susemanager/www/htdocs"
-                failonerror="true"
-                backend="${container.backend}"/>
-    </target>
-
-    <target name="deploy-salt-files-container" depends="warn-if-mgrctl-not-installed"
-            description="Deploy Salt files in a running container">
-        <property name="salt.state.files.dir" value="/usr/share/susemanager/salt"/>
-        <property name="salt.reactor.files.dir" value="/usr/share/susemanager/reactor"/>
-
-        <echo message="Copying Salt sls files to remote host..."/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/salt/"
-                target="${salt.state.files.dir}"
-                backend="${container.backend}"
-        />
-
-        <echo message="Copying Salt grains, beacons, modules and pillars to remote host..."/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/src/grains/"
-                target="${salt.state.files.dir}/_grains/"
-                backend="${container.backend}"/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/src/beacons/"
-                target="${salt.state.files.dir}/_beacons/"
-                backend="${container.backend}"/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/src/modules/"
-                target="${salt.state.files.dir}/_modules/"
-                backend="${container.backend}"/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/modules/pillar/"
-                target="/usr/share/susemanager/modules/pillar/"
-                backend="${container.backend}"/>
-
-        <echo message="Copying Salt reactor to remote host..."/>
-        <copy-to-container
-                source="${basedir}/../susemanager-utils/susemanager-sls/reactor"
-                target="/usr/share/susemanager/modules/pillar/"
-                backend="${container.backend}"/>
-    </target>
-
-    <target name="restart-tomcat-container" depends="warn-if-mgrctl-not-installed"
-            description="Restarts the tomcat process in a running container">
-        <echo message="Launching Tomcat restart..."/>
-        <mgrctl argline="exec rctomcat restart"/>
-    </target>
-
-    <target name="restart-taskomatic-container" depends="warn-if-mgrctl-not-installed"
-            description="Restarts the taskomatic process in a container">
-        <echo message="Launching Taskomatic restart..."/>
-        <mgrctl argline="exec rctaskomatic restart"/>
-    </target>
-
-    <target name="deploy-restart-container">
-        <antcall target="deploy-container"/>
-        <antcall target="restart-tomcat-container"/>
-        <antcall target="restart-taskomatic-container"/>
-    </target>
-
-
-    <!-- wraps mgrctl command, executing the given argline -->
-    <macrodef name="mgrctl">
-        <attribute name="argline"/>
-        <attribute name="failonerror" default="true"/>
-        <attribute name="backend" default=""/>
-        <sequential>
-            <condition property="backend.flag" value="--backend @{backend}" else="">
+        <fail message="mgrctl is not in the PATH on ${deploy.host}. Please install mgrctl first.">
+            <condition>
                 <not>
-                    <equals arg1="@{backend}" arg2=""/>
+                    <equals arg1="${exitCode}" arg2="0" />
                 </not>
             </condition>
-            <exec failonerror="@{failonerror}" executable="mgrctl">
-                <arg line="@{argline} ${backend.flag}"/>
-            </exec>
-        </sequential>
-    </macrodef>
+        </fail>
+    </target>
 
-    <!-- copies the given source path to the given target path in the container -->
-    <macrodef name="copy-to-container">
-        <attribute name="source"/>
-        <attribute name="target"/>
-        <attribute name="failonerror" default="false"/>
-        <attribute name="backend" default=""/>
-        <sequential>
-            <condition property="backend.flag" value="--backend @{backend}" else="">
-                <not>
-                    <equals arg1="@{backend}" arg2=""/>
-                </not>
-            </condition>
+    <target name="ensure-server-access" depends="maybe-open-ssh-socket, maybe-check-mgrctl-installed, maybe-check-remote-mgrctl-installed" />
 
-            <exec failonerror="@{failonerror}" executable="mgrctl">
-                <arg line="cp @{source} server:@{target} ${backend.flag}"/>
-            </exec>
-        </sequential>
-    </macrodef>
+    <target name="maybe-open-ssh-socket" if="deploy.requires.ssh">
+        <echo message="call open ssh"/>
+        <antcall target="open-ssh-socket"/>
+    </target>
 
-    <!-- ./container related -->
+    <target name="maybe-check-mgrctl-installed" if="deploy.requires.mgrctl">
+        <antcall target="check-mgrctl-installed"/>
+    </target>
+
+    <target name="maybe-check-remote-mgrctl-installed" if="deploy.requires.remote-mgrctl">
+        <antcall target="check-remote-mgrctl-installed" />
+    </target>
 
     <target name="test-report" depends="test" description="Run unit tests and produce a report">
         <junitreport todir="${tests.results.dir}">
@@ -442,11 +426,7 @@
         </junitreport>
     </target>
 
-    <target
-            name="test"
-            description="Run unit tests"
-            depends="refresh-branding-jar, jar"
-    >
+    <target name="test" description="Run unit tests" depends="refresh-branding-jar, jar">
         <mkdir dir="${tests.results.dir}"/>
 
         <loadfile property="tests.includes.text" srcFile="${tests.includes}"/>
@@ -467,7 +447,7 @@
                     <include name="**/junit-jupiter-*.jar"/>
                 </fileset>
                 <fileset dir="/usr/share/java/open-test-reporting/">
-                    <include name="**/*.jar" />
+                    <include name="**/*.jar"/>
                 </fileset>
             </classpath>
 
@@ -497,25 +477,26 @@
         <fail if="junit_failed"/>
     </target>
 
-  <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
-    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties" classpath="${lib.dir}/all-10.12.7.jar" />
-    <checkstyle config="${basedir}/buildconf/checkstyle.xml">
-      <classpath>
-        <path location="${build.dir}/classes" />
-        <path refid="libjars" />
-      </classpath>
-      <fileset dir="code">
-        <include name="**/src/**/*.java" />
-      </fileset>
-      <property key="checkstyle.cache.file" file="${checkstyle.cache.src}" />
-      <property key="checkstyle.header.file" file="buildconf/LICENSE.txt" />
-      <property key="checkstyle.suppressions.file" file="buildconf/checkstyle-suppressions.xml" />
-      <property key="javadoc.method.scope" value="public" />
-      <property key="javadoc.var.scope" value="package" />
-      <property key="javadoc.type.scope" value="package" />
-      <property key="javadoc.lazy" value="false" />
-    </checkstyle>
-  </target>
+    <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
+        <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
+                 classpath="${lib.dir}/all-10.12.7.jar"/>
+        <checkstyle config="${basedir}/buildconf/checkstyle.xml">
+            <classpath>
+                <path location="${build.dir}/classes"/>
+                <path refid="libjars"/>
+            </classpath>
+            <fileset dir="code">
+                <include name="**/src/**/*.java"/>
+            </fileset>
+            <property key="checkstyle.cache.file" file="${checkstyle.cache.src}"/>
+            <property key="checkstyle.header.file" file="buildconf/LICENSE.txt"/>
+            <property key="checkstyle.suppressions.file" file="buildconf/checkstyle-suppressions.xml"/>
+            <property key="javadoc.method.scope" value="public"/>
+            <property key="javadoc.var.scope" value="package"/>
+            <property key="javadoc.type.scope" value="package"/>
+            <property key="javadoc.lazy" value="false"/>
+        </checkstyle>
+    </target>
 
     <target name="test-coverage-report" depends="test" description="Generate the unit test coverage reports">
         <taskdef resource="org/jacoco/ant/antlib.xml" classpathref="libjars"/>
@@ -610,47 +591,17 @@
         </javadoc>
 
         <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
-
     </target>
 
-    <target name="deploy-local" depends="webapp" description="Deploy a new copy of SUSE Manager">
-        <echo message="Copying files to local host..."/>
-        <exec failonerror="true" executable="rsync">
-            <arg line="-a --delete --exclude log4j2.xml ${build.dir}/webapp/ ${deploy.dir}/"/>
-        </exec>
-
-        <echo message="Linking the branding jar..."/>
-        <exec failonerror="true" executable="mv">
-            <arg line="${deploy.dir}/WEB-INF/lib/java-branding.jar /usr/share/rhn/lib"/>
-        </exec>
-
-        <exec failonerror="true" executable="ln">
-            <arg line="-sf /usr/share/rhn/lib/java-branding.jar ${deploy.dir}/WEB-INF/lib/java-branding.jar"/>
-        </exec>
-
-        <echo message="Linking jars for Taskomatic..."/>
-        <exec failonerror="true" executable="ln">
-            <arg line="-sf ${deploy.dir}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"/>
-        </exec>
-        <exec failonerror="true" executable="mv">
-            <arg line="${deploy.dir}/WEB-INF/lib/rhn.jar /usr/share/rhn/lib"/>
-        </exec>
-        <exec failonerror="true" executable="ln">
-            <arg line="-sf /usr/share/rhn/lib/rhn.jar ${deploy.dir}/WEB-INF/lib"/>
-        </exec>
-
-  </target>
-
-  <target name="make-eclipse-project"
-          description="Configures this checkout as an eclipse project.">
-    <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false" />
-    <copy toDir="${rhn-home}" overwrite="false">
-      <fileset dir="${rhn-home}/conf/eclipse/">
-        <include name=".checkstyle" />
-        <include name=".classpath" />
-        <include name=".settings/*" />
-        <!-- include name=".externalToolBuilders/*" /-->
-      </fileset>
-    </copy>
-  </target>
+    <target name="make-eclipse-project" description="Configures this checkout as an eclipse project.">
+        <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false"/>
+        <copy toDir="${rhn-home}" overwrite="false">
+            <fileset dir="${rhn-home}/conf/eclipse/">
+                <include name=".checkstyle"/>
+                <include name=".classpath"/>
+                <include name=".settings/*"/>
+                <!-- include name=".externalToolBuilders/*" /-->
+            </fileset>
+        </copy>
+    </target>
 </project>
