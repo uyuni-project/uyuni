@@ -20,7 +20,7 @@ h6,
     font-size: 80%;
   }
 
-  a:hover {
+  a:not(.btn):hover {
     text-decoration: underline !important;
   }
 }

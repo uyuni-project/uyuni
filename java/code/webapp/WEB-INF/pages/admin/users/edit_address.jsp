@@ -16,8 +16,8 @@
             <rhn:csrf />
             <%@ include file="/WEB-INF/pages/common/fragments/user/edit_address_form.jspf" %>
             <div class="form-group">
-                <div class="col-lg-offset-3 offset-lg-3 col-lg-6 test">
-                    <button type="submit" class="btn btn-primary test" value="<bean:message key='message.Update'/>">
+                <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
+                    <button type="submit" class="btn btn-primary" value="<bean:message key='message.Update'/>">
                             <bean:message key="message.Update" />
                     </button>
                 </div>
