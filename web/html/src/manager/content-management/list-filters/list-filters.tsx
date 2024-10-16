@@ -153,7 +153,6 @@ const ListFilters = (props: Props) => {
       button={panelButtons}
       helpUrl="reference/clm/clm-filters.html"
     >
-      test
       <Table
         data={displayedFilters}
         identifier={identifier}

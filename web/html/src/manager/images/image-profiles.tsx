@@ -128,7 +128,7 @@ class ImageProfiles extends React.Component<Props, State> {
   render() {
     const panelButtons = (
       <div className="pull-right btn-group">
-         {window.isAdmin && this.state.selectedItems.length > 0 && (
+        {window.isAdmin && this.state.selectedItems.length > 0 && (
           <ModalButton
             id="delete-selected"
             icon="fa-trash"
