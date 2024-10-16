@@ -92,6 +92,26 @@ def _get_module_info(module_names):
         return []
 
     module_info_output = result.stdout.splitlines()
+    active_modules = []
+    while True:
+        start = next(
+            (i for i, e in enumerate(module_info_output)
+            if "[a]" in e), -1
+        )
+        if start != -1 and module_info_output[start].startswith("Stream"):
+            end = next(
+                (i for i, e in enumerate(module_info_output[start:-1])
+                if e.startswith("Name")), -1
+            )
+            if end != -1:
+                active_modules+=module_info_output[start-1:end+start]
+                module_info_output = module_info_output[end+start:-1]
+            else:
+                active_modules+=module_info_output[start-1:end]
+                module_info_output=active_modules
+                break
+        else:
+            break
 
     nsvca_info_list = []
     current_module_info = []
