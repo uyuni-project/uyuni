@@ -4,6 +4,7 @@ Grains for Mgr Server
 
 import logging
 import os
+import subprocess
 
 log = logging.getLogger(__name__)
 RHNCONF = "/etc/rhn/rhn.conf"
@@ -11,20 +12,41 @@ RHNCONFDEF = "/usr/share/rhn/config-defaults/rhn.conf"
 RHNWEBCONF = "/usr/share/rhn/config-defaults/rhn_web.conf"
 
 
+def _parse(lines):
+    result = {}
+    if not isinstance(lines, list):
+        return result
+    for line in lines:
+        line = line.strip()
+        if not line or line[0] == "#":
+            continue
+        k, v = line.split("=", 1)
+        result[k.strip()] = v.strip() or None
+    return result
+
+
 def _simple_parse_rhn_conf(cfile):
     result = {}
 
-    if not os.path.exists(cfile):
-        return result
+    if os.path.exists(cfile):
 
-    # pylint: disable-next=unspecified-encoding
-    with open(cfile, "r") as config:
-        for line in config.readlines():
-            line = line.strip()
-            if not line or line[0] == "#":
-                continue
-            k, v = line.split("=", 1)
-            result[k.strip()] = v.strip() or None
+        # pylint: disable-next=unspecified-encoding
+        with open(cfile, "r") as config:
+            lines = config.readlines()
+            result = _parse(lines)
+
+    elif os.path.exists("/usr/bin/mgrctl"):
+        # In case Uyuni run in a container and need to look for the files inside of it
+
+        cmd = ["mgrctl", "exec", f"cat {cfile}"]
+        res = subprocess.run(cmd, capture_output=True, text=True, check=False)
+
+        # Check if the command was successful
+        if res.returncode == 0:
+            # Split the text output by lines
+            lines = result.stdout.splitlines()
+            result = _parse(lines)
+
     return result
 
 
