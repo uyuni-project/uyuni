@@ -47,3 +47,4 @@ WHERE NOT EXISTS (
     WHERE server_id = server_stream.server_id
         AND package_id = p.id
 );
+
