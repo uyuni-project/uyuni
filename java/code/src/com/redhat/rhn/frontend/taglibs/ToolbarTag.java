@@ -659,7 +659,7 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
-    
+
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
         }
