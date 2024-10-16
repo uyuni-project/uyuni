@@ -144,8 +144,7 @@ class MatcherScheduleButton extends React.Component<MatcherScheduleButtonProps> 
   };
 
   render() {
-    const buttonClass =
-      "btn spacewalk-btn-margin-vertical btn-default";
+    const buttonClass = "btn spacewalk-btn-margin-vertical btn-default";
 
     return (
       <button type="button" className={buttonClass} disabled={this.props.matcherRunning} onClick={this.onClick}>
