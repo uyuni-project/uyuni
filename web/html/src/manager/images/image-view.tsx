@@ -615,7 +615,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
     }
 
     const obsoleteFilter = (
-      <label className="btn-link">
+      <label>
         <input
           name="obsoleteFilter"
           type="checkbox"

@@ -62,7 +62,7 @@
                     <html:hidden property="submitted" value="true"/>
                     <div class="spacewalk-section-toolbar">
                         <div class="action-button-wrapper">
-                            <input type="submit" class="btn btn-success"
+                            <input type="submit" class="btn btn-primary"
                                 name="schedule_remote_command"
                                 value="<bean:message key='ssm.operations.provisioning.remotecommand.form.submit'/>">
                         </div>

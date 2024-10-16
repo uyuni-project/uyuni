@@ -17,7 +17,7 @@
   <rhn:submitted />
   <div class="spacewalk-section-toolbar">
     <div class="action-button-wrapper">
-      <html:submit styleClass="btn btn-success" property="dispatch">
+      <html:submit styleClass="btn btn-primary" property="dispatch">
         <bean:message key="ssm.misc.reboot.confirm" />
       </html:submit>
     </div>

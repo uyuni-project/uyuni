@@ -92,7 +92,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                   />
                   <SubmitButton
                     id="login-btn"
-                    className="btn-block btn-success"
+                    className="btn-block btn-primary"
                     text={t("Sign In")}
                     disabled={isLoading}
                   />

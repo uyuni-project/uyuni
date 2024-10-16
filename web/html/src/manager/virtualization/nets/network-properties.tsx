@@ -453,7 +453,7 @@ export function NetworkProperties(props: Props) {
                 />
               </Panel>
               <div className="col-md-offset-3 offset-md-3 col-md-6">
-                <SubmitButton id="submit-btn" className="btn-success" text={props.submitText} disabled={invalid} />
+                <SubmitButton id="submit-btn" className="btn-primary" text={props.submitText} disabled={invalid} />
                 <Button
                   id="clear-btn"
                   className="btn-default pull-right"

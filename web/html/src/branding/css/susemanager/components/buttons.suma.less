@@ -1,14 +1,11 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-success,
-.btn-warning,
 .btn-danger {
   // We use flex to ensure icons etc are correctly aligned in buttons
   display: inline-flex;
   align-items: center;
   gap: 0.5em;
-
   color: inherit;
   font-size: 14px;
   font-weight: bold;
@@ -154,27 +151,8 @@
   }
 }
 
-.btn-success {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      background: transparent;
-      border-color: @eos-bc-persimmon-500;
-      color: @eos-bc-gray-1000;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
-        background: @eos-bc-persimmon-500;
-      }
-    }
-  }
-}
 
 // Warning shouldn't currently be used anywhere, but cover it just in case
-.btn-warning,
 .btn-danger {
   &,
   &:active,

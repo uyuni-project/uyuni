@@ -699,13 +699,20 @@ h1 .fa-stack {
     @extend .pull-right;
     padding: 0.5em 1em;
     a {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    a:not(.btn) {
       border-right: 1px solid $gray-light;
       padding: 0 0.5em;
     }
     a:hover {
       text-decoration: none;
     }
-    a:last-child {
+    a:not(.btn):last-child {
       border-right: 0;
     }
   }

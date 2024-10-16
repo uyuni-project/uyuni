@@ -53,7 +53,7 @@
                 </div>
                 <div class="row-0">
                     <div class="col-md-offset-3 offset-md-3 col-md-5">
-                        <html:submit styleClass="btn btn-success">
+                        <html:submit styleClass="btn btn-default">
                             <bean:message key="cloneerrata.jsp.view"/>
                         </html:submit>
                     </div>

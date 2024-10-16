@@ -55,7 +55,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name="dispatch" class="btn btn-primary" value="<bean:message key='errata.edit.packages.add.addpackages'/>">
+                <button type="submit" name="dispatch" class="btn btn-default" value="<bean:message key='errata.edit.packages.add.addpackages'/>">
                     <bean:message key="errata.edit.packages.add.addpackages"/>
                 </button>
             </div>

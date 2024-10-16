@@ -302,7 +302,7 @@ class ImageImport extends React.Component {
             <div className="col-md-offset-3 offset-md-3 col-md-6">
               <SubmitButton
                 id="update-btn"
-                className="btn-success"
+                className="btn-primary"
                 icon="fa-download"
                 text={t("Import")}
                 disabled={this.state.isInvalid}

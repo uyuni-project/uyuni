@@ -34,7 +34,7 @@ export const AppStreamsChangesConfirm = ({ toEnable, toDisable, onConfirm, onErr
           <Button id="cancelAppStreamChanges" className="btn btn-default" text={t("Cancel")} handler={onCancelClick} />
           <AsyncButton
             id="confirmAppStreamChanges"
-            defaultType="btn-success"
+            defaultType="btn-primary"
             text={t("Confirm")}
             action={applyChanges}
           />

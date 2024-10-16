@@ -41,7 +41,7 @@
   <c:if test="${not (userIsOrgAdmin)}">
    <div class="text-right">
     <hr />
-    <html:submit styleClass="btn btn-success" property="submit">
+    <html:submit styleClass="btn btn-default" property="submit">
      <bean:message key="assignedgroups.jsp.submitpermissions" />
     </html:submit>
    </div>
@@ -83,7 +83,7 @@
     <html:hidden property="uid" />
     <div class="text-right">
       <hr />
-      <html:submit styleClass="btn btn-primary" property="submit">
+      <html:submit styleClass="btn btn-default" property="submit">
         <bean:message key="assignedgroups.jsp.submitdefaults"/>
       </html:submit>
     </div>

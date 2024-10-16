@@ -125,7 +125,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         />
         <AsyncButton
           action={this.applyHighstate}
-          defaultType="btn-success"
+          defaultType="btn-default"
           text={t("Apply Highstate")}
           disabled={window.minions?.length === 0}
         />
@@ -135,7 +135,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     const loc = window.location;
     const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
-      <LinkButton icon="fa-plus" href={createLink} className="btn-default" text={t("Create Recurring")} />,
+      <LinkButton icon="fa-plus" href={createLink} className="btn-primary" text={t("Create Recurring")} />,
     ];
     const showHighstate = [
       <InnerPanel

@@ -108,7 +108,7 @@
                         </rl:list>
                         <div class="form-group">
                             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                                <input type="submit" name="dispatch" class="btn btn-success"
+                                <input type="submit" name="dispatch" class="btn btn-primary"
                                        value='<bean:message key="iss.master.update"/>' />
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                 <c:otherwise>
                     <div class="form-group">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                            <html:submit styleClass="btn btn-success">
+                            <html:submit styleClass="btn btn-primary">
                                 <bean:message key="iss.master.create" />
                             </html:submit>
                         </div>

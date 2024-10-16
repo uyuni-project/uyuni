@@ -1,8 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-success,
-.btn-warning,
 .btn-danger {
   --bs-border-width: 1px;
 
@@ -17,8 +15,6 @@
 
 .btn-default,
 .btn-primary,
-.btn-success,
-.btn-warning,
 .btn-danger {
   border: 1px solid;
 }
@@ -33,22 +29,12 @@
   }
 }
 
-.btn-primary,
-.btn-success {
+.btn-primary {
   background-image: linear-gradient(to bottom, #00da92 0%, #00C081 100%);
   color: #fff;
 
   &, &:disabled, &.disabled {
     border-color: #00C081;
-  }
-}
-
-.btn-warning {
-  color: #fff;
-  background: #f0ad4e;
-
-  &, &:disabled, &.disabled {
-    border-color: #eea236;
   }
 }
 
@@ -58,17 +44,5 @@
 
   &, &:disabled, &.disabled {
     border-color: #d43f3a;
-  }
-}
-
-.btn-info {
-  color: #fff;
-  background-color: #5bc0de;
-  border-color: #46b8da;
-  
-  &:hover{
-    color: #fff;
-    background-color: #31b0d5;
-    border-color: #269abc;
   }
 }

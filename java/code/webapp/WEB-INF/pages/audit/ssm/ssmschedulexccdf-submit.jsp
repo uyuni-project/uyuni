@@ -16,7 +16,7 @@
   <%@ include file="/WEB-INF/pages/common/fragments/audit/schedule-xccdf.jspf" %>
   <div class="form-group">
     <div class="col-md-offset-3 offset-md-3 col-md-6">
-      <html:submit styleClass="btn btn-success" property="schedule_button">
+      <html:submit styleClass="btn btn-primary" property="schedule_button">
         <bean:message key="system.audit.confirmschedulexccdf.jsp.button"/>
       </html:submit>
     </div>
