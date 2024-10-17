@@ -4,25 +4,37 @@ Grains for Mgr Server
 
 import logging
 import os
-import subprocess
+import json
+
+# Import salt libs
+import salt.utils.http as http
 
 log = logging.getLogger(__name__)
-RHNCONF = "/etc/rhn/rhn.conf"
-RHNCONFDEF = "/usr/share/rhn/config-defaults/rhn.conf"
-RHNWEBCONF = "/usr/share/rhn/config-defaults/rhn_web.conf"
+RHNCONF = "/var/lib/containers/storage/volumes/etc-rhn/_data/rhn.conf"
+API = "https://localhost/rhn/manager/api"
+TUKIT_CONF = "/etc/tukit.conf.d/suma_mgrserver.conf"
 
 
-def _parse(lines):
-    result = {}
-    if not isinstance(lines, list):
-        return result
-    for line in lines:
-        line = line.strip()
-        if not line or line[0] == "#":
-            continue
-        k, v = line.split("=", 1)
-        result[k.strip()] = v.strip() or None
-    return result
+def _tukit_conf():
+    if not os.path.exists("/usr/bin/mgradm"):
+        return
+
+    if os.path.exists(TUKIT_CONF):
+        return
+    os.mkdir("/etc/tukit.conf.d")
+    with open(TUKIT_CONF, "w", encoding="UTF-8") as tukit:
+        tukit.write('BINDDIRS[etcrhn]="/var/lib/containers/storage/volumes/etc-rhn/"\n')
+
+
+def _api_query(endpoint):
+    body = http.query(os.path.join(API, endpoint), raise_error=False, verify_ssl=False)[
+        "body"
+    ]
+    if body:
+        apires = json.loads(body)
+        if apires["success"]:
+            return apires["result"]
+    return None
 
 
 def _simple_parse_rhn_conf(cfile):
@@ -32,26 +44,22 @@ def _simple_parse_rhn_conf(cfile):
 
         # pylint: disable-next=unspecified-encoding
         with open(cfile, "r") as config:
-            lines = config.readlines()
-            result = _parse(lines)
-
-    elif os.path.exists("/usr/bin/mgrctl"):
-        # In case Uyuni run in a container and need to look for the files inside of it
-
-        cmd = ["mgrctl", "exec", f"cat {cfile}"]
-        res = subprocess.run(cmd, capture_output=True, text=True, check=False)
-
-        # Check if the command was successful
-        if res.returncode == 0:
-            # Split the text output by lines
-            lines = result.stdout.splitlines()
-            result = _parse(lines)
-
+            for line in config.readlines():
+                line = line.strip()
+                if not line or line[0] == "#":
+                    continue
+                k, v = line.split("=", 1)
+                result[k.strip()] = v.strip() or None
     return result
 
 
 def server_grains():
-    """Returns grains relevant for Uyuni/SUMA server."""
+    """
+    Returns grains relevant for Uyuni/SUMA server.
+    Expectation: Uyuni/SUMA is running as container.
+    """
+
+    _tukit_conf()
     grains = {"is_mgr_server": False}
 
     config = _simple_parse_rhn_conf(RHNCONF)
@@ -65,17 +73,17 @@ def server_grains():
             grains["report_db_port"] = config.get("report_db_port", "5432")
         else:
             grains["has_report_db"] = False
-        rhndef = _simple_parse_rhn_conf(RHNCONFDEF)
-        if rhndef.get("product_name", "uyuni") == "SUSE Manager":
+
+        version = _api_query("api/systemVersion")
+        product = _api_query("api/productName")
+
+        if product and product == "SUSE Manager":
             grains["is_uyuni"] = False
         else:
             grains["is_uyuni"] = True
-        webconfig = _simple_parse_rhn_conf(RHNWEBCONF)
-        if grains["is_uyuni"]:
-            version = webconfig.get("web.version.uyuni")
-        else:
-            version = webconfig.get("web.version")
+
         if version:
             grains["version"] = version.split()[0]
 
+    log.debug("mgr_server => server_grains return %s", grains)
     return grains
