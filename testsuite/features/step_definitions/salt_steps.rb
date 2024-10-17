@@ -565,6 +565,8 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
       # Transactional systems could have also installed salt-minion via sumaform
       _result, code = node.run('rpm -q salt-minion', check_errors: false)
       node.run('transactional-update --continue -n pkg rm salt-minion', check_errors: false) if code.zero?
+      # Reboot needed here after package removal but before file removal
+      step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
       node.run('rm -Rf /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt', check_errors: false) if code.zero?
     elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
@@ -577,6 +579,8 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   else
     if transactional_system?(host)
       node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
+      # Reboot needed here after package removal but before file removal
+      step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
     elsif rh_host?(host)
       node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
     elsif deb_host?(host)
@@ -585,6 +589,10 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
       node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', check_errors: false)
     end
     node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+  end
+  if transactional_system?(host)
+    # Reboot needed after file removal as well
+    step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
   end
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
