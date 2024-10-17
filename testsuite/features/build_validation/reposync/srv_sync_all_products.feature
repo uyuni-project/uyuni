@@ -688,6 +688,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux9" have finished
 
+@susemanager
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
     Given I am authorized for the "Admin" section
