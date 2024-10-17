@@ -147,6 +147,7 @@ import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
+import com.suse.manager.webui.utils.salt.LocalCallWithExecutors;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
@@ -344,7 +345,8 @@ public class SaltServerActionService {
         else if (ActionFactory.TYPE_APPLY_STATES.equals(actionType)) {
             ApplyStatesActionDetails actionDetails = ((ApplyStatesAction) actionIn).getDetails();
             return applyStatesAction(minions, actionDetails.getMods(),
-                                     actionDetails.getPillarsMap(), actionDetails.isTest());
+                                     actionDetails.getPillarsMap(), actionDetails.isTest(),
+                                     actionDetails.isDirect());
         }
         else if (ActionFactory.TYPE_IMAGE_INSPECT.equals(actionType)) {
             ImageInspectAction iia = (ImageInspectAction) actionIn;
@@ -1424,10 +1426,17 @@ public class SaltServerActionService {
 
     private Map<LocalCall<?>, List<MinionSummary>> applyStatesAction(
             List<MinionSummary> minionSummaries, List<String> mods,
-            Optional<Map<String, Object>> pillar, boolean test) {
+            Optional<Map<String, Object>> pillar, boolean test, boolean direct) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
-        ret.put(com.suse.salt.netapi.calls.modules.State.apply(mods, pillar, Optional.of(true),
-                test ? Optional.of(test) : Optional.empty()), minionSummaries);
+        LocalCall<Map<String, ApplyResult>> apply = State.apply(mods, pillar, Optional.of(true),
+                test ? Optional.of(test) : Optional.empty());
+        if (direct) {
+            ret.put(new LocalCallWithExecutors<>(apply, List.of("direct_call"), Collections.emptyMap()),
+                    minionSummaries);
+        }
+        else {
+            ret.put(apply, minionSummaries);
+        }
         return ret;
     }
 
