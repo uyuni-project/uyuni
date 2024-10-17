@@ -1,4 +1,4 @@
-import { TableFilter } from "components/table/TableFilter";
+import { FilterOptionType, TableFilter } from "components/table/TableFilter";
 
 const SYSTEM_KIND_OPTIONS = [
   { value: "mgr_server", label: t("Manager Server") },
@@ -38,18 +38,28 @@ const YES_NO_OPTIONS = [
 ];
 
 const allListOptions = [
-  { value: "server_name", label: t("System") },
-  { value: "system_kind", label: t("System Kind"), filterOptions: SYSTEM_KIND_OPTIONS },
-  { value: "status_type", label: t("Updates"), filterOptions: STATUS_TYPE_OPTIONS },
-  { value: "total_errata_count", label: t("Patches") },
-  { value: "outdated_packages", label: t("Packages") },
-  { value: "extra_pkg_count", label: t("Extra Packages") },
-  { value: "config_files_with_differences", label: t("Config Diffs") },
-  { value: "channel_labels", label: t("Base Channel") },
-  { value: "entitlement_level", label: t("System Type"), filterOptions: SYSTEM_TYPE_OPTIONS },
-  { value: "requires_reboot", label: t("Requires Reboot"), filterOptions: YES_NO_OPTIONS },
-  { value: "created_days", label: t("Registered Days") },
-  { value: "group_count", label: t("Groups") },
+  { value: "server_name", label: t("System"), type: FilterOptionType.TEXT },
+  { value: "system_kind", label: t("System Kind"), type: FilterOptionType.SELECT, filterOptions: SYSTEM_KIND_OPTIONS },
+  { value: "status_type", label: t("Updates"), type: FilterOptionType.SELECT, filterOptions: STATUS_TYPE_OPTIONS },
+  { value: "total_errata_count", label: t("Patches"), type: FilterOptionType.NUMERIC },
+  { value: "outdated_packages", label: t("Packages"), type: FilterOptionType.NUMERIC },
+  { value: "extra_pkg_count", label: t("Extra Packages"), type: FilterOptionType.NUMERIC },
+  { value: "config_files_with_differences", label: t("Config Diffs"), type: FilterOptionType.NUMERIC },
+  { value: "channel_labels", label: t("Base Channel"), type: FilterOptionType.TEXT },
+  {
+    value: "entitlement_level",
+    label: t("System Type"),
+    type: FilterOptionType.SELECT,
+    filterOptions: SYSTEM_TYPE_OPTIONS,
+  },
+  {
+    value: "requires_reboot",
+    label: t("Requires Reboot"),
+    type: FilterOptionType.SELECT,
+    filterOptions: YES_NO_OPTIONS,
+  },
+  { value: "created_days", label: t("Registered Days"), type: FilterOptionType.NUMERIC },
+  { value: "group_count", label: t("Groups"), type: FilterOptionType.NUMERIC },
 ];
 
 const virtualSystemsListOptions = [

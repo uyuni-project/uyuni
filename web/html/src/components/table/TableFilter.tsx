@@ -4,9 +4,34 @@ import { Select } from "components/input";
 import { Form } from "components/input/form/Form";
 import { SelectSearchField } from "components/table/SelectSearchField";
 
-const renderSearchField = ({ filterOptions, field, criteria, onSearch, placeholder, name }) => {
+import { NumericSearchField } from "./NumericSearchField";
+
+export enum FilterOptionType {
+  TEXT,
+  SELECT,
+  NUMERIC,
+}
+
+type FilterOption = {
+  label: string;
+  value: string;
+  type?: FilterOptionType;
+  filterOptions?: Array<any>;
+};
+
+type SearchFieldProps = {
+  filterOptions: Array<FilterOption>;
+  field: any;
+  criteria: any;
+  onSearch: any;
+  placeholder: any;
+  name: any;
+};
+
+const renderSearchField = (props: SearchFieldProps) => {
+  const { filterOptions, field, criteria, onSearch, placeholder, name } = props;
   const selectedOption = filterOptions.find((it) => it.value === field);
-  if (selectedOption?.filterOptions) {
+  if (selectedOption?.type === FilterOptionType.SELECT) {
     return (
       <SelectSearchField
         label={selectedOption.label}
@@ -16,6 +41,11 @@ const renderSearchField = ({ filterOptions, field, criteria, onSearch, placehold
       />
     );
   }
+
+  if (selectedOption?.type === FilterOptionType.NUMERIC) {
+    return <NumericSearchField name={name} criteria={criteria} onSearch={onSearch} />;
+  }
+
   return (
     <div className="form-group">
       <input
