@@ -578,12 +578,12 @@ When(/^the server starts mocking an IPMI host$/) do
     raise ScriptError, 'File injection failed' unless success
   end
   server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
-  server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
+  server.run('nohup ipmi_sim -n > /var/log/ipmi_sim.log 2>&1 &', verbose: true, check_errors: true)
 end
 
 When(/^the server stops mocking an IPMI host$/) do
   get_target('server').run('pkill ipmi_sim')
-  get_target('server').run('pkill fake_ipmi_host.sh || :')
+  get_target('server').run("ps aux | grep [f]ake_ipmi_host.sh | awk '{print $2}' | xargs kill")
 end
 
 When(/^the controller starts mocking a Redfish host$/) do
