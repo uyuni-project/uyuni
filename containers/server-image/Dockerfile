@@ -28,6 +28,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ${PRODUCT_PATTERN_PREFIX}_retail \
     billing-data-service \
     grub2-x86_64-efi \
+    grub2-arm64-efi \
+    grub2-powerpc-ieee1275 \
     ed \
     susemanager-tftpsync \
     golang-github-prometheus-node_exporter \
