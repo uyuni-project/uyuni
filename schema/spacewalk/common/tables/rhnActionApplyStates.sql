@@ -27,6 +27,10 @@ CREATE TABLE rhnActionApplyStates
                          DEFAULT ('N') NOT NULL
                          CONSTRAINT rhn_act_apply_states_test_ck
                              CHECK (test in ('Y','N')),
+    direct           CHAR(1)
+                         DEFAULT ('N') NOT NULL
+                         CONSTRAINT rhn_act_apply_states_direct_ck
+                             CHECK (test in ('Y','N')),
     created          TIMESTAMPTZ
                          DEFAULT (current_timestamp) NOT NULL,
     modified         TIMESTAMPTZ

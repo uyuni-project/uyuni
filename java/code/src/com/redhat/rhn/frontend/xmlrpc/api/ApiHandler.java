@@ -68,6 +68,18 @@ public class ApiHandler extends BaseHandler {
     }
 
     /**
+     * Returns the server product name.
+     * @return Returns the server product name.
+     *
+     * @apidoc.doc Returns the server product name.
+     * @apidoc.returntype #param("string", "product name")
+     */
+    @ReadOnly
+    public String productName() {
+        return ConfigDefaults.get().getProductName();
+    }
+
+    /**
      * Returns the api version. Called as: api.get_version
      * @return the api version.
      *
