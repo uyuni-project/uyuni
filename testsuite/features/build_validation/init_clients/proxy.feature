@@ -17,7 +17,6 @@ Feature: Setup containerized proxy
 
   Scenario: Clean up sumaform leftovers on the containerized proxy
     When I perform a full salt minion cleanup on "proxy"
-    And I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
