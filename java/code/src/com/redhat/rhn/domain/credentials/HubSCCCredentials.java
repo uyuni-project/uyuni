@@ -11,6 +11,8 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.suse.manager.model.hub.IssPeripheral;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -18,12 +20,16 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.HUB_SCC)
 public class HubSCCCredentials extends PasswordBasedCredentials {
 
+
+    private IssPeripheral issPeripheral;
     private String peripheralUrl;
 
     // No args constructor for hibernate
@@ -35,6 +41,15 @@ public class HubSCCCredentials extends PasswordBasedCredentials {
         setUsername(usernameIn);
         setPassword(passwordIn);
         this.peripheralUrl = peripheralUrlIn;
+    }
+
+    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
+    public IssPeripheral getIssPeripheral() {
+        return issPeripheral;
+    }
+
+    public void setIssPeripheral(IssPeripheral issPeripheralIn) {
+        this.issPeripheral = issPeripheralIn;
     }
 
     @Override
