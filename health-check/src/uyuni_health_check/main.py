@@ -100,7 +100,7 @@ def run(ctx, logs, from_datetime, to_datetime, since):
             run_loki(
                 supportconfig_path=supportconfig_path, config=config, verbose=verbose
             )
-            wait_loki_init()
+            wait_loki_init(config=config)
 
             console.log("[bold]Building exporter")
             exporter.prepare_exporter(
