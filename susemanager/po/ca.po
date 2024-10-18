@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2024-10-17 12:48+0000\n"
+"PO-Revision-Date: 2024-10-18 13:48+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/susemanager/"
 "ca/>\n"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../yast/susemanager_manager.rb:84
 msgid "&IP Address of the #{@product_name} Server"
-msgstr "Adreça IP del servidor  the{ theproductname}"
+msgstr "Adreça &IP del servidor del producte { theproductname}"
 
 #: ../yast/susemanager_manager.rb:94
 msgid "#{@product_name} &Administrator e-mail address"
@@ -199,7 +199,7 @@ msgstr "Font {{}productname} Nom de la base de dades"
 #: ../yast/susemanager_migration.rb:121
 msgid "Migration from previous #{@product_name} to new #{@product_name}"
 msgstr ""
-"Migració des de l'anterior  to{ toproductname} al nou  to{ toproductname}"
+"Migració des de l'anterior producte { toproductname} al nou: { toproductname}"
 
 #: ../yast/susemanager_migration.rb:138
 msgid "Hostname is missing."
