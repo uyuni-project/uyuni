@@ -26,8 +26,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -105,7 +105,7 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne(targetEntity = HubSCCCredentials.class)
+    @OneToOne(targetEntity = HubSCCCredentials.class)
     @JoinColumn(name = "mirror_creds_id")
     public HubSCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
