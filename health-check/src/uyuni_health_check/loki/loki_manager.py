@@ -5,6 +5,7 @@ import requests
 import zipfile
 import re
 import time
+import json
 from uyuni_health_check.utils import HealthException, console
 from uyuni_health_check.containers.manager import (
     build_image,
@@ -130,7 +131,7 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=
     config.write_config("promtail", "config.yaml", promtail_template.render(**opts))
 
 
-def wait_loki_init(verbose=False):
+def wait_loki_init(config=None, verbose=False):
     """
     Try to figure out when loki is ready to answer our requests.
     There are two things to wait for:
@@ -141,7 +142,6 @@ def wait_loki_init(verbose=False):
     timeouted = False
     request_message_bytes_sum = 0
     loki_ingester_chunk_entries_count = 0
-
     start_time = time.time()
     ready = False
 
@@ -165,10 +165,11 @@ def wait_loki_init(verbose=False):
         or loki_ingester_chunk_entries_count == 0
         or not ready
         and not timeouted
+        or not all_labels_available(config=config)
     ):
         if verbose:
             console.log("Waiting for promtail metrics to be collected")
-        time.sleep(1)
+        time.sleep(5)
         response = requests.get(f"http://localhost:3100/metrics")
         if verbose:
             console.log("loki metrics 3100 status code", response.status_code)
@@ -238,6 +239,8 @@ def wait_loki_init(verbose=False):
                 ready = True
             else:
                 ready = False
+
+        
         # check timeout
         if (time.time() - start_time) > LOKI_WAIT_TIMEOUT:
             timeouted = True
@@ -250,3 +253,16 @@ def wait_loki_init(verbose=False):
         console.print(loki_ingester_chunk_entries_count)
         console.print(request_message_bytes_sum)
         console.log("[bold]Loki and promtail are now ready to receive requests")
+
+
+def all_labels_available(config=None):
+
+    response = requests.get("http://localhost:3100/loki/api/v1/label/job/values")
+    r =json.loads(response.content.decode())
+    jobs = config.global_config['loki']['jobs']
+    for job in jobs.split(','):
+        if job not in r["data"]:
+            return False
+    return True
+        
+    

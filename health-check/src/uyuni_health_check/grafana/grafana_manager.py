@@ -20,7 +20,8 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
         )
     else:
 
-        grafana_cfg = conf.get_config_file_path()
+        grafana_cfg = conf.get_config_dir_path("grafana")
+        console.log("GRAFANA CFG DIR: ",grafana_cfg)
         grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.json")
         render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime, config)
 
