@@ -15,15 +15,21 @@
 
 package com.redhat.rhn.domain.credentials;
 
+import com.suse.manager.model.hub.IssHub;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(CredentialsType.Label.SCC)
 public class SCCCredentials extends RemoteCredentials {
+
+    private IssHub issHub;
 
     // No args constructor for hibernate
     protected SCCCredentials() {
@@ -39,6 +45,15 @@ public class SCCCredentials extends RemoteCredentials {
     @Transient
     public CredentialsType getType() {
         return CredentialsType.SCC;
+    }
+
+    @OneToOne(mappedBy = "mirrorCredentials", fetch = FetchType.LAZY)
+    public IssHub getIssHub() {
+        return issHub;
+    }
+
+    public void setIssHub(IssHub issHubIn) {
+        this.issHub = issHubIn;
     }
 
     /**
