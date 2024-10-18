@@ -13,8 +13,6 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -138,7 +136,7 @@ public class IssHub extends BaseDomainHelper {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getFqdn()).append(getRootCa()).append(getMirrorCredentials()).toHashCode();
+        return Objects.hash(getFqdn(), getRootCa(), getMirrorCredentials());
     }
 
     @Override
