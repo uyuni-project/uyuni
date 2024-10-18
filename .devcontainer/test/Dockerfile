@@ -41,7 +41,7 @@ COPY etc_pam.d_sshd /etc/pam.d/sshd
 RUN mkdir /root/.ssh
 COPY id_rsa_test_env /root/.ssh/id_rsa
 CMD ssh-keygen -A && /usr/sbin/sshd -De
-RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby2.5 install && rm Gemfile
+RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install && rm Gemfile
 RUN mkdir -p /root/.pki/nssdb && \
     certutil -d /root/.pki/nssdb -N
 COPY bashrc /root/.bashrc
