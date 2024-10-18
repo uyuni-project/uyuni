@@ -16,20 +16,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * LocalCall with configuration of executor modules
+ * @param <T> type
+ */
 public class LocalCallWithExecutors<T> extends LocalCall<T> {
 
-    private LocalCall<T> call;
     private List<String> executors;
     private Map<String, ?> executorOpts;
 
-    public LocalCallWithExecutors(LocalCall<T> call, List<String> executors, Map<String, ?> executorOps) {
+    /**
+     * Constructor
+     * @param call a LocalCall
+     * @param executorsIn list of executors
+     * @param executorOptsIn executor options
+     */
+    public LocalCallWithExecutors(LocalCall<T> call, List<String> executorsIn, Map<String, ?> executorOptsIn) {
         super((String) call.getPayload().get("fun"),
                 Optional.ofNullable((List<?>) call.getPayload().get("arg")),
                 Optional.ofNullable((Map<String, ?>) call.getPayload().get("kwarg")),
                 call.getReturnType());
-        this.call = call;
-        this.executors = executors;
-        this.executorOpts = executorOps;
+        this.executors = executorsIn;
+        this.executorOpts = executorOptsIn;
     }
 
     @Override
