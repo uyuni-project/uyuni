@@ -139,7 +139,6 @@ BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
-BuildRequires:  stringtree-json
 BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat >= 7
 BuildRequires:  tomcat-lib >= 7
@@ -227,7 +226,6 @@ Requires:       spacewalk-java-lib = %{version}
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
-Requires:       stringtree-json
 Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
