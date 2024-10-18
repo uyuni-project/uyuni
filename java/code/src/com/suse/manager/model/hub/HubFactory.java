@@ -23,13 +23,6 @@ public class HubFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(HubFactory.class);
 
-    /**
-     * Constructor
-     */
-    public HubFactory() {
-        // TODO document why this constructor is empty
-    }
-
     @Override
     protected Logger getLogger() {
         return LOG;
