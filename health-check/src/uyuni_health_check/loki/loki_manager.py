@@ -127,7 +127,7 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=
         }
 
     # Write rendered promtail configuration file
-    config.write_config("promtail", promtail_template.render(**opts))
+    config.write_config("promtail", "config.yaml", promtail_template.render(**opts))
 
 
 def wait_loki_init(verbose=False):

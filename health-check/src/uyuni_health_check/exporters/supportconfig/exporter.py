@@ -72,5 +72,5 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
 def create_supportconfig_exporter_cfg(config=None, supportconfig_path=None):
     exporter_template = config.load_jinja_template("exporter/exporter.yaml.j2")
     opts = {"supportconfig_path": supportconfig_path}
-    exporter_config_file_path = config.get_config_file_path("exporter")
-    config.write_config("exporter", exporter_template.render(**opts))
+    #exporter_config_file_path = config.get_config_file_path("exporter")
+    config.write_config("exporter", "config.yaml", exporter_template.render(**opts))

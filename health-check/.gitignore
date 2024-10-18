@@ -7,3 +7,4 @@ promtail-linux-amd64
 __pycache__
 **/config/exporter/config.yaml
 **/config/promtail/config.yaml
+**/config/grafana/dashboards/supportconfig_with_logs.json

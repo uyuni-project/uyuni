@@ -20,7 +20,6 @@ def show_full_error_logs(from_datetime, to_datetime, since, console: "Console", 
     )
     print()
     query = f"{{job=~\".+\"}} |~ \"(?i)error|(?i)severe|(?i)critical|(?i)fatal\""
-    import pdb; pdb.set_trace;
     stdout, stderr = query_loki(from_dt=from_datetime, to_dt=to_datetime, since = since, query=query)
     lines = stdout.strip().split("\n")
     json_objects = []
