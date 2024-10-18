@@ -6538,18 +6538,21 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="kickstart.schedule.nopackage" xml:space="preserve">
         <source>Could not find the needed @@PRODUCT_NAME@@ provisioning packages given this system's current base channel and desired target channel: {0}</source>
+        <target state="translated">No s'han pogut trobar els paquets de subministrament per a @@PRODUCT_NAME@@ necessaris a causa del canal de base actual d'aquest sistema i el canal objectiu desitjat: {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe" xml:space="preserve">
         <source>You have no remaining subscriptions to the @@PRODUCT_NAME@@ provisioning channel for &lt;strong&gt;{0}&lt;/strong&gt;'s current base channel.</source>
+        <target state="translated">No teniu subscripcions restants al canal de subministrament del producte @@PRODUCT_NAME@@ per al canal de base actual &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.schedule.cantsubscribe.channel" xml:space="preserve">
         <source>You have no remaining subscriptions to the channel {0} for &lt;strong&gt;{1}&lt;/strong&gt;'s current base channel.</source>
+        <target state="translated">No teniu subscripcions restants al canal {0} per al canal de base actual de &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -7263,6 +7266,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="server|jabber_server" xml:space="preserve">
         <source>Hostname</source>
+        <target state="translated">Nom d'amfitrió</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
@@ -8213,36 +8217,42 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="oneday" xml:space="preserve">
         <source>within the past day</source>
+        <target state="translated">durant el dia d'ahir</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oneweek" xml:space="preserve">
         <source>within the past week</source>
+        <target state="translated">durant la setmana anterior</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="onemonth" xml:space="preserve">
         <source>within the past 30 days</source>
+        <target state="translated">durant els darrers 30 dies</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sixmonths" xml:space="preserve">
         <source>within the past 180 days</source>
+        <target state="translated">durant els darrers 180 dies</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="oneyear" xml:space="preserve">
         <source>within the past year</source>
+        <target state="translated">durant el darrer any</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="allregisteredsystems" xml:space="preserve">
         <source>All Systems</source>
+        <target state="translated">Tots els sistemes</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
@@ -10510,6 +10520,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="Systems Grouping" xml:space="preserve">
         <source>Systems Grouping</source>
+        <target state="translated">Agrupació de sistemes</target>
       </trans-unit>
       <trans-unit id="Salt Entitled Servers" xml:space="preserve">
         <source>Salt</source>
@@ -11313,7 +11324,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system, rebooting if required</source>
-        <target state="new"/>
+        <target state="translated">Actualitzeu el sistema, reinicieu-lo si cal</target>
       </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
