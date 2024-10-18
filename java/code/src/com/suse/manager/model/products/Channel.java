@@ -18,7 +18,6 @@ package com.suse.manager.model.products;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.simpleframework.xml.Attribute;
 
 /**
  * A software Channel in a Product.
@@ -31,14 +30,11 @@ public class Channel {
     public static final String STATUS_NOT_PROVIDED = ".";
 
     /** The label. */
-    @Attribute
     private String label;
 
     /** The status. */
-    @Attribute
     private String status;
 
-    @Attribute
     private boolean installerUpdates;
 
     /**
