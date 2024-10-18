@@ -2354,6 +2354,26 @@ public class ActionManager extends BaseManager {
      */
     public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
             Optional<Map<String, Object>> pillar, Date earliest, Optional<Boolean> test, boolean recurring) {
+        return scheduleApplyStates(scheduler, sids, mods, pillar, earliest, test, recurring, false);
+    }
+
+    /**
+     * Schedule state application given a list of state modules. Salt will apply the
+     * highstate if an empty list of state modules is given.
+     *
+     * @param scheduler the user who is scheduling
+     * @param sids list of server ids
+     * @param mods list of state modules to be applied
+     * @param pillar optional pillar map
+     * @param earliest action will not be executed before this date
+     * @param test run states in test-only mode
+     * @param recurring whether the state is being applied recurring
+     * @param direct  whenther the state should be executed as direct call
+     * @return the action object
+     */
+    public static ApplyStatesAction scheduleApplyStates(User scheduler, List<Long> sids, List<String> mods,
+                                                        Optional<Map<String, Object>> pillar, Date earliest,
+                                                        Optional<Boolean> test, boolean recurring, boolean direct) {
         ApplyStatesAction action = (ApplyStatesAction) ActionFactory
                 .createAction(ActionFactory.TYPE_APPLY_STATES, earliest);
         action.setName(defineStatesActionName(mods, recurring));
@@ -2365,6 +2385,7 @@ public class ActionManager extends BaseManager {
         actionDetails.setMods(mods);
         actionDetails.setPillarsMap(pillar);
         test.ifPresent(actionDetails::setTest);
+        actionDetails.setDirect(direct);
         action.setDetails(actionDetails);
         ActionFactory.save(action);
 
