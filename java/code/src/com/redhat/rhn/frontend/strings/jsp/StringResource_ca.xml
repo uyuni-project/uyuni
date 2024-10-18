@@ -749,7 +749,7 @@
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
         <note>NO TRANSLATION NECSSARY</note>
-        <target state="needs-adaptation"/>
+        <target state="translated"> </target>
       </trans-unit>
       <trans-unit id="permission.jsp.title.deleteuser" xml:space="preserve">
         <source>Cannot delete user.</source>
@@ -17560,7 +17560,7 @@ Tip: If you would like to deploy this file to a system not in this list, you'll 
 You may grant provisioning entitlements _here_.
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated"> </target>
       </trans-unit>
       <!-- date-picker strings -->
       <trans-unit id="deploy.jsp.widgetsummary" xml:space="preserve">
