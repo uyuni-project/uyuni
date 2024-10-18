@@ -85,12 +85,11 @@ public class PackageKey extends BaseDomainHelper implements Comparable<PackageKe
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object archIn) {
-
-        if (archIn instanceof PackageKey) {
-            PackageKey arch = (PackageKey) archIn;
-            return new EqualsBuilder().append(this.key, arch.getKey()).append(getId(),
-                    arch.getId()).isEquals();
+    public boolean equals(Object other) {
+        if (other instanceof PackageKey pk) {
+            return new EqualsBuilder()
+                    .append(this.key, pk.getKey())
+                    .append(getId(), pk.getId()).isEquals();
         }
         return false;
     }

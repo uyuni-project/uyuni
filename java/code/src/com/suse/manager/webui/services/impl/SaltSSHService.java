@@ -409,7 +409,7 @@ public class SaltSSHService {
 
         return serverPaths.stream()
                           .sorted(Comparator.comparing(ServerPath::getPosition).reversed())
-                          .collect(Collectors.toList());
+                          .toList();
     }
 
     /**
@@ -844,7 +844,7 @@ public class SaltSSHService {
                         (saltRes) -> saltRes.values().stream()
                                             .filter(value -> !value.isResult())
                                             .map(StateApplyResult::getComment)
-                                            .collect(Collectors.toList())
+                                            .toList()
                     );
 
                     return result.isEmpty() ? Optional.<List<String>>empty() : Optional.of(result);
@@ -914,14 +914,14 @@ public class SaltSSHService {
             return; // guard against infinite recursion
         }
         data.forEach((key, val) -> {
-            if (val instanceof String) {
-                gatherSaltFileRefs((String)val, fileRefs);
+            if (val instanceof String str) {
+                gatherSaltFileRefs(str, fileRefs);
             }
-            else if (val instanceof List) {
-                gatherSaltFileRefs((List)val, fileRefs, depth + 1);
+            else if (val instanceof List list) {
+                gatherSaltFileRefs(list, fileRefs, depth + 1);
             }
-            else if (val instanceof Map) {
-                gatherSaltFileRefs((Map)val, fileRefs, depth + 1);
+            else if (val instanceof Map map) {
+                gatherSaltFileRefs(map, fileRefs, depth + 1);
             }
         });
     }
@@ -931,14 +931,14 @@ public class SaltSSHService {
             return; // guard against infinite recursion
         }
         for (Object val : data) {
-            if (val instanceof String) {
-                gatherSaltFileRefs((String) val, fileRefs);
+            if (val instanceof String str) {
+                gatherSaltFileRefs(str, fileRefs);
             }
-            else if (val instanceof List) {
-                gatherSaltFileRefs((List)val, fileRefs, depth + 1);
+            else if (val instanceof List list) {
+                gatherSaltFileRefs(list, fileRefs, depth + 1);
             }
-            else if (val instanceof Map) {
-                gatherSaltFileRefs((Map)val, fileRefs, depth + 1);
+            else if (val instanceof Map map) {
+                gatherSaltFileRefs(map, fileRefs, depth + 1);
             }
         }
     }
@@ -965,13 +965,12 @@ public class SaltSSHService {
                                 .filter(SaltSSHService::isApplyHighstate)
                                 .filter(state -> state instanceof ActionSaltState)
                                 .map(state -> ((ActionSaltState)state).getActionId())
-                        .collect(Collectors.toList())
+                        .toList()
                 ));
     }
 
     private static boolean isApplyHighstate(SaltState state) {
-        if (state instanceof SaltModuleRun) {
-            SaltModuleRun moduleRun = (SaltModuleRun)state;
+        if (state instanceof SaltModuleRun moduleRun) {
             return "state.top".equals(moduleRun.getName());
         }
         return false;

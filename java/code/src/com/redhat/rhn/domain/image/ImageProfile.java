@@ -160,10 +160,9 @@ public abstract class ImageProfile extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageProfile)) {
+        if (!(other instanceof ImageProfile castOther)) {
             return false;
         }
-        ImageProfile castOther = (ImageProfile) other;
         return new EqualsBuilder().append(label, castOther.label)
                                   .append(org, castOther.org)
                                   .isEquals();

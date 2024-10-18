@@ -132,10 +132,9 @@ public class PackageActionDetails extends ActionChild {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof PackageActionDetails)) {
+        if (!(other instanceof PackageActionDetails castOther)) {
             return false;
         }
-        PackageActionDetails castOther = (PackageActionDetails) other;
         return new EqualsBuilder().append((getParentAction() == null ? null :
                                        getParentAction().getId()),
                                        (castOther.getParentAction() == null ? null :

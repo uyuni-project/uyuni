@@ -15,7 +15,6 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.user.User;
 
@@ -129,10 +128,9 @@ public class CustomDataValue implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof ServerAction)) {
+        if (!(other instanceof CustomDataValue castOther)) {
             return false;
         }
-        CustomDataValue castOther = (CustomDataValue) other;
         return new EqualsBuilder().append(key, castOther.getKey())
                                   .append(server, castOther.getServer()).isEquals();
     }

@@ -126,7 +126,7 @@ public class ApplyStatesActionResult implements Serializable {
         try {
             @SuppressWarnings("unchecked")
             Map<String, Map<String, Object>> payload = YamlHelper.loadAs(getOutputContents(), Map.class);
-            payload.entrySet().stream().forEach(e -> result.add(new StateResult(e)));
+            payload.entrySet().forEach(e -> result.add(new StateResult(e)));
         }
         catch (ConstructorException ce) {
             return Optional.empty();
@@ -136,12 +136,9 @@ public class ApplyStatesActionResult implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ApplyStatesActionResult)) {
+        if (!(obj instanceof ApplyStatesActionResult result)) {
             return false;
         }
-
-        ApplyStatesActionResult result = (ApplyStatesActionResult) obj;
-
         return new EqualsBuilder()
                 .append(this.getActionApplyStatesId(), result.getActionApplyStatesId())
                 .append(this.getServerId(), result.getServerId())

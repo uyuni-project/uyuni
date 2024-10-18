@@ -31,7 +31,7 @@
 %define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt
 
-%{!?java_version: %global java_version 11}
+%{!?java_version: %global java_version 17}
 %if 0%{?suse_version}
 %define userserverdir       /srv
 %define apache_group    www

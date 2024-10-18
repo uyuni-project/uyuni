@@ -53,8 +53,8 @@ public class PillarUtils {
         Map<String, Object> copy = new HashMap<>();
         for (String key : pillar.keySet()) {
             Object value = pillar.get(key);
-            if (key.equals("size") && value instanceof String) {
-                value = Long.parseLong((String)value);
+            if (key.equals("size") && value instanceof String str) {
+                value = Long.parseLong(str);
             }
             else if (value instanceof Map) {
                 value = convertSizeToLong((Map<String, Object>) value);

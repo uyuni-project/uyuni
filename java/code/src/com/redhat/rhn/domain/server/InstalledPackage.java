@@ -146,8 +146,7 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
     @Override
     public boolean equals(Object other) {
 
-        if (other instanceof InstalledPackage) {
-            InstalledPackage otherPack = (InstalledPackage) other;
+        if (other instanceof InstalledPackage otherPack) {
             return new EqualsBuilder().append(this.getName(), otherPack.getName())
                 .append(this.getEvr(), otherPack.getEvr())
                 .append(this.getServer(), otherPack.getServer())
@@ -155,9 +154,7 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
 
 
         }
-        else if (other instanceof Package) {
-            Package otherPack = (Package) other;
-
+        else if (other instanceof Package otherPack) {
             EqualsBuilder builder =  new EqualsBuilder()
                 .append(this.getName(), otherPack.getPackageName())
                 .append(this.getEvr(), otherPack.getPackageEvr());

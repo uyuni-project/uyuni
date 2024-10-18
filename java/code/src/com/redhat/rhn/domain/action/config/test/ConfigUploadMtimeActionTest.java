@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.config.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -52,7 +52,7 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
         Action a = ActionFactory.lookupById(id);
 
         assertNotNull(a);
-        assertTrue(a instanceof ConfigUploadMtimeAction);
+        assertInstanceOf(ConfigUploadMtimeAction.class, a);
         ConfigUploadMtimeAction cfa = (ConfigUploadMtimeAction) a;
         assertNotNull(cfa.getConfigDateFileActions());
         ConfigDateFileAction cfda = (ConfigDateFileAction)
@@ -98,12 +98,12 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
 
         ActionFactory.save(testAction);
         flushAndEvict(testAction);
-        /**
+        /*
          * Get action back out of db and make sure it committed correctly
          */
         Action same = ActionFactory.lookupById(testAction.getId());
 
-        assertTrue(same instanceof ConfigUploadMtimeAction);
+        assertInstanceOf(ConfigUploadMtimeAction.class, same);
         ConfigUploadMtimeAction sameAction = (ConfigUploadMtimeAction) same;
 
         assertNotNull(sameAction.getConfigDateFileActions());

@@ -111,13 +111,9 @@ public class SubscribeChannelsActionDetails extends ActionChild {
         if (this == o) {
             return true;
         }
-
-        if (!(o instanceof SubscribeChannelsActionDetails)) {
+        if (!(o instanceof SubscribeChannelsActionDetails that)) {
             return false;
         }
-
-        SubscribeChannelsActionDetails that = (SubscribeChannelsActionDetails) o;
-
         return new EqualsBuilder()
                 .append(baseChannel, that.baseChannel)
                 .append(channels, that.channels)

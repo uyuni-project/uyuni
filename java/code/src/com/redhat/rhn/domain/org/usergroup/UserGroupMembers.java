@@ -109,10 +109,9 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof UserGroupMembers)) {
+        if (!(o instanceof UserGroupMembers other)) {
             return false;
         }
-        UserGroupMembers other = (UserGroupMembers) o;
         return new EqualsBuilder()
             .append(this.getUser(), other.getUser())
             .append(this.getUserGroup(), other.getUserGroup())

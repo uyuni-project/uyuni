@@ -29,7 +29,6 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * DeleteSystemFromActionOperation - deletes a system from an action
@@ -70,7 +69,7 @@ public class CancelKickstartSessionOperation
         String rebootName = ActionFactory.TYPE_KICKSTART_INITIATE.getName();
         List<Action> actions = pendingActions.stream().filter(action -> action.getActionName().equals(rebootName))
                 .map(action -> ActionManager.lookupAction(user, action.getId()))
-                .collect(Collectors.toList());
+                .toList();
         try {
             ActionManager.cancelActions(user, actions, List.of(server.getId()));
         }

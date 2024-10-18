@@ -109,10 +109,9 @@ public class ExceptionMessage {
      */
     @Override
     public boolean equals(Object oth) {
-        if (!(oth instanceof ExceptionMessage)) {
+        if (!(oth instanceof ExceptionMessage other)) {
             return false;
         }
-        ExceptionMessage other = (ExceptionMessage) oth;
         return new EqualsBuilder().append(this.getId(), other.getId())
         .append(this.getMessage(), other.getMessage())
         .append(this.getLabel(), other.getLabel())

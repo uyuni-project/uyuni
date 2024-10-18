@@ -47,7 +47,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -136,7 +135,7 @@ public class SystemOverviewAction extends RhnAction {
                 (e1, e2) -> (e1.isBase() && e2.isBase()) || (!e1.isBase() && !e2.isBase()) ?
                         e1.getHumanReadableLabel().compareTo(e2.getHumanReadableLabel()) :
                         (e1.isBase() ? -1 : 1))
-                .collect(Collectors.toList());
+                .toList();
 
         request.setAttribute("rebootRequired", rebootRequired);
         request.setAttribute("rebootScheduled", rebootScheduled);

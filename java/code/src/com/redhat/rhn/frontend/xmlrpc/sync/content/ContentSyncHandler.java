@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * API handler offering content synchronization methods.
@@ -253,7 +252,7 @@ public class ContentSyncHandler extends BaseHandler {
         List<String> mandatoryChannelLabels =
                 SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
                 .map(SUSEProductSCCRepository::getChannelLabel)
-                .collect(Collectors.toList());
+                .toList();
 
         LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);
         channelLabelsToAdd.add(channelLabel);

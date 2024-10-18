@@ -73,10 +73,9 @@ public class ErrataInfo {
      */
     @Override
     public boolean equals(Object objIn) {
-        if (!(objIn instanceof ErrataInfo)) {
+        if (!(objIn instanceof ErrataInfo errataInfo)) {
             return false;
         }
-        ErrataInfo errataInfo = (ErrataInfo) objIn;
         return this.getName().equals(errataInfo.getName());
     }
 

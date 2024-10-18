@@ -15,7 +15,7 @@
 package com.suse.scc.client.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCRequestFactory;
@@ -49,7 +49,7 @@ public class SCCRequestFactoryTest  {
                 "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR, true);
         SCCRequestFactory factory = SCCRequestFactory.getInstance();
         HttpRequestBase request = factory.initRequest("GET", TEST_PATH, config);
-        assertTrue(request instanceof HttpGet);
+        assertInstanceOf(HttpGet.class, request);
         assertEquals(TEST_SCHEME, request.getURI().getScheme());
         assertEquals(TEST_HOST, request.getURI().getHost());
         assertEquals(TEST_PATH, request.getURI().getPath());

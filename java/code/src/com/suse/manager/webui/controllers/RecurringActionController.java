@@ -79,7 +79,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -172,7 +171,7 @@ public class RecurringActionController {
                     type, id, user, pc, PagedSqlQueryBuilder::parseFilterAsText);
             return json(response, members.stream()
                     .map(SimpleMinionJson::getId)
-                    .collect(Collectors.toList()));
+                    .toList());
         }
 
         members = RecurringActionManager.listEntityMembers(
@@ -254,7 +253,7 @@ public class RecurringActionController {
             result.addAll(StateConfigJson.listOrderedStates(
                     ((RecurringState)action.get().getRecurringActionType()).getStateConfig())
                     .stream().filter(config -> config.getName().toLowerCase().contains(targetLowerCase))
-                    .collect(Collectors.toList())
+                    .toList()
             );
         }
 
@@ -277,7 +276,7 @@ public class RecurringActionController {
         return actions
                 .stream()
                 .map(RecurringActionScheduleJson::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static RecurringActionDetailsDto actionToDetailsDto(RecurringAction action) {
@@ -353,7 +352,7 @@ public class RecurringActionController {
         List<String> mods = configs.stream()
                 .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
                 .map(RecurringStateConfig::getStateName)
-                .collect(Collectors.toList());
+                .toList();
 
         try {
             Action a = ActionManager.scheduleApplyStates(user,
@@ -447,11 +446,10 @@ public class RecurringActionController {
             return;
         }
 
-        if (action.getRecurringActionType() instanceof RecurringHighstate) {
-            ((RecurringHighstate) action.getRecurringActionType()).setTestMode(details.isTest());
+        if (action.getRecurringActionType() instanceof RecurringHighstate recurringHighstate) {
+            recurringHighstate.setTestMode(details.isTest());
         }
-        else if (action.getRecurringActionType() instanceof RecurringState) {
-            RecurringState stateType = (RecurringState) action.getRecurringActionType();
+        else if (action.getRecurringActionType() instanceof RecurringState stateType) {
             stateType.setTestMode(details.isTest());
             if (json.getRecurringActionId() == null ||
                     (json.getRecurringActionId() != null && details.getStates() != null)) {

@@ -68,10 +68,9 @@ public class Tuple2<A, B> {
 
     @Override
     public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof Tuple2)) {
+        if (!(otherObject instanceof Tuple2 other)) {
             return false;
         }
-        Tuple2<?, ?> other = (Tuple2<?, ?>) otherObject;
         return new EqualsBuilder()
                 .append(getA(), other.getA())
                 .append(getB(), other.getB())

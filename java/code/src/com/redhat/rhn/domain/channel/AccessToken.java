@@ -155,8 +155,7 @@ public class AccessToken {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof AccessToken) {
-            AccessToken o = (AccessToken)other;
+        if (other instanceof AccessToken o) {
             return new EqualsBuilder()
                     .append(getToken(), o.getToken())
                     .append(getExpiration(), o.getExpiration())
@@ -164,10 +163,7 @@ public class AccessToken {
                     .append(getMinion(), o.getMinion())
                     .isEquals();
         }
-        else {
-            return false;
-        }
-
+        return false;
     }
 
 }

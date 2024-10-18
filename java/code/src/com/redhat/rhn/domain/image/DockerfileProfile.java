@@ -55,10 +55,9 @@ public class DockerfileProfile extends ImageProfile {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof DockerfileProfile)) {
+        if (!(other instanceof DockerfileProfile castOther)) {
             return false;
         }
-        DockerfileProfile castOther = (DockerfileProfile) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(castOther))
                 .append(path, castOther.path)
