@@ -202,6 +202,9 @@ public class FormulaFactory {
         else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
             kernelOptions += " DISABLE_HOSTNAME_ID=1";
         }
+        else if ("MAC".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " USE_MAC_MINION_ID=1";
+        }
         if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
             kernelOptions += " " + saltboot.get("default_kernel_parameters");
         }
