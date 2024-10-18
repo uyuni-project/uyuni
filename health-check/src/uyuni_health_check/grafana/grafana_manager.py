@@ -1,4 +1,5 @@
 import subprocess
+import json
 from config_loader import ConfigLoader
 from uyuni_health_check.utils import run_command, HealthException, console
 from containers.manager import (
@@ -12,14 +13,17 @@ from containers.manager import (
 conf = ConfigLoader()
 
 
-def prepare_grafana(verbose=False):
+def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=None):
     if container_is_running("uyuni-health-check-grafana"):
         console.log(
             "Skipped as the uyuni-health-check-grafana container is already running"
         )
     else:
 
-        grafana_cfg = conf.get_grafana_config_dir()
+        grafana_cfg = conf.get_config_file_path()
+        grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.json")
+        render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime, config)
+
         # Run the container
         podman(
             [
@@ -48,3 +52,14 @@ def prepare_grafana(verbose=False):
                 "run.sh",
             ],
         )
+
+def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_datetime, config=None):
+    """
+    Render grafana dashboard file
+    """
+
+    with open(grafana_dashboard_template, 'r') as f:
+        data = json.load(f)
+        data["time"]["from"] = from_datetime
+        data["time"]["to"] = to_datetime
+        config.write_config("grafana", "dashboards/supportconfig_with_logs.json", data, isjson=True)

@@ -119,7 +119,7 @@ def run(ctx, logs, from_datetime, to_datetime, since):
             prepare_prometheus(verbose=verbose)
 
             console.log("[bold]Preparing Grafana")
-            prepare_grafana(verbose=verbose)
+            prepare_grafana(from_datetime, to_datetime, verbose=verbose, config=config)
 
         console.print(Markdown("# Summary of metrics gatherered from Supportconfig"))
         #uyuni_health_check.metrics.show_supportconfig_metrics(metrics, console)

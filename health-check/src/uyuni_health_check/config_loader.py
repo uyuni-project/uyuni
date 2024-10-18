@@ -1,6 +1,7 @@
 import os
 import configparser
 import yaml
+import json
 from jinja2 import Environment, FileSystemLoader
 
 class ConfigLoader:
@@ -24,15 +25,22 @@ class ConfigLoader:
 
     def load_jinja_template(self, template_name):
         return self.jinja_env.get_template(template_name)
+    
+    def get_json_template_filepath(self, json_relative_path):
+        return os.path.join(self.templates_dir, json_relative_path)
 
     def load_dockerfile_dir(self, dockerfile_dir):
         dockerfile_dir = os.path.join(self.containers_dir, dockerfile_dir)
         return dockerfile_dir
 
-    def write_config(self, component, content):
-        file_path = os.path.join(self.config_dir, component, "config.yaml")
+    def write_config(self, component, config_file_path, content, isjson=False):
+        file_path = os.path.join(self.config_dir, component, config_file_path)
         with open(file_path, "w") as file:
-            file.write(content)
+            if isjson:
+                json.dump(content, file)
+            else:
+                file.write(content)
+        
 
     def get_config_file_path(self, component):
         return os.path.join(self.base_dir, "config", component, "config.yaml")
@@ -41,7 +49,7 @@ class ConfigLoader:
         return self.base_dir
 
     def get_grafana_config_dir(self):
-        return os.path.join(self.base_dir, "grafana", "conf")
+        return os.path.join(self.config_dir, "grafana")
 
     def get_prometheus_config_dir(self):
         return os.path.join(self.base_dir, "prometheus", "conf")
