@@ -29,6 +29,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Schedule an OpenSCAP audit job on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile xccdf_org.ssgproject.content_profile_anssi_bp28_intermediary" as "params"
@@ -40,6 +41,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Check the results of the OpenSCAP scan on the Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "RHEL-8" text
@@ -61,6 +63,7 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Cleanup: delete audit results from Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
     And I click on "Remove Selected Scans"
