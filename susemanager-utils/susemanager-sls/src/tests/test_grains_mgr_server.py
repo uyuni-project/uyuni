@@ -21,6 +21,7 @@ mockery.setup_environment()
 # pylint: disable-next=wrong-import-position
 from ..grains import mgr_server
 
+mgr_server._api_query = MagicMock(return_value={})
 
 def test_server():
     mgr_server.RHNCONF = os.path.join(os.path.abspath(""), "data", "rhnconf.sample")
