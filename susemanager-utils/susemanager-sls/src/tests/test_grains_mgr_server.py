@@ -21,12 +21,10 @@ mockery.setup_environment()
 # pylint: disable-next=wrong-import-position
 from ..grains import mgr_server
 
+mgr_server._api_query = MagicMock(return_value={})
 
 def test_server():
     mgr_server.RHNCONF = os.path.join(os.path.abspath(""), "data", "rhnconf.sample")
-    mgr_server.RHNCONFDEF = os.path.join(
-        os.path.abspath(""), "data", "rhnconfdef.sample"
-    )
 
     grains = mgr_server.server_grains()
     # pylint: disable-next=unidiomatic-typecheck
@@ -37,16 +35,13 @@ def test_server():
     assert grains["is_mgr_server"]
     assert grains["has_report_db"]
     assert grains["report_db_name"] == "reportdb"
-    assert grains["report_db_host"] == "localhost"
+    assert grains["report_db_host"] == "peripheral.example.com"
     assert grains["report_db_port"] == "5432"
     assert grains["is_uyuni"]
 
 
 def test_server_no_reportdb():
     mgr_server.RHNCONF = os.path.join(os.path.abspath(""), "data", "rhnconf2.sample")
-    mgr_server.RHNCONFDEF = os.path.join(
-        os.path.abspath(""), "data", "rhnconfdef.sample"
-    )
 
     grains = mgr_server.server_grains()
     # pylint: disable-next=unidiomatic-typecheck

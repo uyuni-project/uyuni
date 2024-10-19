@@ -24,3 +24,4 @@ report_db_sslrootcert = /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
 web.satellite = 1
 web.satellite_install =
 
+java.hostname = peripheral.example.com
