@@ -200,11 +200,19 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
               const newBaseId = this.state.baseChanges.get(channel.base.id);
               const baseOptions = channel.allowedBaseChannels
                 .filter((c) => !c.custom)
-                .map((c) => <option value={c.id}>{c.name}</option>)
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))
                 .concat(defaultOption);
               const customOptions = channel.allowedBaseChannels
                 .filter((c) => c.custom)
-                .map((c) => <option value={c.id}>{c.name}</option>);
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ));
 
               return (
                 <select
@@ -468,7 +476,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           <hr />
           <dl className="col-lg-12">
             {allowed.childChannels.map((child) => (
-              <dt className="row">
+              <dt className="row" key={child.id}>
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
                     {child.name}
@@ -629,7 +637,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
   };
 
   render() {
-    const rows = this.props.allowedChanges.map((allowed) => {
+    const rows = this.props.allowedChanges.map((allowed: SsmAllowedChildChannelsDto) => {
       const newBaseName = allowed.newBaseChannel
         ? allowed.newBaseChannel.name
         : t("(Couldn't determine new base channel)");
@@ -688,7 +696,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
           <hr />
           <dl className="col-lg-12">
             {allowed.childChannels.map((child) => (
-              <dt className="row">
+              <dt className="row" key={child.id}>
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
                     {child.name + (child.recommended ? " (R)" : "")}
