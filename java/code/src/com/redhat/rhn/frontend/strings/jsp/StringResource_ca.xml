@@ -16480,20 +16480,21 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="targetsystems.jsp.installcfg" xml:space="preserve">
         <source>Schedule mgr-cfg package install</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Programeu la instal·lació del paquet mgr-cfg</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.installcfgactions" xml:space="preserve">
         <source>Schedule mgr-cfg-actions package install</source>
+        <target state="translated">Programeu la instal·lació del paquet mgr-cfg-actions</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="targetsystems.jsp.installcfgclient" xml:space="preserve">
         <source>Schedule mgr-cfg-client package install</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Programeu la instal·lació del paquet mgr-cfg-client</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16521,7 +16522,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="targetsystems.jsp.widgetsummary" xml:space="preserve">
         <source>You may schedule &lt;code&gt;mgr-cfg*&lt;/code&gt; package installs for the time below. &lt;strong&gt;Note: All other actions will take place immediately.&lt;/strong&gt;</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Podeu programar &lt;code&gt;mgr-cfg*&lt;/code&gt; instal·lacions de paquets durant el temps següent. &lt;strong&gt;Nota: totes les altres accions es duran a terme immediatament.&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
@@ -16543,14 +16544,14 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="summary.jsp.stepone" xml:space="preserve">
         <source>Run &lt;code&gt;mgr_check&lt;/code&gt; to complete pending mgr-cfg-* package installs.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Executeu &lt;code&gt;mgr_check&lt;/code&gt; per completar les instal·lacions pendents del paquet mgr-cfg-*.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.steptwo" xml:space="preserve">
         <source>Run the following command: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Executeu l'ordre següent: &lt;code&gt;mgr-actions-control --enable-all&lt;/code&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -16592,13 +16593,14 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="summary.jsp.appstream" xml:space="preserve">
         <source>Could not subscribe to the AppStream channel.</source>
+        <target state="translated">No s'ha pogut subscriure al canal AppStream.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="summary.jsp.packages" xml:space="preserve">
         <source>Could not schedule mgr-cfg* package installations.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">No s'han pogut programar les instal·lacions del paquet mgr-cfg*.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/Summary.do</context>
         </context-group>
@@ -18151,6 +18153,7 @@ Canal de configuració de gestió centralitzada, {2}; a sota hi ha una llista de
       </trans-unit>
       <trans-unit id="toolbar.delete.org" xml:space="preserve">
         <source>delete organization</source>
+        <target state="translated">suprimeix l'organització</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
