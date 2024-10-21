@@ -1816,42 +1816,49 @@
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.title" xml:space="preserve">
         <source>Visualization Hierarchy</source>
+        <target state="translated">Jerarquia de visualització</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notcheckin" xml:space="preserve">
         <source>System not checking in</source>
+        <target state="translated">El sistema no es registra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.notpatched" xml:space="preserve">
         <source>Not patched system</source>
+        <target state="translated">Sistema sense pedaços</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.root" xml:space="preserve">
         <source>SUSE Manager</source>
+        <target state="translated">Gestor de SUSE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.vhm" xml:space="preserve">
         <source>Virtual Host Manager</source>
+        <target state="translated">Gestor d'amfitrió virtual</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.group" xml:space="preserve">
         <source>Group</source>
+        <target state="translated">Grup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
       </trans-unit>
       <trans-unit id="visualization-legend.jsp.system" xml:space="preserve">
         <source>System</source>
+        <target state="translated">Sistema</target>
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/visualization-legend.jsp</context>
         </context-group>
@@ -10024,28 +10031,35 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
         <source>Bare-metal systems</source>
+        <target state="translated">Sistemes de metall nu</target>
       </trans-unit>
       <trans-unit id="enable" xml:space="preserve">
         <source>Enable adding to this organization</source>
+        <target state="translated">Activa l'addició a aquesta organització</target>
       </trans-unit>
       <trans-unit id="disable" xml:space="preserve">
         <source>Disable adding to this organization</source>
+        <target state="translated">Desactiva l'addició a aquesta organització</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled" xml:space="preserve">
         <source>Automatic bare-metal system discovery has been successfully enabled</source>
+        <target state="translated">S'ha activat correctament la descoberta automàtica de sistema de metall nu</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.bootstrap_disabled" xml:space="preserve">
         <source>Automatic bare-metal system discovery has been successfully disabled</source>
+        <target state="translated">S'ha desactivat correctament la descoberta automàtica de sistema de metall nu</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.bootstrap_enabled_for_other_org" xml:space="preserve">
         <source>Automatic bare-metal system registration is enabled for organization "{0}", so it cannot be enabled for current organization "{1}" unless a "{0}" administrator disables it first. </source>
-        <target state="needs-adaptation"/>
+        <target state="translated">El registre automàtic del sistema complet està habilitat per a l'organització {0}, de manera que no es pot activar per a l'organització actual {1} tret que un administrador {0} el desactivi primer. </target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.kernel_not_found" xml:space="preserve">
         <source>Bootstrap kernel file not found, please check that {0} exists and is accessible.</source>
+        <target state="translated">No s'ha trobat el fitxer del nucli d'arrencada, comproveu que {0} existeixi i sigui accessible.</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.initrd_not_found" xml:space="preserve">
         <source>Bootstrap initrd file not found, please check that {0} exists and is accessible.</source>
+        <target state="translated">No s'ha trobat el fitxer initrd d'arrencada, comproveu que {0} existeixi i sigui accessible.</target>
       </trans-unit>
       <trans-unit id="bootstrapsystemlist.jsp.header" xml:space="preserve">
         <source>Unprovisioned Systems</source>
@@ -13172,6 +13186,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="yourrhn.jsp.noinactivesystems" xml:space="preserve">
         <source>&lt;strong&gt;No inactive systems.&lt;/strong&gt; &lt;p&gt;All of your systems are actively checking into @@PRODUCT_NAME@@ at this time. You can view a list of all of your systems at &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; All&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</source>
+        <target state="translated">&lt;strong&gt;No hi ha sistemes inactius.&lt;/strong&gt; &lt;p&gt;Tots els sistemes estan connectant activament amb @@PRODUCT_NAME@@ en aquest moment. Podeu veure una llista de tots els vostres sistemes a &lt;strong&gt;&lt;a href="/rhn/systems/SystemList.do"&gt;Systems &gt; Tots&lt;/a&gt;&lt;/strong&gt;.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -16402,7 +16417,7 @@ el lt;stronggt;ENTERENTERPRISELINUXNAME Guide Guia d'administració del sistema.
       </trans-unit>
       <trans-unit id="targetsystems.jsp.summary" xml:space="preserve">
         <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management.  For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they need to have particular mgr-cfg-* packages installed. You can enable configuration management on selected systems by using the 'Enable @@PRODUCT_NAME@@ Configuration Management' button below.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Els sistemes que s'enumeren a continuació no tenen fitxers gestionats mitjançant la gestió de configuració de @@PRODUCT_NAME@@. Perquè els sistemes puguin ser gestionats per la gestió de configuració de @@PRODUCT_NAME@@, han de tenir instal·lats paquets mgr-cfg-* particulars. Podeu activar la gestió de la configuració als sistemes seleccionats mitjançant el botó 'Activa la gestió de la configuració @@PRODUCT_NAME@@' a continuació.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystems.do</context>
         </context-group>
