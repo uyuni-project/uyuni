@@ -20,6 +20,8 @@ import org.hibernate.metadata.ClassMetadata;
 
 import java.util.Optional;
 
+import jakarta.persistence.metamodel.Metamodel;
+
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
@@ -113,7 +115,7 @@ public interface ConnectionManager {
      * @param target an object instance or a class to retrieve the metadata for
      * @return the {@link ClassMetadata} for the given object.
      */
-    ClassMetadata getMetadata(Object target);
+    Metamodel getMetadata(Object target);
 
     /**
      * Closes Hibernate Session stored in ThreadLocal storage.

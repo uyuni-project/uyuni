@@ -15,8 +15,8 @@
 
 package com.suse.oval.ovaltypes;
 
-import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.XmlEnum;
+import jakarta.xml.bind.annotation.XmlType;
 
 @XmlType(name = "OperatorEnumeration", namespace = "http://oval.mitre.org/XMLSchema/oval-common-5")
 @XmlEnum

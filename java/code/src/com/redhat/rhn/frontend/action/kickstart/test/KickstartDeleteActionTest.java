@@ -63,8 +63,8 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
     private KickstartData lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setLong("id", id)
-                          .setLong("org_id", user.getOrg().getId())
+                          .setParameter("id", id)
+                          .setParameter("org_id", user.getOrg().getId())
                           .uniqueResult();
     }
 }

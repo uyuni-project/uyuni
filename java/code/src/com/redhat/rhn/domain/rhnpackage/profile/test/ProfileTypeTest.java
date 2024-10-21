@@ -73,7 +73,7 @@ public class ProfileTypeTest extends RhnBaseTestCase {
     public static ProfileType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ProfileType) session.getNamedQuery("ProfileType.findByLabel")
-                                        .setString("label", label)
+                                        .setParameter("label", label)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
                                         .uniqueResult();

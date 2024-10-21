@@ -56,7 +56,7 @@ public class RoleFactory extends HibernateFactory {
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (Role) session.getNamedQuery("Role.findById")
-                                       .setLong("id", id)
+                                       .setParameter("id", id)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
@@ -70,7 +70,7 @@ public class RoleFactory extends HibernateFactory {
     public static Role lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
         return (Role) session.getNamedQuery("Role.findByLabel")
-                                       .setString("label", name)
+                                       .setParameter("label", name)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
