@@ -92,16 +92,13 @@
 
   <!-- com.sun.xml.bind replacement (jaxb) -->
   <condition property="jaxb-api" value="jaxb-api" else="">
-    <available file="${java.lib.dir}/jaxb-api.jar" />
+    <available file="${java.lib.dir}/jaxb-api/jakarta.xml.bind-api.jar" />
   </condition>
-  <condition property="jaxb-impl" value="glassfish-jaxb/jaxb-impl" else="">
-    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-impl.jar" />
+  <condition property="jaxb-runtime" value="jaxb-ri/jaxb-runtime" else="">
+    <available file="${java.lib.dir}/jaxb-ri/jaxb-runtime.jar" />
   </condition>
-  <condition property="jaxb-runtime" value="glassfish-jaxb/jaxb-runtime" else="">
-    <available file="${java.lib.dir}/glassfish-jaxb/jaxb-runtime.jar" />
-  </condition>
-  <condition property="txw2" value="glassfish-jaxb/txw2" else="">
-    <available file="${java.lib.dir}/glassfish-jaxb/txw2.jar" />
+  <condition property="txw2" value="jaxb-ri/txw2" else="">
+    <available file="${java.lib.dir}/jaxb-ri/txw2.jar" />
   </condition>
   <condition property="istack-commons" value="istack-commons-runtime" else="">
     <available file="${java.lib.dir}/istack-commons-runtime.jar" />
