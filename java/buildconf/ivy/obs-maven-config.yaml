@@ -143,8 +143,8 @@ artifacts:
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
-    package: jpa-api
-    repository: MicheleBussolotto_Other
+    jar: jakarta-persistence-api.jar
+    repository: MicheleBussolotto_Java
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
@@ -344,17 +344,14 @@ artifacts:
     repository: MicheleBussolotto_Java
     jar: jaxb-api/jakarta.xml.bind-api.jar
   - artifact: jaxb-runtime
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: jaxb-impl
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: txw2
-    package: glassfish-jaxb-txw2
-    repository: Uyuni_Other
-  - artifact: glassfish-activation
-    repository: Uyuni_Other
+    package: jaxb-ri-runtime
+    repository: MicheleBussolotto_Java
+  - artifact: jaxb-ri-txw2
+    package: jaxb-ri-txw2
+    repository: MicheleBussolotto_Java
+  - artifact: jakarta-activation
+    repository: MicheleBussolotto_Java
   - artifact: istack-commons-runtime
-    repository: Leap
+    repository: MicheleBussolotto_Java
   - artifact: stax-ex
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Java
