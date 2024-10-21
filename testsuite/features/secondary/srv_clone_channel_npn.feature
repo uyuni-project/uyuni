@@ -105,8 +105,8 @@ Feature: Clone a channel
     And I follow "Compare"
     And I select "Fake-Clone-3-RPM-SLES15SP4-Channel" from "selected_channel"
     And I click on "View Packages"
-    Then I should see a "andromeda-dummy" text
-    And I should see a "2.0-1.1" link
+    Then I should see a "milkyway-dummy" text
+    And I should see a "2.0-1.2" link
     And I should see a "This channel only" text
 
   Scenario: Cleanup: remove cloned channels

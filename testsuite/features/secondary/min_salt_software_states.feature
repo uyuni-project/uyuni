@@ -97,7 +97,7 @@ Feature: Salt package states
     And I click save
     Then I wait until I see "Package states have been saved." text
     And I click apply
-    And I wait for "andromeda-dummy-2.0-1.1" to be installed on "sle_minion"
+    And I wait for "andromeda-dummy-2.0-1.2" to be installed on "sle_minion"
 
   Scenario: Verify the package states
     When I follow "States" in the content area
