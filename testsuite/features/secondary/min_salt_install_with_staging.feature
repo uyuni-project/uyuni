@@ -49,15 +49,15 @@ Feature: Install a package on the SLES minion with staging enabled
     And I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
-    And I enter "orion-dummy-1.1-1.1" as the filtered package name
+    And I enter "orion-dummy-1.1-1.2" as the filtered package name
     And I click on the filter button
-    When I check row with "orion-dummy-1.1-1.1" and arch of "sle_minion"
+    When I check row with "orion-dummy-1.1-1.2" and arch of "sle_minion"
     And I click on "Install Selected Packages"
     And I pick 3 minutes from now as schedule time
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until the package "orion-dummy-1.1-1.1" has been cached on this "sle_minion"
-    And I wait for "orion-dummy-1.1-1.1" to be installed on "sle_minion"
+    And I wait until the package "orion-dummy-1.1-1.2" has been cached on this "sle_minion"
+    And I wait for "orion-dummy-1.1-1.2" to be installed on "sle_minion"
 
   Scenario: Install patch in the future and check for staging
     And I follow "Software" in the content area

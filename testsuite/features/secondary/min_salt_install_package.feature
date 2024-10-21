@@ -39,7 +39,7 @@ Feature: Install a patch on the client via Salt through the UI
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "1 patch update has been scheduled for" text
-    And I wait for "virgo-dummy-2.0-1.1" to be installed on "sle_minion"
+    And I wait for "virgo-dummy-2.0-1.2" to be installed on "sle_minion"
     And vendor change should be enabled for package actions on "sle_minion"
 
   Scenario: Cleanup: remove virgo-dummy package from SLE minion
