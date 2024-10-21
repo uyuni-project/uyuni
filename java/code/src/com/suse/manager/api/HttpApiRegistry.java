@@ -126,6 +126,7 @@ public class HttpApiRegistry {
         return Set.of(
             "/rhn/manager/api/api/getVersion",
             "/rhn/manager/api/api/systemVersion",
+            "/rhn/manager/api/api/productName",
             "/rhn/manager/api/org/createFirst"
         );
     }
