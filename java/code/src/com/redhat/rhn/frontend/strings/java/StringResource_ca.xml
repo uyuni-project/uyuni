@@ -8637,7 +8637,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">No s'ha pogut subscriure automàticament el sistema al canal d'eines @@PRODUCT_NAME@@. Aquest canal conté paquets necessaris per a la virtualització. El més probable és que això estigui causat per la manca de drets del canal.</target>
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackage" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel.</source>
@@ -8648,6 +8648,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="system.entitle.multiplechannelswithpackagepleaseinstall" xml:space="preserve">
         <source>Found multiple child channels with package: {0}. Please manually subscribe this system to the appropriate child channel, and schedule this package for installation.</source>
+        <target state="translated">S'han trobat diversos canals secundaris amb el paquet {0}. Si us plau, subscriviu manualment a aquest sistema al canal secundari adequat i programeu aquest paquet per a la instal·lació.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8657,10 +8658,11 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">No s'ha pogut subscriure automàticament el sistema al canal de virtualització RHEL. Aquest canal conté paquets necessaris per a la virtualització. El més probable és que això estigui causat per la manca de drets del canal.</target>
       </trans-unit>
       <trans-unit id="system.entitle.novirtpackage" xml:space="preserve">
         <source>Could not find a channel with the {0} package. This package is required to manage virtual guests with @@PRODUCT_NAME@@.</source>
+        <target state="translated">No s'ha pogut trobar un canal amb el paquet {0}. Aquest paquet és necessari per gestionar convidats virtuals amb @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -8677,7 +8679,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">NOTA: per habilitar i usar les capacitats de virtualització dins de @@PRODUCT_NAME@@ per a aquest sistema, instal·leu el paquet mgr-virtualization-host des del canal secundari d'eines associat. Reviseu la documentació per veure altres consideracions i requisits per habilitar la virtualització d'un sistema amfitrió.</target>
       </trans-unit>
       <trans-unit id="system.migrate.user_no_perms" xml:space="preserve">
         <source>This user lacks the required permissions to transfer this system.</source>
@@ -9994,7 +9996,7 @@ l'arbre no es podrà utilitzar per a la instal·lació automàtica.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/TargetSystemsSubmit.do</context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Un sistema seleccionat té diversos canals secundaris disponibles que contenen el paquet mgr-cfg. Heu de subscriure-us manualment al canal fill que vulgueu i, a continuació, tornar a provar aquesta acció.</target>
       </trans-unit>
       <trans-unit id="External Links" xml:space="preserve">
         <source>External Links</source>
@@ -10283,6 +10285,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-push-bunch" xml:space="preserve">
         <source>Manages clients via SSH Server Push</source>
+        <target state="translated">Gestioneu clients mitjançant SSH Server Push</target>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
@@ -10362,6 +10365,7 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="visualization.nav.title" xml:space="preserve">
         <source>Visualization</source>
+        <target state="translated">Visualització</target>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
@@ -10514,9 +10518,11 @@ lt;stronggt;Note:lt;/stronggt; La documentació addicional sobre l'ús de l'ISO 
       </trans-unit>
       <trans-unit id="Virtualization Hierarchy" xml:space="preserve">
         <source>Virtualization Hierarchy</source>
+        <target state="translated">Jerarquia de virtualització</target>
       </trans-unit>
       <trans-unit id="Proxy Hierarchy" xml:space="preserve">
         <source>Proxy Hierarchy</source>
+        <target state="translated">Jerarquia d'intermediaris</target>
       </trans-unit>
       <trans-unit id="Systems Grouping" xml:space="preserve">
         <source>Systems Grouping</source>
