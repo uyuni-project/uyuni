@@ -155,6 +155,9 @@ artifacts:
     repository: Leap
   - artifact: jboss-logging
     repository: Leap
+  - artifact: jcache
+    package: jcache
+    repository: Java
   - artifact: jctools-core
     package: jctools
     repository: Leap

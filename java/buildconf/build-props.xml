@@ -75,6 +75,8 @@
     <available file="${java.lib.dir}/apache-commons-jexl/commons-jexl.jar"/>
   </condition>
 
+  <available file="${java.lib.dir}/jcache.jar" type="file" property="jcache" value="jcache.jar" />
+
   <available file="${java.lib.dir}/jaxb/jaxb-runtime.jar" type="file" property="jaxb-runtime" value="jaxb/jaxb-runtime.jar" />
 
   <available file="${java.lib.dir}/jakarta-persistence-api.jar" type="file" property="jpa-api" value="jakarta-persistence-api.jar" />
@@ -83,7 +85,7 @@
     <available file="${java.lib.dir}/hibernate6/hibernate-core.jar" type="file"/>
   </condition>
 
-  <property name="hibernate6deps" value="${hibernate6files} ${hibernate-commons-annotations} slf4j/api ${jpa-api} ${jaxb-runtime} ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-63 jackson-databind jackson-core jackson-annotations"/>
+  <property name="hibernate6deps" value="${hibernate6files} ${hibernate-commons-annotations} slf4j/api ${jcache} ${jpa-api} ${jaxb-runtime} ${byte-buddy} ${byte-buddy-dep} jboss-logging javassist log4j/log4j-slf4j-impl classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-63 jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="c3p0"/>
   <available file="${java.lib.dir}/mchange-commons/mchange-commons-java.jar" type="file" property="c3p0" value="${c3p0} mchange-commons/mchange-commons-java"/>
