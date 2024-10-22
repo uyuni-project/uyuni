@@ -304,13 +304,13 @@ public class ImageInfo extends BaseDomainHelper {
     }
 
     @OneToMany
-    @JoinColumn(name = "source_image_id", updatable = false)
+    @JoinColumn(name = "source_image_id")
     public Set<DeltaImageInfo> getDeltaSourceFor() {
         return deltaSourceFor;
     }
 
     @OneToMany
-    @JoinColumn(name = "target_image_id", updatable = false)
+    @JoinColumn(name = "target_image_id")
     public Set<DeltaImageInfo> getDeltaTargetFor() {
         return deltaTargetFor;
     }

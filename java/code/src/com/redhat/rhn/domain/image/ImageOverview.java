@@ -175,8 +175,7 @@ public class ImageOverview {
      * @return the build action
      */
     @ManyToOne
-    @JoinColumn(name = "build_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "build_action_id", referencedColumnName = "id")
     public Action getBuildAction() {
         return buildAction;
     }
@@ -185,8 +184,7 @@ public class ImageOverview {
      * @return the inspect action
      */
     @ManyToOne
-    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id", insertable = false,
-            updatable = false)
+    @JoinColumn(name = "inspect_action_id", referencedColumnName = "id")
     public Action getInspectAction() {
         return inspectAction;
     }
@@ -232,9 +230,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoChannel",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "channel_id", nullable = false, updatable = false)}
+            @JoinColumn(name = "channel_id", nullable = false)}
     )
     public Set<Channel> getChannels() {
         return channels;
@@ -246,9 +244,9 @@ public class ImageOverview {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "suseImageInfoInstalledProduct",
         joinColumns = {
-            @JoinColumn(name = "image_info_id", nullable = false, updatable = false)},
+            @JoinColumn(name = "image_info_id", nullable = false)},
         inverseJoinColumns = {
-            @JoinColumn(name = "installed_product_id", nullable = false, updatable = false)
+            @JoinColumn(name = "installed_product_id", nullable = false)
     })
     public Set<InstalledProduct> getInstalledProducts() {
         return installedProducts;

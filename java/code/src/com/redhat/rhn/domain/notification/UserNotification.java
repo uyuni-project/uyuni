@@ -100,7 +100,7 @@ public class UserNotification {
     /**
      * @return Returns the message id.
      */
-    @Column(name = "message_id", insertable = false, updatable = false)
+    @Column(name = "message_id")
     public Long getMessageId() {
         return messageId;
     }

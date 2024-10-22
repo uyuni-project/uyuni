@@ -53,7 +53,7 @@ public class AppStreamApi {
     private String rpm;
 
     @ManyToOne
-    @JoinColumn(name = "module_id")
+    @JoinColumn(name = "module_id", nullable = false)
     @MapsId("id")
     private AppStream appStream;
 
