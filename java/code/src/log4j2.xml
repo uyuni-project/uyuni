@@ -116,8 +116,6 @@
                 <RegexFilter regex="HHH90000009: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
                 <!-- Disable org.hibernate.Criteria API deprecation message -->
                 <RegexFilter regex="HHH90000022: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
-                <!-- Disable ehcache 2 deprecation message -->
-                <RegexFilter regex="HHH020100: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
             </Filters>
         </Logger>
 
@@ -127,9 +125,6 @@
                 <RegexFilter regex="HHH000457: .*" onMatch="DENY" onMismatch="NEUTRAL"/>
             </Filters>
         </Logger>
-
-        <!-- this silences ehcache on Fedoras complaining about using default values -->
-        <Logger name="org.hibernate.cache.ehcache.AbstractEhcacheRegionFactory" level="error" />
 
         <Root level="warn"><AppenderRef ref="rootAppender" /></Root>
     </Loggers>

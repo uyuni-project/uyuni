@@ -32,7 +32,6 @@
         <dependency org="suse" name="concurrent" rev="1.3.4" />
         <dependency org="suse" name="concurrentlinkedhashmap-lru" rev="1.3.2" />
         <dependency org="suse" name="dom4j" rev="2.1.4" />
-        <dependency org="suse" name="ehcache-core" rev="2.10.1" />
         <dependency org="suse" name="jakarta.transaction-api" rev="2.0.1" />
         <dependency org="suse" name="google-gson" rev="2.8.9" />
         <dependency org="suse" name="hibernate-c3p0" rev="6.5.2.Final" />
@@ -102,11 +101,13 @@
         <dependency org="suse" name="xalan-j2-serializer" rev="2.7.2" />
         <dependency org="suse" name="xerces-j2" rev="2.12.2" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
-        <dependency org="suse" name="jaxb-api" rev="4.0.0" />
+        <dependency org="suse" name="jaxb-api" rev="4.0.2" />
+        <dependency org="suse" name="jaxb-core" rev="4.0.5" />
         <dependency org="suse" name="jaxb-runtime" rev="4.0.5" />
-        <dependency org="suse" name="jaxb-ri-txw2" rev="4.0.5" />
+        <dependency org="suse" name="jaxb-txw2" rev="4.0.5" />
         <dependency org="suse" name="istack-commons-runtime" rev="4.2.0" />
         <dependency org="suse" name="stax-ex" rev="2.1.0" />
+        <dependency org="suse" name="jakarta-activation" rev="2.1.3" />
 
         <!-- Tomcat jars -->
         <dependency org="suse" name="jasper" rev="[9.0.75,10.0.0[" />

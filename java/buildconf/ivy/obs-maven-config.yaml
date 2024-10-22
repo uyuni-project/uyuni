@@ -11,6 +11,9 @@ repositories:
   MicheleBussolotto_Java:
     project: home:mbussolotto:branches:Java:packages
     repository: openSUSE_Factory
+  Java:
+    project: Java:packages
+    repository: openSUSE_Factory
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -95,9 +98,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: dom4j
     repository: Leap_sle
-  - artifact: ehcache-core
-    package: ehcache
-    repository: Uyuni_Other
   - artifact: jakarta.transaction-api
     package: jakarta-transactions
     repository: MicheleBussolotto_Java
@@ -343,12 +343,15 @@ artifacts:
   - artifact: jaxb-api
     repository: MicheleBussolotto_Java
     jar: jaxb-api/jakarta.xml.bind-api.jar
+  - artifact: jaxb-core
+    package: jaxb-core
+    repository: Java
   - artifact: jaxb-runtime
-    package: jaxb-ri-runtime
-    repository: MicheleBussolotto_Java
-  - artifact: jaxb-ri-txw2
-    package: jaxb-ri-txw2
-    repository: MicheleBussolotto_Java
+    package: jaxb-runtime
+    repository: Java
+  - artifact: jaxb-txw2
+    package: jaxb-txw2
+    repository: Java
   - artifact: jakarta-activation
     repository: MicheleBussolotto_Java
   - artifact: istack-commons-runtime
