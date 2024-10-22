@@ -49,7 +49,7 @@ public class CreateBootstrapRepoFailed implements NotificationData {
      */
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.error;
+        return NotificationMessage.NotificationMessageSeverity.ERROR;
     }
 
     /**
