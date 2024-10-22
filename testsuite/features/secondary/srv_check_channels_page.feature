@@ -36,45 +36,42 @@ Feature: The channels page
     And I follow "Show All Child Channels"
     And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
-    Then I should see package "andromeda-dummy-2.0-1.2.noarch"
-    And I should see package "hoag-dummy-1.1-1.2.i586"
-    And I should see package "hoag-dummy-1.1-1.2.x86_64"
+    Then I should see package "andromeda-dummy-2.0-1.1.noarch"
+    And I should see package "hoag-dummy-1.1-1.1.i586"
+    And I should see package "hoag-dummy-1.1-1.1.x86_64"
     And I should see package "milkyway-dummy-2.0-1.1.i586"
     And I should see package "milkyway-dummy-2.0-1.1.x86_64"
-    # the package may be in the 2nd page of results
-    When I enter "virgo-dummy" as the filtered package name
-    And I click on the filter button
-    Then I should see package "virgo-dummy-2.0-1.2.noarch"
+    And I should see package "virgo-dummy-2.0-1.1.noarch"
 
   Scenario: Check package metadata
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
     And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
-    And I follow "andromeda-dummy-2.0-1.2.noarch"
+    And I follow "andromeda-dummy-2.0-1.1.noarch"
     Then I should see a "This is the andromeda dummy package used for testing SUSE Manager" text
     And I should see a "Fake-RPM-SUSE-Channel" link
     And I should see a "build.opensuse.org" text
     And I should see a "SHA512sum:" text
-    And I should see a "packages/1/1d9/andromeda-dummy/2.0-1.2/noarch/1d9e6629b6b7abc2fe5fee4921523d421139144696302fd701e8434883169b7705db19aef3ddf10a7b68699f6478776a6c4335661e86b5d54880b7be2a661e7c/andromeda-dummy-2.0-1.2.noarch.rpm" text
+    And I should see a "packages/1/6bc/andromeda-dummy/2.0-1.1/noarch/6bc584eb0af1bc04705c78e59ca0e4154ea86c46cd75abee57c82bfc4ebb57f3660ed21e9aceceae03855264e163853acbcde88005609d773c20f185587f70cc/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
     And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
-    And I follow "andromeda-dummy-2.0-1.2.noarch"
+    And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Dependencies"
     Then I should see a "pam" text
     And I should see a "rpmlib(PayloadIsXz) <= 5.2-1" text
-    And I should see a "andromeda-dummy = 2.0-1.2" text
+    And I should see a "andromeda-dummy = 2.0-1.1" text
 
   Scenario: Check package change log page
     When I follow the left menu "Software > Channel List > All"
     And I follow "Show All Child Channels"
     And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
-    And I follow "andromeda-dummy-2.0-1.2.noarch"
+    And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "Change Log"
     Then I should see a "mc@suse.de" text
     And I should see a "version 2.0" text
@@ -84,7 +81,7 @@ Feature: The channels page
     And I follow "Show All Child Channels"
     And I follow "Fake-RPM-SUSE-Channel"
     And I follow "Packages"
-    And I follow "andromeda-dummy-2.0-1.2.noarch"
+    And I follow "andromeda-dummy-2.0-1.1.noarch"
     And I follow "File List"
     Then I should see a "This package contains the following files." text
     And I should see a "/usr/share/doc/packages/andromeda-dummy/COPYING" text

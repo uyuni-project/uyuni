@@ -42,7 +42,7 @@ Feature: Display patches
     And I follow "andromeda-dummy-6789"
     And I follow "Packages"
     Then I should see a "Fake-RPM-SUSE-Channel" link
-    And I should see a "sha512:83601d7345101d0fce603c9e920ab9868f1499ae38c2e62951a6082ec0737af29c2acb9f643f8f28eee27bb731dad33a431593042ce32165b03489909f4fac10" text
+    And I should see a "sha512:6bc584eb0af1bc04705c78e59ca0e4154ea86c46cd75abee57c82bfc4ebb57f3660ed21e9aceceae03855264e163853acbcde88005609d773c20f185587f70cc" text
     And I should see a "andromeda-dummy-2.0-1.1-noarch" link
 
   Scenario: Check relevant patches for this client
