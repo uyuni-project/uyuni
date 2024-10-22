@@ -17,6 +17,11 @@ __pytest ::
 	$(call install_pytest)
 	cd src/tests; pytest --disable-warnings --tb=native --color=yes -v
 
+junit_pytest ::
+	$(call update_pip_env)
+	$(call install_pytest)
+	cd src/tests; pytest -v --junit-xml /manager/susemanager-utils/susemanager-sls/reports/susemanager-sls.xml
+
 docker_pylint ::
 	docker run --rm -e $(DOCKER_RUN_EXPORT) $(DOCKER_VOLUMES) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql /bin/sh -c "cd /manager/susemanager-utils/susemanager-sls/; make -f Makefile.python __pylint"
 
