@@ -557,10 +557,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+  $current_user = user
+  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
-  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+  user = get_context('user') || 'admin'
+  password = get_context('password') || 'admin'
+  step %(I am authorized as "#{user}" with password "#{password}")
 end
 
 When(/^I sign out$/) do
