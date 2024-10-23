@@ -219,7 +219,8 @@ public class ImageOverview {
     /**
      * @return the custom data values
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "image_info_custom_data_value_id")
     public Set<ImageInfoCustomDataValue> getCustomDataValues() {
         return customDataValues;
     }
@@ -255,7 +256,8 @@ public class ImageOverview {
     /**
      * @return the packages
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "packages_id")
     public Set<ImagePackage> getPackages() {
         return packages;
     }
@@ -275,7 +277,8 @@ public class ImageOverview {
     /**
      * @return the files
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "imageInfo")
+    @OneToMany
+    @JoinColumn(name = "image_info_id")
     public Set<ImageFile> getImageFiles() {
         return imageFiles;
     }
