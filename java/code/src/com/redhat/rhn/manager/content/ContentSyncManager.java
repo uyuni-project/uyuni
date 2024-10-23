@@ -384,6 +384,58 @@ public class ContentSyncManager {
     }
 
     /**
+     * Add new mandatory channels for products which are already synchronized
+     */
+    public void addNewMandatoryChannelsForSyncedProducts() {
+        List<String> installedChannelLabels = getInstalledChannelLabels();
+
+        List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> availableChannels =
+                TimeUtils.logTime(LOG, "getAvailableCHannels", this::getAvailableChannels).stream().map(e -> {
+                    MgrSyncStatus status = installedChannelLabels.contains(e.getChannelLabel()) ?
+                            MgrSyncStatus.INSTALLED : MgrSyncStatus.AVAILABLE;
+                    return new Tuple2<>(e, status);
+                }).toList();
+
+        List<SUSEProduct> allSUSEProducts = SUSEProductFactory.findAllSUSEProducts();
+
+        List<SUSEProduct> roots = allSUSEProducts.stream()
+                .filter(SUSEProduct::isBase)
+                .toList();
+
+        Map<Long, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> byProductId = availableChannels.stream()
+                .collect(Collectors.groupingBy(p -> p.getA().getProduct().getId()));
+        Map<Long, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> byRootId = availableChannels.stream()
+                .collect(Collectors.groupingBy(p -> p.getA().getRootProduct().getId()));
+
+        roots.stream()
+                .filter(p -> byProductId.containsKey(p.getId()))
+                .forEach(root -> {
+                    Map<SUSEProduct, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> byProduct =
+                            byRootId.get(root.getId()).stream()
+                                    //.filter(p -> !p.getA().getProduct().equals(root))
+                                    .collect(Collectors.groupingBy(e -> e.getA().getProduct()));
+
+                    byProduct.forEach((product, prdReposWithStat) -> {
+
+                        Map<MgrSyncStatus, List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>>> reposByStatus =
+                                prdReposWithStat.stream()
+                                        .filter(x -> x.getA().isMandatory())
+                                        .collect(Collectors.groupingBy(Tuple2::getB));
+                        if (!reposByStatus.get(MgrSyncStatus.INSTALLED).isEmpty() &&
+                                !reposByStatus.get(MgrSyncStatus.AVAILABLE).isEmpty()) {
+                            reposByStatus.get(MgrSyncStatus.AVAILABLE)
+                                    .forEach(c -> {
+                                        LOG.warn("Adding new mandatory channel '{}' for product '{}'",
+                                                c.getA().getChannelLabel(), product.getFriendlyName());
+                                        addChannel(c.getA().getChannelLabel(), null);
+                                    });
+                        }
+
+                    });
+                });
+    }
+
+    /**
      * Returns all available products in user-friendly format.
      * @return list of all available products
      */
@@ -592,6 +644,7 @@ public class ContentSyncManager {
         }
         finally {
             ensureSUSEProductChannelData();
+            addNewMandatoryChannelsForSyncedProducts();
             linkAndRefreshContentSource(mirrorUrl);
             ManagerInfoFactory.setLastMgrSyncRefresh();
         }
