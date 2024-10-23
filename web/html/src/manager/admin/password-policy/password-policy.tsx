@@ -71,7 +71,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
       }
     >
       <div className="page-summary">
-        <p>{t("Set up your SUSE Manager server local users password policy.")}</p>
+        <p>{t("Set up your server local users password policy.")}</p>
       </div>
       <Form
         model={policy.properties}
@@ -87,7 +87,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
                 name="minLength"
                 label={t("Minimum Length")}
                 labelClass="col-md-4 text-left"
-                divClass="col-md-8"
+                divClass="col-md-4"
                 type="number"
               />
             </div>
@@ -98,7 +98,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
                 name="maxLength"
                 label={t("Maximum Length")}
                 labelClass="col-md-4 text-left"
-                divClass="col-md-8"
+                divClass="col-md-4"
                 type="number"
               />
             </div>
