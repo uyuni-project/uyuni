@@ -41,10 +41,6 @@ EOF
 	cp /root/.ssh/authorized_keys /root/.ssh/authorized_keys_backup_gitpillar
 	cat /var/lib/salt/.ssh/mgr_ssh_id.pub >> /root/.ssh/authorized_keys
 
-	# Start SSHd service
-	ssh-keygen -A
-	/usr/sbin/sshd -D &
-
 	cat << 'EOF' > /etc/salt/master.d/zz-testing-gitpillar.conf
 ext_pillar:
   - suma_minion: True
@@ -64,6 +60,5 @@ if [ "$1" == "clean" ]; then
 	rm /etc/salt/master.d/zz-testing-gitpillar.conf
 	cp /root/.ssh/authorized_keys_backup_gitpillar /root/.ssh/authorized_keys
 	rm /root/.ssh/authorized_keys_backup_gitpillar
-	pkill sshd
 	systemctl restart salt-master salt-api
 fi
