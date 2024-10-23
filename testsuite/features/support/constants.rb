@@ -961,10 +961,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-micro-5.5-updates-x86_64
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
-        suse-manager-retail-branch-server-5.0-pool-x86_64
-        suse-manager-retail-branch-server-5.0-updates-x86_64
-        suse-manager-proxy-5.0-pool-x86_64
-        suse-manager-proxy-5.0-updates-x86_64
       ],
     'sl-micro-6.0' =>
       %w[
