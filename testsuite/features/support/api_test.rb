@@ -60,11 +60,12 @@ class ApiTest
       Thread.new do
         @semaphore.synchronize do
           begin
-            @token = if name.include?('user.')
-                       @connection.call('auth.login', login: 'admin', password: 'admin')
-                     else
-                       @connection.call('auth.login', login: $current_user, password: $current_password)
-                     end
+            @token =
+              if name.include?('user.')
+                @connection.call('auth.login', login: 'admin', password: 'admin')
+              else
+                @connection.call('auth.login', login: $current_user, password: $current_password)
+              end
             params[0][:sessionKey] = @token
             response = @connection.call(name, *params)
           rescue SystemCallError => e
