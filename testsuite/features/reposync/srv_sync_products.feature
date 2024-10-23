@@ -179,7 +179,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
-  And I should only see success signs in the product list
+    And I should only see success signs in the product list
 
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC
