@@ -48,7 +48,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.persistence.FlushModeType;
+import jakarta.persistence.FlushModeType;
 
 /**
  * A cached set of query/elaborator strings and the parameterMap hash maps.

@@ -14,6 +14,12 @@
  */
 package com.redhat.rhn.domain.errata;
 
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 /**
  * AdvisoryStatusEnumType
  */
@@ -25,4 +31,18 @@ public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus, Strin
         super(AdvisoryStatus.class, String.class, AdvisoryStatus::getMetadataValue,
             s -> AdvisoryStatus.fromMetadata(s).orElse(null));
     }
+
+    @Override
+    public String nullSafeGet(ResultSet var1, int var2,
+            SharedSessionContractImplementor var3, @Deprecated Object var4)
+        throws SQLException {
+        // TODO Hibernate 6
+        return null;
+    };
+
+    @Override
+    public void nullSafeSet(PreparedStatement var1, Object var2, int var3,
+            SharedSessionContractImplementor var4)
+        throws SQLException {
+    };
 }

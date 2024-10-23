@@ -18,6 +18,8 @@
         <emptyLine />
         <package name="org" withSubpackages="true" static="false" />
         <emptyLine />
+        <package name="jakarta" withSubpackages="true" static="false" />
+        <emptyLine />
         <package name="java" withSubpackages="true" static="false" />
         <emptyLine />
         <package name="javax" withSubpackages="true" static="false" />

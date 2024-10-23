@@ -5,6 +5,15 @@ repositories:
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  MicheleBussolotto_Other:
+    project: home:mbussolotto:branches:systemsmanagement:Uyuni:Master:Other
+    repository: openSUSE_Leap_15.6
+  MicheleBussolotto_Java:
+    project: home:mbussolotto:branches:Java:packages
+    repository: openSUSE_Factory
+  Java:
+    project: Java:packages
+    repository: openSUSE_Factory
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -89,22 +98,20 @@ artifacts:
     repository: Uyuni_Other
   - artifact: dom4j
     repository: Leap_sle
-  - artifact: ehcache-core
-    package: ehcache
-    repository: Uyuni_Other
-  - artifact: geronimo-jta-1.1-api
-    package: geronimo-jta-1_1-api
-    repository: Leap
+  - artifact: jakarta.transaction-api
+    package: jakarta-transactions
+    repository: MicheleBussolotto_Java
   - artifact: google-gson
     jar: gson.jar
     repository: Leap
   - artifact: hibernate-c3p0
-    package: hibernate5-c3p0
+    package: hibernate6-c3p0
     jar: hibernate-c3p0
-    repository: Uyuni_Other
-  - artifact: hibernate-types-52
-    package: hibernate-types
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Other
+  - artifact: hypersistence-utils-hibernate-63
+    jar: hypersistence-utils-hibernate-63-3.8.2.jar
+    package: hypersistence-utils
+    repository: MicheleBussolotto_Other
   - artifact: jackson-annotations
     repository: Leap
   - artifact: jackson-core
@@ -112,13 +119,13 @@ artifacts:
   - artifact: jackson-databind
     repository: Leap
   - artifact: hibernate-commons-annotations
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Other
   - artifact: hibernate-core
-    package: hibernate5-core
-    repository: Uyuni_Other
-  - artifact: hibernate-ehcache
-    package: hibernate5-ehcache
-    repository: Uyuni_Other
+    package: hibernate6-core
+    repository: MicheleBussolotto_Other
+  - artifact: hibernate-jcache
+    package: hibernate6-jcache
+    repository: MicheleBussolotto_Other
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
@@ -136,8 +143,8 @@ artifacts:
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
-    package: jpa-api
-    repository: Uyuni_Other
+    jar: jakarta-persistence-api.jar
+    repository: MicheleBussolotto_Java
   - artifact: java-saml
     jar: java-saml-[0-9.]+
     repository: Uyuni_Other
@@ -148,6 +155,9 @@ artifacts:
     repository: Leap
   - artifact: jboss-logging
     repository: Leap
+  - artifact: jcache
+    package: jcache
+    repository: Java
   - artifact: jctools-core
     package: jctools
     repository: Leap
@@ -301,7 +311,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: velocity-engine-core
     repository: Uyuni_Other
-
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
@@ -334,20 +343,21 @@ artifacts:
     repository: Uyuni_Other
   - artifact: jetty-util
     repository: Leap
-  - artifact: glassfish-jaxb-api
-    repository: Uyuni_Other
+  - artifact: jaxb-api
+    repository: MicheleBussolotto_Java
+    jar: jaxb-api/jakarta.xml.bind-api.jar
+  - artifact: jaxb-core
+    package: jaxb-core
+    repository: Java
   - artifact: jaxb-runtime
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: jaxb-impl
-    package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
-  - artifact: txw2
-    package: glassfish-jaxb-txw2
-    repository: Uyuni_Other
-  - artifact: glassfish-activation
-    repository: Uyuni_Other
+    package: jaxb-runtime
+    repository: Java
+  - artifact: jaxb-txw2
+    package: jaxb-txw2
+    repository: Java
+  - artifact: jakarta-activation
+    repository: MicheleBussolotto_Java
   - artifact: istack-commons-runtime
-    repository: Leap
+    repository: MicheleBussolotto_Java
   - artifact: stax-ex
-    repository: Uyuni_Other
+    repository: MicheleBussolotto_Java
