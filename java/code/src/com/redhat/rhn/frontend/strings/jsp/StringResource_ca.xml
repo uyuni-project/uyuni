@@ -3538,7 +3538,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="packagelist.jsp.modulespresent" xml:space="preserve">
         <source>At least one of the channels this system is subscribed to contains modules. If you have activated modules on this system, please refrain from using @@PRODUCT_NAME@@ for package operations. Instead, use &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Content Lifecycle Management&lt;/a&gt; to &lt;strong&gt;create regular channels that include module packages&lt;/strong&gt;.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Almenys un dels canals als quals està subscrit aquest sistema conté mòduls. Si heu activat mòduls en aquest sistema, absteniu-vos d'usar @@PRODUCT_NAME@@ per a operacions de paquets. En comptes d'això, useu &lt;a href="/rhn/manager/contentmanagement/projects"&gt;Gestió del cicle de vida del contingut&lt;/a&gt; per &lt;strong&gt;crear canals habituals que incloguin paquets de mòduls&lt;/strong&gt;.</target>
       </trans-unit>
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
@@ -9879,12 +9879,14 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
       </trans-unit>
       <trans-unit id="bootstrap.jsp.allow-config-actions" xml:space="preserve">
         <source>Enable Remote Configuration</source>
+        <target state="translated">Habilita la configuració remota</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.allow-remote-commands" xml:space="preserve">
         <source>Enable Remote Commands</source>
+        <target state="translated">Habilita les ordres remotes</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/BootstrapConfig.do</context>
         </context-group>
@@ -10019,15 +10021,19 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
       <!-- Bare-metal system listing configuration -->
       <trans-unit id="Bare-metal systems" xml:space="preserve">
         <source>Bare-metal systems</source>
+        <target state="translated">Sistemes de metall nu</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.toolbar" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - Bare-metal systems</source>
+        <target state="translated">Configuració de @@PRODUCT_NAME@@ - Sistemes de metall nu</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.header" xml:space="preserve">
         <source>Bare-metal system management</source>
+        <target state="translated">Gestió de sistemes de metall nu</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.summary" xml:space="preserve">
         <source>Allows @@PRODUCT_NAME@@ to automatically add bare-metal systems capable of PXE booting to an organization.</source>
+        <target state="translated">Permet que @@PRODUCT_NAME@@ afegeixi automàticament sistemes de metall nu capaços d'arrencada de PXE en una organització.</target>
       </trans-unit>
       <trans-unit id="bootstrapsystems.jsp.enable_bootstrap_discovery" xml:space="preserve">
         <source>Bare-metal systems</source>
@@ -20295,7 +20301,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssmenable.jsp.summary" xml:space="preserve">
         <source>The systems listed below do not have files managed via @@PRODUCT_NAME@@ configuration management. For systems to be capable of being managed by @@PRODUCT_NAME@@ configuration management, they will need to have particular mgr-cfg-* packages installed. You can enable configuration management on the systems listed below. &lt;strong&gt;Note:&lt;/strong&gt; nothing will happen to already enabled systems.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Els sistemes que s'enumeren a continuació no tenen fitxers gestionats mitjançant la gestió de configuració de @@PRODUCT_NAME@@. Perquè els sistemes puguin ser gestionats per la gestió de configuració de @@PRODUCT_NAME@@, hauran de tenir instal·lats paquets mgr-cfg-* particulars. Podeu activar la gestió de la configuració als sistemes que s'indiquen a continuació. &lt;strong&gt;Nota:&lt;/strong&gt; no passarà res amb els sistemes ja habilitats.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/config/Enable.do</context>
         </context-group>
@@ -21537,6 +21543,7 @@ qualsevol d'aquestes revisions.  Estàs segur que vols fer-ho?</target>
       </trans-unit>
       <trans-unit id="ssm.operations.provisioning.remotecommand.no_script_run" xml:space="preserve">
         <source>You must enable Remote Command execution on the target system by installing the &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</source>
+        <target state="translated">Heu d'habilitar l'execució d'ordres remotes al sistema de destinació instal·lant el &lt;code&gt;mgr-cfg-actions&lt;/code&gt; RPM.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -24613,12 +24620,14 @@ lt;pgt;El camí a l'arbre ha de ser un camí de disc local al servidor .PRODUCTN
       </trans-unit>
       <trans-unit id="sdc.details.proxy.unlicensed" xml:space="preserve">
         <source>The WebUI @@PRODUCT_NAME@@ Proxy installer is obsolete. Please use the command line installer from package spacewalk-proxy-installer.</source>
+        <target state="translated">L'instal·lador del servidor intermediari WebUI @@PRODUCT_NAME@@ està obsolet. Useu l'instal·lador de línia d'ordres del paquet spacewalk-proxy-installer.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="sdc.details.proxy.licensed" xml:space="preserve">
         <source>This machine is currently a licensed @@PRODUCT_NAME@@ Proxy (v{0}).</source>
+        <target state="translated">Aquesta màquina és actualment un intermediari de @@PRODUCT_NAME@@ amb llicència (v{0}).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/ProxyClients.do</context>
         </context-group>
@@ -29158,6 +29167,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitoring</source>
+        <target state="translated">Monitoratge</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29754,7 +29764,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="overview.jsp.traditionalstack.deprecated" xml:space="preserve">
         <source>The traditional stack is deprecated as of the release of SUSE manager 4.3. It will be unsupported in the next major release, version 5.0 or greater. Consider migrating to salt minions before this release.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">La pila tradicional està obsoleta a partir del llançament del SUSE Manager 4.3. No serà compatible amb la propera versió principal, la versió 5.0 o superior. Penseu a migrar a les versions posteriors abans d'aquest llançament.</target>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.no-maintenance-window" xml:space="preserve">
         <source>Systems assigned to these schedules do not have a maintenance window at {0}</source>
@@ -29896,11 +29906,11 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-        <target state="new"/>
+        <target state="translated">Llista de pedaços ja inclosos:</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="new"/>
+        <target state="translated">Amb això seleccionat, es mostren els pedaços que ja formen part del canal. Això és útil quan un pedaç forma part de diversos canals, s'ha inclòs des d'un d'aquests i cal associar-ne els paquets a un altre.</target>
       </trans-unit>
     </body>
   </file>
