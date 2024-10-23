@@ -56,25 +56,25 @@ class ApiTest
   # @param params [Array] The parameters to pass to the API call.
   # @return [Object] The response from the API call.
   def call(name, *params)
-    Thread.new do
+    Thread.new {
       @semaphore.synchronize do
         begin
-          if name.include?('user.')
-            @token = @connection.call('auth.login', login: 'admin', password: 'admin')
-          else
-            @token = @connection.call('auth.login', login: $current_user, password: $current_password)
-          end
+          @token = if name.include?('user.')
+                     @connection.call('auth.login', login: 'admin', password: 'admin')
+                   else
+                     @connection.call('auth.login', login: $current_user, password: $current_password)
+                   end
           params[0][:sessionKey] = @token
           response = @connection.call(name, *params)
-        rescue => error
-          raise "API call failed: #{error.message}"
+        rescue SystemCallError => e
+          raise "API call failed: #{e.message}"
         ensure
           @connection.call('auth.logout', sessionKey: @token) if @token
           @token = nil
-          response
         end
+        response
       end
-    end.value
+    }.value
   end
 end
 
