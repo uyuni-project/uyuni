@@ -13,5 +13,4 @@
 -- in this software or its documentation.
 --
 
-create extension dblink;
-CREATE EXTENSION pgcrypto;
+-- This file is currently intentionally left blank.

@@ -27,7 +27,7 @@ function find_source ()  {
     local db=""
 
     local imp_packages=(rhn_entitlements.pkb rhn_channel.pks rhn_channel.pkb rhn_server.pkb)
-    local imp_procs=(pg_dblink_exec create_first_org create_new_org)
+    local imp_procs=(create_first_org create_new_org)
 
     if [[ "$s" == *oracle ]]; then
 	db="oracle"
