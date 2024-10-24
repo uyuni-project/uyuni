@@ -219,6 +219,7 @@ namespace :jenkins do
     minions = args[:instances]
     minions.each do |minion|
       next if minion.include?('proxy') or minion.include?('monitoring')
+
       # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25591
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
@@ -268,6 +269,7 @@ namespace :jenkins do
     minions = args[:instances]
     minions.each do |minion|
       next if minion.include?('proxy') || minion.include?('monitoring')
+
       # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25591
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
 
