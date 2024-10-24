@@ -1,0 +1,19 @@
+[Unit]
+Description=Salt Event Publisher
+After=network.target salt-master.service
+Requires=salt-master.service
+
+[Service]
+Type=simple
+User=salt
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=salt-event-publisher
+ExecStartPre=/bin/bash -c 'until [ -S /run/salt/master/master_event_pub.ipc ]; do sleep 1; done'
+ExecStart=/usr/bin/socat TCP4-LISTEN:4512,reuseaddr,fork UNIX-CONNECT:/run/salt/master/master_event_pub.ipc
+Restart=always
+SuccessExitStatus=0 143
+RestartForceExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

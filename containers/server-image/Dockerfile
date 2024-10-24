@@ -17,6 +17,9 @@ RUN chmod a+x /usr/bin/healthcheck.sh
 # Copy timezone link update service
 COPY timezone_alignment.service /usr/lib/systemd/system/
 
+# Copy Salt Event Publisher service used by Saline
+COPY salt-event-publisher.service /usr/lib/systemd/system/
+
 COPY remove_unused.sh .
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 
@@ -71,7 +74,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd-ad \
     sssd-ipa \
     sssd-krb5 \
-    sssd-tools
+    sssd-tools \
+    socat
 
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
@@ -106,7 +110,8 @@ RUN echo "cat /etc/motd" >/etc/sh.shrc.local
 RUN systemctl enable prometheus-node_exporter; \
     systemctl enable uyuni-setup; \
     systemctl enable timezone_alignment; \
-    systemctl enable sssd;
+    systemctl enable sssd; \
+    systemctl enable salt-event-publisher;
 
 # Provide tool to synchronize package and configuration files to persistent volumes
 COPY uyuni-configfiles-sync /usr/bin
