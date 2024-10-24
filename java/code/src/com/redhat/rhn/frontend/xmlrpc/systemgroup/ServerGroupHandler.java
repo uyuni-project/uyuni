@@ -49,7 +49,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * ServerGroupHandler
@@ -606,7 +605,7 @@ public class ServerGroupHandler extends BaseHandler {
         List<ConfigChannel> channels = configChannelLabels.stream()
             .map(l -> Optional.ofNullable(manager.lookupGlobalConfigChannel(loggedInUser, l))
                     .orElseThrow(() -> new NoSuchChannelException(l)))
-            .collect(Collectors.toList());
+            .toList();
 
         group.subscribeConfigChannels(channels, loggedInUser);
         return 1;
@@ -636,7 +635,7 @@ public class ServerGroupHandler extends BaseHandler {
         List<ConfigChannel> channels = configChannelLabels.stream()
             .map(l -> Optional.ofNullable(manager.lookupGlobalConfigChannel(loggedInUser, l))
                     .orElseThrow(() -> new NoSuchChannelException(l)))
-            .collect(Collectors.toList());
+            .toList();
 
         group.unsubscribeConfigChannels(channels, loggedInUser);
         return 1;
@@ -665,6 +664,6 @@ public class ServerGroupHandler extends BaseHandler {
 
         List<Formula> formulas = FormulaFactory.listFormulas();
         List<String> assigned = FormulaFactory.getFormulasByGroup(group);
-        return formulas.stream().filter(f -> assigned.contains(f.getName())).collect(Collectors.toList());
+        return formulas.stream().filter(f -> assigned.contains(f.getName())).toList();
     }
 }

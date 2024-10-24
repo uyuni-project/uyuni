@@ -154,8 +154,7 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
 
     private String getTrElement(Object o, int row) {
 
-        if (!(o instanceof BaseListDto &&
-           !((BaseListDto)o).changeRowColor())) {
+        if (!(o instanceof BaseListDto dto && !dto.changeRowColor())) {
             rowCnt++;
             rowCnt = rowCnt % 2;
         }
@@ -168,19 +167,18 @@ public class UnpagedListDisplayTag extends ListDisplayTagBase {
             retval = new StringBuilder("<tr class=\"list-row-even");
         }
 
-        if (renderDisabled() && o instanceof UserOverview &&
-                ((UserOverview)o).getStatus().equals("disabled")) {
+        if (renderDisabled() && o instanceof UserOverview uOverview &&
+                uOverview.getStatus().equals("disabled")) {
                 return retval.append("-disabled>").toString();
         }
 
-        if ((o instanceof BaseListDto &&
-                ((BaseListDto)o).greyOutRow())) {
-                retval = retval.append(" greyed-out");
-            }
+        if (o instanceof BaseListDto dto && dto.greyOutRow()) {
+            retval.append(" greyed-out");
+        }
 
-        if ((o instanceof BaseListDto)) {
-            nodeIdString = ((BaseListDto)o).getNodeIdString();
-            retval = retval.append("\" id=\"" + createIdString(nodeIdString));
+        if (o instanceof BaseListDto dto) {
+            nodeIdString = dto.getNodeIdString();
+            retval.append("\" id=\"").append(createIdString(nodeIdString));
 
             if (getType().equals("treeview") && isChild(nodeIdString)) {
                 retval.append("\" style=\"display: none;");

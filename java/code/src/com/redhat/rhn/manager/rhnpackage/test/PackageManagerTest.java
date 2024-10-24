@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -106,7 +107,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, dr.size());
 
         for (Object o : dr) {
-            assertTrue(o instanceof PackageListItem);
+            assertInstanceOf(PackageListItem.class, o);
         }
     }
 
@@ -147,7 +148,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertEquals(1, dr.size());
 
         for (Object o : dr) {
-            assertTrue(o instanceof PackageListItem);
+            assertInstanceOf(PackageListItem.class, o);
             PackageListItem pli = (PackageListItem) o;
             assertEquals(p1.getId(), pli.getPackageId());
         }
@@ -230,7 +231,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         assertEquals(0, dr.size());
 
         for (Object o : dr) {
-            assertTrue(o instanceof PackageListItem);
+            assertInstanceOf(PackageListItem.class, o);
         }
     }
 

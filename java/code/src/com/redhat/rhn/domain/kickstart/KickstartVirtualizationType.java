@@ -165,10 +165,9 @@ public class KickstartVirtualizationType
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartVirtualizationType)) {
+        if (!(other instanceof KickstartVirtualizationType castOther)) {
             return false;
         }
-        KickstartVirtualizationType castOther = (KickstartVirtualizationType) other;
         return new EqualsBuilder().append(this.getId(),
                 castOther.getId()).append(this.getLabel(),
                 castOther.getLabel()).isEquals();

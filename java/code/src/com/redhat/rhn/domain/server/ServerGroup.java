@@ -227,10 +227,9 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ServerGroup)) {
+        if (!(other instanceof ServerGroup castOther)) {
             return false;
         }
-        ServerGroup castOther = (ServerGroup) other;
         return new EqualsBuilder().append(getId(), castOther.getId())
                                   .append(getName(), castOther.getName())
                                   .append(getDescription(), castOther.getDescription())

@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,7 +100,7 @@ public class RankChannelsAction extends BaseRankChannels {
         ConfigurationManager cfgMgr = ConfigurationManager.getInstance();
         List<ConfigChannel> configChannelList = getChannelIds(form).stream()
                 .map(chid -> cfgMgr.lookupConfigChannel(user, chid))
-                .collect(Collectors.toList());
+                .toList();
         server.subscribeConfigChannels(configChannelList, user);
 
         RhnSet set = getRhnSet(user);

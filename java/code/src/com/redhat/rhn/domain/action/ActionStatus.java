@@ -70,10 +70,9 @@ public class ActionStatus {
         if (o == this) {
             return true;
         }
-        if (!(o instanceof ActionStatus)) {
+        if (!(o instanceof ActionStatus other)) {
             return false;
         }
-        ActionStatus other = (ActionStatus)o;
         return new EqualsBuilder().append(this.getName(), other.getName())
                                   .isEquals();
     }

@@ -42,7 +42,6 @@ import org.quartz.JobExecutionContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PaygUpdateAuthTask extends RhnJavaJob {
 
@@ -94,7 +93,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         List<PaygSshData> paygSshData;
         if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
             int sshId = Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID));
-            paygSshData = PaygSshDataFactory.lookupById(sshId).stream().collect(Collectors.toList());
+            paygSshData = PaygSshDataFactory.lookupById(sshId).stream().toList();
         }
         else {
             paygSshData = PaygSshDataFactory.lookupPaygSshData();

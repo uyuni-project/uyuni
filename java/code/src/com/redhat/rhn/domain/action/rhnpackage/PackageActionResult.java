@@ -81,12 +81,9 @@ public class PackageActionResult extends BaseDomainHelper implements Serializabl
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof PackageActionResult)) {
+        if (!(obj instanceof PackageActionResult p)) {
             return false;
         }
-
-        PackageActionResult p = (PackageActionResult) obj;
-
         return new EqualsBuilder().append(this.getDetails(), p.getDetails())
                                   .append(this.getServer(), p.getServer())
                                   .append(this.getResultCode(), p.getResultCode())

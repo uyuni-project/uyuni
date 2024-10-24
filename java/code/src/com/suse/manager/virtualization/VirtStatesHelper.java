@@ -57,7 +57,7 @@ public abstract  class VirtStatesHelper {
         if (!ip.getDhcpRanges().isEmpty()) {
             pillar.put("dhcp_ranges", ip.getDhcpRanges().stream()
                 .map(VirtStatesHelper::rangeToPillar)
-                .collect(Collectors.toList()));
+                .toList());
         }
         if (!ip.getHosts().isEmpty()) {
             pillar.put("hosts", ip.getHosts().stream()

@@ -131,11 +131,9 @@ public class ChannelFamily extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ChannelFamily)) {
+        if (!(other instanceof ChannelFamily castOther)) {
             return false;
         }
-        ChannelFamily castOther = (ChannelFamily) other;
-
         return new EqualsBuilder().append(id, castOther.getId())
                                   .append(label, castOther.getLabel())
                                   .append(name, castOther.getName())

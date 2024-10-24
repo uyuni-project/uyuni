@@ -213,10 +213,9 @@ public class NotificationMessage implements Serializable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof NotificationMessage)) {
+        if (!(other instanceof NotificationMessage otherNotificationMessage)) {
             return false;
         }
-        NotificationMessage otherNotificationMessage = (NotificationMessage) other;
         return new EqualsBuilder()
             .append(getId(), otherNotificationMessage.getId())
             .append(getData(), otherNotificationMessage.getData())

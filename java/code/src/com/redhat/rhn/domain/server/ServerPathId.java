@@ -89,10 +89,9 @@ public class ServerPathId implements Serializable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ServerPathId)) {
+        if (!(other instanceof ServerPathId castOther)) {
             return false;
         }
-        ServerPathId castOther = (ServerPathId) other;
         return new EqualsBuilder().append(getServer(), castOther.getServer())
                 .append(getProxyServer(), castOther.getProxyServer())
                 .isEquals();

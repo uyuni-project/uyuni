@@ -300,7 +300,7 @@ public class VirtManagerSalt implements VirtManager {
                                 null
                         );
                         return new VmInfo(0, VirtualInstanceManager.EVENT_TYPE_EXISTS, null, props);
-                    }).collect(Collectors.toList())
+                    }).toList()
                 );
                 return plan;
             }

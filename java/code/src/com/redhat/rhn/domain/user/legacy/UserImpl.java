@@ -789,10 +789,9 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof User)) {
+        if (!(other instanceof User otherUser)) {
             return false;
         }
-        User otherUser = (User) other;
         return new EqualsBuilder().append(login, otherUser.getLogin())
                                   .append(org, otherUser.getOrg())
                                   .append(id, otherUser.getId())

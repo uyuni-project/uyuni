@@ -58,10 +58,9 @@ public class Cve {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Cve)) {
+        if (!(other instanceof Cve castOther)) {
             return false;
         }
-        Cve castOther = (Cve) other;
         return new EqualsBuilder()
                 .append(id, castOther.id)
                 .append(name, castOther.name)

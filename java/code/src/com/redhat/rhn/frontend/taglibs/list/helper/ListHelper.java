@@ -106,8 +106,7 @@ public class ListHelper {
         HttpServletRequest request = context.getRequest();
         request.setAttribute(ListTagHelper.PARENT_URL, getParentUrl());
         request.setAttribute(getDataSetName(), dataSet);
-        if (!StringUtils.isBlank(getListName()) && dataSet instanceof DataResult) {
-            DataResult data = (DataResult) dataSet;
+        if (!StringUtils.isBlank(getListName()) && dataSet instanceof DataResult data) {
             Elaborator elab = data.getElaborator();
             if (elab != null) {
                 TagHelper.bindElaboratorTo(getListName(), elab, request);

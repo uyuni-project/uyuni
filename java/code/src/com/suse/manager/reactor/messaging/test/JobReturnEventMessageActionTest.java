@@ -843,7 +843,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         testHardwareProfileUpdate("hardware.profileupdate.x86.custom.fqdns.json", server -> {
             assertNotNull(server);
             assertEquals(5, server.getFqdns().size());
-            List<String> collect = server.getFqdns().stream().map(ServerFQDN::getName).collect(Collectors.toList());
+            List<String> collect = server.getFqdns().stream().map(ServerFQDN::getName).toList();
             assertTrue(collect.contains("custom.fqdns.name.one"));
             assertTrue(collect.contains("custom.fqdns.name.two"));
             assertTrue(collect.contains("custom.fqdns.name.three"));

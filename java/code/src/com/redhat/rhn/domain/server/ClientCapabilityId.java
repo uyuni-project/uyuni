@@ -75,11 +75,9 @@ public class ClientCapabilityId implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ClientCapabilityId)) {
+        if (!(o instanceof ClientCapabilityId that)) {
             return false;
         }
-
-        ClientCapabilityId that = (ClientCapabilityId) o;
         return new EqualsBuilder()
                 .append(server.getId(), that.server.getId())
                 .append(capability.getId(), that.getCapability().getId())

@@ -113,10 +113,9 @@ public class ReleaseChannelMap implements Serializable, Comparable<ReleaseChanne
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ReleaseChannelMap)) {
+        if (!(other instanceof ReleaseChannelMap castOther)) {
             return false;
         }
-        ReleaseChannelMap castOther = (ReleaseChannelMap) other;
         return new EqualsBuilder().append(getProduct(), castOther.getProduct()).
             append(getRelease(), castOther.getRelease()).
             append(getVersion(), castOther.getVersion()).

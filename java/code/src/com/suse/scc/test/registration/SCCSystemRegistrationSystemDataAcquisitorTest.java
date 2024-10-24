@@ -52,7 +52,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSystemRegistrationTest {
@@ -180,7 +179,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         assertEquals(expectedProductIdentifiers.size(), sccRegisterSystemJson.getProducts().size());
         assertTrue(sccRegisterSystemJson.getProducts().stream()
                 .map(SCCMinProductJson::getIdentifier)
-                .collect(Collectors.toList())
+                .toList()
                 .containsAll(expectedProductIdentifiers));
         assertTrue(!sccRegisterSystemJson.getLastSeenAt().before(testBeginTimestamp));
 
@@ -382,7 +381,7 @@ public class SCCSystemRegistrationSystemDataAcquisitorTest extends AbstractSCCSy
         assertEquals(expectedProductIdentifiers.size(), sccRegisterSystemJson.getProducts().size());
         assertTrue(sccRegisterSystemJson.getProducts().stream()
                 .map(SCCMinProductJson::getIdentifier)
-                .collect(Collectors.toList())
+                .toList()
                 .containsAll(expectedProductIdentifiers));
     }
 

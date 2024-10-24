@@ -69,10 +69,9 @@ public class Capability {
      */
     @Override
     public boolean equals(Object oth) {
-        if (!(oth instanceof Capability)) {
+        if (!(oth instanceof Capability other)) {
             return false;
         }
-        Capability other = (Capability) oth;
         return new EqualsBuilder().append(this.getId(), other.getId())
                                   .append(this.getName(), other.getName())
                                   .isEquals();

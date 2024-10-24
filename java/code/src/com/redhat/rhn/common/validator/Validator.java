@@ -145,9 +145,8 @@ public class Validator {
                 (value != null && !value.equals(""));
         if (required) {
             boolean checkConstraint = true;
-            if (constraint instanceof RequiredIfConstraint) {
-                checkConstraint = ((RequiredIfConstraint) constraint).
-                        isRequired(data, objToValidate);
+            if (constraint instanceof RequiredIfConstraint reqIfConst) {
+                checkConstraint = reqIfConst.isRequired(data, objToValidate);
                 log.debug("RequiredIf indicates:{}", required);
             }
             if (checkConstraint) {
@@ -200,8 +199,7 @@ public class Validator {
                 Integer.parseInt(data);
             }
             catch (NumberFormatException e) {
-                if (constraint instanceof LongConstraint) {
-                    LongConstraint longConstraint = (LongConstraint) constraint;
+                if (constraint instanceof LongConstraint longConstraint) {
                     Long minInclusive = longConstraint.getMinInclusive();
                     Long maxInclusive = longConstraint.getMaxInclusive();
                     validationMessage = new ValidatorError("errors.integer.minmax",
@@ -218,8 +216,7 @@ public class Validator {
                 Long.parseLong(data);
             }
             catch (NumberFormatException e) {
-                if (constraint instanceof LongConstraint) {
-                    LongConstraint longConstraint = (LongConstraint) constraint;
+                if (constraint instanceof LongConstraint longConstraint) {
                     Long minInclusive = longConstraint.getMinInclusive();
                     Long maxInclusive = longConstraint.getMaxInclusive();
                     validationMessage = new ValidatorError("errors.integer.minmax",
@@ -236,8 +233,7 @@ public class Validator {
                 Float.parseFloat(data);
             }
             catch (NumberFormatException e) {
-                if (constraint instanceof DoubleConstraint) {
-                    DoubleConstraint doubleConstraint = (DoubleConstraint) constraint;
+                if (constraint instanceof DoubleConstraint doubleConstraint) {
                     Double minInclusive = doubleConstraint.getMinInclusive();
                     Double maxInclusive = doubleConstraint.getMaxInclusive();
                     validationMessage = new ValidatorError("errors.float.minmax",
@@ -253,8 +249,7 @@ public class Validator {
                 Double.parseDouble(data);
             }
             catch (NumberFormatException e) {
-                if (constraint instanceof DoubleConstraint) {
-                    DoubleConstraint doubleConstraint = (DoubleConstraint) constraint;
+                if (constraint instanceof DoubleConstraint doubleConstraint) {
                     Double minInclusive = doubleConstraint.getMinInclusive();
                     Double maxInclusive = doubleConstraint.getMaxInclusive();
                     validationMessage = new ValidatorError("errors.float.minmax",

@@ -23,7 +23,6 @@ import com.redhat.rhn.manager.formula.FormulaManager;
 import com.suse.manager.api.ReadOnly;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * SystemMonitoringHandler
@@ -63,7 +62,7 @@ public class SystemMonitoringHandler extends BaseHandler {
     public List<EndpointInfo> listEndpoints(User loggedInUser, List<Integer> sids) {
         List<Long> ids = sids.stream()
                 .map(Integer::longValue)
-                .collect(Collectors.toList());
+                .toList();
         return this.formulaManager.listEndpoints(ids);
     }
 }
