@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.client;
-
+// TEST
 import org.apache.commons.digester.Digester;
 import org.xml.sax.SAXException;
 
