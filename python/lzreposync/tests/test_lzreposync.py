@@ -7,6 +7,7 @@ import os
 import shutil
 import time
 import unittest
+from unittest.mock import patch
 
 import pytest
 from psycopg2 import errors
@@ -1093,6 +1094,7 @@ class LazyRepoSyncTest(unittest.TestCase):
         self.assertEqual(repo_url, repo.source_url)
         self.assertEqual("N", repo.metadata_singed)
 
+    @patch("lzreposync.rpm_repo.SPACEWALK_GPG_HOMEDIR", "~/.gnupg/")
     def test_has_valid_gpg_signature(self):
         """
         NOTE!: to successfully run this test, you should have already added
