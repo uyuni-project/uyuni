@@ -7,4 +7,3 @@ Uyuni follows a rolling release model, so it is always the next upcoming version
 ## Reporting a Vulnerability
 
 Please report any security vulnerabilities by creating a [security advisory](https://github.com/uyuni-project/uyuni/security/advisories/new). We will be reviewing your report, get back to you after evaluation and happily give you credits for your help with making Uyuni more secure.
-ASD

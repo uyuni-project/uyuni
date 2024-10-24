@@ -271,6 +271,7 @@ namespace :jenkins do
       # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25591
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
 
+      
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_smoke_tests',
         File.basename(minion, '.feature'),
