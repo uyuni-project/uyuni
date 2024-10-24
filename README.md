@@ -23,3 +23,5 @@ Following links might be of value in case you are interested:
   * [Bug reports](https://github.com/uyuni-project/uyuni/issues)
   * [Development Guides](https://github.com/uyuni-project/uyuni/wiki#development-guides)
   * [SUSE Manager](https://www.suse.com/products/suse-manager/)
+
+This is a testing PR.
