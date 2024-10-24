@@ -16,7 +16,7 @@ package com.redhat.rhn.common.client;
 
 import java.util.ArrayList;
 import java.util.List;
-
+// TEST
 /**
  * Structure representing internal data of a ClientCertificate.
  */
