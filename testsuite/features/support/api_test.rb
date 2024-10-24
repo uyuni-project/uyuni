@@ -14,7 +14,6 @@ require_relative 'namespaces/system'
 require_relative 'namespaces/user'
 require_relative 'xmlrpc_client'
 require_relative 'http_client'
-require 'date'
 
 # Abstract parent class describing an API test
 class ApiTest
@@ -61,38 +60,24 @@ class ApiTest
       Thread.new do
         @semaphore.synchronize do
           begin
-            manage_api_lock(name)
-            response = make_api_call(name, *params)
+            @token =
+              if name.include?('user.')
+                @connection.call('auth.login', login: 'admin', password: 'admin')
+              else
+                @connection.call('auth.login', login: $current_user, password: $current_password)
+              end
+            params[0][:sessionKey] = @token
+            response = @connection.call(name, *params)
+          rescue SystemCallError => e
+            raise "API call failed: #{e.message}"
           ensure
             @connection.call('auth.logout', sessionKey: @token) if @token
-            api_unlock if name.include?('user.')
+            @token = nil
           end
           response
         end
       end
     thread.value
-  end
-
-  private
-
-  # Handles API lock management
-  def manage_api_lock(name)
-    if name.include?('user.')
-      repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'We couldn\'t get access to the API') do
-        break unless api_lock?
-
-        sleep 1
-      end
-      @token = @connection.call('auth.login', login: 'admin', password: 'admin')
-    else
-      @token = @connection.call('auth.login', login: $current_user, password: $current_password)
-    end
-  end
-
-  # Makes the actual API call
-  def make_api_call(name, *params)
-    params[0][:sessionKey] = @token
-    @connection.call(name, *params)
   end
 end
 
