@@ -22,7 +22,7 @@
   %define _fillupdir %{_localstatedir}/adm/fillup-templates
 %endif
 Name:           uyuni-payg-timer
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Uyuni PAYG Timer Package
 License:        GPL-2.0-only

@@ -28,7 +28,7 @@
 %define pythondir %{rhnroot}/proxy-installer
 
 Name:           spacewalk-proxy-installer
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Spacewalk Proxy Server Installer
 License:        GPL-2.0-only

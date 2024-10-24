@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-proxy-docs
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Spacewalk Proxy Server Documentation
 License:        OPL-1.0

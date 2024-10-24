@@ -602,6 +602,15 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[select cp.package_id from rhnChannelPackage cp where cp.channel_id = :cid]]>
     </sql-query>
 
+    <sql-query name="Channel.getClonedErrataOriginalIdList">
+        <return-scalar type="long" column="original_id"/>
+        <![CDATA[SELECT errataCloned.original_id
+                    FROM rhnChannelErrata channelErrata
+                    INNER JOIN rhnErrataCloned errataCloned ON errataCloned.id = channelErrata.errata_id
+                    WHERE channelErrata.channel_id = :cid
+        ]]>
+    </sql-query>
+
     <sql-query name="Channel.isAccessibleBy">
         <return-scalar type="int" column="result"/>
          <![CDATA[SELECT case when (EXISTS (

@@ -26,6 +26,7 @@ Feature: OpenSCAP audit of Salt minion
 @susemanager
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
@@ -37,6 +38,7 @@ Feature: OpenSCAP audit of Salt minion
 @uyuni
   Scenario: Schedule an OpenSCAP audit job on the SLE minion
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
@@ -48,6 +50,7 @@ Feature: OpenSCAP audit of Salt minion
 @susemanager
   Scenario: Check results of the audit job on the minion
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "profile standard" text
@@ -59,6 +62,7 @@ Feature: OpenSCAP audit of Salt minion
 @uyuni
   Scenario: Check results of the audit job on the minion
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "xccdf_org.open-scap_testresult"
     Then I should see a "Details of XCCDF Scan" text
     And I should see a "profile standard" text
@@ -70,6 +74,7 @@ Feature: OpenSCAP audit of Salt minion
 @susemanager
   Scenario: Create a second, almost identical, audit job
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
@@ -81,6 +86,7 @@ Feature: OpenSCAP audit of Salt minion
 @uyuni
   Scenario: Create a second, almost identical, audit job
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
@@ -91,6 +97,7 @@ Feature: OpenSCAP audit of Salt minion
 
   Scenario: Compare audit results
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
     And I click on "Compare Selected Scans"
@@ -108,6 +115,7 @@ Feature: OpenSCAP audit of Salt minion
   Scenario: Cleanup: delete audit results
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Audit" in the content area
+    And I follow "OpenSCAP" in the content area
     And I follow "List Scans" in the content area
     And I click on "Select All"
     And I click on "Remove Selected Scans"

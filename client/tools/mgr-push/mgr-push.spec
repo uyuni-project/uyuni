@@ -33,7 +33,7 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Package uploader for the Spacewalk
 License:        GPL-2.0-only

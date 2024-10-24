@@ -1,0 +1,2 @@
+- Prevent class cast exceptions when getting cobbler profiles
+  (bsc#1227759)

@@ -20,7 +20,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           perl-Satcon
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Framework for configuration files
 License:        GPL-2.0-only

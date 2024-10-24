@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Oct 14 17:09:38 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Enforce directory permissions at repo-sync when creating
+    directories (bsc#1229260)
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
 Mon Jun 10 16:43:55 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0
