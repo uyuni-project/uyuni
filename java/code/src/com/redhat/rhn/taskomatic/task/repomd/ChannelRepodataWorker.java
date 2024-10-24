@@ -97,6 +97,7 @@ public class ChannelRepodataWorker implements QueueWorker {
      */
     @Override
     public void run() {
+        logger.info("Starting worker for channel {}", channelLabelToProcess);
         // if a channel has a EnvironmentTarget associated, we update it too
         Optional<SoftwareEnvironmentTarget> envTarget = ContentProjectFactory
                 .lookupEnvironmentTargetByChannelLabel(channelLabelToProcess);
@@ -145,6 +146,7 @@ public class ChannelRepodataWorker implements QueueWorker {
             parentQueue.changeRun(null);
         }
         finally {
+            logger.info("Worker for channel {} has completed", channelLabelToProcess);
             parentQueue.workerDone();
             HibernateFactory.closeSession();
         }

@@ -17,7 +17,7 @@ package com.redhat.rhn.taskomatic.task.errata;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -30,21 +30,10 @@ import java.util.Set;
 /**
  * Driver for the threaded errata cache update queue
  */
-public class ErrataCacheDriver implements QueueDriver<Task> {
+public class ErrataCacheDriver extends AbstractQueueDriver<Task> {
 
     private Logger logger = null;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<Task> getCandidates() {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(ErrataCacheWorker.BY_CHANNEL);
@@ -55,44 +44,24 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
         return tasks;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return logger;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get().getInt("taskomatic.errata_cache_workers", 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public QueueWorker makeWorker(Task task) {
+    protected QueueWorker makeWorker(Task task) {
         return new ErrataCacheWorker(task, logger);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize() {
-        // empty
     }
 
     /**
@@ -111,13 +80,5 @@ public class ErrataCacheDriver implements QueueDriver<Task> {
             }
         }
         return consolidated;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }
