@@ -93,7 +93,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         handler={onBack}
       />
       <AsyncButton
-        defaultType="btn-success"
+        defaultType="btn-primary"
         action={schedule}
         title={t("Schedule playbook execution")}
         text={t("Schedule")}

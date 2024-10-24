@@ -26,7 +26,7 @@
             </div>
             <div class="form-group">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-                    <button type="submit" class="btn btn-success" value="${button_label}">
+                    <button type="submit" class="btn btn-primary" value="${button_label}">
                         ${button_label}
                     </button>
                 </div>

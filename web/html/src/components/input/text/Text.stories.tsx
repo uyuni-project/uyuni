@@ -35,7 +35,7 @@ export default () => {
         divClass="col-md-6 col-md-offset-3 offset-md-3"
         validators={[(value) => value.length > 2]}
       />
-      <SubmitButton className="btn-success" text={t("Submit")} />
+      <SubmitButton className="btn-primary" text={t("Submit")} />
     </Form>
   );
 };

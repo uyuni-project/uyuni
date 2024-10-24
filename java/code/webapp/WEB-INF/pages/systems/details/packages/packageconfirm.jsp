@@ -24,7 +24,7 @@
     <c:if test="${not empty requestScope.pageList}">
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input type="submit" name ="dispatch" class="btn btn-success"
+                <input type="submit" name ="dispatch" class="btn btn-primary"
                        value='<bean:message key="installconfirm.jsp.confirm"/>'/>
                 <rhn:hidden name="sid" value="${param.sid}" />
             </div>

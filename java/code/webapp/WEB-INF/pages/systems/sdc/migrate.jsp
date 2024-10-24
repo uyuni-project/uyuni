@@ -29,7 +29,7 @@
           </div>
           <hr/>
             <div class="text-right">
-              <html:submit styleClass="btn btn-success">
+              <html:submit styleClass="btn btn-default">
                 <bean:message key="sdc.details.migrate.migrate"/>
               </html:submit>
             </div>

@@ -43,7 +43,7 @@
     <hr/>
     <div class="form-group">
       <div class="col-lg-offset-3 offset-lg-3 col-md-4">
-        <html:submit styleClass="btn btn-success">
+        <html:submit styleClass="btn btn-primary">
           <bean:message key="config.update"/>
         </html:submit>
       </div>

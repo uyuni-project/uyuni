@@ -96,7 +96,7 @@ class Proxy extends React.Component<Props, State> {
     const buttons = [
       <AsyncButton
         id="bootstrap-btn"
-        defaultType="btn-success"
+        defaultType="btn-primary"
         icon="fa-plus"
         text={t("Change Proxy")}
         action={this.onSet}

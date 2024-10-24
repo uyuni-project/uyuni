@@ -1076,7 +1076,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
             <Footer page={this.state.page}>
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 disabled={this.state.allowedBaseChannels.length === 0}
                 text={t("Next")}
@@ -1103,7 +1103,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
               />
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 text={t("Next")}
                 action={this.onGotoConfirm}
@@ -1132,7 +1132,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
                 text={t("Prev")}
                 handler={this.backToChildChannels}
               />
-              <AsyncButton id="confirm-btn" defaultType="btn-success" text={t("Confirm")} action={this.onConfirm} />
+              <AsyncButton id="confirm-btn" defaultType="btn-primary" text={t("Confirm")} action={this.onConfirm} />
             </Footer>
           }
         />

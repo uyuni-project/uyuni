@@ -72,7 +72,7 @@ export default () => {
             </>
           )}
         </FormMultiInput>
-        <SubmitButton id="submit-btn" className="btn-success" text={t("Submit")} />
+        <SubmitButton id="submit-btn" className="btn-primary" text={t("Submit")} />
       </Form>
     </>
   );

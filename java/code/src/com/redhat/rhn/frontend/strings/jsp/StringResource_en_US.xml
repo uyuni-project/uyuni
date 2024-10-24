@@ -19595,7 +19595,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distro_create_new.jsp">
+        <trans-unit id="toolbar.create.distro">
           <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>

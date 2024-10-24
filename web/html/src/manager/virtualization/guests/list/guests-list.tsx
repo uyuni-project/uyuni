@@ -79,7 +79,7 @@ export function GuestsList(props: Props) {
               text={t("Synchronize")}
               icon="fa-refresh"
               action={() => onAction((url) => url, "", {})}
-              defaultType="btn-info"
+              defaultType="btn-default"
             />
           );
         }}

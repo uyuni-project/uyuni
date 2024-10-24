@@ -19,7 +19,7 @@ export default () => {
       }}
     >
       <Check name="booleanValue" label="Boolean value" divClass="col-md-6 col-md-offset-3 offset-md-3" />
-      <SubmitButton className="btn-success" text={t("Submit")} />
+      <SubmitButton className="btn-primary" text={t("Submit")} />
     </Form>
   );
 };

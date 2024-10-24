@@ -62,7 +62,7 @@
 
                     <input type="submit"
                         name ="dispatch"
-                        class="btn btn-success"
+                        class="btn btn-default"
                             value='<bean:message key="sdc.config.subscriptions.jsp.continue"/>'/>
                 </div>
                 </c:if>

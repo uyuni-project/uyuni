@@ -62,7 +62,7 @@
     <div class="form-horizontal">
         <div class="form-group">
             <div class="col-md-12">
-                <html:submit property="createBtn" styleClass="btn btn-success">
+                <html:submit property="createBtn" styleClass="btn btn-default">
                     <bean:message key="profile.jsp.createsystemprofile"/>
                 </html:submit>
             </div>

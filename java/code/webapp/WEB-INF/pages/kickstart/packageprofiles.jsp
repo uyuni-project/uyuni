@@ -40,7 +40,7 @@
                   <html:submit styleClass="btn btn-default" property="dispatch">
                     <bean:message key="kickstart.packageprofile.jsp.clear"/>
                   </html:submit>
-                  <html:submit styleClass="btn btn-success" property="dispatch">
+                  <html:submit styleClass="btn btn-primary" property="dispatch">
                     <bean:message key="kickstart.packageprofile.jsp.submit"/>
                   </html:submit>
 

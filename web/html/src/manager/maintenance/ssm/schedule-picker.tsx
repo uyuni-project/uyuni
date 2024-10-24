@@ -92,7 +92,7 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
                 target="cancel-confirm"
                 text={t("Assign All")}
                 icon={t("fa-edit")}
-                className="btn-success pull-right"
+                className="btn-primary"
                 disabled={!isValid}
               />
             ) : (
@@ -101,8 +101,7 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
                 text={t("Assign All")}
                 icon={t("fa-edit")}
                 action={onSubmit}
-                defaultType="btn-success"
-                className="pull-right"
+                defaultType="btn-primary"
                 disabled={!isValid}
               />
             )}

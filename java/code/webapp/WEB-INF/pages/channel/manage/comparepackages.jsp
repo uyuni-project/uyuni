@@ -58,7 +58,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <html:submit property="dispatch" styleClass="btn btn-success" disabled="${empty pageList}">
+                <html:submit property="dispatch" styleClass="btn btn-primary" disabled="${empty pageList}">
                     <bean:message key="channel.jsp.package.mergebutton"/>
                 </html:submit>
             </div>

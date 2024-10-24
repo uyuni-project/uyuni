@@ -40,7 +40,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="text-right">
-                                <button id="http-proxy-save" class="btn btn-success">Save and Verify</button>
+                                <button id="http-proxy-save" class="btn btn-primary">Save and Verify</button>
                             </div>
                             <div class="text-left">
                                 <a id="http-proxy-verify" href="#"><i class="fa fa-check-square text-success"></i></a>

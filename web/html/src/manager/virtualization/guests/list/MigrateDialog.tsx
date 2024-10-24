@@ -47,7 +47,7 @@ export function MigrateDialog(props: Props) {
           props.onClose();
         }
       }}
-      btnClass="btn-success"
+      btnClass="btn-primary"
       content={
         <Form
           model={model}

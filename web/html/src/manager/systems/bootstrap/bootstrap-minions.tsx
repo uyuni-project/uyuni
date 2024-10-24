@@ -393,7 +393,7 @@ class BootstrapMinions extends React.Component<Props, State> {
     var buttons = [
       <AsyncButton
         id="bootstrap-btn"
-        defaultType="btn-success"
+        defaultType="btn-primary"
         icon="fa-plus"
         text={t("Bootstrap")}
         disabled={this.state.privKeyLoading}

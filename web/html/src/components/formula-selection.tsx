@@ -276,7 +276,6 @@ class FormulaSelection extends React.Component<Props, State> {
         <SectionToolbar>
           <div className="action-button-wrapper">
             <span className="btn-group pull-right">
-              <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
               <Button
                 id="clear-btn"
                 icon="fa-eraser"
@@ -291,6 +290,7 @@ class FormulaSelection extends React.Component<Props, State> {
                 className="btn btn-default"
                 handler={this.resetChanges}
               />
+              <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
             </span>
           </div>
         </SectionToolbar>
