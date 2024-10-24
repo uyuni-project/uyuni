@@ -15,7 +15,8 @@ dependencies = [
      "psycopg2-binary",
      "urlgrabber",
      "python-debian",
-     "python-dateutil"
+     "python-dateutil",
+     "looseversion"
 ]
 
 [project.scripts]
