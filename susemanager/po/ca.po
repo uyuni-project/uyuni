@@ -8,11 +8,11 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2024-10-12 03:48+0000\n"
-"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
-"Language-Team: German <https://l10n.opensuse.org/projects/uyuni/susemanager/"
-"de/>\n"
-"Language: de\n"
+"PO-Revision-Date: 2024-10-18 13:48+0000\n"
+"Last-Translator: David Medina <medipas@gmail.com>\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/susemanager/"
+"ca/>\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,53 +21,55 @@ msgstr ""
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
-msgstr "#{@product_name} von Grund auf neu einrichten"
+msgstr "Configura {{ upproductname} des de zero"
 
 #: ../yast/susemanager_ask.rb:48
 msgid "Migrate a #{@product_name} compatible server"
-msgstr "Einen #{@product_name}-kompatiblen Server migrieren"
+msgstr "Migra un servidor compatible amb {{ aproductname}"
 
 #: ../yast/susemanager_ask.rb:60
 msgid ""
 "<p>Choose if you are setting up #{@product_name} from scratch or migrating "
 "to #{@product_name} from a #{@product_name} compatible server.</p>"
 msgstr ""
+"<p>Trieu si esteu configurant .{.productname} des de zero o migrant a {{."
+"productname} des d'un servidor compatible amb .{.productname}.</p>"
 
 #: ../yast/susemanager_ask.rb:65
 msgid "#{@product_name} Setup"
-msgstr "#{@product_name} aufsetzen"
+msgstr "Configuració de {{}productname}"
 
 #: ../yast/susemanager_cert.rb:43
 msgid "Organization"
-msgstr "Organisation"
+msgstr "Organització"
 
 #: ../yast/susemanager_cert.rb:45
 msgid "Organization Unit"
-msgstr "Organisationseinheiten"
+msgstr "Unitat d'Organització"
 
 #: ../yast/susemanager_cert.rb:47
 msgid "City"
-msgstr "Stadt"
+msgstr "Ciutat"
 
 #: ../yast/susemanager_cert.rb:49
 msgid "State"
-msgstr "Bundesland"
+msgstr "Estat"
 
 #: ../yast/susemanager_cert.rb:51
 msgid "Country"
-msgstr "Land"
+msgstr "País"
 
 #: ../yast/susemanager_cert.rb:53
 msgid "E-mail"
-msgstr "E-Mail"
+msgstr "Correu electrònic"
 
 #: ../yast/susemanager_cert.rb:114
 msgid "SSL Pass&word"
-msgstr "SSL Pass&wort"
+msgstr "Contrasenya SSL"
 
 #: ../yast/susemanager_cert.rb:121 ../yast/susemanager_db.rb:106
 msgid "R&epeat Password"
-msgstr "Password wi&ederholen"
+msgstr "Repeteix la contrasenya"
 
 #: ../yast/susemanager_cert.rb:132
 msgid ""
@@ -75,32 +77,32 @@ msgid ""
 "certificate is used for a number of purposes like connections to a SUSE "
 "Manager Proxy server, HTTPS protocol in browsers, and more.</p>"
 msgstr ""
-"<p>Hier geben Sie die Daten ein, die für die Erstellung eines SSL-"
-"Zertifikats erforderlich sind. Das Zertifikat wird für eine Reihe von "
-"Zwecken verwendet, z. B. für Verbindungen zu einem SUSE Manager Proxy-"
-"Server, das HTTPS-Protokoll in Browsern und vieles mehr.</p>"
+"<p>Aquí, introduïu les dades necessàries per a la creació d'un certificat "
+"SSL. El certificat s'utilitza per a diversos propòsits com ara connexions a "
+"un servidor intermediari SUSE Manager, protocol HTTPS en navegadors i "
+"més.</p>"
 
 #: ../yast/susemanager_cert.rb:137
 msgid "Certificate Setup"
-msgstr "Zertifikatseinrichtung"
+msgstr "Configuració del certificat"
 
 #: ../yast/susemanager_cert.rb:169
 msgid "The value of '%1' is empty."
-msgstr "Der Wert von ‚%1‘ ist leer."
+msgstr "El valor de «%1» és buit."
 
 #: ../yast/susemanager_cert.rb:180 ../yast/susemanager_db.rb:140
 #: ../yast/susemanager_migration.rb:146
 msgid "Password is missing."
-msgstr "Das Passwort fehlt."
+msgstr "Falta la contrasenya."
 
 #: ../yast/susemanager_cert.rb:185 ../yast/susemanager_db.rb:145
 #: ../yast/susemanager_migration.rb:163
 msgid "Passwords do not match."
-msgstr "Die Passwörter stimmen nicht überein."
+msgstr "Les contrasenyes no coincideixen."
 
 #: ../yast/susemanager_cert.rb:193 ../yast/susemanager_db.rb:153
 msgid "The password should have at least %1 characters."
-msgstr "Das Passwort muss mindestens %1 Zeichen enthalten."
+msgstr "La contrasenya ha de tenir almenys %1 caràcters."
 
 #: ../yast/susemanager_cert.rb:204 ../yast/susemanager_db.rb:164
 #: ../yast/susemanager_migration.rb:154
@@ -108,114 +110,116 @@ msgid ""
 "The password contains invalid characters.\n"
 "The invalid characters are: %1"
 msgstr ""
-"Das Passwort beinhaltet ungültige Zeichen.\n"
-"Gültige Zeichen sind: %1"
+"La contrasenya conté caràcters no vàlids.\n"
+"Els caràcters no vàlids són: %1"
 
 #: ../yast/susemanager_congratulate.rb:35
 msgid "<p>#{@product_name} Setup is now complete.</p><br>\n"
-msgstr ""
-"<p>#Die Einrichtung von {@product_name} ist nun abgeschlossen.</p><br>\n"
+msgstr "La configuració <p>.{.productname} ja està completada.</p><br>\n"
 
 #: ../yast/susemanager_congratulate.rb:51
 msgid "Setup Completed"
-msgstr "Einrichtung abgeschlossen"
+msgstr "S'ha completat la configuració"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr "Datenbank &Benutzer"
+msgstr "Usuari de la base de dades"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
-msgstr "Datenbank &Passwort"
+msgstr "Contrasenya de la base de dades"
 
 #: ../yast/susemanager_db.rb:115
 msgid ""
 "<p>By default SUSE Manager is using an internal postgresql database named '"
 msgstr ""
-"<p>Standardmäßig verwendet SUSE Manager eine interne Postgresql-Datenbank "
-"namens '"
+"<p>Per defecte SUSE Manager utilitza una base de dades interna postgresql "
+"anomenada '"
 
 #: ../yast/susemanager_db.rb:125
 msgid "Database Settings"
-msgstr "Datenbankeinstellungen"
+msgstr "Configuració de la base de dades"
 
 #: ../yast/susemanager_db.rb:178
 msgid ""
 "The password failed the cracklib check with:\n"
 "'%1'"
 msgstr ""
+"La contrasenya ha fallat la comprovació de la « cracklib» amb:\n"
+"«%1»"
 
 #: ../yast/susemanager_manager.rb:84
 msgid "&IP Address of the #{@product_name} Server"
-msgstr "&IP-Adresse des #{@product_name}-Servers"
+msgstr "Adreça &IP del servidor del producte { theproductname}"
 
 #: ../yast/susemanager_manager.rb:94
 msgid "#{@product_name} &Administrator e-mail address"
-msgstr "E-Mail-Adresse des #{@product_name}-&Administrators"
+msgstr "address{-productname} Adreça electrònica de l'administrador"
 
 #: ../yast/susemanager_manager.rb:101
 msgid "Advertise #{@product_name} via SLP"
-msgstr "#{@product_name} über SLP bewerben"
+msgstr "Publica {{ viaproductname} via SLP"
 
 #: ../yast/susemanager_manager.rb:112
 msgid ""
 "<p>Fill in <b>Administrator e-mail address</b>. It is used for notifications "
 "by #{@product_name}.</p>"
 msgstr ""
-"<p>Tragen Sie die <b>Administrator-E-Mail-Adresse</b> ein. Sie wird für "
-"Benachrichtigungen von #{@product_name} verwendet.</p>"
+"<p>Emplena <b>Adreça electrònica de l'administrador</b>. S'utilitza per a "
+"les notificacions de {{sproductname}.</p>"
 
 #: ../yast/susemanager_manager.rb:152
 msgid "The Administrator e-mail address is not valid."
-msgstr "Die E-Mail-Adresse des Administrators ist ungültig."
+msgstr "L'adreça de correu electrònic de l'administrador no és vàlida."
 
 #: ../yast/susemanager_migration.rb:73
 msgid "&Hostname of source #{@product_name} Server"
-msgstr "&Hostname der Quelle #{@product_name} Server"
+msgstr "Nom del servidor d'origen {{ ofproductname}"
 
 #: ../yast/susemanager_migration.rb:80
 msgid "&Domain name"
-msgstr "&Domainname"
+msgstr "Nom del domini"
 
 #: ../yast/susemanager_migration.rb:87
 msgid "Source #{@product_name} Database &User Name"
-msgstr "Quelle #{@product_name} Datenbank-&Benutzername"
+msgstr "Font {{}productname} Nom d'usuari de la base de dades"
 
 #: ../yast/susemanager_migration.rb:94
 msgid "Source #{@product_name} Database &Password"
-msgstr "Quelle #{@product_name} Datenbank-&Passwort"
+msgstr "Font {{}productname} Contrasenya de la base de dades"
 
 #: ../yast/susemanager_migration.rb:101
 msgid "&Repeat Password"
-msgstr "Passwort &wiederholen"
+msgstr "Repeteix la contrasenya"
 
 #: ../yast/susemanager_migration.rb:108
 msgid "Source #{@product_name} Database &Name"
-msgstr "Quelle #{@product_name} Datenbank-&Name"
+msgstr "Font {{}productname} Nom de la base de dades"
 
 #: ../yast/susemanager_migration.rb:121
 msgid "Migration from previous #{@product_name} to new #{@product_name}"
-msgstr "Migration vom vorherigen #{@product_name} zum neuen #{@product_name}"
+msgstr ""
+"Migració des de l'anterior producte { toproductname} al nou: { toproductname}"
 
 #: ../yast/susemanager_migration.rb:138
 msgid "Hostname is missing."
-msgstr "Hostname fehlt."
+msgstr "Falta el nom de l'amfitrió."
 
 #: ../yast/susemanager_reqs.rb:65
 msgid "already setup"
-msgstr "bereits eingerichtet"
+msgstr "ja està configurat"
 
 #: ../yast/susemanager_reqs.rb:67
 msgid ""
 "#{@product_name} is already set up. Do you want to delete the existing setup "
 "and start all over again?"
 msgstr ""
-"#{@product_name} ist bereits eingerichtet. Möchten Sie die bestehende "
-"Einrichtung löschen und von vorne beginnen?"
+"{{.productname} ja està configurat. Voleu suprimir la configuració existent "
+"i començar de nou?"
 
 #: ../yast/susemanager_reqs.rb:71
 msgid "Continue"
-msgstr "Weiter"
+msgstr "Continua"
 
 #: ../yast/susemanager_reqs.rb:72 ../yast/susemanager_reqs.rb:93
 #: ../yast/susemanager_reqs.rb:120 ../yast/susemanager_reqs.rb:147
@@ -223,120 +227,117 @@ msgstr "Weiter"
 #: ../yast/susemanager_reqs.rb:205 ../yast/susemanager_reqs.rb:245
 #: ../yast/susemanager_reqs.rb:261
 msgid "Exit installation"
-msgstr "Installation beenden"
+msgstr "Surt de la instal·lació"
 
 #: ../yast/susemanager_reqs.rb:86
 msgid "Not enough memory"
-msgstr "Nicht genug Hauptspeicher vorhanden"
+msgstr "No hi ha prou memòria"
 
 #: ../yast/susemanager_reqs.rb:88
 msgid ""
 "#{@product_name} requires 8G of memory to be installed and 16G for good "
 "perfomance. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} benötiget 8GB Hauptspeicher um installiert werden zu können "
-"und 16GB für gute Leistung. Wenn sie die Installation weiterführen, wird das "
-"Produkt nicht richtig funktionieren."
+".{.productname} requereix que s'instal·lin 8G de memòria i 16G per a una "
+"bona perfomance. Si continua el producte no funcionarà correctament."
 
 #: ../yast/susemanager_reqs.rb:92 ../yast/susemanager_reqs.rb:119
 #: ../yast/susemanager_reqs.rb:146 ../yast/susemanager_reqs.rb:164
 #: ../yast/susemanager_reqs.rb:184 ../yast/susemanager_reqs.rb:204
 #: ../yast/susemanager_reqs.rb:244 ../yast/susemanager_reqs.rb:260
 msgid "Continue anyway"
-msgstr "Trotzdem weitermachen"
+msgstr "Continua igualment"
 
 #: ../yast/susemanager_reqs.rb:109 ../yast/susemanager_reqs.rb:136
 #, c-format
 msgid "    Not enough disk space (only %1G free)"
-msgstr "    Nicht genügend Speicherplatz (nur %1G frei)"
+msgstr "    No hi ha prou espai al disc (només %1G lliures)"
 
 #: ../yast/susemanager_reqs.rb:115
 msgid ""
 "#{@product_name} requires 100G of free disk space in /var/spacewalk to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} benötigt 100 GB freien Speicherplatz in /var/spacewalk, um "
-"installiert werden zu können. Wenn Sie fortfahren, wird das Produkt nicht "
-"korrekt funktionieren."
+".{.productname} requereix que s'instal·lin 100G d'espai lliure de disc a /"
+"var/spacewalk. Si continua el producte no funcionarà correctament."
 
 #: ../yast/susemanager_reqs.rb:142
 msgid ""
 "#{@product_name} requires 50G of free disk space in /var/lib/pgsql to be "
 "installed. If you continue the product will not function correctly."
 msgstr ""
-"#{@product_name} benötigt 50 GB freien Speicherplatz in /var/lib/pgsql, um "
-"installiert werden zu können. Wenn Sie fortfahren, wird das Produkt nicht "
-"korrekt funktionieren."
+"{{.productname} requereix que s'instal·li 50G d'espai lliure de disc a /var/"
+"lib/pgsql. Si continua el producte no funcionarà correctament."
 
 #: ../yast/susemanager_reqs.rb:158
 msgid "Hostname command failed"
-msgstr "Befehl Hostname fehlgeschlagen"
+msgstr "Ha fallat l'ordre Hostname"
 
 #: ../yast/susemanager_reqs.rb:160
 msgid ""
 "The execution of 'hostname -f' failed. The product will not install "
 "correctly."
 msgstr ""
-"Die Ausführung von 'hostname -f' ist fehlgeschlagen. Das Produkt wird nicht "
-"korrekt installiert werden."
+"L'execució de «hostname -f» ha fallat. El producte no s'instal·larà "
+"correctament."
 
 #: ../yast/susemanager_reqs.rb:178 ../yast/susemanager_reqs.rb:198
 #: ../yast/susemanager_reqs.rb:238
 msgid "Illegal FQHN"
-msgstr "Unzulässiges FQHN"
+msgstr "FQHN il·legal"
 
 #: ../yast/susemanager_reqs.rb:180
 msgid ""
 "The FQHN must contain at least 2 dots. The product will not function "
 "correctly."
 msgstr ""
-"Das FQHN muss mindestens 2 Punkte enthalten. Das Produkt wird nicht richtig "
-"funktionieren."
+"El FQHN ha de contenir almenys 2 punts. El producte no funcionarà "
+"correctament."
 
 #: ../yast/susemanager_reqs.rb:200
 msgid ""
 "The FQHN must not contain the '_' (undersorce) character. The product will "
 "not function correctly."
 msgstr ""
-"Das FQHN darf nicht das Zeichen „_“ (Unterstrich) enthalten. Das Produkt "
-"wird nicht richtig funktionieren."
+"El FQHN no ha de contenir el caràcter «» (subsorció). El producte no "
+"funcionarà correctament."
 
 #: ../yast/susemanager_reqs.rb:240
 msgid ""
 "The output of 'hostname -f' does not match the real hostname. The product "
 "will not install correctly."
 msgstr ""
-"Die Ausgabe von „hostname -f“ stimmt nicht mit dem echten Hostnamen überein. "
-"Das Produkt wird nicht korrekt installiert."
+"La sortida de «hostname -f» no coincideix amb el nom real de l'amfitrió. El "
+"producte no s'instal·larà correctament."
 
 #: ../yast/susemanager_reqs.rb:254
 msgid "Illegal Hostname"
-msgstr "Ungültiger Hostname"
+msgstr "Nom d'amfitrió incorrecte"
 
 #: ../yast/susemanager_reqs.rb:256
 msgid ""
 "Your hostname contains upper case characters. The product will not function "
 "correctly."
 msgstr ""
-"Ihr Hostname enthält Großbuchstaben. Das Produkt wird nicht korrekt "
-"funktionieren."
+"El vostre nom d'amfitrió conté caràcters en majúscules. El producte no "
+"funcionarà correctament."
 
 #: ../yast/susemanager_write.rb:54
 msgid "Setup is prepared."
-msgstr "Die Einrichtung ist vorbereitet."
+msgstr "La configuració està preparada."
 
 #: ../yast/susemanager_write.rb:59 ../yast/susemanager_write.rb:68
 msgid "Setup script output"
-msgstr "Skriptausgabe einrichten"
+msgstr "Configura la sortida de l'script"
 
 #: ../yast/susemanager_write.rb:63 ../yast/susemanager_write.rb:72
 msgid "Error output"
-msgstr "Fehlerausgabe"
+msgstr "Sortida d'error"
 
 #: ../yast/susemanager_write.rb:83
 msgid "Now you can start the migration process using the mgr-setup script.\n"
 msgstr ""
-"Jetzt können Sie den Migrationsprozess mit dem Skript mgr-setup starten.\n"
+"Ara podeu iniciar el procés de migració utilitzant l'script «mgr-setup».\n"
 
 #: ../yast/susemanager_write.rb:107
 msgid ""
@@ -345,31 +346,31 @@ msgid ""
 "<p>The script output and possible error output can be watched on the screen."
 "</p>"
 msgstr ""
-"<p>Jetzt läuft das Konfigurationsskript, was einige Zeit in Anspruch nehmen "
-"wird.</p>\n"
-"<p>Die Skriptausgabe und mögliche Fehlerausgaben können auf dem Bildschirm "
-"beobachtet werden.</p>"
+"<p>Ara, l'script de configuració s'està executant, i trigarà una mica de "
+"temps.</p>\n"
+"<p>La sortida de l'script i la possible sortida d'error es poden veure a la "
+"pantalla.</p>"
 
 #: ../yast/susemanager_write.rb:111
 msgid "Write Settings"
-msgstr "Einstellungen schreiben"
+msgstr "Configuració d'escriptura"
 
 #: ../yast/susemanager_write.rb:122
 msgid "Now you can either start the setup process directly or exit the\n"
-msgstr ""
+msgstr "Ara podeu iniciar el procés de configuració directament o sortir de\n"
 
 #: ../yast/susemanager_write.rb:134
 msgid "Setup is running. Please wait..."
-msgstr "Die Einrichtung läuft. Bitte warten ..."
+msgstr "La configuració s'està executant. Espereu..."
 
 #: ../yast/susemanager_write.rb:166
 msgid "Setup is completed."
-msgstr "Einrichtung abgeschlossen."
+msgstr "S'ha completat la configuració."
 
 #: ../yast/susemanager_write.rb:169
 msgid "Setup failed."
-msgstr "Einrichtung fehlgeschlagen."
+msgstr "Ha fallat la configuració."
 
 #: ../yast/susemanager_write.rb:185
 msgid "Setup has been aborted."
-msgstr "Einrichtung wurde abgebrochen."
+msgstr "S'ha interromput la configuració."
