@@ -26,6 +26,9 @@ type BaseProps = {
   /** If true, disable the button. */
   disabled?: boolean;
 
+  /** If true, add unstyled button style */
+  unstyled?: boolean;
+
   /**
    * Any additional css classes for the button, `"btn"` is prepended automatically
    */
@@ -159,17 +162,28 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const cssClasses = this.props.unstyled ?
+      "btn-unstyled " + (this.props.className ?? "")
+      : "btn " + (this.props.className ?? "btn-default");
     return (
       <button
         id={this.props.id}
         type="button"
         title={this.props.title}
-        className={"btn " + (this.props.className ?? "")}
+        className={cssClasses}
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
-        {this.renderIcon()}
-        {text}
+        {this.props.unstyled ? (
+          <>
+            {this.renderIcon()}
+          </>
+          ) : (
+            <>
+            {this.renderIcon()}
+            {text}
+          </>
+        )}
       </button>
     );
   }
@@ -192,6 +206,9 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const cssClasses = this.props.unstyled ?
+      "btn-unstyled " + (this.props.className ?? "")
+      : "btn " + this.props.className;
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
@@ -203,15 +220,24 @@ export class LinkButton extends _ButtonBase<LinkProps> {
           };
     return (
       <a
+        role="button"
         id={this.props.id}
         title={this.props.title}
-        className={"btn " + this.props.className}
+        className={cssClasses}
         href={this.props.href}
         onClick={this.props.handler}
         {...targetProps}
       >
-        {this.renderIcon()}
-        {text}
+        {this.props.unstyled ? (
+          <>
+            {this.renderIcon()}
+          </>
+          ) : (
+          <>
+            {this.renderIcon()}
+            {text}
+          </>
+        )}
       </a>
     );
   }
