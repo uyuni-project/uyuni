@@ -291,7 +291,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Fill in this address" xml:space="preserve">
-        <source>Fill in this address</source>
+        <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
@@ -527,7 +527,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="Edit this address" xml:space="preserve">
-        <source>Edit this address</source>
+        <source>Edit Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
