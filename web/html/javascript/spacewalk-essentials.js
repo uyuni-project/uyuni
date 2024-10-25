@@ -219,6 +219,20 @@ function showFatalError(message, exception) {
   }
 }
 
+/**
+ * Checks if the provided string is a valid URL.
+ *
+ * @param {string} url - The URL string to validate.
+ * @returns {boolean} - `true` if the string is a valid URL, otherwise `false`.
+ */
+function isValidUrl(url) {
+  try {
+      new URL(url);
+      return true;
+  } catch (_) {
+      return false;
+  }
+}
 
 // Extension to Twitter Bootstrap.
 // Gives you a col-XX-auto class like Bootstrap
