@@ -29372,6 +29372,14 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>AppStreams</source>
         <target state="translated">AppStreams</target>
       </trans-unit>
-    </body>
+    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+        <source>List Already Included Patches:</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+        <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
