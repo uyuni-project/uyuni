@@ -48,7 +48,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 
 /**
@@ -165,13 +164,15 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup repository for given channel
+     * Lookup repositories for given channel
      * @param c the channel
      * @return repository
      */
-    public static Optional<SCCRepository> findVendorRepositoryByChannel(Channel c) {
-        return Optional.ofNullable(singleton.lookupObjectByNamedQuery("Channel.findVendorRepositoryByChannelId",
-                Map.of("cid", c.getId())));
+    public static List<SCCRepository> findVendorRepositoryByChannel(Channel c) {
+        return getSession()
+                .createNamedQuery("Channel.findVendorRepositoryByChannelId", SCCRepository.class)
+                .setParameter("cid", c.getId())
+                .list();
     }
 
     /**

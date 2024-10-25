@@ -16,8 +16,17 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.manager.content.GpgInfoEntry;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -25,6 +34,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -35,13 +46,13 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "suseChannelAttributes", uniqueConstraints =
-@UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
+@UniqueConstraint(columnNames = {"product_id", "root_product_id", "channel_label"}))
 public class ChannelAttributes extends BaseDomainHelper {
 
     private Long id;
     private SUSEProduct product;
     private SUSEProduct rootProduct;
-    private SCCRepository repository;
+    private Set<SCCRepository> repositories = new HashSet<>();
     private String channelLabel;
     private String parentChannelLabel;
     private String channelName;
@@ -50,6 +61,35 @@ public class ChannelAttributes extends BaseDomainHelper {
     private String gpgKeyUrl;
     private String gpgKeyId;
     private String gpgKeyFingerprint;
+
+    /**
+     * Constructor
+     */
+    public ChannelAttributes() {
+    }
+
+    /**
+     * Constructor
+     * @param entry a product tree entry
+     * @param rootIn the root product
+     * @param productIn the product
+     */
+    public ChannelAttributes(ProductTreeEntry entry, SUSEProduct rootIn, SUSEProduct productIn) {
+        setUpdateTag(entry.getUpdateTag().orElse(null));
+        setChannelLabel(entry.getChannelLabel());
+        setParentChannelLabel(entry.getParentChannelLabel().orElse(null));
+        setChannelName(entry.getChannelName());
+        setMandatory(entry.isMandatory());
+        setProduct(productIn);
+        setRootProduct(rootIn);
+        if (!entry.getGpgInfo().isEmpty()) {
+            setGpgKeyUrl(entry.getGpgInfo()
+                    .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
+            // we use only the 1st entry for id and fingerprint
+            setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
+            setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
+        }
+    }
 
     /**
      * @return Returns the id.
@@ -82,10 +122,14 @@ public class ChannelAttributes extends BaseDomainHelper {
     /**
      * @return Returns the repoId.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repo_id", nullable = false)
-    public SCCRepository getRepository() {
-        return repository;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "suseChannelRepository",
+        joinColumns = { @JoinColumn(name = "sccchannel_id") },
+        inverseJoinColumns = { @JoinColumn(name = "sccrepo_id") }
+    )
+    public Set<SCCRepository> getRepositories() {
+        return repositories;
     }
 
     /**
@@ -176,8 +220,15 @@ public class ChannelAttributes extends BaseDomainHelper {
     /**
      * @param repoIn The repoId to set.
      */
-    public void setRepository(SCCRepository repoIn) {
-        this.repository = repoIn;
+    public void setRepositories(Set<SCCRepository> repoIn) {
+        this.repositories = repoIn;
+    }
+
+    /**
+     * @param repoIn a repository to add
+     */
+    public void addRepository(SCCRepository repoIn) {
+        this.repositories.add(repoIn);
     }
 
     /**
@@ -244,11 +295,46 @@ public class ChannelAttributes extends BaseDomainHelper {
         gpgKeyFingerprint = gpgKeyFingerprintIn;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ChannelAttributes)) {
+            return false;
+        }
+        ChannelAttributes otherChanAttr = (ChannelAttributes) other;
+        return new EqualsBuilder()
+                .append(getChannelLabel(), otherChanAttr.getChannelLabel())
+                .append(getProduct(), otherChanAttr.getProduct())
+                .append(getRootProduct(), otherChanAttr.getRootProduct())
+                .append(getRepositories(), otherChanAttr.getRepositories())
+                .append(getChannelName(), otherChanAttr.getChannelName())
+                .append(isMandatory(), otherChanAttr.isMandatory())
+                .append(getUpdateTag(), otherChanAttr.getUpdateTag())
+                .append(getGpgKeyUrl(), otherChanAttr.getGpgKeyUrl())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getChannelLabel())
+                .append(getProduct())
+                .append(getRootProduct())
+                .append(getRepositories())
+                .toHashCode();
+    }
+
     @Override
     public String toString() {
         return "(ProductId: " + getProduct().getProductId() +
                 ", RootProductId: " + getRootProduct().getProductId() +
-                ", RepositoryId: " + getRepository().getSccId() +
+                ", RepositoryIds: " + getRepositories().stream()
+                .map(SCCRepository::getSccId).map(Object::toString).collect(Collectors.joining(",")) +
                 ", Label: " + getChannelLabel() +
                 ", Parent: " + getParentChannelLabel() + ")";
     }

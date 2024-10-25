@@ -71,6 +71,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -163,7 +164,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
 
         ChannelAttributes channelAttributes = new ChannelAttributes();
-        channelAttributes.setRepository(repository);
+        channelAttributes.addRepository(repository);
         channelAttributes.setRootProduct(baseProduct);
         channelAttributes.setProduct(product);
         channelAttributes.setParentChannelLabel(baseChannel.getLabel());
@@ -635,12 +636,14 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param optionalChannelIds list of optional channels ids to add
      */
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
-            boolean mandatory, List<Long> optionalChannelIds) {
+            boolean mandatory, Set<Long> optionalChannelIds) {
         ContentSyncManager csm = new ContentSyncManager();
         product.getChannelAttributes()
         .stream()
-        .filter(pr -> pr.getRootProduct().equals(root))
-        .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
+        .filter(ca -> ca.getRootProduct().equals(root))
+        .filter(ca -> (mandatory && ca.isMandatory()) ||
+                optionalChannelIds.containsAll(ca.getRepositories().stream()
+                        .map(SCCRepository::getSccId).collect(Collectors.toSet())))
         .forEach(pr -> {
             try {
                 if (pr.getParentChannelLabel() != null &&

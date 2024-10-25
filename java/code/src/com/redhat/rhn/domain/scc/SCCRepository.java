@@ -30,10 +30,10 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -47,8 +47,8 @@ import javax.persistence.Transient;
 @Table(name = "suseSCCRepository")
 @NamedQuery(name = "SCCRepository.lookupByChannelFamily",
             query = "select r from SCCRepository r " +
-                    " join r.products pr " +
-                    " join pr.product p " +
+                    " join r.channelAttributes ca " +
+                    " join ca.product p " +
                     " join p.channelFamily cf " +
                     "where cf.label = :channelFamily")
 @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
@@ -56,8 +56,8 @@ import javax.persistence.Transient;
                     "where r.url like :urlEndpoint")
 @NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
             query = "select distinct r from SCCRepository r " +
-                    " join r.products pr " +
-                    " join pr.product p " +
+                    " join r.channelAttributes ca " +
+                    " join ca.product p " +
                     " join p.arch a " +
                     " where lower(p.name) = lower(:product_name) " +
                     " and lower(a.label) = lower(:arch_name) " +
@@ -288,7 +288,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "repositories")
     public Set<ChannelAttributes> getChannelAttributes() {
         return channelAttributes;
     }
@@ -304,7 +304,7 @@ public class SCCRepository extends BaseDomainHelper {
      * @param channelAttributesIn the channel attributes to add
      */
     public void addChannelAttribute(ChannelAttributes channelAttributesIn) {
-        channelAttributesIn.setRepository(this);
+        //channelAttributesIn.setRepositories(this);
         this.channelAttributes.add(channelAttributesIn);
     }
 
