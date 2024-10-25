@@ -27,9 +27,9 @@ import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.CloudCredentials;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -186,13 +186,14 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     private void populateProducts() {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductFactory.findAllSUSEProducts()
-                .forEach(suseProduct -> CHANNEL_SUFFIX.forEach((suffix, installer) -> createProductRepo(suseProduct,
+                .forEach(suseProduct -> CHANNEL_SUFFIX.forEach((suffix, installer) ->
+                        createChannelAttributes(suseProduct,
                             createTestRepo(suseProduct.getName() + "-" +
                                     suseProduct.getVersion() + suffix, installer))));
     }
 
-    private SUSEProductSCCRepository createProductRepo(SUSEProduct suseProduct, SCCRepository sccRepository) {
-        SUSEProductSCCRepository productRepo = new SUSEProductSCCRepository();
+    private ChannelAttributes createChannelAttributes(SUSEProduct suseProduct, SCCRepository sccRepository) {
+        ChannelAttributes productRepo = new ChannelAttributes();
         productRepo.setProduct(suseProduct);
         productRepo.setRootProduct(suseProduct);
         productRepo.setRepository(sccRepository);

@@ -27,10 +27,10 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
@@ -520,12 +520,12 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         var appModule = suseProductsMap.get("applications");
         var cntModule = suseProductsMap.get("containers");
 
-        createProductSCCRepository(prefix, sles, sles, "SLES", "sles", null);
-        createProductSCCRepository(prefix, sles, sles, "SLES", "sles-updates", null);
+        createChannelAttributes(prefix, sles, sles, "SLES", "sles", null);
+        createChannelAttributes(prefix, sles, sles, "SLES", "sles-updates", null);
 
-        createProductSCCRepository(prefix, baseSystem, sles, "Module-Basesystem", "sle-basesystem", "sles");
-        createProductSCCRepository(prefix, appModule, sles, "Module-Applications", "sle-applications", "sles");
-        createProductSCCRepository(prefix, cntModule, sles, "Module-Containers", "sle-containers", "sles");
+        createChannelAttributes(prefix, baseSystem, sles, "Module-Basesystem", "sle-basesystem", "sles");
+        createChannelAttributes(prefix, appModule, sles, "Module-Applications", "sle-applications", "sles");
+        createChannelAttributes(prefix, cntModule, sles, "Module-Containers", "sle-containers", "sles");
     }
 
     private static void createSUSEProductExtensions(Map<String, SUSEProduct> suseProductsMap) {
@@ -551,20 +551,20 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         return family;
     }
 
-    private static void createProductSCCRepository(String prefix, SUSEProduct product, SUSEProduct root,
-                                                                       String channelName, String channelLabel,
-                                                                       String rootChannelLabel) {
+    private static void createChannelAttributes(String prefix, SUSEProduct product, SUSEProduct root,
+                                                String channelName, String channelLabel,
+                                                String rootChannelLabel) {
         var repo = SUSEProductTestUtils.createSCCRepository();
 
-        var productSSCRepo = new SUSEProductSCCRepository();
-        productSSCRepo.setProduct(product);
-        productSSCRepo.setRootProduct(root);
-        productSSCRepo.setRepository(repo);
-        productSSCRepo.setChannelLabel(prefix + "-" + channelLabel);
-        productSSCRepo.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
-        productSSCRepo.setChannelName(channelName);
-        productSSCRepo.setMandatory(true);
-        TestUtils.saveAndReload(productSSCRepo);
+        var channelAttrs = new ChannelAttributes();
+        channelAttrs.setProduct(product);
+        channelAttrs.setRootProduct(root);
+        channelAttrs.setRepository(repo);
+        channelAttrs.setChannelLabel(prefix + "-" + channelLabel);
+        channelAttrs.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
+        channelAttrs.setChannelName(channelName);
+        channelAttrs.setMandatory(true);
+        TestUtils.saveAndReload(channelAttrs);
     }
 
     private static void createProductExtension(SUSEProduct product, SUSEProduct parent, SUSEProduct root) {

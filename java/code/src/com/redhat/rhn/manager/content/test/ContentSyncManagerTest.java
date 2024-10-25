@@ -48,12 +48,12 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -641,8 +641,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
-        sles.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+        sles.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -700,8 +700,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(newRepoAuth.getContentSource());
 
         SUSEProduct slesChanged = SUSEProductFactory.lookupByProductId(1117);
-        slesChanged.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+        slesChanged.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -727,9 +727,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
-        sles.getRepositories().stream()
+        sles.getChannelAttributes().stream()
             .peek(pr -> LOGGER.info("Repository {}", pr.getRepository().getName()))
-            .filter(pr -> pr.isMandatory())
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().orElse(null);
@@ -739,7 +739,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
             });
         ContentSyncManager csm = new ContentSyncManager();
-        sles.getRepositories()
+        sles.getChannelAttributes()
         .stream()
         .filter(pr -> pr.getRepository().getSccId().equals(9999L))
         .forEach(pr -> {
@@ -757,7 +757,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 slesUpRepo.getBestAuth().get().getUrl());
 
         SUSEProduct slesChanged = SUSEProductFactory.lookupByProductId(1117);
-        slesChanged.getRepositories().stream()
+        slesChanged.getChannelAttributes().stream()
             .filter(pr -> pr.isMandatory())
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
@@ -770,7 +770,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SCCRepository ptfRepo = SCCCachingFactory.lookupRepositoryBySccId(9999L).orElse(null);
         assertNotNull(ptfRepo, "PTF repo not found");
 
-        slesChanged.getRepositories().stream()
+        slesChanged.getChannelAttributes().stream()
             .filter(pr -> !pr.isMandatory())
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
@@ -811,8 +811,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         // Initialization complete
 
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1939L);
-        sles.getRepositories().stream()
-            .filter(pr -> pr.isMandatory())
+        sles.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -826,33 +826,33 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         // test basesystem module PTFs for SLES root product
         SUSEProduct basesystem = SUSEProductFactory.lookupByProductId(1946L);
-        List<SUSEProductSCCRepository> r = basesystem.getRepositories().stream()
+        List<ChannelAttributes> ca = basesystem.getChannelAttributes().stream()
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
             .toList();
-        assertNotEmpty(r);
-        r.forEach(pr -> {
-                assertNotNull(pr.getRepository());
+        assertNotEmpty(ca);
+        ca.forEach(chanAttr -> {
+                assertNotNull(chanAttr.getRepository());
                 // The PTF repo
-                if (pr.getRepository().getSccId().equals(15000L)) {
-                    assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64", pr.getChannelLabel());
-                    assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64", pr.getChannelName());
+                if (chanAttr.getRepository().getSccId().equals(15000L)) {
+                    assertEquals("a123456-sle-module-basesystem-15.2-ptfs-x86_64", chanAttr.getChannelLabel());
+                    assertEquals("A123456 sle-module-basesystem 15.2 PTFs x86_64", chanAttr.getChannelName());
                 }
                 else {
-                    fail("Unexpected repository " + pr);
+                    fail("Unexpected repository " + chanAttr);
                 }
-                SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
+                SCCRepositoryAuth bestAuth = chanAttr.getRepository().getBestAuth().get();
                 ContentSource cs = bestAuth.getContentSource();
                 assertNotNull(cs);
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
             });
         // test basesystem module PTFs for SAP root product
-        r = basesystem.getRepositories().stream()
+        ca = basesystem.getChannelAttributes().stream()
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15000L, 15001L).contains(pr.getRepository().getSccId()))
             .toList();
-        assertNotEmpty(r);
-        r.forEach(pr -> {
+        assertNotEmpty(ca);
+        ca.forEach(pr -> {
             assertNotNull(pr.getRepository());
             // The PTF repo
             if (pr.getRepository().getSccId().equals(15000L)) {
@@ -869,12 +869,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         });
         // test tools ptf repositories for SLES
         SUSEProduct tools = SUSEProductFactory.lookupByProductId(1712L);
-        r = tools.getRepositories().stream()
+        ca = tools.getChannelAttributes().stream()
             .filter(pr -> pr.getRootProduct().equals(sles))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
             .toList();
-        assertNotEmpty(r);
-        r.forEach(pr -> {
+        assertNotEmpty(ca);
+        ca.forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15002L)) {
@@ -890,12 +890,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
             });
         // test tools ptf repositories for SAP
-        r = tools.getRepositories().stream()
+        ca = tools.getChannelAttributes().stream()
             .filter(pr -> pr.getRootProduct().equals(SUSEProductFactory.lookupByProductId(1941L)))
             .filter(pr -> Arrays.asList(15002L, 15003L).contains(pr.getRepository().getSccId()))
             .toList();
-        assertNotEmpty(r);
-        r.forEach(pr -> {
+        assertNotEmpty(ca);
+        ca.forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 // The PTF repo
                 if (pr.getRepository().getSccId().equals(15002L)) {
@@ -929,8 +929,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1575);
-        sles.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+        sles.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -975,8 +975,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         SUSEProduct slesChanged = SUSEProductFactory.lookupByProductId(1575);
-        slesChanged.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+        slesChanged.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -1375,10 +1375,10 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         ContentSyncManager csm = new ContentSyncManager();
-        List<SUSEProductSCCRepository> availableChannels = csm.getAvailableChannels();
+        List<ChannelAttributes> availableChannels = csm.getAvailableChannels();
 
         List<String> avChanLanbels = availableChannels
-                .stream().map(SUSEProductSCCRepository::getChannelLabel).toList();
+                .stream().map(ChannelAttributes::getChannelLabel).toList();
 
         assertContains(avChanLanbels, "sles12-pool-x86_64");
         assertContains(avChanLanbels, "sle-12-cloud-compute5-updates-x86_64");
@@ -1403,11 +1403,11 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         ContentSyncManager csm = new ContentSyncManager();
-        List<SUSEProductSCCRepository> availableChannels = csm.getAvailableChannels();
+        List<ChannelAttributes> availableChannels = csm.getAvailableChannels();
 
         List<String> duplicates = new LinkedList<>();
         availableChannels.stream()
-                .map(SUSEProductSCCRepository::getChannelLabel)
+                .map(ChannelAttributes::getChannelLabel)
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet().stream().forEach(e -> {
                     if (e.getValue() > 1) {
@@ -1974,7 +1974,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         // Initialization complete
 
         SUSEProduct ubuntu = SUSEProductFactory.lookupByProductId(-18L);
-        ubuntu.getRepositories().stream()
+        ubuntu.getChannelAttributes().stream()
               .peek(pr -> LOGGER.info("Repository {}", pr.getRepository().getName()))
               .filter(pr -> pr.isMandatory())
               .forEach(pr -> {
@@ -1990,7 +1990,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(ptfRepo, "PTF repo not found");
 
         SUSEProduct tools = SUSEProductFactory.lookupByProductId(2113L);
-        tools.getRepositories().stream()
+        tools.getChannelAttributes().stream()
                 .filter(pr -> pr.getRootProduct().equals(ubuntu))
                 .filter(pr -> Arrays.asList(15004L, 15005L).contains(pr.getRepository().getSccId()))
                 .forEach(pr -> {
@@ -2131,8 +2131,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             HibernateFactory.getSession().flush();
             HibernateFactory.getSession().clear();
 
-            sles.getRepositories().stream()
-                .filter(SUSEProductSCCRepository::isMandatory)
+            sles.getChannelAttributes().stream()
+                .filter(ChannelAttributes::isMandatory)
                 .forEach(pr -> {
                     assertNotNull(pr.getRepository());
                     SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().orElse(null);
@@ -2142,8 +2142,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
                     assertContains(cs.getSourceUrl(), "file://" + fromdir + "/SUSE/");
                 });
-            slewe.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+            slewe.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -2238,8 +2238,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             sles = SUSEProductFactory.lookupByProductId(1117);
             slewe = SUSEProductFactory.lookupByProductId(1222);
 
-            sles.getRepositories().stream()
-                .filter(SUSEProductSCCRepository::isMandatory)
+            sles.getChannelAttributes().stream()
+                .filter(ChannelAttributes::isMandatory)
                 .forEach(pr -> {
                     assertNotNull(pr.getRepository());
                     SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();
@@ -2248,8 +2248,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                     assertEquals(bestAuth.getUrl(), cs.getSourceUrl());
                     assertContains(cs.getSourceUrl(), "https://updates.suse.com");
                 });
-            slewe.getRepositories().stream()
-            .filter(SUSEProductSCCRepository::isMandatory)
+            slewe.getChannelAttributes().stream()
+            .filter(ChannelAttributes::isMandatory)
             .forEach(pr -> {
                 assertNotNull(pr.getRepository());
                 SCCRepositoryAuth bestAuth = pr.getRepository().getBestAuth().get();

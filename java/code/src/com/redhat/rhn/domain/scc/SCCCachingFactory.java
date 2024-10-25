@@ -22,9 +22,9 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
@@ -503,8 +503,8 @@ public class SCCCachingFactory extends HibernateFactory {
                 ChannelFamilyFactory.MODULE_CHANNEL_FAMILY_LABEL);
         return prds.stream()
                 .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
-                .flatMap(p -> p.getRepositories().stream())
-                .map(SUSEProductSCCRepository::getRepository);
+                .flatMap(p -> p.getChannelAttributes().stream())
+                .map(ChannelAttributes::getRepository);
         }
 
     /**

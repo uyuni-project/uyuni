@@ -27,11 +27,11 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -149,7 +149,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     /**
-     * Create SUSEProductSCCRepository for the product
+     * Create ChannelAttributes for the product
      * @param baseProduct Base product
      * @param baseChannel base channe
      * @param product product
@@ -162,15 +162,15 @@ public class SUSEProductTestUtils extends HibernateFactory {
         SCCRepository repository = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
 
-        SUSEProductSCCRepository ltssSP1ProdRepo = new SUSEProductSCCRepository();
-        ltssSP1ProdRepo.setRepository(repository);
-        ltssSP1ProdRepo.setRootProduct(baseProduct);
-        ltssSP1ProdRepo.setProduct(product);
-        ltssSP1ProdRepo.setParentChannelLabel(baseChannel.getLabel());
-        ltssSP1ProdRepo.setChannelName(baseChannel.getLabel());
-        ltssSP1ProdRepo.setChannelLabel(channel.getLabel());
-        ltssSP1ProdRepo.setMandatory(true);
-        TestUtils.saveAndReload(ltssSP1ProdRepo);
+        ChannelAttributes channelAttributes = new ChannelAttributes();
+        channelAttributes.setRepository(repository);
+        channelAttributes.setRootProduct(baseProduct);
+        channelAttributes.setProduct(product);
+        channelAttributes.setParentChannelLabel(baseChannel.getLabel());
+        channelAttributes.setChannelName(baseChannel.getLabel());
+        channelAttributes.setChannelLabel(channel.getLabel());
+        channelAttributes.setMandatory(true);
+        TestUtils.saveAndReload(channelAttributes);
     }
 
     /**
@@ -609,9 +609,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
     public static void addChannelsForProduct(SUSEProduct product) {
         ContentSyncManager csm = new ContentSyncManager();
-        product.getRepositories()
+        product.getChannelAttributes()
         .stream()
-        .filter(SUSEProductSCCRepository::isMandatory)
+        .filter(ChannelAttributes::isMandatory)
         .forEach(pr -> {
             try {
                 if (pr.getParentChannelLabel() != null &&
@@ -637,7 +637,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
             boolean mandatory, List<Long> optionalChannelIds) {
         ContentSyncManager csm = new ContentSyncManager();
-        product.getRepositories()
+        product.getChannelAttributes()
         .stream()
         .filter(pr -> pr.getRootProduct().equals(root))
         .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))

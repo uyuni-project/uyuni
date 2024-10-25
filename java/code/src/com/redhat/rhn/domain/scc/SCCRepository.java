@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 
 import com.suse.scc.model.SCCRepositoryJson;
 
@@ -74,7 +74,7 @@ public class SCCRepository extends BaseDomainHelper {
     private boolean signed = true;
     private boolean installerUpdates = false;
 
-    private Set<SUSEProductSCCRepository> products = new HashSet<>();
+    private Set<ChannelAttributes> channelAttributes = new HashSet<>();
     private Set<SCCRepositoryAuth> auth = new HashSet<>();
 
     /**
@@ -289,24 +289,23 @@ public class SCCRepository extends BaseDomainHelper {
      * @return Returns the products.
      */
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
-    public Set<SUSEProductSCCRepository> getProducts() {
-        return products;
+    public Set<ChannelAttributes> getChannelAttributes() {
+        return channelAttributes;
     }
 
     /**
-     * @param productsIn The products to set.
+     * @param channelAttributesIn The products to set.
      */
-    public void setProducts(Set<SUSEProductSCCRepository> productsIn) {
-        this.products = productsIn;
+    public void setChannelAttributes(Set<ChannelAttributes> channelAttributesIn) {
+        this.channelAttributes = channelAttributesIn;
     }
 
     /**
-     * @param productIn the product to add
+     * @param channelAttributesIn the channel attributes to add
      */
-    public void addProduct(SUSEProductSCCRepository productIn) {
-        productIn.setRepository(this);
-        this.products.add(productIn);
-
+    public void addChannelAttribute(ChannelAttributes channelAttributesIn) {
+        channelAttributesIn.setRepository(this);
+        this.channelAttributes.add(channelAttributesIn);
     }
 
     /**

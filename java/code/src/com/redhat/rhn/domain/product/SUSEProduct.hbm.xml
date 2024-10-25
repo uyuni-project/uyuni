@@ -50,9 +50,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
       <one-to-many class="com.redhat.rhn.domain.product.SUSEProductChannel"/>
     </set>
 
-    <set name="repositories" table="SUSEProductSCCRepository" inverse="true">
+    <set name="channelAttributes" table="suseChannelAttributes" inverse="true">
       <key column="product_id"/>
-      <one-to-many class="com.redhat.rhn.domain.product.SUSEProductSCCRepository"/>
+      <one-to-many class="com.redhat.rhn.domain.product.ChannelAttributes"/>
     </set>
   </class>
 

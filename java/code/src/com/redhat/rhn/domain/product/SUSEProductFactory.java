@@ -90,19 +90,18 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Save a {@link SUSEProductSCCRepository}
-     * @param productRepo the productrepo
+     * Save a {@link ChannelAttributes}
+     * @param channelAttributesIn the channel attributes
      */
-    public static void save(SUSEProductSCCRepository productRepo) {
-        singleton.saveObject(productRepo);
+    public static void save(ChannelAttributes channelAttributesIn) {
+        singleton.saveObject(channelAttributesIn);
     }
 
     /**
-     * @return a list of all {@link SUSEProductSCCRepository}
+     * @return a list of all {@link ChannelAttributes}
      */
-    public static List<SUSEProductSCCRepository> allProductRepos() {
-        Criteria c = getSession().createCriteria(SUSEProductSCCRepository.class);
-        return c.list();
+    public static List<ChannelAttributes> allChannelAttributes() {
+        return getSession().createQuery("FROM ChannelAttributes", ChannelAttributes.class).list();
     }
 
     /**
@@ -114,10 +113,10 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * @return map of all {@link SUSEProductSCCRepository} by ID triple
+     * @return map of all {@link ChannelAttributes} by ID triple
      */
-    public static Map<Tuple3<Long, Long, Long>, SUSEProductSCCRepository> allProductReposByIds() {
-        return allProductRepos().stream().collect(
+    public static Map<Tuple3<Long, Long, Long>, ChannelAttributes> allChannelAttributesByIds() {
+        return allChannelAttributes().stream().collect(
                 Collectors.toMap(
                         e -> new Tuple3<>(
                                 e.getRootProduct().getProductId(),
@@ -130,36 +129,20 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Return all {@link SUSEProductSCCRepository} with the given channel label.
+     * Return all {@link ChannelAttributes} with the given channel label.
      * In most cases the label is unique, but there are exceptions like SLES11 SP1/SP2 base channel
      * and products with rolling releases like CaaSP 1 and 2
      * @param channelLabel the channel label
-     * @return list of {@link SUSEProductSCCRepository}
+     * @return list of {@link ChannelAttributes}
      */
-    public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(String channelLabel) {
+    public static List<ChannelAttributes> lookupChannelAttributesByLabel(String channelLabel) {
         Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("channelLabel", channelLabel));
-        return ((List<SUSEProductSCCRepository>) c.list()).stream()
+        return session.createQuery("FROM ChannelAttributes WHERE channelLabel = :label", ChannelAttributes.class)
+                .setParameter("label", channelLabel)
+                .list().stream()
                 .sorted((a, b) ->
                         RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
                 .toList();
-    }
-
-    /**
-     * lookup {@link SUSEProductSCCRepository} by given ID triple
-     * @param rootId root product id
-     * @param productId product id
-     * @param repoId repository id
-     * @return the product/repository item
-     */
-    public static Optional<SUSEProductSCCRepository> lookupProductRepoByIds(long rootId, long productId, long repoId) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("rootProduct.productId", rootId));
-        c.add(Restrictions.eq("product.productId", productId));
-        c.add(Restrictions.eq("repository.sccId", repoId));
-        return Optional.ofNullable((SUSEProductSCCRepository) c.uniqueResult());
     }
 
     /**
@@ -208,43 +191,29 @@ public class SUSEProductFactory extends HibernateFactory {
                 .orElseGet(Stream::empty).toList();
     }
 
-    /**
-     * Lookup SUSEProductChannels by channel label
-     * @param channelLabel the label
-     * @return list of SUSEProductChannels
-     */
-    public static List<SUSEProductSCCRepository> lookupByChannelLabel(String channelLabel) {
-        Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
-                .setParameter("label", channelLabel).list();
-    }
 
     /**
      * Lookup SUSE Product Channels by channel name
      * @param name the channel name
      * @return list of found matches
      */
-    public static List<SUSEProductSCCRepository> lookupByChannelName(String name) {
+    public static List<ChannelAttributes> lookupByChannelName(String name) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SUSEProductSCCRepository> criteria = builder.createQuery(SUSEProductSCCRepository.class);
-        Root<SUSEProductSCCRepository> root = criteria.from(SUSEProductSCCRepository.class);
+        CriteriaQuery<ChannelAttributes> criteria = builder.createQuery(ChannelAttributes.class);
+        Root<ChannelAttributes> root = criteria.from(ChannelAttributes.class);
         criteria.where(builder.equal(root.get("channelName"), name));
         return getSession().createQuery(criteria).getResultList();
     }
 
     /**
-     * Finds a SUSEProductSCCRepository entry by channel label.
+     * Finds a ChannelAttributes entry by channel label.
      * Note: this returns the entry with the newest product to make the result predictable.
      * @param channelLabel channel label
-     * @return SUSEProductSCCRepository entry with the newest product
+     * @return ChannelAttributes entry with the newest product
      */
-    public static Optional<SUSEProductSCCRepository> lookupByChannelLabelFirst(String channelLabel) {
-        return  lookupByChannelLabel(channelLabel)
+    public static Optional<ChannelAttributes> lookupChannelAttributesByLabelFirst(String channelLabel) {
+        return  lookupChannelAttributesByLabel(channelLabel)
                 .stream()
-                // sort so we always choose the latest version
-                .sorted((a, b) ->  RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(),
-                        a.getProduct().getVersion()))
-
                 // We take the first item since there can be more than one entry.
                 // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
                 .findFirst();
@@ -253,7 +222,7 @@ public class SUSEProductFactory extends HibernateFactory {
 
     private static Stream<SUSEProductChannel> findSyncedMandatoryChannels(SUSEProduct product, SUSEProduct base,
                                                                       String baseChannelLabel) {
-        Stream<SUSEProductChannel> concat = Stream.concat(
+        return Stream.concat(
                 product.getSuseProductChannels().stream().filter(
                         pc -> Optional.ofNullable(pc.getChannel().getParentChannel())
                                 .map(c -> c.getLabel().equals(baseChannelLabel))
@@ -263,7 +232,6 @@ public class SUSEProductFactory extends HibernateFactory {
                         p -> findSyncedMandatoryChannels(p, base, baseChannelLabel)
                 )
         );
-        return concat;
     }
 
     private static Optional<SUSEProductChannel> findSyncProductChannelByLabel(String channelLabel) {
@@ -348,14 +316,14 @@ public class SUSEProductFactory extends HibernateFactory {
      * Find all mandatory channels for a given product / root product combination
      * @param product product for which we want the channels
      * @param root root product under which the product sits (this is for disambiguation since a product by itself
-     *             can have different channels depending in what root product it sits)
-     * @return a stream of SUSEProductSCCRepository since only synced channels have a channel instance
+     *             can have different channels depending on what root product it sits)
+     * @return a stream of ChannelAttributes since only synced channels have a channel instance
      */
-    public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(SUSEProduct product, SUSEProduct root) {
+    public static Stream<ChannelAttributes> findAllMandatoryChannels(SUSEProduct product, SUSEProduct root) {
         return Stream.concat(
-                product.getRepositories()
+                product.getChannelAttributes()
                         .stream()
-                        .filter(SUSEProductSCCRepository::isMandatory)
+                        .filter(ChannelAttributes::isMandatory)
                         .filter(p -> p.getRootProduct().equals(root)),
                 SUSEProductFactory.findAllBaseProductsOf(product, root).stream()
                 .flatMap(p -> findAllMandatoryChannels(p, root))
@@ -369,18 +337,18 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return suse product channel
      */
     public static Optional<SUSEProduct> findProductByChannelLabel(String channelLabel) {
-        return lookupByChannelLabelFirst(channelLabel)
-                .map(SUSEProductSCCRepository::getProduct);
+        return lookupChannelAttributesByLabelFirst(channelLabel)
+                .map(ChannelAttributes::getProduct);
     }
 
     /**
-     * Finds all mandetory channels for a given channel label.
+     * Finds all mandatory channels for a given channel label.
      *
      * @param channelLabel channel label
      * @return a stream of suse product channels which are required by the channel
      */
-    public static Stream<SUSEProductSCCRepository> findAllMandatoryChannels(String channelLabel) {
-        return lookupByChannelLabelFirst(channelLabel).map(spsr -> findAllMandatoryChannels(
+    public static Stream<ChannelAttributes> findAllMandatoryChannels(String channelLabel) {
+        return lookupChannelAttributesByLabelFirst(channelLabel).map(spsr -> findAllMandatoryChannels(
                 spsr.getProduct(),
                 spsr.getRootProduct()
         )).orElseGet(Stream::empty);
@@ -389,12 +357,12 @@ public class SUSEProductFactory extends HibernateFactory {
     /**
      * Find not synced mandatory channels for a given channel label and return them as stream
      * @param channelLabel channel label
-     * @return stream of required {@link SUSEProductSCCRepository} representing channels
+     * @return stream of required {@link ChannelAttributes} representing channels
      */
-    public static Stream<SUSEProductSCCRepository> findNotSyncedMandatoryChannels(String channelLabel) {
+    public static Stream<ChannelAttributes> findNotSyncedMandatoryChannels(String channelLabel) {
         return findAllMandatoryChannels(channelLabel).
                 filter(spsr -> Objects.nonNull(ChannelFactory.lookupByLabel(spsr.getChannelLabel())))
-                .sorted(Comparator.comparing(SUSEProductSCCRepository::getParentChannelLabel,
+                .sorted(Comparator.comparing(ChannelAttributes::getParentChannelLabel,
                         Comparator.nullsFirst(Comparator.naturalOrder())));
     }
 
@@ -441,10 +409,10 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Delete a {@link SUSEProductSCCRepository} from the database.
+     * Delete a {@link ChannelAttributes} from the database.
      * @param productRepo product repository to be deleted.
      */
-    public static void remove(SUSEProductSCCRepository productRepo) {
+    public static void remove(ChannelAttributes productRepo) {
         singleton.removeObject(productRepo);
     }
 

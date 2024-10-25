@@ -79,7 +79,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /** repositories */
-    private Set<SUSEProductSCCRepository> repositories = new HashSet<>();
+    private Set<ChannelAttributes> channelAttributes = new HashSet<>();
 
     /**
      * Default constructor.
@@ -334,17 +334,17 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @return Returns the repositories provided by SCC.
+     * @return Returns the channel attributes by SCC.
      */
-    public Set<SUSEProductSCCRepository> getRepositories() {
-        return repositories;
+    public Set<ChannelAttributes> getChannelAttributes() {
+        return channelAttributes;
     }
 
     /**
-     * @param repositoriesIn The repositories to set.
+     * @param channelAttributesIn The channel attributes to set.
      */
-    public void setRepositories(Set<SUSEProductSCCRepository> repositoriesIn) {
-        this.repositories = repositoriesIn;
+    public void setChannelAttributes(Set<ChannelAttributes> channelAttributesIn) {
+        this.channelAttributes = channelAttributesIn;
     }
 
     /**
