@@ -134,7 +134,7 @@ class ImageProfiles extends React.Component<Props, State> {
             icon="fa-trash"
             className="btn-default"
             text={t("Delete")}
-            title={t("Delete selected")}
+            title={t("Delete Image Profile")}
             target="delete-selected-modal"
           />
         )}
@@ -144,8 +144,8 @@ class ImageProfiles extends React.Component<Props, State> {
             id="create"
             icon="fa-plus"
             className="btn-primary"
-            title={t("Create")}
-            text={t("Create")}
+            title={t("Create Image Profile")}
+            text={t("Create Image Profile")}
             href="/rhn/manager/cm/imageprofiles/create"
           />
         )}

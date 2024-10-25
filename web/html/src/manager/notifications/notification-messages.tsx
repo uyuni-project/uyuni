@@ -440,16 +440,16 @@ class NotificationMessages extends React.Component<Props, State> {
             <AsyncButton
               id="delete-selected-messages"
               icon="fa-trash"
-              title={t("Delete selected messages")}
-              text={t("Delete selected messages")}
+              title={t("Delete messages")}
+              text={t("Delete")}
               action={() => this.deleteNotifications(this.state.selectedItems)}
               disabled={this.state.selectedItems.length === 0}
             />
             <AsyncButton
               id="mark-as-read"
               icon="fa-check-circle"
-              title={t("Mark selected as read")}
-              text={t("Mark selected as read")}
+              title={t("Mark as read")}
+              text={t("Mark as read")}
               action={() => this.markAsRead(this.state.selectedItems)}
               disabled={this.state.selectedItems.length === 0}
             />
