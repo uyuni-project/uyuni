@@ -1,1 +1,0 @@
-- CVE-2024-49502: Validate proxy hostname format and escape proxy username to mitigate XSS vulnerabilities (bsc#1231852)

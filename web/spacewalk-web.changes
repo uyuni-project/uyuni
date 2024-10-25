@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Oct 25 14:33:44 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.14-0
+  * CVE-2024-49502: Validate proxy hostname format and escape proxy
+    username to mitigate XSS vulnerabilities (bsc#1231852)
+
+-------------------------------------------------------------------
 Thu Oct 03 16:15:11 CEST 2024 - rosuna@suse.com
 
 - version 5.0.13-0
