@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 14 17:18:26 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Do not create partitions on extra storage disk
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
 Thu Aug 22 09:37:28 CEST 2024 - rosuna@suse.com
 
 - version 5.0.2-0

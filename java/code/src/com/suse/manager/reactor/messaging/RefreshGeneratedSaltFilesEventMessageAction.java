@@ -14,17 +14,9 @@
  */
 package com.suse.manager.reactor.messaging;
 
-import static com.redhat.rhn.common.util.FileUtils.setAttributes;
 import static com.suse.manager.webui.services.SaltConstants.SALT_CONFIG_STATES_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SALT_FILE_GENERATION_TEMP_PATH;
-import static com.suse.manager.webui.services.SaltConstants.SALT_SERVER_STATE_FILE_PREFIX;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
-import static java.nio.file.attribute.PosixFilePermission.GROUP_EXECUTE;
-import static java.nio.file.attribute.PosixFilePermission.GROUP_READ;
-import static java.nio.file.attribute.PosixFilePermission.GROUP_WRITE;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_EXECUTE;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_READ;
-import static java.nio.file.attribute.PosixFilePermission.OWNER_WRITE;
 
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
@@ -48,7 +40,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Regenerate all state assignment .sls files for orgs and groups.
@@ -131,22 +122,11 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
             SaltStateGeneratorService.generateMgrConfPillar();
 
             Path saltPath = suseManagerStatesFilesRoot.resolve(SALT_CONFIG_STATES_DIR);
-            Path oldSaltPath = saltGenerationTempDir.resolve(
-                    SALT_CONFIG_STATES_DIR + "_todelete");
-            Path tempCustomPath = tempSaltRootPath
-                    .resolve(SALT_CONFIG_STATES_DIR);
+            Path oldSaltPath = saltGenerationTempDir.resolve(SALT_CONFIG_STATES_DIR + "_todelete");
+            Path tempCustomPath = tempSaltRootPath.resolve(SALT_CONFIG_STATES_DIR);
 
-            // copy /srv/susemanager/salt/custom/custom_*.sls
-            // to /srv/susemanager/tmpXXXX/salt/custom
-            if (Files.exists(saltPath)) {
-                for (Path serverSls : Files.newDirectoryStream(saltPath,
-                        SALT_SERVER_STATE_FILE_PREFIX + "*.sls")) {
-                    Path target = tempCustomPath.resolve(serverSls.getFileName());
-                    Files.copy(serverSls, target);
-                    setAttributes(target, "tomcat", "susemanager",
-                            Set.of(OWNER_READ, OWNER_WRITE, GROUP_READ, GROUP_WRITE));
-                }
-            }
+            // copy /srv/susemanager/salt/custom/custom_*.sls to /srv/susemanager/tmpXXXX/salt/custom
+            SaltStateGeneratorService.INSTANCE.copyStatesToTemp(saltPath, tempCustomPath);
 
             // rm -rf /srv/susemanager/tmp/custom_todelete
             FileUtils.deleteDirectory(oldSaltPath.toFile());
@@ -155,12 +135,8 @@ public class RefreshGeneratedSaltFilesEventMessageAction implements MessageActio
                 Files.move(saltPath, oldSaltPath, StandardCopyOption.ATOMIC_MOVE);
             }
             // mv /srv/susemanager/tmp/saltXXXX/custom -> /srv/susemanager/salt/custom
-            if (Files.exists(tempCustomPath)) {
-                // this condition is needed only at setup time when there are no orgs yet
-                Files.move(tempCustomPath, saltPath, StandardCopyOption.ATOMIC_MOVE);
-                setAttributes(saltPath, "tomcat", "susemanager",
-                        Set.of(OWNER_READ, OWNER_WRITE, OWNER_EXECUTE, GROUP_READ, GROUP_EXECUTE));
-            }
+            SaltStateGeneratorService.INSTANCE.moveTempDirToSalt(saltPath, tempCustomPath);
+
             // rm -rf /srv/susemanager/tmp/custom_todelete
             if (Files.exists(oldSaltPath)) {
                 FileUtils.deleteDirectory(oldSaltPath.toFile());

@@ -69,6 +69,7 @@ import com.suse.utils.Opt;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -118,8 +119,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         List<Errata> addedList = ErrataFactory.addToChannel(errataList, channel, user, false);
         Errata added = addedList.get(0);
         assertTrue(channel.getPackages().contains(errataPack));
-        List<ErrataFile> errataFile =
-            ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
+
+        List<ErrataFile> errataFile = ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
+        // Sort the list to have the latest entry created at index 0
+        errataFile.sort(Comparator.comparing(ErrataFile::getId).reversed());
         assertTrue(errataFile.get(0).getPackages().contains(errataPack));
 
     }

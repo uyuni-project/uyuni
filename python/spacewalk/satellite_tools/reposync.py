@@ -1192,11 +1192,29 @@ class RepoSync(object):
             updated_date = self._to_db_date(notice["updated"])
         else:
             updated_date = self._to_db_date(notice["issued"])
+
+        existing_packages = (
+            existing_errata["packages"].copy() if existing_errata else []
+        )
+        npkgs = []
+        for c in notice["pkglist"]:
+            for pkg in c["packages"]:
+                npkgs.append(pkg)
+
+        # Previously, the code processed packages of an existing errata only after confirming
+        # that the errata needed an update. Now, packages are processed earlier because
+        # determining if an update is needed involves comparing the packages in the repository
+        # with those in the database.
+        e = importLib.Erratum()
+        e["packages"] = self._updates_process_packages(
+            npkgs, e["advisory_name"], existing_packages
+        )
+
         if (
             existing_errata
             and existing_errata["advisory_status"] == notice["status"]
             and not self.errata_needs_update(
-                existing_errata, notice["version"], updated_date
+                existing_errata, notice["version"], updated_date, e["packages"]
             )
         ):
             return None
@@ -1204,7 +1222,6 @@ class RepoSync(object):
         # pylint: disable-next=consider-using-f-string
         log(0, "Add Patch %s" % patch_name)
 
-        e = importLib.Erratum()
         e["errata_from"] = notice["from"]
         e["advisory"] = e["advisory_name"] = patch_name
         e["advisory_rel"] = notice["version"]
@@ -1234,17 +1251,10 @@ class RepoSync(object):
         e["rights"] = notice["rights"]
         e["refers_to"] = ""
         e["channels"] = [{"label": self.channel_label}]
-        e["packages"] = []
         e["files"] = []
         if existing_errata:
             e["channels"].extend(existing_errata["channels"])
-            e["packages"] = existing_errata["packages"]
 
-        npkgs = [pkg for c in notice["pkglist"] for pkg in c["packages"]]
-
-        e["packages"] = self._updates_process_packages(
-            npkgs, e["advisory_name"], e["packages"]
-        )
         # One or more package references could not be found in the Database.
         # To not provide incomplete patches we skip this update
         if not e["packages"] and not npkgs:
@@ -2453,8 +2463,26 @@ class RepoSync(object):
 
             existing_errata = self.get_errata(e["advisory"])
 
+            atoms = notice.find(PATCH + "atoms")
+            packages = atoms.findall(YUM + "package")
+
+            existing_packages = (
+                existing_errata["packages"].copy() if existing_errata else []
+            )
+
+            # Previously, the code processed packages of an existing errata only after confirming
+            # that the errata needed an update. Now, packages are processed earlier because
+            # determining if an update is needed involves comparing the packages in the repository
+            # with those in the database.
+            e["packages"] = self._patches_process_packages(
+                packages, e["advisory_name"], existing_packages
+            )
+
             if existing_errata and not self.errata_needs_update(
-                existing_errata, version, self._to_db_date(notice.get("timestamp"))
+                existing_errata,
+                version,
+                self._to_db_date(notice.get("timestamp")),
+                e["packages"],
             ):
                 continue
             # pylint: disable-next=consider-using-f-string
@@ -2491,18 +2519,10 @@ class RepoSync(object):
             e["org_id"] = self.org_id
             e["refers_to"] = ""
             e["channels"] = [{"label": self.channel_label}]
-            e["packages"] = []
             e["files"] = []
             if existing_errata:
                 e["channels"].extend(existing_errata["channels"])
-                e["packages"] = existing_errata["packages"]
 
-            atoms = notice.find(PATCH + "atoms")
-            packages = atoms.findall(YUM + "package")
-
-            e["packages"] = self._patches_process_packages(
-                packages, e["advisory_name"], e["packages"]
-            )
             # an update can't have zero packages, so we skip this update
             if not e["packages"]:
                 skipped_updates = skipped_updates + 1
@@ -2546,12 +2566,13 @@ class RepoSync(object):
         return processed_updates
 
     def errata_needs_update(
-        self, existing_errata, new_errata_version, new_errata_changedate
+        self, existing_errata, new_errata_version, new_errata_changedate, packages
     ):
         """check, if the errata in the DB needs an update
 
         new_errata_version: integer version number
         new_errata_changedate: date of the last change in DB format "%Y-%m-%d %H:%M:%S"
+        packages: list of packages linked to errata in the repository to be compared with DB
         """
         if self.force_all_errata:
             # with force_all_errata always re-import all errata
@@ -2569,6 +2590,20 @@ class RepoSync(object):
                 "Patch need update: newer update date - %s > %s" % (newdate, olddate),
             )
             return True
+
+        if packages:
+            existing_package_ids = {
+                pkg["package_id"] for pkg in existing_errata["packages"]
+            }
+            if any(
+                package["package_id"] not in existing_package_ids
+                for package in packages
+            ):
+                log(
+                    2,
+                    "Patch needs update: Detected packages not previously linked to errata",
+                )
+                return True
         for c in existing_errata["channels"]:
             if self.channel_label == c["label"]:
                 log(2, "No update needed")

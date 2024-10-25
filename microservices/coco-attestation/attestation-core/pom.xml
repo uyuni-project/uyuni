@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>coco-attestation</artifactId>
-        <version>5.0.5</version>
+        <version>5.1.2</version>
     </parent>
 
     <groupId>org.uyuni-project.coco-attestation</groupId>
@@ -113,6 +113,11 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

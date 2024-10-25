@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Oct 14 16:00:55 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Add a new task to handle OVAL data synchronization
+  * During schema upgrade, avoid insert problem when
+    Extern - Oracle Linux 9 is not present (bsc#1230021)
+  * Remove superfluous joins from errata view
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
 Thu Aug 01 16:54:53 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.11-0

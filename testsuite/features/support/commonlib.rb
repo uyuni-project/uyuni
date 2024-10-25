@@ -691,6 +691,16 @@ def pillar_get(key, minion)
   get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
+# Get a Salt pillar value from the master via Salt runner
+#
+# @param key [String] The key of the pillar to retrieve.
+# @return [String] The value of the specified pillar key.
+def salt_master_pillar_get(key)
+  output, _code = get_target('server').run('salt-run --out=yaml salt.cmd pillar.items')
+  pillars = YAML.load(output)
+  pillars.key?(key) ? pillars[key] : ''
+end
+
 # Wait for an action to be completed, passing the action id and a timeout
 #
 # @param actionid [String] The ID of the action to wait for.
