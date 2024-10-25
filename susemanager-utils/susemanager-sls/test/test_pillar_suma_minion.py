@@ -133,6 +133,38 @@ def test_using_context_in__get_cursor():
             "port": 1234,
         }
     }
+    with patch.object(suma_minion, "__opts__", {"id": "foobar_master", **test_opts}), patch(
+        "suma_minion.psycopg2.connect", pg_connect_mock
+    ), patch.dict(suma_minion.__context__, {}):
+        # Check if it creates new connection if it's not in the context
+        # pylint: disable-next=protected-access
+        suma_minion._get_cursor(cursor_callback)
+
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }
+
+        pg_connect_mock.reset_mock()
+
+        # Check if it reuses the connection from the context
+        # pylint: disable-next=protected-access
+        suma_minion._get_cursor(cursor_callback)
+
+        assert pg_connect_mock.call_args_list[0][1] == {
+            "host": "test_host",
+            "user": "test_user",
+            "password": "test_pass",
+            "dbname": "test_db",
+            "port": 1234,
+        }
+        assert not "suma_minion_cnx" in suma_minion.__context__
+
+    pg_connect_mock.reset_mock()
+
     with patch.object(suma_minion, "__opts__", test_opts), patch(
         "suma_minion.psycopg2.connect", pg_connect_mock
     ), patch.dict(suma_minion.__context__, {}):

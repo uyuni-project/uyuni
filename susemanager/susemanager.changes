@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Oct 04 14:58:03 CEST 2024 - rosuna@suse.com
+
+- version 4.3.39-0
+  * Enable bootstrapping for Ubuntu 24.04 LTS
+
+-------------------------------------------------------------------
 Mon Sep 02 15:01:29 CEST 2024 - rosuna@suse.com
 
 - version 4.3.38-0

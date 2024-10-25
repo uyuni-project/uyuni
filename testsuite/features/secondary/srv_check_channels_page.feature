@@ -53,7 +53,7 @@ Feature: The channels page
     And I should see a "Fake-RPM-SUSE-Channel" link
     And I should see a "build.opensuse.org" text
     And I should see a "SHA512sum:" text
-    And I should see a "packages/1/6bc/andromeda-dummy/2.0-1.1/noarch/6bc584eb0af1bc04705c78e59ca0e4154ea86c46cd75abee57c82bfc4ebb57f3660ed21e9aceceae03855264e163853acbcde88005609d773c20f185587f70cc/andromeda-dummy-2.0-1.1.noarch.rpm" text
+    And I should see a "packages/1/199/andromeda-dummy/2.0-1.1/noarch/19940cc4a9f0d38a038a4455b0f1cf1290c4a4296b27f5a62f4aae60585ac6e2677e88c3c3127d487116ed8d9b1787379e23aafac46bc14408864926bedee693/andromeda-dummy-2.0-1.1.noarch.rpm" text
 
   Scenario: Check package dependencies page
     When I follow the left menu "Software > Channel List > All"

@@ -630,6 +630,7 @@ When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
   `rm #{path}`
   # make both files readeable by salt
   get_target('server').run('chgrp salt /srv/salt/*')
+  get_target('server').run('chmod 644 /srv/salt/*')
 end
 
 When(/^I uninstall the user-defined state from the server$/) do
