@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -42,8 +43,11 @@ public class ProductTreeEntry {
     @SerializedName("product_id")
     private long productId;
 
+    @SerializedName("repository_ids")
+    private List<Long> repositoryIds = new ArrayList<>();
+
     @SerializedName("repository_id")
-    private long repositoryId;
+    private Long repositoryId;
 
     @SerializedName("parent_product_id")
     private Optional<Long> parentProductId = Optional.empty();
@@ -84,7 +88,7 @@ public class ProductTreeEntry {
      * @param parentChannelLabelIn parent channel label
      * @param channelNameIn        channel name
      * @param productIdIn          product id
-     * @param repositoryIdIn       repository id
+     * @param repositoryIdsIn       repository ids
      * @param parentProductIdIn    parent product id
      * @param rootProductIdIn      root product id
      * @param updateTagIn          update tag
@@ -98,7 +102,7 @@ public class ProductTreeEntry {
      * @param gpgInfoIn            gpg info
      */
     public ProductTreeEntry(String channelLabelIn, Optional<String> parentChannelLabelIn, String channelNameIn,
-                            long productIdIn, long repositoryIdIn, Optional<Long> parentProductIdIn,
+                            long productIdIn, List<Long> repositoryIdsIn, Optional<Long> parentProductIdIn,
                             long rootProductIdIn, Optional<String> updateTagIn, boolean signedIn, boolean mandatoryIn,
                             boolean recommendedIn, String urlIn, ReleaseStage releaseStageIn,
                             Optional<ProductType> productTypeIn, List<String> tagsIn, List<GpgInfoEntry> gpgInfoIn) {
@@ -106,7 +110,7 @@ public class ProductTreeEntry {
         this.parentChannelLabel = parentChannelLabelIn;
         this.channelName = channelNameIn;
         this.productId = productIdIn;
-        this.repositoryId = repositoryIdIn;
+        this.repositoryIds = repositoryIdsIn;
         this.parentProductId = parentProductIdIn;
         this.rootProductId = rootProductIdIn;
         this.updateTag = updateTagIn;
@@ -163,9 +167,16 @@ public class ProductTreeEntry {
     }
 
     /**
-     * @return the repositoriy id
+     * @return the repositoriy ids
      */
-    public long getRepositoryId() {
+    public List<Long> getRepositoryIds() {
+        if (repositoryIds.isEmpty() && getRepositoryId() != null) {
+            repositoryIds = List.of(getRepositoryId());
+        }
+        return repositoryIds;
+    }
+
+    private Long getRepositoryId() {
         return repositoryId;
     }
 
@@ -240,7 +251,7 @@ public class ProductTreeEntry {
         ToStringBuilder builder = new ToStringBuilder(this);
         builder.append("root", getRootProductId())
                 .append("product", getProductId())
-                .append("repo", getRepositoryId())
+                .append("repo", getRepositoryIds())
                 .append("channel", getChannelLabel())
                 .append("parent", getParentChannelLabel());
         return builder.toString();
