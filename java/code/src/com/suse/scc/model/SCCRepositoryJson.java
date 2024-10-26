@@ -36,6 +36,8 @@ public class SCCRepositoryJson {
     private boolean enabled;
     @SerializedName("installer_updates")
     private boolean installerUpdates;
+    @SerializedName("non-oss")
+    private boolean nonOss;
 
     /**
      * @return the SCC id
@@ -150,6 +152,20 @@ public class SCCRepositoryJson {
     }
 
     /**
+     * @return Return true if this is a non oss repository
+     */
+    public boolean isNonOss() {
+        return nonOss;
+    }
+
+    /**
+     * @param nonOssIn set non oss parameter
+     */
+    public void setNonOss(boolean nonOssIn) {
+        nonOss = nonOssIn;
+    }
+
+    /**
      * @return return if this repo is a PTF repository
      */
     public boolean isPtfRepository() {
@@ -189,4 +205,5 @@ public class SCCRepositoryJson {
         .append("description", getDescription())
         .toString();
     }
+
 }
