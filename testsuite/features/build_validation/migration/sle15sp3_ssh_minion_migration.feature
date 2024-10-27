@@ -7,6 +7,21 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  # pristine images for SSH minions use an old version of OS Salt
+  # Product Migration will be possible only if we update to latest
+  Scenario: Prerequisite: update OS Salt to the latest version
+    Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
+    When I follow "Software" in the content area
+    And I follow "Packages"
+    And I follow "Upgrade"
+    And I enter "salt" as the filtered package name
+    And I click on the filter button
+    And I click on "Select All"
+    And I click on "Upgrade Packages"
+    And I click on "Confirm"
+    Then I should see a "packages upgrades have been scheduled" text
+    And I wait until event "Package Install/Upgrade scheduled" is completed
+
   Scenario: Migrate this SSH minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
     When I follow "Software" in the content area
