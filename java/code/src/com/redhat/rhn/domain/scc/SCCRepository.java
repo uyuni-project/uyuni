@@ -267,7 +267,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the auth.
      */
-    @OneToMany(mappedBy = "repo")
+    @OneToMany(mappedBy = "repo", orphanRemoval = true)
     public Set<SCCRepositoryAuth> getRepositoryAuth() {
         return auth;
     }
@@ -336,6 +336,9 @@ public class SCCRepository extends BaseDomainHelper {
         }
         return new EqualsBuilder()
             .append(getUrl(), otherSCCRepository.getUrl())
+                .append(getSccId(), otherSCCRepository.getSccId())
+                .append(getName(), otherSCCRepository.getName())
+                .append(getDescription(), otherSCCRepository.getDescription())
             .isEquals();
     }
 
@@ -346,6 +349,9 @@ public class SCCRepository extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder()
             .append(getUrl())
+                .append(getSccId())
+                .append(getName())
+                .append(getDescription())
             .toHashCode();
     }
 
