@@ -45,12 +45,6 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "suseSCCRepository")
-@NamedQuery(name = "SCCRepository.lookupByChannelFamily",
-            query = "select r from SCCRepository r " +
-                    " join r.channelAttributes ca " +
-                    " join ca.product p " +
-                    " join p.channelFamily cf " +
-                    "where cf.label = :channelFamily")
 @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
             query = "select r from SCCRepository r " +
                     "where r.url like :urlEndpoint")
