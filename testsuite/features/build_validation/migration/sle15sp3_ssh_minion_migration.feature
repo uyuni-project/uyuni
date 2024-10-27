@@ -46,12 +46,6 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
     Then I should see a "SUSE Linux Enterprise Server 15 SP4" text
     And vendor change should be enabled for product migration on "sle15sp3_ssh_minion"
 
-  Scenario: Install the latest Salt on this SSH minion
-    When I migrate the non-SUMA repositories on "sle15sp3_ssh_minion"
-    And I enable repositories before installing Salt on this "sle15sp3_ssh_minion"
-    And I install Salt packages from "sle15sp3_ssh_minion"
-    And I disable repositories after installing Salt on this "sle15sp3_ssh_minion"
-
   Scenario: Subscribe the SSH-managed SLES minion to a SLES 15 SP4 child channel
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
     When I follow "Software" in the content area
