@@ -156,8 +156,8 @@ public class UserPreferenceUtils {
         }
 
         Context ctx = Context.getCurrentContext();
-        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
-        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
+        Locale locale = ctx.getLocale();
+        TimeZone timezone = ctx.getTimezone();
         DateFormat tzFormat = new SimpleDateFormat("z", locale);
         tzFormat.setTimeZone(new GregorianCalendar(timezone, locale).getTimeZone());
         return tzFormat.format(new Date());
@@ -183,10 +183,7 @@ public class UserPreferenceUtils {
             }
         }
 
-        Context ctx = Context.getCurrentContext();
-        Locale locale = ctx != null ? ctx.getLocale() : Locale.getDefault();
-        TimeZone timezone = ctx != null ? ctx.getTimezone() : TimeZone.getDefault();
-        return timezone.getID();
+        return Context.getCurrentContext().getTimezone().getID();
     }
 
     /**
