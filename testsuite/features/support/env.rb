@@ -17,6 +17,7 @@ require 'multi_test'
 require 'set'
 require 'timeout'
 require_relative 'code_coverage'
+require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
 
@@ -29,9 +30,13 @@ if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
 end
-if ENV['REDIS_HOST']
+if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
   $code_coverage_mode = true
   $stdout.puts('CODE COVERAGE MODE ENABLED.')
+end
+if ENV.fetch('QUALITY_INTELLIGENCE', false)
+  $quality_intelligence_mode = true
+  $stdout.puts('QUALITY INTELLIGENCE MODE ENABLED.')
 end
 
 # Context per feature
@@ -117,7 +122,10 @@ World(MiniTest::Assertions)
 $api_test = new_api_client
 
 # Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil)) if $code_coverage_mode
+$code_coverage = CodeCoverage.new if $code_coverage_mode
+
+# Init Quality Intelligence Handler
+$quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
 # Define the current feature scope
 Before do |scenario|
@@ -139,7 +147,7 @@ After do |scenario|
       print_server_logs
     end
   end
-  page.instance_variable_set(:@touched, false)
+  page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
 end
 
 # Test is web session is open
