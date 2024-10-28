@@ -11,6 +11,21 @@ Feature: Push a package with unset vendor
   Scenario: Log in as org admin user
     Given I am authorized
 
+  @uyuni
+  Scenario: Pre-requisite: SLES minion must be subscribed to the openSUSE Leap Micro 5.5 channel
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap Micro 5.5 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap Micro 5.5 (x86_64)"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled by admin" is completed
+
   Scenario: Pre-requisite: mgr-push package must be installed on the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
