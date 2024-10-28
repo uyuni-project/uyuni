@@ -29,9 +29,13 @@ if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
 end
-if ENV['REDIS_HOST']
+if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
   $code_coverage_mode = true
   $stdout.puts('CODE COVERAGE MODE ENABLED.')
+end
+if ENV['REDIS_HOST'] && ENV.fetch('QUALITY_INTELLIGENCE', false)
+  $quality_intelligence = true
+  $stdout.puts('QUALITY_INTELLIGENCE MODE ENABLED.')
 end
 
 # Context per feature
