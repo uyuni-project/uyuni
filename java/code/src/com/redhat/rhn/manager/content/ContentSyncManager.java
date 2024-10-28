@@ -617,7 +617,7 @@ public class ContentSyncManager {
 
         if (source == null) {
             String url = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
-            source = Optional.ofNullable(ChannelFactory.findVendorContentSourceByRepo(url))
+            source = Optional.ofNullable(ChannelFactory.findVendorContentSourceByRepo(url, channel.getLabel()))
                     .orElse(new ContentSource());
             source.setLabel(channel.getLabel());
             source.setMetadataSigned(auth.getRepo().isSigned());
@@ -2219,7 +2219,8 @@ public class ContentSyncManager {
                 Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
                 if (auth.isPresent()) {
                     String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), null);
-                    ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+                    ContentSource source =
+                            ChannelFactory.findVendorContentSourceByRepo(url, chanAttr.getChannelLabel());
                     if (source == null) {
                         source = new ContentSource();
                         source.setLabel(chanAttr.getChannelLabel());
@@ -2327,7 +2328,8 @@ public class ContentSyncManager {
                         Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
                         if (auth.isPresent()) {
                             String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), mirrorUrl);
-                            ContentSource source = ChannelFactory.findVendorContentSourceByRepo(url);
+                            ContentSource source =
+                                    ChannelFactory.findVendorContentSourceByRepo(url, chanAttr.getChannelLabel());
                             if (source == null) {
                                 source = new ContentSource();
                                 source.setLabel(chanAttr.getChannelLabel());

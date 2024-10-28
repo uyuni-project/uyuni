@@ -36,7 +36,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
@@ -1241,26 +1240,40 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Find a vendor content source (org is null) for a given repo URL.
      * @param repoUrl url to match against
+     * @param label possible content source label
      * @return vendor content source if it exists
      */
-    public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
-        criteria.add(Restrictions.isNull("org"));
-        if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org")) {
-            criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+    public static ContentSource findVendorContentSourceByRepo(String repoUrl, String label) {
+        List<ContentSource> contentSources = null;
+        String [] parts = repoUrl.split("\\?");
+        String repoUrlPrefix = parts[0];
+
+        if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org") ||
+                parts.length == 1) {
+            contentSources = getSession()
+                    .createQuery("SELECT cs FROM ContentSource cs WHERE org is null AND sourceUrl = :repoURL",
+                            ContentSource.class)
+                    .setParameter("repoURL", repoUrl)
+                    .list();
         }
         else {
-            String [] parts = repoUrl.split("\\?");
-            String repoUrlPrefix = parts[0];
-            if (parts.length > 1) {
-                criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
-                        MatchMode.START));
-            }
-            else {
-                criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+            contentSources = getSession()
+                    .createQuery("SELECT cs FROM ContentSource cs WHERE org is null AND sourceUrl like :repoURL",
+                            ContentSource.class)
+                    .setParameter("repoURL", repoUrl + "%")
+                    .list();
+        }
+        if (contentSources.size() == 1) {
+            return contentSources.get(0);
+        }
+        else if (contentSources.size() > 1) {
+            for (ContentSource source : contentSources) {
+                if (source.getLabel().equals(label)) {
+                    return source;
+                }
             }
         }
-        return (ContentSource) criteria.uniqueResult();
+        return lookupVendorContentSourceByLabel(label);
     }
 
     /**
