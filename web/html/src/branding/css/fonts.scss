@@ -63,3 +63,31 @@
   font-weight: 300;
   src: local("Roboto Bold"), local("RobotoBold"), url("../fonts/Roboto/Roboto-Bold.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "SuseFont";
+  font-style: normal;
+  font-weight: 300;
+  src: local("SuseFont"), url("../fonts/suse-fonts/SUSE20240606-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SuseFont Bold";
+  font-style: normal;
+  font-weight: 300;
+  src: local("SuseFont"), local("SuseFontBold"), url("../fonts/suse-fonts/SUSE20240606-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SuseFont Light";
+  font-style: normal;
+  font-weight: 300;
+  src: local("SuseFont"), local("SuseFontLight"), url("../fonts/suse-fonts/SUSE20240606-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "SuseFont Medium";
+  font-style: normal;
+  font-weight: 300;
+  src: local("SuseFont"), local("SuseFontMedium"), url("../fonts/suse-fonts/SUSE20240606-Medium.ttf") format("truetype");
+}
