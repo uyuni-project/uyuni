@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Oct 29 14:56:41 CET 2024 - marina.latini@suse.com
+
+- version 5.0.14-0
+  * Limit frontend-log message size (bsc#1231900)
+
+-------------------------------------------------------------------
 Thu Oct 03 16:06:39 CEST 2024 - rosuna@suse.com
 
 - version 5.0.13-0
