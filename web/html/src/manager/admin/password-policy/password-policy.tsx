@@ -1,16 +1,15 @@
 import { hot } from "react-hot-loader/root";
-import * as React from "react";
-import { useState } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
-import { Form, Text } from "components/input";
+import { Form, Text, Check } from "components/input";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { AsyncButton } from "components/buttons";
-import { showErrorToastr } from "components/toastr/toastr";
+import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 
 // Assume you have an API hook similar to useLifecyclePaygActionsApi
 import usePasswordPolicyApi from "manager/admin/password-policy/use-password-policy-api";
+import { useState } from "react";
 
 type PasswordPolicyProps = {
   minLength: bigint;
@@ -23,7 +22,9 @@ type PasswordPolicyProps = {
   specialCharList: string | null;
   restrictedOccurrenceFlag: boolean;
   maxCharOccurrence: bigint;
+  isUyuni: boolean;
 };
+
 
 const PasswordPolicy = (props: PasswordPolicyProps) => {
   const [policy, setPolicy] = useState({
@@ -38,6 +39,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
       specialCharList: props.specialCharList || "",
       restrictedOccurrenceFlag: props.restrictedOccurrenceFlag,
       maxCharOccurrence: props.maxCharOccurrence.toString(),
+      isUyuni: props.isUyuni,
     },
     errors: {},
   });
@@ -46,7 +48,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
 
   return (
     <TopPanel
-      title={t("SUSE Manager Configuration - Password Policy")}
+      title={t(policy.properties.isUyuni ? "SUSE Manager" : "Uyuni").concat(" Configuration - Password Policy")}
       icon="fa-info-circle"
       button={
         <div className="pull-right btn-group">
@@ -59,11 +61,10 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
             action={() =>
               updatePolicy(policy.properties)
                 .then(() => {
-                  // Handle success, maybe show a success message
+                  showSuccessToastr(t("Password Policy Changed"))
                 })
                 .catch((error) => {
-                  setPolicy({ ...policy, errors: error.errors });
-                  showErrorToastr(error.messages, { autoHide: false });
+                  showErrorToastr(error, { autoHide: false });
                 })
             }
           />
@@ -76,159 +77,127 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
       <Form
         model={policy.properties}
         errors={policy.errors}
-        onChange={(newProperties) => setPolicy({ ...policy, properties: newProperties })}
-      >
+        onChange={(newProperties) =>
+          setPolicy({ ...policy, properties: newProperties })
+        }
+        >
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
-          <div className="col-md-10">
+          <div className="col-md-8">
             {/* Minimum Length */}
             <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="minLength">{t("Min Password Length")}</label>
+              </div>
               <Text
                 required
                 name="minLength"
-                label={t("Minimum Length")}
-                labelClass="col-md-4 text-left"
-                divClass="col-md-4"
+                divClass="col-md-2"
                 type="number"
               />
             </div>
             {/* Maximum Length */}
             <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="minLength">{t("Max Password Length")}</label>
+              </div>
               <Text
                 required
                 name="maxLength"
-                label={t("Maximum Length")}
-                labelClass="col-md-4 text-left"
-                divClass="col-md-4"
+                divClass="col-md-2"
                 type="number"
               />
             </div>
             {/* Require Digits */}
-            <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Require Digits")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="digitsFlag"
-                  checked={policy.properties.digitsFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, digitsFlag: e.target.checked },
-                    })
-                  }
-                />
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Require Digits")}</label>
               </div>
+              <Check
+                name="digitsFlag"
+                key="digitsFlag"
+                divClass="col-md-2"
+              />
             </div>
             {/* Require Lowercase Characters */}
-            <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Require Lowercase Characters")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="lowerCharFlag"
-                  checked={policy.properties.lowerCharFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, lowerCharFlag: e.target.checked },
-                    })
-                  }
-                />
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Require Lowercase Characters")}</label>
               </div>
+              <Check
+                 name="lowerCharFlag"
+                 key="lowerCharFlag"
+                 divClass="col-md-2"
+               />
             </div>
             {/* Require Uppercase Characters */}
-            <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Require Uppercase Characters")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="upperCharFlag"
-                  checked={policy.properties.upperCharFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, upperCharFlag: e.target.checked },
-                    })
-                  }
-                />
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Require Uppercase Characters")}</label>
               </div>
+              <Check
+                name="upperCharFlag"
+                key="upperCharFlag"
+                divClass="col-md-2"
+                />
             </div>
             {/* Restrict Consecutive Characters */}
-            <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Restrict Consecutive Characters")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="consecutiveCharFlag"
-                  checked={policy.properties.consecutiveCharFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, consecutiveCharFlag: e.target.checked },
-                    })
-                  }
-                />
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Restrict Consecutive Characters")}</label>
               </div>
+              <Check
+                name="consecutiveCharFlag"
+                key="consecutiveCharFlag"
+                divClass="col-md-2"
+              />
             </div>
             {/* Require Special Characters */}
-            <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Require Special Characters")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="specialCharFlag"
-                  checked={policy.properties.specialCharFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, specialCharFlag: e.target.checked },
-                    })
-                  }
-                />
-              </div>
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Require Special Characters")}</label>
+              </div>   
+              <Check
+                name="specialCharFlag"
+                key="specialCharFlag"
+                divClass="col-md-2"
+              />
             </div>
-            {/* Special Characters List */}
-            {policy.properties.specialCharFlag && (
-              <div className="row">
-                <Text
-                  required
-                  name="specialCharList"
-                  label={t("Allowed Special Characters")}
-                  labelClass="col-md-4 text-left"
-                  divClass="col-md-8"
-                />
-              </div>
-            )}
-            {/* Restrict Character Occurrence */}
+            {/* Allowed Special Characters */}
             <div className="row form-group">
-              <label className="col-md-4 text-left">{t("Restrict Character Occurrence")}</label>
-              <div className="col-md-8">
-                <input
-                  type="checkbox"
-                  name="restrictedOccurrenceFlag"
-                  checked={policy.properties.restrictedOccurrenceFlag}
-                  onChange={(e) =>
-                    setPolicy({
-                      ...policy,
-                      properties: { ...policy.properties, restrictedOccurrenceFlag: e.target.checked },
-                    })
-                  }
-                />
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Allowed Special Characters")}</label>
               </div>
+              <Text
+                required={policy.properties.specialCharFlag}
+                disabled={!policy.properties.specialCharFlag}
+                name="specialCharList"
+                divClass="col-md-4"
+              />
+            </div>
+            {/* Restrict Character Occurrence */}
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Restrict Character Occurrence")}</label>
+              </div>
+              <Check
+                key="restrictedOccurrenceFlag"
+                name="restrictedOccurrenceFlag"
+                divClass="col-md-2"  
+              />
             </div>
             {/* Maximum Character Occurrence */}
-            {policy.properties.restrictedOccurrenceFlag && (
-              <div className="row">
-                <Text
-                  required
-                  name="maxCharOccurrence"
-                  label={t("Maximum Character Occurrence")}
-                  labelClass="col-md-4 text-left"
-                  divClass="col-md-8"
-                  type="number"
-                />
+            <div className="row form-group">
+              <div className="col-md-4 text-left">
+                <label htmlFor="digitsFlag">{t("Restrict Character Occurrence")}</label>
               </div>
-            )}
+              <Text
+                required={policy.properties.restrictedOccurrenceFlag}
+                disabled={!policy.properties.restrictedOccurrenceFlag}
+                name="maxCharOccurrence"
+                divClass="col-md-2"
+                type="number"
+              />
+            </div>
           </div>
         </Panel>
       </Form>

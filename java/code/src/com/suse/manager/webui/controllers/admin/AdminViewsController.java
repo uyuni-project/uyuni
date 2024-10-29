@@ -107,9 +107,10 @@ public class AdminViewsController {
         data.put("upperCharFlag", pc.isUpperCharFlag());
         data.put("consecutiveCharFlag", pc.isConsecutiveCharsFlag());
         data.put("specialCharFlag", pc.isSpecialCharFlag());
-        data.put("specialCharList", pc.getSpecialChars());
+        data.put("specialCharList", GSON.toJson(pc.getSpecialChars()));
         data.put("restrictedOccurrenceFlag", pc.isRestrictedOccurrenceFlag());
         data.put("maxCharOccurrence", pc.getMaxCharacterOccurrence());
+        data.put("isUyuni", ConfigDefaults.get().isUyuni());
         return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
     }
 

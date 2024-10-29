@@ -18,23 +18,14 @@ package com.suse.manager.webui.controllers.admin.handlers;
 import static com.redhat.rhn.domain.role.RoleFactory.SAT_ADMIN;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static spark.Spark.delete;
 import static spark.Spark.post;
-import static spark.Spark.put;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
-import com.redhat.rhn.common.validator.ValidatorException;
-import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.EntityExistsException;
 
-import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.webui.controllers.admin.beans.PasswordPolicyProperties;
-import com.suse.manager.webui.controllers.admin.beans.PaygProperties;
-import com.suse.manager.webui.controllers.contentmanagement.handlers.ValidationUtils;
-import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
@@ -93,12 +84,7 @@ public class PasswordPolicyController {
                     passwordPolicyProperties.getRestrictedOccurrenceFlag());
             SatConfigFactory.setSatConfigValue(SatConfigFactory.PSW_CHECK_MAX_OCCURRENCE,
                     passwordPolicyProperties.getMaxCharOccurrence().toString());
-            return json(GSON, response, ResultJson.success("OK"), new TypeToken<>() { });
-        }
-        catch (ValidatorException e) {
-            return json(GSON, response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(ValidationUtils.convertValidationErrors(e),
-                            ValidationUtils.convertFieldValidationErrors(e)), new TypeToken<>() { });
+            return json(GSON, response, ResultJson.success(""), new TypeToken<>() { });
         }
         catch (Exception e) {
             return json(GSON, response, HttpStatus.SC_BAD_REQUEST, ResultJson.error(e.getMessage()),
