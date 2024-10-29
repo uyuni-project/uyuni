@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct 29 14:57:46 CET 2024 - marina.latini@suse.com
+
+- version 5.0.15-0
+  * CVE-2024-49503: Escape organization credentials username to
+    mitigate XSS vulnerability (bsc#1231922)
+
+-------------------------------------------------------------------
 Fri Oct 25 14:33:44 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.14-0
