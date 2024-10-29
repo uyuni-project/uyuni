@@ -3,9 +3,9 @@ import * as React from "react";
 import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
 import { Button, SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
-import { MessageType } from "components/messages";
-import { Messages } from "components/messages";
+import { Form } from "components/input/form/Form";
+import { MessageType } from "components/messages/messages";
+import { Messages } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 
 import { localizedMoment } from "utils";

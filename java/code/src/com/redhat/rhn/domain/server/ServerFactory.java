@@ -42,6 +42,7 @@ import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
+import com.redhat.rhn.manager.audit.OsReleasePair;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -66,6 +67,7 @@ import org.hibernate.type.StandardBasicTypes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -247,6 +249,19 @@ public class ServerFactory extends HibernateFactory {
                     .stream()
                     .findFirst();
         }
+    }
+
+    /**
+     * List the <b>unique</b> set of pairs of os and release versions used by servers
+     *
+     * @return the set of unique pairs of os and release version used by servers
+     * */
+    public static Set<OsReleasePair> listAllServersOsAndRelease() {
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listAllServersOsAndRelease",
+                Collections.emptyMap());
+
+        return result.stream().map(row -> new OsReleasePair((String) row[0], (String) row[1]))
+                .collect(Collectors.toSet());
     }
 
     /**

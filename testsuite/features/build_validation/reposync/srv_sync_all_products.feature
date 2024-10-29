@@ -25,28 +25,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add channel "sles12-sp5-uyuni-client-devel" with arch "x86_64"
     And I wait until the channel "sles12-sp5-uyuni-client-devel-x86_64" has been synced
 
-@sle15sp1_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP1
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Server 15 SP1" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP1 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP1 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP1 x86_64"
-    And I select "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP1 x86_64" product has been added
-    And I wait until all synchronized channels for "sles15-sp1" have finished
-
-@uyuni
-@sle15sp1_minion
-  Scenario: Add SUSE Linux Enterprise Server 15 SP1 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "sles15-sp1-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "sles15-sp1-devel-uyuni-client-x86_64" has been synced
-
 @sle15sp2_minion
   Scenario: Add SUSE Linux Enterprise Server 15 SP2
     Given I am authorized for the "Admin" section
@@ -448,27 +426,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sl-micro-6.0-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
-@opensuse154arm_minion
-  Scenario: Add openSUSE 15.4 for ARM
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "openSUSE Leap 15.4 aarch64" as the filtered product description
-    And I select "openSUSE Leap 15.4 aarch64" as a product
-    Then I should see the "openSUSE Leap 15.4 aarch64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "openSUSE Leap 15.4 aarch64" product has been added
-    And I wait until all synchronized channels for "leap15.4-aarch64" have finished
-
-@uyuni
-@opensuse154arm_minion
-  Scenario: Add openSUSE 15.4 for ARM Uyuni Client tools
-    When I use spacewalk-common-channel to add all "leap15.4" channels with arch "aarch64"
-    And I wait until all synchronized channels for "leap15.4-aarch64" have finished
-
-@susemanager
 @opensuse155arm_minion
   Scenario: Add openSUSE 15.5 for ARM
     Given I am authorized for the "Admin" section
@@ -710,6 +667,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux9" have finished
 
+@susemanager
 @ubuntu2004_minion
   Scenario: Add Ubuntu 20.04
     Given I am authorized for the "Admin" section
@@ -750,24 +708,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "ubuntu-2204" have finished
 
 @susemanager
-@debian10_minion
-  Scenario: Add Debian 10
+@ubuntu2404_minion
+  Scenario: Add Ubuntu 24.04
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "Debian 10" as the filtered product description
-    And I select "Debian 10" as a product
-    Then I should see the "Debian 10" selected
+    And I enter "Ubuntu 24.04" as the filtered product description
+    And I select "Ubuntu 24.04" as a product
+    Then I should see the "Ubuntu 24.04" selected
     When I click the Add Product button
-    And I wait until I see "Debian 10" product has been added
-    And I wait until all synchronized channels for "debian-10" have finished
+    And I wait until I see "Ubuntu 24.04" product has been added
+    And I wait until all synchronized channels for "ubuntu-2404" have finished
 
 @uyuni
-@debian10_minion
-  Scenario: Add Debian 10
-    When I use spacewalk-common-channel to add all "debian-10" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "debian-10" have finished
+@ubuntu2404_minion
+  Scenario: Add Ubuntu 24.04
+    When I use spacewalk-common-channel to add all "ubuntu-2404" channels with arch "amd64-deb"
+    And I wait until all synchronized channels for "ubuntu-2404" have finished
 
 @susemanager
 @debian11_minion
@@ -860,5 +818,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
-    And I should not see a warning nor an error sign
+    And I should only see success signs in the product list

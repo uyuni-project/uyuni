@@ -21,6 +21,7 @@ class CodeCoverage
   #
   # @param feature_name [String] The name of the feature.
   def push_feature_coverage(feature_name)
+    $stdout.puts("Pushing coverage for #{feature_name} into Redis")
     filename = "/tmp/jacoco-#{feature_name}.xml"
     begin
       xml = File.read(filename, mode: 'r')
@@ -62,9 +63,9 @@ class CodeCoverage
     xml_report = xml ? "--xml /srv/www/htdocs/pub/jacoco-#{feature_name}.xml" : ''
     sourcefiles = source ? '--sourcefiles /tmp/uyuni-master/java/code/src' : ''
     classfiles = '--classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib/rhn.jar'
-    dump_path = "/tmp/jacoco-#{feature_name}.exec"
-    get_target('server').run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset")
-    get_target('server').run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}")
-    file_extract(get_target('server'), "/srv/www/htdocs/pub/jacoco-#{feature_name}.xml", "/tmp/jacoco-#{feature_name}.xml")
+    dump_path = "/var/cache/jacoco-#{feature_name}.exec"
+    get_target('server').run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset", verbose: true)
+    get_target('server').run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}", verbose: true)
+    get_target('server').extract("/srv/www/htdocs/pub/jacoco-#{feature_name}.xml", "/tmp/jacoco-#{feature_name}.xml")
   end
 end

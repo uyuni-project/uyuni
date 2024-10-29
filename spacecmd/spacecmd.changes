@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Oct 14 15:41:34 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Speed up softwarechannel_removepackages (bsc#1227606)
+  * Fix error in 'kickstart_delete' when using wildcards
+    (bsc#1227578)
+  * spacecmd bootstrap now works with specified port (bsc#1229437)
+  * Bump version to 5.1.0
+  * Fix SLS backup creation as directory with spacecmd (bsc#1230745)
+
+-------------------------------------------------------------------
 Thu Aug 01 09:35:12 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0

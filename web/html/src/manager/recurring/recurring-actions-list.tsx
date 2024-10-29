@@ -6,7 +6,7 @@ import { Button } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { IconTag } from "components/icontag";
-import { Utils as MessagesUtils } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Toggler } from "components/toggler";

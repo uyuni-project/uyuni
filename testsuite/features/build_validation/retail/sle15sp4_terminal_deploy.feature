@@ -27,7 +27,7 @@ Feature: PXE boot a SLES 15 SP4 retail terminal
     And I follow this "sle15sp4_terminal" link
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
+    And I wait until I see "added system entitlement" text, refreshing the page
     And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area

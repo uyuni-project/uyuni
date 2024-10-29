@@ -3,11 +3,11 @@ import { useContext, useEffect, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Check } from "components/input/Check";
-import { Form, FormContext } from "components/input/Form";
-import { Select } from "components/input/Select";
-import { Utils as MessagesUtils } from "components/messages";
-import { MessageType } from "components/messages";
+import { Select } from "components/input";
+import { Check } from "components/input/check/Check";
+import { Form, FormContext } from "components/input/form/Form";
+import { Utils as MessagesUtils } from "components/messages/messages";
+import { MessageType } from "components/messages/messages";
 
 import Network from "utils/network";
 

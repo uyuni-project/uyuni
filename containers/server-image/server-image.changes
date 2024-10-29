@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Oct 14 17:26:43 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1
+  * Add HANA and cluster formulas to Server image (bsc#1230536)
+  * Use /etc/krb5.conf.d for all Kerberos related configurations
+    (bsc#1229077)
+  * Bump version to 5.1.0
+  * Do not install outdated package spacewalk-utils-extras on
+    Server image (bsc#1228945)
+  * Fix package name search when syncing volumes data (bsc#1229923)
+
+-------------------------------------------------------------------
 Thu Aug 01 18:40:27 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8

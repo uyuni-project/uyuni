@@ -8,6 +8,8 @@ import * as React from "react";
 type BaseProps = {
   /** Text to display on the button. */
   text?: React.ReactNode;
+  /** Text to display on the button. */
+  children?: React.ReactNode;
 
   /**
    * FontAwesome icon class of the button. Can also include additional FA classes
@@ -37,7 +39,8 @@ type BaseState = {};
  */
 class _ButtonBase<P extends BaseProps = BaseProps, S extends BaseState = BaseState> extends React.Component<P, S> {
   renderIcon() {
-    const margin = this.props.text ? "" : " no-margin";
+    const text = this.props.text ?? this.props.children;
+    const margin = text ? "" : " no-margin";
     const icon = this.props.icon && <i className={"fa " + this.props.icon + margin} />;
 
     return icon;
@@ -124,7 +127,8 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
       style += " " + this.props.className;
     }
 
-    const margin = this.props.text ? "" : " no-margin";
+    const text = this.props.text ?? this.props.children;
+    const margin = text ? "" : " no-margin";
     return (
       <button
         id={this.props.id}
@@ -138,7 +142,7 @@ export class AsyncButton extends _ButtonBase<AsyncProps, AsyncState> {
         ) : (
           this.renderIcon()
         )}
-        {this.props.text}
+        {text}
       </button>
     );
   }
@@ -154,6 +158,7 @@ export type ButtonProps = BaseProps & {
  */
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
+    const text = this.props.text ?? this.props.children;
     return (
       <button
         id={this.props.id}
@@ -164,7 +169,7 @@ export class Button extends _ButtonBase<ButtonProps> {
         disabled={this.props.disabled}
       >
         {this.renderIcon()}
-        {this.props.text}
+        {text}
       </button>
     );
   }
@@ -186,6 +191,7 @@ type LinkProps = BaseProps & {
  */
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
+    const text = this.props.text ?? this.props.children;
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
@@ -205,7 +211,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         {...targetProps}
       >
         {this.renderIcon()}
-        {this.props.text}
+        {text}
       </a>
     );
   }
@@ -216,10 +222,11 @@ export class LinkButton extends _ButtonBase<LinkProps> {
  */
 export class SubmitButton extends _ButtonBase {
   render() {
+    const text = this.props.text ?? this.props.children;
     return (
       <button id={this.props.id} type="submit" className={"btn " + this.props.className} disabled={this.props.disabled}>
         {this.renderIcon()}
-        {this.props.text}
+        {text}
       </button>
     );
   }
@@ -240,6 +247,7 @@ type DropdownProps = BaseProps & {
  */
 export class DropdownButton extends _ButtonBase<DropdownProps> {
   render() {
+    const text = this.props.text ?? this.props.children;
     return (
       <div className="dropdown">
         <button
@@ -252,7 +260,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           disabled={this.props.disabled}
         >
           {this.renderIcon()}
-          {this.props.text} <span className="caret" />
+          {text} <span className="caret" />
         </button>
         <ul className="dropdown-menu dropdown-menu-right">
           {this.props.items.map((i) => (

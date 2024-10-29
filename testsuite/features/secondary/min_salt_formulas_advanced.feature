@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_formulas
@@ -7,8 +7,8 @@ Feature: Use advanced features of Salt formulas
   As an authorized user
   I want to be able to install and use Salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
+   Scenario: Log in as org admin user
+      Given I am authorized
 
   Scenario: Install a test formula package on the server
      When I install "form.yml" to custom formula metadata directory "testform"
@@ -102,7 +102,7 @@ Feature: Use advanced features of Salt formulas
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
      When I wait for "1" seconds
@@ -208,7 +208,7 @@ Feature: Use advanced features of Salt formulas
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
      When I wait for "1" seconds

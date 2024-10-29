@@ -2,10 +2,10 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 import { hideDialog } from "components/dialog/util";
-import { Form } from "components/input/Form";
-import { Password } from "components/input/Password";
+import { Form } from "components/input/form/Form";
+import { Password } from "components/input/password/Password";
 import { PopUp } from "components/popup";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 export type PopupState = "wait" | "askPassword" | "errors";
 

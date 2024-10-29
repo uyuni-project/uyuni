@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.frontend.dto;
 
+import com.redhat.rhn.domain.errata.Errata;
+
 import java.util.Date;
 
 /**
@@ -24,6 +26,23 @@ public class OwnedErrata extends ErrataOverview {
     private Date created;
     private String locallyModified;
     private Integer published;
+
+    /**
+     * Empty default Constructor
+     */
+    public OwnedErrata() {
+        super();
+    }
+
+    /**
+     * Constructor from errata
+     * @param errataIn the errata
+     */
+    public OwnedErrata(Errata errataIn) {
+        super();
+        setId(errataIn.getId());
+        setAdvisory(errataIn.getAdvisory());
+    }
 
     /**
      * @param locallyModifiedIn The locallyModified to set.

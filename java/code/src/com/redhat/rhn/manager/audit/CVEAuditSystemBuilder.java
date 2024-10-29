@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.manager.audit;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -30,6 +32,7 @@ public class CVEAuditSystemBuilder {
     private long systemID;
     private String systemName;
     private PatchStatus patchStatus;
+    private Set<ScanDataSource> scanDataSources = new HashSet<>();
 
     // LinkedHashSet is used to preserve insertion order when iterating
     private Set<AuditChannelInfo> channels =
@@ -180,5 +183,19 @@ public class CVEAuditSystemBuilder {
     /** {@inheritDoc} */
     public Long getId() {
         return systemID;
+    }
+
+    /**
+     * Returns the list of data sources used to audit the system.
+     *
+     * @return list of data sources
+     * */
+    public Set<ScanDataSource> getScanDataSources() {
+        return scanDataSources;
+    }
+
+
+    public void setScanDataSources(ScanDataSource... dataSourcesIn) {
+        scanDataSources = new HashSet<>(Arrays.asList(dataSourcesIn));
     }
 }

@@ -1,0 +1,8 @@
+export SERVER="oscar-srv.mgr.suse.de"
+
+#### Generate certificates for Google Chrome
+if [ ! -f /etc/pki/trust/anchors/$SERVER.cert ]; then
+  wget http://$SERVER/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/$SERVER.cert
+  update-ca-certificates
+  certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/$SERVER.cert
+fi

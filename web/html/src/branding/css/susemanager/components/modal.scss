@@ -91,4 +91,6 @@
 .ReactModal__Content {
   background-color: $modal-color;
   border-radius: $border-radius;
+  // For modals with unspecified constraints, limit them to the largest
+  max-width: $modal-xl;
 }

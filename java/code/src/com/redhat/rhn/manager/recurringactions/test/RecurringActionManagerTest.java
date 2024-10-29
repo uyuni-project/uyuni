@@ -76,7 +76,6 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     static {
         CONTEXT.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
-        RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }
 
     @Override
@@ -86,6 +85,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         anotherOrg = UserTestUtils.createNewOrgFull("anotherOrg");
         anotherUser = UserTestUtils.createUser("anotherUser", anotherOrg.getId());
+
+        RecurringActionManager.setTaskomaticApi(taskomaticMock);
     }
 
     @Test

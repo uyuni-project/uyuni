@@ -42,6 +42,9 @@ import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.salt.netapi.utils.Xor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -407,6 +410,37 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         if (!user.hasRole(role)) {
             throw new PermissionCheckFailureException(role);
         }
+    }
+
+    /**
+     * Parse an input element uniformly for both XMLRPC and JSON APIs.
+     * <p>
+     * Useful when parsing input parameter values inside complex structs where there's no type information available.
+     * <p>
+     * XMLRPC and JSON APIs automatically parse the values for top-level parameters according to the type information
+     * available. However, the values nested inside a complex struct must be parsed inside the specific handler method.
+     *
+     * @param argIn the input value
+     * @return the parsed {@link T} object
+     * @throws InvalidParameterException when the input cannot be parsed
+     */
+    protected static <T> T parseInputValue(Object argIn, Class<T> typeIn) throws InvalidParameterException {
+        T value;
+        try {
+            if (typeIn.isAssignableFrom(argIn.getClass())) {
+                // Assume exact type (XMLRPC)
+                value = typeIn.cast(argIn);
+            }
+            else {
+                // Interpret as string (JSON over HTTP)
+                value = new Gson().fromJson("\"" + argIn + "\"", typeIn);
+            }
+        }
+        catch (ClassCastException | JsonSyntaxException e) {
+            throw new InvalidParameterException("Wrong input format", e);
+        }
+
+        return value;
     }
 
     /**

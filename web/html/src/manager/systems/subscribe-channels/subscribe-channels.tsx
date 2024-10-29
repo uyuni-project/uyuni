@@ -8,8 +8,8 @@ import { ActionSchedule } from "components/action-schedule";
 import { ActionChain } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelAnchorLink } from "components/links";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Toggler } from "components/toggler";
 
@@ -467,7 +467,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
               const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
 
               return (
-                <div className="radio">
+                <div className="radio" key={c.id}>
                   <input
                     type="radio"
                     value={c.id}
@@ -493,7 +493,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
               const isChecked = c.id === (this.state.selectedBase && this.state.selectedBase.id);
 
               return (
-                <div className="radio">
+                <div className="radio" key={c.id}>
                   <input
                     type="radio"
                     value={c.id}
@@ -519,7 +519,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
       let mandatoryChannels = this.state.selectedBase && this.state.requiredChannels.get(this.state.selectedBase.id);
 
       childChannels = Array.from(availableChildren.values()).map((c) => (
-        <div className="checkbox">
+        <div className="checkbox" key={c.id}>
           <input
             type="checkbox"
             value={c.id}
@@ -692,7 +692,7 @@ class SystemChannels extends React.Component<SystemChannelsProps, SystemChannels
           <div>
             {availableChildren &&
               Array.from(availableChildren.values()).map((c) => (
-                <div className="checkbox">
+                <div className="checkbox" key={c.id}>
                   <input
                     type="checkbox"
                     value={c.id}

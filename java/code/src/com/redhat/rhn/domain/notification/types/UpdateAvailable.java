@@ -23,11 +23,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * Notification data for an update being available for the server.
  */
-public class UpdateAvailable implements NotificationData {
+public class UpdateAvailable implements NotificationData, Serializable {
 
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
     private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);
@@ -36,7 +37,7 @@ public class UpdateAvailable implements NotificationData {
 
     private final boolean mgr = !ConfigDefaults.get().isUyuni();
     private final String version = StringUtils.substringBeforeLast(ConfigDefaults.get().getProductVersion(), ".");
-    private final Runtime runtime;
+    private final transient Runtime runtime;
 
     /**
      * Constructor allowing to pass the runtime as argument.
@@ -82,7 +83,7 @@ public class UpdateAvailable implements NotificationData {
 
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.warning;
+        return NotificationMessage.NotificationMessageSeverity.WARNING;
     }
 
     @Override

@@ -1,8 +1,10 @@
+type PathString = `/rhn/${string}`;
+
 /**
  * A list of updated page pathnames, e.g. `"/rhn/manager/foo/bar"`
  * NB! This must be in sync with java/code/src/com/suse/manager/webui/utils/ViewHelper.java
  */
-const BOOTSTRAP_READY_PAGES: string[] = [
+const BOOTSTRAP_READY_PAGES: PathString[] = [
   "/rhn/YourRhn.do",
   "/rhn/account/UserPreferences.do",
   "/rhn/account/UserDetails.do",
@@ -12,7 +14,7 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/account/EditAddress.do",
   "/rhn/multiorg/OrgConfigDetails.do",
   "/rhn/manager/notification-messages",
-  "rhn/channels/software/Search.do",
+  "/rhn/channels/software/Search.do",
   "/rhn/activationkeys/List.do",
   "/rhn/manager/systems/list/all",
   "/rhn/manager/contentmanagement/projects",
@@ -47,10 +49,19 @@ const BOOTSTRAP_READY_PAGES: string[] = [
   "/rhn/manager/cm/build",
   "/rhn/admin/ScheduleDetail.do",
   "/rhn/manager/systems/cmd",
+  "/rhn/kickstart/KickstartIpRanges.do",
+  "/rhn/channels/manage/repos/RepoCreate.do",
+  "/rhn/systems/details/Overview",
+  "/rhn/manager/formula-catalog",
+  "/rhn/errata/manage/CloneErrata.do",
+  "/rhn/admin/setup/ProxySettings.do",
+  "/rhn/admin/setup/MirrorCredentials.do",
+  "/rhn/manager/admin/setup/payg",
+  "/rhn/manager/storybook",
 ];
 
 export const onEndNavigate = () => {
-  const pathname = window.location.pathname;
+  const pathname = window.location.pathname as PathString;
   if (BOOTSTRAP_READY_PAGES.includes(pathname)) {
     document.body.className = document.body.className.replace("old-theme", "new-theme");
   } else {

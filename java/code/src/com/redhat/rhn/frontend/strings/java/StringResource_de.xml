@@ -888,12 +888,14 @@
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
+        <target state="translated">@@PRODUCT_NAME@@-Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
+        <target state="translated">@@PRODUCT_NAME@@-Server</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -6046,11 +6048,11 @@ Benutzers vor dem Versuch, den Account zu deaktivieren.</target>
         <target>Unbehandelter Fehler</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.success" xml:space="preserve">
-        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target>Bootstrap-Skript erfolgreich erstellt.  Sie haben Zugriff auf &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap&lt;/a&gt;</target>
+        <target state="needs-adaptation">Bootstrap-Skript erfolgreich erstellt.  Sie haben Zugriff auf &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -8885,6 +8887,7 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
       </trans-unit>
       <trans-unit id="cpuModel" xml:space="preserve">
         <source>CPU Model</source>
+        <target state="translated">CPU-Modell</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
@@ -8897,6 +8900,7 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
       </trans-unit>
       <trans-unit id="cpuNumberOfCpus" xml:space="preserve">
         <source>CPU Count</source>
+        <target state="translated">CPU-Anzahl</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
@@ -8909,18 +8913,21 @@ Folgen Sie dieser URL für die vollständige Liste inaktiver Systeme:
       </trans-unit>
       <trans-unit id="serverArchName" xml:space="preserve">
         <source>Server Architecture</source>
+        <target state="translated">Serverarchitektur</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="runningKernel" xml:space="preserve">
         <source>Kernel</source>
+        <target state="translated">Kernel</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemTypeLabel" xml:space="preserve">
         <source>System Type</source>
+        <target state="translated">Systemtyp</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
@@ -10006,27 +10013,33 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="setup-wizard.next" xml:space="preserve">
         <source>Next</source>
+        <target state="translated">Weiter</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.empty" xml:space="preserve">
         <source>No credentials</source>
+        <target state="translated">Keine Anmeldedaten</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.actions" xml:space="preserve">
         <source>Actions</source>
+        <target state="translated">Aktionen</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.verify" xml:space="preserve">
         <source>verify credentials</source>
+        <target state="translated">Anmeldedaten verifizieren</target>
       </trans-unit>
       <trans-unit id="subscriptionmatching.nav.title" xml:space="preserve">
         <source>Subscription Matching</source>
       </trans-unit>
       <trans-unit id="foreign_entitled" xml:space="preserve">
         <source>Foreign</source>
+        <target state="translated">Fremd</target>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.entitlements" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/Index.do#entitle"&gt;Add or Remove&lt;/a&gt; Add-On System Types</source>
       </trans-unit>
       <trans-unit id="system_entitlements.invalid" xml:space="preserve">
         <source>Invalid system type selected.</source>
+        <target state="translated">Ungültiger Systemtyp ausgewählt.</target>
       </trans-unit>
       <trans-unit id="system_entitlements.addon.error" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) failed to set to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
@@ -10149,12 +10162,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="Foreign Entitled Servers" xml:space="preserve">
         <source>Foreign</source>
+        <target state="translated">Fremd</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Formula Catalog" xml:space="preserve">
         <source>Formula Catalog</source>
+        <target state="translated">Formelkatalog</target>
       </trans-unit>
       <trans-unit id="Non Compliant" xml:space="preserve">
         <source>Non Compliant</source>
@@ -10207,6 +10222,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="recurring_action.invalid_cron" xml:space="preserve">
         <source>Invalid Quartz expression provided.</source>
+        <target state="translated">Ungültiger Quartz-Ausdruck angegeben.</target>
       </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
@@ -10228,7 +10244,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Netzwerke</target>
       </trans-unit>
       <trans-unit id="virt.pool_refresh" xml:space="preserve">
         <source>Virtual storage pool refresh</source>
@@ -10442,35 +10458,35 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Name darf nicht länger als 128 Zeichen sein</target>
       </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-        <target state="new"/>
+        <target state="translated">Name existiert bereits</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-        <target state="new"/>
+        <target state="translated">Kennzeichnung darf nicht länger als 16 Zeichen sein</target>
       </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Name darf nicht länger als 128 Zeichen sein</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
-        <target state="new"/>
+        <target state="translated">Filtername existiert bereits</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
         <source>Filter {0} created successfully</source>
-        <target state="new"/>
+        <target state="translated">Filter {0} erfolgreich erstellt</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
-        <target state="new"/>
+        <target state="translated">Filter {0} erfolgreich aktualisiert</target>
       </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-        <target state="new"/>
+        <target state="translated">Name darf nicht länger als 128 Zeichen sein</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
@@ -10481,11 +10497,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Erstellung eines virtuellen Netzwerks</target>
       </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-        <target state="new"/>
+        <target state="translated">Keine solche FQDN: {0}.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
@@ -10501,11 +10517,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-        <target state="new"/>
+        <target state="translated">Zurückgezogene Pakete: {0}</target>
       </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-        <target state="new"/>
+        <target state="translated">Zurückgezogene Patches: {0}</target>
       </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
@@ -10519,7 +10535,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Aktualisierung des virtuellen Netzes</target>
       </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
@@ -10533,28 +10549,28 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Ungültiger Pfad (muss ein gültiger absoluter Pfad sein)</target>
       </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Pfad existiert bereits</target>
       </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Kontrollknoten antwortet nicht</target>
       </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Ungültiger Pfadtyp</target>
       </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
@@ -11179,14 +11195,22 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="internal_state.reboot" xml:space="preserve">
+      <trans-unit id="internal_state.reboot" xml:space="preserve">
         <source>Perform a reboot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+        <source>Sync OVAL Data</source>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+        <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
