@@ -53,7 +53,7 @@ function saveCredentials() {
 
   if (validated) {
     console.log("Saving credentials: " + editId);
-    var user = jQuery('#edit-user').val();
+    var user = dwr.util.escapeHtml(jQuery('#edit-user').val());
     var password = jQuery('#edit-password').val();
     showSpinner("edit-credentials-spinner");
 
