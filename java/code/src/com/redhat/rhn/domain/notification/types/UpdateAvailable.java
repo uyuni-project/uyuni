@@ -24,10 +24,12 @@ import com.redhat.rhn.domain.notification.NotificationMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.Serializable;
+
 /**
  * Notification data for an update being available for the server.
  */
-public class UpdateAvailable implements NotificationData {
+public class UpdateAvailable implements NotificationData, Serializable {
 
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
     private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);

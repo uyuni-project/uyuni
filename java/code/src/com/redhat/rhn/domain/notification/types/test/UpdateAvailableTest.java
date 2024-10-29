@@ -19,6 +19,7 @@ import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_NAME;
 import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_MGR;
 import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_UYUNI;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,6 +27,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,8 +44,6 @@ public class UpdateAvailableTest {
             "Failed to extract version from release notes from";
     private static final String RELEASE_NOTES_HTML_ELEMENT =
             "<html>Release Notes for v<span id=\"current_version\">%s</span>.</html>";
-    private static final String RELEASE_NOTES_HTML_ELEMENT_WITH_MORE_ATTRIBUTES =
-            "<html>...<span class=\"some classes\" id=\"current_version\" style=\"display:none\">%s</span>...</html>";
     private static final String SUMA = "SUSE Manager";
     private static final String UYUNI = "Uyuni";
 
@@ -73,6 +74,9 @@ public class UpdateAvailableTest {
         };
 
         assertTrue(updateAvailable.hasUpdateAvailable());
+        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.warning, updateAvailable.getSeverity());
+        assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
     /**
@@ -115,6 +119,9 @@ public class UpdateAvailableTest {
         };
 
         assertTrue(updateAvailable.hasUpdateAvailable());
+        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.warning, updateAvailable.getSeverity());
+        assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
     /**
