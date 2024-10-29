@@ -30,6 +30,87 @@
   "liveNow": false,
   "panels": [
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "PBFA97CFB590B2093"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "statics{instance=\"host.containers.internal:9000\", job=\"supportconfig-exporter\", statics=\"madeupmetric\"}"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 101,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.2.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "PBFA97CFB590B2093"
+          },
+          "editorMode": "code",
+          "expr": "statics{}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "transformations": [
+        {
+          "id": "renameByRegex",
+          "options": {
+            "regex": "statics{instance=\"host.containers.internal:9000\", job=\"supportconfig-exporter\", statics=\"xmx_size\"}",
+            "renamePattern": "xmx size (MB)"
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
       "collapsed": false,
       "datasource": {
         "type": "loki",
@@ -39,7 +120,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 8
       },
       "id": 71,
       "panels": [],
@@ -87,7 +168,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 1
+        "y": 9
       },
       "id": 91,
       "options": {
@@ -168,7 +249,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 1
+        "y": 9
       },
       "id": 99,
       "options": {
@@ -236,7 +317,7 @@
         "h": 4,
         "w": 12,
         "x": 12,
-        "y": 1
+        "y": 9
       },
       "id": 77,
       "options": {
@@ -302,7 +383,7 @@
         "h": 4,
         "w": 6,
         "x": 6,
-        "y": 5
+        "y": 13
       },
       "id": 97,
       "options": {
@@ -366,7 +447,7 @@
         "h": 4,
         "w": 3,
         "x": 12,
-        "y": 5
+        "y": 13
       },
       "id": 73,
       "options": {
@@ -451,7 +532,7 @@
         "h": 4,
         "w": 3,
         "x": 15,
-        "y": 5
+        "y": 13
       },
       "id": 83,
       "options": {
@@ -538,7 +619,7 @@
         "h": 4,
         "w": 3,
         "x": 18,
-        "y": 5
+        "y": 13
       },
       "id": 85,
       "options": {
@@ -621,7 +702,7 @@
         "h": 4,
         "w": 3,
         "x": 21,
-        "y": 5
+        "y": 13
       },
       "id": 75,
       "options": {
@@ -682,7 +763,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 17
       },
       "id": 63,
       "panels": [],
@@ -759,7 +840,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 18
       },
       "id": 65,
       "options": {
@@ -799,7 +880,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 15
+        "y": 23
       },
       "id": 67,
       "options": {
