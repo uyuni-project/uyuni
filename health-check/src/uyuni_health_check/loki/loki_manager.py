@@ -165,7 +165,7 @@ def wait_loki_init(config=None, verbose=False):
         or loki_ingester_chunk_entries_count == 0
         or not ready
         and not timeouted
-        or not all_labels_available(config=config)
+        #or not all_labels_available(config=config)
     ):
         if verbose:
             console.log("Waiting for promtail metrics to be collected")
