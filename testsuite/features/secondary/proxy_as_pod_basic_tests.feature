@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
@@ -127,9 +127,9 @@ Feature: Register and test a Containerized Proxy
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "Fake-Base-Channel"
+    And I check radio button "Fake-Base-Channel-SUSE-like"
     And I wait until I do not see "Loading..." text
-    And I check "Fake-Child-Channel"
+    And I check "Fake-Child-Channel-SUSE-like"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
