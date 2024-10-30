@@ -70,17 +70,26 @@ ALTER TABLE suseSCCRepository
   ADD COLUMN IF NOT EXISTS
     nonoss CHAR(1) DEFAULT ('N') NOT NULL CONSTRAINT suse_sccrepo_nonoss_ck CHECK (nonoss in ('Y', 'N'));
 
-INSERT INTO suseChannelAttributes (product_id, root_product_id, channel_label, parent_channel_label, channel_name, mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp)
-SELECT product_id, root_product_id, channel_label, parent_channel_label, channel_name, CASE mandatory WHEN 'Y' THEN true ELSE false END AS mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp
-    FROM suseProductSCCRepository
-ORDER BY id
-ON CONFLICT DO NOTHING;
+DO $$
+  BEGIN
+    IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'suseproductsccrepository') THEN
 
-INSERT INTO suseChannelRepository
-  SELECT ca.id, spcr.repo_id
-FROM suseProductSCCRepository spcr
-JOIN suseChannelAttributes ca ON ca.channel_label = spcr.channel_label AND ca.product_id = spcr.product_id AND ca.root_product_id = spcr.root_product_id
-ON CONFLICT DO NOTHING;
+      INSERT INTO suseChannelAttributes (product_id, root_product_id, channel_label, parent_channel_label, channel_name, mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp)
+        SELECT product_id, root_product_id, channel_label, parent_channel_label, channel_name, CASE mandatory WHEN 'Y' THEN true ELSE false END AS mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp
+          FROM suseProductSCCRepository
+      ORDER BY id;
+
+      INSERT INTO suseChannelRepository
+        SELECT ca.id, spcr.repo_id
+          FROM suseProductSCCRepository spcr
+          JOIN suseChannelAttributes ca ON ca.channel_label = spcr.channel_label AND ca.product_id = spcr.product_id AND ca.root_product_id = spcr.root_product_id;
+
+    ELSE
+      RAISE NOTICE 'suseProductSCCRepository does not exists';
+    END IF;
+  END;
+$$;
+
 
 DROP INDEX IF EXISTS suse_prdrepo_pid_rpid_rid_uq;
 DROP INDEX IF EXISTS suse_prdrepo_chl_idx;
