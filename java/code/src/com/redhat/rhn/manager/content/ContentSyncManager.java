@@ -636,7 +636,8 @@ public class ContentSyncManager {
     private void linkOrphanContentSource(ContentSource cs) {
         for (Channel c : cs.getChannels()) {
             for (SCCRepository repo : ChannelFactory.findVendorRepositoryByChannel(c)) {
-                if (cs.getSourceUrl().startsWith(repo.getUrl())) {
+                String repoUrl = repo.getUrl();
+                if (cs.getSourceUrl().startsWith(repoUrl)) {
                     // found the matching repo for the contentsource we search for
                     repo.getBestAuth().ifPresentOrElse(
                             auth -> {
@@ -649,6 +650,29 @@ public class ContentSyncManager {
                                 ChannelFactory.remove(cs);
                             });
                     return;
+                }
+                else if (cs.getSourceUrl().startsWith("file://")) {
+                    try {
+                        for (String url : buildRepoFileUrls(repoUrl, repo)) {
+                            if (cs.getSourceUrl().startsWith(url)) {
+                                // found the matching repo for the contentsource we search for
+                                repo.getBestAuth().ifPresentOrElse(
+                                        auth -> {
+                                            LOG.debug("Has new auth: {}", cs.getLabel());
+                                            auth.setContentSource(cs);
+                                            SCCCachingFactory.saveRepositoryAuth(auth);
+                                        },
+                                        () -> {
+                                            LOG.debug("No auth anymore - remove content source: {}", cs.getLabel());
+                                            ChannelFactory.remove(cs);
+                                        });
+                                return;
+                            }
+                        }
+                    }
+                    catch (URISyntaxException eIn) {
+                        LOG.error("unable to convert URL into File URL");
+                    }
                 }
             }
         }
