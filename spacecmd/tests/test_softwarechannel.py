@@ -3,7 +3,7 @@
 Test software channel module.
 """
 
-from mock import Mock, MagicMock, patch
+from mock import Mock, MagicMock, patch, call
 import spacecmd.softwarechannel
 from helpers import shell, assert_expect, assert_list_args_expect
 import pytest
@@ -700,3 +700,44 @@ def test_softwarechannel_errata_diff(shell):
         ],
     )
 
+
+def test_softwarechannel_removepackages(shell):
+    packages_list = [
+        {
+            "id": 21708,
+            "name": "emacs",
+            "version": "42.0",
+            "release": "9",
+            "epoch": "",
+            "arch": "x86_64",
+        },
+        {
+            "id": 21742,
+            "name": "emacs-nox",
+            "version": "42.0",
+            "release": "10",
+            "epoch": "",
+            "arch_label": "x86_64",
+        },
+        {
+            "id": 12969,
+            "name": "tiff",
+            "version": "1.0",
+            "release": "11",
+            "epoch": "3",
+            "arch": "amd64",
+        },
+    ]
+
+    mprint = MagicMock()
+    shell.client.channel.software.listAllPackages = MagicMock(
+        return_value=packages_list
+    )
+    with patch("spacecmd.softwarechannel.print", mprint):
+        out = spacecmd.softwarechannel.do_softwarechannel_removepackages(
+            shell, "some_channel emacs-42.0-9.x86_64"
+        )
+    assert out == 0
+    # It's not good to check output, but the actual call includes so many mocked
+    # functions that it's close to meaningless to check those
+    assert call("emacs-42.0-9.x86_64") in mprint.call_args_list

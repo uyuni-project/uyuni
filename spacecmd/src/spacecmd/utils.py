@@ -405,32 +405,53 @@ def latest_pkg(pkg1, pkg2, version_key='version',
 
     return None
 
+def build_package_name(package):
+    """Returns name-version-release:epoch.arch string for a single package.
+
+    Args:
+      packages: A single package object.
+    """
+    name = "{name}-{version}-{release}".format(
+        name=package.get("name"),
+        version=package.get("version"),
+        release=package.get("release")
+    )
+    epoch = package.get("epoch", "").strip()
+    # NOTE: normally it's "name-epoch:version-release.arch", but in spacecmd
+    # "name-version-release:epoch.arch" is used. Such strings can be supplied
+    # by users, therefore we need to stick to it.
+    if epoch:
+        name += ":{epoch}".format(epoch=epoch)
+
+    arch = package.get("arch", "").strip()
+    arch_label = package.get("arch_label", "").strip()
+    if arch:
+        # system.listPackages uses AMD64 instead of x86_64
+        arch = re.sub("amd64", "x86_64", arch.lower())
+        name += ".{arch}".format(arch=arch)
+    elif arch_label:
+        name += ".{arch}".format(arch=arch_label)
+
+    return name
+
+
 def build_package_names(packages):
-    """build a proper RPM name from the various parts"""
+    """Create name-version-release:epoch.arch strings for packages.
+
+    Args:
+      packages: List of packages or a single package object.
+
+    Returns:
+      List of package identifier strings with the following format for each package:
+        "name-version-release:epoch.arch" or a singe package identifier string.
+    """
     single = False
 
     if not isinstance(packages, list):
         packages = [packages]
         single = True
 
-    package_names = []
-    for p in packages:
-        package = '%s-%s-%s' % (
-            p.get('name'), p.get('version'), p.get('release'))
-
-        epoch = p.get("epoch", "").strip()
-        if epoch:
-            package += ':%s' % epoch
-
-        if p.get('arch'):
-            # system.listPackages uses AMD64 instead of x86_64
-            arch = re.sub('amd64', 'x86_64', p.get('arch', "").lower())
-
-            package += '.%s' % arch
-        elif p.get('arch_label', "").strip():
-            package += '.%s' % p.get('arch_label')
-
-        package_names.append(package)
+    package_names = [build_package_name(p) for p in packages]
 
     if single:
         return package_names[0]

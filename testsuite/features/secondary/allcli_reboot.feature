@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC.
+# Copyright (c) 2017-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # Idempotency note:
@@ -14,7 +14,7 @@
 # - features/secondary/min_deblike_openscap_audit.feature
 # - features/secondary/min_deblike_remote_command.feature
 # - features/secondary/min_deblike_ssh.feature
-# If the minions take over the alloted 10 minutes to reboot, 
+# If the minions take over the alloted 10 minutes to reboot,
 # the following features could fail due to the minions not being reachable.
 # Depending on how long they take to reboot, even more features could fail.
 
@@ -22,8 +22,8 @@
 @scope_onboarding
 Feature: Reboot systems managed by Uyuni
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
 @ssh_minion
   Scenario: Reboot the SSH-managed SLES minion
@@ -41,7 +41,7 @@ Feature: Reboot systems managed by Uyuni
     And I should see a "Reboot system" button
     And I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    When I wait at most 600 seconds until event "System reboot scheduled" is completed
     And I should see a "Reboot completed." text
 
 @rhlike_minion
@@ -52,7 +52,7 @@ Feature: Reboot systems managed by Uyuni
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    When I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "Reboot completed." text
 
 @deblike_minion
@@ -63,5 +63,5 @@ Feature: Reboot systems managed by Uyuni
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    When I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    When I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "Reboot completed." text

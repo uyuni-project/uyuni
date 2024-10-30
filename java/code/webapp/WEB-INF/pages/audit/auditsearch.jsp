@@ -80,7 +80,7 @@
         <html:form action="/audit/Search.do">
         <rhn:csrf />
         <rhn:submitted />
-        <div class="text-right form-group">
+        <div class="text-right mb-4">
             <button type="submit" class="btn btn-success">
                 <rhn:icon type="header-search" />
                 <bean:message key="button.search"/>

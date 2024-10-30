@@ -387,13 +387,13 @@ def do_configchannel_backup(self, args):
 
         fh.write('selinux_ctx = %s\n' % details.get('selinux_ctx'))
 
-        if details.get('type') == 'file':
+        if details.get("type") in ("file", "sls"):
             dumpdir = os.path.dirname(dumpfile)
 
         if not os.path.isdir(dumpdir):
             os.makedirs(dumpdir)
 
-        if details.get('type') == 'file':
+        if details.get("type") in ("file", "sls"):
             fh.write('sha256 = %s\n' % details.get('sha256'))
             fh.write('binary = %s\n' % details.get('binary'))
             of = open(dumpfile, 'w')

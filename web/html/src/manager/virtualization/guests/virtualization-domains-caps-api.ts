@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Utils as MessagesUtils } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 

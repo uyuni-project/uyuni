@@ -1,8 +1,8 @@
 import * as React from "react";
 
 import { DateTimePicker } from "components/datetime";
-import { Form } from "components/input/Form";
-import { Text } from "components/input/Text";
+import { Form } from "components/input/form/Form";
+import { Text } from "components/input/text/Text";
 
 import { localizedMoment } from "utils";
 

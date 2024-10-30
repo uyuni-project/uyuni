@@ -6,7 +6,7 @@ import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalLink } from "components/dialog/ModalLink";
 import { showDialog } from "components/dialog/util";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { FilterFormType } from "../shared/type/filter.type";

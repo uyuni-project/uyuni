@@ -10,7 +10,8 @@ require 'socket'
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $client_id = $api_test.system.search_by_name(system_name).first['id']
+  first_match = $api_test.system.search_by_name(system_name).first
+  $client_id = first_match['id'] unless first_match.nil?
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
@@ -102,7 +103,7 @@ When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
 end
 
 Then(/^I should get at least one role that matches "([^"]*)" suffix$/) do |suffix|
-  refute(@roles.find_all { |el| el =~ /#{suffix}/ }.empty?)
+  refute(@roles.find_all { |el| el.match?(/#{suffix}/) }.empty?)
 end
 
 Then(/^I should get role "([^"]*)"$/) do |rolename|
@@ -141,7 +142,7 @@ Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, p
   $current_password = password
   next if $api_test.user.list_users.to_s.include? user
 
-  $api_test.user.create(user, password, user, user, "#{user}@mail.com")
+  $api_test.user.create(user, password, user, user, 'galaxy-noise@suse.de')
   roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
   roles.each do |role|
     $api_test.user.add_role(user, role)
@@ -629,4 +630,33 @@ end
 
 When(/^I delete profile and distribution using the API for "([^"]*)" kickstart tree$/) do |distro_name|
   $api_test.kickstart.tree.delete_tree_and_profiles(distro_name)
+end
+
+When(/I verify channel "([^"]*)" is( not)? modular via the API/) do |channel_label, not_modular|
+  is_modular = $api_test.channel.appstreams.modular?(channel_label)
+  expected = not_modular.nil?
+
+  raise ScriptError "channel '#{channel_label}' is modular? Expected: #{expected} - got: #{is_modular}" unless is_modular == expected
+end
+
+When(/channel "([^"]*)" is( not)? present in the modular channels listed via the API/) do |channel, not_present|
+  modular_channels = $api_test.channel.appstreams.list_modular_channels
+  is_present = modular_channels.include?(channel)
+  expected = not_present.nil?
+
+  raise ScriptError "Expected #{modular_channels} to include '#{channel}'? #{expected} - got: #{is_present}" unless is_present == expected
+end
+
+When(/"([^"]*)" module streams "([^"]*)" are available for channel "([^"]*)" via the API/) do |module_name, streams, channel_label|
+  expected_streams = streams.split(',').map(&:strip)
+  available_streams = $api_test.channel.appstreams.list_module_streams(channel_label)
+
+  expected_streams.each do |expected_stream|
+    found =
+      available_streams.any? do |stream|
+        stream['module'] == module_name && stream['stream'] == expected_stream
+      end
+
+    raise ScriptError, "Stream '#{expected_stream}' for module '#{module_name}' not found in the available streams for channel '#{channel_label}'" unless found
+  end
 end

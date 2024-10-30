@@ -8,7 +8,7 @@ import { docsLocale } from "core/user-preferences";
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { IconTag as Icon } from "components/icontag";
-import { Messages, Utils as MessagesUtils } from "components/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
 

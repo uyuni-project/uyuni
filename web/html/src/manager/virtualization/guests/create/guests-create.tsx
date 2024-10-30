@@ -3,8 +3,8 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
-import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
-import { Utils as MessagesUtils } from "components/messages";
+import { getOrderedItemsFromModel } from "components/input/form-multi-input/FormMultiInput";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { SimpleActionApi } from "../../SimpleActionApi";

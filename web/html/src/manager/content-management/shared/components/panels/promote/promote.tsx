@@ -8,7 +8,7 @@ import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../../../api/use-lifecycle-actions-api";
 import { ProjectEnvironmentType, ProjectHistoryEntry } from "../../../type/project.type";
@@ -77,8 +77,8 @@ const Promote = (props: Props) => {
           ) : (
             <React.Fragment>
               <dl className="row">
-                <dt className="col-xs-4">{t("Version")}:</dt>
-                <dd className="col-xs-8">
+                <dt className="col-4 col-xs-4">{t("Version")}:</dt>
+                <dd className="col-8 col-xs-8">
                   <BuildVersion
                     id={`${props.environmentPromote.version}_promote_${props.environmentTarget.id}`}
                     text={
@@ -90,8 +90,8 @@ const Promote = (props: Props) => {
                 </dd>
               </dl>
               <dl className="row">
-                <dt className="col-xs-4">{t("Target environment")}:</dt>
-                <dd className="col-xs-8">{props.environmentTarget.name}</dd>
+                <dt className="col-4 col-xs-4">{t("Target environment")}:</dt>
+                <dd className="col-8 col-xs-8">{props.environmentTarget.name}</dd>
               </dl>
             </React.Fragment>
           )

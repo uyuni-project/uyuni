@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -15,15 +15,17 @@
 # - features/secondary/srv_docker_cve_audit.feature
 # If the image is not created, the message shown is "There are no entries to show."
 
-@skip_if_github_validation
 @skip_if_cloud
 @buildhost
 @scope_retail
 @scope_building_container_images
+@scc_credentials
 Feature: Build OS images
 
+  Scenario: Log in as org admin user
+    Given I am authorized
+
   Scenario: Create an OS image profile with activation key
-    Given I am authorized for the "Admin" section
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
     And I enter "suse_os_image" as "label"

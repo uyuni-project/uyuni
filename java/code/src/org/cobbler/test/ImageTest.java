@@ -79,6 +79,7 @@ public class ImageTest {
     @AfterEach
     public void tearDown() {
         Assertions.assertTrue(image.remove());
+        MockConnection.clear();
     }
 
     /**

@@ -54,7 +54,7 @@ conf_files $OF \
     /etc/salt/minion \
     /etc/salt/minion.d/susemanager.conf \
     /etc/salt/minion.d/_schedule.conf \
-    /etc/uyuni/proxy/config.yaml \
+    /etc/uyuni/proxy/config.yaml  \
     /etc/sysconfig/uyuni-proxy-systemd-services
 
 
@@ -126,4 +126,3 @@ if which podman >/dev/null 2>&1; then
         log_cmd $OF "podman logs $CONTAINER"
     done
 fi
-

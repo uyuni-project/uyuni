@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { Button } from "components/buttons";
 import { ModalButton } from "components/dialog/ModalButton";
-import { MessageType } from "components/messages";
+import { MessageType } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import MaintenanceCalendarDetails from "./calendar-details";

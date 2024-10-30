@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { InnerPanel } from "components/panels/InnerPanel";
 import { MessagesContainer } from "components/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import Network from "utils/network";
 

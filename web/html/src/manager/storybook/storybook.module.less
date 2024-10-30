@@ -1,0 +1,29 @@
+:global(.old-theme),
+:global(.new-theme) {
+  .header {
+    // position: sticky;
+    top: 8px;
+    padding-bottom: 8px;
+    background: #fff;
+    z-index: 1;
+  }
+
+  .story {
+    display: flex;
+    gap: 16px;
+
+    > div {
+      flex: 1 0 auto;
+    }
+
+    > pre {
+      flex: 1 1 auto;
+      overflow: auto;
+      max-width: 50%;
+
+      code {
+        white-space: pre;
+      }
+    }
+  }
+}

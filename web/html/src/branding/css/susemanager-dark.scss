@@ -6,6 +6,7 @@ $theme: "susemanager-dark";
 @import "./bootstrap5-scaffolding-variables.scss";
 
 .new-theme {
+  @import "./bootstrap5-grid-patch.scss";
   @import "bootstrap5/scss/bootstrap";
 
   @import "./mixins.scss";

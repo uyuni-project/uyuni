@@ -1,10 +1,9 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
-@skip_if_github_validation
 @sle_minion
 @scope_monitoring
 Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
@@ -12,13 +11,13 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   As an authorized user
   I want to enable Prometheus exporters
 
+@skip_if_github_validation
   Scenario: Pre-requisite: enable Prometheus exporters repository on the minion
     When I enable the necessary repositories before installing Prometheus exporters on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
-
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Apply Prometheus and Prometheus exporter formulas
     Given I am on the Systems overview page of this "sle_minion"
@@ -50,20 +49,24 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
+@skip_if_github_validation
   Scenario: Apply highstate for Prometheus exporters
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
+
+@skip_if_github_validation    
+  Scenario: Wait for services
+    When I wait until "prometheus" service is active on "sle_minion"
+    And I wait until "node" exporter service is active on "sle_minion"
+    And I wait until "apache" exporter service is active on "sle_minion"
+    And I wait until "postgres" exporter service is active on "sle_minion"
 
   Scenario: Visit monitoring endpoints on the minion
-    When I wait until "prometheus" service is active on "sle_minion"
-    And I visit "Prometheus" endpoint of this "sle_minion"
-    And I wait until "node" exporter service is active on "sle_minion"
+    When I visit "Prometheus" endpoint of this "sle_minion"
     And I visit "Prometheus node exporter" endpoint of this "sle_minion"
-    And I wait until "apache" exporter service is active on "sle_minion"
     And I visit "Prometheus apache exporter" endpoint of this "sle_minion"
-    And I wait until "postgres" exporter service is active on "sle_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "sle_minion"
 
   Scenario: Cleanup: undo Prometheus and Prometheus exporter formulas
@@ -73,11 +76,13 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Save"
     Then I wait until I see "Formula saved" text
 
+@skip_if_github_validation
   Scenario: Cleanup: apply highstate after test monitoring
     And I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
+@skip_if_github_validation    
   Scenario: Cleanup: disable Prometheus exporters repository
     When I disable the necessary repositories before installing Prometheus exporters on this "sle_minion" without error control

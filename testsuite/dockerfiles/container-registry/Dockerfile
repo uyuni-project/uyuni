@@ -1,0 +1,2 @@
+FROM registry:2
+

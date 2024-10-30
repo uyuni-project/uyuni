@@ -723,8 +723,7 @@ public class SystemHandler extends BaseHandler {
         Channel baseChannel = server.getBaseChannel();
         List<Map<String, Object>> returnList = new ArrayList<>();
 
-        List<EssentialChannelDto> list =
-                ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
+        Set<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
         for (EssentialChannelDto ch : list) {
             Boolean currentBase = (baseChannel != null) &&
                     baseChannel.getId().equals(ch.getId());
@@ -6827,8 +6826,8 @@ public class SystemHandler extends BaseHandler {
      *      #array_begin("netDevices")
      *          #struct_begin("network device")
      *              #prop("string", "name")
-     *              #prop("string", "mac")
      *              #prop("string", "ip")
+     *              #prop("string", "mac")
      *              #prop("string", "dnsname")
      *          #struct_end()
      *      #array_end()

@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Mon Oct 14 15:51:19 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Set Proxy authtoken FQDN based on config file (bsc#1230255)
+  * Allow execute of ssh-keygen command on the Proxy to cleanup SSH
+    known_hosts (bsc#1228345)
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
 Mon Jun 10 17:10:09 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.3-0

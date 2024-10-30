@@ -1,9 +1,9 @@
 import * as React from "react";
 
 import { ActionChain } from "components/action-schedule";
-import { Text } from "components/input/Text";
-import { MessageType } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Text } from "components/input/text/Text";
+import { MessageType } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import Validation from "components/validation";
 

@@ -20,21 +20,21 @@
       <ul class="list-group">
         <li class="list-group-item">
           <div class="row">
-            <div class="col-xs-1 col-sm-2"><strong><bean:message key="deleterev.jsp.channelname" /></strong></div>
-            <div class="col-xs-11 col-sm-10">${file.configChannel.displayName}</div>
+            <div class="col-1 col-xs-1 col-sm-2"><strong><bean:message key="deleterev.jsp.channelname" /></strong></div>
+            <div class="col-11 col-xs-11 col-sm-10">${file.configChannel.displayName}</div>
           </div>
         </li>
         <li class="list-group-item">
           <div class="row">
-            <div class="col-xs-1 col-sm-2"><strong><bean:message key="deleterev.jsp.revisionpath" /></strong></div>
-            <div class="col-xs-11 col-sm-10">${file.configFileName.path}</div>
+            <div class="col-1 col-xs-1 col-sm-2"><strong><bean:message key="deleterev.jsp.revisionpath" /></strong></div>
+            <div class="col-11 col-xs-11 col-sm-10">${file.configFileName.path}</div>
           </div>
         </li>
         <c:if test="${!revision.directory}">
           <li class="list-group-item">
             <div class="row">
-              <div class="col-xs-1 col-sm-2"><strong><bean:message key="deletefile.jsp.totalspace" /></strong></div>
-              <div class="col-xs-11 col-sm-10">${storage}</div>
+              <div class="col-1 col-xs-1 col-sm-2"><strong><bean:message key="deletefile.jsp.totalspace" /></strong></div>
+              <div class="col-11 col-xs-11 col-sm-10">${storage}</div>
             </div>
           </li>
         </c:if>

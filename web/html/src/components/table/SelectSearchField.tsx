@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Select } from "components/input";
 
@@ -15,9 +15,11 @@ export const SelectSearchField = ({ label, criteria, options, onSearch }) => {
   const allOptions = [ALL_OPTION].concat(options);
 
   // Avoid invalid value selected when changing field.
-  if (!allOptions.some((it) => it.value === searchValue)) {
-    handleSearchValueChange(ALL_OPTION.value);
-  }
+  useEffect(() => {
+    if (!allOptions.some((it) => it.value === searchValue)) {
+      handleSearchValueChange(ALL_OPTION.value);
+    }
+  }, [searchValue, allOptions, onSearch]);
 
   return (
     <Select

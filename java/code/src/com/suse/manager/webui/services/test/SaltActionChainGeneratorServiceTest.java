@@ -216,6 +216,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setOs(ServerConstants.SLEMICRO);
+        minion1.setRelease("5.5");
         MinionSummary minionSummary1 = new MinionSummary(minion1);
 
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -279,6 +280,7 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
 
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         minion1.setOs(ServerConstants.SLEMICRO);
+        minion1.setRelease("6.0");
         MinionSummary minionSummary1 = new MinionSummary(minion1);
 
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
