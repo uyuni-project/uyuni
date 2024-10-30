@@ -257,11 +257,8 @@ Before do |scenario|
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
 
-  # Some stages have features that always requires admin user, the rest will use its own user based on feature filename
-  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing') || (feature_path.include? 'build_validation')
-    $current_user = 'admin'
-    $current_password = 'admin'
-  else
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
     step %(I create a user with name "#{$feature_filename}" and password "linux")
     add_context('user_created', true)
   end
