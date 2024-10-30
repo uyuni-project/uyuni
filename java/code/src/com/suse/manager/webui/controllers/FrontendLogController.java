@@ -25,15 +25,18 @@ import com.redhat.rhn.domain.user.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.commons.io.input.BoundedReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.text.Normalizer;
 import java.util.HashMap;
 import java.util.Map;
 
 import spark.Request;
 import spark.Response;
+import spark.Spark;
 
 /**
  * Spark controller class the FrontendLog handler.
@@ -43,6 +46,8 @@ public class FrontendLogController {
     private static final Gson GSON = new GsonBuilder().create();
 
     private static Logger log = LogManager.getLogger(FrontendLogController.class);
+    private static final int MAX_LOG_PAYLOAD_SIZE = 1000;
+    private static final int MAX_USER_AGENT_LENGTH = 200;
 
     /**
      * Initialize the {@link spark.Route}s served by this controller
@@ -60,24 +65,36 @@ public class FrontendLogController {
      * @return JSON result of the API call
      */
     public static String log(Request request, Response response, User user) {
-        Map<String, Object> map = GSON.fromJson(request.body(), Map.class);
-        String type = map.get("level").toString();
-
-        // Normalize the unicode message to canonical form to ensure no invalid characters are present
-        String message = Normalizer.normalize(map.get("message").toString(), Normalizer.Form.NFC);
-        message = "[" + user.getId() + " - " + request.userAgent() + "] - " + message;
-
-
-        switch (type) {
-            case "info": log.info(message); break;
-            case "debug": log.debug(message); break;
-            case "warning": log.warn(message); break;
-            case "error": log.error(message); break;
-            default: log.info(message); break;
+        int contentLength = request.contentLength();
+        if (contentLength <= 0 || contentLength > MAX_LOG_PAYLOAD_SIZE) {
+            Spark.halt(413, "Content Too Large");
         }
+        String userAgent = request.userAgent()
+                .substring(0, Math.min(request.userAgent().length(), MAX_USER_AGENT_LENGTH));
 
-        Map<String, Boolean> data = new HashMap<>();
-        data.put("success", true);
-        return GSON.toJson(data);
+        try {
+            BoundedReader in = new BoundedReader(request.raw().getReader(), MAX_LOG_PAYLOAD_SIZE);
+            Map<String, Object> map = GSON.fromJson(in, Map.class);
+            String type = map.get("level").toString();
+
+            // Normalize the unicode message to canonical form to ensure no invalid characters are present
+            String message = Normalizer.normalize(map.get("message").toString(), Normalizer.Form.NFC);
+            message = "[" + user.getId() + " - " + userAgent + "] - " + message;
+
+            switch (type) {
+                case "info": log.info(message); break;
+                case "debug": log.debug(message); break;
+                case "warning": log.warn(message); break;
+                case "error": log.error(message); break;
+                default: log.info(message); break;
+            }
+
+            Map<String, Boolean> data = new HashMap<>();
+            data.put("success", true);
+            return GSON.toJson(data);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
