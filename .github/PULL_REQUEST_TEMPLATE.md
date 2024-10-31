@@ -1,3 +1,8 @@
+  ## IMPORTANT 📌
+
+
+**SUSE Manager 4.3** is in maintenance mode, and we don't intend to implement significant changes unless absolutely necessary. If the pull request is substantial in size and targets **SUSE Manager 4.3**, and it's not a Level 3 fix, please reach out to @rjmateus or @admd before proceeding with the merge.
+
 ## What does this PR change?
 
 **add description**
@@ -33,7 +38,7 @@ After:
 ## Links
 
 Issue(s): #
-Port(s): # **add downstream PR(s), if any**
+Port(s): # **add upstream PR, if any**
 
 - [ ] **DONE**
 
@@ -53,7 +58,9 @@ If you need to re-run a test, please mark the related checkbox, it will be unche
 
 - [ ] Re-run test "changelog_test"
 - [ ] Re-run test "backend_unittests_pgsql"
+- [ ] Re-run test "java_lint_checkstyle"
 - [ ] Re-run test "java_pgsql_tests"
+- [ ] Re-run test "ruby_rubocop"
 - [ ] Re-run test "schema_migration_test_pgsql"
 - [ ] Re-run test "susemanager_unittests"
 - [ ] Re-run test "javascript_lint"

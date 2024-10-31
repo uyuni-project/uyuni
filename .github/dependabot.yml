@@ -8,8 +8,3 @@ updates:
     # This is currently bugged, see https://github.com/dependabot/dependabot-core/issues/2521
     allow:
       - dependency-type: "production"
-
-  - package-ecosystem: "github-actions" # Check for updates to GitHub Actions every weekday
-    directory: "/"
-    schedule: 
-      interval: "daily"
