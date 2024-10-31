@@ -35,7 +35,7 @@ if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
 end
 if ENV['REDIS_HOST'] && ENV.fetch('QUALITY_INTELLIGENCE', false)
   $quality_intelligence = true
-  $stdout.puts('QUALITY_INTELLIGENCE MODE ENABLED.')
+  $stdout.puts('QUALITY INTELLIGENCE MODE ENABLED.')
 end
 
 # Context per feature
@@ -121,7 +121,7 @@ World(MiniTest::Assertions)
 $api_test = new_api_client
 
 # Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil)) if $code_coverage_mode
+$code_coverage = CodeCoverage.new if $code_coverage_mode
 
 # Define the current feature scope
 Before do |scenario|

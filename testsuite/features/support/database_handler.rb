@@ -5,6 +5,7 @@ require 'redis'
 # Database handler to interact with a Redis database
 class DatabaseHandler
   # Initialize a connection with a Redis database
+  #
   # @param redis_host [String] The hostname of the Redis database.
   # @param redis_port [Integer] The port of the Redis database.
   # @param redis_username [String] The username to authenticate with the Redis database.

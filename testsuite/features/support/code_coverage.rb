@@ -1,12 +1,17 @@
-# Copyright (c) 2016-2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 require_relative 'database_handler'
 require 'nokogiri'
 require 'open-uri'
 
 # CodeCoverage handler to produce, parse and report Code Coverage from the Jave Server to our GitHub PRs
-class CodeCoverage < DatabaseHandler
-  include(Nokogiri::XML)
+class CodeCoverage
+  include Nokogiri::XML
+
+  # Initialize the CodeCoverage handler
+  def initialize
+    @db_handler = DatabaseHandler.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil))
+  end
 
   # Parse a JaCoCo XML report, extracting information that will be included in a Set on a Redis database
   #
@@ -27,13 +32,12 @@ class CodeCoverage < DatabaseHandler
 
           next unless Integer(counter_class.attr('covered').to_s).positive?
 
-          add("#{package_name}/#{sourcefile_name}", feature_name)
+          @db_handler.add("#{package_name}/#{sourcefile_name}", feature_name)
         end
       end
     rescue StandardError => e
       warn(e.backtrace)
-    ensure
-      File.delete(filename)
+    ensure File.delete(filename)
     end
   end
 
