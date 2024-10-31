@@ -704,17 +704,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
         <return alias="r" class="com.redhat.rhn.domain.scc.SCCRepository" />
     </sql-query>
-    <sql-query name="Channel.findOrphanVendorChannels">
-        <![CDATA[
-            SELECT {c.*}
-            FROM rhnChannel c
-            LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
-            left join rhnChannelContentSource ccs on c.id = ccs.channel_id
-            where c.org_id is NULL
-            and ccs.source_id IS NULL
-        ]]>
-        <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
-    </sql-query>
     <sql-query name="Channel.findModularChannels">
         <![CDATA[
             SELECT {c.*}

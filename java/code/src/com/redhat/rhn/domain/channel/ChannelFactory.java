@@ -25,6 +25,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
@@ -142,15 +143,34 @@ public class ChannelFactory extends HibernateFactory {
      * @return the ContentSource(s)
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
-        return singleton.listObjectsByNamedQuery("ContentSource.findOrphanVendorContentSources", Map.of());
+        return getSession().createNamedQuery("ContentSource.findOrphanVendorContentSources", ContentSource.class)
+                .list();
     }
 
     /**
-     * Lookup orphan vendor channels
-     * @return the Channels(s)
+     * Find all Vendor Channels which miss repositories comparing to SCC provided data
+     * @return list of channels which are incomplete
      */
-    public static List<Channel> lookupOrphanVendorChannels() {
-        return singleton.listObjectsByNamedQuery("Channel.findOrphanVendorChannels", Map.of());
+    public static List<Channel> findIncompleteVendorChannels() {
+        return getSession().createNativeQuery("""
+                SELECT X.*, 0 as clazz_ FROM (
+                    SELECT c.*,
+                           (SELECT COUNT(*)
+                              FROM suseChannelTemplate ct
+                              JOIN suseChannelTemplateRepository cr ON ct.id = cr.template_id
+                             WHERE ct.channel_label = c.label) sccrepositorycount,
+                           (SELECT COUNT(*)
+                              FROM rhnChannelContentSource ccs
+                             WHERE ccs.channel_id = c.id) contentsourcecount
+                      FROM rhnChannel c
+                     WHERE c.org_id IS NULL) X
+                 WHERE X.sccrepositorycount > X.contentsourcecount;
+                """, Channel.class)
+                .addSynchronizedEntityClass(ChannelTemplate.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(SCCRepository.class)
+                .addSynchronizedEntityClass(ContentSource.class)
+                .getResultList();
     }
 
     /**
