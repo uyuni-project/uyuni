@@ -45,7 +45,6 @@ utils/__init__.py
 utils/migrate-system-profile
 utils/migrateSystemProfile.py
 utils/spacewalk-api
-utils/spacewalk-clone-by-date
 utils/spacewalk-common-channels
 utils/spacewalk-dump-schema
 utils/spacewalk-export

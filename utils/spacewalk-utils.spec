@@ -49,7 +49,7 @@ Requires:       python3-uyuni-common-libs
 Requires:       rpm
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-admin
-# Required by cloneByDate.py, spacewalk-clone-by-date, spacewalk-common-channels
+# Required by spacewalk-common-channels
 Requires:       spacewalk-backend
 # Required by cloneByDate.py
 Requires:       spacewalk-backend-sql
@@ -65,7 +65,7 @@ Requires:       spacewalk-reports
 Requires:       spacewalk-setup
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
 Requires:       susemanager-schema
-# Required by cloneByDate.py, depsolver.py,spacewalk-clone-by-date
+# Required by depsolver.py
 Requires(pre):  uyuni-base-common
 # Required by taskotop
 Requires:       python3-curses
@@ -131,7 +131,6 @@ popd
 %defattr(-,root,root)
 %license COPYING.GPLv2 COPYING.GPLv3
 %attr(755,root,root) %{_bindir}/spacewalk-common-channels
-%attr(755,root,root) %{_bindir}/spacewalk-clone-by-date
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
@@ -147,7 +146,6 @@ popd
 %{python3_sitelib}/utils/__pycache__/systemSnapshot.*
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
-%{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
 %{_mandir}/man8/spacewalk-hostname-rename.8%{?ext_man}
 %{_mandir}/man8/spacewalk-sync-setup.8%{?ext_man}
 %{_mandir}/man8/taskotop.8%{?ext_man}
