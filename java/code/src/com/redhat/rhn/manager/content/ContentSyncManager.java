@@ -697,12 +697,14 @@ public class ContentSyncManager {
             }
         }
         HibernateFactory.getSession().flush();
-        // find all rhnChannel with org id == null and no content source
-        List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
-        if (orphanChannels != null) {
-            LOG.debug("found orphan vendor channels: {}", orphanChannels.size());
+
+        // find all rhnChannel with org id == null and no or incomplete content sources
+        List<Channel> incompleteVendorChannels = ChannelFactory.findIncompleteVendorChannels();
+        if (!incompleteVendorChannels.isEmpty()) {
+            LOG.debug("found orphan or incomplete vendor channels: {}", incompleteVendorChannels.size());
             // find sccrepository auth and create content source and link
-            orphanChannels.forEach(this::updateChannel);
+            incompleteVendorChannels.forEach(this::updateChannel);
+            HibernateFactory.getSession().flush();
         }
         // update URL if needed
         for (SCCRepositoryAuth auth : SCCCachingFactory.lookupRepositoryAuthWithContentSource()) {

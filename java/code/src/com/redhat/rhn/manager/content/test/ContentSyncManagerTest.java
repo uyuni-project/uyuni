@@ -2484,6 +2484,176 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
+     * Test if changes in SCC data result in updates of the channel data in the DB
+     * Especially when we introduce restricted repositories
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testUpdateChannelsRestricted() throws Exception {
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        // SLES15 GA + Basesystem Moduke
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
+        SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1576));
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Channel productPool = ChannelFactory.lookupByLabel("sle-product-sles15-pool-x86_64");
+        Channel baseUpdate = ChannelFactory.lookupByLabel("sle-module-basesystem15-updates-x86_64");
+        assertNotNull(productPool);
+        assertNotNull(baseUpdate);
+
+        assertEquals(1, productPool.getSources().size());
+        assertEquals(1, baseUpdate.getSources().size());
+
+        //----------------------- add firmware repo --------------------------------------------
+
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                .create();
+        InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/testNonOSS/productsUnscoped.json"));
+        List<SCCProductJson> productsChanged = gson.fromJson(
+                inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+
+        InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/testNonOSS/product_tree.json"));
+        List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+
+        InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/testNonOSS/repositories.json"));
+        List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+
+        InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/testNonOSS/additional_repositories.json"));
+        List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+
+        SCCCredentials scc1st = CredentialsFactory.listSCCCredentials().get(0);
+        ContentSyncSource contentSyncSource = new SCCContentSyncSource(scc1st);
+        ContentSyncManager csm = new ContentSyncManager();
+        csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
+        csm.refreshRepositoriesAuthentication(repositoriesChanged, contentSyncSource, null);
+        csm.linkAndRefreshContentSource(null);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Channel productPoolChanged = ChannelFactory.lookupByLabel("sle-product-sles15-pool-x86_64");
+        Channel baseUpdateChanged = ChannelFactory.lookupByLabel("sle-module-basesystem15-updates-x86_64");
+        Channel basePoolChanged = ChannelFactory.lookupByLabel("sle-module-basesystem15-pool-x86_64");
+        assertNotNull(productPoolChanged);
+        assertNotNull(baseUpdateChanged);
+        assertNotNull(basePoolChanged);
+
+        assertEquals(1, productPoolChanged.getSources().size());
+        assertEquals(2, basePoolChanged.getSources().size());
+        assertEquals(2, baseUpdateChanged.getSources().size());
+
+        for (ContentSource cs : basePoolChanged.getSources()) {
+            if (cs.getSourceUrl().contains("SUSE/Products/SLE-Module-Basesystem-Firmware/15/x86_64/product")) {
+                assertEquals("SLE-Module-Basesystem-Firmware15-Pool_999997", cs.getLabel());
+            }
+            else if (cs.getSourceUrl().contains("SUSE/Products/SLE-Module-Basesystem/15/x86_64/product")) {
+                assertEquals("SLE-Module-Basesystem15-Pool_2526", cs.getLabel());
+            }
+            else {
+                fail("unexpected content source: " + cs);
+            }
+        }
+
+        for (ContentSource cs : baseUpdateChanged.getSources()) {
+            if (cs.getSourceUrl().contains("SUSE/Updates/SLE-Module-Basesystem-Firmware/15/x86_64/update")) {
+                assertEquals("SLE-Module-Basesystem-Firmware15-Updates_999998", cs.getLabel());
+            }
+            else if (cs.getSourceUrl().contains("SUSE/Updates/SLE-Module-Basesystem/15/x86_64/update")) {
+                assertEquals("SLE-Module-Basesystem15-Updates_2524", cs.getLabel());
+            }
+            else {
+                fail("unexpected content source: " + cs);
+            }
+        }
+        List<ChannelAttributes> ca = csm.getAvailableChannels();
+
+        assertTrue(ca.stream()
+                .map(ChannelAttributes::getChannelLabel)
+                .anyMatch(label -> label.equals("sle-module-basesystem15-pool-x86_64")),
+                "Expected entry not available");
+        assertTrue(ca.stream()
+                        .map(ChannelAttributes::getChannelLabel)
+                        .anyMatch(label -> label.equals("sle-module-basesystem15-updates-x86_64")),
+                "Expected entry not available");
+
+        SUSEProduct product = SUSEProductFactory.lookupByProductId(1576);
+        SUSEProduct rootProduct = SUSEProductFactory.lookupByProductId(1575);
+        assertTrue(ContentSyncManager.isProductAvailable(product, rootProduct), "Expected Product not available");
+
+        //----------------------- restrict firmware repo --------------------------------------------
+
+        InputStreamReader inReaderReposRestricted = new InputStreamReader(ContentSyncManager.class
+                .getResourceAsStream("/com/redhat/rhn/manager/content/test/testNonOSS/repositories_restricted.json"));
+        List<SCCRepositoryJson> repositoriesRestricted = gson.fromJson(
+                inReaderReposRestricted, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+
+        csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
+        csm.refreshRepositoriesAuthentication(repositoriesRestricted, contentSyncSource, null);
+        csm.linkAndRefreshContentSource(null);
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        Channel productPoolRestricted = ChannelFactory.lookupByLabel("sle-product-sles15-pool-x86_64");
+        Channel basePoolRestricted = ChannelFactory.lookupByLabel("sle-module-basesystem15-pool-x86_64");
+        Channel baseUpdateRestricted = ChannelFactory.lookupByLabel("sle-module-basesystem15-updates-x86_64");
+        assertNotNull(productPoolRestricted);
+        assertNotNull(basePoolRestricted);
+        assertNotNull(baseUpdateRestricted);
+
+        assertEquals(1, productPoolRestricted.getSources().size());
+        assertEquals(1, basePoolRestricted.getSources().size());
+        assertEquals(1, baseUpdateRestricted.getSources().size());
+
+        for (ContentSource cs : basePoolRestricted.getSources()) {
+            if (cs.getSourceUrl().contains("SUSE/Products/SLE-Module-Basesystem-Firmware/15/x86_64/product")) {
+                fail("SLE-Module-Basesystem-Firmware15-Pool_999997 should not be available");
+            }
+            else if (cs.getSourceUrl().contains("SUSE/Products/SLE-Module-Basesystem/15/x86_64/product")) {
+                assertEquals("SLE-Module-Basesystem15-Pool_2526", cs.getLabel());
+            }
+            else {
+                fail("unexpected content source: " + cs);
+            }
+        }
+
+        for (ContentSource cs : baseUpdateRestricted.getSources()) {
+            if (cs.getSourceUrl().contains("SUSE/Updates/SLE-Module-Basesystem-Firmware/15/x86_64/update")) {
+                fail("SLE-Module-Basesystem-Firmware15-Updates_999998 should not be available");
+            }
+            else if (cs.getSourceUrl().contains("SUSE/Updates/SLE-Module-Basesystem/15/x86_64/update")) {
+                assertEquals("SLE-Module-Basesystem15-Updates_2524", cs.getLabel());
+            }
+            else {
+                fail("unexpected content source: " + cs);
+            }
+        }
+        ca = csm.getAvailableChannels();
+        assertTrue(ca.stream()
+                        .map(ChannelAttributes::getChannelLabel)
+                        .anyMatch(label -> label.equals("sle-module-basesystem15-pool-x86_64")),
+                "Expected entry not available");
+        assertTrue(ca.stream()
+                        .map(ChannelAttributes::getChannelLabel)
+                        .anyMatch(label -> label.equals("sle-module-basesystem15-updates-x86_64")),
+                "Expected entry not available");
+        assertTrue(ContentSyncManager.isProductAvailable(product, rootProduct), "Expected Product not available");
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

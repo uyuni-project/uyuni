@@ -25,6 +25,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.ChannelAttributes;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
@@ -151,6 +152,32 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> lookupOrphanVendorChannels() {
         return singleton.listObjectsByNamedQuery("Channel.findOrphanVendorChannels", Map.of());
+    }
+
+    /**
+     * Find all Vendor Channels which miss repositories comparing to SCC provided data
+     * @return list of channels which are incomplete
+     */
+    public static List<Channel> findIncompleteVendorChannels() {
+        return getSession().createNativeQuery("""
+                SELECT X.*, 0 as clazz_ FROM (
+                    SELECT c.*,
+                           (SELECT COUNT(*)
+                              FROM suseChannelAttributes ca
+                              JOIN suseChannelRepository cr ON ca.id = cr.sccchannel_id
+                             WHERE ca.channel_label = c.label) sccrepositorycount,
+                           (SELECT COUNT(*)
+                              FROM rhnChannelContentSource ccs
+                             WHERE ccs.channel_id = c.id) contentsourcecount
+                      FROM rhnChannel c
+                     WHERE c.org_id IS NULL) X
+                 WHERE X.sccrepositorycount > X.contentsourcecount;
+                """, Channel.class)
+                .addSynchronizedEntityClass(ChannelAttributes.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(SCCRepository.class)
+                .addSynchronizedEntityClass(ContentSource.class)
+                .getResultList();
     }
 
     /**
