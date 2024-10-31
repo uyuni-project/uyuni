@@ -50,7 +50,6 @@ utils/spacewalk-dump-schema
 utils/spacewalk-export
 utils/spacewalk-export-channels
 utils/spacewalk-hostname-rename
-utils/spacewalk-manage-channel-lifecycle
 utils/spacewalk-manage-snapshots
 utils/spacewalk-sync-setup
 utils/spacewalk-utils.changes

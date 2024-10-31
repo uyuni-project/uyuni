@@ -132,7 +132,6 @@ popd
 %license COPYING.GPLv2 COPYING.GPLv3
 %attr(755,root,root) %{_bindir}/spacewalk-common-channels
 %attr(755,root,root) %{_bindir}/spacewalk-hostname-rename
-%attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
 %attr(755,root,root) %{_bindir}/taskotop
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini

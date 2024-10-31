@@ -8,7 +8,7 @@ SUBDIR  = utils
 FILES	= __init__ systemSnapshot migrateSystemProfile depsolver cloneByDate
 SCRIPTS = sw-system-snapshot migrate-system-profile spacewalk-api \
 	  spacewalk-common-channels delete-old-systems-interactive spacewalk-hostname-rename \
-	  spacewalk-sync-setup spacewalk-manage-channel-lifecycle \
+	  spacewalk-sync-setup \
 	  spacewalk-export spacewalk-export-channels sw-ldap-user-sync \
 	  taskotop spacewalk-manage-snapshots spacewalk-watch-channel-sync.sh
 CONFIGS = spacewalk-common-channels.ini sw-ldap-user-sync.conf
