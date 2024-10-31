@@ -1,0 +1,2 @@
+- remove no longer valid pam configuration
+  (bsc#1231377)
