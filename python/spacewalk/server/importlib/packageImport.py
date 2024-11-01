@@ -313,7 +313,8 @@ class PackageImport(ChannelPackageSubscription):
 
         # fix encoding issues in package summary and description
         package['description'] = self._fix_encoding(package['description'])
-        package['summary'] = self._fix_encoding(package['summary']).rstrip()
+        package["summary"] = self._fix_encoding(package["summary"])
+        package["summary"] = package["summary"].rstrip() if package["summary"] else ""
 
         if package['product_files'] is not None:
             for prodFile in package['product_files']:
