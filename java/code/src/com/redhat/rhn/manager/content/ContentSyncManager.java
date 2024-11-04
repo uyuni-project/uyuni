@@ -672,11 +672,13 @@ public class ContentSyncManager {
                             },
                             () -> {
                                 LOG.debug("No auth anymore - remove content source: {}", cs.getLabel());
+                                c.getSources().remove(cs);
                                 ChannelFactory.remove(cs);
                             }
                     ),
                     () -> {
                         LOG.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
+                        c.getSources().remove(cs);
                         ChannelFactory.remove(cs);
                     }
             );
@@ -695,17 +697,17 @@ public class ContentSyncManager {
         HibernateFactory.getSession().flush();
         // find all CountentSource with org id == NULL which do not have a sccrepositoryauth
         List<ContentSource> orphan = ChannelFactory.lookupOrphanVendorContentSources();
-        if (orphan != null) {
+        if (!orphan.isEmpty()) {
             LOG.debug("found orphan vendor content sources: {}", orphan.size());
             // find sccrepositoryauth and link
             for (ContentSource cs : orphan) {
                 linkOrphanContentSource(cs);
             }
+            HibernateFactory.getSession().flush();
         }
-        HibernateFactory.getSession().flush();
         // find all rhnChannel with org id == null and no content source
         List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
-        if (orphanChannels != null) {
+        if (!orphanChannels.isEmpty()) {
             LOG.debug("found orphan vendor channels: {}", orphanChannels.size());
             // find sccrepository auth and create content source and link
             orphanChannels.forEach(c -> Opt.consume(ChannelFactory.findVendorRepositoryByChannel(c),
@@ -726,11 +728,12 @@ public class ContentSyncManager {
 
             // check if this auth item is the "best" available auth for this repo
             // if not, switch it over to the best
-            if (auth.getRepo().getBestAuth().isEmpty()) {
+            Optional<SCCRepositoryAuth> bestAuthOpt = auth.getRepo().getBestAuth();
+            if (bestAuthOpt.isEmpty()) {
                 LOG.warn("no best auth available for repo {}", auth.getRepo());
                 continue;
             }
-            SCCRepositoryAuth bestAuth = auth.getRepo().getBestAuth().get();
+            SCCRepositoryAuth bestAuth = bestAuthOpt.get();
             if (!bestAuth.equals(auth)) {
                 // we are not the "best" available repository auth item.
                 // remove the content source link and set it to the "best"
@@ -1022,7 +1025,10 @@ public class ContentSyncManager {
         authList.stream()
                 .filter(repoAuth -> repoAuth.cloudRmtAuth().isEmpty()) // rmtAuth is handled elsewhere (where?)
                 .filter(repoAuth -> !repoIdsFromCredential.contains(repoAuth.getRepo().getSccId()))
-                .forEach(SCCCachingFactory::deleteRepositoryAuth);
+                .forEach(a -> {
+                    a.getRepo().getRepositoryAuth().remove(a);
+                    SCCCachingFactory.deleteRepositoryAuth(a);
+                });
     }
 
     private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
