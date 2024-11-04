@@ -6351,7 +6351,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="systems.groups.jsp.add">
-          <source>Join Selected Groups</source>
+          <source>Join Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -12287,7 +12287,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         </trans-unit>
         <trans-unit id="activation-key.groups.jsp.add">
-          <source>Join Selected Groups</source>
+          <source>Join Groups</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/groups/* pages</context>
         </context-group>
