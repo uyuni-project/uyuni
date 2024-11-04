@@ -302,6 +302,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     public void testUpdateProducts()  throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
 
+        assertTrue(SCCCachingFactory.lookupRepositoryBySccId(2524L).get()
+                .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
+
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
@@ -315,19 +318,15 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 .filter(c -> c.getUsername().equals("dummy"))
                 .findFirst().get();
 
-        assertTrue(SCCCachingFactory.lookupRepositoryBySccId(633L).get()
-                .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
-
         ContentSyncManager csm = new ContentSyncManager();
         // todo i think this doesn't mock correctly and causes timeouts
         csm.refreshRepositoriesAuthentication(repositories, new SCCContentSyncSource(credentials), null);
 
-        Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(633L);
+        Optional<SCCRepository> upRepoOpt = SCCCachingFactory.lookupRepositoryBySccId(2524L);
         assertTrue(upRepoOpt.isPresent(), "Repo not found");
         SCCRepository upRepo = upRepoOpt.get();
         assertTrue(upRepo.getBestAuth().flatMap(SCCRepositoryAuth::tokenAuth).isPresent(),
                 "Best Auth is not token auth");
-
     }
 
     @Test
