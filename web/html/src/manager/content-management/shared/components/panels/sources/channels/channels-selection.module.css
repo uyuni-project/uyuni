@@ -12,6 +12,11 @@
         padding: 0px;
     }
 
+    .gapped_label {
+        margin-bottom: 30px;
+        display: inline-block;
+    }
+
     .initial_selected {
         color: #02a49c !important;
     }

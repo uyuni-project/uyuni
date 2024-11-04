@@ -1057,6 +1057,9 @@ a time:hover {
   .action-button-wrapper {
     float: right;
     overflow: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     button,
     input,
