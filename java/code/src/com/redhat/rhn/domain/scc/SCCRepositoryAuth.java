@@ -31,6 +31,7 @@ import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,6 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -52,10 +52,8 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "auth_type")
 @Table(name = "suseSCCRepositoryAuth")
-@NamedNativeQueries({
-        @NamedNativeQuery(name = "SCCRepositoryAuth.lookupRepoIdWithAuth",
-                query = "select distinct ra.repo_id from suseSCCRepositoryAuth ra")
-})
+@NamedNativeQuery(name = "SCCRepositoryAuth.lookupRepoIdWithAuth",
+        query = "select distinct ra.repo_id from suseSCCRepositoryAuth ra")
 public abstract class SCCRepositoryAuth extends BaseDomainHelper {
 
     private Long id;
@@ -115,7 +113,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     /**
      * @return the contentSource
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_id")
     public ContentSource getContentSource() {
         return contentSource;
@@ -131,7 +129,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "repo_id", nullable = false)
     public SCCRepository getRepo() {
         return repo;
