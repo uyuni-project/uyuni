@@ -428,7 +428,7 @@ public class ContentSyncManager {
         List<String> installedChannelLabels = getInstalledChannelLabels();
 
         List<Tuple2<SUSEProductSCCRepository, MgrSyncStatus>> availableChannels =
-                TimeUtils.logTime(LOG, "getAvailableCHannels", this::getAvailableChannels).stream().map(e -> {
+                TimeUtils.logTime(LOG, "getAvailableChannels", this::getAvailableChannels).stream().map(e -> {
                     MgrSyncStatus status = installedChannelLabels.contains(e.getChannelLabel()) ?
                             MgrSyncStatus.INSTALLED : MgrSyncStatus.AVAILABLE;
                     return new Tuple2<>(e, status);
@@ -947,6 +947,7 @@ public class ContentSyncManager {
             SCCRepository repo = availableReposById.get(jsonRepo.getSCCId());
             if (repo == null) {
                 LOG.error("No repository with ID '{}' found", jsonRepo.getSCCId());
+                // This happens when no ChannelTemplate reference this repository
                 continue;
             }
             Set<SCCRepositoryAuth> allRepoAuths = repo.getRepositoryAuth();
@@ -1392,17 +1393,15 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public Collection<SCCSubscriptionJson> updateSubscriptions() throws ContentSyncException {
-        LOG.info("ContentSyncManager.getSubscriptions called");
-        List<ContentSyncSource> sources = filterCredentials();
-        List<SCCSubscriptionJson> subscriptions = sources.stream()
-            .flatMap(source -> updateSubscriptions(source).stream())
-            .collect(Collectors.toList());
+        return TimeUtils.logTime(LOG, "updateSubscriptions", () -> {
+            List<ContentSyncSource> sources = filterCredentials();
+            List<SCCSubscriptionJson> subscriptions = sources.stream()
+                    .flatMap(source -> updateSubscriptions(source).stream())
+                    .collect(Collectors.toList());
 
-        if (LOG.isDebugEnabled()) {
             LOG.debug("Found {} available subscriptions.", subscriptions.size());
-        }
-        LOG.info("ContentSyncManager.getSubscriptions finished");
-        return subscriptions;
+            return subscriptions;
+        });
     }
 
     /**
@@ -1514,9 +1513,9 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateRepositories(String mirrorUrl) throws ContentSyncException {
-        LOG.info("ContentSyncManager.updateRepository called");
-        refreshRepositoriesAuthentication(mirrorUrl, false);
-        LOG.info("ContentSyncManager.updateRepository finished");
+        TimeUtils.logTime(LOG, "updateRepositories", () ->
+                refreshRepositoriesAuthentication(mirrorUrl, false)
+        );
     }
 
     /**
@@ -1525,9 +1524,9 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateRepositoriesPayg() throws ContentSyncException {
-        LOG.info("ContentSyncManager.updateRepository payg called");
-        refreshRepositoriesAuthentication(null, true);
-        LOG.info("ContentSyncManager.updateRepository payg finished");
+        TimeUtils.logTime(LOG, "updateRepositoriesPayg", () ->
+                refreshRepositoriesAuthentication(null, true)
+        );
     }
 
     /**
@@ -1536,7 +1535,7 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateChannelFamilies(Collection<ChannelFamilyJson> channelFamilies) throws ContentSyncException {
-        LOG.info("ContentSyncManager.updateChannelFamilies called");
+        LOG.info("Sync started with updateChannelFamilies");
         List<String> suffixes = Arrays.asList("", "ALPHA", "BETA");
 
         for (ChannelFamilyJson channelFamily : channelFamilies) {
@@ -1544,7 +1543,7 @@ public class ContentSyncManager {
                 ChannelFamily family = createOrUpdateChannelFamily(
                         channelFamily.getLabel(), channelFamily.getName(), suffix);
                 // Create rhnPublicChannelFamily entry if it doesn't exist
-                if (family.getPublicChannelFamily() == null) {
+                if (family != null && family.getPublicChannelFamily() == null) {
                     PublicChannelFamily pcf = new PublicChannelFamily();
 
                     // save the public channel family
@@ -1554,7 +1553,6 @@ public class ContentSyncManager {
                 }
             }
         }
-        LOG.info("ContentSyncManager.updateChannelFamilies finished");
     }
 
     /**
@@ -2038,13 +2036,14 @@ public class ContentSyncManager {
      * @throws ContentSyncException in case of an error
      */
     public void updateSUSEProducts(List<SCCProductJson> products) throws ContentSyncException {
-        updateSUSEProducts(
-                Stream.concat(
-                        products.stream(),
-                        getAdditionalProducts().stream()
-                ).collect(Collectors.toList()),
-                readUpgradePaths(), loadStaticTree(),
-                getAdditionalRepositories());
+        TimeUtils.logTime(LOG, "updateSUSEProducts", () ->
+                updateSUSEProducts(
+                        Stream.concat(
+                                products.stream(),
+                                getAdditionalProducts().stream()
+                        ).collect(Collectors.toList()),
+                        readUpgradePaths(), loadStaticTree(), getAdditionalRepositories())
+        );
     }
 
     /**
@@ -2058,7 +2057,6 @@ public class ContentSyncManager {
      */
     public void updateSUSEProducts(List<SCCProductJson> products, List<UpgradePathJson> upgradePathJsons,
                                    List<ProductTreeEntry> staticTree, List<SCCRepositoryJson> additionalRepos) {
-        LOG.info("ContentSyncManager.updateSUSEProducts called");
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
         List<SCCProductJson> allProducts = overrideProductAttributes(
@@ -2087,7 +2085,6 @@ public class ContentSyncManager {
 
         updateUpgradePaths(products, upgradePathJsons);
         HibernateFactory.getSession().flush();
-        LOG.info("ContentSyncManager.updateSUSEProducts finished");
     }
 
     /**
@@ -2511,9 +2508,7 @@ public class ContentSyncManager {
      */
     public static String getUUID() {
         if (uuid == null) {
-            BufferedReader reader = null;
-            try {
-                reader = new BufferedReader(new FileReader(UUID_FILE));
+            try (BufferedReader reader = new BufferedReader(new FileReader(UUID_FILE))) {
                 String line;
                 while ((line = reader.readLine()) != null) {
                     if (line.startsWith("username")) {
@@ -2522,20 +2517,10 @@ public class ContentSyncManager {
                 }
             }
             catch (FileNotFoundException e) {
-                LOG.info("Server not registered at SCC: {}", e.getMessage());
+                LOG.debug("Server not registered at SCC: {}", e.getMessage());
             }
             catch (IOException e) {
                 LOG.warn("Unable to read SCC credentials file: {}", e.getMessage());
-            }
-            finally {
-                if (reader != null) {
-                    try {
-                        reader.close();
-                    }
-                    catch (IOException e) {
-                        LOG.warn("IO exception on SCC credentials file: {}", e.getMessage());
-                    }
-                }
             }
             if (uuid == null) {
                 uuid = Config.get().getString(ConfigDefaults.SCC_BACKUP_SRV_USR);
