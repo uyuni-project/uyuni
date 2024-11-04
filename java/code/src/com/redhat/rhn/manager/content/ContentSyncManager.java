@@ -2046,10 +2046,13 @@ public class ContentSyncManager {
     private Stream<SUSEProductSCCRepository> getAvailableRepositories(SUSEProduct root, SUSEProduct product) {
         List<SUSEProductSCCRepository> allEntries = SUSEProductFactory.allProductRepos();
         List<Long> repoIdsWithAuth = SCCCachingFactory.lookupRepositoryIdsWithAuth();
+        Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductExtension>> allSUSEProdExt =
+                SUSEProductFactory.findAllSUSEProductExtensions().stream()
+                        .collect(Collectors.groupingBy(e -> new Tuple2<>(e.getRootProduct(), e.getBaseProduct())));
 
         Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductSCCRepository>> entriesByProducts = allEntries.stream()
                 .collect(Collectors.groupingBy(e -> new Tuple2<>(e.getRootProduct(), e.getProduct())));
-        return getAvailableRepositories(root, product, entriesByProducts, repoIdsWithAuth);
+        return getAvailableRepositories(root, product, entriesByProducts, repoIdsWithAuth, allSUSEProdExt);
     }
 
     /**
@@ -2058,18 +2061,19 @@ public class ContentSyncManager {
      * @param product product to get available repositories from
      * @param allEntries lookup map for repositories by product and root product
      * @param repoIdsWithAuth lookup list for all authenticated repositories by id
+     * @param allSUSEProdExt lookup map for all extensions
      * @return stream of available repositories of product
      */
     private Stream<SUSEProductSCCRepository> getAvailableRepositories(
         SUSEProduct root,
         SUSEProduct product,
         Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductSCCRepository>> allEntries,
-        List<Long> repoIdsWithAuth
+        List<Long> repoIdsWithAuth,
+        Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductExtension>> allSUSEProdExt
     ) {
-
+        Tuple2<SUSEProduct, SUSEProduct> rootProductTuple = new Tuple2<>(root, product);
         List<SUSEProductSCCRepository> entries =
-                Optional.ofNullable(allEntries.get(new Tuple2<>(root, product)))
-                        .orElseGet(Collections::emptyList);
+                allEntries.getOrDefault(rootProductTuple, Collections.emptyList());
         boolean isAccessible = entries.stream()
                 .filter(SUSEProductSCCRepository::isMandatory)
                 .allMatch(entry -> {
@@ -2093,9 +2097,12 @@ public class ContentSyncManager {
                     entries.stream().filter(e ->
                             e.isMandatory() || repoIdsWithAuth.contains(e.getRepository().getId())
                     ),
-                    SUSEProductFactory.findAllExtensionProductsForRootOf(product, root).stream()
-                            .flatMap(nextProduct ->
-                                    getAvailableRepositories(root, nextProduct, allEntries, repoIdsWithAuth))
+                    // We iterate recursively to not evaluate extensions when the parent is not accessible
+                    allSUSEProdExt.getOrDefault(rootProductTuple, new ArrayList<>())
+                            .stream()
+                            .map(SUSEProductExtension::getExtensionProduct)
+                            .flatMap(nextProduct -> getAvailableRepositories(root, nextProduct, allEntries,
+                                    repoIdsWithAuth, allSUSEProdExt))
             );
         }
         else {
@@ -2111,6 +2118,9 @@ public class ContentSyncManager {
     public List<SUSEProductSCCRepository> getAvailableChannels() {
         List<SUSEProductSCCRepository> allEntries = SUSEProductFactory.allProductRepos();
         List<Long> repoIdsWithAuth = SCCCachingFactory.lookupRepositoryIdsWithAuth();
+        Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductExtension>> allSUSEProdExt =
+                SUSEProductFactory.findAllSUSEProductExtensions().stream()
+                        .collect(Collectors.groupingBy(e -> new Tuple2<>(e.getRootProduct(), e.getBaseProduct())));
 
         Map<Tuple2<SUSEProduct, SUSEProduct>, List<SUSEProductSCCRepository>> entriesByProducts = allEntries.stream()
                 .collect(Collectors.groupingBy(e -> new Tuple2<>(e.getRootProduct(), e.getProduct())));
@@ -2119,7 +2129,7 @@ public class ContentSyncManager {
                 .filter(SUSEProductSCCRepository::isRoot)
                 .map(SUSEProductSCCRepository::getProduct)
                 .distinct()
-                .flatMap(p -> getAvailableRepositories(p, p, entriesByProducts, repoIdsWithAuth))
+                .flatMap(p -> getAvailableRepositories(p, p, entriesByProducts, repoIdsWithAuth, allSUSEProdExt))
                 .toList();
     }
 
