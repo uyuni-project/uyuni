@@ -34,7 +34,7 @@ if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
   $stdout.puts('CODE COVERAGE MODE ENABLED.')
 end
 if ENV['REDIS_HOST'] && ENV.fetch('QUALITY_INTELLIGENCE', false)
-  $quality_intelligence = true
+  $quality_intelligence_mode = true
   $stdout.puts('QUALITY INTELLIGENCE MODE ENABLED.')
 end
 
@@ -122,6 +122,9 @@ $api_test = new_api_client
 
 # Init CodeCoverage Handler
 $code_coverage = CodeCoverage.new if $code_coverage_mode
+
+# Init Quality Intelligence Handler
+$quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
 # Define the current feature scope
 Before do |scenario|
