@@ -5,12 +5,25 @@
             <bean:message key="channelOverview.jsp.properties" />
             <rhn:require acl="config_channel_type(normal); authorized_for(config.channels)"
                          mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
-                <c:if test="${channelOverviewForm.map.editing != 'true'}">
-                    (<a
-                        href="/rhn/configuration/ChannelOverview.do?ccid=${ccid}&amp;editing=true"><bean:message
-                            key="channelOverview.jsp.choose-edit" /></a>)
-                    </c:if>
-                </rhn:require>
+                <c:choose>
+                <c:when test="${channelOverviewForm.map.editing != 'true'}">
+                  <a 
+                    role="button" class="btn-unstyled pull-right"
+                    title="<bean:message key='channelOverview.jsp.choose-edit' />"
+                    href="/rhn/configuration/ChannelOverview.do?ccid=${ccid}&amp;editing=true">
+                    <rhn:icon type="item-edit" />
+                  </a>
+                </c:when>
+                <c:otherwise>
+                  <a 
+                    role="button" class="btn-unstyled pull-right"
+                    title="Cancel"
+                    href="/rhn/configuration/ChannelOverview.do?ccid=${ccid}&amp">
+                    <rhn:icon type="item-close" />
+                  </a>
+                </c:otherwise>
+              </c:choose>
+            </rhn:require>
         </h4>
     </div>
     <div class="panel-body">
