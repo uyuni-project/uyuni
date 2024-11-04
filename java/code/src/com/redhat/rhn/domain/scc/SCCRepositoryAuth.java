@@ -132,7 +132,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
      * @return Returns the products.
      */
     @ManyToOne
-    @JoinColumn(name = "repo_id")
+    @JoinColumn(name = "repo_id", nullable = false)
     public SCCRepository getRepo() {
         return repo;
     }
