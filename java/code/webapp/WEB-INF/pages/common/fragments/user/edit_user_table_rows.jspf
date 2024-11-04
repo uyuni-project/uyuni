@@ -82,16 +82,17 @@
     <div class="col-lg-4">
         <c:choose>
             <c:when test="${!empty mailableAddress}">
-                <a class="btn btn-default btn-sm" href="<c:out value="${email_link}"/>">
-                    <rhn:icon type="header-refresh" />
+                ${mailableAddress}
+                <a role="button" class="btn-unstyled" title="Edit Email" href="<c:out value="${email_link}"/>">
+                    <rhn:icon type="setup-wizard-creds-edit" />
                     <%--
                     <bean:message key="${email_display}"/>
                     --%>
-                    ${mailableAddress}
                 </a>
             </c:when>
             <c:when test="${empty mailableAddress}">
                 <a class="btn btn-default btn-sm" href="<c:out value="${email_link}"/>">
+                    <rhn:icon type="item-add" />
                     <bean:message key="userdetails.jsp.noemailaddress"/>
                 </a>
             </c:when>
