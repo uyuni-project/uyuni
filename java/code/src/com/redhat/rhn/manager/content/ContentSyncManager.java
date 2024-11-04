@@ -661,6 +661,28 @@ public class ContentSyncManager {
         auth.setContentSource(source);
     }
 
+    private void linkOrphanContentSource(ContentSource cs) {
+        for (Channel c : cs.getChannels()) {
+            ChannelFactory.findVendorRepositoryByChannel(c).ifPresentOrElse(
+                    repo -> repo.getBestAuth().ifPresentOrElse(
+                            auth -> {
+                                LOG.debug("Has new auth: {}", cs.getLabel());
+                                auth.setContentSource(cs);
+                                SCCCachingFactory.saveRepositoryAuth(auth);
+                            },
+                            () -> {
+                                LOG.debug("No auth anymore - remove content source: {}", cs.getLabel());
+                                ChannelFactory.remove(cs);
+                            }
+                    ),
+                    () -> {
+                        LOG.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
+                        ChannelFactory.remove(cs);
+                    }
+            );
+        }
+    }
+
     /**
      * Search for orphan contentsource or channels and try to find
      * available repositories. In case they are found they get linked.
@@ -676,28 +698,11 @@ public class ContentSyncManager {
         if (orphan != null) {
             LOG.debug("found orphan vendor content sources: {}", orphan.size());
             // find sccrepositoryauth and link
-            orphan.forEach(cs ->
-                cs.getChannels().forEach(c ->
-                    ChannelFactory.findVendorRepositoryByChannel(c).ifPresentOrElse(
-                        repo -> repo.getBestAuth().ifPresentOrElse(
-                            auth -> {
-                                LOG.debug("Has new auth: {}", cs.getLabel());
-                                auth.setContentSource(cs);
-                                SCCCachingFactory.saveRepositoryAuth(auth);
-                            },
-                            () -> {
-                                LOG.debug("No auth anymore - remove content source: {}", cs.getLabel());
-                                ChannelFactory.remove(cs);
-                            }
-                        ),
-                        () -> {
-                            LOG.debug("No repository found for channel: '{}' - remove content source", cs.getLabel());
-                            ChannelFactory.remove(cs);
-                        }
-                    )
-                )
-            );
+            for (ContentSource cs : orphan) {
+                linkOrphanContentSource(cs);
+            }
         }
+        HibernateFactory.getSession().flush();
         // find all rhnChannel with org id == null and no content source
         List<Channel> orphanChannels = ChannelFactory.lookupOrphanVendorChannels();
         if (orphanChannels != null) {
