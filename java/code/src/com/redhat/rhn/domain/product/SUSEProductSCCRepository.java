@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.product;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
@@ -250,6 +252,40 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     public void setGpgKeyFingerprint(String gpgKeyFingerprintIn) {
         gpgKeyFingerprint = gpgKeyFingerprintIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof SUSEProductSCCRepository)) {
+            return false;
+        }
+        SUSEProductSCCRepository otherCast = (SUSEProductSCCRepository) other;
+        return new EqualsBuilder()
+                .append(getChannelLabel(), otherCast.getChannelLabel())
+                .append(getProduct(), otherCast.getProduct())
+                .append(getRootProduct(), otherCast.getRootProduct())
+                .append(getRepository(), otherCast.getRepository())
+                .append(getChannelName(), otherCast.getChannelName())
+                .append(isMandatory(), otherCast.isMandatory())
+                .append(getUpdateTag(), otherCast.getUpdateTag())
+                .append(getGpgKeyUrl(), otherCast.getGpgKeyUrl())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getChannelLabel())
+                .append(getProduct())
+                .append(getRootProduct())
+                .append(getRepository())
+                .toHashCode();
     }
 
     @Override
