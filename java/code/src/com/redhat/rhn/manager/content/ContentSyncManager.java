@@ -371,7 +371,7 @@ public class ContentSyncManager {
         for (Channel sc : syncedChannels) {
             List<SUSEProductChannel> spcList = SUSEProductFactory.lookupSyncedProductChannelsByLabel(sc.getLabel());
             if (spcList.isEmpty()) {
-                List<SUSEProductSCCRepository> missingData = SUSEProductFactory.lookupByChannelLabel(sc.getLabel());
+                List<SUSEProductSCCRepository> missingData = SUSEProductFactory.lookupPSRByChannelLabel(sc.getLabel());
                 missingData.forEach(md -> {
                     SUSEProductChannel correctedData = new SUSEProductChannel();
                     correctedData.setProduct(md.getProduct());
