@@ -137,29 +137,12 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of {@link SUSEProductSCCRepository}
      */
     public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(String channelLabel) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("channelLabel", channelLabel));
-        return ((List<SUSEProductSCCRepository>) c.list()).stream()
+        return getSession().createNamedQuery("SUSEProductSCCRepository.lookupByLabel", SUSEProductSCCRepository.class)
+                .setParameter("label", channelLabel)
+                .stream()
                 .sorted((a, b) ->
                         RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
                 .toList();
-    }
-
-    /**
-     * lookup {@link SUSEProductSCCRepository} by given ID triple
-     * @param rootId root product id
-     * @param productId product id
-     * @param repoId repository id
-     * @return the product/repository item
-     */
-    public static Optional<SUSEProductSCCRepository> lookupProductRepoByIds(long rootId, long productId, long repoId) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("rootProduct.productId", rootId));
-        c.add(Restrictions.eq("product.productId", productId));
-        c.add(Restrictions.eq("repository.sccId", repoId));
-        return Optional.ofNullable((SUSEProductSCCRepository) c.uniqueResult());
     }
 
     /**
@@ -209,17 +192,6 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup SUSEProductChannels by channel label
-     * @param channelLabel the label
-     * @return list of SUSEProductChannels
-     */
-    public static List<SUSEProductSCCRepository> lookupByChannelLabel(String channelLabel) {
-        Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("SUSEProductSCCRepository.lookupByLabel")
-                .setParameter("label", channelLabel).list();
-    }
-
-    /**
      * Lookup SUSE Product Channels by channel name
      * @param name the channel name
      * @return list of found matches
@@ -239,21 +211,15 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSEProductSCCRepository entry with the newest product
      */
     public static Optional<SUSEProductSCCRepository> lookupByChannelLabelFirst(String channelLabel) {
-        return  lookupByChannelLabel(channelLabel)
-                .stream()
-                // sort so we always choose the latest version
-                .sorted((a, b) ->  RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(),
-                        a.getProduct().getVersion()))
-
-                // We take the first item since there can be more than one entry.
-                // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
-                .findFirst();
+        // We take the first item since there can be more than one entry.
+        // This only happens for sles11 sp1/2  and rolling release attempts like caasp 1/2
+        return  lookupPSRByChannelLabel(channelLabel).stream().findFirst();
     }
 
 
     private static Stream<SUSEProductChannel> findSyncedMandatoryChannels(SUSEProduct product, SUSEProduct base,
                                                                       String baseChannelLabel) {
-        Stream<SUSEProductChannel> concat = Stream.concat(
+        return Stream.concat(
                 product.getSuseProductChannels().stream().filter(
                         pc -> Optional.ofNullable(pc.getChannel().getParentChannel())
                                 .map(c -> c.getLabel().equals(baseChannelLabel))
@@ -263,7 +229,6 @@ public class SUSEProductFactory extends HibernateFactory {
                         p -> findSyncedMandatoryChannels(p, base, baseChannelLabel)
                 )
         );
-        return concat;
     }
 
     private static Optional<SUSEProductChannel> findSyncProductChannelByLabel(String channelLabel) {
