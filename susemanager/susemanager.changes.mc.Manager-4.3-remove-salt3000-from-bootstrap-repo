@@ -1,0 +1,1 @@
+- remove unsupported salt 3000 from bootstrap repo package list (bsc#1226958)
