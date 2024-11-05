@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,7 +67,7 @@ public class ListCustomDataAction extends RhnAction {
         List<String> keyList = customDataValues.stream()
                 .map(val -> val.getKey().getLabel())
                 .sorted()
-                .collect(Collectors.toList());
+                .toList();
 
         List<Map<String, Object>> pageList = new ArrayList<>();
         for (String keyLabel : keyList) {

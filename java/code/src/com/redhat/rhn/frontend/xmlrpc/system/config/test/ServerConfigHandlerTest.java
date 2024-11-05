@@ -81,7 +81,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * SystemConfigHandlerTest
@@ -225,7 +224,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         List<ConfigChannel> channels = List.of(gcc1, gcc2);
 
-        List<String> channelLabels = channels.stream().map(ConfigChannel::getLabel).collect(Collectors.toList());
+        List<String> channelLabels = channels.stream().map(ConfigChannel::getLabel).toList();
 
         //test set channels
         handler.setChannels(admin, serverIds, channelLabels);
@@ -274,7 +273,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         List<ConfigChannel> channels = List.of(gcc1, gcc2);
         List<String> channelLabels = channels.stream()
                 .map(ConfigChannel::getLabel)
-                .collect(Collectors.toList());
+                .toList();
 
         srv1.setConfigChannels(channels, regular);
 

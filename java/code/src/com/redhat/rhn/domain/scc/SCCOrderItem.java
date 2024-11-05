@@ -230,10 +230,9 @@ public class SCCOrderItem extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCOrderItem)) {
+        if (!(other instanceof SCCOrderItem otherSCCOrderItem)) {
             return false;
         }
-        SCCOrderItem otherSCCOrderItem = (SCCOrderItem) other;
         return new EqualsBuilder()
             .append(getSccId(), otherSCCOrderItem.getSccId())
             .append(getSku(), otherSCCOrderItem.getSku())

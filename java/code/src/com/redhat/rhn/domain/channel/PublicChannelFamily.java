@@ -67,10 +67,9 @@ public class PublicChannelFamily extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof PublicChannelFamily)) {
+        if (!(other instanceof PublicChannelFamily otherFamily)) {
             return false;
         }
-        PublicChannelFamily otherFamily = (PublicChannelFamily) other;
         return new EqualsBuilder()
             .append(getChannelFamily(), otherFamily.getChannelFamily())
             .isEquals();

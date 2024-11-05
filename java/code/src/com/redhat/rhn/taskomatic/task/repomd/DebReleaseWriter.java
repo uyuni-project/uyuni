@@ -83,7 +83,7 @@ public class DebReleaseWriter {
 
             List<File> metadataFiles = Arrays.asList("Packages", "Packages.gz")
                     .stream().map(name -> new File(pathPrefix + name))
-                    .collect(Collectors.toList());
+                    .toList();
 
             writer.println("MD5Sum:");
             metadataFiles.forEach(file -> appendSum(writer, DigestUtils::md5Hex, file));

@@ -81,10 +81,9 @@ public class Keyword extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Keyword)) {
+        if (!(other instanceof Keyword castOther)) {
             return false;
         }
-        Keyword castOther = (Keyword) other;
         return new EqualsBuilder().append(keyword, castOther.keyword)
                                   .append(errata, castOther.errata)
                                   .isEquals();

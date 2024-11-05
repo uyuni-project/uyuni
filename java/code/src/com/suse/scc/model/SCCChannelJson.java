@@ -149,10 +149,9 @@ public class SCCChannelJson {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SCCChannelJson)) {
+        if (!(obj instanceof SCCChannelJson otherSCCChannelJson)) {
             return false;
         }
-        SCCChannelJson otherSCCChannelJson = (SCCChannelJson) obj;
         return new EqualsBuilder()
                 .append(getProductId(), otherSCCChannelJson.getProductId())
                 .append(getRootProductId(), otherSCCChannelJson.getRootProductId())

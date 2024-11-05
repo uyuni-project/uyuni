@@ -16,9 +16,9 @@ package com.redhat.rhn.domain.task.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
@@ -82,6 +82,6 @@ public class TaskTest extends RhnBaseTestCase {
         assertNotNull(lookedup);
         assertFalse(lookedup.isEmpty());
         assertNotNull(lookedup.get(0));
-        assertTrue(lookedup.get(0) instanceof Task);
+        assertInstanceOf(Task.class, lookedup.get(0));
     }
 }

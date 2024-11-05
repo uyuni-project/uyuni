@@ -121,7 +121,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
                 "sles", "12", "x86_64").collect(Collectors.toSet());
-        List<String> repoNames = repos.stream().map(SCCRepository::getName).collect(Collectors.toList());
+        List<String> repoNames = repos.stream().map(SCCRepository::getName).toList();
         assertContains(repoNames, "SUSE-PackageHub-12-Pool");
         assertContains(repoNames, "SLE-Module-Web-Scripting12-Pool");
         assertContains(repoNames, "SLES12-Updates");

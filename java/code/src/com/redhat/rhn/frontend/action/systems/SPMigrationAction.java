@@ -592,7 +592,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> channels = details.getChannelTasks().stream()
                 .filter(channel -> channel.getTask() == DistUpgradeChannelTask.SUBSCRIBE)
                 .map(DistUpgradeChannelTask::getChannel)
-                .collect(Collectors.toList());
+                .toList();
 
         Set<Channel> baseChannelSet = channels.stream()
                 .filter(Channel::isBaseChannel)
@@ -604,7 +604,7 @@ public class SPMigrationAction extends RhnAction {
         }
 
         Channel baseChannel = baseChannelSet.iterator().next();
-        List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
+        List<Long> channelIds = channels.stream().map(Channel::getId).toList();
         List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
 
         // Get name of original base channel if channel is cloned
@@ -618,7 +618,7 @@ public class SPMigrationAction extends RhnAction {
                 installedProducts,
                 server.getServerArch().getCompatibleChannelArch(),
                 ctx.getCurrentUser()
-        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).collect(Collectors.toList());
+        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).toList();
 
         if (targetProductSet.isEmpty()) {
             logger.debug("No valid migration target found");

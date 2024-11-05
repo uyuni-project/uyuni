@@ -59,7 +59,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 // TODO: Test for when patch status is unknown
 public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
@@ -88,7 +87,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -123,7 +122,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -157,7 +156,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -195,7 +194,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -230,7 +229,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -273,7 +272,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -315,7 +314,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -362,7 +361,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         HibernateFactory.getSession().flush();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -412,7 +411,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         HibernateFactory.getSession().flush();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -454,7 +453,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 
@@ -487,7 +486,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         CVEAuditManager.populateCVEChannels();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
-                .collect(Collectors.toList());
+                .toList();
 
         CVEAuditSystemBuilder systemAuditResult = CVEAuditManagerOVAL.doAuditSystem(cve.getName(), results, server);
 

@@ -247,10 +247,9 @@ public class KickstartInstallType extends BaseDomainHelper {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof KickstartInstallType)) {
+        if (!(o instanceof KickstartInstallType that)) {
             return false;
         }
-        KickstartInstallType that = (KickstartInstallType) o;
         return getLabel().equals(that.getLabel());
     }
 

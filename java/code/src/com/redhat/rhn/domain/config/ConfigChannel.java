@@ -261,10 +261,9 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ConfigChannel)) {
+        if (!(obj instanceof ConfigChannel that)) {
             return false;
         }
-        ConfigChannel that = (ConfigChannel) obj;
         return new EqualsBuilder().
                 append(this.getLabel(), that.getLabel()).
                 append(this.getOrg(), that.getOrg()).
