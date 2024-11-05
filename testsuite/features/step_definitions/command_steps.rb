@@ -1558,6 +1558,7 @@ end
 When(/^I reboot the "([^"]*)" if it is a SLE Micro$/) do |host|
   if slemicro_host?(host)
     step %(I reboot the "#{host}" minion through the web UI)
+    step %(I should not see a "There is a pending transaction for this system, please reboot it to activate the changes." text)
   end
 end
 
