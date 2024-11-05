@@ -178,6 +178,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 /**
@@ -3877,7 +3878,7 @@ public class SystemManager extends BaseManager {
 
         // if there's no base channel present the there are no child channels to set
         List<Long> childChannelIds = baseChannel.isPresent() ?
-                childChannels.stream().map(Channel::getId).toList() :
+                childChannels.stream().map(Channel::getId).collect(Collectors.toList()) :
                 emptyList();
 
         UpdateBaseChannelCommand baseChannelCommand =
