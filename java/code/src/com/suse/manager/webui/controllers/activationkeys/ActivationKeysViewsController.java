@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -112,7 +111,7 @@ public class ActivationKeysViewsController {
                 (module, stream) -> ActivationKeyManager.getInstance().hasAppStreamModuleEnabled(
                         activationKey, channel, module, stream
                 )
-            )).collect(Collectors.toList());
+            )).toList();
     }
 
     /**

@@ -130,8 +130,7 @@ public class PackageArch extends BaseDomainHelper implements Comparable<PackageA
     @Override
     public boolean equals(Object archIn) {
 
-        if (archIn instanceof PackageArch) {
-            PackageArch arch = (PackageArch) archIn;
+        if (archIn instanceof PackageArch arch) {
             return new EqualsBuilder()
                     .append(this.name, arch.getName())
                     .append(getLabel(), arch.getLabel())

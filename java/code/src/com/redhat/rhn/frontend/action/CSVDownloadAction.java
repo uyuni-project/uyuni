@@ -34,9 +34,9 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DownloadAction;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,7 +73,7 @@ public class CSVDownloadAction extends DownloadAction {
             super.execute(mapping, form, request, response);
         }
         catch (Exception e) {
-            /**
+            /*
              * Overridden to redirect for case of errors while processing CSV Export,
              * example: Session timeout.
              */
@@ -185,7 +185,7 @@ public class CSVDownloadAction extends DownloadAction {
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
         CSVWriter csvWriter = new CSVWriter(new StringWriter(), user.getCsvSeparator());
-        csvWriter.setColumns(Arrays.stream(exportColumns.split(",")).map(c -> c.trim()).collect(Collectors.toList()));
+        csvWriter.setColumns(Arrays.stream(exportColumns.split(",")).map(String::trim).toList());
 
         String header = getHeaderText(request, session);
         if (header != null) {
@@ -194,7 +194,7 @@ public class CSVDownloadAction extends DownloadAction {
 
         Elaborator elaborator = TagHelper.lookupElaboratorFor(getUniqueName(request), request);
         if (elaborator != null) {
-            elaborator.elaborate(pageData.stream().collect(Collectors.toList()), HibernateFactory.getSession());
+            elaborator.elaborate(new ArrayList<>(pageData), HibernateFactory.getSession());
         }
 
         String contentType = csvWriter.getMimeType() + ";charset=" + response.getCharacterEncoding();

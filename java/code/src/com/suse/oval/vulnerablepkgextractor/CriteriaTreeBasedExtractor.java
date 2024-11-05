@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
-import java.util.stream.Collectors;
 
 /**
  * An abstract implementation that provides utility methods to extract vulnerable package information from
@@ -61,7 +60,7 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
 
         return matchedCriteriaList.stream().map(this::extractItem)
                 .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -93,8 +92,8 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
 
     private void collectCriterionsHelper(BaseCriteria criteria, int currentLevel, int maxNestingLevel,
                                          List<CriterionType> criterions) {
-        if (criteria instanceof CriterionType) {
-            criterions.add((CriterionType) criteria);
+        if (criteria instanceof CriterionType criteriaCast) {
+            criterions.add(criteriaCast);
         }
         else {
             if (currentLevel > maxNestingLevel) {
@@ -121,8 +120,8 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
         else if (test(criteria)) {
             matches.add(criteria);
         }
-        if (criteria instanceof CriteriaType) {
-            for (BaseCriteria childCriteria : ((CriteriaType) criteria).getChildren()) {
+        if (criteria instanceof CriteriaType criteriaCast) {
+            for (BaseCriteria childCriteria : (criteriaCast).getChildren()) {
                 walkCriteriaTreeHelper(childCriteria, matches);
             }
         }

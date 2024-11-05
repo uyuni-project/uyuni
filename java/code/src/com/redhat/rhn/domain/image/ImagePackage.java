@@ -155,8 +155,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
     @Override
     public boolean equals(Object other) {
 
-        if (other instanceof ImagePackage) {
-            ImagePackage otherPack = (ImagePackage) other;
+        if (other instanceof ImagePackage otherPack) {
             return new EqualsBuilder().append(this.getName(), otherPack.getName())
                     .append(this.getEvr(), otherPack.getEvr())
                     .append(this.getImageInfo(), otherPack.getImageInfo())
@@ -164,9 +163,7 @@ public class ImagePackage implements Comparable<ImagePackage> {
 
 
         }
-        else if (other instanceof Package) {
-            Package otherPack = (Package) other;
-
+        else if (other instanceof Package otherPack) {
             EqualsBuilder builder =  new EqualsBuilder()
                     .append(this.getName(), otherPack.getPackageName())
                     .append(this.getEvr(), otherPack.getPackageEvr());

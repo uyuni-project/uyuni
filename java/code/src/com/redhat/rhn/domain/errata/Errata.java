@@ -784,10 +784,9 @@ public class Errata extends BaseDomainHelper implements Selectable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Errata)) {
+        if (!(obj instanceof Errata e)) {
             return false;
         }
-        Errata e = (Errata) obj;
         EqualsBuilder eb = new EqualsBuilder();
         eb.append(this.getAdvisory(), e.getAdvisory());
         eb.append(this.getAdvisoryName(), e.getAdvisoryName());

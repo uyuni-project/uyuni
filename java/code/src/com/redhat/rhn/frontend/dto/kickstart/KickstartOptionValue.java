@@ -143,11 +143,9 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof KickstartOptionValue)) {
+        if (!(o instanceof KickstartOptionValue that)) {
             return false;
         }
-
-        KickstartOptionValue that = (KickstartOptionValue) o;
 
         if (!Objects.equals(arg, that.arg)) {
             return false;

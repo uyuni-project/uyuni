@@ -18,7 +18,6 @@ import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * VirtualVolumeBaseAction represents the generic virtual volume action request body structure.
@@ -51,6 +50,6 @@ public class VirtualVolumeBaseActionJson extends ScheduledRequestJson {
     public List<String> getVolumesPath() {
         return getVolumes().entrySet().stream()
                 .flatMap(entry -> entry.getValue().stream().map(volume -> entry.getKey() + "/" + volume))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

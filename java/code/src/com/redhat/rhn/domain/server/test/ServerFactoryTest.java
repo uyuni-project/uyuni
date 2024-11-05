@@ -130,7 +130,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ServerFactoryTest
@@ -1145,7 +1144,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
-        List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
+        List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).toList();
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
                 SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);
@@ -1589,7 +1588,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        List<Server> result = ServerFactory.querySlesSystems("", 20, user).collect(Collectors.toList());
+        List<Server> result = ServerFactory.querySlesSystems("", 20, user).toList();
 
         assertEquals(1, result.size());
         assertEquals("first-system", result.get(0).getName());
@@ -1610,7 +1609,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).collect(Collectors.toList());
+        List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).toList();
 
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(s -> "my-foo-system-1".equals(s.getName())));
@@ -1644,7 +1643,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(srv).collect(Collectors.toList());
+        List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(srv).toList();
 
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(pkgEvr1::equals));

@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -206,7 +207,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerTest extends BaseHandlerTestCase {
@@ -684,7 +684,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         var actionId = actionIds.get(0);
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertEquals(1, sca.getDetails().getChannels().size());
@@ -722,7 +722,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertTrue(sca.getDetails().getChannels().isEmpty());
@@ -3296,7 +3296,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Assert
         List<NetworkInterface> nics = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(1, nics.size());
         Server server = nics.get(0).getServer();
         assertEquals("test system", server.getName());

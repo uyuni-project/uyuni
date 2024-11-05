@@ -25,11 +25,11 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -90,7 +90,7 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
                 }
             }
             candidates.forEach(e ->  Hibernate.initialize(e.getReportDbCredentials()));
-            return candidates.stream().collect(Collectors.toList());
+            return new ArrayList<>(candidates);
         }
     }
 

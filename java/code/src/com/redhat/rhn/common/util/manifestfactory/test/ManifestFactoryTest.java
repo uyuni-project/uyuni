@@ -17,8 +17,8 @@ package com.redhat.rhn.common.util.manifestfactory.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.manifestfactory.ManifestFactoryLookupException;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -48,7 +48,7 @@ public class ManifestFactoryTest extends RhnBaseTestCase {
 
         List l = (List)PrimitiveFactory.getObject("list-object");
         assertEquals(l.size(), 12);
-        assertTrue(l.get(0) instanceof java.lang.String);
+        assertInstanceOf(String.class, l.get(0));
     }
 
     @Test

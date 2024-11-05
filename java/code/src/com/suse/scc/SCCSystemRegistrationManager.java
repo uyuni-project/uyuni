@@ -62,7 +62,7 @@ public class SCCSystemRegistrationManager {
                         c.get("scc_login").toString(),
                         c.get("scc_passwd").toString(),
                         (Date) c.get("checkin")))
-                .collect(Collectors.toList());
+                .toList();
 
         ArrayList<List<SCCUpdateSystemJson>> batches = new ArrayList<>(
                 IntStream.range(0, sysList.size()).boxed().collect(

@@ -75,10 +75,9 @@ public class ProfileType extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ProfileType)) {
+        if (!(other instanceof ProfileType castOther)) {
             return false;
         }
-        ProfileType castOther = (ProfileType) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .append(label, castOther.label)
                                   .append(name, castOther.name)

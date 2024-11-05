@@ -30,7 +30,6 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
@@ -217,7 +216,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .collect(Collectors.toList())
+                                .toList()
                 );
             }
         };

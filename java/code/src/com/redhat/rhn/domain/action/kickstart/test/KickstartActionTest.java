@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.kickstart.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -52,7 +52,7 @@ public class KickstartActionTest extends RhnBaseTestCase {
         Action a = ActionFactory.lookupById(id);
 
         assertNotNull(a);
-        assertTrue(a instanceof KickstartInitiateAction);
+        assertInstanceOf(KickstartInitiateAction.class, a);
         KickstartAction k = (KickstartAction) a;
         assertNotNull(k.getKickstartActionDetails().getStaticDevice());
         assertNotNull(k.getEarliestAction());

@@ -40,6 +40,7 @@ public class DynamicComparatorTest extends RhnJmockBaseTestCase {
         assertEquals("Z", list.get(list.size() - 1).getStringField());
     }
 
+    @SuppressWarnings("java:S6204")
     public static List<TestObject> generateRandomList() {
         List<String> letters = LocalizationService.getInstance().getAlphabet();
         Collections.shuffle(letters);

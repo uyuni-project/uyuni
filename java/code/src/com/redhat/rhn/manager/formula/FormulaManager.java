@@ -87,7 +87,7 @@ public class FormulaManager {
         FormulaFactory.saveGroupFormulaData(content, group, formulaName);
         List<String> minionIds = group.getServers().stream()
             .flatMap(s -> Opt.stream(s.asMinionServer()))
-            .map(MinionServer::getMinionId).collect(Collectors.toList());
+            .map(MinionServer::getMinionId).toList();
         saltApi.refreshPillar(new MinionList(minionIds));
     }
 
@@ -146,8 +146,8 @@ public class FormulaManager {
             Object value = entry.getValue();
             checkForUndefinedFields(key, layout);
             boolean isEditGroup = isEditGroup(key, layout);
-            if (value instanceof Map && !isEditGroup) {
-                validateContents((Map) value, (Map) layout.get(key));
+            if (value instanceof Map map && !isEditGroup) {
+                validateContents(map, (Map) layout.get(key));
             }
             else {
                 Map<String, Object> def = (Map<String, Object>) layout.get(key);
@@ -195,12 +195,12 @@ public class FormulaManager {
         for (Map.Entry<String, Object> entry: editGroupDict.entrySet()) {
             String k = entry.getKey();
             Object v = entry.getValue();
-            if (v instanceof Map) {
+            if (v instanceof Map map) {
                 if (Objects.nonNull(prototype.get(k))) {
-                    validateDictionary((Map) v, (Map) prototype.get(k));
+                    validateDictionary(map, (Map) prototype.get(k));
                 }
                 else {
-                    validateDictionary((Map) v, def);
+                    validateDictionary(map, def);
                 }
             }
             else {
@@ -340,7 +340,7 @@ public class FormulaManager {
 
         return minions.stream().map(minion -> getCombinedFormulaDataForSystem(minion,
                 Optional.ofNullable(managedGroupsPerServer.get(minion.getId())), groupsFormulaData, formulaName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private FormulaData getCombinedFormulaDataForSystem(MinionServer minion,
@@ -419,6 +419,6 @@ public class FormulaManager {
                     getCombinedFormulaDataForSystemAndFormula(minion,
                                 Optional.ofNullable(managedGroupsPerServer.get(minion.getId())),
                                 groupsFormulaData, formulaName)).stream())
-        ).collect(Collectors.toList());
+        ).toList();
     }
 }

@@ -258,7 +258,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
                             vmData.putAll(extra.get(entry.getKey()));
                             return vmData;
                         })
-                        .collect(Collectors.toList());
+                        .toList();
                 mergeData.addAll(missing);
             });
         });
@@ -310,7 +310,7 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
         Map<String, Object> allDomainCaps = new HashMap<>();
         allDomainCaps.put("osTypes", hostCaps.getGuests().stream().map(HostCapabilitiesJson.Guest::getOsType)
                 .distinct()
-                .collect(Collectors.toList()));
+                .toList());
         allDomainCaps.put("domainsCaps", domainsCaps);
 
         return json(response, allDomainCaps, new TypeToken<>() { });

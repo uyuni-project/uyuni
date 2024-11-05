@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.schedule.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.util.DatePicker;
@@ -65,7 +66,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
             request.getAttribute(ActionChainEditAction.ACTION_CHAIN_ATTRIBUTE));
 
         Object datePicker = request.getAttribute(ActionChainEditAction.DATE_ATTRIBUTE);
-        assertTrue(datePicker instanceof DatePicker);
+        assertInstanceOf(DatePicker.class, datePicker);
 
         assertTrue(((List<ActionChainEntryGroup>) request
             .getAttribute(ActionChainEditAction.GROUPS_ATTRIBUTE)).isEmpty());
