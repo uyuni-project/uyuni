@@ -329,7 +329,7 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap
+    repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Uyuni_Other
   - artifact: jaxb-runtime
