@@ -29,6 +29,7 @@ import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourc
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -78,7 +79,7 @@ public class ProjectSourcesApiController {
         List<String> sourceLabelsToAttach = createSourceRequest.getSoftwareSources()
                 .stream()
                 .map(ProjectSoftwareSourceRequest::getLabel)
-                .toList();
+                .collect(Collectors.toList());
         Collections.reverse(sourceLabelsToAttach);
         sourceLabelsToAttach.forEach(sourceLabel -> CONTENT_MGR.attachSource(
                 projectLabel,
