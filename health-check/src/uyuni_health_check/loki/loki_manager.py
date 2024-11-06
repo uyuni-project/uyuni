@@ -131,6 +131,36 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=
     config.write_config("promtail", "config.yaml", promtail_template.render(**opts))
 
 
+
+def check_series_in_loki(loki_url, job_name="promtail-complete-job", flag="complete", message="Promtail finished!d"):
+    query = f'{{job="{job_name}", flag="{flag}"}} |= "{message}"'
+    end = int(time.time())
+    start = end - 60 * 60
+
+    response = requests.get(
+        f"{loki_url}/loki/api/v1/query",
+        params={"query": query, "start": start * 1_000_000_000, "end": end * 1_000_000_000}
+    )
+
+    if response.status_code == 200:
+        data = response.json()
+        return len(data['data']['result']) > 0
+    else:
+        print("Failed to query Loki:", response.text)
+        return False
+
+def wait_promtail_init():
+    loki_url = "http://localhost:3100"
+    start_time = time.time()
+    timeout = 60
+    while not check_series_in_loki(loki_url):
+        elapsed_time = time.time() - start_time
+        if elapsed_time >= timeout:
+            console.log("Timeout waiting for promtail to finish!")
+            break
+        time.sleep(10)
+    console.log("Promtail finished processing logs!")
+
 def wait_loki_init(config=None, verbose=False):
     """
     Try to figure out when loki is ready to answer our requests.
