@@ -7,6 +7,7 @@ from prometheus.prometheus_manager import prepare_prometheus
 from uyuni_health_check.utils import console, HealthException, run_command
 from uyuni_health_check.loki.loki_manager import (
     run_loki,
+    wait_promtail_init,
     wait_loki_init,
     download_component_build_image,
 )
@@ -100,7 +101,8 @@ def run(ctx, logs, from_datetime, to_datetime, since):
             run_loki(
                 supportconfig_path=supportconfig_path, config=config, verbose=verbose
             )
-            wait_loki_init(config=config)
+            wait_promtail_init()
+            #wait_loki_init(config=config)
 
             console.log("[bold]Building exporter")
             exporter.prepare_exporter(
