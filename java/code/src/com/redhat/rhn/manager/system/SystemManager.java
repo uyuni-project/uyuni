@@ -123,6 +123,7 @@ import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
@@ -166,6 +167,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 
 /**
@@ -3623,8 +3625,10 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Update the the base and child channels of a server. Calls
+     * Update the base and child channels of a server. Calls
      * the {@link UpdateBaseChannelCommand} and {@link UpdateChildChannelsCommand}.
+     * This method regenerate the Tokens and Pillar Data synchronous, but does not
+     * trigger a 'state.apply' for channels.
      *
      * @param user the user changing the channels
      * @param server the server for which to change channels
@@ -3632,7 +3636,7 @@ public class SystemManager extends BaseManager {
      * @param childChannels the full list of child channels to set. Any channel no provided will be unsubscribed.
      * and will be used when regenerating the Pillar data for Salt minions.
      */
-    public static void updateServerChannels(User user,
+    public void updateServerChannels(User user,
                                             Server server,
                                             Optional<Channel> baseChannel,
                                             Collection<Channel> childChannels) {
@@ -3641,7 +3645,7 @@ public class SystemManager extends BaseManager {
 
         // if there's no base channel present the there are no child channels to set
         List<Long> childChannelIds = baseChannel.isPresent() ?
-                childChannels.stream().map(Channel::getId).toList() :
+                childChannels.stream().map(Channel::getId).collect(Collectors.toList()) :
                 emptyList();
 
         UpdateBaseChannelCommand baseChannelCommand =
@@ -3661,7 +3665,11 @@ public class SystemManager extends BaseManager {
         childChannelsCommand.skipChannelChangedEvent(true);
         childChannelsCommand.store();
 
-        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
+        // Calling this asynchronous block execution util main thread close the Hibernate Session
+        // as we require the result, we must call this synchronous
+        ChannelsChangedEventMessageAction channelsChangeAction =
+                new ChannelsChangedEventMessageAction(saltApi);
+        channelsChangeAction.execute(new ChannelsChangedEventMessage(server.getId(), user.getId()));
 
     }
 
