@@ -19,20 +19,16 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rhnChannelSyncFlag")
 public class ChannelSyncFlag implements Serializable {
 
-    @Id
-    @Column(name = "channel_id", nullable = false)
-    private Long id;
-
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Id @OneToOne
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @Column(name = "no_strict", nullable = false)
@@ -51,14 +47,6 @@ public class ChannelSyncFlag implements Serializable {
     private boolean quitOnError;
 
     // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long idnr) {
-        this.id = idnr;
-    }
 
     public boolean isNoStrict() {
         return noStrict;

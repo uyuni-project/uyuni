@@ -478,8 +478,11 @@ public abstract class HibernateFactory {
      * @param <T> the entity type
      */
     public static <T> T reload(T obj) throws HibernateException {
-        Session session = HibernateFactory.getSession();
+        Session session = getSession();
+        session.flush();
+        session.evict(obj);
         session.refresh(obj);
+
         return obj;
     }
 
