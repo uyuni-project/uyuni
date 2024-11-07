@@ -8,8 +8,9 @@ import signal
 import sys
 import time
 from datetime import datetime
-
 import yaml
+
+import static_metrics
 from prometheus_client import start_http_server
 from prometheus_client.core import REGISTRY, GaugeMetricFamily
 from prometheus_client.registry import Collector
@@ -31,6 +32,7 @@ class SupportConfigMetricsCollector(Collector):
             raise ValueError("A 'supportconfig_path' must be set via config.yml file")
 
         self.supportconfig_path = supportconfig_path
+        self.static_metrics_collection = static_metrics.create_static_metrics_collection(self.supportconfig_path)
         self.refresh()
 
     def refresh(self):
@@ -40,11 +42,9 @@ class SupportConfigMetricsCollector(Collector):
             self.salt_keys = self.read_salt_keys()
         if self.exists_salt_configuration_file():
             self.salt_configuration = self.read_salt_configuration()
-        if self.exists_tomcat_java_opts():
-            self.xmx_size = self.get_tomcat_xmx_size()
 
-        self.max_threads_ipv4 = self.get_tomcat_max_threads_ipv4()
-
+        self.get_static_metrics(self.supportconfig_path)
+        
     def _parse_command(self, command_block):
         lines = command_block.strip().split("\n")
         command = lines[0][2:]
@@ -128,62 +128,20 @@ class SupportConfigMetricsCollector(Collector):
             "^'([0-9]+)':[\s\S]*?Function:\s+([\w.]+)[\s\S]*?StartTime:\s+(\d{4},\s\w{3}\s\d{2}\s\d{2}:\d{2}:\d{2}\.\d{6})", content, re.MULTILINE
         )
 
-    def get_connector_attribute(self, file_path, attribute_name):
-
-        with open(os.path.join(self.supportconfig_path, "spacewalk-debug/conf/tomcat/tomcat/server.xml")) as f:
-            tree = ET.parse(file_path)
-            root = tree.getroot()
-
-            max_threads_values = []
-            for connector in root.findall(".//Connector"):
-                if 'maxThreads' in connector.attrib:
-                    max_threads_values.append(connector.attrib['maxThreads'])
-
-            return max_threads_values
-
-    def exists_tomcat_java_opts(self):
-        if os.path.isfile(os.path.join(self.supportconfig_path, "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf")):
-            return True
-
-    def get_tomcat_xmx_size(self):
-        with open(os.path.join(self.supportconfig_path, "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf")) as f:
-            first_line = f.readline().strip()
-            xmx_match = re.search(r'-Xmx(\d)+([kKmMgG])', first_line)
-            xmx_value = xmx_match.group(1) if xmx_match else None
-            xmx_unit = xmx_match.group(2) if xmx_match else None
-            if xmx_value is None:
-                return 0
-            if xmx_unit == 'm' or xmx_unit == 'M':
-                return int(xmx_value)
-            if xmx_unit == 'k' or xmx_unit == 'K':
-                return int(xmx_value) * 1024
-            if xmx_unit == 'g' or xmx_unit == 'G':
-                return int(xmx_value) * 1024 * 1024
-
-    def get_tomcat_max_threads_ipv4(self):
-        with open(os.path.join(self.supportconfig_path, "spacewalk-debug/conf/tomcat/tomcat/server.xml")) as f:
-            content = f.read()
-            max_threads_match = re.search(r'<Connector[^>]*address="127\.0\.0\.1"[^>]*maxThreads="(\d+)"[^>]*\/>', content)
-            return int(max_threads_match.group(1))
-
-    def get_tomcat_max_threads_ipv6(self):
-        with open(os.path.join(self.supportconfig_path), "spacewalk-debug/conf/tomcat/tomcat/server.xml") as f:
-            content = f.read()
-            max_threads_match = re.search(r'<Connector[^>]*address="::1"[^>]*maxThreads="(\d+)"[^>]*\/>', content)
-            return max_threads_match.group(1)
+    def get_static_metrics(self, supportconfig_path):
+        for name, static_metric in self.static_metrics_collection.items():
+            if static_metric.is_present():
+                val = static_metric.get_value()
+                setattr(self, name, val)
 
     def collect(self):
-
         gauge_statics = GaugeMetricFamily("statics", "Static values", labels=["statics"])
-        if hasattr(self,'xmx_size'):
-            gauge_statics.add_metric(["xmx_size"], self.xmx_size)
+        if hasattr(self,'tomcat_xmx_size'):
+            gauge_statics.add_metric(["tomcat_xmx_size"], self.tomcat_xmx_size)
         if hasattr(self, 'max_threads_ipv4'):
             gauge_statics.add_metric(["max_threads_ipv4"], self.max_threads_ipv4)
 
         yield gauge_statics
-
-        if hasattr(self, ''):
-            gauge_statics.add_metric(["xmx_size"], self.xmx_size)
 
         if hasattr(self,'salt_configuration'):
             gauge = GaugeMetricFamily(
@@ -239,10 +197,6 @@ class SupportConfigMetricsCollector(Collector):
                 gauge3.add_metric([jid, fun], 1)
             yield gauge3
 
-        gauge_statics.add_metric(["xmx_size"], self.xmx_size)
-        yield gauge_statics
-
-
 def main():
     print("Supportconfig Exporter started")
     port = 9000
@@ -266,7 +220,6 @@ def main():
         # period between collection
         time.sleep(frequency)
         collector.refresh()
-
 
 if __name__ == "__main__":
     main()
