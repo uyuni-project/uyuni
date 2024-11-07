@@ -264,7 +264,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
         </button>
         <ul className="dropdown-menu dropdown-menu-right">
           {this.props.items.map((i, index) => (
-            <li key={index}>{i}</li>
+            <li key={`${index}-${i?.toString()}`}>{i}</li>
           ))}
         </ul>
       </div>
