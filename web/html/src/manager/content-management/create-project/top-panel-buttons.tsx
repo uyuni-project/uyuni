@@ -8,7 +8,7 @@ type TopPanelButtonsProps = {
 
 const TopPanelButtons = (props: TopPanelButtonsProps) => {
   return (
-    <div className="pull-right btn-group">
+    <div className="btn-group">
       <AsyncButton
         id="savebutton"
         className="btn-primary"

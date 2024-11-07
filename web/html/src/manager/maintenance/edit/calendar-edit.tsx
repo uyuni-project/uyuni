@@ -189,7 +189,6 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
                 }
                 onConfirm={() => onConfirmRefresh()}
                 submitText={t("Confirm")}
-                submitIcon="fa-check"
               />
             </div>
           )}
