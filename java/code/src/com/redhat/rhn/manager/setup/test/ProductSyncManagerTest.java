@@ -27,10 +27,10 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.user.User;
@@ -556,15 +556,15 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
                                                                        String rootChannelLabel) {
         var repo = SUSEProductTestUtils.createSCCRepository();
 
-        var productSSCRepo = new SUSEProductSCCRepository();
-        productSSCRepo.setProduct(product);
-        productSSCRepo.setRootProduct(root);
-        productSSCRepo.setRepository(repo);
-        productSSCRepo.setChannelLabel(prefix + "-" + channelLabel);
-        productSSCRepo.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
-        productSSCRepo.setChannelName(channelName);
-        productSSCRepo.setMandatory(true);
-        TestUtils.saveAndReload(productSSCRepo);
+        var template = new ChannelTemplate();
+        template.setProduct(product);
+        template.setRootProduct(root);
+        template.setRepository(repo);
+        template.setChannelLabel(prefix + "-" + channelLabel);
+        template.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
+        template.setChannelName(channelName);
+        template.setMandatory(true);
+        TestUtils.saveAndReload(template);
     }
 
     private static void createProductExtension(SUSEProduct product, SUSEProduct parent, SUSEProduct root) {

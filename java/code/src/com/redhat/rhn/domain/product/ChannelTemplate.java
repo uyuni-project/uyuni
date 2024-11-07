@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,21 +29,20 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 /**
- * SUSEProductSCCRepository - link Product with Repository and hold data for channels
+ * ChannelTemplate - link Product with Repository and hold data for channels
  */
 @Entity
-@Table(name = "suseProductSCCRepository", uniqueConstraints =
+@Table(name = "suseChannelTemplate", uniqueConstraints =
 @UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
 @NamedQuery(
-        name = "SUSEProductSCCRepository.lookupByLabel",
-        query = "FROM SUSEProductSCCRepository pr WHERE pr.channelLabel = :label")
-public class SUSEProductSCCRepository extends BaseDomainHelper {
+        name = "ChannelTemplate.lookupByLabel",
+        query = "FROM ChannelTemplate pr WHERE pr.channelLabel = :label")
+public class ChannelTemplate extends BaseDomainHelper {
 
     private Long id;
     private SUSEProduct product;
@@ -64,8 +62,7 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prdrepo_seq")
-    @SequenceGenerator(name = "prdrepo_seq", sequenceName = "suse_prdrepo_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -124,7 +121,6 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the mandatory.
      */
-    @Type(type = "yes_no")
     @Column(name = "mandatory")
     public boolean isMandatory() {
         return mandatory;
@@ -259,10 +255,10 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SUSEProductSCCRepository)) {
+        if (!(other instanceof ChannelTemplate)) {
             return false;
         }
-        SUSEProductSCCRepository otherCast = (SUSEProductSCCRepository) other;
+        ChannelTemplate otherCast = (ChannelTemplate) other;
         return new EqualsBuilder()
                 .append(getChannelLabel(), otherCast.getChannelLabel())
                 .append(getProduct(), otherCast.getProduct())
