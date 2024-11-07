@@ -14,7 +14,7 @@ type Props = {
 const Properties = (props: Props) => {
   return (
     <Panel headingLevel="h2" title={t("Project Properties")}>
-      <div className="col-md-8">
+      <div className="col-md-12">
         <PropertiesForm properties={props.properties} errors={props.errors} onChange={props.onChange} />
       </div>
     </Panel>

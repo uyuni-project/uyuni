@@ -27,7 +27,6 @@ export function DeleteDialog(props: DeleteDialogProps) {
       onConfirm={props.onConfirm}
       onConfirmAsync={props.onConfirmAsync}
       submitText={t("Delete")}
-      submitIcon="fa-trash"
     />
   );
 }

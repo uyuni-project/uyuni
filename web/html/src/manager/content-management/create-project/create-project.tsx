@@ -36,28 +36,30 @@ const CreateProject = () => {
     <TopPanel
       title={t("Create a new Content Lifecycle Project")}
       icon="fa-plus"
-      button={
-        <TopPanelButtons
-          onCreate={() =>
-            onAction(project, "create")
-              .then(() => {
-                window.pageRenderers?.spaengine?.navigate?.(
-                  `/rhn/manager/contentmanagement/project/${project.properties.label || ""}`
-                );
-              })
-              .catch((error) => {
-                setProject({ ...project, errors: error.errors });
-                showErrorToastr(error.messages, { autoHide: false });
-              })
-          }
-        />
-      }
     >
       <PropertiesCreate
         properties={project.properties}
         errors={project.errors}
         onChange={(newProperties) => setProject({ ...project, properties: newProperties })}
       />
+       <div className="form-group">
+            <div className="col-md-offset-2 offset-md-2 col-md-10">
+              <TopPanelButtons
+                onCreate={() =>
+                  onAction(project, "create")
+                    .then(() => {
+                      window.pageRenderers?.spaengine?.navigate?.(
+                        `/rhn/manager/contentmanagement/project/${project.properties.label || ""}`
+                      );
+                    })
+                    .catch((error) => {
+                      setProject({ ...project, errors: error.errors });
+                      showErrorToastr(error.messages, { autoHide: false });
+                    })
+                }
+              />
+            </div>
+          </div>
     </TopPanel>
   );
 };

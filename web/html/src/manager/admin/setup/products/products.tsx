@@ -1133,7 +1133,6 @@ const ChannelsPopUp = (props) => {
       onClose={() => props.onClose()}
       content={contentPopup}
       submitText={t("Confirm")}
-      submitIcon="fa-check"
       btnClass="btn-primary"
       onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
     />
