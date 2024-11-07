@@ -60,7 +60,7 @@
     </script>
 
     <script src="/javascript/legacy/jquery.min.js?cb=${cb_version}"></script>
-    <script src="/javascript/legacy/bootstrap.min.js?cb=${cb_version}"></script>
+    <script src="/javascript/legacy/bootstrap-webpack.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-essentials.js?cb=${cb_version}"></script>
     <script src="/javascript/spacewalk-checkall.js?cb=${cb_version}"></script>
     <script src="/javascript/ajax.js?cb=${cb_version}"></script>

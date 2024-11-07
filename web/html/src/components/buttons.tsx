@@ -263,8 +263,8 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           {text} <span className="caret" />
         </button>
         <ul className="dropdown-menu dropdown-menu-right">
-          {this.props.items.map((i) => (
-            <li>{i}</li>
+          {this.props.items.map((i, index) => (
+            <li key={index}>{i}</li>
           ))}
         </ul>
       </div>
