@@ -39,12 +39,8 @@ proxy/proxy/wsgi/xmlrpc.py
 proxy/proxy/wsgi/xmlrpc_redirect.py
 reporting/reports.py
 utils/cloneByDate.py
-utils/delete-old-systems-interactive
 utils/depsolver.py
 utils/__init__.py
-utils/migrate-system-profile
-utils/migrateSystemProfile.py
-utils/spacewalk-api
 utils/spacewalk-clone-by-date
 utils/spacewalk-common-channels
 utils/spacewalk-dump-schema
@@ -52,7 +48,6 @@ utils/spacewalk-hostname-rename
 utils/spacewalk-manage-channel-lifecycle
 utils/spacewalk-sync-setup
 utils/spacewalk-utils.changes
-utils/sw-ldap-user-sync
 utils/systemSnapshot.py
 utils/taskotop
 spacewalk/certs-tools/
