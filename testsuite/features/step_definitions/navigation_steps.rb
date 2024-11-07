@@ -874,6 +874,12 @@ When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
 end
 
+When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
+  raise 'Package name is not set' if input.empty?
+
+  find('input[placeholder=\'Filter by Latest Package: \']').set(input)
+end
+
 When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
   find('input[placeholder=\'Filter by Synopsis: \']').set(input)
 end
