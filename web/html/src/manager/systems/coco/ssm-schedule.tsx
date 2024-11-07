@@ -85,18 +85,17 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
       <>
         <TopPanel title="Confidential Computing Schedule">
           <Messages items={this.state.messages} />
-          <SectionToolbar>
+          {/* <SectionToolbar>
             <div className="action-button-wrapper">
               <div className="btn-group pull-right">
                 <AsyncButton
                   className="btn-default"
-                  defaultType="btn-danger"
                   text={t("Schedule")}
                   action={this.onSchedule}
                 />
               </div>
             </div>
-          </SectionToolbar>
+          </SectionToolbar> */}
           <ActionSchedule
             earliest={this.state.earliest}
             actionChains={this.props.actionChains}
@@ -105,6 +104,16 @@ class CoCoSSMSchedule extends React.Component<Props, State> {
             systemIds={this.props.systemSupport.filter((system) => system.cocoSupport).map((system) => system.id)}
             actionType="coco.attestation"
           />
+            
+              <div className="row">
+                <div className="col-md-offset-3 offset-md-3 col-md-6">
+                  <AsyncButton
+                    className="btn-primary"
+                    text={t("Schedule")}
+                    action={this.onSchedule}
+                  />
+                </div>
+              </div>
         </TopPanel>
         <TargetSystems systemsData={this.props.systemSupport}>
           <Column
