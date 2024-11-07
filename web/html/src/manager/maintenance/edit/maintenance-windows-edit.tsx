@@ -32,14 +32,16 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   };
 
   const buttons = [
-    <div className="btn-group pull-right">
-      <AsyncButton
-        id={"editButton"}
-        action={() => child.current?.onEdit()}
-        defaultType="btn-primary"
-        disabled={icalLoading === true}
-        text={(isEdit() ? t("Update") : t("Create")) + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
-      />
+    <div className="row">
+      <div className="col-md-offset-3 offset-md-3 col-md-6">
+        <AsyncButton
+          id={"editButton"}
+          action={() => child.current?.onEdit()}
+          defaultType="btn-primary"
+          disabled={icalLoading === true}
+          text={(isEdit() ? t("Update ") : t("Create ")) + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
+        />
+      </div>
     </div>,
   ];
 
@@ -60,7 +62,6 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
       title={t("Maintenance") + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
       icon="spacewalk-icon-schedule"
       buttonsLeft={buttonsLeft}
-      buttons={buttons}
     >
       {(type === "schedule" && (
         <MaintenanceScheduleEdit
@@ -82,6 +83,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
             isLoading={(i) => setIcalLoading(i)}
           />
         ))}
+        {buttons}
     </InnerPanel>
   );
 };
