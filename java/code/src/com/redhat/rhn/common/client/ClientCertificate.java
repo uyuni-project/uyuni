@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.redhat.rhn.common.client;
-
+// TEST
 import com.redhat.rhn.frontend.html.XmlTag;
 
 import org.apache.commons.codec.binary.Hex;
