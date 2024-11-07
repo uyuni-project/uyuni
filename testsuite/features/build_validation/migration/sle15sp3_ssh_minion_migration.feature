@@ -14,12 +14,12 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
     When I follow "Software" in the content area
     And I follow "Packages"
     And I follow "Upgrade"
-    And I enter "salt" as the filtered package name
+    And I enter "salt" as the filtered latest package
     And I click on the filter button
     And I click on "Select All"
     And I click on "Upgrade Packages"
     And I click on "Confirm"
-    Then I should see a "packages upgrades have been scheduled" text
+    Then I should see a "package upgrades have been scheduled" text
     And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Migrate this SSH minion to SLE 15 SP4
