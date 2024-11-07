@@ -31,23 +31,22 @@
         WITH product_channels AS (
           -- Extract all the mandatory channels for the given product ids
           SELECT sp.id
-                    , spr.channel_label AS label
+               , ct.channel_label AS label
             FROM suseproducts sp
-                    INNER JOIN suseproductsccrepository spr ON sp.id = spr.product_id
+                    INNER JOIN suseChannelTemplate ct ON sp.id = ct.product_id
            WHERE sp.product_id IN ( %s )
-                    AND spr.mandatory = 'Y'
+             AND ct.mandatory = 'Y'
         ), custom_channels AS (
           -- Extract all the custom channels
           SELECT id, label
             FROM rhnchannel
            WHERE org_id IS NOT NULL
-                    AND channel_product_id IS NULL
+             AND channel_product_id IS NULL
         ) -- Evaluate if the labels are conflicting
           SELECT pc.id, cc.label
             FROM product_channels pc
                     INNER JOIN custom_channels cc ON pc.label = cc.label
     </query>
 </mode>
-
 
 </datasource_modes>

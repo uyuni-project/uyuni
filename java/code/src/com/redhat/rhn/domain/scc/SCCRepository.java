@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.scc;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 
 import com.suse.scc.model.SCCRepositoryJson;
 
@@ -47,8 +47,8 @@ import javax.persistence.Transient;
 @Table(name = "suseSCCRepository")
 @NamedQuery(name = "SCCRepository.lookupByChannelFamily",
             query = "select r from SCCRepository r " +
-                    " join r.products pr " +
-                    " join pr.product p " +
+                    " join r.channelTemplates ct " +
+                    " join ct.product p " +
                     " join p.channelFamily cf " +
                     "where cf.label = :channelFamily")
 @NamedQuery(name = "SCCRepository.lookupByUrlEndpoint",
@@ -56,8 +56,8 @@ import javax.persistence.Transient;
                     "where r.url like :urlEndpoint")
 @NamedQuery(name = "SCCRepository.lookupByProductNameAndArchForPayg",
             query = "select distinct r from SCCRepository r " +
-                    " join r.products pr " +
-                    " join pr.product p " +
+                    " join r.channelTemplates ct " +
+                    " join ct.product p " +
                     " join p.arch a " +
                     " where lower(p.name) = lower(:product_name) " +
                     " and lower(a.label) = lower(:arch_name) " +
@@ -74,7 +74,7 @@ public class SCCRepository extends BaseDomainHelper {
     private boolean signed = true;
     private boolean installerUpdates = false;
 
-    private Set<SUSEProductSCCRepository> products = new HashSet<>();
+    private Set<ChannelTemplate> channelTemplates = new HashSet<>();
     private Set<SCCRepositoryAuth> auth = new HashSet<>();
 
     /**
@@ -289,24 +289,23 @@ public class SCCRepository extends BaseDomainHelper {
      * @return Returns the products.
      */
     @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
-    public Set<SUSEProductSCCRepository> getProducts() {
-        return products;
+    public Set<ChannelTemplate> getChannelTemplates() {
+        return channelTemplates;
     }
 
     /**
-     * @param productsIn The products to set.
+     * @param channelTemplatesIn The products to set.
      */
-    public void setProducts(Set<SUSEProductSCCRepository> productsIn) {
-        this.products = productsIn;
+    public void setChannelTemplates(Set<ChannelTemplate> channelTemplatesIn) {
+        this.channelTemplates = channelTemplatesIn;
     }
 
     /**
-     * @param productIn the product to add
+     * @param templateIn the channel template to add
      */
-    public void addProduct(SUSEProductSCCRepository productIn) {
-        productIn.setRepository(this);
-        this.products.add(productIn);
-
+    public void addChannelTemplate(ChannelTemplate templateIn) {
+        templateIn.setRepository(this);
+        this.channelTemplates.add(templateIn);
     }
 
     /**
