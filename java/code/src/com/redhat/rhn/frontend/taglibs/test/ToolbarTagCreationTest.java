@@ -64,7 +64,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     @Test
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-default\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
             "<i class=\"fa fa-plus\" title=\"Create User\">" +
             "</i>Create User</a></div><h1></h1></div>";
 
