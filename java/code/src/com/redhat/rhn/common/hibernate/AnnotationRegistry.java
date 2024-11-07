@@ -52,7 +52,7 @@ import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -125,7 +125,7 @@ public class AnnotationRegistry {
         SCCRepository.class,
         SCCSubscription.class,
         SCCOrderItem.class,
-        SUSEProductSCCRepository.class,
+        ChannelTemplate.class,
         SCCRepositoryAuth.class,
         SCCRepositoryNoAuth.class,
         SCCRepositoryBasicAuth.class,

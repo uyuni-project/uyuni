@@ -253,7 +253,7 @@ public class ProductsController {
         List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
-            log.fatal("addProduct failed: Product Data refresh needed");
+            log.fatal("addChannelTemplate failed: Product Data refresh needed");
             return json(response, identifiers.stream().collect(Collectors.toMap(
                 Function.identity(),
                 ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
@@ -268,7 +268,7 @@ public class ProductsController {
         // Convert to a map specifying operation result for each product while logging the errors that have happened
         Map<String, String> resultMap = new HashMap<>();
         productStatusMap.forEach((product, error) -> {
-            error.ifPresent(ex -> log.fatal("addProduct() failed for {}", product, ex));
+            error.ifPresent(ex -> log.fatal("addChannelTemplate() failed for {}", product, ex));
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
