@@ -41,9 +41,9 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreationNoAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
-            "Create User</a></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
+                "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+                "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url", "", "user");
 
@@ -54,7 +54,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreationWithMissingType() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url", "true_test()", "");
 
@@ -64,16 +64,16 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     @Test
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\">" +
-            "</i>Create User</a></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
+                "<i class=\"fa fa-plus\" title=\"Create User\">" +
+                "</i>Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url",
-                         "first_true_acl(); second_true_acl(); is_foo(foo)",
-                         "user");
+                "first_true_acl(); second_true_acl(); is_foo(foo)",
+                "user");
 
         tt.setAclMixins(MockOneAclHandler.class.getName() + "," +
-                        MockTwoAclHandler.class.getName());
+                MockTwoAclHandler.class.getName());
 
         verifyTag(output);
     }
@@ -81,12 +81,12 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     @Test
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
-            "Create User</a></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
+                "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+                "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url",
-                         "first_true_acl(); second_true_acl()", "user");
+                "first_true_acl(); second_true_acl()", "user");
 
         tt.setAclMixins(MockOneAclHandler.class.getName());
 
@@ -98,17 +98,16 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
         boolean flag = false;
         try {
             String output = "<div class=\"toolbar-h1\"><div class=\"" +
-                "toolbar\"></div></div>";
+                    "toolbar\"></div></div>";
 
             setupCreationTag("h1", "creation-url",
-                             "true_test()", "user");
+                    "true_test()", "user");
 
             tt.setAclMixins("throws.class.not.found.exception");
 
             verifyTag(output);
             flag = true;
-        }
-        catch (JspException je) {
+        } catch (JspException je) {
             // deep inside the tag, an IllegalArgumentException became
             // a JspException
             assertFalse(flag);
@@ -119,9 +118,9 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreationAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
-            "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
-            "Create User</a></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"creation-url\" class=\"btn btn-primary\">" +
+                "<i class=\"fa fa-plus\" title=\"Create User\"></i>" +
+                "Create User</a></div><h1></h1></div>";
 
         setupCreationTag("h1", "creation-url", "true_test()", "user");
 
@@ -132,7 +131,7 @@ public class ToolbarTagCreationTest extends BaseTestToolbarTag {
     public void testCreationWithMissingUrl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
 
         setupCreationTag("h1", null, "true_test()", "user");
 
