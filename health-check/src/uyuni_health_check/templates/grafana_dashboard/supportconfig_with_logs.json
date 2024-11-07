@@ -103,8 +103,8 @@
         {
           "id": "renameByRegex",
           "options": {
-            "regex": "statics{instance=\"host.containers.internal:9000\", job=\"supportconfig-exporter\", statics=\"xmx_size\"}",
-            "renamePattern": "xmx size (MB)"
+            "regex": "statics{instance=\"uyuni_health_check_supportconfig-exporter:9000\", job=\"supportconfig-exporter\", statics=\"tomcat_xmx_size\"}",
+            "renamePattern": "Tomcat xmx size (MB)"
           }
         }
       ],
