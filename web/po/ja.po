@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:22+0200\n"
+"POT-Creation-Date: 2024-11-08 15:02+0100\n"
 "PO-Revision-Date: 2024-10-15 09:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -3159,7 +3159,7 @@ msgstr "新しいベースチャンネルとして選択すべきチャンネル
 msgid "Child Channels"
 msgstr "子チャンネル"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:219
 msgid "Clear Search"
 msgstr "検索の消去"
 
