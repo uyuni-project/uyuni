@@ -238,7 +238,7 @@ public class SystemManager extends BaseManager {
         List<SystemIDInfo> systemIDInfos =
                 this.serverFactory.lookupSystemsVisibleToUserWithEntitlement(user, entitlement);
 
-        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).collect(Collectors.toList());
+        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).toList();
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
@@ -246,7 +246,7 @@ public class SystemManager extends BaseManager {
         return systemIDInfos.stream()
                 .map(s -> new SystemGroupsDTO(s.getSystemID(),
                         managedGroupsPerServer.getOrDefault(s.getSystemID(), new ArrayList<>())))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -258,7 +258,7 @@ public class SystemManager extends BaseManager {
         if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
             return;
         }
-        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
+        List<Long> serverIds = servers.stream().map(Server::getId).toList();
         List<Long> snapshottableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
@@ -524,11 +524,11 @@ public class SystemManager extends BaseManager {
         Set<String> hwAddrs = hwAddress.map(Collections::singleton).orElse(emptySet());
         List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
         if (!matchingProfiles.isEmpty()) {
-            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
+            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).toList());
         }
 
         String uniqueId = createUniqueId(
-                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).collect(Collectors.toList()));
+                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).toList());
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -1742,7 +1742,7 @@ public class SystemManager extends BaseManager {
         params.put("feature", feat);
 
         DataResult<Map<String, Long>> result = m.execute(params, sids);
-        return result.stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
+        return result.stream().map(Map::values).flatMap(Collection::stream).toList();
     }
 
     /**
@@ -2208,7 +2208,7 @@ public class SystemManager extends BaseManager {
             // Add the FQDNs as some may not be already known
             server.getFqdns().addAll(fqdns.stream()
                 .filter(fqdn -> !fqdn.contains("*"))
-                .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
+                .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
             return server;
         }
         Server server = ServerFactory.createServer();
@@ -2216,7 +2216,7 @@ public class SystemManager extends BaseManager {
         server.setHostname(proxyName);
         server.getFqdns().addAll(fqdns.stream()
                 .filter(fqdn -> !fqdn.contains("*"))
-                .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
+                .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
         server.setOrg(creator.getOrg());
         server.setCreator(creator);
 
@@ -3155,7 +3155,7 @@ public class SystemManager extends BaseManager {
         SelectMode mode = ModeFactory.getMode("System_queries", "system_ids");
         Map<String, Object> params = new HashMap<>();
         DataResult<Map<String, Object>> dr = mode.execute(params);
-        return dr.stream().map(data -> (Long)data.get("id")).collect(Collectors.toList());
+        return dr.stream().map(data -> (Long)data.get("id")).toList();
     }
 
     /**
@@ -4092,7 +4092,10 @@ public class SystemManager extends BaseManager {
                 return existingCredentials;
             })
             .orElseGet(() -> {
-                String username = "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+                String randomSuffix = RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+                // Ensure the username is stored lowercase in the database, since the script uyuni-setup-reportdb-user
+                // will convert it to lowercase anyway
+                String username = "hermes_" + randomSuffix.toLowerCase();
 
                 ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(username, password);
                 CredentialsFactory.storeCredentials(reportCredentials);

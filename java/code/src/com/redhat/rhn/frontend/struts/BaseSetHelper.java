@@ -117,8 +117,8 @@ public class BaseSetHelper {
             tmp = (String[]) set.stream()
                     .toArray(String[]::new);
         }
-        else if (set instanceof RhnSetImpl) {
-            tmp = ((RhnSetImpl) set).getElements()
+        else if (set instanceof RhnSetImpl rhnSet) {
+            tmp = rhnSet.getElements()
                     .stream()
                     .map(x -> x.getElement().toString())
                     .toArray(String[]::new);
@@ -245,8 +245,7 @@ public class BaseSetHelper {
 
         // If we have an RhnSet, we can 'unset' only the data-objects
         // Otherwise, we don't know enough to be able to make things happen, sorry
-        if (set instanceof RhnSet) {
-            RhnSet rset = (RhnSet)set;
+        if (set instanceof RhnSet rset) {
             rset.removeElements(keys.toArray(keysArray));
         }
         else {
@@ -260,8 +259,7 @@ public class BaseSetHelper {
 
 
     private void removeObjectFromSet(List<String> keys, Object obj) {
-        if (obj instanceof Selectable) {
-            Selectable next = (Selectable) obj;
+        if (obj instanceof Selectable next) {
             if (next.isSelectable()) {
                 next.setSelected(false);
                 keys.add(next.getSelectionKey());
@@ -271,8 +269,7 @@ public class BaseSetHelper {
             Map<String, Object> next = (Map<String, Object>) obj;
             next.remove(SELECTED);
         }
-        else if (obj instanceof Identifiable) {
-            Identifiable next = (Identifiable) obj;
+        else if (obj instanceof Identifiable next) {
             keys.add(next.getId().toString());
          }
     }
@@ -301,8 +298,7 @@ public class BaseSetHelper {
     }
 
     private void syncObjectToSet(Set set, Object obj) {
-        if (obj instanceof Selectable) {
-            Selectable next = (Selectable) obj;
+        if (obj instanceof Selectable next) {
             if (next.isSelectable()) {
                 if (set.contains(next.getSelectionKey())) {
                     next.setSelected(true);
@@ -316,8 +312,7 @@ public class BaseSetHelper {
                 next.put(SELECTED, true);
             }
         }
-        else if (obj instanceof Identifiable) {
-            Identifiable next = (Identifiable) obj;
+        else if (obj instanceof Identifiable next) {
             if (set.contains(next.getId())) {
                 set.add(next.getId().toString());
             }
@@ -356,8 +351,7 @@ public class BaseSetHelper {
 
 
     private void addObjectToSet(Set set, Object obj) {
-        if (obj instanceof Selectable) {
-            Selectable next = (Selectable) obj;
+        if (obj instanceof Selectable next) {
             if (next.isSelectable()) {
                 set.add(next.getSelectionKey());
             }
@@ -366,15 +360,14 @@ public class BaseSetHelper {
             Map<String, Object> next = (Map<String, Object>) obj;
             set.add(next.get(KEY));
         }
-        else if (obj instanceof Identifiable) {
-           Identifiable next = (Identifiable) obj;
+        else if (obj instanceof Identifiable next) {
            set.add(next.getId().toString());
         }
     }
 
     protected void storeSet(Set set) {
-        if (set instanceof RhnSet) {
-            RhnSetManager.store((RhnSet) set);
+        if (set instanceof RhnSet rset) {
+            RhnSetManager.store(rset);
         }
     }
 

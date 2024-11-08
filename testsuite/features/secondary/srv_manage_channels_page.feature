@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
@@ -7,8 +7,8 @@ Feature: Managing channels
   As an authorized user
   I want to manage channels
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Fail when trying to add a duplicate channel
     When I follow the left menu "Software > Manage > Channels"

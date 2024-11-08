@@ -470,7 +470,7 @@ public class SaltUtils {
                 }).orElseGet(Stream::empty))
                 // we sort by run order process multiple package changing states right
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
-                .collect(Collectors.toList());
+                .toList();
         for (StateApplyResult<JsonElement> value : collect) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = extractPackageDelta(value.getChanges());
             PackageChangeOutcome changeOutcome = applyChangesFromStateModule(delta, server);
@@ -1646,7 +1646,7 @@ public class SaltUtils {
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
-        ).map(Map.Entry::getValue).collect(Collectors.toList());
+        ).map(Map.Entry::getValue).toList();
         packages.retainAll(unchanged);
 
         Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
@@ -1706,7 +1706,7 @@ public class SaltUtils {
         return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
                 packageNames.get(e.getValue().getA()),
                 packageEvrsBySaltPackageKey.get(e.getKey()), e.getValue().getB(), server))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -1885,7 +1885,7 @@ public class SaltUtils {
                         result.getDnsFqdns().stream()
                     ),
                     result.getCustomFqdns().stream()
-                ).distinct().collect(Collectors.toList())
+                ).distinct().toList()
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
 
@@ -2144,8 +2144,8 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        List<ServerAction> serverActions = ActionFactory
-                .listServerActionsForServer(minion);
+        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion,
+                List.of(ActionFactory.TYPE_REBOOT));
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {

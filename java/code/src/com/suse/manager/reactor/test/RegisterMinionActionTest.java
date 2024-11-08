@@ -1041,7 +1041,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 ch.get("shortName"),
                                 ch.get("friendlyName")
                         ))
-                        .collect(Collectors.toList()) : null;
+                        .toList() : null;
         Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         HibernateFactory.getSession().flush();

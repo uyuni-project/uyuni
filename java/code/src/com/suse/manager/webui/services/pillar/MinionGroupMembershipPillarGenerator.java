@@ -26,7 +26,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Class for generating pillar data containing information of the server groups memberships of minions
@@ -56,9 +55,9 @@ public class MinionGroupMembershipPillarGenerator extends MinionPillarGeneratorB
         pillar.getPillar().clear();
 
         List<String> addonGroupTypes = minion.getEntitledGroupTypes().stream()
-                .map(ServerGroupType::getLabel).collect(Collectors.toList());
+                .map(ServerGroupType::getLabel).toList();
 
-        List<Long> groupIds = minion.getManagedGroups().stream().map(ServerGroup::getId).collect(Collectors.toList());
+        List<Long> groupIds = minion.getManagedGroups().stream().map(ServerGroup::getId).toList();
 
         pillar.add("group_ids", groupIds.toArray(new Long[groupIds.size()]));
         pillar.add("addon_group_types", addonGroupTypes.toArray(new String[addonGroupTypes.size()]));

@@ -1,12 +1,12 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
 @scope_visualization
 Feature: Manage a group of systems
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Fail to create a group with only its name
     When I follow the left menu "Systems > System Groups"
@@ -62,7 +62,7 @@ Feature: Manage a group of systems
     And I should see "sle_minion" as link
 
    #container already has locale formula installed
-   @skip_if_containerized_server 
+   @skip_if_containerized_server
    Scenario: Install the locale formula package on the server
      When I manually install the "locale" formula on the server
 
@@ -106,7 +106,7 @@ Feature: Manage a group of systems
 
   # Red Hat-like minion is intentionally not removed from group
 
-  @skip_if_containerized_server 
+  @skip_if_containerized_server
   Scenario: Cleanup: uninstall formula from the server
     When I manually uninstall the "locale" formula from the server
 

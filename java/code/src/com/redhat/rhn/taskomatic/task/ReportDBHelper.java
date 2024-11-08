@@ -111,7 +111,7 @@ public class ReportDBHelper {
      */
     public SelectMode generateExistingTables(Session session, List<String> tables) {
         List<String> selectContent =
-                tables.stream().map(t -> "to_regclass('" + t + "') AS " + t).collect(Collectors.toList());
+                tables.stream().map(t -> "to_regclass('" + t + "') AS " + t).toList();
         final String sqlStatement = "SELECT " + String.join(",", selectContent);
         return new GeneratedSelectMode("exists.reportdbtables" , session, sqlStatement, Collections.emptyList());
     }

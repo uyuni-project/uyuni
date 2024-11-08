@@ -112,10 +112,9 @@ public class TokenPackage implements Identifiable {
     @Override
     public boolean equals(Object other) {
 
-        if (!(other instanceof TokenPackage)) {
+        if (!(other instanceof TokenPackage otherPack)) {
             return false;
         }
-        TokenPackage otherPack = (TokenPackage) other;
 
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(getToken(), otherPack.getToken());

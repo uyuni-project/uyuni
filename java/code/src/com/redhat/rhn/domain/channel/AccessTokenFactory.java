@@ -119,7 +119,7 @@ public class AccessTokenFactory extends HibernateFactory {
                     tokensToActivate.stream()
                             .anyMatch(newToken ->
                                     newToken.getChannels().containsAll(token.getChannels()));
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     /**
@@ -179,14 +179,14 @@ public class AccessTokenFactory extends HibernateFactory {
         List<Channel> allTokenChannels =
                 Stream.concat(all.stream(), tokensToActivate.stream())
                         .flatMap(s -> s.getChannels().stream())
-                        .collect(Collectors.toList());
+                        .toList();
 
         ArrayList<Channel> withoutToken = new ArrayList<>(minion.getChannels());
         withoutToken.removeAll(allTokenChannels);
 
         List<AccessToken> newTokens = withoutToken.stream().flatMap(channel ->
                 Opt.stream(generate(minion, Collections.singleton(channel)))
-        ).collect(Collectors.toList());
+        ).toList();
         all.addAll(newTokens);
 
         List<AccessToken> maybeRefreshed = update.stream().map(token -> {
@@ -197,12 +197,12 @@ public class AccessTokenFactory extends HibernateFactory {
                 LOG.error("Could not regenerate token with id: {}", token.getId(), e);
                 return token;
             }
-        }).collect(Collectors.toList());
+        }).toList();
 
         List<AccessToken> tokens = Stream.concat(
                 maybeRefreshed.stream(),
                 Stream.concat(newTokens.stream(), noUpdate.stream())
-        ).collect(Collectors.toList());
+        ).toList();
         minion.getAccessTokens().clear();
         minion.getAccessTokens().addAll(tokens);
         tokensToActivate.forEach(toActivate -> {

@@ -362,7 +362,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -445,7 +445,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -535,7 +535,7 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
-        List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
+        List<Long> sids = systems.stream().map(SystemOverview::getId).toList();
         Session session = HibernateFactory.getSession();
         Query<Long> query = session.getNamedQuery("Server.findServersPendingRebootAction");
         query.setParameter("systemIds", sids);
@@ -623,7 +623,7 @@ public class ServerFactory extends HibernateFactory {
         DataResult<Map<String, Object>> dr = mode.execute(params);
 
         return dr.stream().map(m -> new SystemIDInfo((Long) m.get("id"), (String) m.get("name")))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

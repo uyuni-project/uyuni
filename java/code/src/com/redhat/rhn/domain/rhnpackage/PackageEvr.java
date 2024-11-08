@@ -164,12 +164,9 @@ public class PackageEvr implements Comparable<PackageEvr> {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PackageEvr)) {
+        if (!(obj instanceof PackageEvr evr)) {
             return false;
         }
-
-        PackageEvr evr = (PackageEvr) obj;
-
         return new EqualsBuilder().append(this.getId(), evr.getId()).append(
                 this.getEpoch(), evr.getEpoch())
                 .append(this.getVersion(), evr.getVersion()).append(this.getRelease(),

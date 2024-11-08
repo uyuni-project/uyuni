@@ -202,13 +202,13 @@ When(/^I copy autoinstall mocked files on server$/) do
   get_target('server').run("mkdir -p #{target_dirs}")
   base_dir = "#{File.dirname(__FILE__)}/../upload_files/autoinstall/cobbler/"
   source_dir = '/var/autoinstall/'
-  return_codes = []
-  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/vmlinuz", "#{source_dir}Fedora_12_i386/images/pxeboot/vmlinuz")
-  return_codes << file_inject(get_target('server'), "#{base_dir}fedora12/initrd.img", "#{source_dir}Fedora_12_i386/images/pxeboot/initrd.img")
-  return_codes << file_inject(get_target('server'), "#{base_dir}mock/empty.xml", "#{source_dir}mock/empty.xml")
-  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/initrd", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd")
-  return_codes << file_inject(get_target('server'), "#{base_dir}sles15sp4/linux", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux")
-  raise ScriptError, 'File injection failed' unless return_codes.all?(&:zero?)
+  successes = []
+  successes << file_inject(get_target('server'), "#{base_dir}fedora12/vmlinuz", "#{source_dir}Fedora_12_i386/images/pxeboot/vmlinuz")
+  successes << file_inject(get_target('server'), "#{base_dir}fedora12/initrd.img", "#{source_dir}Fedora_12_i386/images/pxeboot/initrd.img")
+  successes << file_inject(get_target('server'), "#{base_dir}mock/empty.xml", "#{source_dir}mock/empty.xml")
+  successes << file_inject(get_target('server'), "#{base_dir}sles15sp4/initrd", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/initrd")
+  successes << file_inject(get_target('server'), "#{base_dir}sles15sp4/linux", "#{source_dir}SLES15-SP4-x86_64/DVD1/boot/x86_64/loader/linux")
+  raise ScriptError, 'File injection failed' unless successes.all?
 end
 
 When(/^I run Cobbler sync (with|without) error checking$/) do |checking|
@@ -261,8 +261,8 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   local_file = '/tmp/cobbler.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{local_file}")
-  return_code = file_extract(node, local_file, local_file)
-  raise ScriptError, 'File extraction failed' unless return_code.zero?
+  success = file_extract(node, local_file, local_file)
+  raise ScriptError, 'File extraction failed' unless success
 
   output = File.read(local_file).each_line.select { |line| line.include? 'ERROR' }
   unless output.empty?
@@ -276,8 +276,8 @@ Then(/^the local logs for Cobbler should not contain errors$/) do
   local_file = '/tmp/cobbler_debug.log'
   # to avoid a race condition with "tar" as called by "mgrctl cp", we need to work on a copy:
   node.run("cp #{cobbler_log_file} #{local_file}")
-  return_code = file_extract(node, local_file, local_file)
-  raise ScriptError, 'File extraction failed' unless return_code.zero?
+  success = file_extract(node, local_file, local_file)
+  raise ScriptError, 'File extraction failed' unless success
 
   file_data = File.read(local_file).gsub("\n", ',').chop.gsub('"', ' \' ').gsub('\\\'\'', '"')
   data_hash = JSON.parse("[#{file_data}]")

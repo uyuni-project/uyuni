@@ -88,11 +88,9 @@ public class UserServerPreferenceId implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof UserServerPreferenceId)) {
+        if (!(other instanceof UserServerPreferenceId castOther)) {
             return false;
         }
-        UserServerPreferenceId castOther = (UserServerPreferenceId) other;
-
         return new EqualsBuilder().append(server, castOther.getServer())
                                   .append(user, castOther.getUser())
                                   .append(name, castOther.getName())

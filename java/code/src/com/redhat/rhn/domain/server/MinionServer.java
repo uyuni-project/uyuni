@@ -168,7 +168,7 @@ public class MinionServer extends Server implements SaltConfigurable {
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
-                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
                 isAlibaba2() || isAmazon2() || isAmazon2023() ||
                 isDebian12() || isDebian11() || isDebian10();
@@ -211,10 +211,9 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MinionServer)) {
+        if (!(other instanceof MinionServer otherMinion)) {
             return false;
         }
-        MinionServer otherMinion = (MinionServer) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(otherMinion))
                 .append(getMachineId(), otherMinion.getMachineId())

@@ -1,4 +1,19 @@
 -------------------------------------------------------------------
+Wed Oct 09 16:03:54 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8-0
+  * add SUSE Linux Enterprise 15 SP5 LTSS channel families
+  * add MicroOS PPC channel family
+  * set Ubuntu 22.04 to released
+
+-------------------------------------------------------------------
+Thu Oct 03 16:19:34 CEST 2024 - rosuna@suse.com
+
+- version 5.0.7-0
+  * Add Ubuntu 24.04 support
+  * Add channel family for SLES 12 SP5 LTSS Extended Security
+
+-------------------------------------------------------------------
 Thu Aug 01 09:28:43 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

@@ -187,10 +187,9 @@ public class ConfigChannelType extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object arg) {
-        if (!(arg instanceof ConfigChannelType)) {
+        if (!(arg instanceof ConfigChannelType that)) {
              return false;
         }
-        ConfigChannelType that = (ConfigChannelType) arg;
         return new EqualsBuilder().
                 append(this.getLabel(), that.getLabel()).
                 append(this.getPriority(), that.getPriority()).

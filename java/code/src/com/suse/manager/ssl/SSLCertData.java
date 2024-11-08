@@ -21,7 +21,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Data contained in an SSL certificate, also used to generate them
@@ -76,7 +75,7 @@ public class SSLCertData {
 
         if (cnames != null) {
             params.addAll(cnames.stream()
-                    .flatMap(cname -> List.of("--set-cname", cname).stream()).collect(Collectors.toList()));
+                    .flatMap(cname -> List.of("--set-cname", cname).stream()).toList());
         }
 
         if (country != null) {

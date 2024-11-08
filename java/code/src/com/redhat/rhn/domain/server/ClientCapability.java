@@ -77,12 +77,11 @@ public class ClientCapability extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof ClientCapability)) {
+        if (!(other instanceof ClientCapability that)) {
             return false;
         }
-        ClientCapability otherActionChain = (ClientCapability) other;
         return new EqualsBuilder()
-                .append(getId(), otherActionChain.getId())
+                .append(getId(), that.getId())
                 .isEquals();
     }
 

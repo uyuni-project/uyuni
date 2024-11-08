@@ -15,9 +15,9 @@
 package com.redhat.rhn.common.validator.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.validator.Constraint;
 import com.redhat.rhn.common.validator.DataConverter;
@@ -70,7 +70,7 @@ public class ValidatorTest  {
     public void testGetConstraints() {
         assertFalse(validator.getConstraints().isEmpty());
         Object constraint = validator.getConstraints().get(0);
-        assertTrue(constraint instanceof Constraint);
+        assertInstanceOf(Constraint.class, constraint);
     }
 
     @Test

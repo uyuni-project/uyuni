@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 03 15:54:49 CEST 2024 - rosuna@suse.com
+
+- version 5.0.8-0
+  * Fix parsing Authority Key Identifier when keyid is not
+    prefixed (bsc#1229079)
+
+-------------------------------------------------------------------
 Thu Aug 01 09:43:48 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7-0

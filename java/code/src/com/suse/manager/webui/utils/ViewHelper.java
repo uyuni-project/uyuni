@@ -343,6 +343,6 @@ public enum ViewHelper {
      */
     @Deprecated
     public boolean isBootstrapReady(String uri) {
-        return BOOTSTRAP_READY_PAGES.contains(uri);
+        return true;
     }
 }

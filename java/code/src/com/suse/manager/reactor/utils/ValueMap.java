@@ -149,8 +149,8 @@ public class ValueMap {
         else if (value instanceof Long) {
             return Optional.of(Long.toString((long)value));
         }
-        else if (value instanceof String) {
-            return Optional.of((String)value);
+        else if (value instanceof String str) {
+            return Optional.of(str);
         }
         else {
             if (LOG.isWarnEnabled()) {
@@ -167,18 +167,18 @@ public class ValueMap {
      * the value could not be converted.
      */
     public Optional<Long> toLong(Object value) {
-        if (value instanceof Double) {
-            return Optional.of(((Double)value).longValue());
+        if (value instanceof Double dbl) {
+            return Optional.of(dbl.longValue());
         }
-        else if (value instanceof Long) {
-            return Optional.of((Long)value);
+        else if (value instanceof Long lng) {
+            return Optional.of(lng);
         }
-        else if (value instanceof Integer) {
-            return Optional.of(((Integer)value).longValue());
+        else if (value instanceof Integer integer) {
+            return Optional.of(integer.longValue());
         }
-        else if (value instanceof String) {
+        else if (value instanceof String str) {
             try {
-                return Optional.of(Long.parseLong((String) value));
+                return Optional.of(Long.parseLong(str));
             }
             catch (NumberFormatException e) {
                 LOG.warn("Error converting  '{}' to long", value, e);
@@ -201,8 +201,8 @@ public class ValueMap {
      * the value could not be converted.
      */
     public Optional<Boolean> toBoolean(Object value) {
-        if (value instanceof Boolean) {
-            return Optional.of((Boolean) value);
+        if (value instanceof Boolean bool) {
+            return Optional.of(bool);
         }
         else {
             if (LOG.isWarnEnabled()) {

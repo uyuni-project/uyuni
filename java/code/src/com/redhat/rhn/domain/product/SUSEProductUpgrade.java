@@ -114,10 +114,9 @@ public class SUSEProductUpgrade extends BaseDomainHelper implements Serializable
         if (obj == null) {
             return false;
         }
-        if (!(obj instanceof SUSEProductUpgrade)) {
+        if (!(obj instanceof SUSEProductUpgrade other)) {
             return false;
         }
-        SUSEProductUpgrade other = (SUSEProductUpgrade) obj;
         if (details == null) {
             if (other.details != null) {
                 return false;
@@ -135,13 +134,8 @@ public class SUSEProductUpgrade extends BaseDomainHelper implements Serializable
             return false;
         }
         if (toProduct == null) {
-            if (other.toProduct != null) {
-                return false;
-            }
+            return other.toProduct == null;
         }
-        else if (!toProduct.equals(other.toProduct)) {
-            return false;
-        }
-        return true;
+        return toProduct.equals(other.toProduct);
     }
 }

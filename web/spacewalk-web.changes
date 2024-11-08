@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Tue Oct 29 14:57:46 CET 2024 - marina.latini@suse.com
+
+- version 5.0.15-0
+  * CVE-2024-49503: Escape organization credentials username to
+    mitigate XSS vulnerability (bsc#1231922)
+
+-------------------------------------------------------------------
+Fri Oct 25 14:33:44 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.14-0
+  * CVE-2024-49502: Validate proxy hostname format and escape proxy
+    username to mitigate XSS vulnerabilities (bsc#1231852)
+
+-------------------------------------------------------------------
+Thu Oct 03 16:15:11 CEST 2024 - rosuna@suse.com
+
+- version 5.0.13-0
+  * Fix Find Targets button behavior for the feature Salt > Remote Commands page
+  * Fix the missing background color for the pending status badge
+    and show/hide the response badge component.
+  * Fix stretched button issue in Audit Search and Subscription Matching pages
+  * Fix alert layout in formula catalog
+  * Fix sticky header infinite scroll
+  * Fix layout mismatch in patches management
+  * Fix column alignment on repository and system pages
+  * Integrate UI debugging stories
+  * Fix Extra Packages column in systems list (bsc#1228980)
+  * Update the WebUI version
+
+-------------------------------------------------------------------
 Thu Aug 01 16:45:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.12-0

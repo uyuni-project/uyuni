@@ -28,6 +28,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ${PRODUCT_PATTERN_PREFIX}_retail \
     billing-data-service \
     grub2-x86_64-efi \
+    grub2-arm64-efi \
+    grub2-powerpc-ieee1275 \
     ed \
     susemanager-tftpsync \
     golang-github-prometheus-node_exporter \
@@ -141,7 +143,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.0.8
+LABEL org.opencontainers.image.version=5.0.9
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

@@ -28,7 +28,6 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Class representing the VM XML Definition.
@@ -287,9 +286,9 @@ public class GuestDefinition {
             def.graphics = GuestGraphicsDef.parse(devices.getChild("graphics"));
 
             def.interfaces = ((List<Element>)devices.getChildren("interface")).stream()
-                    .map(GuestInterfaceDef::parse).collect(Collectors.toList());
+                    .map(GuestInterfaceDef::parse).toList();
             def.disks = ((List<Element>)devices.getChildren("disk")).stream()
-                    .map(node -> GuestDiskDef.parse(node, vmInfo)).collect(Collectors.toList());
+                    .map(node -> GuestDiskDef.parse(node, vmInfo)).toList();
         }
         catch (Exception e) {
             LOG.error("failed to parse libvirt XML definition: {}", e.getMessage());

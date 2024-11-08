@@ -109,10 +109,9 @@ public class PackageProperty extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof PackageProperty)) {
+        if (!(obj instanceof PackageProperty prop)) {
             return false;
         }
-        PackageProperty prop = (PackageProperty) obj;
         EqualsBuilder eq = new EqualsBuilder();
         eq.append(this.getSense(), prop.getSense());
         eq.append(this.getPack(), prop.getPack());

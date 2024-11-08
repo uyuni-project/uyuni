@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 03 16:14:21 CEST 2024 - rosuna@suse.com
+
+- version 5.0.5-0
+  * Add repositories for Ubuntu 24.04 LTS
+  * Drop unsupported tool spacewalk-final-archive as it is broken
+    and may disclose sensitive information (bsc#1228945)
+  * Move taskotop tool to spacewalk-utils package
+
+-------------------------------------------------------------------
 Mon Jun 10 17:13:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0

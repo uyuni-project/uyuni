@@ -5,8 +5,8 @@
 @scope_content_lifecycle_management
 Feature: Content lifecycle
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create CLM filter to remove all fonts packages
     When I follow the left menu "Content Lifecycle > Filters"
@@ -177,6 +177,7 @@ Feature: Content lifecycle
     Then I should see a "Build (0)" text
     When I click on "Attach/Detach Sources"
     And I uncheck "Vendors"
+    And I enter "Fake-Base-Channel-SUSE-like" in the placeholder "Search a channel"
     And I add the "Fake-Base-Channel-SUSE-like" channel to sources
     And I click on "Save"
     Then I wait until I see "Fake-Base-Channel-SUSE-like" text
@@ -205,7 +206,7 @@ Feature: Content lifecycle
     And I click on "Delete"
     And I click on "Delete" in "Delete Project" modal
     Then I should not see a "clp_name" text
-    
+
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
     And I click the "remove fonts packages" item delete button

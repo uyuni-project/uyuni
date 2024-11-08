@@ -18,8 +18,7 @@ Feature: Migrate Salt to bundled Salt on a SLES 15 SP5 minion
     And I enter the hostname of "salt_migration_minion" as "target"
     And I click on preview
     Then I should see a "Target systems (1)" text
-    And I should see a "Stop waiting" text
-    And I click on stop waiting
+    When I wait until I do not see "pending" text
     And I click on run
     And I wait until I do not see "pending" text
     And I expand the results for "salt_migration_minion"

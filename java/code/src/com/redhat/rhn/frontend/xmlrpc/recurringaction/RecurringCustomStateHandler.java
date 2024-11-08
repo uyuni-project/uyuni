@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -183,6 +182,6 @@ public class RecurringCustomStateHandler extends BaseHandler {
                 // Get internal states
                 RecurringActionFactory.listInternalStates().stream()
                         .map(InternalState::getName)
-        ).collect(Collectors.toList());
+        ).toList();
     }
 }

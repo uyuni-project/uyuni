@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Oct 03 16:23:33 CEST 2024 - rosuna@suse.com
+
+- version 5.0.10-0
+  * Enable bootstrapping for Ubuntu 24.04 LTS
+  * Add missing package python3-ply to bootstrap repo definition (bsc#1228130)
+  * Use different exit codes for different failures in mgr-setup (bsc#1230139)
+  * Remove yast2 dependency from installation
+
+-------------------------------------------------------------------
 Thu Aug 01 09:27:16 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0

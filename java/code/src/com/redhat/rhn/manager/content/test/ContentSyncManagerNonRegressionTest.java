@@ -91,7 +91,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     baseProducts.stream(),
                     baseProducts.stream()
                         .flatMap(p -> p.getExtensions().stream())
-            ).collect(Collectors.toList());
+            ).toList();
 
             Set<MgrSyncProductDto> checkedProducts = new LinkedHashSet<>();
 
@@ -100,7 +100,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                 .map(l -> Arrays.asList(l.split(",")))
                     .map(a -> new ExpectedProductDto(a.get(0), a.get(1), a.get(2),
                             a.get(3).equals("base"), a.subList(4, a.size())))
-                    .collect(Collectors.toList());
+                    .toList();
 
             Map<ExpectedProductDto, ExpectedProductDto> parents =
                 IntStream.range(0, expectedProducts.size())
@@ -139,7 +139,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
 
                     List<MgrSyncChannelDto> unexpectedChannels = product.getChannels().stream()
                         .filter(c -> !ep.getChannelLabels().contains(toChannelLabel(c)))
-                        .collect(Collectors.toList());
+                        .toList();
 
                     unexpectedChannels.forEach(c -> failures.add("Product " + product +
                             " has unexpected channel " + toChannelLabel(c)));
@@ -147,7 +147,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
                     List<String> missingChannels = ep.getChannelLabels().stream().filter(
                         label -> !product.getChannels().stream()
                             .anyMatch(c -> toChannelLabel(c).equals(label))
-                    ).collect(Collectors.toList());
+                    ).toList();
 
                     missingChannels.forEach(c -> failures.add("Product " + product +
                             " does not have expected channel " + c));

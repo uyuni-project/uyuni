@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 03 16:18:47 CEST 2024 - rosuna@suse.com
+
+- version 5.0.11-0
+  * Implement product migration from RHEL and Clones to SUSE Liberty Linux
+
+-------------------------------------------------------------------
 Thu Aug 01 09:30:50 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.10-0

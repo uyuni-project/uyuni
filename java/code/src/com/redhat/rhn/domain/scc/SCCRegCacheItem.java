@@ -314,10 +314,9 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCRegCacheItem)) {
+        if (!(other instanceof SCCRegCacheItem otherSCCRegCache)) {
             return false;
         }
-        SCCRegCacheItem otherSCCRegCache = (SCCRegCacheItem) other;
         return new EqualsBuilder()
                 .append(getServer(), otherSCCRegCache.getServer())
                 .append(getSccId(), otherSCCRegCache.getSccId())

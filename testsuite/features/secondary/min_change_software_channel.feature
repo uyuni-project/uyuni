@@ -11,8 +11,8 @@
 @sle_minion
 Feature: Assign child channel to a system
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
 @susemanager
   Scenario: Check the system is still subscribed to old channels before channel change completes
@@ -80,7 +80,7 @@ Feature: Assign child channel to a system
 
   Scenario: Check channel change has completed for the system
     Given I am on the Systems overview page of this "sle_minion"
-    When I wait until event "Subscribe channels scheduled by admin" is completed
+    When I wait until event "Subscribe channels scheduled" is completed
     Then I should see a "The client completed this action on" text
 
 @susemanager

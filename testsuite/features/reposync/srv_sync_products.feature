@@ -148,6 +148,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-proxy-extension-50" have finished
 
 @proxy
 @susemanager
@@ -163,6 +164,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-retail-branch-server-extension-50" have finished
 
 
 @scc_credentials
@@ -175,8 +177,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
-    And I should not see a warning nor an error sign
+    And I should only see success signs in the product list
 
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC

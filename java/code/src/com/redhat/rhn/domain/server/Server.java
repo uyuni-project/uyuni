@@ -895,7 +895,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<ServerGroupType> getEntitledGroupTypes() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(ServerGroup::getGroupType).collect(Collectors.toList());
+                .map(ServerGroup::getGroupType).toList();
     }
 
     /**
@@ -904,16 +904,18 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<EntitlementServerGroup> getEntitledGroups() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
+                .map(s -> (EntitlementServerGroup) s).toList();
     }
 
     /**
      * The set of managed ServerGroup(s) that this Server is a member of
      * @return Returns the serverGroups.
      */
+    @SuppressWarnings("java:S6204")
     public List<ManagedServerGroup> getManagedGroups() {
         return this.groups.stream().filter(g -> g.getGroupType() == null)
-                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
+                .map(s -> (ManagedServerGroup) s)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1768,10 +1770,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Server)) {
+        if (!(other instanceof Server castOther)) {
             return false;
         }
-        Server castOther = (Server) other;
 
         Optional<PackageEvr> proxyVersion =
                 Optional.ofNullable(proxyInfo).map(ProxyInfo::getVersion);
@@ -2419,7 +2420,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
-                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
                 isAlibaba2() || isAmazon2() || isAmazon2023() ||
                 isDebian12() || isDebian11() || isDebian10();
@@ -2521,6 +2522,10 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     boolean isUbuntu2204() {
         return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("22.04");
+    }
+
+    boolean isUbuntu2404() {
+        return ServerConstants.UBUNTU.equals(getOs()) && getRelease().equals("24.04");
     }
 
     boolean isDebian12() {

@@ -326,10 +326,9 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Action)) {
+        if (!(other instanceof Action castOther)) {
             return false;
         }
-        Action castOther = (Action) other;
         return new EqualsBuilder().append(this.getId(), castOther.getId())
                                   .append(this.getOrg(), castOther.getOrg())
                                   .append(this.getName(), castOther.getName())

@@ -152,10 +152,9 @@ public class DistChannelMap implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof DistChannelMap)) {
+        if (!(other instanceof DistChannelMap castOther)) {
             return false;
         }
-        DistChannelMap castOther = (DistChannelMap) other;
         return new EqualsBuilder().append(getOs(), castOther.getOs()).append(getRelease(),
                 castOther.getRelease()).append(getChannelArch(), castOther.getChannelArch())
                 .append(getChannel(), castOther.getChannel()).isEquals();

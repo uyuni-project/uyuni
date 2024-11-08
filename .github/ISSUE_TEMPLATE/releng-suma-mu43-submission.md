@@ -1,0 +1,63 @@
+---
+name: SUSE Manager 4.3 MU submission
+about: Use this template for SUSE Manager 4.3 MU submissions
+title: 'X.Y.Z Maintenance Update submission'
+labels: ["vega-squad", "4.3"]
+projects: ["SUSE/35"]
+assignees: ''
+---
+
+# Important changes, for the release notes
+
+- 
+
+# Deadlines
+
+Check the [Release Calendar](https://confluence.suse.com/display/SUSEMANAGER/Release+calendar)
+Freeze: 
+Submission: 
+Release: 
+
+# Procedure
+
+https://confluence.suse.com/display/SUSEMANAGER/Maintenance+Update+procedure
+
+# TODO some days before
+
+Add more tasks if needed.
+
+- [ ] Lock the `Manager-4.3` branch
+- [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-4.3` is locked, and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+- [ ] Ask the Doc Squad to submit an update of the doc package to `Devel:Galaxy:Manager:4.3` project, and ask them to warn the translators so they can start their work. A Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) should get created a few days before the release
+- [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
+- [ ] Increase `web.version` in `web/conf/rhn_web.conf` (`x.y.z+1`) in `Manager-4.3` branch
+- [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://confluence.suse.com/display/SUSEMANAGER/Maintenance+Update+procedure)
+- [ ] Check if schema migration directories exist between older and newer SUSE Manager version (more at https://confluence.suse.com/display/SUSEMANAGER/Maintenance+Update+procedure)
+- [ ] Push changes to `Manager-4.3` branch
+- [ ] Confirm that the SR for the documentation is merged, and translators warned
+- [ ] Merge the PR for the translations with the option `Merge pull request`
+- [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
+- [ ] Check all the [tests for the relevant version](https://ci.suse.de/view/Manager/): everything should be green, or otherwise submission must be approved by the RRTG
+- [ ] Create the JIRA ticket, with placeholders for the IDs
+
+# TODO during the submission window
+
+Add more tasks if needed (for example, asking Maintenace to change the channel definitions).
+
+- [ ] Check all the [tests for the relevant version](https://ci.suse.de/view/Manager/): everything should be green, or otherwise submission must be approved by the RRTG
+- [ ] Tag everything with `tito tag --use-release=0`
+- [ ] Check that the `manager-4.3-releng-2obs` job has packaged latest and submitted the changes from `Manager-4.3` branch into the relevant https://build.suse.de/project/subprojects/Devel:Galaxy:Manager:4.3 project.
+- [ ] Prepare the submissions with `mu-massive-task` or `patch-creator`. For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package) and document this at the release card.
+- [ ] Add the IDs (and notes, if any), to the JIRA ticket, and ping the Maintenance Team at [#discuss-susemamanager-maintenance](https://app.slack.com/client/T02863RC2AC/C02DEF2U0E5)
+- [ ] Once the server/proxy submission is approved, [update the project](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) that rebuilds the container images and the helm chart.
+  - [ ] Unlock the project [Devel:Galaxy:Manager:MUTesting:4.3](https://build.suse.de/project/show/Devel:Galaxy:Manager:MUTesting:4.3) with `osc -A https://api.suse.de unlock -m "Project unlocked for updating the sources" Devel:Galaxy:Manager:MUTesting:4.3`
+  - [ ] Update the sources with:
+  ```
+  for source in `osc -A https://api.suse.de ls Devel:Galaxy:Manager:MUTesting:4.3`; do osc -A https://api.suse.de copypac Devel:Galaxy:Manager:4.3 `echo $source | cut -d '.' -f 1` Devel:Galaxy:Manager:MUTesting:4.3 $source; done
+  ```
+  - [ ] After the build is complete and everything is published, lock the project again with `osc -A https://api.suse.de lock -m "Project locked for testing" Devel:Galaxy:Manager:MUTesting:4.3`.
+- [ ] Once autobuild approves all MRs, create the `Manager-4.3-MU-X.Y.Z` branch, push it.
+- [ ] Before unlocking the `Manager-4.3`  branch, consider PRs for merge that became ready during the branch freeze looking for the ["merge-candidate" label](https://github.com/SUSE/spacewalk/pulls?q=is%3Apr+is%3Aopen+label%3Amerge-candidate) or ping reviewers to take care of it.
+- [ ] Send an email to galaxy-devel@suse.de informing that the branch `Manager-4.3` is unlocked , and adjust the topic on the slack [#team-susemanager](https://app.slack.com/client/T02863RC2AC/C02D78LLS04) channel
+- [ ] Add links to the patchinfos on top of this issue, and send for the PO with a link to this issue, and the deadline for the SR for the release notes.
+- [ ] Submit the release notes

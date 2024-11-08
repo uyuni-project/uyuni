@@ -318,14 +318,14 @@ public class RhnSetImpl implements RhnSet {
      */
     @Override
     public boolean add(Object e) {
-        if (e instanceof String) {
-            addElement((String)e);
+        if (e instanceof String str) {
+            addElement(str);
         }
-        else if (e instanceof Long) {
-            addElement((Long)e);
+        else if (e instanceof Long lng) {
+            addElement(lng);
         }
-        else if (e instanceof RhnSetElement) {
-            addElement((RhnSetElement)e);
+        else if (e instanceof RhnSetElement elem) {
+            addElement(elem);
         }
         return false;
     }
@@ -347,13 +347,13 @@ public class RhnSetImpl implements RhnSet {
      */
     @Override
     public boolean contains(Object o) {
-        if (o instanceof String) {
+        if (o instanceof String str) {
             return elements.contains(new RhnSetElement(this.getUserId(),
-                    this.getLabel(), (String) o));
+                    this.getLabel(), str));
         }
-        else if (o instanceof Long) {
+        else if (o instanceof Long lng) {
             return elements.contains(new RhnSetElement(this.getUserId(),
-                    this.getLabel(), (Long) o, null, null));
+                    this.getLabel(), lng, null, null));
         }
         return elements.contains(o);
     }

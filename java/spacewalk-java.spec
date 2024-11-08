@@ -32,7 +32,7 @@
 %define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt
 
-%{!?java_version: %global java_version 11}
+%{!?java_version: %global java_version 17}
 %if 0%{?suse_version}
 %define userserverdir       /srv
 %define apache_group    www
@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.12
+Version:        5.0.14
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz

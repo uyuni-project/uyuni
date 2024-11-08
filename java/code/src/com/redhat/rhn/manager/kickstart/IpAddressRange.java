@@ -118,10 +118,9 @@ public class IpAddressRange {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof IpAddressRange)) {
+        if (!(o instanceof IpAddressRange other)) {
             return false;
         }
-        IpAddressRange other = (IpAddressRange)o;
         return new EqualsBuilder().append(this.getMax(), other.getMax())
                                   .append(this.getMin(), other.getMin())
                                   .isEquals();

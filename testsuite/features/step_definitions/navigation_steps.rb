@@ -221,6 +221,10 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
+When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
+  find("input[placeholder='#{placeholder}']").set(text)
+end
+
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
   future_time = get_future_time(minutes_to_add)
   fill_in(field, with: future_time, fill_options: { clear: :backspace })
@@ -272,6 +276,17 @@ When(/^I click on "([^"]*)" and confirm$/) do |text|
   begin
     accept_alert do
       step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
+  end
+end
+
+# Click on a button and confirm in alert box
+When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
+  begin
+    accept_confirm do
+      click_button(text)
     end
   rescue Capybara::ModalNotFound
     warn 'Modal not found'
@@ -378,6 +393,8 @@ end
 
 Given(/^I am not authorized$/) do
   begin
+    xpath_logout = '//a[@href=\'/rhn/Logout.do\']'
+    find(:xpath, xpath_logout).click if has_xpath?(xpath_logout)
     page.reset!
   rescue NoMethodError
     log 'The browser session could not be cleaned.'
@@ -404,6 +421,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "admin" with password "admin"'
   when 'Images'
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
+  when 'Docker'
+    step 'I am authorized as "docker" with password "docker"'
   else
     log "Section #{section} not supported"
   end
@@ -538,10 +557,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+  $current_user = user
+  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
-  step 'I am authorized as "testing" with password "testing"'
+  user = get_context('user') || 'admin'
+  password = get_context('password') || 'admin'
+  step %(I am authorized as "#{user}" with password "#{password}")
 end
 
 When(/^I sign out$/) do
@@ -780,9 +803,11 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning nor an error sign$/) do
-  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
-  raise ScriptError, 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
+Then(/^I should only see success signs in the product list$/) do
+  raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
+  raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
+  raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+  raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
@@ -844,9 +869,15 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise 'Package name is not set' if input.empty?
+  raise ArgumentError, 'Package name is not set' if input.empty?
 
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
+  raise ArgumentError, 'Package name is not set' if input.empty?
+
+  find('input[placeholder=\'Filter by Latest Package: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|

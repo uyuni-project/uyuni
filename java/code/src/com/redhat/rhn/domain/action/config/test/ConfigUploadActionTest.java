@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.config.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -43,7 +43,7 @@ public class ConfigUploadActionTest extends RhnBaseTestCase {
         //look it back up
         Action lookedUp = ActionFactory.lookupByUserAndId(user, a.getId());
         assertNotNull(lookedUp);
-        assertTrue(lookedUp instanceof ConfigUploadAction);
+        assertInstanceOf(ConfigUploadAction.class, lookedUp);
 
         //see that we have an expected collection
         Set<ConfigFileNameAssociation> set =
@@ -53,7 +53,7 @@ public class ConfigUploadActionTest extends RhnBaseTestCase {
 
         //check one of the collection elements
         Object o = set.iterator().next();
-        assertTrue(o instanceof ConfigFileNameAssociation);
+        assertInstanceOf(ConfigFileNameAssociation.class, o);
         assertEquals(((ConfigFileNameAssociation)o).getParentAction(), lookedUp);
     }
 }

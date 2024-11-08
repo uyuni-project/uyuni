@@ -131,45 +131,6 @@ This parameter controls whether server is allowed to perform system snapshots.
 1
 
 .TP
-.B "pam_auth_service"
-Spacewalk/Red Hat Satellite supports network-based authentication systems via Pluggable Authentication Modules (PAM).
-Spacewalk/Red Hat Satellite supports LDAP, Kerberos, Directory Server and other network-based authentication
-systems. To enable Spacewalk/Red Hat Satellite to use PAM and your organization's authentication infrastructure, follow the
-steps below:
-.RS
-.IP \(bu 3
-make sure that pam\-devel package is installed
-.IP \(bu 3
-set the parameter \fBpam_auth_service = rhn\-satellite\fR
-.IP \(bu 3
-create a file in \fB/etc/pam.d/rhn\-satellite\fR which contains:
-
-.B For LDAP authentication on 32\-bit systems:
-.nf
-#%PAM-1.0
-auth         required      /lib/security/pam_env.so
-auth         sufficient    /lib/security/pam_ldap.so no_user_check
-auth         required      /lib/security/pam_deny.so
-account      required      /lib/security/pam_ldap.so no_user_check
-.fi
-
-.B For LDAP authentication on 64\-bit systems:
-.nf
-#%PAM-1.0
-auth      required      /lib64/security/pam_env.so
-auth      sufficient    /lib64/security/pam_ldap.so no_user_check
-auth      required      /lib64/security/pam_deny.so
-account   required      /lib64/security/pam_ldap.so no_user_check
-.fi
-
-.IP \(bu 3
-restart Spacewalk/Red Hat Satellite service
-.RE
-.IP
-.B Default:
-none
-
-.TP
 .B "enable_nvrea" (boolean)
 This parameter controls whether server will allow package uploads for same NVREA
 (Name, Version, Release, Epoch, Arch) but different vendors.

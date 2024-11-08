@@ -10,7 +10,8 @@ require 'socket'
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $client_id = $api_test.system.search_by_name(system_name).first['id']
+  first_match = $api_test.system.search_by_name(system_name).first
+  $client_id = first_match['id'] unless first_match.nil?
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
@@ -102,7 +103,7 @@ When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
 end
 
 Then(/^I should get at least one role that matches "([^"]*)" suffix$/) do |suffix|
-  refute(@roles.find_all { |el| el =~ /#{suffix}/ }.empty?)
+  refute(@roles.find_all { |el| el.match?(/#{suffix}/) }.empty?)
 end
 
 Then(/^I should get role "([^"]*)"$/) do |rolename|
@@ -141,7 +142,7 @@ Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, p
   $current_password = password
   next if $api_test.user.list_users.to_s.include? user
 
-  $api_test.user.create(user, password, user, user, "#{user}@mail.com")
+  $api_test.user.create(user, password, user, user, 'galaxy-noise@suse.de')
   roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
   roles.each do |role|
     $api_test.user.add_role(user, role)
