@@ -36,10 +36,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </set>
         </class>
 
-    <query name="Profile.findByIdAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.rhnpackage.profile.Profile as p
-                where p.id = :id and org =:org_id]]>
-    </query>
+        <query name="Profile.findByIdAndOrg">
+                <![CDATA[from com.redhat.rhn.domain.rhnpackage.profile.Profile as p where p.id = :id and p.org.id = :org_id]]>
+        </query>
+
     <sql-query name="Profile.compatibleWithServer">
         <![CDATA[SELECT DISTINCT {p.*}
   FROM rhnServer S,

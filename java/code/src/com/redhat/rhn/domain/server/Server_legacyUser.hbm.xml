@@ -214,11 +214,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="Server.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id = :sid and org = :orgId]]>
+      <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id = :sid and s.org.id = :orgId]]>
     </query>
 
     <query name="Server.findByIdsAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where org = :orgId and s.id in (:serverIds)]]>
+      <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.org.id = :orgId and s.id in (:serverIds)]]>
     </query>
 
     <query name="Server.findByIds">
@@ -235,8 +235,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                         where s.id in (:sids) and s.serverArch.archType.label != 'sysv-solaris']]>
     </query>
 
+
     <query name="Server.listOrgSystems">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where org = :orgId]]>
+      <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.org.id = :orgId]]>
     </query>
 
      <query name="Server.listConfigEnabledSystems">
@@ -496,10 +497,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
     
     <query name="Server.filterSystemsWithPendingMaintenanceOnlyActions">
-        <![CDATA[SELECT sa.server.id FROM ServerAction sa
-                        WHERE sa.server.id IN (:systemIds)
-                          AND sa.parentAction.actionType.maintenancemodeOnly = true
-                          AND status.id in ( 0, 1 )]]>
+      <![CDATA[
+        SELECT sa.server.id 
+        FROM ServerAction sa
+        WHERE sa.server.id IN (:systemIds)
+          AND sa.parentAction.actionType.maintenancemodeOnly = true
+          AND sa.status.id in (0, 1)
+      ]]>
     </query>
 
     <query name="Server.setMaintenanceScheduleToSystems">
@@ -510,10 +514,13 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
 
     <query name="Server.findServersPendingRebootAction">
-        <![CDATA[SELECT distinct(sa.server.id) FROM ServerAction sa
-                      WHERE sa.server.id IN (:systemIds)
-                        AND sa.parentAction.actionType.label = 'reboot.reboot'
-                        AND status.id in ( 0, 1 )]]>
+      <![CDATA[
+        SELECT distinct(sa.server.id) 
+        FROM ServerAction sa
+        WHERE sa.server.id IN (:systemIds)
+          AND sa.parentAction.actionType.label = 'reboot.reboot'
+          AND sa.status.id in (0, 1) 
+      ]]>
     </query>
 
     <query name="Server.listAllServerIds">

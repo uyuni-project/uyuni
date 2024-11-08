@@ -14,16 +14,17 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             t.ksdata = :ksdata and t.kickstartMode = :mode order by created desc ]]>
     </query>
 
-
-    <query name="KickstartSession.findPendingForActions"><![CDATA[
-                from KickstartSession s
-                        where
-                (s.oldServer in (:servers) or
-                s.newServer in (:servers))
-            and s.action in (:actions_to_delete)
-            and not exists
-            (select 1 from KickstartSessionState ss
-                where ss.id = s.state.id and ss.label in ('failed', 'complete'))
-    ]]></query>
+    <query name="KickstartSession.findPendingForActions">
+      <![CDATA[
+        from KickstartSession s
+        where (s.oldServer in (:servers) or s.newServer in (:servers))
+          and s.action in (:actions_to_delete)
+          and not exists (
+            select 1 
+            from KickstartSessionState ss 
+            where ss.id = s.state.id and ss.label in ('failed', 'complete')
+          )
+      ]]>
+    </query>
 
 </hibernate-mapping>

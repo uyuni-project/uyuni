@@ -60,9 +60,16 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <query name="TaskoSchedule.listInSatByLabel">
             <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND jobLabel = :job_label]]>
         </query>
-
+        
         <query name="TaskoSchedule.listActiveByOrgAndBunch">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId = :org_id AND bunch = :bunch_id AND (activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill))]]>
+            <![CDATA[
+                SELECT ts 
+                FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule ts
+                JOIN ts.bunch b 
+                WHERE ts.orgId = :org_id 
+                  AND b.id = :bunch_id 
+                  AND (ts.activeFrom < :timestamp AND (ts.activeTill is null OR :timestamp < ts.activeTill))
+            ]]>
         </query>
 
         <query name="TaskoSchedule.listByOrgAndBunch">
@@ -70,8 +77,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </query>
 
         <query name="TaskoSchedule.listActiveInSatByBunch">
-            <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND bunch.id = :bunch_id AND activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill)]]>
-        </query>
+          <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND bunch.id = :bunch_id AND activeFrom < :timestamp AND (activeTill is null OR :timestamp < activeTill)]]>
+        </query>   
+
 
         <query name="TaskoSchedule.listInSatByBunch">
             <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule WHERE orgId is null AND bunch.id = :bunch_id]]>

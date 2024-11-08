@@ -556,10 +556,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                 <one-to-many class="com.redhat.rhn.domain.action.appstream.AppStreamActionDetails" />
             </set>
         </subclass>
-
+        
     </class>
+    
     <query name="Action.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org = :orgId]]>
+       <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and a.org.id = :orgId]]>
     </query>
 
     <sql-query name="Action.getServerActionCountByStatus">
@@ -630,13 +631,14 @@ select {ra.*}
         <return alias="ra" class="com.redhat.rhn.domain.action.Action" />
     </sql-query>
 
-    <query name="Action.findByServerAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.action.Action as a
-            left join fetch a.serverActions as sa
-            where org = :orgId and
-            sa.server = :server]]>
-    </query>
-
+     <query name="Action.findByServerAndOrgId">
+       <![CDATA[
+         from com.redhat.rhn.domain.action.Action a
+         left join fetch a.serverActions sa
+         where a.org.id = :orgId 
+         and sa.server = :server
+       ]]>
+     </query>
 
      <query name="Action.rescheduleFailedActions">
        <![CDATA[ update  com.redhat.rhn.domain.action.server.ServerAction sa
@@ -665,22 +667,23 @@ select {ra.*}
     </query>
 
     <query name="Action.findMinionIds">
-    <![CDATA[
-    SELECT sa.server.id
-        FROM ServerAction sa
-        JOIN sa.server s
-        WHERE type(s) = com.redhat.rhn.domain.server.MinionServer AND sa.id = :id
-    ]]>
+      <![CDATA[
+      SELECT sa.server.id
+      FROM ServerAction sa
+      JOIN sa.server s
+      WHERE type(s) = com.redhat.rhn.domain.server.MinionServer 
+        AND sa.parentAction.id = :id 
+      ]]>
     </query>
     
     <query name="Action.findTradClientServerActions">
-    <![CDATA[
-        SELECT sa
-            FROM ServerAction AS sa
-                JOIN sa.server AS s
-            WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
-                AND sa.id = :id
-    ]]>
+      <![CDATA[
+      SELECT sa
+      FROM ServerAction AS sa
+      JOIN sa.server AS s
+      WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
+        AND sa.parentAction.id = :id
+      ]]>
     </query>
 
     <query name="Action.findMinionSummaries">

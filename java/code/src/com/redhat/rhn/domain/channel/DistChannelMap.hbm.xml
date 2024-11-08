@@ -30,9 +30,9 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="DistChannelMap.listAll">
-        <![CDATA[
-        from com.redhat.rhn.domain.channel.DistChannelMap where org is null
-        ]]>
+      <![CDATA[
+      from com.redhat.rhn.domain.channel.DistChannelMap where org is null
+      ]]>
     </query>
 
     <sql-query name="DistChannelMap.listAllByOrg">

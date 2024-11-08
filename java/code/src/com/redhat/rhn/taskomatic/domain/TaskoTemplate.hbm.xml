@@ -38,7 +38,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </class>
 
     <query name="TaskoTemplate.lookupByBunchAndOrder">
-        <![CDATA[from com.redhat.rhn.taskomatic.domain.TaskoTemplate where bunch.id = :bunch_id and ordering = :order]]>
+        <![CDATA[from com.redhat.rhn.taskomatic.domain.TaskoTemplate t where t.bunch.id = :bunch_id and t.ordering = :order]]>
     </query>
 
 </hibernate-mapping>
