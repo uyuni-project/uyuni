@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:31+0200\n"
+"POT-Creation-Date: 2024-11-08 15:16+0100\n"
 "PO-Revision-Date: 2024-04-25 20:43+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web-4-3/it/"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 4.9.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:436
+#: ../html/javascript/spacewalk-essentials.js:450
 msgid "remaining"
 msgstr "rimanente"
 
-#: ../html/javascript/spacewalk-essentials.js:456
+#: ../html/javascript/spacewalk-essentials.js:470
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
