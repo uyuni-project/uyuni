@@ -34,7 +34,7 @@ BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common
 
-# Required by spacewalk-hostname-rename
+# Required by spacewalk-hostname-rename, spacewalk-watch-channel-sync.sh
 Requires:       bash
 # Required by spacewalk-hostname-rename
 Requires:       cobbler
@@ -82,17 +82,6 @@ Requires:       spacewalk-backend-sql
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
 
-%package extras
-Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
-# Required by spacewalk-watch-channel-sync.sh
-Group:          Productivity/Other
-Requires:       bash
-# As spacewalk-utils owns {python3_sitelib}/utils
-Requires:       spacewalk-utils
-
-%description extras
-Extra utilities that may be run against a SUSE Manager server (unsupported) or an Uyuni server
-
 %prep
 %setup -q
 
@@ -122,6 +111,7 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
 %attr(755,root,root) %{_bindir}/taskotop
+%attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
@@ -136,9 +126,5 @@ popd
 %{_mandir}/man8/spacewalk-sync-setup.8.gz
 %{_mandir}/man8/taskotop.8.gz
 
-%files extras
-%defattr(-,root,root)
-%license COPYING.GPLv2 COPYING.GPLv3
-%attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 
 %changelog
