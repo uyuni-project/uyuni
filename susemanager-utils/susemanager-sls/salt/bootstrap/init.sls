@@ -295,6 +295,12 @@ salt-minion-key-pem:
       - salt-minion-package
 {%- endif %}
 
+# On bootstapping the minion which was registered to the other master before,
+# the master public key must be removed from the minion to prevent key verification fails.
+salt-minion-master-pub-wipe:
+  file.absent:
+    - name: {{ salt_config_dir }}/pki/minion/minion_master.pub
+
 {%- if not transactional %}
 {{ salt_minion_name }}:
   service.running:
