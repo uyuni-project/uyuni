@@ -24,16 +24,16 @@
                             </a>
                         </c:if>
                     </span>
-                    <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-toggle="modal" data-target="#modal-list-subscriptions">
+                    <a href="javascript:void(0);" onCLick="initSubscriptions('${current.id}')" data-bs-toggle="modal" data-bs-target="#modal-list-subscriptions">
                         <rhn:icon type="setup-wizard-creds-subscriptions" title="mirror-credentials.jsp.subscriptions" />
                     </a>
-                    <a href="javascript:void(0);" onCLick="initEdit('${current.id}', '${current.user}');" data-toggle="modal" data-target="#modal-edit-credentials">
+                    <a href="javascript:void(0);" onCLick="initEdit('${current.id}', '${current.user}');" data-bs-toggle="modal" data-bs-target="#modal-edit-credentials">
                         <rhn:icon type="setup-wizard-creds-edit" title="mirror-credentials.jsp.edit" />
                     </a>
                 </div>
                 <div class="text-right col-2 col-xs-2">
                     <span id="delete-${current.id}">
-                        <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.user}');" data-toggle="modal" data-target="#modal-delete-credentials">
+                        <a href="javascript:void(0);" onClick="initDelete('${current.id}', '${current.user}');" data-bs-toggle="modal" data-bs-target="#modal-delete-credentials">
                             <rhn:icon type="item-del" title="mirror-credentials.jsp.delete" />
                         </a>
                     </span>
@@ -44,7 +44,7 @@
     <script>verifyCredentials('${current.id}', false);</script>
 </c:forEach>
 
-<div class="panel panel-inactive" data-toggle="modal" data-target="#modal-edit-credentials">
+<div class="panel panel-inactive" data-bs-toggle="modal" data-bs-target="#modal-edit-credentials">
     <div class="panel-body">
         <i class="fa fa-plus-circle"></i>
         <p>Add a new credential</p>
