@@ -135,15 +135,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param channelLabel the channel label
      * @return list of {@link SUSEProductSCCRepository}
      */
-    public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(String channelLabel) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(SUSEProductSCCRepository.class);
-        c.add(Restrictions.eq("channelLabel", channelLabel));
-        return ((List<SUSEProductSCCRepository>) c.list()).stream()
-                .sorted((a, b) ->
-                        RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
-                .toList();
-    }
+    public static List<SUSEProductSCCRepository> lookupPSRByChannelLabel(
+            String channelLabel) {
 
         CriteriaBuilder cb = getSession().getCriteriaBuilder();
 
@@ -187,12 +180,21 @@ public class SUSEProductFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static void removeAllExcept(Collection<SUSEProduct> products) {
         if (!products.isEmpty()) {
-            Collection<Long> ids = products.stream().map(SUSEProduct::getId).toList();
+            Collection<Long> ids
+                    = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
 
-            Criteria c = getSession().createCriteria(SUSEProduct.class);
-            c.add(Restrictions.not(Restrictions.in("id", ids)));
+            CriteriaBuilder cb = getSession().getCriteriaBuilder();
 
-            for (SUSEProduct product : (List<SUSEProduct>) c.list()) {
+            CriteriaQuery<SUSEProduct> query = cb.createQuery(SUSEProduct.class);
+
+            Root<SUSEProduct> root = query.from(SUSEProduct.class);
+
+            Predicate predicate = root.get("id").in(ids);
+
+            query.select(root).where(predicate);
+
+            for (SUSEProduct product : (List<SUSEProduct>) getSession().createQuery(query)
+                    .list()) {
                 remove(product);
             }
         }
@@ -207,7 +209,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static List<SUSEProductChannel> lookupSyncedProductChannelsByLabel(String channelLabel) {
         return Optional.ofNullable(ChannelFactory.lookupByLabel(channelLabel))
                 .map(channel -> channel.getSuseProductChannels().stream())
-                .orElseGet(Stream::empty).toList();
+                .orElseGet(Stream::empty).collect(Collectors.toList());
     }
 
     /**
@@ -304,7 +306,7 @@ public class SUSEProductFactory extends HibernateFactory {
                     List<String> selectedParts = List.of(channel.getLabel().split("-"));
                     List<String> uniqueParts = selectedParts.stream()
                             .filter(s -> !originalParts.contains(s))
-                            .toList();
+                            .collect(Collectors.toList());
 
                     if (channel.isBaseChannel()) {
                         return Stream.<Channel>empty();
