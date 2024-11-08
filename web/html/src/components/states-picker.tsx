@@ -264,8 +264,8 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
               /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
               <a
                 href="#"
-                data-toggle="modal"
-                data-target="#saltStatePopUp"
+                data-bs-toggle="modal"
+                data-bs-target="#saltStatePopUp"
                 onClick={() => {
                   this.showPopUp(currentChannel);
                 }}
