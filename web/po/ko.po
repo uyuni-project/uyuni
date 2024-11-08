@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:22+0200\n"
+"POT-Creation-Date: 2024-11-08 15:02+0100\n"
 "PO-Revision-Date: 2024-10-17 02:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -3126,7 +3126,7 @@ msgstr "새 기본 채널로 선택할 채널 선택"
 msgid "Child Channels"
 msgstr "하위 채널"
 
-#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:218
+#: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:219
 msgid "Clear Search"
 msgstr "검색 지우기"
 
