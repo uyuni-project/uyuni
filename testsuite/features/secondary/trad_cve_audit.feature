@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -14,10 +14,12 @@ Feature: CVE Audit on traditional clients
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_client"
-    And I install old package "milkyway-dummy-1.0" on this "sle_client"
     And I refresh the metadata for "sle_client"
+    And I install old package "milkyway-dummy-1.0" on this "sle_client"
     And I run "rhn_check -vvv" on "sle_client"
-    And I follow the left menu "Admin > Task Schedules"
+
+  Scenario: Schedule errata cache refresh
+    When I follow the left menu "Admin > Task Schedules"
     And I follow "errata-cache-default"
     And I follow "errata-cache-bunch"
     And I click on "Single Run Schedule"

@@ -1,12 +1,18 @@
 // Save and verifiy the proxy settings
 function saveProxySettings() {
+  hostname = jQuery('#http-proxy-input-hostname').val();
+  username = dwr.util.escapeHtml(jQuery('#http-proxy-input-username').val());
+  password = jQuery('#http-proxy-input-password').val();
+
+  if (hostname.trim() !== "" && !isValidUrl(hostname)) {
+    alert("Proxy Hostname is not a valid URL.");
+    return;
+  }
+
   showSpinner('http-proxy-verify');
   jQuery('#http-proxy-verify').show(100);
   jQuery('#http-proxy-save').attr('disabled', true);
 
-  hostname = jQuery('#http-proxy-input-hostname').val();
-  username = jQuery('#http-proxy-input-username').val();
-  password = jQuery('#http-proxy-input-password').val();
   ProxySettingsRenderer.saveProxySettings({'hostname': hostname, 'username': username, 'password': password},
     makeAjaxHandler(function(settings) {
       console.log("Proxy settings saved!");

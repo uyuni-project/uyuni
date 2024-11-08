@@ -136,9 +136,9 @@ Feature: Register and test a Containerized Proxy
   Scenario: Remove package from the Salt minion
     When I follow "Software" in the content area
     And I follow "List / Remove"
-    And I enter the package for "sle_minion" as the filtered package name
+    And I enter the package for "sle15sp4_minion" as the filtered package name
     And I click on the filter button
-    And I check the package for "sle_minion" in the list
+    And I check the package for "sle15sp4_minion" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text

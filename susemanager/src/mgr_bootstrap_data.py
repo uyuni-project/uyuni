@@ -162,14 +162,10 @@ PKGLIST12 = [
     "python-psutil",
     "python-pycrypto",
     "python-PyYAML",
-    "python-pyzmq",
     "python-requests",
     "python-simplejson",
     "python-singledispatch",
     "python-tornado",
-    "salt",
-    "salt-minion",
-    "python2-salt",
     "libgio-2_0-0",
     "libgthread-2_0-0",
     "shared-mime-info",
@@ -318,9 +314,6 @@ RES6 = [
 ]
 
 RES7 = [
-    "salt",
-    "salt-minion",
-    "python2-salt",
     "python-futures",
     "python-jinja2",
     "python-msgpack-python",
@@ -330,8 +323,6 @@ RES7 = [
     "python-setuptools|python2-setuptools", # python-setuptools is the Amazon Linux name
     "python-singledispatch",
     "python-tornado",
-    "python-zmq",
-    "zeromq",
     "python-backports-ssl_match_hostname",
     "python-backports",
     "python-certifi",
@@ -365,9 +356,7 @@ RES7 = [
     "venv-salt-minion",
 ]
 
-RES7_X86 = [
-    "dmidecode"
-]
+RES7_X86 = ["dmidecode*"]
 
 RES8 = [
     "redhat-rpm-config",

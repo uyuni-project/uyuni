@@ -3998,7 +3998,10 @@ public class SystemManager extends BaseManager {
                 return existingCredentials;
             })
             .orElseGet(() -> {
-                String username = "hermes_" + RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+                String randomSuffix = RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+                // Ensure the username is stored lowercase in the database, since the script uyuni-setup-reportdb-user
+                // will convert it to lowercase anyway
+                String username = "hermes_" + randomSuffix.toLowerCase();
 
                 ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(username, password);
                 CredentialsFactory.storeCredentials(reportCredentials);
