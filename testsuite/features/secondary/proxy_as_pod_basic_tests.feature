@@ -22,7 +22,7 @@
 @scope_containerized_proxy
 @proxy
 @sle_minion
-Feature: Register and test a Containerized Proxy
+Feature: Containerized Proxy
   In order to test Containerized Proxy
   As the system administrator
   I want to register the proxy to the server
@@ -171,18 +171,22 @@ Feature: Register and test a Containerized Proxy
     Then I should see a "1 patch update has been scheduled for" text
     And I wait until event "Patch Update:" is completed
 
-  Scenario: Remove package from Salt minion
+  Scenario: Remove packages from Salt minion
     When I follow "Software" in the content area
     And I follow "List / Remove"
     And I enter "milkyway-dummy" as the filtered package name
     And I click on the filter button
     And I wait until I see "Clear filter to see all" text
     And I check "milkyway-dummy" in the list
+    And I enter the package for "sle_minion" as the filtered package name
+    And I click on the filter button
+    And I wait until I see "Clear filter to see all" text
+    And I check the package for "sle_minion" in the list
     And I click on "Remove Packages"
     Then I wait until I see "Confirm Package Removal" text
     And I should see a "milkyway-dummy" text
     And I click on "Confirm"
-    Then I should see a "1 package removal has been scheduled for" text
+    Then I should see a "2 package removals have been scheduled for" text
     And I wait until event "Package Removal scheduled by admin" is completed
 
   @susemanager
