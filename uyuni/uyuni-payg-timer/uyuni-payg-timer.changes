@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Nov 08 11:30:51 CET 2024 - rosuna@suse.com
+
+- version 5.0.3-0
+  * Fix compliance check as some packages were renamed (bsc#1233014)
+
+-------------------------------------------------------------------
 Thu Jun 20 16:23:34 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.2-0
