@@ -138,6 +138,7 @@ public class SUSEProductFactory extends HibernateFactory {
                         RPM_VERSION_COMPARATOR.compare(b.getProduct().getVersion(), a.getProduct().getVersion()))
                 .toList();
     }
+==== BASE ====
 
     /**
      * Insert or update a {@link SUSEProductExtension}.
@@ -186,7 +187,7 @@ public class SUSEProductFactory extends HibernateFactory {
     public static List<SUSEProductChannel> lookupSyncedProductChannelsByLabel(String channelLabel) {
         return Optional.ofNullable(ChannelFactory.lookupByLabel(channelLabel))
                 .map(channel -> channel.getSuseProductChannels().stream())
-                .orElseGet(Stream::empty).toList();
+                .orElseGet(Stream::empty).collect(Collectors.toList());
     }
 
     /**
@@ -263,7 +264,7 @@ public class SUSEProductFactory extends HibernateFactory {
                     List<String> selectedParts = List.of(channel.getLabel().split("-"));
                     List<String> uniqueParts = selectedParts.stream()
                             .filter(s -> !originalParts.contains(s))
-                            .toList();
+                            .collect(Collectors.toList());
 
                     if (channel.isBaseChannel()) {
                         return Stream.<Channel>empty();
