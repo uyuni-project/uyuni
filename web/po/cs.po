@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:31+0200\n"
+"POT-Creation-Date: 2024-11-08 15:16+0100\n"
 "PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web-4-3/cs/>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 5.6.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:436
+#: ../html/javascript/spacewalk-essentials.js:450
 msgid "remaining"
 msgstr "zbývající"
 
-#: ../html/javascript/spacewalk-essentials.js:456
+#: ../html/javascript/spacewalk-essentials.js:470
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
