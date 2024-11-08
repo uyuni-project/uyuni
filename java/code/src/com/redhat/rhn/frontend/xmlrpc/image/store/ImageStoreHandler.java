@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ImageStoreHandler
@@ -117,7 +116,7 @@ public class ImageStoreHandler extends BaseHandler {
     @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
-        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream().collect(Collectors.toList());
+        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream().toList();
     }
 
     /**

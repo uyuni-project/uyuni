@@ -629,9 +629,8 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
         //This is a really really crappy way of doing this, but i don't want to restructure
         //      the actions too much at this point :/
         //      We only want to do this for the non-guest action
-        if (kickstartAction instanceof KickstartAction) {
-            ((KickstartAction) kickstartAction).getKickstartActionDetails().
-            setCobblerSystemName(rec.getName());
+        if (kickstartAction instanceof KickstartAction kaction) {
+            kaction.getKickstartActionDetails().setCobblerSystemName(rec.getName());
         }
 
         ActionFactory.save(kickstartAction);

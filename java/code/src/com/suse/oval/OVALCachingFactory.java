@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
     private static final Logger LOG = LogManager.getLogger(OVALCachingFactory.class);
@@ -129,7 +128,7 @@ public class OVALCachingFactory extends HibernateFactory {
             vulnerablePackage.setName((String) row.get("vulnerablepkgname"));
             vulnerablePackage.setFixVersion((String) row.get("vulnerablepkgfixversion"));
             return vulnerablePackage;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     /**

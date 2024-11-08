@@ -256,15 +256,15 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           title={this.props.title}
           className={"dropdown-toggle btn " + this.props.className}
           onClick={this.props.handler}
-          data-toggle="dropdown"
+          data-bs-toggle="dropdown"
           disabled={this.props.disabled}
         >
           {this.renderIcon()}
           {text} <span className="caret" />
         </button>
         <ul className="dropdown-menu dropdown-menu-right">
-          {this.props.items.map((i) => (
-            <li>{i}</li>
+          {this.props.items.map((i, index) => (
+            <li key={`${index}-${i?.toString()}`}>{i}</li>
           ))}
         </ul>
       </div>

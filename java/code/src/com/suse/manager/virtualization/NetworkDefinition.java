@@ -29,7 +29,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 /**
  * Represents the virtual network create action request body structure.
@@ -437,7 +436,7 @@ public class NetworkDefinition {
         List<String> attributes = List.of("domain", "bus", "slot", "function");
         List<Integer> parts = attributes.stream().map(
                 attr -> parseNumber(node.getAttributeValue(attr))
-        ).collect(Collectors.toList());
+        ).toList();
         return String.format("%04x:%02x:%02x.%x", parts.get(0), parts.get(1), parts.get(2), parts.get(3)).toUpperCase();
     }
 

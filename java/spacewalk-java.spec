@@ -31,7 +31,7 @@
 %define serverdir       %{susemanagershareddir}/www
 %define salt_user_group salt
 
-%{!?java_version: %global java_version 11}
+%{!?java_version: %global java_version 17}
 %if 0%{?suse_version}
 %define userserverdir       /srv
 %define apache_group    www
@@ -93,7 +93,6 @@ BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
-BuildRequires:  concurrent
 BuildRequires:  dom4j
 BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
@@ -139,7 +138,6 @@ BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
-BuildRequires:  stringtree-json
 BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat >= 7
 BuildRequires:  tomcat-lib >= 7
@@ -182,7 +180,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       concurrent
 Requires:       dwr >= 3
 Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
@@ -227,7 +224,6 @@ Requires:       spacewalk-java-lib = %{version}
 Requires:       spark-core
 Requires:       spark-template-jade
 Requires:       statistics
-Requires:       stringtree-json
 Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
@@ -363,7 +359,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       concurrent
 Requires:       hibernate-commons-annotations
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core

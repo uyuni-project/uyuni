@@ -174,7 +174,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
         Map<String, JsonObject> infos = virtManager.getNetworks(minionId);
         List<VirtualNetworkInfoJson> networks = infos.entrySet().stream()
                 .map(entry -> new VirtualNetworkInfoJson(entry.getKey(), entry.getValue()))
-                .collect(Collectors.toList());
+                .toList();
 
         return json(response, networks, new TypeToken<>() { });
     }
@@ -214,7 +214,7 @@ public class VirtualNetsController extends AbstractVirtualizationController {
                     }
                     return item;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         return json(response, netDevices, new TypeToken<>() { });
     }

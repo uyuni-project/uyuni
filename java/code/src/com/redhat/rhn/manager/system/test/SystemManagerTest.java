@@ -24,6 +24,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -1005,14 +1006,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             if (map.get("id").equals(server1.getId())) {
                 assertEquals(server1.getName(), map.get("system_name"));
 
-                assertTrue(map.get("elaborator0") instanceof List);
+                assertInstanceOf(List.class, map.get("elaborator0"));
                 List result1Packages = (List)map.get("elaborator0");
                 assertEquals(2, result1Packages.size());
             }
             else if (map.get("id").equals(server2.getId())) {
                 assertEquals(server2.getName(), (map.get("system_name")));
 
-                assertTrue(map.get("elaborator0") instanceof List);
+                assertInstanceOf(List.class, map.get("elaborator0"));
                 List result2Packages = (List)map.get("elaborator0");
                 assertEquals(1, result2Packages.size());
             }
@@ -1352,7 +1353,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22));
+        systemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22));
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(2, server.getChildChannels().size());
@@ -1382,7 +1383,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, of(base2), Collections.emptyList());
+        systemManager.updateServerChannels(user, server, of(base2), Collections.emptyList());
 
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(0, server.getChildChannels().size());
@@ -1410,7 +1411,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
 
-        SystemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22));
+        systemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22));
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());

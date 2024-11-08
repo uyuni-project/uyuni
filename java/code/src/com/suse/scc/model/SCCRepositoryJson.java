@@ -161,10 +161,9 @@ public class SCCRepositoryJson {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SCCRepositoryJson)) {
+        if (!(other instanceof SCCRepositoryJson otherSCCRepository)) {
             return false;
         }
-        SCCRepositoryJson otherSCCRepository = (SCCRepositoryJson) other;
         return new EqualsBuilder()
             .append(getUrl(), otherSCCRepository.getUrl())
             .isEquals();

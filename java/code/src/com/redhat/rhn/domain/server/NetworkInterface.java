@@ -122,10 +122,9 @@ Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof NetworkInterface)) {
+        if (!(other instanceof NetworkInterface castOther)) {
             return false;
         }
-        NetworkInterface castOther = (NetworkInterface) other;
         return new EqualsBuilder().append(this.getServer(), castOther.getServer())
                 .append(this.getName(), castOther.getName())
                 .append(this.getHwaddr(), castOther.getHwaddr())

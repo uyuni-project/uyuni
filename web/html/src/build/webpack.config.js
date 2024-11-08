@@ -46,8 +46,8 @@ module.exports = (env, argv) => {
        * Scripts and dependencies we're migrating from susemanager-frontend-libs to spacewalk-web
        */
       {
-        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+        from: path.resolve(__dirname, "../node_modules/bootstrap5/dist/js/bootstrap.bundle.min.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/bootstrap-webpack.js"),
       },
       {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),

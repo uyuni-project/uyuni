@@ -120,10 +120,9 @@ public class ProductName {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof ProductName)) {
+        if (!(o instanceof ProductName that)) {
             return false;
         }
-        ProductName that = (ProductName) o;
         return new EqualsBuilder().append(this.getId(), that.getId()).
                            append(this.getLabel(), that.getLabel()).
                            append(this.getName(), that.getName()).isEquals();

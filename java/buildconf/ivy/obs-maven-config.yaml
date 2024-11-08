@@ -83,8 +83,6 @@ artifacts:
   - artifact: commons-compress
     package: apache-commons-compress
     repository: Leap
-  - artifact: concurrent
-    repository: Uyuni_Other
   - artifact: concurrentlinkedhashmap-lru
     repository: Uyuni_Other
   - artifact: dom4j
@@ -273,8 +271,6 @@ artifacts:
   - artifact: stax2-api
     package: woodstox
     repository: Uyuni_Other
-  - artifact: stringtree-json
-    repository: Uyuni_Other
   - artifact: struts
     repository: Uyuni_Other
   - artifact: taglibs-standard-impl
@@ -333,7 +329,7 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap
+    repository: Leap_sle
   - artifact: glassfish-jaxb-api
     repository: Uyuni_Other
   - artifact: jaxb-runtime

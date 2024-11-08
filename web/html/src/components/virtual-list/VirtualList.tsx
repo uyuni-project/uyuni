@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { Virtuoso } from "react-virtuoso";
 
+import styles from "./VirtualList.module.less";
+
 type ListProps<T> = {
   renderItem: (item: T) => JSX.Element;
   items: T[];
@@ -17,7 +19,7 @@ const VirtualList = <T,>(props: ListProps<T>) => {
   const computeItemKey = (index: number, item: T) => props.itemKey(item);
 
   return (
-    <div style={{ flex: "1 1 auto" }}>
+    <div className={styles.listWrapper}>
       <Virtuoso
         data={props.items}
         itemContent={itemContent}

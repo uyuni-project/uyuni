@@ -131,12 +131,9 @@ public class ScriptResult implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof ScriptResult)) {
+        if (!(obj instanceof ScriptResult r)) {
             return false;
         }
-
-        ScriptResult r = (ScriptResult) obj;
-
         return new EqualsBuilder().append(this.getActionScriptId(), r.getActionScriptId())
                                   .append(this.getServerId(), r.getServerId())
                                   .append(this.getStartDate(), r.getStartDate())

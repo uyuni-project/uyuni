@@ -59,11 +59,10 @@ class XmlToPlainText {
     }
 
     private void toPlainText(Object current) {
-        if (current instanceof Text) {
-            process((Text)current);
+        if (current instanceof Text text) {
+            process(text);
         }
-        else if (current instanceof Element) {
-            Element elem = (Element)current;
+        else if (current instanceof Element elem) {
             if ("a".equalsIgnoreCase(elem.getName())) {
                 href = elem.getAttributeValue("href").trim();
             }
@@ -71,8 +70,8 @@ class XmlToPlainText {
                 toPlainText(o);
             }
         }
-        else if (current instanceof Document) {
-            for (Object o : ((Document)current).getContent()) {
+        else if (current instanceof Document doc) {
+            for (Object o : doc.getContent()) {
                 toPlainText(o);
             }
         }
@@ -82,7 +81,7 @@ class XmlToPlainText {
     private void process(Text current) {
         String text = current.getTextTrim();
         if (!StringUtils.isBlank(text)) {
-            if (plainText.length() > 0 && !IGNORABLES.contains(text)) {
+            if (!plainText.isEmpty() && !IGNORABLES.contains(text)) {
                 plainText.append(" ");
             }
             plainText.append(text);

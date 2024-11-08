@@ -93,16 +93,15 @@ public class ModularDependencyValidator implements ContentValidator {
             }
         }
         catch (DependencyResolutionException e) {
-            if (e.getCause() instanceof ModuleNotFoundException) {
-                List<Module> modules = ((ModuleNotFoundException) e.getCause()).getModules();
+            if (e.getCause() instanceof ModuleNotFoundException ex) {
+                List<Module> modules = ex.getModules();
                 messages = modules.stream()
                         .map(m -> ContentValidationMessage.contentFiltersMessage(
                                 loc.getMessage("contentmanagement.validation.modulenotfound", m.getFullName()),
                                 TYPE_ERROR))
-                        .collect(Collectors.toList());
+                        .toList();
             }
-            else if (e.getCause() instanceof ConflictingStreamsException) {
-                ConflictingStreamsException cause = (ConflictingStreamsException) e.getCause();
+            else if (e.getCause() instanceof ConflictingStreamsException cause) {
                 Module module = cause.getModule();
                 Module other = cause.getOther();
                 messages.add(ContentValidationMessage.contentFiltersMessage(

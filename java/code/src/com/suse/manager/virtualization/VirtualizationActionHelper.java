@@ -55,7 +55,6 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -267,7 +266,7 @@ public class VirtualizationActionHelper {
                     diskDetails.setSourceFile(disk.getSourceFile());
                     diskDetails.setFormat(disk.getFormat());
                     return diskDetails;
-                }).collect(Collectors.toList()));
+                }).toList());
             }
 
             if (data.getInterfaces() != null) {
@@ -277,7 +276,7 @@ public class VirtualizationActionHelper {
                     ifaceDetails.setSource(nic.getSource());
                     ifaceDetails.setMac(nic.getMac());
                     return ifaceDetails;
-                }).collect(Collectors.toList()));
+                }).toList());
             }
             details.setRemoveDisks(data.getDisks() != null && data.getDisks().isEmpty());
 

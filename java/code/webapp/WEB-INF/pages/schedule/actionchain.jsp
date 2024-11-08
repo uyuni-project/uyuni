@@ -25,7 +25,7 @@
 
     <div class="spacewalk-toolbar-h1">
         <div class="spacewalk-toolbar">
-            <a data-toggle="modal" href="#confirm-modal"><i class="fa fa-trash-o"></i>delete action chain</a>
+            <a data-bs-toggle="modal" href="#confirm-modal"><i class="fa fa-trash-o"></i>delete action chain</a>
         </div>
     </div>
 
@@ -163,7 +163,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close"
-                        data-dismiss="modal"><i class="fa fa-close"></i></button>
+                        data-bs-dismiss="modal"><i class="fa fa-close"></i></button>
                     <h4 class="modal-title" id="confirm-modal-title">
                         <bean:message key="actionchain.jsp.modaltitle"/>
                     </h4>

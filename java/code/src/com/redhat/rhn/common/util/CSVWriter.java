@@ -169,8 +169,8 @@ public class CSVWriter extends BufferedWriter implements ExportWriter {
         while (itr.hasNext()) {
             Object value = itr.next();
             // If it's a List of Strings
-            if (value instanceof String) {
-                write((String) value);
+            if (value instanceof String str) {
+                write(str);
                 if (itr.hasNext()) {
                     writeSeparator();
                 }

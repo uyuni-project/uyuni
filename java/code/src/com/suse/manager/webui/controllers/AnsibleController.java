@@ -65,7 +65,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -188,12 +187,12 @@ public class AnsibleController {
         if (pathType.equalsIgnoreCase(AnsiblePath.Type.PLAYBOOK.getLabel())) {
             paths = AnsibleManager.listAnsiblePlaybookPaths(minionServerId, user).stream()
                     .map(AnsiblePathJson::new)
-                    .collect(Collectors.toList());
+                    .toList();
         }
         else {
             paths = AnsibleManager.listAnsibleInventoryPaths(minionServerId, user).stream()
                     .map(AnsiblePathJson::new)
-                    .collect(Collectors.toList());
+                    .toList();
         }
         return result(res, success(paths), new TypeToken<>() { });
     }
@@ -210,7 +209,7 @@ public class AnsibleController {
         long minionServerId = Long.parseLong(req.params("minionServerId"));
         List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
-                .collect(Collectors.toList());
+                .toList();
         return result(res, success(paths), new TypeToken<>() { });
     }
 

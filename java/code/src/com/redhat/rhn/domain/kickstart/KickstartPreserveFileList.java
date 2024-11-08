@@ -102,10 +102,9 @@ public class KickstartPreserveFileList implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartPreserveFileList)) {
+        if (!(other instanceof KickstartPreserveFileList castOther)) {
             return false;
         }
-        KickstartPreserveFileList castOther = (KickstartPreserveFileList) other;
         return new EqualsBuilder().append(ksdata, castOther.ksdata)
                                   .append(fileList, castOther.fileList)
                                   .isEquals();

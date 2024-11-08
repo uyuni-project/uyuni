@@ -36,10 +36,15 @@ import org.cobbler.Distro;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -588,11 +593,34 @@ public class KickstartableTree extends BaseDomainHelper {
                 Path copyTo = fullDir.resolve(copyFrom.getFileName());
                 if (!Files.exists(copyTo) || Files.isSymbolicLink(copyTo)) {
                     Files.copy(copyFrom, copyTo, StandardCopyOption.REPLACE_EXISTING);
+                    modifyOwner(copyTo, true);
                 }
             }
         }
         catch (IOException e) {
             log.error("Unable to copy file", e);
+        }
+    }
+
+    /**
+     * Change the owner to user tomcat when the current owner is root
+     * @param pathIn the path to change
+     * @param setOwner set to true if the owner should be changed, otherwise false
+     * @throws IOException
+     */
+    protected void modifyOwner(Path pathIn, boolean setOwner) throws IOException {
+        if (!setOwner) {
+            return;
+        }
+        UserPrincipal tomcatUser = null;
+        UserPrincipal rootUser = null;
+        FileSystem fileSystem = FileSystems.getDefault();
+        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+        tomcatUser = service.lookupPrincipalByName("tomcat");
+        rootUser = service.lookupPrincipalByName("root");
+
+        if (Files.getOwner(pathIn, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+            Files.setOwner(pathIn, tomcatUser);
         }
     }
 

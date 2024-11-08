@@ -46,10 +46,9 @@ public class OrgStateRevision extends StateRevision  {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof OrgStateRevision)) {
+        if (!(other instanceof OrgStateRevision otherRevision)) {
             return false;
         }
-        OrgStateRevision otherRevision = (OrgStateRevision) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(otherRevision))
                 .append(getOrg(), otherRevision.getOrg())

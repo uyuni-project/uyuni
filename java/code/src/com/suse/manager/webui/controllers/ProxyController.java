@@ -41,7 +41,6 @@ import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,11 +125,6 @@ public class ProxyController {
 
             return SparkApplicationHelper.json(response, filename + "-config.tar.gz");
         }
-        catch (IOException | InstantiationException e) {
-            LOG.error("Failed to generate proxy container configuration", e);
-            return jsonError(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    "Failed to generate proxy container configuration");
-        }
         catch (SystemsExistException e) {
             String msg = String.format("Cannot create proxy as an existing system has FQDN '%s'", data.getProxyFqdn());
             LOG.error(msg);
@@ -158,8 +152,7 @@ public class ProxyController {
             return jsonError(response, HttpStatus.SC_BAD_REQUEST, "Configuration file wasn't generated").getBytes();
         }
         Object config = request.session().attribute(filename);
-        if (config instanceof byte[]) {
-            byte[] data = (byte[]) config;
+        if (config instanceof byte[] data) {
             request.session().removeAttribute(filename);
             response.header("Content-Disposition", "attachment; filename=\"" + filename + "\"");
             response.header("Content-Length", Integer.toString(data.length));

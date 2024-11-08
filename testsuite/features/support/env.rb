@@ -257,11 +257,8 @@ Before do |scenario|
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
 
-  # Core features are always handled using admin user, the rest will use its own user based on feature filename
-  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing')
-    $current_user = 'admin'
-    $current_password = 'admin'
-  else
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
     step %(I create a user with name "#{$feature_filename}" and password "linux")
     add_context('user_created', true)
   end
@@ -693,13 +690,13 @@ end
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
   $stdout.puts
   $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end

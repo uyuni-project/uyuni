@@ -86,11 +86,9 @@ public abstract class PasswordBasedCredentials extends BaseCredentials {
             return true;
         }
 
-        if (!(o instanceof PasswordBasedCredentials)) {
+        if (!(o instanceof PasswordBasedCredentials that)) {
             return false;
         }
-
-        PasswordBasedCredentials that = (PasswordBasedCredentials) o;
 
         return new EqualsBuilder()
             .appendSuper(super.equals(o))

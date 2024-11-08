@@ -67,10 +67,9 @@ public class ConfigDateFileAction extends ActionChild implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (other == null || !(other instanceof ConfigDateFileAction)) {
+        if (!(other instanceof ConfigDateFileAction castOther)) {
             return false;
         }
-        ConfigDateFileAction castOther = (ConfigDateFileAction)other;
         return new EqualsBuilder().append(getParentAction(), castOther.getParentAction())
                                   .append(fileName, castOther.getFileName()).isEquals();
     }

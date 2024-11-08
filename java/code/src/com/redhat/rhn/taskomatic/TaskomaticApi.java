@@ -682,7 +682,7 @@ public class TaskomaticApi {
                             params.put("staging_job_minion_server_id", Long.toString(minionData.getKey()));
                             params.put("earliest_action", minionData.getValue().toInstant().toString());
                             return params;
-                        })).collect(Collectors.toList());
+                        })).toList();
         invoke("tasko.scheduleRuns", MINION_ACTION_BUNCH_LABEL, MINION_ACTION_JOB_DOWNLOAD_PREFIX, paramList);
     }
 
@@ -745,7 +745,7 @@ public class TaskomaticApi {
                         .allMatch(s -> e.getValue().contains(s))
                 )
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .toList();
 
         Set<ActionChain> affectedActionChains = actionsToBeUnscheduled.stream()
                 .map(a -> ActionChainFactory.getActionChainsByAction(a).orElse(null))

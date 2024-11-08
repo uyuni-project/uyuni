@@ -59,8 +59,6 @@ Requires:       spacewalk-backend-tools >= 2.2.27
 Requires:       spacewalk-certs-tools
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-config
-# Required by spacewalk-export
-Requires:       spacewalk-reports
 # Required by spacewalk-hostname-rename
 Requires:       spacewalk-setup
 # Required by spacewalk-hostname-rename (provides /usr/bin/spacewalk-sql)
@@ -93,15 +91,13 @@ Requires:       python3-PyYAML
 Requires:       python3-ldap
 # Required by migrate-system-profile
 Requires:       python3-rhnlib >= 2.5.20
-# Required by migrateSystemProfile.py, systemSnapshot.py
+# Required by migrateSystemProfile.py
 Requires:       python3-uyuni-common-libs
-# Required by spacewalk-manage-snapshots, systemSnapshot.py
-Requires:       spacewalk-backend
 # Required by spacewalk-watch-channel-sync.sh
 Requires:       spacewalk-backend-tools >= 2.2.27
 # As spacewalk-utils owns {python3_sitelib}/utils
 Requires:       spacewalk-utils
-# Required by migrate-system-profile, migrateSystemProfile.py, spacewalk-export-channels, spacewalk-manage-snapshots, sw-system-snapshot, systemSnapshot.py
+# Required by migrate-system-profile, migrateSystemProfile.py
 Requires(pre):  uyuni-base-common
 
 %description extras
@@ -139,12 +135,10 @@ popd
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
-%{python3_sitelib}/utils/systemSnapshot.py*
 %{python3_sitelib}/utils/cloneByDate.py*
 %{python3_sitelib}/utils/depsolver.py*
 %dir %{python3_sitelib}/utils/__pycache__
 %{python3_sitelib}/utils/__pycache__/__init__.*
-%{python3_sitelib}/utils/__pycache__/systemSnapshot.*
 %{python3_sitelib}/utils/__pycache__/cloneByDate.*
 %{python3_sitelib}/utils/__pycache__/depsolver.*
 %{_mandir}/man8/spacewalk-clone-by-date.8%{?ext_man}
@@ -158,21 +152,13 @@ popd
 %attr(755,root,root) %{_bindir}/delete-old-systems-interactive
 %attr(755,root,root) %{_bindir}/migrate-system-profile
 %attr(755,root,root) %{_bindir}/spacewalk-api
-%attr(755,root,root) %{_bindir}/spacewalk-export
-%attr(755,root,root) %{_bindir}/spacewalk-export-channels
-%attr(755,root,root) %{_bindir}/spacewalk-manage-snapshots
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %attr(755,root,root) %{_bindir}/sw-ldap-user-sync
-%attr(755,root,root) %{_bindir}/sw-system-snapshot
 %{python3_sitelib}/utils/migrateSystemProfile.py*
 %{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
 %config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
 %{_mandir}/man8/delete-old-systems-interactive.8%{?ext_man}
 %{_mandir}/man8/migrate-system-profile.8%{?ext_man}
 %{_mandir}/man8/spacewalk-api.8%{?ext_man}
-%{_mandir}/man8/spacewalk-export-channels.8%{?ext_man}
-%{_mandir}/man8/spacewalk-export.8%{?ext_man}
-%{_mandir}/man8/spacewalk-manage-snapshots.8%{?ext_man}
-%{_mandir}/man8/sw-system-snapshot.8%{?ext_man}
 
 %changelog

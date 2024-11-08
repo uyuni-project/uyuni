@@ -557,10 +557,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+  $current_user = user
+  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
-  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+  user = get_context('user') || 'admin'
+  password = get_context('password') || 'admin'
+  step %(I am authorized as "#{user}" with password "#{password}")
 end
 
 When(/^I sign out$/) do
@@ -865,9 +869,15 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise 'Package name is not set' if input.empty?
+  raise ArgumentError, 'Package name is not set' if input.empty?
 
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
+  raise ArgumentError, 'Package name is not set' if input.empty?
+
+  find('input[placeholder=\'Filter by Latest Package: \']').set(input)
 end
 
 When(/^I enter "([^"]*)" as the filtered synopsis$/) do |input|
