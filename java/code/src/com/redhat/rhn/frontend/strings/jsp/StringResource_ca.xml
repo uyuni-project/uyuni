@@ -29876,11 +29876,11 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-        <target state="translated">Llista de pedaços ja inclosos:</target>
+        <target state="translated">Llista dels pedaços ja inclosos:</target>
       </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="translated">Amb això seleccionat, es mostren els pedaços que ja formen part del canal. Això és útil quan un pedaç forma part de diversos canals, s'ha inclòs des d'un i cal associar els seus paquets a un altre.</target>
+        <target state="translated">Amb això seleccionat, es mostren els pedaços que ja formen part del canal. Això és útil quan un pedaç forma part de diversos canals, s'ha inclòs des d'un i cal associar-ne els paquets a un altre.</target>
       </trans-unit>
     </body>
   </file>
