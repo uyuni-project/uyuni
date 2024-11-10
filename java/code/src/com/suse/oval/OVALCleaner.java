@@ -81,7 +81,6 @@ public class OVALCleaner {
 
         if (osFamily == OsFamily.DEBIAN) {
             convertDebianTestRefs(definition.getCriteria(), osVersion);
-            // SUSE-MicroOS-release is ==5.3
         }
     }
 
