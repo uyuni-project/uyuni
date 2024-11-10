@@ -7,7 +7,6 @@ import { TopPanel } from "components/panels/TopPanel";
 import { AsyncButton } from "components/buttons";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 
-// Assume you have an API hook similar to useLifecyclePaygActionsApi
 import usePasswordPolicyApi from "manager/admin/password-policy/use-password-policy-api";
 import { useState } from "react";
 
@@ -24,7 +23,6 @@ type PasswordPolicyProps = {
   maxCharOccurrence: bigint;
   isUyuni: boolean;
 };
-
 
 const PasswordPolicy = (props: PasswordPolicyProps) => {
   const [policy, setPolicy] = useState({
@@ -48,7 +46,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
 
   return (
     <TopPanel
-      title={t(policy.properties.isUyuni ? "SUSE Manager" : "Uyuni").concat(" Configuration - Password Policy")}
+      title={t("Server Configuration - Password Policy")}
       icon="fa-info-circle"
       button={
         <div className="pull-right btn-group">
