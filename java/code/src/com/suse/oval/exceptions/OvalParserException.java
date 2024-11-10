@@ -23,6 +23,15 @@ import com.suse.oval.parser.OvalParser;
 public class OvalParserException extends RuntimeException {
 
     /**
+     * Constructs a new parser exception with the specified cause.
+     *
+     * @param exception the cause (which is saved for later retrieval by the getCause() method).
+     * */
+    public OvalParserException(Exception exception) {
+        super(exception);
+    }
+
+    /**
      * Constructs a new parser exception with the specified detail message.
      *
      * @param message the detail message. The detail message is saved for later retrieval by the getMessage() method.
