@@ -374,7 +374,8 @@ public class CVEAuditManagerOVAL {
     public static void syncOVAL() {
         Set<OVALOsProduct> osProductsToSync = getProductsToSync();
 
-        LOG.debug("Detected {} products eligible for OVAL synchronization: {}", osProductsToSync.size(), osProductsToSync);
+        LOG.debug("Detected {} products eligible for OVAL synchronization: {}",
+            osProductsToSync.size(), osProductsToSync);
 
         OVALDownloader ovalDownloader = new OVALDownloader(OVALConfigLoader.loadDefaultConfig());
         for (OVALOsProduct osProduct : osProductsToSync) {
@@ -388,11 +389,11 @@ public class CVEAuditManagerOVAL {
         }
     }
 
-    private static void syncOVALForProduct(OVALOsProduct product, OVALDownloader ovalDownloader) {
-        LOG.debug("Downloading OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+    private static void syncOVALForProduct(OVALOsProduct osProduct, OVALDownloader ovalDownloader) {
+        LOG.debug("Downloading OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         OVALDownloadResult downloadResult;
         try {
-            downloadResult = ovalDownloader.download(product.getOsFamily(), product.getOsVersion());
+            downloadResult = ovalDownloader.download(osProduct.getOsFamily(), osProduct.getOsVersion());
         }
         catch (IOException e) {
             throw new RuntimeException("Failed to download OVAL data", e);
@@ -404,13 +405,16 @@ public class CVEAuditManagerOVAL {
         LOG.debug("OVAL patch file: {}", downloadResult.getPatchFile().map(File::getAbsoluteFile).orElse(null));
 
         downloadResult.getVulnerabilityFile().ifPresent(ovalVulnerabilityFile -> {
-            extractAndSaveOVALData(product, ovalVulnerabilityFile);
-            LOG.debug("Saving Vulnerability OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            // we need this to avoid any conflicts with the previously stored OVAL metadata.
+            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
+            extractAndSaveOVALData(osProduct, ovalVulnerabilityFile);
+            LOG.debug("Saving Vulnerability OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
 
         downloadResult.getPatchFile().ifPresent(patchFile -> {
-            extractAndSaveOVALData(product, patchFile);
-            LOG.debug("Saving Patch OVAL for {} {}", product.getOsFamily(), product.getOsVersion());
+            OVALCachingFactory.clearOVALMetadataByOsProduct(osProduct);
+            extractAndSaveOVALData(osProduct, patchFile);
+            LOG.debug("Saving Patch OVAL for {} {}", osProduct.getOsFamily(), osProduct.getOsVersion());
         });
 
         LOG.debug("Saving OVAL finished");

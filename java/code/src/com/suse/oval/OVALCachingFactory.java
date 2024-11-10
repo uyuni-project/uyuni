@@ -22,8 +22,8 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-
 import com.redhat.rhn.manager.audit.CVEAuditManagerOVAL;
+
 import com.suse.oval.manager.OVALResourcesCache;
 import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.ovaltypes.OvalRootType;
@@ -49,9 +49,22 @@ public class OVALCachingFactory extends HibernateFactory {
         // Left empty on purpose
     }
 
-    private static void clearOVALMetadataByPlatform(String platformCpe) {
-        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "clear_oval_metadata_by_platform");
-        mode.executeUpdate(Map.of("cpe", platformCpe));
+    /**
+     * Clears the OVAL metadata for the given OS product, meaning:
+     * <ul>
+     *     <li>Clears all entries in the suseOVALPlatformVulnerablePackage table that correspond
+     *     to the given OS product.</li>
+     *     <li>Deletes the OS product from the suseOVALOsProduct table.</li>
+     * </ul>
+     *
+     * @param osProduct the OS product to clear the OVAL metadata for.
+     * */
+    public static void clearOVALMetadataByOsProduct(CVEAuditManagerOVAL.OVALOsProduct osProduct) {
+        WriteMode mode = ModeFactory.getWriteMode("oval_queries", "clear_oval_metadata_by_os_product");
+        Map<String, String> params = new HashMap<>();
+        params.put("os_product_family", osProduct.getOsFamily().toString());
+        params.put("os_product_version", osProduct.getOsVersion());
+        mode.executeUpdate(params);
     }
 
     /**
@@ -73,11 +86,6 @@ public class OVALCachingFactory extends HibernateFactory {
 
             productVulnerablePackages.addAll(vulnerablePackagesExtractor.extract());
         }
-
-        // Clear previous OVAL metadata
-//        productVulnerablePackages.stream()
-//                .collect(groupingBy(ProductVulnerablePackages::getProductCpe))
-//                .keySet().forEach(OVALCachingFactory::clearOVALMetadataByPlatform);
 
         // Write OVAL metadata in batches
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
