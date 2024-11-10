@@ -24,7 +24,7 @@ fi
 
 echo "Loading ${VPRODUCT}"
 . ${HERE}/${VPRODUCT}
-GITROOT=`readlink -f ${HERE}/../../../`
+GITROOT=`git rev-parse --show-toplevel`
 
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CMD="cd /manager/susemanager-utils/susemanager-sls/; make -f Makefile.python junit_pytest"
