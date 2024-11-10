@@ -43,7 +43,7 @@ def __virtual__():
     if not postgres and not mgradm:
         return (
             False,
-            "Unable to load postgres module.  Make sure `postgres.bins_dir` is set.",
+            "Neither postgres module nor mgradm is available.",
         )
     return __virtualname__
 
@@ -52,10 +52,7 @@ def _user_exists(dbuser):
     # pylint: disable-next=undefined-variable
     if "postgres.user_exists" in __salt__:
         # pylint: disable-next=undefined-variable
-        if __salt__["postgres.user_exists"](dbuser):
-            return True
-        else:
-            return False
+        return __salt__["postgres.user_exists"](dbuser)
     elif os.path.exists("/usr/bin/mgradm"):
         cmd = ["mgradm", "support", "sql", "-d", "reportdb", "--logLevel", "error"]
         # pylint: disable-next=undefined-variable
@@ -66,8 +63,9 @@ def _user_exists(dbuser):
         if result["retcode"] != 0:
             raise CommandExecutionError(result["stderr"])
 
-        for line in (line.strip() for line in result["stdout"].splitlines()):
-            if line and line == dbuser.lower():
+        for line in result["stdout"].splitlines():
+            role = line.strip()
+            if role and role == dbuser.lower():
                 return True
     return False
 
