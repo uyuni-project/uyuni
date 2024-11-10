@@ -63,8 +63,8 @@ public class OVALCachingFactory extends HibernateFactory {
         CallableMode mode = ModeFactory.getCallableMode("oval_queries", "add_product_vulnerable_package");
 
         OVALResourcesCache ovalResourcesCache = new OVALResourcesCache(rootType);
-        CVEAuditManagerOVAL.OVALProduct ovalOsProduct =
-            new CVEAuditManagerOVAL.OVALProduct(rootType.getOsFamily(), rootType.getOsVersion());
+        CVEAuditManagerOVAL.OVALOsProduct ovalOsProduct =
+            new CVEAuditManagerOVAL.OVALOsProduct(rootType.getOsFamily(), rootType.getOsVersion());
 
         List<ProductVulnerablePackages> productVulnerablePackages = new ArrayList<>();
         for (DefinitionType definition : rootType.getDefinitions()) {
