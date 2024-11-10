@@ -12,6 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.common.util.validation.password.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;

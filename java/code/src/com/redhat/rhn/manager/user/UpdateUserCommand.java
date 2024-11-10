@@ -12,6 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.manager.user;
 
 import com.redhat.rhn.common.conf.UserDefaults;
@@ -24,7 +25,6 @@ import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
