@@ -29,11 +29,11 @@ import java.util.List;
 
 public class PasswordValidationUtilsTest {
 
-    private PasswordPolicy defaultPolicy;
+    private PasswordPolicy strictPolicy;
 
     @BeforeEach
     public void setUp() {
-        defaultPolicy = new PasswordPolicy(
+        strictPolicy = new PasswordPolicy(
                 true,       // upperCharFlagIn
                 true,       // lowerCharFlagIn
                 true,       // digitFlagIn
@@ -50,14 +50,16 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testValidPassword() {
         String password = "Ab1!Ab1!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertTrue(errors.isEmpty(), "Password should be valid");
     }
 
     @Test
     public void testPasswordTooShort() {
         String password = "A1a!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should be too short");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.minpassword")));
     }
@@ -65,7 +67,8 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordTooLong() {
         String password = "A1!aA1!aA1!aA1!aA1!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should be too long");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.maxpassword")));
     }
@@ -73,7 +76,8 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordMissingUppercase() {
         String password = "ab1!ab1!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should require uppercase letters");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.nouppercasepassword")));
     }
@@ -81,7 +85,8 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordMissingLowercase() {
         String password = "AB1!AB1!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should require lowercase letters");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.nolowercasepassword")));
     }
@@ -89,7 +94,8 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordMissingDigit() {
         String password = "Abc!Abc!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should require digits");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.nodigitspassword")));
     }
@@ -97,15 +103,19 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordMissingSpecialChar() {
         String password = "Ab1Ab1Ab";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should require special characters");
-        assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.nospecialcharacterspassword")));
+        assertTrue(errors.stream().anyMatch(
+                e -> e.getLocalizedMessageId().contains("error.nospecialcharacterspassword"))
+        );
     }
 
     @Test
     public void testPasswordWithSpaces() {
         String password = "Ab1! Ab1!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should not contain spaces");
         assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.spacesinpassword")));
     }
@@ -113,23 +123,30 @@ public class PasswordValidationUtilsTest {
     @Test
     public void testPasswordWithConsecutiveChars() {
         String password = "AAbb11!!";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should not contain consecutive characters");
-        assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("consecutive_characters_presents")));
+        assertTrue(errors.stream().anyMatch(
+                e -> e.getLocalizedMessageId().contains("consecutive_characters_presents"))
+        );
     }
 
     @Test
     public void testPasswordExceedingMaxCharOccurrences() {
         String password = "Ab1!b!!Ab";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromPolicy(password, defaultPolicy);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, strictPolicy);
         assertFalse(errors.isEmpty(), "Password should not exceed max character occurrences");
-        assertTrue(errors.stream().anyMatch(e -> e.getLocalizedMessageId().contains("error.occurrencecharacterspassword")));
+        assertTrue(errors.stream().anyMatch(
+                e -> e.getLocalizedMessageId().contains("error.occurrencecharacterspassword"))
+        );
     }
 
     @Test
     public void testPasswordUsingDefaultSatConfigurations() {
         String password = "Abc123!er}{hjxc";
-        List<PasswordPolicyCheckFail> errors = PasswordValidationUtils.validatePasswordFromSatConfiguration(password);
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromSatConfiguration(password);
         assertTrue(errors.isEmpty(), "Default valid password");
     }
 }
