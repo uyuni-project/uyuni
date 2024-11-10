@@ -46,10 +46,18 @@
         </query>
     </mode>
 
-    <write-mode name="clear_oval_metadata_by_platform">
-        <query params="cpe">
-            DELETE FROM suseOVALPlatformVulnerablePackage pvp WHERE pvp.platform_id = (SELECT id FROM suseOVALPlatform plat WHERE plat.cpe = :cpe);
-            DELETE FROM suseOVALPlatform plat where plat.cpe = :cpe;
+    <write-mode name="clear_oval_metadata_by_os_product">
+        <query params="os_product_family, os_product_version">
+            DELETE
+            FROM suseOVALPlatformVulnerablePackage pvp
+            WHERE pvp.platform_id = (SELECT id
+                                     FROM suseOVALOsProduct osProduct
+                                     WHERE osProduct.os_family = :os_product_family
+                                       AND osProduct.version = :os_product_version);
+            DELETE
+            FROM suseOVALOsProduct osProduct
+            WHERE osProduct.os_family = :os_product_family
+              AND osProduct.version = :os_product_version;
         </query>
     </write-mode>
 </datasource_modes>
