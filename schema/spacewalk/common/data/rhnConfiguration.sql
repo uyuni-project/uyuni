@@ -8,11 +8,11 @@ VALUES ('password_check_length_min', 'Minimum number of characters in local user
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_length_max', 'Maximum number of characters in local user passwords', 32, 32);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_lower_char_flag', 'Password has to have at least one lower alpha character', TRUE, TRUE);
+VALUES ('password_check_lower_char_flag', 'Password has to have at least one lower alpha character', FALSE, FALSE);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_upper_char_flag', 'Password has to have at least one upper alpha character', TRUE, TRUE);
+VALUES ('password_check_upper_char_flag', 'Password has to have at least one upper alpha character', FALSE, FALSE);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_digit_flag', 'Password has to have at least one digit', TRUE, TRUE);
+VALUES ('password_check_digit_flag', 'Password has to have at least one digit', FALSE, FALSE);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_consecutive_char_flag', 'Password has to have no consecutive characters', FALSE, FALSE);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
