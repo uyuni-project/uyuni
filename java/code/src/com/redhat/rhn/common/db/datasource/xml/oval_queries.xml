@@ -1,7 +1,7 @@
 <datasource_modes>
     <callable-mode name="add_product_vulnerable_package">
-        <query params="package_name, fix_version, product_name, cve_name">
-            call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
+        <query params="os_product_family, os_product_version, package_name, fix_version, platform_cpe, cve_name">
+            call insert_product_vulnerable_packages(:os_product_family, :os_product_version, :package_name, :fix_version, :platform_cpe, :cve_name)
         </query>
     </callable-mode>
 
