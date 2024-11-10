@@ -18,16 +18,16 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 15:12+0100\n"
-"PO-Revision-Date: 2024-10-01 20:48+0000\n"
+"PO-Revision-Date: 2024-11-10 17:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.8.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:471
 msgid "remaining"
@@ -1042,24 +1042,20 @@ msgid "System Locked"
 msgstr "Systém uzamknutý"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
-#, fuzzy
 msgid "less than"
-msgstr "nižšia ako"
+msgstr "menej ako"
 
 #: ../html/src/components/table/NumericSearchField.tsx:12
-#, fuzzy
 msgid "less than or equal to"
-msgstr "nižšia alebo rovnaká ako"
+msgstr "menšie alebo rovné"
 
 #: ../html/src/components/table/NumericSearchField.tsx:13
-#, fuzzy
 msgid "equal to"
-msgstr "rovnaká"
+msgstr "rovné"
 
 #: ../html/src/components/table/NumericSearchField.tsx:14
-#, fuzzy
 msgid "greater than or equal to"
-msgstr "vyššia alebo rovnaká ako"
+msgstr "väčšie alebo rovné"
 
 #: ../html/src/components/table/NumericSearchField.tsx:15
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
@@ -1067,9 +1063,8 @@ msgid "greater than"
 msgstr "vyššia ako"
 
 #: ../html/src/components/table/NumericSearchField.tsx:16
-#, fuzzy
 msgid "not equal to"
-msgstr "nezostavené"
+msgstr "nie je rovné"
 
 #: ../html/src/components/table/NumericSearchField.tsx:47
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
