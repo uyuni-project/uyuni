@@ -1,0 +1,71 @@
+# Copyright (c) 2024 SUSE LLC.
+# Licensed under the terms of the MIT license.
+
+require 'time'
+
+# This method should return the last bootstrap duration for the given host
+# @param host [String] the hostname
+# @return [Float] the duration in seconds
+def last_bootstrap_duration(host)
+  system_name = get_system_name(host)
+  duration = nil
+  lines, _code = get_target('server').run('tail -n100 /var/log/rhn/rhn_web_api.log')
+  lines.each_line do |line|
+    if line.include?(system_name) && line.include?('systems.bootstrap')
+      match = line.match(/TIME: (\d+\.\d+) seconds/)
+      duration = match[1].to_f if match
+    end
+  end
+  raise ScriptError, "Boostrap duration not found for #{host}" if duration.nil?
+
+  duration
+end
+
+# This method should return the last onboarding duration for the given host
+# @param host [String] the hostname
+# @return [Float] the duration in seconds
+def last_onboarding_duration(host)
+  begin
+    node = get_target(host)
+    system_id = get_system_id(node)
+    events = $api_test.system.get_event_history(system_id, 0, 10)
+    onboarding_events = events.select { |event| event['summary'].include? 'certs, channels, packages' }
+    last_event_id = onboarding_events.last['id']
+    event_details = $api_test.system.get_event_details(system_id, last_event_id)
+    Time.parse(event_details['completed']) - Time.parse(event_details['picked_up'])
+  rescue StandardError => e
+    raise ScriptError, "Error extracting onboarding duration for #{host}.\n #{e.full_message}"
+  end
+end
+
+# This method should return the synchronization duration for the given product
+# @param os_product_version [String] the product name
+# @return [Integer] the duration in seconds
+def synchronization_duration(os_product_version)
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
+  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
+
+  duration = 0
+  channel_to_evaluate = false
+  get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
+  raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?('/tmp/reposync.log') || File.empty?('/tmp/reposync.log')
+
+  File.foreach('/tmp/reposync.log') do |line|
+    if line.include?('Channel: ')
+      channel_name = line.split('Channel: ')[1].strip
+      channel_to_evaluate = channels_to_wait.include?(channel_name)
+    end
+    if line.include?('Total time: ') && channel_to_evaluate
+      match = line.match(/Total time: (\d+):(\d+):(\d+)/)
+      hours, minutes, seconds = match.captures.map(&:to_i)
+      total_seconds = (hours * 3600) + (minutes * 60) + seconds
+      duration += total_seconds
+      channel_to_evaluate = false
+    end
+  end
+
+  raise ScriptError, "Error extracting the synchronization duration of #{os_product_version}" if duration.zero?
+
+  duration
+end
