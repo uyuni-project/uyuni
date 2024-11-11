@@ -21,7 +21,6 @@ type PasswordPolicyProps = {
   specialCharList: string | null;
   restrictedOccurrenceFlag: boolean;
   maxCharOccurrence: bigint;
-  isUyuni: boolean;
 };
 
 const PasswordPolicy = (props: PasswordPolicyProps) => {
@@ -37,7 +36,6 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
       specialCharList: props.specialCharList || "",
       restrictedOccurrenceFlag: props.restrictedOccurrenceFlag,
       maxCharOccurrence: props.maxCharOccurrence.toString(),
-      isUyuni: props.isUyuni,
     },
     errors: {},
   });
