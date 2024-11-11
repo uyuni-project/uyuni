@@ -320,6 +320,14 @@ public class SCCRepository extends BaseDomainHelper {
     }
 
     /**
+     * @return return a unique label used for {@link com.redhat.rhn.domain.channel.ContentSource} label
+     */
+    @Transient
+    public String getUniqueLabel() {
+        return name + "_" + sccId;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

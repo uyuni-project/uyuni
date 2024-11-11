@@ -616,20 +616,18 @@ public class ContentSyncManager {
         ContentSource source = auth.getContentSource();
 
         if (source == null) {
-            String url = contentSourceUrlOverwrite(auth.getRepo(), auth.getUrl(), mirrorUrl);
-            source = Optional.ofNullable(ChannelFactory.findVendorContentSourceByRepo(url, channel.getLabel()))
+            SCCRepository repository = auth.getRepo();
+            String url = contentSourceUrlOverwrite(repository, auth.getUrl(), mirrorUrl);
+            source = Optional.ofNullable(ChannelFactory.findVendorContentSourceByRepo(url, repository.getUniqueLabel()))
                     .orElse(new ContentSource());
-            source.setLabel(channel.getLabel());
-            source.setMetadataSigned(auth.getRepo().isSigned());
+            source.setLabel(repository.getUniqueLabel());
+            source.setMetadataSigned(repository.isSigned());
             source.setOrg(null);
             source.setSourceUrl(url);
             source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
-            ChannelFactory.save(source);
         }
-        Set<ContentSource> css = channel.getSources();
-        css.add(source);
-        channel.setSources(css);
-        ChannelFactory.save(channel);
+        ChannelFactory.save(source);
+        channel.getSources().add(source);
         auth.setContentSource(source);
     }
 
@@ -2252,28 +2250,8 @@ public class ContentSyncManager {
                     // Non OSS repositories which are not accessible can be skipped
                     continue;
                 }
-                Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
-                if (auth.isPresent()) {
-                    String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), null);
-                    ContentSource source =
-                            ChannelFactory.findVendorContentSourceByRepo(url, chanTmpl.getChannelLabel());
-                    if (source == null) {
-                        source = new ContentSource();
-                        source.setLabel(chanTmpl.getChannelLabel());
-                        source.setMetadataSigned(repository.isSigned());
-                        source.setOrg(null);
-                        source.setSourceUrl(url);
-                        source.setType(
-                                ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
-                    }
-                    else {
-                        // update the URL as the token might have changed
-                        source.setSourceUrl(url);
-                    }
-                    ChannelFactory.save(source);
-                    dbChannel.getSources().add(source);
-                    auth.get().setContentSource(source);
-                }
+                repository.getBestAuth().ifPresent(sccRepositoryAuthIn ->
+                        createOrUpdateContentSource(sccRepositoryAuthIn, dbChannel, null));
             }
             ChannelFactory.save(dbChannel);
 
@@ -2361,28 +2339,8 @@ public class ContentSyncManager {
                             // Non OSS repositories which are not accessible can be skipped
                             continue;
                         }
-                        Optional<SCCRepositoryAuth> auth = repository.getBestAuth();
-                        if (auth.isPresent()) {
-                            String url = contentSourceUrlOverwrite(repository, auth.get().getUrl(), mirrorUrl);
-                            ContentSource source =
-                                    ChannelFactory.findVendorContentSourceByRepo(url, chanTmpl.getChannelLabel());
-                            if (source == null) {
-                                source = new ContentSource();
-                                source.setLabel(chanTmpl.getChannelLabel());
-                                source.setMetadataSigned(repository.isSigned());
-                                source.setOrg(null);
-                                source.setSourceUrl(url);
-                                source.setType(
-                                        ChannelManager.findCompatibleContentSourceType(dbChannel.getChannelArch()));
-                            }
-                            else {
-                                // update the URL as the token might have changed
-                                source.setSourceUrl(url);
-                            }
-                            ChannelFactory.save(source);
-                            dbChannel.getSources().add(source);
-                            auth.get().setContentSource(source);
-                        }
+                        repository.getBestAuth().ifPresent(sccRepositoryAuthIn ->
+                                createOrUpdateContentSource(sccRepositoryAuthIn, dbChannel, mirrorUrl));
                     }
                     // Save the channel
                     ChannelFactory.save(dbChannel);

@@ -2086,7 +2086,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         for (ContentSource cs : channel.getSources()) {
             assertEquals("https://updates.suse.com/SUSE/Products/SLE-SERVER/12/x86_64/product/?my-fake-token",
                     cs.getSourceUrl());
-            assertEquals("sles12-pool-x86_64", cs.getLabel());
+            assertEquals("SLES12-Pool_1634", cs.getLabel());
         }
         for (SUSEProductChannel pc : channel.getSuseProductChannels()) {
             assertTrue(pc.isMandatory());
