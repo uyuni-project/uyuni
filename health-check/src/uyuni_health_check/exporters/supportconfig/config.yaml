@@ -1,3 +1,0 @@
-supportconfig_path: /home/ygutierrez/src/uyuni/healt-check/src/scc_susemgr902_240612_0943
-port: 9000
-scrape_frequency: 60

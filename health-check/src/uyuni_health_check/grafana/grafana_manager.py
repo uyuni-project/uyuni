@@ -22,7 +22,7 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
 
         grafana_cfg = conf.get_config_dir_path("grafana")
         console.log("GRAFANA CFG DIR: ",grafana_cfg)
-        grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.json")
+        grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.template.json")
         render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime, config)
 
         # Run the container

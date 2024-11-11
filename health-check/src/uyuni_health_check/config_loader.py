@@ -7,8 +7,8 @@ from jinja2 import Environment, FileSystemLoader
 class ConfigLoader:
     def __init__(self):
         self.base_dir = os.path.dirname(os.path.abspath(__file__))
-        self.templates_dir = os.path.join(self.base_dir, "templates")
         self.config_dir = os.path.join(self.base_dir, "config")
+        self.templates_dir = os.path.join(self.base_dir, self.config_dir, "templates")
         self.containers_dir = os.path.join(self.base_dir, "containers")
         self.jinja_env = Environment(loader=FileSystemLoader(self.templates_dir))
         self.load_config()
@@ -47,14 +47,14 @@ class ConfigLoader:
     def get_config_file_path(self, component):
         return os.path.join(self.base_dir, "config", component, "config.yaml")
 
-    def get_sources_path(self):
-        return self.base_dir
+    def get_sources_dir(self, component):
+        return os.path.join(self.base_dir, component)
 
     def get_grafana_config_dir(self):
         return os.path.join(self.config_dir, "grafana")
 
     def get_prometheus_config_dir(self):
-        return os.path.join(self.base_dir, "prometheus", "conf")
+        return os.path.join(self.config_dir, "prometheus")
 
 
 if __name__ == "__main__":

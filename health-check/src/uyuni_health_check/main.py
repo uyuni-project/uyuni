@@ -13,7 +13,7 @@ from uyuni_health_check.loki.loki_manager import (
 )
 from uyuni_health_check.loki.logs_gatherer import show_full_error_logs, show_error_logs_stats
 from uyuni_health_check.config_loader import ConfigLoader
-from uyuni_health_check.exporters.supportconfig import exporter
+from uyuni_health_check.exporters import exporter
 import uyuni_health_check.containers.manager
 import uyuni_health_check.metrics
 
