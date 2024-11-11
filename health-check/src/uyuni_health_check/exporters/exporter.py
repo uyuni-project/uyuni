@@ -23,11 +23,12 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
     exporter_config = config.get_config_file_path("exporter")
     # config = get_supportconfig_exporter_cfg(supportconfig_path=supportconfig_path)
 
+    exporter_sources = config.get_sources_dir("exporters")
+
     console.log(f"[bold]Building {exporter_name} image")
     if image_exists(f"{exporter_name}"):
         console.log(f"[yellow]Skipped as the {exporter_name} image is already present")
     else:
-        # sources_dir = config.get_sources_path()
         build_image(f"{exporter_name}", exporter_dir, verbose=verbose)
         # build_image(f"{exporter_name}", os.path.dirname(__file__), build_args=[f"config={config}"],verbose=verbose)
         console.log(f"[green]The {exporter_name} image was built successfully")
@@ -50,6 +51,8 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
         "9000:9000",
         "-v",
         f"{supportconfig_path}:{supportconfig_path}",
+        "-v",
+        f"{exporter_sources}:/opt",
         "-v",
         f"{exporter_config}:/opt/config.yml",
     ]
