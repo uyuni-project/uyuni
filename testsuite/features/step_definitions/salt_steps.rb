@@ -559,10 +559,16 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  cleanup_paths = use_salt_bundle ? "/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*" :
-                                    "/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*"
+  config_dir = use_salt_bundle ? "/etc/venv-salt-minion" : "/etc/salt"
+  cleanup_paths = use_salt_bundle ? "/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*" :
+                                    "/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*"
 
-  # File/folder cleanup needs to happen before package removal otherwise the transaction is in an inconsistent state
+  # Selective file cleanup within configuration directory
+  node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
+  node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
+  node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
+
+  # Additional cleanup for cached and runtime files
   node.run("rm -Rf /root/salt #{cleanup_paths}", check_errors: false)
 
   # Package removal using the existing step
