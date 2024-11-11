@@ -20,7 +20,7 @@ class QualityIntelligence
   # @param time [Integer] the time to complete the bootstrap in seconds
   # @return [void]
   def push_bootstrap_duration(system, time)
-    @metrics_collector_handler.push_metrics(QI, 'system_bootstrap_duration_seconds', time, { 'system' => system, 'environment' => @environment })
+    @metrics_collector_handler.push_metrics(QI, 'system_bootstrap_duration_seconds', time, { :system => system, :environment => @environment })
   end
 
   # Report the time to complete the onboarding of a system passed as parameter,
@@ -30,7 +30,7 @@ class QualityIntelligence
   # @param time [Integer] the time to complete the onboarding in seconds
   # @return [void]
   def push_onboarding_duration(system, time)
-    @metrics_collector_handler.push_metrics(QI, 'system_onboarding_duration_seconds', time, { 'system' => system, 'environment' => @environment })
+    @metrics_collector_handler.push_metrics(QI, 'system_onboarding_duration_seconds', time, { :system => system, :environment => @environment })
   end
 
   # Report the time to complete a synchronization of a product passed as parameter,
@@ -40,6 +40,6 @@ class QualityIntelligence
   # @param time [Integer] the time to complete the synchronization in seconds
   # @return [void]
   def push_synchronization_duration(product, time)
-    @metrics_collector_handler.push_metrics(QI, 'product_synch_duration_seconds', time, { 'product' => product, 'environment' => @environment })
+    @metrics_collector_handler.push_metrics(QI, 'product_synch_duration_seconds', time, { :system => product, :environment => @environment })
   end
 end
