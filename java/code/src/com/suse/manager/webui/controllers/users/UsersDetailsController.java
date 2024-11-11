@@ -37,7 +37,6 @@ import org.apache.logging.log4j.Logger;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
@@ -62,11 +61,11 @@ public class UsersDetailsController {
     }
 
     /**
-     *
+     * validate the submitted password
      * @param req
      * @param res
      * @param user
-     * @return
+     * @return Ok or fail
      */
     public String validatePassword(Request req, Response res, User user) {
         PasswordValidationRequest request = GSON.fromJson(req.body(), PasswordValidationRequest.class);
@@ -75,7 +74,7 @@ public class UsersDetailsController {
         return json(GSON, res, ResultJson.success(fails), new TypeToken<>() { });
     }
 
-    public static class PasswordValidationRequest {
+    protected static class PasswordValidationRequest {
         private final String password;
 
         public PasswordValidationRequest(String passwordIn) {

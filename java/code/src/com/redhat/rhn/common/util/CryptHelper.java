@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.common.util;
 
-import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.domain.common.SatConfigFactory;
 
 import org.apache.commons.lang3.RandomStringUtils;

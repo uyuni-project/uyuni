@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
-import com.redhat.rhn.domain.common.SatConfigFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
