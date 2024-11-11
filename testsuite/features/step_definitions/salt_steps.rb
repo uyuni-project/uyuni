@@ -560,13 +560,16 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
 
-  # Define config directory and cleanup paths based on bundle usage
+  # Define config directory based on bundle usage
   config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
-  cleanup_paths = if use_salt_bundle
-                    '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
-                  else
-                    '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
-                  end
+
+  # Define cleanup paths based on bundle usage
+  cleanup_paths =
+    if use_salt_bundle
+      '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
+    else
+      '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
+    end
 
   # Selective file cleanup within the configuration directory
   node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
