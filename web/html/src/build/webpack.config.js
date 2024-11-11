@@ -94,9 +94,6 @@ module.exports = (env, argv) => {
     pluginsInUse = [
       ...pluginsInUse,
       new LicenseCheckerWebpackPlugin({
-        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar in the future
-        // allow: [...],
-        // emitError: true,
         outputFilename: "../vendors/npm.licenses.structured.js",
         outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
       }),
@@ -109,10 +106,6 @@ module.exports = (env, argv) => {
   return {
     entry: {
       "javascript/manager/main": "./manager/index.ts",
-      "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
-      "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-      "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
-      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
       "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
       "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.scss"),
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
@@ -124,7 +117,6 @@ module.exports = (env, argv) => {
       publicPath: "/",
       hashFunction: "md5",
     },
-    // context: __dirname,
     node: {
       __filename: true,
       __dirname: true,
