@@ -73,6 +73,7 @@ public class SCCRepository extends BaseDomainHelper {
     private boolean autorefresh;
     private boolean signed = true;
     private boolean installerUpdates = false;
+    private boolean nonOss = false;
 
     private Set<ChannelTemplate> channelTemplates = new HashSet<>();
     private Set<SCCRepositoryAuth> auth = new HashSet<>();
@@ -102,6 +103,7 @@ public class SCCRepository extends BaseDomainHelper {
         url = j.getUrl();
         autorefresh = j.isAutorefresh();
         installerUpdates = j.isInstallerUpdates();
+        nonOss = j.isNonOss();
     }
     /**
      * @return the SCC id
@@ -244,6 +246,22 @@ public class SCCRepository extends BaseDomainHelper {
      */
     public void setInstallerUpdates(boolean installerUpdatesIn) {
         this.installerUpdates = installerUpdatesIn;
+    }
+
+    /**
+     * @return Return true if this is a non oss repository
+     */
+    @Type(type = "yes_no")
+    @Column(name = "nonoss")
+    public boolean isNonOss() {
+        return nonOss;
+    }
+
+    /**
+     * @param nonOssIn set non oss flag
+     */
+    public void setNonOss(boolean nonOssIn) {
+        nonOss = nonOssIn;
     }
 
     /**

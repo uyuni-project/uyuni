@@ -36,6 +36,8 @@ public class SCCRepositoryJson {
     private boolean enabled;
     @SerializedName("installer_updates")
     private boolean installerUpdates;
+    @SerializedName("non_oss")
+    private boolean nonOss;
 
     /**
      * @return the SCC id
@@ -147,6 +149,20 @@ public class SCCRepositoryJson {
      */
     public void setInstallerUpdates(boolean installerUpdatesIn) {
         this.installerUpdates = installerUpdatesIn;
+    }
+
+    /**
+     * @return Return true if this is a non oss repository
+     */
+    public boolean isNonOss() {
+        return nonOss;
+    }
+
+    /**
+     * @param nonOssIn set non oss parameter
+     */
+    public void setNonOss(boolean nonOssIn) {
+        nonOss = nonOssIn;
     }
 
     /**
