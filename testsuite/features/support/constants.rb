@@ -1342,7 +1342,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_micro5_5-x86_64-sle-updates
         opensuse_micro5_5-uyuni-client-x86_64
         opensuse_micro5_5-uyuni-client-devel-x86_64
-        uyuni-proxy-devel-leap-x86_64
       ]
     # There are no channels for Retail under Uyuni
   }
