@@ -559,11 +559,16 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  config_dir = use_salt_bundle ? "/etc/venv-salt-minion" : "/etc/salt"
-  cleanup_paths = use_salt_bundle ? "/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*" :
-                                    "/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*"
 
-  # Selective file cleanup within configuration directory
+  # Define config directory and cleanup paths based on bundle usage
+  config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
+  cleanup_paths = if use_salt_bundle
+                    '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
+                  else
+                    '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
+                  end
+
+  # Selective file cleanup within the configuration directory
   node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
   node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
   node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
@@ -573,15 +578,13 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
 
   # Package removal using the existing step
   package_list = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
+  step %(I remove package "#{package_list}" from this "#{host}" without error control)
 
+  # Conditional additional package removal
   if transactional_system?(host) && use_salt_bundle
-    # Remove venv-salt-minion and conditionally remove salt-minion if present from sumaform
-    step %(I remove package "#{package_list}" from this "#{host}" without error control)
+    # Check if salt-minion is installed, remove if present from sumaform
     _result, code = node.run('rpm -q salt-minion', check_errors: false)
     step %(I remove package "salt-minion" from this "#{host}" without error control) if code.zero?
-  else
-    # Standard removal of bundled or non-bundled package list
-    step %(I remove package "#{package_list}" from this "#{host}" without error control)
   end
 
   # Disable repositories
