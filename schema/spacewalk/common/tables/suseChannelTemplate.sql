@@ -22,10 +22,6 @@ suseChannelTemplate
                                   CONSTRAINT suse_chantpl_rpid_fk
                                   REFERENCES suseProducts (id)
                                   ON DELETE CASCADE,
-    repo_id                NUMERIC NOT NULL
-                                  CONSTRAINT suse_chantpl_rid_fk
-                                  REFERENCES suseSCCRepository (id)
-                                  ON DELETE CASCADE,
     channel_label          VARCHAR(128) NOT NULL,
     parent_channel_label   VARCHAR(128),
     channel_name           VARCHAR(256) NOT NULL,
@@ -40,8 +36,8 @@ suseChannelTemplate
                            DEFAULT (current_timestamp) NOT NULL
 );
 
-CREATE UNIQUE INDEX suse_chantpl_pid_rpid_rid_uq
-ON suseChannelTemplate (product_id, root_product_id, repo_id);
+CREATE UNIQUE INDEX suse_chantpl_pid_rpid_chl_uq
+ON suseChannelTemplate (product_id, root_product_id, channel_label);
 
 CREATE INDEX suse_chantpl_rpid_idx
 ON suseChannelTemplate (root_product_id);

@@ -22,10 +22,6 @@ suseChannelTemplate
                                   CONSTRAINT suse_chantpl_rpid_fk
                                   REFERENCES suseProducts (id)
                                   ON DELETE CASCADE,
-    repo_id                NUMERIC NOT NULL
-                                  CONSTRAINT suse_chantpl_rid_fk
-                                  REFERENCES suseSCCRepository (id)
-                                  ON DELETE CASCADE,
     channel_label          VARCHAR(128) NOT NULL,
     parent_channel_label   VARCHAR(128),
     channel_name           VARCHAR(256) NOT NULL,
@@ -40,8 +36,8 @@ suseChannelTemplate
                            DEFAULT (current_timestamp) NOT NULL
 );
 
-CREATE UNIQUE INDEX IF NOT EXISTS suse_chantpl_pid_rpid_rid_uq
-ON suseChannelTemplate (product_id, root_product_id, repo_id);
+CREATE UNIQUE INDEX IF NOT EXISTS suse_chantpl_pid_rpid_chl_uq
+ON suseChannelTemplate (product_id, root_product_id, channel_label);
 
 CREATE INDEX IF NOT EXISTS suse_chantpl_rpid_idx
 ON suseChannelTemplate (root_product_id);
@@ -49,16 +45,48 @@ ON suseChannelTemplate (root_product_id);
 CREATE INDEX IF NOT EXISTS suse_chantpl_chl_idx
 ON suseChannelTemplate (channel_label);
 
+------------------------------------------------------------------
+
+CREATE TABLE IF NOT EXISTS suseChannelTemplateRepository
+(
+    template_id    BIGINT NOT NULL
+                     CONSTRAINT suse_chantmplrepo_tid_fk
+                         REFERENCES suseChannelTemplate (id)
+                         ON DELETE CASCADE,
+    repo_id        NUMERIC NOT NULL
+                     CONSTRAINT suse_chantmplrepo_rid_fk
+                         REFERENCES suseSCCRepository (id)
+                         ON DELETE CASCADE
+);
+
+CREATE UNIQUE INDEX IF NOT EXISTS suse_chantmplrepo_tid_rid_uq
+    ON suseChannelTemplateRepository (template_id, repo_id);
+
+CREATE INDEX IF NOT EXISTS suse_chantmplrepo_rid_idx
+    ON suseChannelTemplateRepository(repo_id);
+
+------------------------------------------------------------------
+
+ALTER TABLE suseSCCRepository
+  ADD COLUMN IF NOT EXISTS
+    nonoss CHAR(1) DEFAULT ('N') NOT NULL CONSTRAINT suse_sccrepo_nonoss_ck CHECK (nonoss in ('Y', 'N'));
+
 DO $$
   BEGIN
     IF EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'suseproductsccrepository') THEN
 
-      INSERT INTO suseChannelTemplate (product_id, root_product_id, repo_id, channel_label, parent_channel_label, channel_name,
+      INSERT INTO suseChannelTemplate (product_id, root_product_id, channel_label, parent_channel_label, channel_name,
                                       mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp)
-        SELECT product_id, root_product_id, repo_id, channel_label, parent_channel_label, channel_name,
+        SELECT product_id, root_product_id, channel_label, parent_channel_label, channel_name,
                CASE mandatory WHEN 'Y' THEN true ELSE false END AS mandatory, update_tag, gpg_key_url, gpg_key_id, gpg_key_fp
           FROM suseProductSCCRepository
       ORDER BY id;
+
+      INSERT INTO suseChannelTemplateRepository
+        SELECT ct.id, spcr.repo_id
+          FROM suseProductSCCRepository spcr
+          JOIN suseChannelTemplate ct ON ct.channel_label = spcr.channel_label AND ct.product_id = spcr.product_id AND ct.root_product_id = spcr.root_product_id
+	ORDER BY ct.id;
 
     ELSE
        RAISE NOTICE 'suseProductSCCRepository does not exists';

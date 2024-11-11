@@ -30,13 +30,14 @@ CREATE TABLE suseSCCRepository
     installer_updates CHAR(1) DEFAULT ('N') NOT NULL
                            CONSTRAINT suse_sccrepo_instup_ck
                            CHECK (installer_updates in ('Y', 'N')),
+    nonoss         CHAR(1) DEFAULT ('N') NOT NULL
+                           CONSTRAINT suse_sccrepo_nonoss_ck
+                           CHECK (nonoss in ('Y', 'N')),
     created        TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL,
     modified       TIMESTAMPTZ
                        DEFAULT (current_timestamp) NOT NULL
-)
-
-;
+);
 
 CREATE SEQUENCE suse_sccrepository_id_seq;
 

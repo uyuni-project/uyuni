@@ -1,1 +1,3 @@
-- rename table suseProductSCCRepository to the more meaningful name suseChannelTemplate
+- Support multiple repositories for a channel template
+- Rename table suseProductSCCRepository to the more meaningful
+  name suseChannelTemplate

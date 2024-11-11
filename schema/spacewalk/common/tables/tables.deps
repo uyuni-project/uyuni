@@ -258,11 +258,12 @@ susePackageState                   :: rhnPackageName rhnPackageEVR rhnPackageArc
 suseProducts                       :: rhnPackageArch rhnChannelFamily
 suseProductChannel                 :: suseProducts rhnChannel
 suseProductExtension               :: suseProducts
-suseChannelTemplate                :: suseProducts suseSCCRepository
+suseChannelTemplate                :: suseProducts
+suseChannelTemplateRepository      :: suseChannelTemplate suseSCCRepository
 suseSaltPillar                     :: rhnServer rhnServerGroup web_customer
 suseSCCOrderItem                   :: suseCredentials
 suseSCCRegCache                    :: suseCredentials rhnServer
-suseSCCRepositoryAuth              :: suseCredentials rhnContentSource
+suseSCCRepositoryAuth              :: suseCredentials rhnContentSource suseSCCRepository
 suseSCCSubscription                :: suseCredentials
 suseSCCSubscriptionProduct         :: suseSCCSubscription suseProducts
 suseServerCoCoAttestationConfig    :: rhnServer
