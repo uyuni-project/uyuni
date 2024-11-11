@@ -8,18 +8,18 @@ VALUES ('password_check_length_min', 'Minimum number of characters in local user
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_length_max', 'Maximum number of characters in local user passwords', 32, 32);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_lower_char_flag', 'Password has to have at least one lower alpha character', FALSE, FALSE);
+VALUES ('password_check_lower_char_flag', 'Password has to have at least one lower alpha character', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_upper_char_flag', 'Password has to have at least one upper alpha character', FALSE, FALSE);
+VALUES ('password_check_upper_char_flag', 'Password has to have at least one upper alpha character', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_digit_flag', 'Password has to have at least one digit', FALSE, FALSE);
+VALUES ('password_check_digit_flag', 'Password has to have at least one digit', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_consecutive_char_flag', 'Password has to have no consecutive characters', FALSE, FALSE);
+VALUES ('password_check_consecutive_char_flag', 'Password has to have no consecutive characters', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_special_char_flag', 'Password has to have at least a special character', FALSE, FALSE);
+VALUES ('password_check_special_char_flag', 'Password has to have at least a special character', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_restricted_occurrence_flag', 'Password has to have no repeating characters', FALSE, FALSE);
+VALUES ('password_check_restricted_occurrence_flag', 'Password has to have no repeating characters', 0, 0);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('password_check_max_occurrence', 'Maximum number of valid occurrence of a character', 2, 2);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('password_check_special_characters', 'List of special characters to check in a password', null, '!$%&()*+,./:;<=>?[\\]^_{|}~');
+VALUES ('password_check_special_characters', 'List of special characters to check in a password', '!$%&()*+,./:;<=>?[\\]^_{|}~', '!$%&()*+,./:;<=>?[\\]^_{|}~');
