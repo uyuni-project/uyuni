@@ -195,7 +195,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         ChannelTemplate productRepo = new ChannelTemplate();
         productRepo.setProduct(suseProduct);
         productRepo.setRootProduct(suseProduct);
-        productRepo.setRepository(sccRepository);
+        productRepo.addRepository(sccRepository);
         productRepo.setChannelLabel(sccRepository.getName());
         productRepo.setParentChannelLabel(sccRepository.getName());
         productRepo.setChannelName(sccRepository.getDescription());

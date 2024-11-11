@@ -30,10 +30,10 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
@@ -306,7 +306,7 @@ public class SCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the products.
      */
-    @OneToMany(mappedBy = "repository", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "repositories")
     public Set<ChannelTemplate> getChannelTemplates() {
         return channelTemplates;
     }
@@ -322,7 +322,6 @@ public class SCCRepository extends BaseDomainHelper {
      * @param templateIn the channel template to add
      */
     public void addChannelTemplate(ChannelTemplate templateIn) {
-        templateIn.setRepository(this);
         this.channelTemplates.add(templateIn);
     }
 

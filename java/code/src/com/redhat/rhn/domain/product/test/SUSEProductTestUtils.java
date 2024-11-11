@@ -71,6 +71,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -163,7 +164,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
 
         ChannelTemplate ltssSP1ProdRepo = new ChannelTemplate();
-        ltssSP1ProdRepo.setRepository(repository);
+        ltssSP1ProdRepo.addRepository(repository);
         ltssSP1ProdRepo.setRootProduct(baseProduct);
         ltssSP1ProdRepo.setProduct(product);
         ltssSP1ProdRepo.setParentChannelLabel(baseChannel.getLabel());
@@ -632,28 +633,30 @@ public class SUSEProductTestUtils extends HibernateFactory {
      * @param product the product
      * @param root the root product
      * @param mandatory add mandatory channels
-     * @param optionalChannelIds list of optional channels ids to add
+     * @param optionalChannelIds set of optional channels ids to add
      */
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
-            boolean mandatory, List<Long> optionalChannelIds) {
+            boolean mandatory, Set<Long> optionalChannelIds) {
         ContentSyncManager csm = new ContentSyncManager();
         product.getChannelTemplates()
-        .stream()
-        .filter(pr -> pr.getRootProduct().equals(root))
-        .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))
-        .forEach(pr -> {
-            try {
-                if (pr.getParentChannelLabel() != null &&
-                        ChannelFactory.lookupByLabel(pr.getParentChannelLabel()) == null) {
-                    csm.addChannel(pr.getParentChannelLabel(), null);
-                }
-                csm.addChannel(pr.getChannelLabel(), null);
-            }
-            catch (ContentSyncException e) {
-                log.error("unable to add channel", e);
-                throw new RuntimeException(e);
-            }
-        });
+                .stream()
+                .filter(ct -> ct.getRootProduct().equals(root))
+                .filter(ct -> (mandatory && ct.isMandatory()) ||
+                        optionalChannelIds.containsAll(ct.getRepositories().stream()
+                                .map(SCCRepository::getSccId).collect(Collectors.toSet())))
+                .forEach(ct -> {
+                    try {
+                        if (ct.getParentChannelLabel() != null &&
+                                ChannelFactory.lookupByLabel(ct.getParentChannelLabel()) == null) {
+                            csm.addChannel(ct.getParentChannelLabel(), null);
+                        }
+                        csm.addChannel(ct.getChannelLabel(), null);
+                    }
+                    catch (ContentSyncException e) {
+                        log.error("unable to add channel", e);
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
     /**

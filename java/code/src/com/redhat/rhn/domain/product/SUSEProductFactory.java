@@ -113,15 +113,15 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
-     * @return map of all {@link ChannelTemplate} by ID triple
+     * @return map of all {@link ChannelTemplate} by ID and lable triple
      */
-    public static Map<Tuple3<Long, Long, Long>, ChannelTemplate> allChannelTemplatesByIds() {
+    public static Map<Tuple3<Long, Long, String>, ChannelTemplate> allChannelTemplatesByIds() {
         return allChannelTemplates().stream().collect(
                 Collectors.toMap(
                         e -> new Tuple3<>(
                                 e.getRootProduct().getProductId(),
                                 e.getProduct().getProductId(),
-                                e.getRepository().getSccId()
+                                e.getChannelLabel()
                         ),
                         e -> e
                 )

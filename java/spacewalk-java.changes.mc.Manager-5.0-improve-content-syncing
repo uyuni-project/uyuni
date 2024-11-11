@@ -1,3 +1,5 @@
-- rename SUSEProductSCCRepository to the more meaningful name ChannelTemplate
-- various improvements for ContentSyncManager in regard of hibernate schema
-  and performance
+- Support multiple repositories for a channel template
+- Rename SUSEProductSCCRepository to the more meaningful name
+  ChannelTemplate
+- Various improvements for ContentSyncManager in regard of
+  hibernate schema and performance

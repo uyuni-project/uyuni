@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,10 +16,17 @@ package com.redhat.rhn.domain.product;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.manager.content.GpgInfoEntry;
+import com.redhat.rhn.manager.content.ProductTreeEntry;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,6 +34,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -38,7 +47,7 @@ import javax.persistence.UniqueConstraint;
  */
 @Entity
 @Table(name = "suseChannelTemplate", uniqueConstraints =
-@UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
+@UniqueConstraint(columnNames = {"product_id", "root_product_id", "channel_label"}))
 @NamedQuery(
         name = "ChannelTemplate.lookupByLabel",
         query = "FROM ChannelTemplate pr WHERE pr.channelLabel = :label")
@@ -47,7 +56,7 @@ public class ChannelTemplate extends BaseDomainHelper {
     private Long id;
     private SUSEProduct product;
     private SUSEProduct rootProduct;
-    private SCCRepository repository;
+    private Set<SCCRepository> repositories = new HashSet<>();
     private String channelLabel;
     private String parentChannelLabel;
     private String channelName;
@@ -56,6 +65,35 @@ public class ChannelTemplate extends BaseDomainHelper {
     private String gpgKeyUrl;
     private String gpgKeyId;
     private String gpgKeyFingerprint;
+
+    /**
+     * Constructor
+     */
+    public ChannelTemplate() {
+    }
+
+    /**
+     * Constructor
+     * @param entry a product tree entry
+     * @param rootIn the root product
+     * @param productIn the product
+     */
+    public ChannelTemplate(ProductTreeEntry entry, SUSEProduct rootIn, SUSEProduct productIn) {
+        setUpdateTag(entry.getUpdateTag().orElse(null));
+        setChannelLabel(entry.getChannelLabel());
+        setParentChannelLabel(entry.getParentChannelLabel().orElse(null));
+        setChannelName(entry.getChannelName());
+        setMandatory(entry.isMandatory());
+        setProduct(productIn);
+        setRootProduct(rootIn);
+        if (!entry.getGpgInfo().isEmpty()) {
+            setGpgKeyUrl(entry.getGpgInfo()
+                    .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
+            // we use only the 1st entry for id and fingerprint
+            setGpgKeyId(entry.getGpgInfo().get(0).getKeyId());
+            setGpgKeyFingerprint(entry.getGpgInfo().get(0).getFingerprint());
+        }
+    }
 
     /**
      * @return Returns the id.
@@ -86,12 +124,16 @@ public class ChannelTemplate extends BaseDomainHelper {
     }
 
     /**
-     * @return Returns the repoId.
+     * @return Returns the repositories.
      */
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "repo_id", nullable = false)
-    public SCCRepository getRepository() {
-        return repository;
+    @ManyToMany(cascade = {CascadeType.ALL })
+    @JoinTable(
+        name = "suseChannelTemplateRepository",
+        joinColumns = { @JoinColumn(name = "template_id") },
+        inverseJoinColumns = { @JoinColumn(name = "repo_id") }
+    )
+    public Set<SCCRepository> getRepositories() {
+        return repositories;
     }
 
     /**
@@ -180,10 +222,17 @@ public class ChannelTemplate extends BaseDomainHelper {
     }
 
     /**
-     * @param repoIn The repoId to set.
+     * @param repoIn The repositories to set.
      */
-    public void setRepository(SCCRepository repoIn) {
-        this.repository = repoIn;
+    public void setRepositories(Set<SCCRepository> repoIn) {
+        this.repositories = repoIn;
+    }
+
+    /**
+     * @param repoIn a repository to add
+     */
+    public void addRepository(SCCRepository repoIn) {
+        this.repositories.add(repoIn);
     }
 
     /**
@@ -263,7 +312,7 @@ public class ChannelTemplate extends BaseDomainHelper {
                 .append(getChannelLabel(), otherCast.getChannelLabel())
                 .append(getProduct(), otherCast.getProduct())
                 .append(getRootProduct(), otherCast.getRootProduct())
-                .append(getRepository(), otherCast.getRepository())
+                .append(getRepositories(), otherCast.getRepositories())
                 .append(getChannelName(), otherCast.getChannelName())
                 .append(isMandatory(), otherCast.isMandatory())
                 .append(getUpdateTag(), otherCast.getUpdateTag())
@@ -280,7 +329,7 @@ public class ChannelTemplate extends BaseDomainHelper {
                 .append(getChannelLabel())
                 .append(getProduct())
                 .append(getRootProduct())
-                .append(getRepository())
+                .append(getRepositories())
                 .toHashCode();
     }
 
@@ -288,7 +337,8 @@ public class ChannelTemplate extends BaseDomainHelper {
     public String toString() {
         return "(ProductId: " + getProduct().getProductId() +
                 ", RootProductId: " + getRootProduct().getProductId() +
-                ", RepositoryId: " + getRepository().getSccId() +
+                ", RepositoryIds: " + getRepositories().stream()
+                .map(SCCRepository::getSccId).map(Object::toString).collect(Collectors.joining(",")) +
                 ", Label: " + getChannelLabel() +
                 ", Parent: " + getParentChannelLabel() + ")";
     }
