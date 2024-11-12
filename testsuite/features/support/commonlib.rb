@@ -584,28 +584,38 @@ end
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
 def channel_is_synced(channel)
+  sync_status = false
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
   if code.zero? && !result.include?('repo size: 0')
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
-    !new_code.zero?
+    sync_status = !new_code.zero?
   elsif result.include?('repo size: 0')
     if EMPTY_CHANNELS.include?(channel)
-      true
+      sync_status = true
     else
       _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
       log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
-      false
+      sync_status = false
     end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
-    new_code.zero?
+    sync_status = new_code.zero?
   end
+  if sync_status
+    begin
+      channel_synchronization_duration(channel)
+    rescue ScriptError => e
+      log "Error while checking synchronization duration: #{e.message}"
+      sync_status = false
+    end
+  end
+  sync_status
 end
 
 # This function initializes the API client
@@ -623,7 +633,8 @@ def new_api_client
   when 'xmlrpc'
     ApiTestXmlrpc.new(hostname)
   when 'http'
-    ApiTestHttp.new(hostname, ssl_verify)
+    # We use API_PROTOCOL env. variable only for debugging purposes from our local machine, so we can skip the SSL verification
+    ApiTestHttp.new(hostname, false)
   else
     if product == 'SUSE Manager'
       ApiTestXmlrpc.new(hostname)
