@@ -41,16 +41,17 @@ end
 # This method should return the synchronization duration for the given product
 # @param os_product_version [String] the product name
 # @return [Integer] the duration in seconds
-def synchronization_duration(os_product_version)
+def product_synchronization_duration(os_product_version)
   channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
   channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
-  duration = 0
-  channel_to_evaluate = false
   get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
   raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?('/tmp/reposync.log') || File.empty?('/tmp/reposync.log')
 
+  duration = 0
+  channel_to_evaluate = false
+  matches = 0
   File.foreach('/tmp/reposync.log') do |line|
     if line.include?('Channel: ')
       channel_name = line.split('Channel: ')[1].strip
@@ -61,11 +62,45 @@ def synchronization_duration(os_product_version)
       hours, minutes, seconds = match.captures.map(&:to_i)
       total_seconds = (hours * 3600) + (minutes * 60) + seconds
       duration += total_seconds
+      matches += 1
       channel_to_evaluate = false
     end
   end
 
-  raise ScriptError, "Error extracting the synchronization duration of #{os_product_version}" if duration.zero?
+  raise ScriptError, "Error extracting the synchronization duration of #{os_product_version}" if matches.zero?
+
+  duration
+end
+
+# This method should return the synchronization duration for the given channel
+# @param channel [String] the channel name
+# @return [Integer] the duration in seconds
+def channel_synchronization_duration(channel)
+  channel_found = false
+  get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
+  raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?('/tmp/reposync.log') || File.empty?('/tmp/reposync.log')
+
+  duration = 0
+  matches = 0
+  File.foreach('/tmp/reposync.log') do |line|
+    if line.include?('Channel: ')
+      channel_name = line.split('Channel: ')[1].strip
+      if channel_name == channel
+        channel_found = true
+        duration = 0
+        matches += 1
+      end
+    end
+    if line.include?('Total time: ') && channel_found
+      match = line.match(/Total time: (\d+):(\d+):(\d+)/)
+      hours, minutes, seconds = match.captures.map(&:to_i)
+      total_seconds = (hours * 3600) + (minutes * 60) + seconds
+      duration = total_seconds
+      channel_found = false
+    end
+  end
+  $stdout.puts "Channel #{channel} was found #{matches} times in the logs, we return the last synchronization time." if matches > 1
+  raise ScriptError, "Error extracting the synchronization duration of #{channel}" if matches.zero?
 
   duration
 end
