@@ -20,6 +20,6 @@ end
 When(/^I report the synchronization duration for "([^"]*)"$/) do |product|
   next unless $quality_intelligence_mode
 
-  duration = synchronization_duration(product)
+  duration = product_synchronization_duration(product)
   $quality_intelligence.push_synchronization_duration(product, duration)
 end

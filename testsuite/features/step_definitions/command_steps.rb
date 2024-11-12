@@ -446,11 +446,9 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message
-    unless $build_validation
-      # It might be that the MU repository is wrong, but we want to continue in any case
-      raise ScriptError, "These channels were not fully synced:\n #{channels_to_wait}"
-    end
+    log "These channels were not fully synced:\n #{channels_to_wait}. \n#{e.message}"
+    # It might be that the MU repository is wrong, but on BV we want to continue in any case
+    raise unless $build_validation
   end
 end
 
