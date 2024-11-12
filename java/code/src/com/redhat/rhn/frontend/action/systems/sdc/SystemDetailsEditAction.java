@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRenameCommand;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.user.UserManager;
@@ -111,6 +112,7 @@ public class SystemDetailsEditAction extends RhnAction {
                             "sdc.details.edit.propertieschanged",
                             s.getName());
 
+                    SystemManager.updateSystemOverview(s.getId());
                     return getStrutsDelegate().forwardParam(mapping.findForward("success"),
                             "sid",
                             s.getId().toString());
@@ -143,7 +145,9 @@ public class SystemDetailsEditAction extends RhnAction {
         boolean success = true;
         ActionErrors errors = new ActionErrors();
 
-        s.setName(daForm.getString(NAME));
+        String name = daForm.getString(NAME);
+        boolean renamed = !name.equals(s.getName());
+        s.setName(name);
         s.setDescription(daForm.getString(DESCRIPTION));
 
         // Process the base entitlement selection.  Need to
@@ -242,6 +246,10 @@ public class SystemDetailsEditAction extends RhnAction {
 
         if (!success) {
             getStrutsDelegate().saveMessages(request, errors);
+        }
+
+        if (success && renamed && s.getCobblerId() != null) {
+            new CobblerSystemRenameCommand(s, name).store();
         }
         return success;
     }
