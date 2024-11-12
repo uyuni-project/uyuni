@@ -32,7 +32,10 @@ def last_onboarding_duration(host)
     onboarding_events = events.select { |event| event['summary'].include? 'certs, channels, packages' }
     last_event_id = onboarding_events.last['id']
     event_details = $api_test.system.get_event_details(system_id, last_event_id)
-    Time.parse(event_details['completed']) - Time.parse(event_details['picked_up'])
+    # Convert XMLRPC::DateTime to Ruby's Time if necessary
+    completed_time = event_details['completed'].is_a?(XMLRPC::DateTime) ? event_details['completed'].to_time : Time.parse(event_details['completed'])
+    picked_up_time = event_details['picked_up'].is_a?(XMLRPC::DateTime) ? event_details['picked_up'].to_time : Time.parse(event_details['picked_up'])
+    completed_time - picked_up_time
   rescue StandardError => e
     raise ScriptError, "Error extracting onboarding duration for #{host}.\n #{e.full_message}"
   end
