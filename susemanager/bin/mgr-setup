@@ -437,11 +437,10 @@ done
 
 do_setup
 
-if [ $EXTERNALDB = "0" ]; then
-    /usr/bin/smdba system-check autotuning --max_connections=400
-fi
-
 if [ "$EXTERNALDB" = "0" ]; then
+    /usr/sbin/spacewalk-service stop
+    /usr/bin/smdba system-check autotuning --max_connections=400
+
     # Find PostgreSQL service name.
     POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
     systemctl restart $POSTGRESQLSERVICE
