@@ -72,7 +72,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
 
     <sql-query name="Org.accessibleChannels">
-        <![CDATA[SELECT  {c.*}
+        <![CDATA[SELECT  {c.*}, 0 AS clazz_ 
                    FROM  rhnChannel {c}
                    LEFT JOIN rhnChannelCloned c_1_
                      ON c.id = c_1_.original_id
