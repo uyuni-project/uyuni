@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -2910,7 +2911,7 @@ public class SystemHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2934,7 +2935,7 @@ public class SystemHandler extends BaseHandler {
      * @param request the spark request
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2952,13 +2953,65 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.HTTP)
+    public int provisionSystem(User loggedInUser, Integer sid, Integer proxy, String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, proxy, profileName, new Date());
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param request the spark request
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, Integer proxy,
+                               String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, new Date());
+    }
+
+    /**
      * Provision a system using the specified kickstart/autoinstallation profile at specified time.
      *
      * @param loggedInUser The current user
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
      * @param earliestDate when the autoinstallation needs to be scheduled
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2985,7 +3038,7 @@ public class SystemHandler extends BaseHandler {
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
      * @param earliestDate when the autoinstallation needs to be scheduled
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -3001,6 +3054,63 @@ public class SystemHandler extends BaseHandler {
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
                                 String profileName, Date earliestDate)
             throws FaultException {
+        return provisionSystem(loggedInUser, request , sid, null, profileName, earliestDate);
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.HTTP)
+    public int provisionSystem(User loggedInUser, Integer sid,
+                               Integer proxy, String profileName, Date earliestDate)
+            throws FaultException {
+        HttpServletRequest request = RhnXmlRpcServer.getRequest();
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate);
+    }
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param request the request
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
+            Integer proxy, String profileName, Date earliestDate)
+        throws FaultException {
         log.debug("provisionSystem called.");
 
         // Lookup the server so we can validate it exists and throw error if not.
@@ -3021,10 +3131,19 @@ public class SystemHandler extends BaseHandler {
         KickstartHelper helper = new KickstartHelper(request);
         String host = helper.getKickstartHost();
 
-
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
                 ksdata.getId(), loggedInUser, earliestDate, host);
+        if (proxy != null) {
+            Server proxyServer = SystemManager.lookupByIdAndOrg(Long.valueOf(proxy), loggedInUser.getOrg());
+            if (proxyServer == null) {
+                throw new FaultException(-2, "provisionError", "Requested proxy is not available");
+            }
+            if (!proxyServer.isProxy()) {
+                throw new FaultException(-2, "provisionError", "Requested proxy is not registered proxy");
+            }
+            cmd.setProxy(proxyServer);
+        }
         ValidatorError ve = cmd.store();
         if (ve != null) {
             throw new FaultException(-2, "provisionError",
