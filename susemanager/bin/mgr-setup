@@ -277,7 +277,8 @@ scc-pass = $SCC_PASS
     /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
     SWRET=$?
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
-        MANAGER_MAIL_FROM="$PRODUCT_NAME ($HOSTNAME) <root@$HOSTNAME>"
+        MY_DOMAIN=`hostname -d`
+        MANAGER_MAIL_FROM="$PRODUCT_NAME ($REALHOSTNAME) <root@$MY_DOMAIN>"
     fi
     if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
