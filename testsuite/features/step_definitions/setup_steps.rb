@@ -203,6 +203,8 @@ When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshin
 
     refresh_page
   end
+  get_target("server").run("salt-key -F", verbose: true)
+  get_target(host).run("venv-salt-call --local key.finger", verbose: true)
 end
 
 When(/^I wait at most (\d+) seconds until onboarding is completed for "([^"]*)"$/) do |seconds, host|
