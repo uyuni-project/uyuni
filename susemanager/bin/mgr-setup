@@ -197,6 +197,8 @@ setup_db_postgres() {
 
 check_re_install() {
 if [ -f $MANAGER_COMPLETE ]; then
+    echo "Delete existing salt minion keys"
+    salt-key -D -y > /dev/null
     echo "$PRODUCT_NAME is already set up. Exit." >&2
     exit $EXIT_ALREADY_CONFIGURED
 fi
