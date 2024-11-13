@@ -1,0 +1,11 @@
+#!/bin/bash
+
+REPORTDB_NAME=reportdb
+
+run_sql() {
+    PGHOST= PGHOSTADDR= psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" --no-password --no-psqlrc "$@"
+}
+
+echo "CREATE DATABASE $REPORTDB_NAME ENCODING = UTF8 ;" | run_sql
+echo "CREATE EXTENSION IF NOT EXISTS plpgsql;"  | run_sql
+echo "CREATE ROLE $REPORTDB_USER PASSWORD '$REPORTDB_PASSWORD' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | run_sql
