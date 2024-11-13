@@ -804,8 +804,7 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should only see success signs in the product list$/) do
-  # Wait up for the element with class 'fa-check-circle' to be visible
-  unless page.has_xpath?('//*[contains(@class, \'fa-check-circle\')]', wait: Capybara.default_max_wait_time)
+  unless page.has_xpath?('//span[contains(@class, \'text-success\')]', wait: Capybara.default_max_wait_time)
     raise ScriptError, 'No product synchronized'
   end
   raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
