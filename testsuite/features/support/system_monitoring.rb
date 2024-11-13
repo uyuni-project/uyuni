@@ -45,9 +45,10 @@ end
 # @param os_product_version [String] the product name
 # @return [Integer] the duration in seconds
 def product_synchronization_duration(os_product_version)
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
-  channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
-  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
+  channels_to_evaluate = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_evaluate = filter_channels(channels_to_evaluate, ['beta']) unless $beta_enabled
+  $stdout.puts("Channels to evaluate:\n#{channels_to_evaluate}")
+  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_evaluate.nil?
 
   get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
   raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?('/tmp/reposync.log') || File.empty?('/tmp/reposync.log')
@@ -55,6 +56,7 @@ def product_synchronization_duration(os_product_version)
   duration = 0
   channel_to_evaluate = false
   matches = 0
+  channel_name = ''
   log_content = File.readlines('/tmp/reposync.log')
   log_content.each do |line|
     if line.include?('Channel: ')
@@ -66,6 +68,7 @@ def product_synchronization_duration(os_product_version)
     match = line.match(/Total time: (\d+):(\d+):(\d+)/)
     hours, minutes, seconds = match.captures.map(&:to_i)
     total_seconds = (hours * 3600) + (minutes * 60) + seconds
+    $stdout.puts("Channel #{channel_name} synchronization duration: #{total_seconds} seconds")
     duration += total_seconds
     matches += 1
     channel_to_evaluate = false
@@ -76,6 +79,15 @@ def product_synchronization_duration(os_product_version)
     $stdout.puts("Content of reposync.log:\n#{log_content.join}")
   end
 
+    match = line.match(/Total time: (\d+):(\d+):(\d+)/)
+    hours, minutes, seconds = match.captures.map(&:to_i)
+    total_seconds = (hours * 3600) + (minutes * 60) + seconds
+    $stdout.puts("Channel #{channel_name} synchronization duration: #{total_seconds} seconds")
+    duration += total_seconds
+    matches += 1
+    channel_to_evaluate = false
+  end
+  $stdout.puts("Error extracting the synchronization duration of #{os_product_version}") if matches < channels_to_evaluate.size
   duration
 end
 
