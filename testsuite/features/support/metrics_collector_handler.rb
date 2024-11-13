@@ -26,8 +26,9 @@ class MetricsCollectorHandler
       gauge = @metrics_collector.get(metric_name.to_sym) || @metrics_collector.gauge(metric_name.to_sym, docstring: job_name, labels: labels.keys)
       gauge.set(metric_value, labels: labels)
       Prometheus::Client::Push.new(job: job_name, gateway: @metrics_collector_url).add(@metrics_collector)
+      $stdout.puts("Pushed the metric #{metric_name} with value #{metric_value} to #{@metrics_collector_url}")
     rescue StandardError => e
-      warn("Error pushing the metric #{metric_name} with value #{metric_value}:\n#{e.full_message}")
+      $stdout.puts("Error pushing the metric #{metric_name} with value #{metric_value}:\n#{e.full_message}")
       raise
     end
   end

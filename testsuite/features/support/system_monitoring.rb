@@ -56,6 +56,7 @@ def product_synchronization_duration(os_product_version)
   channel_to_evaluate = false
   matches = 0
   log_content = File.readlines('/tmp/reposync.log')
+  $stdout.puts("Content of reposync.log:\n#{log_content.join}")
   log_content.each do |line|
     if line.include?('Channel: ')
       channel_name = line.split('Channel: ')[1].strip
@@ -70,12 +71,7 @@ def product_synchronization_duration(os_product_version)
     matches += 1
     channel_to_evaluate = false
   end
-
-  if matches < channels_to_wait.size
-    $stdout.puts("Error extracting the synchronization duration of #{os_product_version}")
-    $stdout.puts("Content of reposync.log:\n#{log_content.join}")
-  end
-
+  $stdout.puts("Error extracting the synchronization duration of #{os_product_version}") if matches < channels_to_wait.size
   duration
 end
 

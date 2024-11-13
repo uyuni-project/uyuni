@@ -609,7 +609,8 @@ def channel_is_synced(channel)
   end
   if sync_status
     begin
-      channel_synchronization_duration(channel)
+      duration = channel_synchronization_duration(channel)
+      log "Channel #{channel} synchronized in #{duration} seconds"
     rescue ScriptError => e
       log "Error while checking synchronization duration: #{e.message}"
       sync_status = false
