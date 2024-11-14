@@ -1,10 +1,10 @@
-import { StoryRow, StorySection } from "manager/storybook/layout";
+import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";
 
 export default () => {
   return (
-    <StorySection>
+    <StripedStorySection>
       <StoryRow>
         <Button>&lt;Button /&gt;</Button>
         <Button disabled>&lt;Button disabled /&gt;</Button>
@@ -33,6 +33,6 @@ export default () => {
           &lt;Button className="btn-danger" disabled /&gt;
         </Button>
       </StoryRow>
-    </StorySection>
+    </StripedStorySection>
   );
 };
