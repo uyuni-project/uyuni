@@ -139,7 +139,7 @@ const ListFilters = (props: Props) => {
 
   const deleteSelected = (
     <Button
-      className={`${selectedIdentifiers.length ? "btn-danger" : "btn-danger disabled"}`}
+      className="btn btn-danger"
       disabled={!selectedIdentifiers.length}
       handler={deleteSelectedRows}
       text={t("Delete selected")}
@@ -153,7 +153,6 @@ const ListFilters = (props: Props) => {
       button={panelButtons}
       helpUrl="reference/clm/clm-filters.html"
     >
-      test
       <Table
         data={displayedFilters}
         identifier={identifier}
