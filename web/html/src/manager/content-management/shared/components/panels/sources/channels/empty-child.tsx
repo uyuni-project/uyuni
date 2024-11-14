@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import styles from "./channels-selection.module.css";
+import styles from "./channels-selection.module.scss";
 
 const EmptyChild = () => {
   return (

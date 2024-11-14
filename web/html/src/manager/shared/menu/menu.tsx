@@ -8,7 +8,7 @@ import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
-import styles from "./menu.module.css";
+import styles from "./menu.module.scss";
 
 type LinkProps = {
   url: string;
