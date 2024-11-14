@@ -59,6 +59,7 @@ def product_synchronization_duration(os_product_version)
   log_content = File.readlines('/tmp/reposync.log')
   $stdout.puts("Content of reposync.log:\n#{log_content.join}")
   log_content.each do |line|
+    channel_name = ''
     if line.include?('Channel: ')
       channel_name = line.split('Channel: ')[1].strip
       channel_to_evaluate = channels_to_evaluate.include?(channel_name)
