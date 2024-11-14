@@ -24,6 +24,7 @@ import com.redhat.rhn.frontend.dto.ChannelOverview;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.query.SelectionQuery;
 
 import java.util.ArrayList;
 import java.util.HashMap;
