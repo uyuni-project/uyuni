@@ -4,8 +4,8 @@
 Feature: Synchronize products in the products page of the Setup Wizard
 
   @scc_credentials
-  Scenario: Trigger a refresh of the products synched from SCC
-    When I execute mgr-sync refresh
+  Scenario: Refresh SCC
+    When I refresh SCC
 
 @scc_credentials
   Scenario: Let the products page appear
