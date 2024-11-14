@@ -1,4 +1,4 @@
-@import "../../../branding/css/susemanager/variables.less";
+@import "../../../branding/css/susemanager/variables.scss";
 
 :global(.old-theme),
 :global(.new-theme) {
@@ -7,7 +7,7 @@
     min-height: 100vh;
     justify-content: center;
     align-items: center;
-    background: url("./background.svg") @eos-bc-pine-500 no-repeat center fixed;
+    background: url("./background.svg") $eos-bc-pine-500 no-repeat center fixed;
   }
 
   .wrapper {
@@ -17,7 +17,7 @@
     min-height: 700px;
     width: 100%;
     max-width: 1120px;
-    background-color: @eos-bc-white;
+    background-color: $eos-bc-white;
   }
 
   .brand {
@@ -25,8 +25,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    background: @eos-bc-pine-500;
-    color: @eos-bc-white;
+    background: $eos-bc-pine-500;
+    color: $eos-bc-white;
     padding: 32px;
   }
 
@@ -47,18 +47,18 @@
   }
 
   .productLink {
-    color: @eos-bc-white;
+    color: $eos-bc-white;
     font-weight: bold;
     text-decoration: underline;
   }
 
   .productLink:hover {
-    color: @eos-bc-white;
+    color: $eos-bc-white;
     text-decoration: none;
   }
 
   .title {
-    color: @eos-bc-green-500;
+    color: $eos-bc-green-500;
     font-size: 28px;
     margin: 0 0 7px 0;
   }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import styles from "./layout.module.less";
+import styles from "./layout.module.scss";
 
 type Props = {
   children?: React.ReactNode;
