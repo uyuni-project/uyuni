@@ -122,6 +122,17 @@ Feature: Containerized Proxy
     And the uptime for "sle_minion" should be correct
     And I should see several text fields
 
+  Scenario: Install a package on the Salt minion
+    When I follow "Software" in the content area
+    And I follow "Install"
+    And I enter the package for "sle_minion" as the filtered package name
+    And I click on the filter button
+    And I check the package for "sle_minion" in the list
+    And I click on "Install Selected Packages"
+    And I click on "Confirm"
+    Then I should see a "1 package install has been scheduled for" text
+    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+
   Scenario: Pre-requisite: subscribe system to Fake Channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -150,17 +161,6 @@ Feature: Containerized Proxy
   Scenario: Pre-requisite: check that there are updates available
     Given I am on the Systems overview page of this "sle_minion"
     And I wait until I see "Software Updates Available" text, refreshing the page
-
-  Scenario: Install a package on the Salt minion
-    When I follow "Software" in the content area
-    And I follow "Install"
-    And I enter the package for "sle_minion" as the filtered package name
-    And I click on the filter button
-    And I check the package for "sle_minion" in the list
-    And I click on "Install Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
 
   Scenario: Install a patch on the Salt minion
     When I follow "Software" in the content area
