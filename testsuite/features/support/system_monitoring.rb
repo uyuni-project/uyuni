@@ -48,6 +48,7 @@ def product_synchronization_duration(os_product_version)
   channels_to_evaluate = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
   channels_to_evaluate = filter_channels(channels_to_evaluate, ['beta']) unless $beta_enabled
   $stdout.puts("Channels to evaluate:\n#{channels_to_evaluate}")
+  $stdout.puts("Product: #{product}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)}") if channels_to_evaluate.empty?
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_evaluate.nil?
 
   get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
