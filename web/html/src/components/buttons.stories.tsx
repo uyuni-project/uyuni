@@ -1,4 +1,4 @@
-import { StoryRow, StorySection, StripedStorySection } from "manager/storybook/layout";
+import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";
 
