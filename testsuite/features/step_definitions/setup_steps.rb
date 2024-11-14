@@ -196,6 +196,8 @@ end
 # Register client
 
 When(/^I wait at most (\d+) seconds until I see the name of "([^"]*)", refreshing the page$/) do |seconds, host|
+  get_target("server").run("salt-key -F", verbose: true)
+  get_target(host).run("venv-salt-call --local key.finger", verbose: true)
   system_name = get_system_name(host)
   repeat_until_timeout(message: "I can't see the system '#{system_name}'", timeout: seconds.to_i) do
     step 'I wait until I do not see "Loading..." text'
