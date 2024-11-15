@@ -531,9 +531,7 @@ def get_system_name(host)
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   when 'containerized_proxy'
-    # TODO: remove once CI and BV hostnames are aligned
-    proxy_name = $build_validation ? 'proxy' : 'pxy'
-    system_name = get_target('proxy').full_hostname.sub(proxy_name, 'pod-pxy')
+    system_name = get_target('proxy').full_hostname.sub('proxy', 'pod-pxy')
   else
     begin
       node = get_target(host)
