@@ -175,7 +175,7 @@ public class HttpClientAdapter {
 
     private SSLContext buildSslSocketContext() throws NoSuchAlgorithmException {
 
-        LOG.info("Started checking for certificates and if it finds the certificates will be loaded…..");
+        LOG.info("Started checking for certificates and if it finds the certificates will be loaded...");
 
         String keyStoreLoc = System.getProperty("javax.net.ssl.trustStore",
                 System.getProperty("java.home") + "/lib/security/cacerts");
