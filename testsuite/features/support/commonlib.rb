@@ -731,10 +731,11 @@ end
 # @param channels [Array<String>] The list of channels to filter.
 # @param filters [Array<String>] The list of filters to apply.
 def filter_channels(channels, filters = [])
+  filtered_channels = channels.clone
   filters.each do |filter|
-    channels.delete_if { |channel| channel.include? filter }
+    filtered_channels.delete_if { |channel| channel.include? filter }
   end
-  channels
+  filtered_channels
 end
 
 # Mutex for processes accessing the API of the server via admin user
