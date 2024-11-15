@@ -43,8 +43,11 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,6 +55,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 import spark.route.HttpMethod;
 
@@ -104,7 +108,7 @@ public class HttpClientAdapter {
     public HttpClientAdapter() {
         Optional<SSLConnectionSocketFactory> sslSocketFactory = Optional.empty();
         try {
-            SSLContext sslContext = SSLContext.getDefault();
+            SSLContext sslContext = buildSslSocketContext();
             List<String> supportedProtocols = Arrays.asList(sslContext.getSupportedSSLParameters().getProtocols());
             List<String> wantedProtocols = Arrays.asList("TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3");
             wantedProtocols.retainAll(supportedProtocols);
@@ -167,6 +171,38 @@ public class HttpClientAdapter {
         clientBuilder.setMaxConnPerRoute(Config.get().getInt(MAX_CONNCECTIONS, 1));
         clientBuilder.setMaxConnTotal(Config.get().getInt(MAX_CONNCECTIONS, 1));
         httpClient = clientBuilder.build();
+    }
+
+    private SSLContext buildSslSocketContext() throws NoSuchAlgorithmException {
+
+        LOG.info("Started checking for certificates and if it finds the certificates will be loaded…..");
+
+        String keyStoreLoc = System.getProperty("javax.net.ssl.trustStore",
+                System.getProperty("java.home") + "/lib/security/cacerts");
+        SSLContext context;
+
+        try (InputStream in = new FileInputStream(keyStoreLoc)) {
+            // Create a KeyStore containing our trusted CAs
+            KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
+            keystore.load(in, null);
+
+            // Create a TrustManager that trusts the CAs in our KeyStore
+            String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+            TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+            tmf.init(keystore);
+
+            // Create an SSLContext that uses our TrustManager
+            context = SSLContext.getInstance("TLS");
+            context.init(null, tmf.getTrustManagers(), null);
+            LOG.info("Completed loading of certificates.");
+        }
+        catch (Exception e) {
+            LOG.error("unable to create ssl context {}." +
+                    "If the trust store has been updated, some certificates might not have been loaded.",
+                    e.getMessage());
+            context = SSLContext.getDefault();
+        }
+        return context;
     }
 
     /**
