@@ -162,8 +162,8 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
 end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
-  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
-                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel).clone ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}").clone
   channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
@@ -326,7 +326,7 @@ end
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
   next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
-  channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
   channels_to_kill = filter_channels(channels_to_kill, ['beta']) unless $beta_enabled
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
@@ -416,7 +416,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
   channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
