@@ -4114,6 +4114,7 @@ public class SystemManager extends BaseManager {
                 minion.getCreator() != null ? minion.getCreator().getId() : null,
                         false,
                         pillar,
+                        true,
                         ApplyStatesEventMessage.REPORTDB_USER
                 ));
     }

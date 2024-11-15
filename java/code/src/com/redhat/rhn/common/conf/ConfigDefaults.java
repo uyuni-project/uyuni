@@ -666,7 +666,7 @@ public class ConfigDefaults {
      * @return the java hostname
      */
     public String getJavaHostname() {
-        return Config.get().getString("java.hostname", "localhost");
+        return Config.get().getString(SERVER_HOSTNAME, "localhost");
     }
 
     /**
@@ -691,7 +691,7 @@ public class ConfigDefaults {
      * @return true is this is an Uyuni or Spacewalk instance.
      */
     public boolean isSpacewalk() {
-        return SPACEWALK.contains(Config.get().getString(PRODUCT_NAME));
+        return SPACEWALK.contains(getProductName());
     }
 
     /**
@@ -700,6 +700,13 @@ public class ConfigDefaults {
      */
     public boolean isUyuni() {
         return isSpacewalk();
+    }
+
+    /**
+     * @return return the product name
+     */
+    public String getProductName() {
+        return Config.get().getString(PRODUCT_NAME, "");
     }
 
     /**
