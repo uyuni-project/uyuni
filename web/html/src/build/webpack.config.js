@@ -36,17 +36,14 @@ module.exports = (env, argv) => {
       },
       // TODO: Copy all font licenses too
       { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
-      // Any non-compiled CSS, Less files will be compiled by their entry points
+      // Any non-compiled CSS files will be compiled by their entry points
       {
         from: path.resolve(__dirname, "../branding/css/*.css"),
         context: path.resolve(__dirname, "../branding/css"),
         to: path.resolve(__dirname, "../dist/css"),
       },
-      /**
-       * Scripts and dependencies we're migrating from susemanager-frontend-libs to spacewalk-web
-       */
       {
-        from: path.resolve(__dirname, "../node_modules/bootstrap5/dist/js/bootstrap.bundle.min.js"),
+        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
         to: path.resolve(__dirname, "../dist/javascript/legacy/bootstrap-webpack.js"),
       },
       {
@@ -143,7 +140,7 @@ module.exports = (env, argv) => {
         },
         {
           // Stylesheets that are imported directly by components
-          test: /(components|core|manager)\/.*\.(css|less)$/,
+          test: /(components|core|manager)\/.*\.css$/,
           exclude: /node_modules/,
           use: [
             MiniCssExtractPlugin.loader,
@@ -153,23 +150,6 @@ module.exports = (env, argv) => {
                 modules: true,
               },
             },
-            { loader: "less-loader" },
-          ],
-        },
-        {
-          // Global stylesheets
-          test: /branding\/.*\.less$/,
-          exclude: /node_modules/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: "css-loader",
-              options: {
-                // NB! This is crucial, we don't consume Bootstrap etc as a module, but as a regular style
-                modules: false,
-              },
-            },
-            { loader: "less-loader" },
           ],
         },
         {

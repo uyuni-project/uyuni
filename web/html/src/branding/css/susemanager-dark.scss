@@ -3,11 +3,11 @@ $theme: "susemanager-dark";
 @import "./body.scss";
 @import "./fonts.scss";
 
-@import "./bootstrap5-scaffolding-variables.scss";
+@import "./bootstrap-scaffolding-variables.scss";
 
 .new-theme {
-  @import "./bootstrap5-grid-patch.scss";
-  @import "bootstrap5/scss/bootstrap";
+  @import "./bootstrap-grid-patch.scss";
+  @import "bootstrap/scss/bootstrap";
 
   @import "./mixins.scss";
   @import "./susemanager/variables.scss";
