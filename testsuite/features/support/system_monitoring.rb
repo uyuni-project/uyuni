@@ -45,10 +45,10 @@ end
 # @param os_product_version [String] the product name
 # @return [Integer] the duration in seconds
 def product_synchronization_duration(os_product_version)
-  channels_to_evaluate = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_evaluate = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
+  $stdout.puts("Product: #{product}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)}") if channels_to_evaluate.empty?
   channels_to_evaluate = filter_channels(channels_to_evaluate, ['beta']) unless $beta_enabled
   $stdout.puts("Channels to evaluate:\n#{channels_to_evaluate}")
-  $stdout.puts("Product: #{product}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION}\n#{CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)}") if channels_to_evaluate.empty?
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_evaluate.nil?
 
   get_target('server').extract('/var/log/rhn/reposync.log', '/tmp/reposync.log')
@@ -76,7 +76,10 @@ def product_synchronization_duration(os_product_version)
     matches += 1
     channel_to_evaluate = false
   end
-  $stdout.puts("Error extracting the synchronization duration of #{os_product_version}") if matches < channels_to_evaluate.size
+  if matches < channels_to_evaluate.size
+    $stdout.puts("Error extracting the synchronization duration of #{os_product_version}")
+    $stdout.puts("Content of reposync.log:\n#{log_content.join}")
+  end
   duration
 end
 
