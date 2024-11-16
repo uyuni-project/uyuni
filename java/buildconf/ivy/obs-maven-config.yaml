@@ -341,7 +341,7 @@ artifacts:
   - artifact: ical4j
     repository: Uyuni_Other
   - artifact: jetty-util
-    repository: Leap
+    repository: Leap_sle
   - artifact: jaxb-api
     repository: MicheleBussolotto_Java
     jar: jaxb-api/jakarta.xml.bind-api.jar
