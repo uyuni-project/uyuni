@@ -2909,7 +2909,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="failedactions.jsp.nogroups" xml:space="preserve">
         <source>No failed actions.</source>
-        <target/>
+        <target state="translated">Žiadne neúspešné akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedActions</context>
         </context-group>
@@ -2917,21 +2917,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- completedactions.jsp -->
       <trans-unit id="completedactions.jsp.completed_actions" xml:space="preserve">
         <source>Completed Actions</source>
-        <target/>
+        <target state="translated">Dokončené akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="completedactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been completed by one or more systems. Actions can only be archived by Org Admins or by the user who scheduled the action. </source>
-        <target/>
+        <target state="translated"> Nasledujúce akcie boli dokončené jedným alebo viacerými systémami. Akcie môžu archivovať len administrátori organizácií alebo používateľ, ktorý akciu naplánoval. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="completedactions.jsp.nogroups" xml:space="preserve">
         <source>No completed actions.</source>
-        <target/>
+        <target state="translated">Žiadne dokončené akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedActions</context>
         </context-group>
@@ -2939,21 +2939,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- archivedactions.jsp -->
       <trans-unit id="archivedactions.jsp.archived_actions" xml:space="preserve">
         <source>Archived Actions</source>
-        <target/>
+        <target state="translated">Archivované akcie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.summary" xml:space="preserve">
         <source> The following actions have been archived. </source>
-        <target/>
+        <target state="translated"> Nasledujúce akcie boli archivované. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
       </trans-unit>
       <trans-unit id="archivedactions.jsp.nogroups" xml:space="preserve">
         <source>No archived actions.</source>
-        <target/>
+        <target state="translated">Žiadne archivované akcie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ArchivedActions</context>
         </context-group>
@@ -2961,14 +2961,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- actionchains.jsp -->
       <trans-unit id="actionchains.jsp.title" xml:space="preserve">
         <source>Action Chain List</source>
-        <target/>
+        <target state="translated">Zoznam reťazcov akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.summary" xml:space="preserve">
         <source>Below is a list of all Action Chains available to the current user. Click on a label to view or edit it.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam všetkých reťazcov akcií, ktoré má aktuálny používateľ k dispozícii. Kliknutím na označenie ho zobrazíte alebo upravíte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
@@ -2982,7 +2982,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
             &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;deploying a configuration file&lt;/a&gt;.
             Both System Set Manager and single system actions are supported.
         </source>
-        <target/>
+        <target state="translated">
+            Nový reťazec akcií môžete vytvoriť naplánovaním ľubovoľnej podporovanej operácie, ako napr.
+            &lt;a href="/rhn/ssm/PackageInstall.do"&gt;inštalácia&lt;/a&gt; alebo
+            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;zvýšenie verzia&lt;/a&gt; balíka, spustenie
+            &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;vzdialeného príkazu&lt;/a&gt; alebo
+            &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;nasadenie konfiguračného súboru&lt;/a&gt;.
+            Podporované sú ako Správca sád systémov, tak aj jednotlivé systémové akcie.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
