@@ -3,6 +3,10 @@
 
 Feature: Synchronize products in the products page of the Setup Wizard
 
+  @scc_credentials
+  Scenario: Refresh SCC
+    When I refresh SCC
+
 @scc_credentials
   Scenario: Let the products page appear
     Given I am authorized for the "Admin" section
@@ -179,10 +183,6 @@ Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should only see success signs in the product list
-
-@scc_credentials
-  Scenario: Trigger a refresh of the products synched from SCC
-    When I execute mgr-sync refresh
 
 @scc_credentials
   Scenario: Report the synchronization duration for SLES 15 SP4

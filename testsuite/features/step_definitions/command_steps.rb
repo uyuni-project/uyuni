@@ -317,10 +317,6 @@ When(/^I refresh SCC$/) do
   get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync refresh', timeout: refresh_timeout)
 end
 
-When(/^I execute mgr-sync refresh$/) do
-  $command_output, _code = get_target('server').run('mgr-sync refresh', check_errors: false)
-end
-
 # This function kills spacewalk-repo-sync processes for a particular OS product version.
 # It waits for all the reposyncs in the allow-list to complete, and kills all others.
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
