@@ -1,9 +1,9 @@
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
-    a(href="/rhn/groups/Delete.do?sgid=#{groupId}")
+    a(href="/rhn/groups/Delete.do?sgid=#{groupId}" class="btn btn-danger")
         i.fa.fa-trash-o(title='Delete Group')
         | #{l.t("Delete Group")}
-    a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}")
+    a(href="/rhn/systems/WorkWithGroup.do?sgid=#{groupId}" class="btn btn-default")
         i.fa.spacewalk-icon-system-groups(title='Work With Group')
         | #{l.t("Work With Group")}
 
