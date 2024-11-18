@@ -87,7 +87,10 @@ public class CommonFactory extends HibernateFactory {
         Session session = null;
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
-        return (FileList) session.getNamedQuery("FileList.findByIdAndOrg")
+        return session.createNativeQuery("""
+                                      SELECT * from rhnFileList
+                                      WHERE id = :id
+                                      and org_id = :org_id """, FileList.class)
                                       .setParameter("id", idIn)
                                       .setParameter("org_id", org.getId())
                                       .uniqueResult();

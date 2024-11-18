@@ -16,7 +16,10 @@ package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
@@ -117,6 +120,10 @@ public class AnnotationRegistry {
     }
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
+//            AvailableChannelsView.class,
+        Channel.class,
+        ChannelArch.class,
+        ClonedChannel.class,
         ImageStore.class,
         ImageStoreType.class,
         DockerfileProfile.class,

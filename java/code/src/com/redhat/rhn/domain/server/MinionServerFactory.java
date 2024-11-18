@@ -32,9 +32,11 @@ import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import jakarta.persistence.NoResultException;
@@ -65,7 +67,7 @@ public class MinionServerFactory extends HibernateFactory {
             return List.of();
         }
 
-        String sql = "SELECT DISTINCT * FROM minion_server WHERE org_id = :orgId";
+        String sql = "SELECT DISTINCT * FROM rhnServer WHERE org_id = :orgId";
 
         TypedQuery<MinionServer> query
                 = getSession().createNativeQuery(sql, MinionServer.class);
@@ -100,7 +102,7 @@ public class MinionServerFactory extends HibernateFactory {
         if (machineId == null) {
             return Optional.empty();
         }
-        String sql = "SELECT * FROM minion_server WHERE machine_id = :machineId";
+        String sql = "SELECT * FROM rhnServer WHERE machine_id = :machineId";
 
         TypedQuery<MinionServer> query
                 = getSession().createNativeQuery(sql, MinionServer.class);
@@ -123,10 +125,10 @@ public class MinionServerFactory extends HibernateFactory {
      * @return server corresponding to the given machine_id
      */
     public static Optional<MinionServer> findByMinionId(String minionId) {
-        String sql = "SELECT * FROM minion_server WHERE minion_id = :minionId";
+        String sql = "SELECT * FROM rhnServer WHERE id = :minionId";
         MinionServer result
                 = (MinionServer) getSession().createNativeQuery(sql, MinionServer.class)
-                        .setParameter("minionId", minionId).getSingleResult();
+                        .setParameter("minionId", Integer.parseInt(minionId)).getSingleResult();
         return Optional.ofNullable(result);
     }
 
@@ -137,7 +139,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<MinionServer> listMinions() {
-        String sql = "SELECT DISTINCT * FROM minion_server";
+        String sql = "SELECT DISTINCT * FROM rhnServer";
         TypedQuery<MinionServer> query
                 = getSession().createNativeQuery(sql, MinionServer.class);
         return query.getResultList();
@@ -242,13 +244,34 @@ public class MinionServerFactory extends HibernateFactory {
     private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
         Session session = HibernateFactory.getSession();
 
-        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
-                                            .setParameter("id", actionId)
-                                            .setParameter("allowedStatues", allowedStatues);
+        if (allowedStatues == null || allowedStatues.isEmpty()) {
+            return Collections.emptyList(); // Return empty list if no statuses are provided
+        }
+
+        // Get status IDs (assuming ActionStatus has getId method that returns the ID of the status)
+        List<Long> statusIds = allowedStatues.stream()
+                .map(ActionStatus::getId) // or toString() depending on how your enum is represented
+                .collect(Collectors.toList());
+
+        // Create the query with parameter placeholder for a list
+        Query<MinionSummary> query = session.createNativeQuery("""
+            SELECT sa.server_id AS serverId,
+                   s.id AS minionId,
+                   s.digital_server_id AS digitalServerId,
+                   s.machine_id AS machineId,
+                   c.label AS contactMethodLabel,
+                   s.os AS os
+            FROM rhnServerAction sa
+            JOIN rhnServer s ON sa.server_id = s.id
+            JOIN suseServerContactMethod c ON s.contact_method_id = c.id
+            WHERE sa.action_id = :id
+            AND sa.status IN (:allowedStatues)
+            """, "findMinionSummaries", MinionSummary.class)
+                .setParameter("id", actionId)
+                .setParameterList("allowedStatues", statusIds); // Use setParameterList for collections
 
         return query.getResultList();
     }
-
     /**
      * Find all minions by their server ids.
      *

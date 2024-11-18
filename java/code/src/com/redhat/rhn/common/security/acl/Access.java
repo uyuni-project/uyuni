@@ -597,7 +597,7 @@ public class Access extends BaseHandler {
         // Evaluate if any of the subscript channel refers to a PTF repository
         return server.getChannels()
                      .stream()
-                     .map(channel -> channel instanceof ClonedChannel ? channel.getOriginal() : channel)
+                     .map(channel -> channel.asCloned().map(ClonedChannel::getOriginal).orElse(channel))
                      .flatMap(c -> c.getSources().stream())
                      .map(ContentSource::getSourceUrl)
                      .anyMatch(url -> url.contains("/PTF/"));

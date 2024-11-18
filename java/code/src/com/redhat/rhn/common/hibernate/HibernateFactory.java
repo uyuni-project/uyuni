@@ -277,8 +277,7 @@ public abstract class HibernateFactory {
      * save() is to be called directly.
      */
     protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = HibernateFactory.getSession();
+        Session session = getSession();
         if (saveOrUpdate) {
             session.saveOrUpdate(toSave);
         }

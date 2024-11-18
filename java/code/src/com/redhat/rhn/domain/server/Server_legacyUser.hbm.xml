@@ -201,7 +201,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <property name="osFamily" column="os_family"  type="string" length="32" />
             <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
             <property name="sshPushPort" column="ssh_push_port" access="field"/>
-            <set name="accessTokens" lazy="true" inverse="true">
+            <set name="accessTokens" lazy="true" inverse="true" cascade="all">
                 <key column="minion_id"/>
                 <one-to-many class="com.redhat.rhn.domain.channel.AccessToken"/>
             </set>
