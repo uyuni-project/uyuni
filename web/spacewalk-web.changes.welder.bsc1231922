@@ -1,1 +1,0 @@
-- CVE-2024-49503: Escape organization credentials username to mitigate XSS vulnerability (bsc#1231922)
