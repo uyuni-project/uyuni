@@ -5,7 +5,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 echo "fix mirror"
 sudo -i podman exec server bash -c "cp /testsuite/dockerfiles/server-all-in-one-dev/mirror/organizations_products_unscoped.json /mirror"
-sudo -i podman exec server bash -c "cp /testsuite/dockerfiles/server-all-in-one-dev/mirror/product_tree.json /mirror"
+# sudo -i podman exec server bash -c "cp /testsuite/dockerfiles/server-all-in-one-dev/mirror/product_tree.json /mirror"
 sudo -i podman exec server bash -c "cp /testsuite/dockerfiles/server-all-in-one-dev/mirror/organizations_repositories.json /mirror"
 
 sudo -i podman exec server bash -c "/testsuite/podman_runner/provide-db-schema.sh"
