@@ -28,6 +28,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -228,7 +229,8 @@ public class ErrataFactory extends HibernateFactory {
                     throw new InvalidChannelException("Cloned channel expected: " +
                             chan.getLabel());
                 }
-                Channel original = chan.getOriginal();
+                Channel original = chan.asCloned().map(ClonedChannel::getOriginal)
+                        .orElseThrow(() -> new InvalidChannelException("Cloned channel expected: " + chan.getLabel()));
                 // see BZ 805714, if we are a clone of a clone the 1st clone
                 // may not have the errata we want
                 Set<Channel> associatedChannels = errata.getChannels();

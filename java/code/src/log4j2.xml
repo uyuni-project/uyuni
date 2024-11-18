@@ -99,9 +99,8 @@
         -->
 
         <!-- log SQL statements -->
-        <!--
-        <Logger name="org.hibernate.SQL" level="debug" />
-        -->
+	<Logger name="org.hibernate.SQL" level="debug" />
+	<Logger name="org.hibernate.orm.jdbc.bind" level="trace" />
 
         <!--
         <Logger name="net.rkbloom.logdriver" level="debug" additivity="false">

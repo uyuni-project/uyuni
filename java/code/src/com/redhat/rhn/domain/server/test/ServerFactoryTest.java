@@ -704,8 +704,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         }
 
         Long id = newS.getId();
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(newS);
+        TestUtils.saveAndReload(newS);
         newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
         assertNotNull(newS.getEntitledGroupTypes());
         assertNotNull(newS.getManagedGroups());

@@ -137,8 +137,8 @@ public class MinionServerFactoryTest extends BaseTestCaseWithUser {
      * @return the MinionServer object
      */
     public static MinionServer createTestMinionServer(User owner) {
-        return (MinionServer) ServerFactoryTest.createTestServer(owner, true,
+        return ServerFactoryTest.createTestServer(owner, true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
-                ServerFactoryTest.TYPE_SERVER_MINION);
+                ServerFactoryTest.TYPE_SERVER_MINION).asMinionServer().orElseThrow();
     }
 }

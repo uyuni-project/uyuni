@@ -81,12 +81,24 @@ public class ServerGroupFactory extends HibernateFactory {
     public static Optional<ServerGroup> findCompatibleServerGroupForBaseEntitlement(
             Long serverId, Entitlement baseEnt) {
         Session session = HibernateFactory.getSession();
-        ServerGroup serverGroup = (ServerGroup) session
-                .getNamedQuery("ServerGroup.findCompatibleServerGroupForBaseEntitlement")
+        return session.createNativeQuery("""
+                        SELECT SG.*
+                          FROM rhnServerGroupType SGT
+                          JOIN rhnServerGroup SG ON (SG.group_type = SGT.id)
+                          JOIN rhnServer S ON (S.org_id = SG.org_id)
+                          JOIN rhnServerServerGroupArchCompat SSGAC ON
+                                   (SSGAC.server_arch_id = S.server_arch_id AND SSGAC.server_group_type = SGT.id)
+                         WHERE S.id = :sid
+                           AND SGT.label = :entitlement_label
+                           AND NOT EXISTS (SELECT 1
+                                             FROM rhnServerGroupMembers SGM
+                                            WHERE SGM.server_group_id = SG.id
+                                              AND SGM.server_id = S.id)
+                """, ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .setParameter("sid", serverId)
-                .setParameter("entitlement_label", baseEnt.getLabel()).uniqueResult();
-
-        return Optional.ofNullable(serverGroup);
+                .setParameter("entitlement_label", baseEnt.getLabel())
+                .uniqueResultOptional();
     }
 
     /**

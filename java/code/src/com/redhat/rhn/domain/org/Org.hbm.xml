@@ -71,16 +71,14 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.org.Org as o]]>
     </query>
 
-    <sql-query name="Org.accessibleChannels">
-        <![CDATA[SELECT  {c.*}, 0 AS clazz_ 
-                   FROM  rhnChannel {c}
-                   LEFT JOIN rhnChannelCloned c_1_
-                     ON c.id = c_1_.original_id
-                   JOIN rhnAvailableChannels cfp
-                     ON c.id = cfp.channel_id
-                  WHERE cfp.org_id = :org_id]]>
-        <return alias="c" class="com.redhat.rhn.domain.channel.Channel" />
-    </sql-query>
+    <!--
+    <query name="Org.accessibleChannels">
+        <![CDATA[SELECT c
+                   FROM Channel c
+                   JOIN AvailableChannelsView acv ON c.id = acv.channel_id
+                  WHERE acv.org_id = :org_id]]>
+    </query>
+    -->
     <sql-query name="Org.numOfOrgAdmins">
         <return-scalar type="long" column="user_id"/>
     SELECT ugm.user_id

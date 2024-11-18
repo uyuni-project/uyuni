@@ -33,6 +33,7 @@ import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -273,13 +274,34 @@ public class MinionServerFactory extends HibernateFactory {
     private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
         Session session = HibernateFactory.getSession();
 
-        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
-                                            .setParameter("id", actionId)
-                                            .setParameter("allowedStatues", allowedStatues);
+        if (allowedStatues == null || allowedStatues.isEmpty()) {
+            return Collections.emptyList(); // Return empty list if no statuses are provided
+        }
+
+        // Get status IDs (assuming ActionStatus has getId method that returns the ID of the status)
+        List<Long> statusIds = allowedStatues.stream()
+                .map(ActionStatus::getId) // or toString() depending on how your enum is represented
+                .collect(Collectors.toList());
+
+        // Create the query with parameter placeholder for a list
+        Query<MinionSummary> query = session.createNativeQuery("""
+            SELECT sa.server_id AS serverId,
+                   s.id AS minionId,
+                   s.digital_server_id AS digitalServerId,
+                   s.machine_id AS machineId,
+                   c.label AS contactMethodLabel,
+                   s.os AS os
+            FROM rhnServerAction sa
+            JOIN rhnServer s ON sa.server_id = s.id
+            JOIN suseServerContactMethod c ON s.contact_method_id = c.id
+            WHERE sa.action_id = :id
+            AND sa.status IN (:allowedStatues)
+            """, "findMinionSummaries", MinionSummary.class)
+                .setParameter("id", actionId)
+                .setParameterList("allowedStatues", statusIds); // Use setParameterList for collections
 
         return query.getResultList();
     }
-
     /**
      * Find all minions by their server ids.
      *
