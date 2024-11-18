@@ -6477,7 +6477,7 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         </trans-unit>
         <trans-unit id="systemgroup.details.editproperties">
-          <source>Edit These Properties</source>
+          <source>Edit System Group Properties</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>

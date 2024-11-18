@@ -153,26 +153,6 @@
   }
 }
 
-<<<<<<< HEAD
-=======
-.btn-info {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      border-color: $eos-bc-cerulean-500;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        color: $white;
-      }
-    }
-  }
-}
-
->>>>>>> d319dcd8192 (Removed css for btn-success, removed class btn-success from pages)
 // Warning shouldn't currently be used anywhere, but cover it just in case
 .btn-danger {
   &,
@@ -221,7 +201,6 @@
 
 .panel-heading,
 th {
-  .btn,
   .btn-link,
   a:not(.btn-unstyled) {
     border: none;
