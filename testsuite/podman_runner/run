@@ -1,6 +1,7 @@
 #!/bin/bash
 
-export UYUNI_PROJECT=uyuni-project
+# export UYUNI_PROJECT=uyuni-project
+export UYUNI_VERSION=jordimassaguerpla
 export UYUNI_VERSION=master
 export NO_AUTH_REGISTRY=no_auth_registry
 export AUTH_REGISTRY_CREDENTIALS="cucutest|cucutest"
