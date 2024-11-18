@@ -39,6 +39,12 @@ if [ -z "${obs_project}" ] || \
 fi
 
 repo_dir=$repo_dir/$obs_project/$obs_repo/$obs_arch
+if [ ! -d $repo_dir ];then
+  echo "Creating $repo_dir"
+  mkdir -p $repo_dir
+fi
+
+
 echo "Clean up packages older than 30 days, to do some cleanup"
 find $repo_dir -mtime +30 | xargs rm
 
