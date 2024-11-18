@@ -1,0 +1,1 @@
+- Fix enabled flag for users listed via API (bsc#1233431)
