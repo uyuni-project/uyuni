@@ -1,8 +1,16 @@
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
-    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
+    a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}" class="btn btn-danger")
         i.fa.fa-trash-o(title='Delete System')
         | #{l.t("Delete System")}
+    if inSSM
+      a(href="/rhn/systems/details/RemoveFromSSM.do?sid=#{server.id}" class="btn btn-default")
+        i.fa.fa-minus-circle(title='Remove from SSM')
+        | #{l.t("Remove from SSM")}
+    else
+      a(href="/rhn/systems/details/AddToSSM.do?sid=#{server.id}" class="btn btn-default")
+        i.fa.fa-plus-circle(title='Add to SSM')
+        | #{l.t("Add to SSM")}
   h1
     if server.bootstrap
         i.fa.spacewalk-icon-bare-metal
