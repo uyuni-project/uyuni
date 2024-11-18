@@ -73,6 +73,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
+# in github validation, the retail feature is not tested
+@skip_if_github_validation
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
