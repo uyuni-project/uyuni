@@ -6,6 +6,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 echo "fix mirror"
 sudo -i podman exec server bash -c "cp testsuite/dockerfiles/server-all-in-one-dev/mirror/organizations_products_unscoped.json /mirror"
 sudo -i podman exec server bash -c "cp testsuite/dockerfiles/server-all-in-one-dev/mirror/product_tree.json /mirror"
+sudo -i podman exec server bash -c "cp testsuite/dockerfiles/server-all-in-one-dev/organizations_repositories.json /mirror"
 
 sudo -i podman exec server bash -c "/testsuite/podman_runner/provide-db-schema.sh"
 sudo -i podman exec -e CERT_O="test_org" -e CERT_OU="test_ou" -e CERT_CITY="test_city" -e CERT_STATE="test_state" -e CERT_COUNTRY="DE" -e CERT_EMAIL="a@b.com" -e CERT_CNAMES="server" -e CERT_PASS="spacewalk" -e UYUNI_FQDN="server" -e MANAGER_USER="admin" -e MANAGER_PASS="spacewalk" -e MANAGER_ADMIN_EMAIL="a@b.com" -e MANAGER_MAIL_FROM="a@b.com" -e MANAGER_ENABLE_TFTP="n" -e MANAGER_DB_NAME="manager" -e MANAGER_DB_HOST="localhost" -e MANAGER_DB_PORT="5432" -e MANAGER_DB_USER="manager" -e MANAGER_DB_PASS="manager" -e MANAGER_DB_PROTOCOL="TCP" -e REPORT_DB_NAME="reportdb" -e REPORT_DB_USER="pythia_susemanager" -e REPORT_DB_PASS="pythia_susemanager" -e EXTERNALDB_ADMIN_USER="" -e EXTERNALDB_ADMIN_PASS="" -e EXTERNALDB_PROVIDER="" -e ISS_PARENT="" -e ACTIVATE_SLP="" -e SCC_USER="" -e SCC_PASS="" server bash -c /usr/lib/susemanager/bin/mgr-setup

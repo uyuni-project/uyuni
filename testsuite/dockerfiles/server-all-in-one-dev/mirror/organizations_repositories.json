@@ -523,6 +523,6 @@
         "installer_updates": false,
         "name": "RES8-Manager-Tools-Pool",
         "url": "https://updates.suse.com/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/"
-    },
+    }
 ]
 
