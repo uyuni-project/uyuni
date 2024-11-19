@@ -19,7 +19,7 @@ artifacts:
     package: antlr-java
     repository: Leap
   - artifact: bcel
-    repository: Leap
+    repository: Leap_sle
   - artifact: byte-buddy
     package: byte-buddy
     repository: Leap_sle
@@ -72,7 +72,7 @@ artifacts:
     repository: Leap
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
@@ -123,14 +123,14 @@ artifacts:
     repository: Leap
   - artifact: httpclient
     package: httpcomponents-client
-    repository: Leap
+    repository: Leap_sle
   - artifact: httpcore
     package: httpcomponents-core
     jar: httpcore.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: httpcore-nio
     package: httpcomponents-core
-    repository: Leap
+    repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
@@ -287,10 +287,10 @@ artifacts:
     repository: Uyuni_Other
   - artifact: xalan-j2
     jar: xalan-j2.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: xalan-j2-serializer
     package: xalan-j2
-    repository: Leap
+    repository: Leap_sle
   - artifact: xerces-j2
     repository: Leap
   - artifact: xmlsec
