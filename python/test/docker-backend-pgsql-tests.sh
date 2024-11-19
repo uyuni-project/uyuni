@@ -1,6 +1,5 @@
 #! /bin/bash
 
-/sbin/sysctl -w kernel.shmmax=4067832832
 su - postgres -c '/usr/lib/postgresql/bin/pg_ctl start'
 cp /root/rhn.conf /etc/rhn/rhn.conf
 mkdir -p /manager/python/spacewalk/reports

@@ -26,7 +26,6 @@ echo $PATH
 echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
-#sysctl -w kernel.shmmax=18446744073709551615
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start" ||:
 

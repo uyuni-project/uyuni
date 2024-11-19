@@ -94,8 +94,6 @@ sub process_file {
     my $apache_group = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
     chown 0, $apache_group, "$destdir/$relative_path";
 
-    system '/sbin/restorecon', '-vv', "$destdir/$relative_path";
-
     while (<IF>) {
       my $out = $engine->perform_substitutions($_);
       print OF $out;
