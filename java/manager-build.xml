@@ -33,7 +33,8 @@
     <property name="tests.coverage.destfile" value="test-results/coverage/jacoco.exec"/>
     <property name="tests.configuration.path" value="${basedir}/buildconf/test"/>
 
-    <property name="branding.src.dir" value="${basedir}/../branding/java/code/src"/>
+    <property name="branding.dir" value="${basedir}/../branding"/>
+
     <property name="frontend.src.dir" value="${basedir}/../web/html/src"/>
     <property name="frontend.dist.dir" value="${basedir}/../web/html/src/dist"/>
 
@@ -155,6 +156,18 @@
         </sequential>
     </macrodef>
 
+    <!-- Macrodef for calling maven -->
+    <macrodef name="maven-call">
+        <attribute name="command" default="package" />
+        <attribute name="baseDir" default="." />
+        <sequential>
+            <echo message="Invoking mvn @{command}" />
+            <exec dir="@{baseDir}" executable="sh">
+                <arg line="-c 'mvn @{command}'" />
+            </exec>
+        </sequential>
+    </macrodef>
+
     <!-- Tasks -->
     <target name="clean" description="Cleans up all generated files">
         <delete dir="${build.dir}" quiet="true">
@@ -183,22 +196,9 @@
         <ivy-retrieve sync="true" type="jar,bundle"/>
     </target>
 
-    <target name="refresh-branding-jar" depends="maybe-clean" description="Compiles and builds the SUSE branding jar">
-        <mkdir dir="${build.dir}/java-branding"/>
-
-        <javac destdir="${build.dir}/java-branding"
-               includeantruntime="no"
-               nowarn="true"
-	       release="17"
-               srcdir="${branding.src.dir}"/>
-
-        <copy toDir="${build.dir}/java-branding">
-            <fileset dir="${branding.src.dir}" excludes="**/*.java"/>
-        </copy>
-
-        <jar destfile="${lib.dir}/java-branding.jar" includes="">
-            <fileset dir="${build.dir}/java-branding"/>
-        </jar>
+    <target name="refresh-branding-jar" description="Compiles and builds the SUSE branding jar">
+        <maven-call baseDir="${branding.dir}" command="package" />
+        <copy file="${branding.dir}/target/java-branding.jar" tofile="${lib.dir}/java-branding.jar" />
     </target>
 
     <target name="compile"
