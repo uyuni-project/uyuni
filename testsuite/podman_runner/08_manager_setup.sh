@@ -24,3 +24,6 @@ for schema in "${available_schemas[@]}"; do
     # Run the missing migrations and only those, to ensure no script is out of place
     sudo -i podman exec server bash -c "/testsuite/podman_runner/run_db_migrations.sh ${schema_name} ${schema_version}"
 done
+
+echo "Setting SCC mirror to /mirror"
+sudo -i podman exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
