@@ -41,9 +41,9 @@
         <dependency org="manager-50" name="hibernate-ehcache" rev="5.3.25" />
         <dependency org="manager-50" name="hibernate-types-52" rev="2.16.2" />
         <dependency org="manager-50" name="httpasyncclient" rev="4.1.4" />
-        <dependency org="manager-50" name="httpclient" rev="4.5.12" />
-        <dependency org="manager-50" name="httpcore" rev="4.4.13" />
-        <dependency org="manager-50" name="httpcore-nio" rev="4.4.13" />
+        <dependency org="manager-50" name="httpclient" rev="4.5.14" />
+        <dependency org="manager-50" name="httpcore" rev="4.4.14" />
+        <dependency org="manager-50" name="httpcore-nio" rev="4.4.14" />
         <dependency org="manager-50" name="ical4j" rev="3.0.18" />
         <dependency org="manager-50" name="jackson-annotations" rev="2.16.1" />
         <dependency org="manager-50" name="jackson-core" rev="2.16.1" />
