@@ -2936,7 +2936,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
         <target state="translated">
             Nový reťazec akcií môžete vytvoriť naplánovaním ľubovoľnej podporovanej operácie, ako napr.
             &lt;a href="/rhn/ssm/PackageInstall.do"&gt;inštalácia&lt;/a&gt; alebo
-            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;zvýšenie verzia&lt;/a&gt; balíka, spustenie
+            &lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;zvýšenie verzie&lt;/a&gt; balíka, spustenie
             &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;vzdialeného príkazu&lt;/a&gt; alebo
             &lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;nasadenie konfiguračného súboru&lt;/a&gt;.
             Podporované sú ako Správca sád systémov, tak aj jednotlivé systémové akcie.
@@ -2947,35 +2947,35 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actionchains.jsp.label" xml:space="preserve">
         <source>Label</source>
-        <target/>
+        <target state="translated">Označenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.modified" xml:space="preserve">
         <source>Last modified</source>
-        <target/>
+        <target state="translated">Naposledy zmenené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.entry_count" xml:space="preserve">
         <source>Total Action Count</source>
-        <target/>
+        <target state="translated">Celkový počet akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.delete" xml:space="preserve">
         <source>Delete Action Chains</source>
-        <target/>
+        <target state="translated">Vymazanie reťazcov akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchains.jsp.empty" xml:space="preserve">
         <source>No Action Chains found.</source>
-        <target/>
+        <target state="translated">Nenašli sa žiadne reťazce akcií.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChains</context>
         </context-group>
@@ -2983,14 +2983,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- actionchain.jsp -->
       <trans-unit id="actionchain.jsp.title" xml:space="preserve">
         <source>Action Chain</source>
-        <target/>
+        <target state="translated">Reťazec akcií</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.summary" xml:space="preserve">
         <source>Below is a list of Actions in this Action Chain. You can change the order by &lt;em&gt;drag and drop&lt;/em&gt;.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam akcií v tomto reťazci akcií. Poradie môžete zmeniť &lt;em&gt;pretiahnutím&lt;/em&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3001,91 +3001,95 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
             installing or upgrading a package, running a remote command or deploying a configuration file.
             Both System Set Manager and single system actions are supported.
         </source>
-        <target/>
+        <target state="translated">
+            Do tohto reťazca akcií pridávate akcie naplánovaním ľubovoľnej podporovanej operácie, ako napr.
+            inštalácia alebo zvýšenie verzie balíka, spustenie vzdialeného príkazu alebo nasadenie konfiguračného súboru.
+            Podporované sú ako Správca sád systémov, tak aj jednotlivé systémové akcie.
+        </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.action" xml:space="preserve">
         <source>Action</source>
-        <target/>
+        <target state="translated">Akcia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.delete" xml:space="preserve">
         <source>Delete</source>
-        <target/>
+        <target state="translated">Vymazať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.on" xml:space="preserve">
         <source>on</source>
-        <target/>
+        <target state="translated">na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.system" xml:space="preserve">
         <source>system</source>
-        <target/>
+        <target state="translated">systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.systems" xml:space="preserve">
         <source>systems</source>
-        <target/>
+        <target state="translated">systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.maintenanceschedule" xml:space="preserve">
         <source>maintenance schedule</source>
-        <target/>
+        <target state="translated">plán údržby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.deletesystem" xml:space="preserve">
         <source>delete system</source>
-        <target/>
+        <target state="translated">vymazať systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.packages.update" xml:space="preserve">
         <source>Install or update {0} on</source>
-        <target/>
+        <target state="translated">Inštalovať alebo aktualizovať {0} na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.packages.remove" xml:space="preserve">
         <source>Remove {0} from</source>
-        <target/>
+        <target state="translated">Odstrániť {0} z</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.packages.verify" xml:space="preserve">
         <source>Verify {0} on</source>
-        <target/>
+        <target state="translated">Overiť {0} na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.errata.update" xml:space="preserve">
         <source>Apply patch(es) {0} on</source>
-        <target/>
+        <target state="translated">Aplikovať opravu(y) {0} na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.script.run" xml:space="preserve">
         <source>Run a remote command on</source>
-        <target/>
+        <target state="translated">Spustiť vzdialený príkaz na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
