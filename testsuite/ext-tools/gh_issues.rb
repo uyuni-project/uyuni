@@ -39,6 +39,7 @@ module GithubProjectBoard
                     item {
                       content {
                         ... on Issue {
+                          url
                           title
                           bodyText
                           comments(first: 100) {
@@ -137,11 +138,19 @@ module GithubProjectBoard
     dataset = []
     nodes.each do |item|
       status_field = item['fieldValueByName']
+      label = status_field['name']
+      # TODO: Implement a query to obtain the timeline of that issue.
+      #       As of today, 20-11-2024, there is no support to retrieve it through graphql in new project boards
+      #       Neither REST API or trying to browse it (due to the login constraint with a 2FA).
+      #       Without being able to know the previous state of a Fixed issue, a Machine Learning model will not be accurate.
+      # if label == 'Fixed'
+      #   get_timeline(item['fieldValueByName']['item']['content']['url'])
+      # end
       if status_field && status_field['item'] && status_field['item']['content']
         title = clean_text(status_field['item']['content']['title'])
         description = clean_text(status_field['item']['content']['bodyText'])
         comments = status_field['item']['content']['comments']['nodes'].map { |node| clean_text(node['body']) }
-        dataset.push({ title: title, description: description, comments: comments, label: label_mapping[status_field['name']] })
+        dataset.push({ title: title, description: description, comments: comments, label: label_mapping[label] })
         puts "\e[36mCard found\e[0m => #{title}"
       else
         puts "No data found in the GraphQL response for this item: #{item}"
@@ -263,8 +272,10 @@ def main
   project_number = 23
   regex_on_gh_card_title = /Feature:(.*)Scenario:(.*)/
   headers = {
-    'Content-Type' => 'application/json',
-    'Authorization' => "Bearer #{token}"
+    'Content-Type' => 'application/json,text/html',
+    'Accept' => 'application/vnd.github.starfox-preview+vnd.github.bane-preview+vnd.github+json,*/*',
+    'Authorization' => "Bearer #{token}",
+    'User-Agent' => 'Ruby script'
   }
 
   if options[:generate_dataset]
