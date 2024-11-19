@@ -6,6 +6,7 @@
 *.src.rpm
 *.git.*.rpm
 *.Ds_Store
+branding/target
 java/build
 java/buildconf/ivy/repository/
 java/lib

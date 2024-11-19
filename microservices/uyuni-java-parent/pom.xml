@@ -22,11 +22,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <modules>
         <module>../uyuni-java-common</module>
         <module>../coco-attestation</module>
+        <module>../../branding</module>
     </modules>
 
     <!-- Global dependencies based on the package version in OBS -->
