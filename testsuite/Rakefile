@@ -187,7 +187,12 @@ namespace :utils do
 
   desc 'Collect and tag flaky tests'
   task :collect_and_tag_flaky_tests do
-    `ruby ext-tools/collect_and_tag_flaky_tests.rb features`
+    `ruby ext-tools/gh_issues.rb --collect-and-tag --directory-path features`
+  end
+
+  desc 'Generate dataset from GH issues'
+  task :generate_dataset_gh_issues do
+    `ruby ext-tools/gh_issues.rb --generate-dataset --file-path gh_issues_dataset.json`
   end
 end
 
