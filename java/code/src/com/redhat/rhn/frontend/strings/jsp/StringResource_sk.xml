@@ -3215,70 +3215,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actionchain.jsp.labelexists" xml:space="preserve">
         <source>Could not save the Action Chain, a chain with the same label already exists.</source>
-        <target/>
+        <target state="translated">Nebolo možné uložiť reťazec akcií, reťazec s rovnakým označením už existuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.labeltoolong" xml:space="preserve">
         <source>Could not save the Action Chain, chain label is too long (&gt;= 256 chars).</source>
-        <target/>
+        <target state="translated">Nebolo možné uložiť reťazec akcií, označenie reťazca je príliš dlhé (&gt;= 256 znakov).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.schedulesummary" xml:space="preserve">
         <source>This Action Chain can be scheduled for execution below:</source>
-        <target/>
+        <target state="translated">Vykonanie tohto reťazca akcií je možné naplánovať nižšie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.edit" xml:space="preserve">
         <source>Edit</source>
-        <target/>
+        <target state="translated">Upraviť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.schedule" xml:space="preserve">
         <source>Schedule</source>
-        <target/>
+        <target state="translated">Naplánovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.saveandschedule" xml:space="preserve">
         <source>Save and Schedule</source>
-        <target/>
+        <target state="translated">Uložiť a naplánovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.stayorleave" xml:space="preserve">
         <source>You made some changes in this Action Chain and they are not saved yet.</source>
-        <target/>
+        <target state="translated">V tomto reťazci akcií ste vykonali nejaké zmeny, ktoré ešte nie sú uložené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.scheduled" xml:space="preserve">
         <source>Action Chain {0} has been scheduled for execution.</source>
-        <target/>
+        <target state="translated">Reťazec akcií {0} bol naplánovaný na vykonanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.channels.subscribe" xml:space="preserve">
         <source>Change channels subscription on</source>
-        <target/>
+        <target state="translated">Zmeniť predplatné kanálov na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.virt.create" xml:space="preserve">
         <source>Create or update a virtual machine on</source>
-        <target/>
+        <target state="translated">Vytvoriť alebo aktualizovať virtuálny stroj na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
