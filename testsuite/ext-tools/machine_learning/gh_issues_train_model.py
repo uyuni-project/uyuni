@@ -93,12 +93,13 @@ def train_bert(texts, labels):
     # Define Training Arguments
     training_args = TrainingArguments(
         output_dir="./bert_results",
-        evaluation_strategy="epoch",
+        eval_strategy="steps",
+        save_strategy="steps",  # Align save strategy with evaluation
+        save_steps=500,  # Frequency of saving (if step-based)
         logging_dir="./bert_logs",
         num_train_epochs=3,
         per_device_train_batch_size=8,
         per_device_eval_batch_size=8,
-        save_steps=500,
         save_total_limit=2,
         learning_rate=2e-5,
         weight_decay=0.01,
@@ -112,7 +113,7 @@ def train_bert(texts, labels):
         args=training_args,
         train_dataset=train_data,
         eval_dataset=test_data,
-        tokenizer=tokenizer
+        processing_class=tokenizer
     )
 
     # Train the Model

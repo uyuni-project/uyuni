@@ -187,12 +187,17 @@ namespace :utils do
 
   desc 'Collect and tag flaky tests'
   task :collect_and_tag_flaky_tests do
-    `ruby ext-tools/gh_issues.rb --collect-and-tag --directory-path features`
+    `ruby ext-tools/machine_learning/gh_issues_parser.rb --collect-and-tag --directory-path features`
   end
 
   desc 'Generate dataset from GH issues'
   task :generate_dataset_gh_issues do
-    `ruby ext-tools/gh_issues.rb --generate-dataset --file-path gh_issues_dataset.json`
+    `ruby ext-tools/machine_learning/gh_issues_parser.rb --generate-dataset --file-path gh_issues_dataset.json`
+  end
+
+  desc 'Generate dataset from JSON Cucumber Test Report'
+  task :generate_dataset_cucumber_report do
+    `ruby ext-tools/machine_learning/cucumber_report_parser.rb --report_path cucumber_report/cucumber_report.html.json --output_path cucumber_report_dataset.json`
   end
 end
 

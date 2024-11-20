@@ -4,8 +4,8 @@
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag
 #
-# Usage: ruby gh_issues.rb <directory_path>
-# Example: ruby gh_issues.rb <repository_path>/testsuite/features
+# Usage: ruby gh_issues_parser.rb <directory_path>
+# Example: ruby gh_issues_parser.rb <repository_path>/testsuite/features
 
 require 'json'
 require 'net/http'
@@ -217,7 +217,7 @@ def main
   options = {}
   parser =
     OptionParser.new do |opts|
-      opts.banner = 'Usage: ruby gh_issues.rb [options]'
+      opts.banner = 'Usage: ruby gh_issues_parser.rb [options]'
 
       opts.on('-g', '--generate-dataset', 'Generate a dataset from GitHub project board issues') do
         options[:generate_dataset] = true
@@ -287,7 +287,9 @@ def main
       'Debugging' => 'under_debugging',
       'Bugs' => 'bug_reported',
       'Test Framework issues' => 'test_issue',
-      'Flaky Tests' => 'flaky'
+      'Flaky Tests' => 'flaky',
+      'Fixed' => 'fixed',
+      'Fixed with bug workaround' => 'workaround'
     }
 
     columns.each do |column, tag|

@@ -94,7 +94,7 @@ Style/ArgumentsForwarding:
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/ArrayFirstLast:
   Exclude:
-    - 'ext-tools/gh_issues.rb'
+    - 'ext-tools/gh_issues_parser.rb'
     - 'ext-tools/maintenance_crawler.rb'
     - 'features/step_definitions/api_common.rb'
     - 'features/step_definitions/command_steps.rb'
@@ -189,7 +189,7 @@ Style/RedundantStringEscape:
 Style/RequireOrder:
   Exclude:
     - 'Rakefile'
-    - 'ext-tools/gh_issues.rb'
+    - 'ext-tools/gh_issues_parser.rb'
     - 'ext-tools/maintenance_crawler.rb'
     - 'features/step_definitions/command_steps.rb'
     - 'features/step_definitions/common_steps.rb'
