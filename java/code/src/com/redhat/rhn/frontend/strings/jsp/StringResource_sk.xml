@@ -3145,70 +3145,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="actionchain.jsp.reboot.reboot" xml:space="preserve">
         <source>Reboot</source>
-        <target/>
+        <target state="translated">Reštart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.deploy" xml:space="preserve">
         <source>Deploy {0} to</source>
-        <target/>
+        <target state="translated">Nasadiť {0} na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.diff" xml:space="preserve">
         <source>Compare {0} on</source>
-        <target/>
+        <target state="translated">Porovnať {0} na</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.modaltitle" xml:space="preserve">
         <source>Delete Action Chain?</source>
-        <target/>
+        <target state="translated">Vymazať reťazec akcií?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.modalbody" xml:space="preserve">
         <source>All Actions in this Action Chain will also be deleted. Are you sure?</source>
-        <target/>
+        <target state="translated">Všetky akcie v tomto reťazci akcií budú tiež vymazané. Ste si istí?</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.states.apply" xml:space="preserve">
         <source>Apply Highstate</source>
-        <target/>
+        <target state="translated">Použiť Highstate</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.deleted" xml:space="preserve">
         <source>Action Chain {0} deleted.</source>
-        <target/>
+        <target state="translated">Reťazec akcií {0} vymazaný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.save" xml:space="preserve">
         <source>Save</source>
-        <target/>
+        <target state="translated">Uložiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.cancel" xml:space="preserve">
         <source>Cancel Discarding all Changes</source>
-        <target/>
+        <target state="translated">Zrušiť zahodenie všetkých zmien</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.saved" xml:space="preserve">
         <source>Changes saved.</source>
-        <target/>
+        <target state="translated">Zmeny boli uložené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
