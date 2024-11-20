@@ -177,6 +177,7 @@ Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
+@skip_if_github_validation
 @scc_credentials
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section
