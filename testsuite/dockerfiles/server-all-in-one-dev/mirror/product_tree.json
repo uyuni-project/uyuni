@@ -1013,5 +1013,23 @@
         ],
         "update_tag": null,
         "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/22.04-CLIENT-TOOLS/x86_64/update/"
+    },
+    {
+        "channel_label": "rhel8-pool-x86_64",
+        "channel_name": "RHEL8-Pool for x86_64",
+        "gpg_info": [],
+        "mandatory": true,
+        "parent_channel_label": null,
+        "parent_product_id": null,
+        "product_id": -8,
+        "product_type": "base",
+        "recommended": false,
+        "release_stage": "released",
+        "repository_id": -82,
+        "root_product_id": -8,
+        "signed": false,
+        "tags": [],
+        "update_tag": null,
+        "url": "http://localhost/pub/repositories/empty/"
     }
 ]
