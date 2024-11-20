@@ -10,6 +10,6 @@ sudo -i podman run --privileged --rm -d --network network -p 9092:9090 -v /tmp/r
 sudo -i podman exec rhlike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
 sudo -i podman exec rhlike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
 # sudo -i podman exec -d rhlike_minion prometheus
-sudo -i podman exec -d rhlike_minion node_exporter
-sudo -i podman exec -d rhlike_minion prometheus-apache_exporter
-sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" rhlike_minion prometheus-postgres_exporter
+# sudo -i podman exec -d rhlike_minion node_exporter
+# sudo -i podman exec -d rhlike_minion prometheus-apache_exporter
+# sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" rhlike_minion prometheus-postgres_exporter
