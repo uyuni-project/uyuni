@@ -956,7 +956,28 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
+        return getSession().createNativeQuery("""
+                SELECT E.*, EC.original_id, CASE WHEN EC.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM rhnErrata as E
+             LEFT JOIN rhnErrataCloned EC ON E.id = EC.id
+                 WHERE E.id in (:eids)
+                   AND (E.org_id = :orgId
+                        OR EXISTS (SELECT 1
+                                     FROM WEB_CUSTOMER ORG
+                               INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
+                                    WHERE ORG.id = :orgId
+                                      AND E.org_id = TORG.org_trust_id)
+                        OR EXISTS (SELECT 1
+                                     FROM rhnAvailableChannels AC,
+                                          rhnChannelErrata CE
+                                    WHERE CE.errata_id = E.id
+                                      AND CE.channel_id = AC.channel_id
+                                      AND AC.org_id = :orgId))
+                """, Errata.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .setParameter("eids", ids)
+                .setParameter("orgId", orgId)
+                .list();
     }
 
     /**
