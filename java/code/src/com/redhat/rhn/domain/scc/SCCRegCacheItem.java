@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.scc;
 
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.hibernate.converter.YesNoConverterString;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.server.Server;
@@ -180,7 +181,7 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * @return true when updating the registration at SCC is required, otherwise false
      */
     @Column(name = "scc_reg_required")
-    @Convert(converter = org.hibernate.type.YesNoConverter.class)
+    @Convert(converter = YesNoConverterString.class)
     public boolean isSccRegistrationRequired() {
         return sccRegistrationRequired;
     }
