@@ -15,6 +15,7 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.server.MinionServer;
