@@ -479,7 +479,7 @@ public abstract class HibernateFactory {
     public static <T> T reload(T obj) throws HibernateException {
         Session session = getSession();
         session.flush();
-        session.evict(obj);
+        //session.evict(obj);
         session.refresh(obj);
 
         return obj;
