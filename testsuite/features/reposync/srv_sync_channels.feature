@@ -43,8 +43,8 @@ Feature: Be able to list available channels and enable them
     Then I should get "[ ] SUSE Linux Enterprise Server 15 SP4 x86_64"
     And I shouldn't get "ppc64"
     And I shouldn't get "s390x"
-
+@skip_if_github_validation
   Scenario: Let mgr-sync time out
     When I remove the mgr-sync cache file
-    And I execute mgr-sync refresh
+    And I refresh SCC
     Then I should get "Timeout. No user input for 60 seconds. Exiting..."

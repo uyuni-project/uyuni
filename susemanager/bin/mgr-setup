@@ -1108,6 +1108,7 @@ if [ "$DO_MIGRATION" = "1" ]; then
     echo "in the new server as well as the ISO images needed for distributions before"
     echo "rebooting the new server!"
     echo "============================================================================"
+
 fi
 
 # vim: set expandtab:

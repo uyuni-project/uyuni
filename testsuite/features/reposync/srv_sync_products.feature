@@ -3,6 +3,10 @@
 
 Feature: Synchronize products in the products page of the Setup Wizard
 
+  @scc_credentials
+  Scenario: Refresh SCC
+    When I refresh SCC
+
 @scc_credentials
   Scenario: Let the products page appear
     Given I am authorized for the "Admin" section
@@ -69,6 +73,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
+# in github validation, the retail feature is not tested
+@skip_if_github_validation
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
@@ -113,11 +119,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @containerized_server
 @proxy
 @uyuni
-  Scenario: Add openSUSE Leap Micro 5.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap-micro5.5" channels with arch "x86_64"
-    And I use spacewalk-common-channel to add all "leap-micro5.5-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap-micro5.5-x86_64" have finished
-    And I wait until all synchronized channels for "leap-micro5.5-client-tools-x86_64" have finished
+Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+  When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
+  And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @proxy
 @susemanager
@@ -173,6 +177,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
+@skip_if_github_validation
 @scc_credentials
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section
@@ -181,10 +186,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should only see success signs in the product list
-
-@scc_credentials
-  Scenario: Trigger a refresh of the products synched from SCC
-    When I execute mgr-sync refresh
 
 @scc_credentials
   Scenario: Report the synchronization duration for SLES 15 SP4

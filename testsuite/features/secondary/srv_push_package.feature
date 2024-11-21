@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+# in github validation, mgr-push is not preinstalled
+@skip_if_github_validation
 @sle_minion
 @scc_credentials
 Feature: Push a package with unset vendor
