@@ -3237,21 +3237,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- packagelist.jsp -->
       <trans-unit id="packagelist.jsp.header.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.summary.packages" xml:space="preserve">
         <source>The following packages are associated with this action:</source>
-        <target/>
+        <target state="translated">Nasledujúce balíky sú spojené s touto akciou:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopackages" xml:space="preserve">
         <source>No packages.</source>
-        <target/>
+        <target state="translated">Žiadne balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
@@ -3260,14 +3260,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.name.packages" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagename" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList.do</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -3277,7 +3277,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagearch" xml:space="preserve">
         <source>Architecture</source>
-        <target/>
+        <target state="translated">Architektúra</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList.do</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -3287,7 +3287,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.notspecified" xml:space="preserve">
         <source>not specified</source>
-        <target/>
+        <target state="translated">nie je špecifikované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList.do</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
@@ -3297,21 +3297,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.installtime" xml:space="preserve">
         <source>Installed</source>
-        <target/>
+        <target state="translated">Nainštalované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepagesummary" xml:space="preserve">
         <source>The following packages are installed on this system.  Packages may be scheduled for removal by selecting them and clicking "Remove Packages" below.</source>
-        <target/>
+        <target state="translated">V tomto systéme sú nainštalované nasledujúce balíky.  Balíky je možné naplánovať na odstránenie tak, že sa vyberú a klikne sa nižšie na "Odstrániť balíky".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepackages" xml:space="preserve">
         <source>Removable Packages</source>
-        <target/>
+        <target state="translated">Odstrániteľné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
