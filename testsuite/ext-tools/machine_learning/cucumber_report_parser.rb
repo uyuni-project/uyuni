@@ -1,6 +1,7 @@
 # Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'csv'
 require 'json'
 require 'nokogiri'
 require 'optparse'
@@ -36,32 +37,36 @@ def extract_dataset_from_json(json_report_path)
         screenshots += scenario['after'][1]['embeddings'].select { |e| e['mime_type'] == 'image/png' }.map { |e| e['data'] }
       end
 
-      feature_data = {
-        test_name: scenario['name'],
-        label: label_mapping[scenario['steps'].last['result']['status']],
-        execution_time: scenario['steps'].sum { |step| step['result']['duration'] || 0 } / 1_000_000.0
+      scenario_data = {
+        feature: feature['name'],
+        scenario: scenario['name'],
+        time: (scenario['steps'].sum { |step| step['result']['duration'] || 0 } / 1_000_000_000.0).round
       }
 
-      feature_data[:error_message] = scenario['steps'].last['result']['error_message'] if scenario['steps'].last['result'].key?('error_message')
-      feature_data[:tags] = scenario['tags'].map { |tag| tag['name'][1..-1] } if scenario.key?('tags')
-      feature_data[:logs] = logs unless logs.empty?
-      feature_data[:screenshots] = screenshots unless screenshots.empty?
+      scenario_data[:error_message] = scenario['steps'].last['result']['error_message'] if scenario['steps'].last['result'].key?('error_message')
+      scenario_data[:tags] = scenario['tags'].map { |tag| tag['name'][1..] } if scenario.key?('tags')
+      scenario_data[:logs] = logs unless logs.empty?
+      scenario_data[:screenshots] = screenshots unless screenshots.empty?
+
       if scenario['before'] && scenario['before'].size > 3 && scenario['before'][3].key?('output')
         timestamp_string = scenario['before'][3]['output'][0].strip
         timestamp_match = timestamp_string.match(/(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})/)
-        feature_data[:timestamp] = timestamp_match[1] if timestamp_match
+        scenario_data[:timestamp] = timestamp_match[1] if timestamp_match
       end
+
+      found_gh_issue_label = scenario_data[:tags].select { |tag| %w[new_issue under_debugging bug_reported test_issue flaky].include?(tag) }.first unless scenario_data[:tags].nil?
+      scenario_data[:gh_issue_label] = gh_issue_label_mapping[found_gh_issue_label] unless found_gh_issue_label.nil?
+
       dataset_entry = {
-        description: feature_data,
-        gh_issue_label: 'unknown'
+        label: label_mapping[scenario['steps'].last['result']['status']],
+        description: scenario_data
       }
-      found_gh_issue_label = feature_data[:tags].select { |tag| %w[new_issue under_debugging bug_reported test_issue flaky].include?(tag) }.first unless feature_data[:tags].nil?
-      dataset_entry[:gh_issue_label] = gh_issue_label_mapping[found_gh_issue_label] unless found_gh_issue_label.nil?
+
       dataset << dataset_entry
     end
   end
 
-  dataset.to_json
+  dataset
 end
 
 # Parse command-line arguments
@@ -74,7 +79,7 @@ parser =
       options[:report_path] = f
     end
 
-    opts.on('-o', '--output_path PATH', 'Path to the processed report file') do |f|
+    opts.on('-o', '--output_path PATH', 'Path to the processed report file (CSV format)') do |f|
       options[:output_path] = f
     end
 
@@ -93,4 +98,9 @@ if options[:report_path].nil? || options[:output_path].nil?
 end
 
 dataset = extract_dataset_from_json(options[:report_path])
-File.write(options[:output_path], dataset)
+CSV.open(options[:output_path], 'w') do |csv|
+  csv << dataset.first.keys
+  dataset.each do |entry|
+    csv << [entry[:label], entry[:description].to_json]
+  end
+end

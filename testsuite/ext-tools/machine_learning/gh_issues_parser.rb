@@ -1,16 +1,14 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag
-#
-# Usage: ruby gh_issues_parser.rb <directory_path>
-# Example: ruby gh_issues_parser.rb <repository_path>/testsuite/features
 
+require 'csv'
+require 'find'
 require 'json'
 require 'net/http'
 require 'netrc'
-require 'find'
 require 'optparse'
 
 # GitHub Project Board module query and process data from the GH Board
@@ -150,7 +148,17 @@ module GithubProjectBoard
         title = clean_text(status_field['item']['content']['title'])
         description = clean_text(status_field['item']['content']['bodyText'])
         comments = status_field['item']['content']['comments']['nodes'].map { |node| clean_text(node['body']) }
-        dataset.push({ title: title, description: description, comments: comments, label: label_mapping[label] })
+        matches = title.match(/Feature:(.*)\s*\|\s*Scenario:(.*)/)
+        gh_issue_content = {}
+        if matches.nil?
+          gh_issue_content[:title] = title
+        else
+          gh_issue_content[:feature] = matches[1].strip
+          gh_issue_content[:scenario] = matches[2].strip
+        end
+        gh_issue_content[:description] = description
+        gh_issue_content[:comments] = comments
+        dataset.push({ label: label_mapping[label], description: gh_issue_content })
         puts "\e[36mCard found\e[0m => #{title}"
       else
         puts "No data found in the GraphQL response for this item: #{item}"
@@ -166,7 +174,7 @@ def clean_text(text)
 end
 
 # Function to tag Cucumber feature files
-def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
+def tag_cucumber_feature_files(directory_path, gh_card_titles, tag)
   features_tagged = 0
   scenarios_tagged = 0
 
@@ -175,10 +183,10 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
 
     gh_card_titles.each do |title|
       feature_matched = false
-      matches = regex_on_gh_card_title.match(title)
+      matches = title.match(/Feature:(.*)\s*\|\s*Scenario:(.*)/)
       next if matches.nil?
 
-      match_feature = "Feature: #{matches[1].delete('|').strip}"
+      match_feature = "Feature: #{matches[1].strip}"
       match_scenario = "Scenario: #{matches[2].strip}"
 
       temp_file_path = 'temp_file'
@@ -231,7 +239,7 @@ def main
         options[:directory_path] = path
       end
 
-      opts.on('-f', '--file-path PATH', 'File path to store the dataset') do |path|
+      opts.on('-f', '--file-path PATH', 'File path to store the dataset (CSV format)') do |path|
         options[:file_path] = path
       end
 
@@ -270,7 +278,6 @@ def main
 
   organization = 'SUSE'
   project_number = 23
-  regex_on_gh_card_title = /Feature:(.*)Scenario:(.*)/
   headers = {
     'Content-Type' => 'application/json,text/html',
     'Accept' => 'application/vnd.github.starfox-preview+vnd.github.bane-preview+vnd.github+json,*/*',
@@ -280,7 +287,12 @@ def main
 
   if options[:generate_dataset]
     dataset = GithubProjectBoard.generate_dataset(organization, project_number, headers)
-    File.write(options[:file_path], JSON.generate(dataset))
+    CSV.open(options[:file_path], 'w') do |csv|
+      csv << dataset.first.keys
+      dataset.each do |entry|
+        csv << [entry[:label], entry[:description].to_json]
+      end
+    end
   elsif options[:collect_and_tag]
     columns = {
       'New' => 'new_issue',
@@ -296,7 +308,7 @@ def main
       gh_card_titles = GithubProjectBoard.fetch_issues(organization, project_number, column, headers)
       puts ">> Found #{gh_card_titles.length} issues in the '#{column}' column of the GitHub project board."
       unless gh_card_titles.empty?
-        features_tagged, scenarios_tagged = tag_cucumber_feature_files(options[:directory_path], gh_card_titles, tag, regex_on_gh_card_title)
+        features_tagged, scenarios_tagged = tag_cucumber_feature_files(options[:directory_path], gh_card_titles, tag)
         puts ">> Tagged #{features_tagged} feature and #{scenarios_tagged} scenarios with the '#{tag}' tag."
       end
     end
