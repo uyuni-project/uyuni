@@ -3385,70 +3385,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.nopatches" xml:space="preserve">
         <source>No patches.</source>
-        <target/>
+        <target state="translated">Žiadne opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.patchname" xml:space="preserve">
         <source>Patch Name</source>
-        <target/>
+        <target state="translated">Názov opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.patchtype" xml:space="preserve">
         <source>Patch Type</source>
-        <target/>
+        <target state="translated">Typ opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.patchinstalled" xml:space="preserve">
         <source>Last Installed</source>
-        <target/>
+        <target state="translated">Naposledy nainštalované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.emptytimestamp" xml:space="preserve">
         <source>Not Available</source>
-        <target/>
+        <target state="translated">Nie je k dispozícii</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.backoutpatch" xml:space="preserve">
         <source>Backout</source>
-        <target/>
+        <target state="translated">Stiahnuť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installpatch" xml:space="preserve">
         <source>Install</source>
-        <target/>
+        <target state="translated">Inštalovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagesaffected" xml:space="preserve">
         <source>Packages Affected</source>
-        <target/>
+        <target state="translated">Ovplyvnené balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.confirmpatch" xml:space="preserve">
         <source>Confirm Backout</source>
-        <target/>
+        <target state="translated">Potvrdiť stiahnutie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.confirmpatchinstall" xml:space="preserve">
         <source>Confirm Install</source>
-        <target/>
+        <target state="translated">Potvrdiť inštaláciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
