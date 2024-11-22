@@ -1,40 +1,34 @@
-# Image Server installation state - part of SUSE Multi-Linux Manager for Retail
+#!jinja|yaml
+# SUSE Multi-Linux Manager image server preparation
 #
-# Copyright (c) 2017 - 2022 SUSE LLC
+# Copyright (c) 2017 - 2025 SUSE LLC
 
-{% if pillar['addon_group_types'] is defined and 'osimage_build_host' in pillar['addon_group_types'] %}
+{% from "images/kiwi-detect.sls" import kiwi_method with context %}
+
+{% if 'osimage_build_host' in pillar.get('addon_group_types', []) %}
 {%- set kiwi_dir = '/var/lib/Kiwi' %}
-{%- set force_kiwi_ng = pillar.get('use_kiwi_ng', salt['pillar.get']('custom_info:use_kiwi_ng', False)) %}
-
-{# on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere #}
-{%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) or force_kiwi_ng %}
-{%- set available_packages = salt['pkg.search']('kiwi').keys() %}
 
 {# Set correct package list base on SLES version but independent of kiwi_ng usage #}
-{%- if salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15 %}
-{%-   set kiwi_modules = ['kiwi-desc-netboot', 'kiwi-desc-saltboot', 'kiwi-desc-vmxboot', 'kiwi-desc-oemboot', 'kiwi-desc-isoboot'] %}
-{%- else %}
-{%-   set kiwi_modules = ['kiwi-systemdeps-disk-images', 'kiwi-systemdeps-image-validation', 'kiwi-systemdeps-iso-media', 'kiwi-systemdeps-containers', 'kiwi-boot-descriptions'] %}
+{%- if kiwi_method == 'legacy' %}
+{%-   set kiwi_modules = ['kiwi', 'kiwi-desc-netboot', 'kiwi-desc-saltboot', 'kiwi-desc-vmxboot', 'kiwi-desc-oemboot', 'kiwi-desc-isoboot'] %}
+{%- elif kiwi_method == 'kiwi-ng' %}
+{%-   set kiwi_modules = ['python3-kiwi', 'kiwi-systemdeps-disk-images', 'kiwi-systemdeps-image-validation', 'kiwi-systemdeps-iso-media', 'kiwi-systemdeps-containers', 'kiwi-boot-descriptions'] %}
+{%- elif kiwi_method == 'podman' %}
+{#- TODO: add kiwi container rpm once available#}
+{%-   set kiwi_modules = ['podman', 'xorriso'] %}
+{%- else: %}
+kiwi_unknown_method:
+  test.fail_without_changes:
+    - name: Unknown kiwi method {{ kiwi_method }}
 {%- endif %}
 
 mgr_install_kiwi:
   pkg.installed:
     - pkgs:
-{%- if use_kiwi_ng %}
-      - python3-kiwi
-{%- else %}
-      - kiwi
-{%- endif %}
-{%- for km in kiwi_modules %}
-{%-   if km in available_packages %}
-      - {{ km }}
-{%-   endif %}
-{%- endfor %}
-
-mgr_kiwi_build_tools:
-  pkg.installed:
-    - pkgs:
       - git-core
+{%- for km in kiwi_modules %}
+      - {{ km }}
+{%- endfor %}
 
 mgr_kiwi_dir_created:
   file.directory:
