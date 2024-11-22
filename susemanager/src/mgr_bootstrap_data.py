@@ -571,6 +571,31 @@ PKGLISTRASPBERRYPIOS12 = [
     "venv-salt-minion",
 ]
 
+PKGLISTFUSS12 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpg-wks-server",
+    "gpgconf",
+    "gpgsm",
+    "libassuan0",
+    "libksba8",
+    "libldap-2.5-0",
+    "libnpth0",
+    "libsasl2-2",
+    "libsasl2-modules-db",
+    "libsqlite3-0",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "venv-salt-minion",
+]
+
 PKGLISTASTRALINUXOREL = [
     "dctrl-tools",
     "dirmngr",
@@ -2075,6 +2100,12 @@ DATA = {
         "BASECHANNEL": "raspberrypios-12-pool-armhf-uyuni",
         "PKGLIST": PKGLISTRASPBERRYPIOS12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
+        "TYPE": "deb",
+    },
+    "fuss-12-amd64-uyuni": {
+        "BASECHANNEL": "fuss-12-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTFUSS12,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/12/bootstrap/",
         "TYPE": "deb",
     },
     "astralinux-orel-amd64": {
