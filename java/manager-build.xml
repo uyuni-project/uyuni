@@ -333,7 +333,7 @@
             description="Deploy css/js/img/font files in a running container">
         <echo message="Copying frontend files to container... "/>
         <copy-to-container
-                source="${frontend.dist.dir}"
+                source="${frontend.dist.dir}/."
                 target="/usr/share/susemanager/www/htdocs"
                 failonerror="true"
                 backend="${container.backend}"/>
