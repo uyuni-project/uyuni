@@ -3367,67 +3367,67 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.jsp.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
-        <target/>
+        <target state="translated">Odstrániť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installedpagesummary" xml:space="preserve">
         <source>The following packages are installed on this system.</source>
-        <target/>
+        <target state="translated">V tomto systéme sú nainštalované nasledujúce balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installedpackages" xml:space="preserve">
         <source>Installed Packages</source>
-        <target/>
+        <target state="translated">Nainštalované balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepatches" xml:space="preserve">
         <source>Installed Patches</source>
-        <target/>
+        <target state="translated">Nainštalované opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.thischannel" xml:space="preserve">
         <source>This Channel</source>
-        <target/>
+        <target state="translated">Tento kanál</target>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.header" xml:space="preserve">
         <source>Installable Packages</source>
-        <target/>
+        <target state="translated">Inštalovateľné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="installpkgs.jsp.summary" xml:space="preserve">
         <source>The following packages may be installed on this system.</source>
-        <target/>
+        <target state="translated">V tomto systéme môžu byť nainštalované nasledujúce balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/InstallPackages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatches" xml:space="preserve">
         <source>Installable Patches</source>
-        <target/>
+        <target state="translated">Inštalovateľné opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.removablepatchsummary" xml:space="preserve">
         <source>The following patches are installed on this System. You can back out patches to previous patch versions by using the checkboxes and clicking on the "Back Out"button below. If a patch cannot be selected, it cannot be backed out any further.</source>
-        <target/>
+        <target state="translated">V tomto systéme sú nainštalované nasledujúce opravy. Pomocou zaškrtávacích polí a kliknutím nižšie na tlačidlo „Stiahnuť“ môžete záplaty vrátiť na predchádzajúce verzie opráv. Ak sa oprava nedá vybrať, nie je ju už možné vrátiť späť.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.installablepatchsummary" xml:space="preserve">
         <source>The following patches may be installed on this system.</source>
-        <target/>
+        <target state="translated">V tomto systéme môžu byť nainštalované nasledujúce opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchInstallList</context>
         </context-group>
