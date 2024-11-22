@@ -1,5 +1,9 @@
-# SUSE Multi-Linux Manager for Retail build trigger
+#!jinja|yaml
+# SUSE Multi-Linux Manager image build state
 #
+# Copyright (c) 2017 - 2025 SUSE LLC
+
+{% from "images/kiwi-detect.sls" import kiwi_method with context %}
 
 {%- set source     = pillar.get('source') %}
 
@@ -14,12 +18,20 @@
 # cache dir is used only with Kiwi-ng
 {%- set cache_dir  = root_dir + '/cache/' %}
 {%- set bundle_id  = pillar.get('build_id') %}
+
+{%- set eib_require = '' %}
+{%- set kpartx_require = '' %}
+
 {%- set activation_key = pillar.get('activation_key') %}
 {%- set use_bundle_build = pillar.get('use_bundle_build', salt['pillar.get']('custom_info:use_bundle_build', False)) %}
-{%- set force_kiwi_ng = pillar.get('use_kiwi_ng', salt['pillar.get']('custom_info:use_kiwi_ng', False)) %}
 
-# on SLES11 and SLES12 use legacy Kiwi, use Kiwi NG elsewhere
-{%- set use_kiwi_ng = not (salt['grains.get']('osfullname') == 'SLES' and salt['grains.get']('osmajorrelease')|int() < 15) or force_kiwi_ng %}
+{# Default images and overrides #}
+{%- set eib_image = salt['pillar.get']('custom_info:eib_image', 'registry.suse.com/edge/3.2/edge-image-builder:1.1.0') %}
+{%- set kiwi_image = salt['pillar.get']('custom_info:kiwi_image', 'registry.suse.com/bci/kiwi:10.2') %}
+
+report_method:
+  test.show_notification:
+    - text: "selected kiwi method: {{ kiwi_method }}, kiwi_dir is {{ kiwi_dir }}"
 
 mgr_buildimage_prepare_source:
   file.directory:
@@ -39,11 +51,41 @@ mgr_buildimage_prepare_activation_key_in_source:
           susemanager:
             activation_key: {{ activation_key }}
 
-{%- if use_kiwi_ng %}
-# KIWI NG
-#
-{%- set kiwi = '/usr/bin/kiwi-ng' %}
+{%- if kiwi_method == 'podman' %}
+{%- set kpartx_require = '- file: mgr_buildimage_prepare_kpartx_kiwi_yml' %}
+{%- set eib_require = '- cmd: mgr_eib' %}
+mgr_buildimage_prepare_kpartx_kiwi_yml:
+  file.managed:
+    - name: {{ source_dir }}/kiwi.yml
+    - contents: |
+        mapper:
+          - part_mapper: kpartx
 
+# EIB support
+mgr_eib:
+  file.directory:
+    - name: {{ source_dir}}/root/oem
+    - onlyif:
+      - test -f {{ source_dir }}/eib/eib.yaml
+  cmd.run:
+    - names:
+      - podman run --rm --privileged -v {{ source_dir }}/eib:/eib:ro,Z {{ eib_image }} build --definition-file=eib.yaml
+      - xorriso -osirrox on -indev {{ source_dir }}/eib/combustion.iso extract / {{ source_dir }}/root/oem
+    - require:
+      - file: mgr_eib
+    - onlyif:
+      - test -f {{ source_dir }}/eib/eib.yaml
+
+{# need ca-certificates for kiwi to trust CA #}
+{# need /dev for losetup error during create #}
+{% set kiwi_mount = ' -v '+ kiwi_dir + ':/var/lib/Kiwi:Z ' %}
+{% set kiwi_yml_mount = ' -v ' + source_dir + '/kiwi.yml:/etc/kiwi.yml:ro,Z ' %}
+{%- set kiwi = 'podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates:ro -v /dev:/dev '+ kiwi_mount + kiwi_yml_mount + kiwi_image + ' kiwi-ng' -%}
+{%- elif kiwi_method == 'kiwi-ng' -%}
+{%- set kiwi = 'kiwi-ng' -%}
+{%- endif -%}
+
+{%- if kiwi_method == 'podman' or kiwi_method == 'kiwi-ng' %}
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
 
@@ -59,7 +101,8 @@ mgr_buildimage_prepare_activation_key_in_source:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS"
+# need to remove rpm-md due to kiwi error during create
+    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS && sed -i 's/rpm-dir/rpm-md/g' {{ chroot_dir }}/image/config.xml"
     - hide_output: True
     - env:
       - GLOBAL_PARAMS: "--logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }}"
@@ -67,6 +110,8 @@ mgr_buildimage_kiwi_prepare:
     - require:
       - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
+      {{ kpartx_require }}
+      {{ eib_require }}
 
 mgr_buildimage_kiwi_create:
   cmd.run:
