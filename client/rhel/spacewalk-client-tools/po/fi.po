@@ -23,16 +23,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-08-27 11:18+0200\n"
-"PO-Revision-Date: 2021-03-23 18:57+0000\n"
-"Last-Translator: Tommi Nieminen <software@legisign.org>\n"
-"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
-"client-tools/fi/>\n"
+"PO-Revision-Date: 2024-11-23 21:48+0000\n"
+"Last-Translator: Rantala <toni.rantala@protonmail.com>\n"
+"Language-Team: Finnish <https://l10n.opensuse.org/projects/uyuni/"
+"spacewalk-client-tools-4-3/fi/>\n"
 "Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -249,9 +249,9 @@ msgid "Cannot contact selected server"
 msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:326
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "We could not contact the {PRODUCT_NAME} or Proxy at '{HOST}'."
-msgstr "Satelliteen tai Proxyyn '%s' ei saatu yhteyttä."
+msgstr "{PRODUCT_NAME} tai Proxyyn '{HOST}' ei saatu yhteyttä."
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
@@ -265,9 +265,8 @@ msgid "Make sure the network connection on this system is operational."
 msgstr "Varmista että järjestelmän verkkoyhteydet toimivat."
 
 #: ../src/up2date_client/rhnregGui.py:341
-#, fuzzy
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Virhe kommunikoitaessa rekisteröintipalvelimen kanssa:\n"
+msgstr "Virhe kommunikoitaessa Spacewalk-palvelimen kanssa."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -572,13 +571,13 @@ msgid "Why Register"
 msgstr "Miksi rekisteröityä"
 
 #: ../src/up2date_client/rhnreg_constants.py:58
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
 "of the benefits of a paid subscription, including:"
 msgstr ""
-"Rekisteröimällä järjestelmäsi Red Hatille saat tukisopimuksestasi kaiken "
-"irti, mm:"
+"Yhdistämällä järjestelmäsi {PRODUCT_NAME} saat täyden hyödyn maksullisesta "
+"tilauksestasi, mukaanlukien:"
 
 #: ../src/up2date_client/rhnreg_constants.py:60
 msgid "Security & Updates:"
@@ -695,17 +694,17 @@ msgid "Password:"
 msgstr "Salasana:"
 
 #: ../src/up2date_client/rhnreg_constants.py:92
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid ""
 "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
 "Organization Administrator."
 msgstr ""
-"Vihje: Unohditko käyttäjätunnuksesi tai salasanasi? Ota yhteyttä Satelliten "
-"organisaation pääkäyttäjään."
+"Vihje: Unohditko käyttäjätunnuksesi tai salasanasi? Ota yhteyttä "
+"{PRODUCT_NAME} organisaation pääkäyttäjään."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
-msgstr "Anna haluamasi käyttäjätunnus:"
+msgstr "Anna haluamasi käyttäjätunnus."
 
 #: ../src/up2date_client/rhnreg_constants.py:95
 msgid "Please enter and verify a password."
@@ -806,9 +805,7 @@ msgstr "*Sähköpostiosoite:"
 #: ../src/up2date_client/rhnreg_constants.py:134
 #: ../data/rh_register.glade.h:125
 msgid "System Already Registered"
-msgstr ""
-"    --force                    - rekisteröi järjestelmä, vaikka se olisi jo "
-"rekisteröity"
+msgstr "Järjestelmä on jo rekisteröity"
 
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:126
@@ -998,7 +995,7 @@ msgid ""
 "you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
 "types associated with this system:"
 msgstr ""
-"Edut vaihtelevat sen mukaan, mitä {PRODUCT_NAME} -järjestelmätyyppejä  "
+"Edut vaihtelevat sen mukaan, mitä {PRODUCT_NAME} -järjestelmätyyppejä "
 "järjestelmään on kytketty. Tähän järjestelmään on kytketty seuraavat "
 "{PRODUCT_NAME} -järjestelmätyypit:"
 
@@ -1254,19 +1251,19 @@ msgstr "Profiilin nimi:"
 
 #: ../src/up2date_client/tui.py:756 ../src/up2date_client/tui.py:757
 msgid "Version: "
-msgstr "Versio:"
+msgstr "Versio: "
 
 #: ../src/up2date_client/tui.py:763
 msgid "CPU model: "
-msgstr "CPU:n malli:"
+msgstr "CPU:n malli: "
 
 #: ../src/up2date_client/tui.py:769
 msgid "Hostname: "
-msgstr "Isäntänimi:"
+msgstr "Isäntänimi: "
 
 #: ../src/up2date_client/tui.py:781
 msgid "CPU speed: "
-msgstr "CPU:n nopeus:"
+msgstr "CPU:n nopeus: "
 
 #: ../src/up2date_client/tui.py:787
 msgid "IP Address: "
@@ -1314,9 +1311,9 @@ msgstr ""
 "seuraava ruutu"
 
 #: ../src/up2date_client/tui.py:1345
-#, fuzzy, python-brace-format
+#, python-brace-format
 msgid "You must run the {PRODUCT_NAME} registration program as root."
-msgstr "RHN-rekisteröintiohjelma on suoritettava pääkäyttäjänä."
+msgstr "{PRODUCT_NAME}-rekisteröintiohjelma on suoritettava pääkäyttäjänä."
 
 #: ../src/up2date_client/up2dateErrors.py:49
 #: ../src/up2date_client/up2dateErrors.py:82
@@ -1396,8 +1393,8 @@ msgid ""
 "You need to register this system by running `rhn_register` before using this "
 "option"
 msgstr ""
-"Järjestelmä pitää rekisteröidä komennolla `up2date --register` ennen kuin "
-"tätä valitsinta voidaan käyttää."
+"Järjestelmä pitää rekisteröidä komennolla `rhn_register` ennen kuin tätä "
+"valitsinta voidaan käyttää"
 
 #: ../src/bin/rhn-profile-sync.py:45
 msgid "Updating package profile..."
@@ -1441,7 +1438,7 @@ msgstr "Määrittele käytettävä url-palvelin"
 
 #: ../src/bin/rhnreg_ks.py:60
 msgid "Specify a file to use as the ssl CA cert"
-msgstr "    --sslCACert=<polku>         - määrittele "
+msgstr "Määrittele tiedosto jota haluat käyttää ssl CA sertifikaattina"
 
 #: ../src/bin/rhnreg_ks.py:62
 msgid "Specify an activation key"
@@ -1454,15 +1451,15 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:66
 msgid "[Deprecated] Read contact info from stdin"
-msgstr "    --contactinfo              - lue yhteystiedot stdin:stä "
+msgstr "[Lopetettu] Lue yhteystiedot stdin:stä"
 
 #: ../src/bin/rhnreg_ks.py:68
 msgid "Do not probe or upload any hardware info"
-msgstr "    --nohardware        - älä etsi tai siirrä mitään laitteistotietoa "
+msgstr "Älä etsi tai siirrä mitään laitteistotietoa"
 
 #: ../src/bin/rhnreg_ks.py:70
 msgid "Do not profile or upload any package info"
-msgstr "    --nopackages       - älä profiloi tai siirrä mitään pakettitietoja"
+msgstr "Älä profiloi tai siirrä mitään pakettitietoja"
 
 #: ../src/bin/rhnreg_ks.py:72
 msgid "Do not upload any virtualization info"
@@ -1474,9 +1471,7 @@ msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:76
 msgid "Register the system even if it is already registered"
-msgstr ""
-"    --force                    - rekisteröi järjestelmä, vaikka se olisi jo "
-"rekisteröity"
+msgstr "Rekisteröi järjestelmä, vaikka se olisi jo rekisteröity"
 
 #: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
@@ -1487,7 +1482,7 @@ msgstr ""
 msgid "This system is already registered. Use --force to override"
 msgstr ""
 "Tämä järjestelmä on jo rekisteröity. Käytä valitsinta --force uudelleen "
-"rekisteröitymiseen."
+"rekisteröitymiseen"
 
 #: ../src/bin/rhnreg_ks.py:125
 msgid ""
@@ -1506,11 +1501,9 @@ msgid ""
 msgstr ""
 
 #: ../src/bin/rhnreg_ks.py:175
-#, fuzzy, python-format
+#, python-format
 msgid "Warning: %s is not present, could not enable it."
-msgstr ""
-"Varoitus: yum-rhn-pluginia ei löydä eikä sitä voida enabloida.\n"
-"Automaattiset päivitykset eivät toimi."
+msgstr "Varoitus: %s:ia ei löydä eikä sitä voida ottaa käyttöön."
 
 #: ../src/bin/rhnreg_ks.py:178
 #, python-format
@@ -1697,7 +1690,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:14
 msgid "Please enter your Red Hat account information:"
-msgstr "Syötä Red Hat tilisi tiedot"
+msgstr "Syötä Red Hat tilisi tiedot:"
 
 #: ../data/rh_register.glade.h:15
 msgid "RHN login field"
@@ -1864,7 +1857,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:51
 msgid "_Activate a subscription now..."
-msgstr "_Aktivoi subscriptioni nyt"
+msgstr "_Aktivoi subscriptioni nyt..."
 
 #: ../data/rh_register.glade.h:52
 msgid "Review system..."
@@ -1890,7 +1883,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:58
 msgid "system name"
-msgstr "Sukunimi:"
+msgstr "järjestelmän nimi"
 
 #: ../data/rh_register.glade.h:59
 msgid "<big><b>Profile Data</b></big>"
@@ -2102,7 +2095,7 @@ msgstr ""
 
 #: ../data/rh_register.glade.h:107
 msgid "proxy password field"
-msgstr "Salasana:"
+msgstr "proxyn salasanakenttä"
 
 #: ../data/rh_register.glade.h:108
 msgid "Confirm operation system release selection"
