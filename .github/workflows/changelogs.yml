@@ -5,6 +5,7 @@ on:
     types: [opened, edited, synchronize, reopened, closed]
     # Only execute on the main branches (feature branches are excluded)
     branches:
+      - changelog-action
       - master
       # Uyuni patches
       - 'Uyuni-[0-9]+.[0-9]+'
@@ -80,7 +81,7 @@ jobs:
 
         # Tracker file can be retrieved from the OBS/IBS API
         # by calling 'osc api /issue_trackers/' (with authentication)
-        python .github/workflows/changelogs/changelogs.py \
+        python .github/workflows/changelogs/changelogs.py -v \
             --tracker-file .github/workflows/changelogs/trackers.xml \
             --git-repo uyuni-project/uyuni \
             --pr-number ${{ github.event.pull_request.number }} \
