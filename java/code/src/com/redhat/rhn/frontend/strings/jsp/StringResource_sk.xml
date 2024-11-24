@@ -3504,42 +3504,42 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary.plural" xml:space="preserve">
         <source>Click on the "confirm" button below to back out the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
-        <target/>
+        <target state="translated">Kliknutím na tlačidlo "potvrdiť" nižšie stiahnete uvedené opravy na &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; pri ďalšom prihlásení s @@PRODUCT_NAME@@. (čas posledného prihlásenia: &lt;b&gt;{1}&lt;/b&gt;; ďalšie očakávané prihlásenie: &lt;b&gt;{2}&lt;/b&gt;.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.confirmpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to back out the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
-        <target/>
+        <target state="translated">Kliknutím na tlačidlo "potvrdiť" nižšie stiahnete uvedenú opravu na &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; pri ďalšom prihlásení s @@PRODUCT_NAME@@. (posledné prihlásenie: &lt;b&gt;{1}&lt;/b&gt;; ďalšie očakávané prihlásenie: &lt;b&gt;{2}&lt;/b&gt;.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary.plural" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patches on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in time: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
-        <target/>
+        <target state="translated">Kliknutím na tlačidlo "potvrdiť" nižšie nainštalujete uvedené opravy na &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; pri ďalšom prihlásení s @@PRODUCT_NAME@@. (čas posledného prihlásenia: &lt;b&gt;{1}&lt;/b&gt;; ďalšie očakávané prihlásenie: &lt;b&gt;{2}&lt;/b&gt;.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirmInstall</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.confirminstallpatchsummary" xml:space="preserve">
         <source>Click on the "confirm" button below to install the listed patch on &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; the next time it checks in with @@PRODUCT_NAME@@. (last check-in: &lt;b&gt;{1}&lt;/b&gt;; next expected check-in: &lt;b&gt;{2}&lt;/b&gt;.)</source>
-        <target/>
+        <target state="translated">Kliknutím na tlačidlo "potvrdiť" nižšie nainštalujete uvedenú opravu na &lt;a href="/rhn/systems/details/Overview.do?sid={3}"&gt;{0}&lt;/a&gt; pri ďalšom prihlásení s @@PRODUCT_NAME@@. (posledné prihlásenie: &lt;b&gt;{1}&lt;/b&gt;; ďalšie očakávané prihlásenie: &lt;b&gt;{2}&lt;/b&gt;.)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patches/PatchConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackages" xml:space="preserve">
         <source>Non Compliant</source>
-        <target/>
+        <target state="translated">Nevyhovujúce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagelist.jsp.extrapackagessummary" xml:space="preserve">
         <source>The following packages are installed on this system and are not present in any of its channels.</source>
-        <target/>
+        <target state="translated">V tomto systéme sú nainštalované nasledujúce balíky, ktoré sa nenachádzajú v žiadnom z jeho kanálov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/ForeignPackages</context>
         </context-group>
@@ -3551,28 +3551,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- upgradable.jsp -->
       <trans-unit id="upgradable.jsp.header" xml:space="preserve">
         <source>Upgradable Packages</source>
-        <target/>
+        <target state="translated">Balíky s možnosťou zvýšenia vezie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.summary" xml:space="preserve">
         <source>The following packages on this system are out-of-date and may be upgraded.</source>
-        <target/>
+        <target state="translated">Nasledujúce balíky v tomto systéme sú zastarané a mala by im byť zvýšená verzia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
         <source>Latest Package</source>
-        <target/>
+        <target state="translated">Najnovší balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
-        <target/>
+        <target state="translated">Nainštalovaný balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
