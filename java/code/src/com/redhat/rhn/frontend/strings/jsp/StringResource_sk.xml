@@ -3526,14 +3526,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="upgradable.jsp.errata" xml:space="preserve">
         <source>Related Patches</source>
-        <target/>
+        <target state="translated">Súvisiace opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.upgrade" xml:space="preserve">
         <source>Upgrade Packages</source>
-        <target/>
+        <target state="translated">Zvýšiť verziu balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
@@ -3541,7 +3541,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- package details -->
       <trans-unit id="packagedetails.description" xml:space="preserve">
         <source>Description:</source>
-        <target/>
+        <target state="translated">Popis:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/patchsets/InstallPatchSet</context>
         </context-group>
@@ -3549,21 +3549,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- completedsystems.jsp -->
       <trans-unit id="completedsystems.jsp.completedsystems" xml:space="preserve">
         <source>Completed Systems</source>
-        <target/>
+        <target state="translated">Dokončené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="completedsystems.jsp.nogroups" xml:space="preserve">
         <source>No systems have completed this action.</source>
-        <target/>
+        <target state="translated">Žiadny systém túto akciu nedokončil.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="completedsystems.jsp.completed" xml:space="preserve">
         <source>Completed</source>
-        <target/>
+        <target state="translated">Dokončené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/CompletedSystems</context>
         </context-group>
@@ -3571,14 +3571,14 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- inprogresssystems.jsp -->
       <trans-unit id="inprogresssystems.jsp.inprogresssystems" xml:space="preserve">
         <source>In Progress Systems</source>
-        <target/>
+        <target state="translated">Prebiehajúce systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="inprogresssystems.jsp.nogroups" xml:space="preserve">
         <source>This action is not pending for any systems.</source>
-        <target/>
+        <target state="translated">Táto akcia nečaká v žiadnom systéme.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
@@ -3586,7 +3586,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- failedsystems.jsp -->
       <trans-unit id="failedsystems.jsp.failedsystems" xml:space="preserve">
         <source>Failed Systems</source>
-        <target/>
+        <target state="translated">Neúspešné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
