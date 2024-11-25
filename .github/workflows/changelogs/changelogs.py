@@ -210,11 +210,16 @@ class ChangelogValidator:
             self.bzapi = self.get_bugzilla_api()
 
     def get_bugzilla_api(self) -> bugzilla.Bugzilla:
-        """Initialize and authenticate the Bugzilla API"""
+        """Initialize and authenticate the Bugzilla API
+
+        If BZ_API environment variable not set, return None.
+        """
 
         api_key = os.getenv("BZ_TOKEN")
         if not api_key:
-            raise Exception("Bugzilla API key not set. Please set it in 'BZ_TOKEN' environment variable.")
+            logging.info("Bugzilla API key not set. Skipping Bugzilla validation.")
+            logging.info("Please set it in 'BZ_TOKEN' environment variable.")
+            return None
 
         uri = os.getenv("BUGZILLA_URI", DEFAULT_BUGZILLA_URI)
         try:
@@ -500,7 +505,8 @@ class ChangelogValidator:
                                                 entry.end_line))
 
             # Check Bugzilla trackers via the API
-            issues.extend(self.validate_bsc(entry))
+            if self.bzapi:
+                issues.extend(self.validate_bsc(entry))
 
         # Check if all the trackers mentioned in the
         # PR are also mentioned in the changelogs
