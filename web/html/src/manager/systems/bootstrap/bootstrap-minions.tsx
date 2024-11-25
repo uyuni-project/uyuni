@@ -325,8 +325,8 @@ class BootstrapMinions extends React.Component<Props, State> {
           var errMessage =
             xhr.status === 0
               ? t(
-                  "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
-                )
+                "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+              )
               : Network.errorMessageByStatus(xhr.status);
           this.setState({
             success: false,
@@ -393,7 +393,7 @@ class BootstrapMinions extends React.Component<Props, State> {
     var buttons = [
       <AsyncButton
         id="bootstrap-btn"
-        defaultType="btn-primary"
+        defaultType="btn-primary me-4"
         icon="fa-plus"
         text={t("Bootstrap")}
         disabled={this.state.privKeyLoading}
@@ -401,7 +401,7 @@ class BootstrapMinions extends React.Component<Props, State> {
       />,
       <AsyncButton
         id="clear-btn"
-        defaultType="btn-default pull-right"
+        defaultType="btn-default"
         icon="fa-eraser"
         text={t("Clear fields")}
         action={this.clearFields}
