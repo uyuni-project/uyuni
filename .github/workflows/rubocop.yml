@@ -7,6 +7,8 @@ on:
       - 'testsuite/features/**.rb'
       - 'testsuite/.rubocop.yml'
       - 'testsuite/.rubocop_todo.yml'
+      - 'testsuite/Gemfile'
+      - 'testsuite/Rakefile'
 
 jobs:
   rubocop:
