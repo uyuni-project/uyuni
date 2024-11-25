@@ -13,18 +13,9 @@
   <head>
     <jsp:include page="layout_head.jsp" />
     <decorator:head />
-    <rhn:require acl="is(development_environment)">
-      <link rel="stylesheet/less" type="text/css" href="/css/susemanager-fullscreen.less" />
-      <script>less = { env: 'development' };</script>
-      <script src="/javascript/less.js"></script>
-    </rhn:require>
-    <rhn:require acl="not is(development_environment)">
-      <link rel="stylesheet" href="/css/susemanager-fullscreen.css" />
-    </rhn:require>
   </head>
   <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-  <c:set var="isUpdatedPage" value="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}"/>
-  <body class="theme-${webTheme} ${isUpdatedPage ? 'new-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
+  <body class="theme-${webTheme} new-theme" onload="<decorator:getProperty property="body.onload" />">
     <div id="menu-portal-target"></div>
     <div class="spacewalk-main-column-layout">
       <section id="spacewalk-content">

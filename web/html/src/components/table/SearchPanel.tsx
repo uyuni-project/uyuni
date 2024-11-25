@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { cloneReactElement } from "components/utils";
 
-import styles from "./SearchPanel.module.less";
+import styles from "./SearchPanel.module.scss";
 
 type SearchPanelProps = {
   /** number representing the number of the first displayed item */
