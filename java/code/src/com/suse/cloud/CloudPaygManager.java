@@ -263,16 +263,16 @@ public class CloudPaygManager {
 
         // files of this package should not be modified
         if (hasPackageModifications("csp-billing-adapter-service") ||
-                hasPackageModifications("python3-csp-billing-adapter") ||
-                hasPackageModifications("python3-csp-billing-adapter-local")) {
+                hasPackageModifications("python311-csp-billing-adapter") ||
+                hasPackageModifications("python311-csp-billing-adapter-local")) {
             return false;
         }
         if (cloudProvider.equals(CloudProvider.AWS) &&
-                hasPackageModifications("python3-csp-billing-adapter-amazon")) {
+                hasPackageModifications("python311-csp-billing-adapter-amazon")) {
             return false;
         }
         if (cloudProvider.equals(CloudProvider.AZURE) &&
-                hasPackageModifications("python3-csp-billing-adapter-azure")) {
+                hasPackageModifications("python311-csp-billing-adapter-azure")) {
             return false;
         }
         if (!isServiceRunning("csp-billing-adapter.service")) {
