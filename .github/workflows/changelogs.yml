@@ -96,4 +96,4 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          :warning: No changelog entry has been added. @${{ github.event.pull_request.user.login }}, please add necessary changelog entries with an additional PR.
+          :warning: Some changelog tests have failed. @${{ github.event.pull_request.user.login }}, please review and fix the changelog issues with an additional PR.
