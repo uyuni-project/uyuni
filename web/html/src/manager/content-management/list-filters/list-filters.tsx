@@ -142,7 +142,7 @@ const ListFilters = (props: Props) => {
       className="btn btn-danger"
       disabled={!selectedIdentifiers.length}
       handler={deleteSelectedRows}
-      text={t("Delete selected")}
+      text={t("Delete")}
     />
   );
 

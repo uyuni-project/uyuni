@@ -170,7 +170,14 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
 
   renderButtons() {
     var buttons = [
-      <div className="btn-group pull-right">
+      <Button
+        id="clear-btn"
+        className="btn-default"
+        icon="fa-eraser"
+        text={t("Clear fields")}
+        handler={this.clearFields}
+      />,
+      <div className="pull-right">
         <Button
           id="back"
           className="btn-default"
@@ -179,20 +186,13 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
           title={t("Back")}
           handler={this.props.onCancel}
         />
-        <Button
-          id="clear-btn"
-          className="btn-default"
-          icon="fa-eraser"
-          text={t("Clear fields")}
-          handler={this.clearFields}
-        />
       </div>,
     ];
     if (this.isEdit()) {
       buttons.unshift(
         <SubmitButton
           id="update-btn"
-          className="btn-primary"
+          className="btn-primary me-4"
           icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
@@ -202,7 +202,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="create-btn"
-          className="btn-primary"
+          className="btn-primary me-4"
           icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}
