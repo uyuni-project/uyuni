@@ -17,11 +17,12 @@ java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
 java/buildconf/tempjars/*
 java/.checkstyle
-java/.classpath
+**/.classpath
 java/.externalToolBuilders
 java/.pmd
 java/.project
-java/.settings/*
+**/.settings/*
+**/.factorypath
 java/conf/eclipse/bin
 java/conf/eclipse/.project
 java/rhnwebapp
