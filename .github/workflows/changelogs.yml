@@ -69,6 +69,7 @@ jobs:
         echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
         exit 1
     - name: Test changelog entries
+      if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BZ_TOKEN: ${{ secrets.BUGZILLA_TOKEN }}
