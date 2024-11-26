@@ -50,7 +50,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 1
-        ref: ${{ github.event.pull_request.head.sha }}
     - id: master
       name: Get modified master changelog files
       uses: Ana06/get-changed-files@v2.3.0
@@ -68,8 +67,17 @@ jobs:
         echo
         echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
         exit 1
-    - name: Test changelog entries
+    - name: Checkout the HEAD branch
+      id: checkout
       if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
+      # Check out the PR HEAD in a subdirectory to read the updated changelog files
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: .head
+    - name: Test changelog entries
+      if: steps.checkout.outcome == 'success'
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BZ_TOKEN: ${{ secrets.BUGZILLA_TOKEN }}
@@ -83,7 +91,7 @@ jobs:
 
         CHANGED_FILES=$(gh pr diff -R $GIT_REPO $PR_NUM --name-only)
         python .github/workflows/changelogs/changelogs.py \
-            --tracker-file $TRACKER_FILE --git-repo $GIT_REPO --pr-number $PR_NUM $CHANGED_FILES
+            --tracker-file $TRACKER_FILE --git-repo $GIT_REPO --uyuni-dir .head --pr-number $PR_NUM $CHANGED_FILES
 
   # Warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
