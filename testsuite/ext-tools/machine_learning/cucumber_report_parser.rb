@@ -1,7 +1,7 @@
 # Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-require 'csv'
+require 'base64'
 require 'json'
 require 'nokogiri'
 require 'optparse'
@@ -43,9 +43,9 @@ def extract_dataset_from_json(json_report_path)
         time: (scenario['steps'].sum { |step| step['result']['duration'] || 0 } / 1_000_000_000.0).round
       }
 
-      scenario_data[:error_message] = scenario['steps'].last['result']['error_message'] if scenario['steps'].last['result'].key?('error_message')
+      scenario_data[:error_message] = Base64.encode64(scenario['steps'].last['result']['error_message']) if scenario['steps'].last['result'].key?('error_message')
       scenario_data[:tags] = scenario['tags'].map { |tag| tag['name'][1..] } if scenario.key?('tags')
-      scenario_data[:logs] = logs unless logs.empty?
+      scenario_data[:logs] = Base64.encode64(logs.to_s) unless logs.empty?
       scenario_data[:screenshots] = screenshots unless screenshots.empty?
 
       if scenario['before'] && scenario['before'].size > 3 && scenario['before'][3].key?('output')
@@ -79,7 +79,7 @@ parser =
       options[:report_path] = f
     end
 
-    opts.on('-o', '--output_path PATH', 'Path to the processed report file (CSV format)') do |f|
+    opts.on('-o', '--output_path PATH', 'Path to the processed report file (JSON format)') do |f|
       options[:output_path] = f
     end
 
@@ -98,9 +98,4 @@ if options[:report_path].nil? || options[:output_path].nil?
 end
 
 dataset = extract_dataset_from_json(options[:report_path])
-CSV.open(options[:output_path], 'w') do |csv|
-  csv << dataset.first.keys
-  dataset.each do |entry|
-    csv << [entry[:label], entry[:description].to_json]
-  end
-end
+File.write(options[:output_path], dataset.to_json)

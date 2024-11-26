@@ -4,6 +4,7 @@
 # Collect all the issues from a GitHub project board column
 # and tag the corresponding Cucumber feature files with a given tag
 
+require 'base64'
 require 'csv'
 require 'find'
 require 'json'
@@ -146,18 +147,15 @@ module GithubProjectBoard
       # end
       if status_field && status_field['item'] && status_field['item']['content']
         title = clean_text(status_field['item']['content']['title'])
-        description = clean_text(status_field['item']['content']['bodyText'])
-        comments = status_field['item']['content']['comments']['nodes'].map { |node| clean_text(node['body']) }
+        description = Base64.encode64(clean_text(status_field['item']['content']['bodyText']))
+        comments = Base64.encode64(status_field['item']['content']['comments']['nodes'].map { |node| clean_text(node['body']) }.to_s)
         matches = title.match(/Feature:(.*)\s*\|\s*Scenario:(.*)/)
-        gh_issue_content = {}
-        if matches.nil?
-          gh_issue_content[:title] = title
-        else
-          gh_issue_content[:feature] = matches[1].strip
-          gh_issue_content[:scenario] = matches[2].strip
-        end
-        gh_issue_content[:description] = description
-        gh_issue_content[:comments] = comments
+        gh_issue_content = {
+          feature: matches.nil? ? title : matches[1].strip,
+          scenario: matches.nil? ? title : matches[2].strip,
+          description: description,
+          comments: comments
+        }
         dataset.push({ label: label_mapping[label], description: gh_issue_content })
         puts "\e[36mCard found\e[0m => #{title}"
       else
@@ -227,20 +225,20 @@ def main
     OptionParser.new do |opts|
       opts.banner = 'Usage: ruby gh_issues_parser.rb [options]'
 
-      opts.on('-g', '--generate-dataset', 'Generate a dataset from GitHub project board issues') do
+      opts.on('-g', '--generate_dataset', 'Generate a dataset from GitHub project board issues') do
         options[:generate_dataset] = true
       end
 
-      opts.on('-c', '--collect-and-tag', 'Collect flaky tests and tag Cucumber features') do
+      opts.on('-c', '--collect_and_tag', 'Collect flaky tests and tag Cucumber features') do
         options[:collect_and_tag] = true
       end
 
-      opts.on('-d', '--directory-path PATH', 'Directory path to search for Cucumber feature files') do |path|
+      opts.on('-d', '--directory_path PATH', 'Directory path to search for Cucumber feature files') do |path|
         options[:directory_path] = path
       end
 
-      opts.on('-f', '--file-path PATH', 'File path to store the dataset (CSV format)') do |path|
-        options[:file_path] = path
+      opts.on('-o', '--output_path PATH', 'File path to store the dataset (JSON format)') do |path|
+        options[:output_path] = path
       end
 
       opts.on('-h', '--help', 'Show this help message') do
@@ -252,17 +250,17 @@ def main
   parser.parse!
 
   unless options[:generate_dataset] || options[:collect_and_tag]
-    puts 'Please specify either --generate-dataset or --collect-and-tag'
+    puts 'Please specify either --generate_dataset or --collect_and_tag'
     exit 1
   end
 
-  if options[:generate_dataset] && !options[:file_path]
-    puts 'Please specify the file path using --file-path'
+  if options[:generate_dataset] && !options[:output_path]
+    puts 'Please specify the file path using --output_path'
     exit 1
   end
 
   if options[:collect_and_tag] && !options[:directory_path]
-    puts 'Please specify the file path using --directory-path'
+    puts 'Please specify the file path using --directory_path'
     exit 1
   end
 
@@ -287,12 +285,7 @@ def main
 
   if options[:generate_dataset]
     dataset = GithubProjectBoard.generate_dataset(organization, project_number, headers)
-    CSV.open(options[:file_path], 'w') do |csv|
-      csv << dataset.first.keys
-      dataset.each do |entry|
-        csv << [entry[:label], entry[:description].to_json]
-      end
-    end
+    File.write(options[:output_path], dataset.to_json)
   elsif options[:collect_and_tag]
     columns = {
       'New' => 'new_issue',
