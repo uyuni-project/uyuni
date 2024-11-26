@@ -50,6 +50,8 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 1
+        # Checkout only workflow code
+        sparse-checkout: '.github/workflows'
     - id: master
       name: Get modified master changelog files
       uses: Ana06/get-changed-files@v2.3.0
