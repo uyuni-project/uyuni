@@ -513,13 +513,16 @@ Then(/^the salt event log on server should contain no failures$/) do
   raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
+  # ignore the error if there is only the expected hoag-dummy package lock installation failure from min_salt_lock_packages.feature
   output, _code = get_target('server').run("python3 /tmp/#{file}")
-  count_failures = output.to_s.scan(/false/).length
-  output = output.join.to_s if output.respond_to?(:join)
-  # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
-  ignore_error = false
-  ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
-  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+  filtered_output = output
+    .split(/(?=# Failure \d+)/)
+    .reject { 
+      |block| block.include?('remove lock to allow installation of hoag-dummy')
+    }
+  count_failures = filtered_output.to_s.scan(/false/).length
+  filtered_output = filtered_output.join.to_s if filtered_output.respond_to?(:join)
+  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{filtered_output}\n" if count_failures.nonzero?
 end
 
 # salt-ssh steps
