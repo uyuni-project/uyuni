@@ -89,7 +89,7 @@ jobs:
       run: |
         pip install python-bugzilla~=3.2.0
 
-        CHANGED_FILES=$(gh pr diff -R $GIT_REPO $PR_NUM --name-only)
+        CHANGED_FILES=$(gh api --paginate repos/$GIT_REPO/pulls/$PR_NUM/files | jq -r '.[].filename')
         python .github/workflows/changelogs/changelogs.py \
             --tracker-file $TRACKER_FILE --git-repo $GIT_REPO --uyuni-dir .head --pr-number $PR_NUM $CHANGED_FILES
 
