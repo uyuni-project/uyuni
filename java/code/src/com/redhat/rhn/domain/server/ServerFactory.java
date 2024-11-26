@@ -380,28 +380,52 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static boolean insertServersToGroup(List<Long> serverIds, Long sgid) {
-        WriteMode m = ModeFactory.getWriteMode(SYSTEM_QUERIES, "add_servers_to_server_group");
+        String sql = """
+                    INSERT INTO rhnServerGroupMembers (server_id, server_group_id)
+                    SELECT S.id AS server_id, :sgid
+                    FROM rhnServerGroup SG
+                    JOIN rhnServer S ON S.org_id = SG.org_id
+                    WHERE S.id IN (:serverIds)
+                    AND SG.id = :sgid
+                    AND NOT EXISTS (
+                       SELECT 1
+                       FROM rhnServerGroupMembers SGM
+                       WHERE SGM.server_id = S.id
+                       AND SGM.server_group_id = SG.id
+                    )
+                    ON CONFLICT (server_id, server_group_id) DO NOTHING
+                    """;
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sgid);
+            // Create a native query
+            Query<Object> query = HibernateFactory.getSession().createNativeQuery(sql, Object.class);
 
-        int insertsCount = m.executeUpdate(params, serverIds);
+            // Set parameters for the query
+            query.setParameter("sgid", sgid);
+            query.setParameter("serverIds", serverIds);
 
-        if (insertsCount > 0) {
-            updateCurrentMembersOfServerGroup(sgid, insertsCount);
-            return true;
-        }
-        return false;
+            // Execute the update
+            int insertsCount = query.executeUpdate();
+
+            if (insertsCount > 0) {
+                // Update the current members if there were inserts
+                updateCurrentMembersOfServerGroup(HibernateFactory.getSession(), sgid, insertsCount);
+                return true;
+            }
+            return false;
     }
 
-    private static void updateCurrentMembersOfServerGroup(Long sgid, int membersCount) {
-        WriteMode mode = ModeFactory.getWriteMode(SYSTEM_QUERIES, "update_current_members_of_server_group");
+    private static void updateCurrentMembersOfServerGroup(Session session, Long sgid, int membersCount) {
+        // Native query to update the current members count
+        String updateSql = """
+                UPDATE rhnServerGroup
+                SET current_members = :members_count
+                WHERE id = :sgid
+                """;
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("sgid", sgid);
-        params.put("members_count", membersCount);
-
-        mode.executeUpdate(params);
+        Query<Object> updateQuery = session.createNativeQuery(updateSql, Object.class);
+        updateQuery.setParameter("sgid", sgid);
+        updateQuery.setParameter("members_count", membersCount);
+        updateQuery.executeUpdate();
     }
 
     private static void updatePermissionsForServerGroup(Long sgid) {
@@ -474,7 +498,7 @@ public class ServerFactory extends HibernateFactory {
         int removesCount = m.executeUpdate(params, serverIds);
 
         if (removesCount > 0) {
-            updateCurrentMembersOfServerGroup(sgid, -removesCount);
+            updateCurrentMembersOfServerGroup(HibernateFactory.getSession(), sgid, -removesCount);
             return true;
         }
         return false;

@@ -17,13 +17,45 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+
 /**
  * OrgAdminManagement
  */
-public class OrgAdminManagement extends BaseDomainHelper {
+@Entity
+@Table(name = "rhnOrgAdminManagement")
+public class OrgAdminManagement extends BaseDomainHelper implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "org_id")
     private Long orgId;
+
+    @OneToOne
+    @JoinColumn(name = "org_id", insertable = false, updatable = false)
+    private Org org;  // The foreign key relationship with Org entity
+
+    @Column(name = "enabled", nullable = false)
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     private boolean enabled;
+
+    public Org getOrg() {
+        return org;
+    }
+
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
 
     /**
      * @return Returns the orgId.

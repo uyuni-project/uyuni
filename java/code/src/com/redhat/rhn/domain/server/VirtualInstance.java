@@ -20,6 +20,8 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
+
 /**
  * VirtualInstance represents a virtual guest system. When the guest is
  * registered, there is an associated {@link Server} that contains additional
@@ -30,7 +32,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * being implemented in the RHN 500 release.
  *
  */
-public class VirtualInstance extends BaseDomainHelper {
+public class VirtualInstance extends BaseDomainHelper implements Serializable {
 
     private static final VirtualInstanceInfo NULL_INFO = new VirtualInstanceInfo();
 

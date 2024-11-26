@@ -33,13 +33,17 @@ import org.hibernate.query.Query;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.NoResultException;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -52,6 +56,22 @@ import jakarta.persistence.criteria.Root;
  * MinionFactory - the singleton class used to fetch and store
  * com.redhat.rhn.domain.server.MinionServer objects from the database.
  */
+@SqlResultSetMapping(
+        name = "findMinionServers",
+        classes = {
+                @ConstructorResult(
+                        targetClass = MinionServer.class,
+                        columns = {
+                                @ColumnResult(name = "server_id", type = Long.class),
+                                @ColumnResult(name = "minion_id", type = String.class),
+                                @ColumnResult(name = "os_family", type = String.class),
+                                @ColumnResult(name = "kernel_live_version", type = String.class),
+                                @ColumnResult(name = "ssh_push_port", type = Integer.class),
+                                @ColumnResult(name = "reboot_required_after", type = Date.class),
+                        }
+                )
+        }
+)
 public class MinionServerFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(MinionServerFactory.class);
@@ -67,7 +87,7 @@ public class MinionServerFactory extends HibernateFactory {
             return List.of();
         }
 
-        String sql = "SELECT DISTINCT * FROM rhnServer WHERE org_id = :orgId";
+        String sql = "SELECT DISTINCT * FROM suseMinionInfo WHERE org_id = :orgId";
 
         TypedQuery<MinionServer> query
                 = getSession().createNativeQuery(sql, MinionServer.class);
@@ -102,7 +122,7 @@ public class MinionServerFactory extends HibernateFactory {
         if (machineId == null) {
             return Optional.empty();
         }
-        String sql = "SELECT * FROM rhnServer WHERE machine_id = :machineId";
+        String sql = "SELECT * FROM suseMinionInfo WHERE machine_id = :machineId";
 
         TypedQuery<MinionServer> query
                 = getSession().createNativeQuery(sql, MinionServer.class);
@@ -125,10 +145,12 @@ public class MinionServerFactory extends HibernateFactory {
      * @return server corresponding to the given machine_id
      */
     public static Optional<MinionServer> findByMinionId(String minionId) {
-        String sql = "SELECT * FROM rhnServer WHERE id = :minionId";
         MinionServer result
-                = (MinionServer) getSession().createNativeQuery(sql, MinionServer.class)
-                        .setParameter("minionId", Integer.parseInt(minionId)).getSingleResult();
+                = getSession().createQuery("""
+                        SELECT m FROM MinionServer m WHERE m.minionId = :minionId
+                        """,
+                        MinionServer.class)
+                        .setParameter("minionId", minionId).getSingleResult();
         return Optional.ofNullable(result);
     }
 
@@ -137,11 +159,10 @@ public class MinionServerFactory extends HibernateFactory {
      *
      * @return a list of all minions
      */
-    @SuppressWarnings("unchecked")
     public static List<MinionServer> listMinions() {
-        String sql = "SELECT DISTINCT * FROM rhnServer";
+        String sql = "SELECT DISTINCT * FROM suseMinionInfo";
         TypedQuery<MinionServer> query
-                = getSession().createNativeQuery(sql, MinionServer.class);
+                = getSession().createNativeQuery(sql, "findMinionServers", MinionServer.class);
         return query.getResultList();
     }
 
@@ -191,11 +212,11 @@ public class MinionServerFactory extends HibernateFactory {
      * @return map of SSH minion id and its contact method
      */
     public static List<MinionServer> listSSHMinions() {
-        String sql = "SELECT ms.* FROM minion_server ms " +
+        String sql = "SELECT ms.* FROM suseMinionInfo ms " +
         "JOIN contact_method cm ON ms.contact_method_id = cm.id " +
         "WHERE cm.label IN (:labels)";
 
-        return HibernateFactory.getSession().createNativeQuery(sql, MinionServer.class)
+        return HibernateFactory.getSession().createNativeQuery(sql, "findMinionServers", MinionServer.class)
                 .setParameter("labels", Arrays.asList("ssh-push", "ssh-push-tunnel"))
                 .getResultList();
     }
@@ -262,7 +283,7 @@ public class MinionServerFactory extends HibernateFactory {
                    c.label AS contactMethodLabel,
                    s.os AS os
             FROM rhnServerAction sa
-            JOIN rhnServer s ON sa.server_id = s.id
+            JOIN suseMinionInfo s ON sa.server_id = s.server_id
             JOIN suseServerContactMethod c ON s.contact_method_id = c.id
             WHERE sa.action_id = :id
             AND sa.status IN (:allowedStatues)

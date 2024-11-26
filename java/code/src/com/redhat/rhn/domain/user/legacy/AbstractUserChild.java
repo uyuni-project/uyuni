@@ -17,11 +17,13 @@ package com.redhat.rhn.domain.user.legacy;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.io.Serializable;
+
 /**
  * Class that contains webUserId field to be used by children of the User object
  * (parent key)
  */
-public abstract class AbstractUserChild extends BaseDomainHelper {
+public abstract class AbstractUserChild extends BaseDomainHelper implements Serializable {
     private Long webUserId;
 
     /**

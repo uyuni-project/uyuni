@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ import java.util.Set;
  * and ancillary tables.
  * DB table: web_contact
  */
-public interface User {
+public interface User extends Serializable {
     /**
      * Gets the current value of id
      * @return long the current value

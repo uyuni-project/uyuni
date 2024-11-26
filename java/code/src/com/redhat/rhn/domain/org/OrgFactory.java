@@ -308,10 +308,14 @@ public class OrgFactory extends HibernateFactory {
      * @return the Template found
      */
     public static TemplateString lookupTemplateByLabel(String label) {
+        // Obtain the current Hibernate session
         Session session = HibernateFactory.getSession();
-        return (TemplateString) session.getNamedQuery("TemplateString.findByLabel")
+
+        // Execute the native SQL query
+        return (TemplateString) session.createNativeQuery(
+                        "SELECT * FROM RHNTEMPLATESTRING t WHERE t.label = :label", TemplateString.class)
                 .setParameter("label", label)
-                //Retrieve from cache if there
+                // Retrieve from cache if available
                 .setCacheable(true)
                 .uniqueResult();
     }

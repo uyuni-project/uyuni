@@ -21,7 +21,7 @@ hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 hibernate.connection.driver_class = org.postgresql.Driver
 hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
-# hibernate.show_sql = true
+hibernate.show_sql = true
 hibernate.use_outer_join = true
 hibernate.jdbc.batch_size = 0
 hibernate.cache.use_query_cache=false
@@ -34,7 +34,7 @@ reporting.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 reporting.hibernate.connection.driver_class = org.postgresql.Driver
 reporting.hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
-# reporting.hibernate.show_sql = true
+reporting.hibernate.show_sql = true
 reporting.hibernate.use_outer_join = true
 reporting.hibernate.jdbc.batch_size = 0
 reporting.hibernate.cache.use_query_cache=false

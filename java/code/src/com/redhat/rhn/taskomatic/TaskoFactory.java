@@ -430,39 +430,42 @@ public class TaskoFactory extends HibernateFactory {
      * @return the latest run or null if none exists
      */
     public static TaskoRun getLatestRun(String bunchName) {
-        // Obtain CriteriaBuilder from EntityManager
-        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+        String sql =
+                """
+                        SELECT tr.id, tr.created, tr.end_time, tr.modified, tr.org_id, tr.schedule_id, tr.start_time,
+                        tr.status, tr.template_id
+                        FROM rhnTaskoRun tr
+                        WHERE tr.template_id IN (
+                          SELECT tt.id
+                          FROM rhnTaskoTemplate tt
+                          WHERE tt.bunch_id = (
+                            SELECT tb.id
+                            FROM rhnTaskoBunch tb
+                            WHERE tb.name = :bunchName
+                          )
+                        )
+                        AND tr.status IN (:status1, :status2, :status3)
+                        ORDER BY tr.start_time DESC, tr.id DESC
+                        LIMIT 1
+                        """;
 
-        // Main query to fetch TaskoRun
-        CriteriaQuery<TaskoRun> query = cb.createQuery(TaskoRun.class);
-        Root<TaskoRun> taskoRunRoot = query.from(TaskoRun.class);
+        // Create the native query
+        Query<TaskoRun> query = getSession().createNativeQuery(sql, TaskoRun.class);
 
-        // Subquery to fetch TaskoBunch IDs
-        Subquery<Long> bunchIdsSubquery = query.subquery(Long.class);
-        Root<TaskoBunch> bunchRoot = bunchIdsSubquery.from(TaskoBunch.class);
-        bunchIdsSubquery.select(bunchRoot.get("id"))
-                .where(cb.equal(bunchRoot.get("name"), bunchName));
+        // Set the parameters for bunchName and status
+        query.setParameter("bunchName", bunchName);
+        query.setParameter("status1", TaskoRun.STATUS_RUNNING);
+        query.setParameter("status2", TaskoRun.STATUS_FINISHED);
+        query.setParameter("status3", TaskoRun.STATUS_INTERRUPTED);
 
-        // Subquery to fetch TaskoTemplate IDs
-        Subquery<Long> templateIdsSubquery = query.subquery(Long.class);
-        Root<TaskoTemplate> templateRoot = templateIdsSubquery.from(TaskoTemplate.class);
-        templateIdsSubquery.select(templateRoot.get("id"))
-                .where(cb.equal(templateRoot.get("bunch").get("id"), bunchIdsSubquery));
-
-        // Add criteria to main query
-        query.select(taskoRunRoot)
-                .where(taskoRunRoot.get("template").get("id").in(templateIdsSubquery), // Use IN here correctly
-                        taskoRunRoot.get("status").in(TaskoRun.STATUS_RUNNING, TaskoRun.STATUS_FINISHED, TaskoRun.STATUS_INTERRUPTED))
-                .orderBy(cb.desc(taskoRunRoot.get("startTime")),
-                        cb.desc(taskoRunRoot.get("id")));
-
-        // Create and execute the query
-        TypedQuery<TaskoRun> typedQuery = getSession().createQuery(query);
-        typedQuery.setFirstResult(0);  // Starting from the first result
-        typedQuery.setMaxResults(1);   // Only fetch one result (the latest)
-
-        // Return the result (the latest TaskoRun)
-        return typedQuery.getSingleResult();
+        // Execute the query and return the result (or null if no result is found)
+        try {
+            return (TaskoRun) query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            // Handle the case where no result is found
+            return null;
+        }
     }
 
     /**

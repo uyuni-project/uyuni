@@ -88,7 +88,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
             query.setParameter("org_id", org.getId());
         }
         else {
-            query.setParameter("org",   -1 );
+            query.setParameter("org",   -1);
         }
 
         try {

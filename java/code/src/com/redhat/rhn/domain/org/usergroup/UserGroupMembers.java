@@ -14,23 +14,41 @@
  */
 package com.redhat.rhn.domain.org.usergroup;
 
-import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+
 
 /**
  * UserGroupMembers
  */
-public class UserGroupMembers extends BaseDomainHelper implements Serializable {
+@Entity
+@Table(name = "rhnUserGroupMembers", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "user_group_id"})
+})
+public class UserGroupMembers implements Serializable {
+    @EmbeddedId
+    private UserGroupMembersId id;
 
-    private User user;
-    private UserGroup userGroup;
-    private boolean temporary;
+    @Column(name = "user_id", insertable = false)
+    private UserImpl user;
+
+    @Column(name = "user_group_id", insertable = false)
+    private UserGroupImpl userGroup;
+
+    @Column(name = "temporary", insertable = false, updatable = false, nullable = false)
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
+    private boolean temporary = false; // default value to avoid nulls
 
     /**
      * Constructor
@@ -44,10 +62,11 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
      * @param userIn user
      * @param ugIn user group
      */
-    public UserGroupMembers(User userIn, UserGroup ugIn) {
+    public UserGroupMembers(UserImpl userIn, UserGroupImpl ugIn) {
+        id = new UserGroupMembersId(userIn, ugIn, false);
         user = userIn;
         userGroup = ugIn;
-        temporary = false;
+        this.setTemporary(false);
     }
 
     /**
@@ -56,50 +75,53 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
      * @param ugIn user group
      * @param tempIn temporary flag
      */
-    public UserGroupMembers(User userIn, UserGroup ugIn, boolean tempIn) {
+    public UserGroupMembers(UserImpl userIn, UserGroupImpl ugIn, boolean tempIn) {
+        id = new UserGroupMembersId(userIn, ugIn, tempIn);
         user = userIn;
         userGroup = ugIn;
-        temporary = tempIn;
+        this.setTemporary(temporary);
     }
 
     /**
      * @return Returns the user.
      */
-    public User getUser() {
+    public UserImpl getUser() {
         return user;
     }
 
     /**
      * @param userIn The user to set.
      */
-    public void setUser(User userIn) {
+    public void setUser(UserImpl userIn) {
         user = userIn;
     }
 
     /**
      * @return Returns the userGroup.
      */
-    public UserGroup getUserGroup() {
+    public UserGroupImpl getUserGroup() {
         return userGroup;
     }
 
     /**
      * @param userGroupIn The userGroup to set.
      */
-    public void setUserGroup(UserGroup userGroupIn) {
+    public void setUserGroup(UserGroupImpl userGroupIn) {
         userGroup = userGroupIn;
     }
 
     /**
      * @return Returns the temporary.
      */
-    public boolean getTemporary() {
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
+    public boolean isTemporary() {
         return temporary;
     }
 
     /**
      * @param temporaryIn The temporary to set.
      */
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
     public void setTemporary(boolean temporaryIn) {
         temporary = temporaryIn;
     }
@@ -126,7 +148,16 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
         return new HashCodeBuilder()
             .append(this.getUser())
             .append(this.getUserGroup())
-            .append(this.getTemporary())
+            .append(this.isTemporary())
             .toHashCode();
     }
+
+    public UserGroupMembersId getId() {
+        return id;
+    }
+
+    public void setId(UserGroupMembersId idIn) {
+        id = idIn;
+    }
+
 }
