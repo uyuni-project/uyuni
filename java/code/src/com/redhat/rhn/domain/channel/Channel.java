@@ -70,6 +70,7 @@ import jakarta.persistence.Transient;
 @Entity
 @Table(name = "rhnChannel")
 @Inheritance(strategy = InheritanceType.JOINED)
+
 public class Channel extends BaseDomainHelper implements Comparable<Channel> {
 
     /**

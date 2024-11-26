@@ -384,25 +384,19 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label, Org org,
             ConfigChannelType cct) {
         String sql
-                = "SELECT * FROM rhnserverconfigchannel WHERE org = :org" +
-                "AND label = :label AND config_channel_type = :cct";
+                = """
+                SELECT * FROM rhnConfigChannel WHERE org_id = :org_id
+                AND label = :label AND confchan_type_id = :cct
+                """;
 
         TypedQuery<ConfigChannel> query
                 = getSession().createNativeQuery(sql, ConfigChannel.class);
 
-        query.setParameter("org", org);
+        query.setParameter("org_id", org.getId());
         query.setParameter("label", label);
-        query.setParameter("cct", cct);
+        query.setParameter("cct", cct.getId());
 
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error retrieving ConfigChannel", e);
-        }
+        return query.getSingleResult();
     }
 
     /**
@@ -527,8 +521,9 @@ public class ConfigurationFactory extends HibernateFactory {
      */
      static ConfigChannelType lookupConfigChannelTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (ConfigChannelType)
-            session.getNamedQuery("ConfigChannelType.findByLabel")
+        return session.createNativeQuery("""
+                                        SELECT * FROM rhnConfigChannelType where label = :label
+                                        """, ConfigChannelType.class)
                                         .setParameter("label", label)
                                         //Retrieve from cache if there
                                         .setCacheable(true)

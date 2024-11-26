@@ -283,7 +283,7 @@ public class MinionServerFactory extends HibernateFactory {
                    c.label AS contactMethodLabel,
                    s.os AS os
             FROM rhnServerAction sa
-            JOIN suseMinionInfo s ON sa.server_id = s.server_id
+            JOIN rhnServer s ON sa.server_id = s.id
             JOIN suseServerContactMethod c ON s.contact_method_id = c.id
             WHERE sa.action_id = :id
             AND sa.status IN (:allowedStatues)

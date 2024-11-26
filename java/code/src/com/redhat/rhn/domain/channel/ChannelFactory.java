@@ -35,6 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -127,8 +128,29 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null || userIn == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndUserId",
-                Map.of(LABEL, label, "userId", userIn.getId()));
+        Session session = HibernateFactory.getSession();
+
+        Query<Channel> query = session.createNativeQuery("""
+                SELECT c.*, c_1_.original_id,
+                       CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                         FROM rhnChannel c
+                        LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                                     WHERE c.label = :label AND
+                                       EXISTS (SELECT 1
+                                               FROM suseChannelUserRoleView scur
+                                               WHERE scur.channel_id = c.id AND
+                                                     scur.user_id = :userId AND
+                                                     scur.deny_reason IS NULL)
+                """, Channel.class)
+                .setCacheable(false)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelSyncFlag.class)
+                .setParameter("label", label)
+                .setParameter("userId", userIn.getId());
+        return query.uniqueResult();
+
+//        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndUserId",
+  //              Map.of(LABEL, label, "userId", userIn.getId()));
     }
 
     /**
