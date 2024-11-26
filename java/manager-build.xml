@@ -604,4 +604,30 @@
             </fileset>
         </copy>
     </target>
+
+    <!-- Print a notice when using the old targets -->
+    <target name="deploy-container">
+        <echo message="This target is obsolete and will be removed. Please use:" />
+        <echo message="         ant -f manager-build.xml -Ddeploy.mode=container deploy" />
+    </target>
+
+    <target name="deploy-static-resources-container">
+        <echo message="This target is obsolete and will be removed. Please use:" />
+        <echo message="         ant -f manager-build.xml -Ddeploy.mode=container deploy-static-resources" />
+    </target>
+
+    <target name="restart-tomcat-container">
+        <echo message="This target is obsolete and will be removed. Please use:" />
+        <echo message="         ant -f manager-build.xml -Ddeploy.mode=container restart-tomcat" />
+    </target>
+
+    <target name="restart-taskomatic-container">
+        <echo message="This target is obsolete and will be removed. Please use:" />
+        <echo message="         ant -f manager-build.xml -Ddeploy.mode=container restart-taskomatic" />
+    </target>
+
+    <target name="deploy-restart-container">
+        <echo message="This target is obsolete and will be removed. Please use:" />
+        <echo message="         ant -f manager-build.xml -Ddeploy.mode=container deploy-restart" />
+    </target>
 </project>
