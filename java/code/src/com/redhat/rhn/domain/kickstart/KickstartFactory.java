@@ -733,7 +733,13 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartSession lookupKickstartSessionByServer(Long sidIn) {
         Session session = HibernateFactory.getSession();
-        List<KickstartSession> ksessions = session.getNamedQuery("KickstartSession.findByServer")
+        List<KickstartSession> ksessions = session.createNativeQuery("""
+                           SELECT * FROM rhnKickStartSession WHERE
+                           new_server_id = :server
+                           OR host_server_id = :server 
+                           ORDER BY CREATED DESC
+                """,
+                        KickstartSession.class)
                 .setParameter("server", sidIn)
                 .list();
         if (!ksessions.isEmpty()) {
