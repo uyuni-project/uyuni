@@ -127,7 +127,7 @@
             <!-- Extract to the temporary directory -->
             <echo message="Executing sh -c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;" level="verbose"/>
             <exec failonerror="true" executable="sh" logerror="true">
-                <arg line="-c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/'&quot;"/>
+                <arg line="-c &quot;tar c -C @{source} -f - . | ${deploy.executor.command} ${deploy.executor.parameters} 'tar xf - -C ${deploy.temp.dir}/ --no-same-owner --no-same-permissions'&quot;"/>
             </exec>
             <!-- Use rsync to synchronize the folder -->
             <deploy-execute command="rsync -a @{syncParameters} ${deploy.temp.dir}/ @{destination}" />
