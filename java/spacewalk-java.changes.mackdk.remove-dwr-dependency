@@ -1,0 +1,1 @@
+- Remove DWR from the package dependency since it's no longer used
