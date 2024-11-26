@@ -14,7 +14,7 @@ artifacts:
   - artifact: asm
     package: objectweb-asm
     jar: asm-all
-    repository: Uyuni_Other
+    repository: Leap_sle
   - artifact: antlr
     package: antlr-java
     repository: Leap
@@ -104,11 +104,11 @@ artifacts:
     package: hibernate-types
     repository: Uyuni_Other
   - artifact: jackson-annotations
-    repository: Leap
+    repository: Leap_sle
   - artifact: jackson-core
-    repository: Leap
+    repository: Leap_sle
   - artifact: jackson-databind
-    repository: Leap
+    repository: Leap_sle
   - artifact: hibernate-commons-annotations
     repository: Uyuni_Other
   - artifact: hibernate-core
