@@ -94,7 +94,6 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
 BuildRequires:  dom4j
-BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
 BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
@@ -180,7 +179,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       dwr >= 3
 Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
@@ -583,8 +581,6 @@ install -m 644 conf/cobbler/snippets/redhat_register_using_salt    %{buildroot}%
 install -m 644 conf/cobbler/snippets/minion_script    %{buildroot}%{spacewalksnippetsdir}/minion_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks %{buildroot}%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script %{buildroot}%{spacewalksnippetsdir}/wait_for_networkmanager_script
-
-ln -s -f %{_javadir}/dwr.jar %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
