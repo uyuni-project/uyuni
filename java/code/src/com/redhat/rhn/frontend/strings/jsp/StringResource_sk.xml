@@ -3593,42 +3593,42 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="failedsystems.jsp.summary" xml:space="preserve">
         <source>The following systems have failed this action. You may reschedule the action, but you should ensure that whatever caused the failure has been solved before rescheduling.</source>
-        <target/>
+        <target state="translated">Nasledujúce systémy zlyhali pri tejto akcii. Akciu môžete preplánovať, ale pred preplánovaním by ste sa mali uistiť, že príčina zlyhania bola vyriešená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.nosystems" xml:space="preserve">
         <source>No systems have failed this action.</source>
-        <target/>
+        <target state="translated">Žiadny systém pri tejto akcii nezlyhal.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.failed" xml:space="preserve">
         <source>Failed</source>
-        <target/>
+        <target state="translated">Neúspešné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.message" xml:space="preserve">
         <source>Message</source>
-        <target/>
+        <target state="translated">Správa</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="failedsystems.jsp.rescheduleactions" xml:space="preserve">
         <source>Reschedule All</source>
-        <target/>
+        <target state="translated">Preplánovať všetko</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/FailedSystems</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.allerrata" xml:space="preserve">
         <source>All Types</source>
-        <target/>
+        <target state="translated">Všetky typy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
         </context-group>
@@ -3636,28 +3636,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- == AUDIT == -->
       <trans-unit id="audit.overview.jsp.header" xml:space="preserve">
         <source>Audit Information</source>
-        <target/>
+        <target state="translated">Informácie o audite</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="audit.jsp.alt" xml:space="preserve">
         <source>Audit Icon</source>
-        <target/>
+        <target state="translated">Ikona auditu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auditsearch.jsp.header" xml:space="preserve">
         <source>Audit Search</source>
-        <target/>
+        <target state="translated">Vyhľadanie auditu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="auditview.jsp.norecords" xml:space="preserve">
         <source>No audit records found!</source>
-        <target/>
+        <target state="translated">Nenašli sa žiadne záznamy auditu!</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/Search.do</context>
         </context-group>
@@ -3665,7 +3665,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       <!-- == ERRATA == -->
       <trans-unit id="erratalist.jsp.noerrata" xml:space="preserve">
         <source>No Patches</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Žiadne opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
