@@ -516,7 +516,7 @@ Then(/^the salt event log on server should contain no failures$/) do
   # ignore the error if there is only the expected hoag-dummy package lock installation failure from min_salt_lock_packages.feature
   output, _code = get_target('server').run("python3 /tmp/#{file}")
   filtered_output =
-  output
+    output
     .split(/(?=# Failure \d+)/)
     .reject do |block|
       block.include?('remove lock to allow installation of hoag-dummy')
