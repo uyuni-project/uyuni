@@ -31,6 +31,7 @@ class RegexRules:
     WRONG_CAP_START = re.compile(r"^\W*[a-z]")
     WRONG_CAP_AFTER = re.compile(r"\. *[a-z]")
     WRONG_SPACING = re.compile(r"([.,;:])[^ \n]")
+    VERSION_REGEX = re.compile(r"\b(?:v?(\d+\.\d+(\.\d+)?)(?:[-.][a-zA-Z0-9]+)?)\b")
     TRACKER_LIKE = re.compile(r".{2,5}#\d+")
 
     def __init__(self, tracker_filename: str = None):
@@ -355,9 +356,15 @@ class ChangelogValidator:
         # Test capitalization
         if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
             issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
-        # Test spacing
-        if re.search(self.regex.WRONG_SPACING, entry.entry):
-            issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+
+        # Test spacing (ignored in version strings)
+        # Test to check if a match overlaps with a version string
+        overlaps = lambda ver_str, match: ver_str.start() <= match.start() and ver_str.end() >= match.end()
+        for match in re.finditer(self.regex.WRONG_SPACING, entry.entry):
+            # Ignore if part of a version string
+            if not any(overlaps(ver_str, match) for ver_str in re.finditer(self.regex.VERSION_REGEX, entry.entry[:match.end()])):
+                issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+                break
 
         return issues
 

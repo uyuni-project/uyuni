@@ -204,8 +204,13 @@ def test_get_entry_obj_with_multiple_trackers(validator_with_trackers):
     assert ("tckr#01", "01") in entry.trackers["tckr"]
     assert ("tckr#02", "02") in entry.trackers["tckr"]
 
-def test_validate_chlog_file_valid(validator, chlog_file):
-    chlog_file.write_text("- This is a valid\n  multiline changelog entry\n")
+@pytest.mark.parametrize("entry_text", [
+    "- This is a valid changelog entry\n",
+    "- This is a valid\n  multiline changelog entry\n",
+    "- This is an entry with a version-1.2.3 string\n"
+])
+def test_validate_chlog_file_valid(validator, chlog_file, entry_text):
+    chlog_file.write_text(entry_text)
     issues, entries = validator.validate_chlog_file(str(chlog_file))
     assert not issues, issues_to_str(issues, 0)
     assert len(entries) == 1
@@ -259,6 +264,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
     ("- This entry has wrong capitalization.\n  right here.\n", IssueType.WRONG_CAP),
     ("- This entry does not have a space.After a full stop\n", IssueType.WRONG_SPACING),
     ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
+    ("- Entry with version string 2.0 with.Wrong spacing.\n", IssueType.WRONG_SPACING),
     ("- This entry is" + " very" * 10 + " long\n", IssueType.LINE_TOO_LONG.format(DEFAULT_LINE_LENGTH)),
 ])
 def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg):
