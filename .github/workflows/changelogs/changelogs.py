@@ -343,11 +343,15 @@ class ChangelogValidator:
         assert git_repo
 
         logging.info(f"Requesting information for PR#{pr_number} at '{git_repo}'")
-        stream = os.popen(f'gh pr view -R {git_repo} {pr_number} --json title,commits -q ".title, .commits[].messageHeadline, .commits[].messageBody | select(length > 0)"')
-        commits = stream.read()
+
+        pr_path = f'repos/{git_repo}/pulls/{pr_number}'
+        stream = os.popen(f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"')
+        title_and_commits = stream.read()
         if stream.close():
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
-        return self.extract_trackers(commits)
+
+        logging.debug(f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}")
+        return self.extract_trackers(title_and_commits)
 
     def validate_chlog_entry(self, entry: Entry) -> list[Issue]:
         """Validate a single changelog entry"""

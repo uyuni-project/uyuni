@@ -88,7 +88,7 @@ def validator_with_trackers(monkeypatch, tracker_filename, base_path):
 First commit message (tckr#99)
 Second commit message
 """
-        if re.search(r"^gh pr view -R [^ ]+ 999 .*", api_cmd):
+        if re.search(r"^gh api repos/[^/]*/[^/]*/pulls/999 .*", api_cmd):
             return io.StringIO(pr_data)
         else:
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
