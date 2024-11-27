@@ -1,0 +1,11 @@
+include ../common.jade
+
+#scap-policies
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.scapPolicies = !{scapPolicies};
+
+script(type='text/javascript').
+    spaImportReactPage('audit/list-scap-policies')
+        .then(function(module) { module.renderer('scap/list-scap-policies') });

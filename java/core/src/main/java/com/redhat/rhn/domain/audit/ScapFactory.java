@@ -227,6 +227,69 @@ public class ScapFactory extends HibernateFactory {
     }
 
     /**
+     * List all SCAP polices objects in the database
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     */
+    public static List<ScapPolicy> listScapPolicies(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for Scap policies by an id list and organization
+     * @param ids image profile id list
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     * inside the organization
+     */
+    public static List<ScapPolicy>  lookupScapPoliciesByIds(List<Integer> ids, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+    /**
+     * Lookup for a tailoring file object based on the id and organization
+     * @param id tailoring file ID
+     * @param org the organization
+     * @return optional of tailoring file object
+     */
+    public static Optional<ScapPolicy> lookupScapPolicyByIdAndOrg(Integer id, Org org) {
+
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> select = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = select.from(ScapPolicy.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+    /**
+     * Deletes the Scap Policy object from the database
+     * @param scapPolicy ScapPolicy object
+     */
+    public static void deleteScapPolicy(ScapPolicy scapPolicy) {
+        getSession().delete(scapPolicy);
+    }
+    /**
+     * Save the scapPolicy object to the database
+     * @param scapPolicy object
+     */
+    public static void saveScapPolicy(ScapPolicy scapPolicy) {
+        scapPolicy.setModified(new Date());
+        singleton.saveObject(scapPolicy);
+    }
+    /**
      * Get the Logger for the derived class so log messages
      * show up on the correct class.
      * @return Logger
