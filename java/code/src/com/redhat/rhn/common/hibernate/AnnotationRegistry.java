@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -321,6 +322,7 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScapPolicy.class,
             ScriptActionDetails.class,
             ScriptResult.class,
             ServerAppStream.class,

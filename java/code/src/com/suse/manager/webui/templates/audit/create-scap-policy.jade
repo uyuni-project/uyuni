@@ -1,0 +1,13 @@
+include ../common.jade
+
+#scap-create-policy
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.scapDataStreams = !{scapDataStreams};
+    window.tailoringFiles = !{tailoringFiles};
+    window.selectedPolicy = !{selectedPolicy};
+
+script(type='text/javascript').
+    spaImportReactPage('audit/create-scap-policy')
+        .then(function(module) { module.renderer('scap/create-scap-policy') });
