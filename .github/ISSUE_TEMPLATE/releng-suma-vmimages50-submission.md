@@ -1,7 +1,7 @@
 ---
 name: SUSE Manager 5.0 VM Images submission
 about: Use this template for submitting SUSE Manager 5.0 VM Images
-title: 'SUSE Manager 5.0 VM Images X.Y.Z release'
+title: 'SUSE Manager 5.0 VM Images X.Y.Z submission'
 labels: ["vega-squad", "5.0"]
 projects: ["SUSE/35"]
 assignees: ''
