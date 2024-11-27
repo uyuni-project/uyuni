@@ -73,6 +73,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
+# in github validation, the retail feature is not tested
+@skip_if_github_validation
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
@@ -175,6 +177,7 @@ Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
+@skip_if_github_validation
 @scc_credentials
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section

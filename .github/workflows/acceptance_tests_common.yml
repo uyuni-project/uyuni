@@ -9,7 +9,7 @@ on:
         required: true
         type: string
 env:
-  UYUNI_PROJECT: uyuni-project
+  UYUNI_PROJECT: jordimassaguerpla
   UYUNI_VERSION: master
   NO_AUTH_REGISTRY: no_auth_registry
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
