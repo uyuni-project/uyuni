@@ -136,7 +136,7 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
             results: this.getSortedList(newSearchResults),
           },
         });
-        this.setMessages(MessagesUtils.info(t("State assignments have been saved.")));
+        this.props.type === "state" && this.setMessages(MessagesUtils.info(t("State assignments have been saved.")));
         this.hideRanking();
       },
       (jqXHR, textStatus, errorThrown) => {
