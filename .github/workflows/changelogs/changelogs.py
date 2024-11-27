@@ -206,8 +206,7 @@ class ChangelogValidator:
         self.pr_number = pr_number
         self.max_line_length = max_line_length
         self.regex = regex_rules
-        if regex_rules.trackers:
-            self.bzapi = self.get_bugzilla_api()
+        self.bzapi = self.get_bugzilla_api() if regex_rules.trackers else None
 
     def get_bugzilla_api(self) -> bugzilla.Bugzilla:
         """Initialize and authenticate the Bugzilla API
