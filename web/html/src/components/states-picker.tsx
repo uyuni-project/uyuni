@@ -149,7 +149,10 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           }
         });
 
-        messages = messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
+        messages =
+          this.props.type === "state"
+            ? messages
+            : messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
         this.setState({
           changed: new Map(), // clear changed
           // Update the channels with the new data
