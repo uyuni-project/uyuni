@@ -1,0 +1,2 @@
+- Fix rebootifneeded state which miss definition of a variable
+  (bsc#1233426)
