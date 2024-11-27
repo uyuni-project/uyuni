@@ -248,13 +248,19 @@ class ChangelogValidator:
         pkg_chlogs = []
         for f in files:
             # Check if the file exists in a subdirectory of the base path of the package
-            if os.path.normpath(os.path.dirname(f)).startswith(os.path.normpath(pkg_path)):
+            if (f.startswith(pkg_path)):
                 if os.path.basename(f).startswith(pkg_name + ".changes."):
                     # Ignore if the change is a removal
                     if os.path.isfile(os.path.join(self.uyuni_root, f)):
                         pkg_chlogs.append(f)
                 else:
                     pkg_files.append(f)
+
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            if len(pkg_files):
+                logging.debug(f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_files))
+            if len(pkg_chlogs):
+                logging.debug(f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_chlogs))
 
         return { "files": pkg_files, "changes": pkg_chlogs }
 
@@ -292,7 +298,7 @@ class ChangelogValidator:
             # Each file contains the package version and the
             # package path, separated by a space character
             pkg_path = linecache.getline(os.path.join(packages_dir, pkg_name), 1).rstrip().split(maxsplit=1)[1]
-            logging.debug(f"Package {pkg_name} is in path {pkg_path}")
+            logging.debug(f"Indexing package {pkg_name} in path {pkg_path}")
 
             # Get the list of modified files and changelog files for the package
             modified_files = self.get_modified_files_for_pkg(pkg_path, pkg_name, files)

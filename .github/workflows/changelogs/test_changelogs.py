@@ -34,7 +34,9 @@ def file_list():
         "pkg/path/myfile.txt",
         "pkg/path/mypkg.changes.my.feature",
         "pkg/other/path/file.txt",
-        "pkg/other/otherpkg.changes.my.feature"
+        "pkg/other/otherpkg.changes.my.feature",
+        "pkg/path-extra/myfile-extra.txt",
+        "pkg/path-extra/mypkg-extra.changes.my.feature"
     ]
 
 @pytest.fixture
@@ -53,11 +55,17 @@ def base_path(tmp_path, file_list):
     pkg_dir = base_path / "rel-eng/packages"
     pkg_dir.mkdir(parents=True)
 
+    #'mypkg' package
     pkg_file = pkg_dir / "mypkg"
     pkg_file.write_text("1.0.0 pkg/path/")
 
+    #'otherpkg' package
     pkg_file = pkg_dir / "otherpkg"
     pkg_file.write_text("1.0.0 pkg/other/")
+
+    #'mypkg-extra' package
+    pkg_file = pkg_dir / "mypkg-extra"
+    pkg_file.write_text("1.0.0 pkg/path-extra/")
     return base_path
 
 @pytest.fixture
@@ -124,9 +132,24 @@ def test_issue_gh_action_string(monkeypatch):
 
 def test_get_pkg_index(validator, file_list):
     pkg_idx = validator.get_pkg_index(file_list)
+
     assert "mypkg" in pkg_idx
+    assert 1 == len(pkg_idx["mypkg"]["files"])
+    assert 1 == len(pkg_idx["mypkg"]["changes"])
     assert "pkg/path/myfile.txt" in pkg_idx["mypkg"]["files"]
     assert "pkg/path/mypkg.changes.my.feature" in pkg_idx["mypkg"]["changes"]
+
+    assert "mypkg-extra" in pkg_idx
+    assert 1 == len(pkg_idx["mypkg-extra"]["files"])
+    assert 1 == len(pkg_idx["mypkg-extra"]["changes"])
+    assert "pkg/path-extra/myfile-extra.txt" in pkg_idx["mypkg-extra"]["files"]
+    assert "pkg/path-extra/mypkg-extra.changes.my.feature" in pkg_idx["mypkg-extra"]["changes"]
+
+    assert "otherpkg" in pkg_idx
+    assert 1 == len(pkg_idx["otherpkg"]["files"])
+    assert 1 == len(pkg_idx["otherpkg"]["changes"])
+    assert "pkg/other/path/file.txt" in pkg_idx["otherpkg"]["files"]
+    assert "pkg/other/otherpkg.changes.my.feature" in pkg_idx["otherpkg"]["changes"]
 
 def test_extract_trackers(validator_with_trackers):
     trackers = validator_with_trackers.extract_trackers("""
