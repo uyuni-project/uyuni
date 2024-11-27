@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
@@ -206,7 +207,8 @@ public class AnnotationRegistry {
         AppStreamApi.class,
         TokenChannelAppStream.class,
         PaygDimensionResult.class,
-        TailoringFile.class
+        TailoringFile.class,
+        ScapPolicy.class
     );
 
     /**
