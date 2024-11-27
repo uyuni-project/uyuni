@@ -92,7 +92,7 @@ public class PackageController {
     }
 
     private static Object data(Request request, Response response, User user) {
-        PageControlHelper pageHelper = new PageControlHelper(request, "server_name");
+        PageControlHelper pageHelper = new PageControlHelper(request, "nvrea");
 
         boolean source = request.params(":binary").equals("source");
         String kind = request.params(":kind");
