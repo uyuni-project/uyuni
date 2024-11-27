@@ -1,5 +1,772 @@
 [
     {
+        "id" : -45,
+        "name" : "Open Enterprise Server",
+        "identifier" : "OES",
+        "former_identifier" : "",
+        "version" : "24.4",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 24.4",
+        "product_class" : "OES2",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "released",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            -42
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -574,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 24.4",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -575,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 24.4",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -576,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Basesystem15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Basesystem15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -577,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Basesystem15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Basesystem15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -578,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Product-SLES15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Product-SLES15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -579,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Product-SLES15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Product-SLES15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -580,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Server-Applications15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Server-Applications15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -581,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Server-Applications15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Server-Applications15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -582,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Containers15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Containers15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -583,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Containers15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Containers15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -584,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Desktop-Applications15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Desktop-Applications15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -585,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Desktop-Applications15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Desktop-Applications15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -586,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Basesystem15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Basesystem15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -587,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Basesystem15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Basesystem15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -588,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Basesystem15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Basesystem15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -589,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Product-SLES15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Product-SLES15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -590,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Product-SLES15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Product-SLES15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -591,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Product-SLES15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Product-SLES15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -592,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Server-Applications15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Server-Applications15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -593,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Server-Applications15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Server-Applications15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -594,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Server-Applications15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Server-Applications15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -595,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Containers15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Containers15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -596,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Containers15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Containers15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -597,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Containers15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Containers15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -598,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Desktop-Applications15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Desktop-Applications15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -599,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -600,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -601,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-DevTools15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-DevTools15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -602,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-DevTools15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-DevTools15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -603,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-DevTools15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-DevTools15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -604,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-DevTools15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-DevTools15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -605,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-DevTools15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-DevTools15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -606,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Web-Scripting15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Web-Scripting15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -607,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Web-Scripting15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Web-Scripting15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -608,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Web-Scripting15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Web-Scripting15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -609,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -610,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -611,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Public-Cloud15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Public-Cloud15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -612,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Public-Cloud15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Public-Cloud15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -613,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Public-Cloud15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Public-Cloud15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -614,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -615,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -616,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Python3-15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Python3-15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -617,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Python3-15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Python3-15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -618,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Python3-15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Python3-15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -619,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Python3-15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Python3-15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -620,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Python3-15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Python3-15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -621,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Manager-Tools15-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -622,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Manager-Tools15-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -623,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Manager-Tools15-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -624,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Manager-Tools15-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -625,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES22.4-SLE-Manager-Tools15-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -626,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Legacy15-SP4-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Legacy15-SP4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP4-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -627,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Legacy15-SP4-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Legacy15-SP4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP4-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -628,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Legacy15-SP4-Source-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Legacy15-SP4-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP4-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -629,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Legacy15-SP4-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Legacy15-SP4-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP4-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -630,
+                "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Module-Legacy15-SP4-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES24.4-SLE-Module-Legacy15-SP4-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP4-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
         "id" : -44,
         "name" : "Ubuntu",
         "identifier" : "Ubuntu-Client",
