@@ -13,8 +13,9 @@ Feature: Salt master integration with Git pillar
 
   Scenario: Check for the expected pillar data after enabling Git pillar
     When I refresh the pillar data
-    Then the pillar data for "git_pillar_foobar" should be "12345" on "sle_minion"
-    And the pillar data for "org_id" should be "1" on "sle_minion"
+    And I wait until there is no pillar refresh salt job active
+    Then the pillar data for "org_id" should be "1" on "sle_minion"
+    And the pillar data for "git_pillar_foobar" should be "12345" on "sle_minion"
     And the pillar data for "git_pillar_foobar" should be "12345" on the Salt master
 
   Scenario: Cleanup: Remove Git pillar configuration for Salt master
