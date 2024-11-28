@@ -31,6 +31,7 @@ class RegexRules:
     WRONG_CAP_START = re.compile(r"^\W*[a-z]")
     WRONG_CAP_AFTER = re.compile(r"\. *[a-z]")
     WRONG_SPACING = re.compile(r"([.,;:])[^ \n]")
+    VERSION_REGEX = re.compile(r"\b(?:v?(\d+\.\d+(\.\d+)?)(?:[-.][a-zA-Z0-9]+)?)\b")
     TRACKER_LIKE = re.compile(r".{2,5}#\d+")
 
     def __init__(self, tracker_filename: str = None):
@@ -206,8 +207,7 @@ class ChangelogValidator:
         self.pr_number = pr_number
         self.max_line_length = max_line_length
         self.regex = regex_rules
-        if regex_rules.trackers:
-            self.bzapi = self.get_bugzilla_api()
+        self.bzapi = self.get_bugzilla_api() if regex_rules.trackers else None
 
     def get_bugzilla_api(self) -> bugzilla.Bugzilla:
         """Initialize and authenticate the Bugzilla API
@@ -249,13 +249,19 @@ class ChangelogValidator:
         pkg_chlogs = []
         for f in files:
             # Check if the file exists in a subdirectory of the base path of the package
-            if os.path.normpath(os.path.dirname(f)).startswith(os.path.normpath(pkg_path)):
+            if (f.startswith(pkg_path)):
                 if os.path.basename(f).startswith(pkg_name + ".changes."):
                     # Ignore if the change is a removal
                     if os.path.isfile(os.path.join(self.uyuni_root, f)):
                         pkg_chlogs.append(f)
                 else:
                     pkg_files.append(f)
+
+        if logging.getLogger().isEnabledFor(logging.DEBUG):
+            if len(pkg_files):
+                logging.debug(f"Found {len(pkg_files)} file(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_files))
+            if len(pkg_chlogs):
+                logging.debug(f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_chlogs))
 
         return { "files": pkg_files, "changes": pkg_chlogs }
 
@@ -293,7 +299,7 @@ class ChangelogValidator:
             # Each file contains the package version and the
             # package path, separated by a space character
             pkg_path = linecache.getline(os.path.join(packages_dir, pkg_name), 1).rstrip().split(maxsplit=1)[1]
-            logging.debug(f"Package {pkg_name} is in path {pkg_path}")
+            logging.debug(f"Indexing package {pkg_name} in path {pkg_path}")
 
             # Get the list of modified files and changelog files for the package
             modified_files = self.get_modified_files_for_pkg(pkg_path, pkg_name, files)
@@ -337,11 +343,15 @@ class ChangelogValidator:
         assert git_repo
 
         logging.info(f"Requesting information for PR#{pr_number} at '{git_repo}'")
-        stream = os.popen(f'gh pr view -R {git_repo} {pr_number} --json title,commits -q ".title, .commits[].messageHeadline, .commits[].messageBody | select(length > 0)"')
-        commits = stream.read()
+
+        pr_path = f'repos/{git_repo}/pulls/{pr_number}'
+        stream = os.popen(f'gh api {pr_path} -q ".title" && gh api {pr_path}/commits -q ".[].commit.message | select(length > 0)"')
+        title_and_commits = stream.read()
         if stream.close():
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
-        return self.extract_trackers(commits)
+
+        logging.debug(f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}")
+        return self.extract_trackers(title_and_commits)
 
     def validate_chlog_entry(self, entry: Entry) -> list[Issue]:
         """Validate a single changelog entry"""
@@ -350,9 +360,15 @@ class ChangelogValidator:
         # Test capitalization
         if re.match(self.regex.WRONG_CAP_START, entry.entry) or re.search(self.regex.WRONG_CAP_AFTER, entry.entry):
             issues.append(Issue(IssueType.WRONG_CAP, entry.file, entry.line, entry.end_line))
-        # Test spacing
-        if re.search(self.regex.WRONG_SPACING, entry.entry):
-            issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+
+        # Test spacing (ignored in version strings)
+        # Test to check if a match overlaps with a version string
+        overlaps = lambda ver_str, match: ver_str.start() <= match.start() and ver_str.end() >= match.end()
+        for match in re.finditer(self.regex.WRONG_SPACING, entry.entry):
+            # Ignore if part of a version string
+            if not any(overlaps(ver_str, match) for ver_str in re.finditer(self.regex.VERSION_REGEX, entry.entry[:match.end()])):
+                issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
+                break
 
         return issues
 

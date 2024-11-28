@@ -34,7 +34,9 @@ def file_list():
         "pkg/path/myfile.txt",
         "pkg/path/mypkg.changes.my.feature",
         "pkg/other/path/file.txt",
-        "pkg/other/otherpkg.changes.my.feature"
+        "pkg/other/otherpkg.changes.my.feature",
+        "pkg/path-extra/myfile-extra.txt",
+        "pkg/path-extra/mypkg-extra.changes.my.feature"
     ]
 
 @pytest.fixture
@@ -53,11 +55,17 @@ def base_path(tmp_path, file_list):
     pkg_dir = base_path / "rel-eng/packages"
     pkg_dir.mkdir(parents=True)
 
+    #'mypkg' package
     pkg_file = pkg_dir / "mypkg"
     pkg_file.write_text("1.0.0 pkg/path/")
 
+    #'otherpkg' package
     pkg_file = pkg_dir / "otherpkg"
     pkg_file.write_text("1.0.0 pkg/other/")
+
+    #'mypkg-extra' package
+    pkg_file = pkg_dir / "mypkg-extra"
+    pkg_file.write_text("1.0.0 pkg/path-extra/")
     return base_path
 
 @pytest.fixture
@@ -80,7 +88,7 @@ def validator_with_trackers(monkeypatch, tracker_filename, base_path):
 First commit message (tckr#99)
 Second commit message
 """
-        if re.search(r"^gh pr view -R [^ ]+ 999 .*", api_cmd):
+        if re.search(r"^gh api repos/[^/]*/[^/]*/pulls/999 .*", api_cmd):
             return io.StringIO(pr_data)
         else:
             raise Exception("An error occurred when getting the PR information from the GitHub API.")
@@ -124,9 +132,24 @@ def test_issue_gh_action_string(monkeypatch):
 
 def test_get_pkg_index(validator, file_list):
     pkg_idx = validator.get_pkg_index(file_list)
+
     assert "mypkg" in pkg_idx
+    assert 1 == len(pkg_idx["mypkg"]["files"])
+    assert 1 == len(pkg_idx["mypkg"]["changes"])
     assert "pkg/path/myfile.txt" in pkg_idx["mypkg"]["files"]
     assert "pkg/path/mypkg.changes.my.feature" in pkg_idx["mypkg"]["changes"]
+
+    assert "mypkg-extra" in pkg_idx
+    assert 1 == len(pkg_idx["mypkg-extra"]["files"])
+    assert 1 == len(pkg_idx["mypkg-extra"]["changes"])
+    assert "pkg/path-extra/myfile-extra.txt" in pkg_idx["mypkg-extra"]["files"]
+    assert "pkg/path-extra/mypkg-extra.changes.my.feature" in pkg_idx["mypkg-extra"]["changes"]
+
+    assert "otherpkg" in pkg_idx
+    assert 1 == len(pkg_idx["otherpkg"]["files"])
+    assert 1 == len(pkg_idx["otherpkg"]["changes"])
+    assert "pkg/other/path/file.txt" in pkg_idx["otherpkg"]["files"]
+    assert "pkg/other/otherpkg.changes.my.feature" in pkg_idx["otherpkg"]["changes"]
 
 def test_extract_trackers(validator_with_trackers):
     trackers = validator_with_trackers.extract_trackers("""
@@ -181,8 +204,13 @@ def test_get_entry_obj_with_multiple_trackers(validator_with_trackers):
     assert ("tckr#01", "01") in entry.trackers["tckr"]
     assert ("tckr#02", "02") in entry.trackers["tckr"]
 
-def test_validate_chlog_file_valid(validator, chlog_file):
-    chlog_file.write_text("- This is a valid\n  multiline changelog entry\n")
+@pytest.mark.parametrize("entry_text", [
+    "- This is a valid changelog entry\n",
+    "- This is a valid\n  multiline changelog entry\n",
+    "- This is an entry with a version-1.2.3 string\n"
+])
+def test_validate_chlog_file_valid(validator, chlog_file, entry_text):
+    chlog_file.write_text(entry_text)
     issues, entries = validator.validate_chlog_file(str(chlog_file))
     assert not issues, issues_to_str(issues, 0)
     assert len(entries) == 1
@@ -236,6 +264,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
     ("- This entry has wrong capitalization.\n  right here.\n", IssueType.WRONG_CAP),
     ("- This entry does not have a space.After a full stop\n", IssueType.WRONG_SPACING),
     ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
+    ("- Entry with version string 2.0 with.Wrong spacing.\n", IssueType.WRONG_SPACING),
     ("- This entry is" + " very" * 10 + " long\n", IssueType.LINE_TOO_LONG.format(DEFAULT_LINE_LENGTH)),
 ])
 def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg):
