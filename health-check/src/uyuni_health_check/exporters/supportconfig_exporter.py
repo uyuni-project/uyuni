@@ -44,7 +44,7 @@ class SupportConfigMetricsCollector(Collector):
             self.salt_configuration = self.read_salt_configuration()
 
         self.get_static_metrics(self.supportconfig_path)
-        
+
     def _parse_command(self, command_block):
         lines = command_block.strip().split("\n")
         command = lines[0][2:]
