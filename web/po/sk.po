@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-11-08 15:02+0100\n"
-"PO-Revision-Date: 2024-10-31 22:48+0000\n"
+"PO-Revision-Date: 2024-11-28 18:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.8.1\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: ../html/javascript/spacewalk-essentials.js:442
 msgid "remaining"
@@ -522,7 +522,7 @@ msgstr "požadované"
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
-msgstr "Podať"
+msgstr "Odoslať"
 
 #: ../html/src/components/input/datetime/DateTime.stories.tsx:24
 msgid "Time"
