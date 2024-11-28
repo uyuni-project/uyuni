@@ -28,24 +28,6 @@ export default () => {
         </Button>
       </StoryRow>
       <StoryRow>
-        <Button className="btn-success">&lt;Button className="btn-success" /&gt;</Button>
-        <Button className="btn-success" disabled>
-          &lt;Button className="btn-success" disabled /&gt;
-        </Button>
-      </StoryRow>
-      <StoryRow>
-        <Button className="btn-info">&lt;Button className="btn-info" /&gt;</Button>
-        <Button className="btn-info" disabled>
-          &lt;Button className="btn-info" disabled /&gt;
-        </Button>
-      </StoryRow>
-      <StoryRow>
-        <Button className="btn-warning">&lt;Button className="btn-warning" /&gt;</Button>
-        <Button className="btn-warning" disabled>
-          &lt;Button className="btn-warning" disabled /&gt;
-        </Button>
-      </StoryRow>
-      <StoryRow>
         <Button className="btn-danger">&lt;Button className="btn-danger" /&gt;</Button>
         <Button className="btn-danger" disabled>
           &lt;Button className="btn-danger" disabled /&gt;

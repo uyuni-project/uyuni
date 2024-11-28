@@ -47,12 +47,12 @@
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test='${not empty n.id}'>
-                            <html:submit property="edit_button" styleClass="btn btn-success">
+                            <html:submit property="edit_button" styleClass="btn btn-primary">
                                 <bean:message key="edit_note.jsp.update"/>
                             </html:submit>
                         </c:when>
                         <c:otherwise>
-                            <html:submit property="create_button" styleClass="btn btn-success">
+                            <html:submit property="create_button" styleClass="btn btn-primary">
                                 <bean:message key="edit_note.jsp.create"/>
                             </html:submit>
                         </c:otherwise>

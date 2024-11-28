@@ -103,7 +103,7 @@ public class AddressTagTest extends RhnBaseTestCase {
                 "Phone: 650-555-1212<br />" +
                 "Fax: 650-555-1212<br />" +
                 "</address>" +
-                "<a class=\"btn btn-primary\" href=\"/EditAddress.do?type=M&amp;uid=" +
+                "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +
                 uid + "\">" + "Edit this address</a>";
     }
 

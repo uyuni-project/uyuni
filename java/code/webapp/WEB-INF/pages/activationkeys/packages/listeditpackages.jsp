@@ -22,7 +22,7 @@
             <div class="form-group">
                 <div class="col-sm-6 text-right">
                     <rhn:submitted/>
-                    <input class="btn btn-success" type="submit"
+                    <input class="btn btn-primary" type="submit"
                            name ="dispatch" value='<bean:message key="activation-key.jsp.edit-key"/>'/>
                 </div>
             </div>

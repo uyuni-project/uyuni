@@ -145,7 +145,7 @@
                         </c:choose>
                         <div class="form-group">
                             <div class="col-md-offset-3 offset-md-3 col-md-6">
-                                <button type="button" class="btn btn-success" id="save-and-schedule">
+                                <button type="button" class="btn btn-primary" id="save-and-schedule">
                                     <bean:message key="actionchain.jsp.saveandschedule"/>
                                 </button>
                             </div>

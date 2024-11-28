@@ -1,8 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-success,
-.btn-warning,
 .btn-danger {
   color: inherit;
   font-weight: bold;
@@ -130,44 +128,7 @@
   }
 }
 
-.btn-success {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      background: transparent;
-      border-color: $eos-bc-persimmon-500;
-      color: $eos-bc-gray-1000;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
-        background: $eos-bc-persimmon-500;
-      }
-    }
-  }
-}
-
-.btn-info {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      border-color: $eos-bc-cerulean-500;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        color: $white;
-      }
-    }
-  }
-}
-
 // Warning shouldn't currently be used anywhere, but cover it just in case
-.btn-warning,
 .btn-danger {
   &,
   &:active,

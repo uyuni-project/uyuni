@@ -315,7 +315,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       <React.Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
-          defaultType="btn-success"
+          defaultType="btn-default"
           icon="fa-play"
           text={t("Enable")}
           className={styles.gap_right}

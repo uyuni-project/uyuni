@@ -9,7 +9,7 @@ export const AppStreamActions = ({ numberOfChanges, onReset, onSubmit }) => {
         )}
         <Button
           id="applyModuleChanges"
-          className="btn-success"
+          className="btn-primary"
           disabled={numberOfChanges === 0}
           text={t("Apply Changes") + (numberOfChanges > 0 ? " (" + numberOfChanges + ")" : "")}
           handler={onSubmit}

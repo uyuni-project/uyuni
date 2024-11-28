@@ -57,12 +57,12 @@
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test='${empty param.sgid}'>
-                            <html:submit property="create_button" styleClass="btn btn-success">
+                            <html:submit property="create_button" styleClass="btn btn-primary">
                                 <bean:message key="systemgroup.create.creategroup"/>
                             </html:submit>
                         </c:when>
                         <c:otherwise>
-                            <html:submit property="edit_button" styleClass="btn btn-success">
+                            <html:submit property="edit_button" styleClass="btn btn-primary">
                                 <bean:message key="systemgroup.edit.editgroup"/>
                             </html:submit>
                         </c:otherwise>
