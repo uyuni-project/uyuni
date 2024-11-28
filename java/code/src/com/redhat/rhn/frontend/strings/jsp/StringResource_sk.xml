@@ -3805,7 +3805,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="erratalist.jsp.productenhancementadvisory" xml:space="preserve">
         <source>Product Enhancement Advisory</source>
-        <target/>
+        <target state="translated">Upozornenie na vylepšenia produktu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
@@ -3813,77 +3813,77 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.jsp.header" xml:space="preserve">
         <source>Relevant Patches</source>
-        <target/>
+        <target state="translated">Príslušné opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.summary" xml:space="preserve">
         <source>The following patches may currently be applied to this system.</source>
-        <target/>
+        <target state="translated">Nasledujúce opravy možno v súčasnosti aplikovať na tento systém.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.status" xml:space="preserve">
         <source>Status</source>
-        <target/>
+        <target state="translated">Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.apply" xml:space="preserve">
         <source>Apply Patches</source>
-        <target/>
+        <target state="translated">Aplikovať opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.scheduled" xml:space="preserve">
         <source>Update Scheduled</source>
-        <target/>
+        <target state="translated">Aktualizovať naplánované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.jsp.affected" xml:space="preserve">
         <source>Affected</source>
-        <target/>
+        <target state="translated">Ovplyvnené</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.header" xml:space="preserve">
         <source>Confirm Patch Updates</source>
-        <target/>
+        <target state="translated">Potvrdiť aktualizácie opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errataconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.created" xml:space="preserve">
         <source>Patch {0}-{1} created.</source>
-        <target/>
+        <target state="translated">Oprava {0}-{1} vytvorená.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.toolbar" xml:space="preserve">
         <source>Patch: </source>
-        <target/>
+        <target state="translated">Oprava: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.editerrata" xml:space="preserve">
         <source>Edit Patch</source>
-        <target/>
+        <target state="translated">Upraviť opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
@@ -3891,35 +3891,35 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.instructions" xml:space="preserve">
         <source>Edit patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</source>
-        <target/>
+        <target state="translated">Opravu upravte tu.  Požadované položky sú označené s (&lt;span class="required-form-field"&gt;*&lt;/span&gt;).</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.updateerrata" xml:space="preserve">
         <source>Update Patch</source>
-        <target/>
+        <target state="translated">Aktualizovať opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.submit" xml:space="preserve">
         <source>Submit</source>
-        <target/>
+        <target state="translated">Odoslať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.delete" xml:space="preserve">
         <source>Delete</source>
-        <target/>
+        <target state="translated">Vymazať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.sendnotification" xml:space="preserve">
         <source>Send Notification</source>
-        <target/>
+        <target state="translated">Odoslať oznámenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/Notify.do</context>
@@ -3927,21 +3927,21 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.youmaynotify" xml:space="preserve">
         <source>You can send an email notification of this patch.</source>
-        <target/>
+        <target state="translated">Môžete poslať e-mailové oznámenie o tejto oprave.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.senderratamail" xml:space="preserve">
         <source>Send Patch Mail</source>
-        <target/>
+        <target state="translated">Odoslať správu o oprave</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.updated" xml:space="preserve">
         <source>Patches updated.</source>
-        <target/>
+        <target state="translated">Opravy boli aktualizované.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
