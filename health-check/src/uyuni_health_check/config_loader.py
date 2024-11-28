@@ -1,5 +1,6 @@
 import os
 import configparser
+from pathlib import Path
 import yaml
 import json
 from jinja2 import Environment, FileSystemLoader
@@ -34,6 +35,9 @@ class ConfigLoader:
         return dockerfile_dir
 
     def write_config(self, component, config_file_path, content, isjson=False):
+        basedir = Path(os.path.join(self.config_dir, component))
+        if not basedir.exists():
+            basedir.mkdir(parents=True)
         file_path = os.path.join(self.config_dir, component, config_file_path)
         with open(file_path, "w") as file:
             if isjson:

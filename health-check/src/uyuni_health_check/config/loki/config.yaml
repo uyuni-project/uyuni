@@ -21,9 +21,9 @@ common:
 schema_config:
   configs:
     - from: 2020-10-24
-      store: boltdb-shipper
+      store: tsdb
       object_store: filesystem
-      schema: v11
+      schema: v13
       index:
         prefix: index_
         period: 24h
@@ -34,7 +34,6 @@ ruler:
 limits_config:
   # max_cache_freshness_per_query: '10m'
   max_cache_freshness_per_query: '1m'
-  enforce_metric_name: false
   reject_old_samples: false
   reject_old_samples_max_age: 8064h #336d
   ingestion_rate_mb: 50
@@ -47,9 +46,8 @@ limits_config:
   max_query_length: 5000h
   per_stream_rate_limit: 50MB
   per_stream_rate_limit_burst: 100MB
-
-chunk_store_config:
-  max_look_back_period: 8064h #336d
+  max_query_lookback: 8064h #336d
+  allow_structured_metadata: true
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
