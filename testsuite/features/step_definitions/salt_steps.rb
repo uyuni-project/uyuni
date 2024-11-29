@@ -563,41 +563,38 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  if use_salt_bundle
-    if transactional_system?(host)
-      node.run('transactional-update --continue -n pkg rm venv-salt-minion', check_errors: false)
-      # Transactional systems could have also installed salt-minion via sumaform
-      _result, code = node.run('rpm -q salt-minion', check_errors: false)
-      node.run('transactional-update --continue -n pkg rm salt-minion', check_errors: false) if code.zero?
-      # Reboot needed here after package removal but before file removal
-      step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
-      node.run('rm -Rf /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt', check_errors: false) if code.zero?
-    elsif rh_host?(host)
-      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
-    elsif deb_host?(host)
-      node.run('apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove', check_errors: false)
+
+  # Define config directory based on bundle usage
+  config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
+
+  # Define cleanup paths based on bundle usage
+  cleanup_paths =
+    if use_salt_bundle
+      '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
     else
-      node.run('zypper --non-interactive remove --clean-deps -y venv-salt-minion', check_errors: false)
+      '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
     end
-    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
-  else
-    if transactional_system?(host)
-      node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
-      # Reboot needed here after package removal but before file removal
-      step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
-    elsif rh_host?(host)
-      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
-    elsif deb_host?(host)
-      node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
-    else
-      node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', check_errors: false)
-    end
-    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+
+  # Selective file cleanup within the configuration directory
+  node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
+  node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
+  node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
+
+  # Additional cleanup for cached and runtime files
+  node.run("rm -Rf /root/salt #{cleanup_paths}", check_errors: false)
+
+  # Package removal using the existing step
+  package_list = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
+  step %(I remove package "#{package_list}" from this "#{host}" without error control)
+
+  # Conditional additional package removal
+  if transactional_system?(host) && use_salt_bundle
+    # Check if salt-minion is installed, remove if present from sumaform
+    _result, code = node.run('rpm -q salt-minion', check_errors: false)
+    step %(I remove package "salt-minion" from this "#{host}" without error control) if code.zero?
   end
-  if transactional_system?(host)
-    # Reboot needed after file removal as well
-    step %(I reboot the "#{host}" host through SSH, waiting until it comes back)
-  end
+
+  # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 
