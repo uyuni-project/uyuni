@@ -78,6 +78,13 @@ public class ScapAuditController {
         post("/manager/api/audit/scap/tailoring-file/create", withUser(this::createTailoringFile));
         post("/manager/api/audit/scap/tailoring-file/update", withUser(this::updateTailoringFile));
         post("/manager/api/audit/scap/tailoring-file/delete", withUser(this::deleteTailoringFile));
+
+        // SCAP Policies routes
+        get("/manager/audit/scap/policies",
+                withUserPreferences(withCsrfToken(withUser(this::listScapPoliciesView))), jade);
+        get("/manager/audit/scap/policy/create",
+                withUserPreferences(withCsrfToken(withUser(this::createScapPolicyView))), jade);
+
     }
     /**
      * Processes a GET request to get a list of all Tailoring files
@@ -267,7 +274,6 @@ public class ScapAuditController {
         return result(res, ResultJson.success(tailoringFiles.size()));
     }
 
-    // ========== Private Helper Methods ==========
     // TODO: Consider moving these generic file utilities to a shared utility class
     //       for reuse across other controllers
 
@@ -320,4 +326,34 @@ public class ScapAuditController {
         }
     }
 
+    /**
+     * Returns a view to display list of SCAP policies
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView listScapPoliciesView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "templates/audit/list-scap-policies.jade");
+    }
+
+    /**
+     * Returns a view to display form to create SCAP policy
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public ModelAndView createScapPolicyView(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        
+        // Add empty arrays to prevent JavaScript syntax errors in the template
+        data.put("scapDataStreams", GSON.toJson(new String[]{}));
+        data.put("tailoringFiles", GSON.toJson(new Object[]{}));
+        
+        return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+    }
 }

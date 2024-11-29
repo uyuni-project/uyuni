@@ -27,6 +27,7 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.google.gson.JsonObject;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -34,6 +35,8 @@ import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.audit.ScapFactory;
+import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
@@ -42,11 +45,13 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
+import com.redhat.rhn.manager.org.OrgManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -114,6 +119,7 @@ public class RecurringActionController {
         get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
+        get("/manager/api/recurringactions/policies", asJson(withUser(RecurringActionController::listScapPolicies)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
         post("/manager/api/recurringactions/custom/execute",
                 asJson(withUser(RecurringActionController::executeCustom)));
@@ -312,7 +318,33 @@ public class RecurringActionController {
         }
         return dto;
     }
-
+    /**
+     * Processes a GET request to get a list of all the scap policies
+     *
+     * @param req  the request object
+     * @param res  the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String listScapPolicies(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
+                .map(policy -> {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("id", policy.getId());
+                    json.addProperty("policyName", policy.getPolicyName());
+                    json.addProperty("dataStreamName", policy.getDataStreamName());
+                    json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+                    json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
+                    json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    return json;
+                })
+                .collect(Collectors.toList());
+        //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
+        data.put("scapPolicies", scapPoliciesJson);
+        return json(res, scapPoliciesJson, new TypeToken<>() { });
+    }
 
     /**
      * Creates a new Recurring Action Schedule
@@ -479,6 +511,13 @@ public class RecurringActionController {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }
+        } else if (action.getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy) {
+
+           /* details.getPolicies()
+                    .stream()
+                    .findFirst()
+                    .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg()))
+                    .ifPresent(recurringScapPolicy::setScapPolicy);*/
         }
         else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
             setPlaybookDetails(playbookType, details);

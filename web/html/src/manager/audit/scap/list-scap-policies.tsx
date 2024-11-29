@@ -87,7 +87,7 @@ class ScapPolicy extends React.Component<Props, State> {
           className="btn-default"
           title={t("Create")}
           text={t("Create")}
-          href="/rhn/manager/audit/scap/create-scap-policy"
+          href="/rhn/manager/audit/scap/policy/create"
         />
       </div>
     );

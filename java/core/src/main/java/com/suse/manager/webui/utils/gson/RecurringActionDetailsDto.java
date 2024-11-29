@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.suse.manager.webui.utils.ScapPolicyJson;
+
 import java.util.Date;
 import java.util.Map;
 import java.util.Set;
@@ -49,6 +51,9 @@ public class RecurringActionDetailsDto {
 
     /** The extra_vars to use for execution */
     private String extraVars;
+
+    /** The policies assigned to a scap policy schedule */
+    private Set<ScapPolicyJson> policies;
 
     /**
      * @return the Array containing Quartz information
@@ -220,5 +225,20 @@ public class RecurringActionDetailsDto {
      */
     public void setExtraVars(String extraVarsIn) {
         extraVars = extraVarsIn;
+    }
+    /**
+     * @return the set of states
+     */
+    public Set<ScapPolicyJson> getPolicies() {
+        return this.policies;
+    }
+
+    /**
+     * Sets the policies
+     *
+     * @param policiesIn the polices
+     */
+    public void setPolicies(Set<ScapPolicyJson> policiesIn) {
+        this.policies = policiesIn;
     }
 }

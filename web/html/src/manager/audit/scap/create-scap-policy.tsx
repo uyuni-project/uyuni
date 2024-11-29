@@ -129,7 +129,7 @@ class ScapPolicy extends React.Component<Props, State> {
     const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles } = this.state;
 
     return (
-      <TopPanel title="Create Compliance Policy" icon="spacewalk-icon-manage-configuration-files">
+      <TopPanel title={t("Create Compliance Policy")} icon="spacewalk-icon-manage-configuration-files">
         {this.renderMessages()}
         <Form
           model={this.state.model}
@@ -139,18 +139,56 @@ class ScapPolicy extends React.Component<Props, State> {
         >
           <Text
             name="policyName"
-            label="Name"
+            label={t("Name")}
             required
             labelClass="col-md-3"
             divClass="col-md-6"
-            value="ss"
           />
-          {this.renderSelect("dataStreamName", "Scap content", dataStreams, this.fetchProfiles, true)}
-          {this.renderSelect("xccdfProfileId", "XCCDF Profile", xccdfProfiles.map((type) => ({ value: type.id, label: type.title })), () => { }, true)}
-          {this.renderSelect("tailoringFile", "Tailoring File", tailoringFiles, this.fetchProfiles)}
-          {this.renderSelect("tailoringProfileId", "Tailoring Profile", tailoringFileProfiles.map((type) => ({ value: type.id, label: type.title })), () => { })}
-          <div className="btn-group pull-right">
-            {this.renderButtons()}
+          <FormGroup>
+            <Label name={t("SCAP Content")} className="col-md-3" required />
+            <div className="col-md-6">
+              <Select
+                name="dataStreamName"
+                isClearable
+                options={dataStreams}
+                onChange={(value) => this.fetchProfiles("dataStream", value as string)}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <Label name={t("XCCDF Profile")} className="col-md-3" required />
+            <div className="col-md-6">
+              <Select
+                name="xccdfProfileId"
+                isClearable
+                options={xccdfProfiles.map((type) => ({ value: type.id, label: type.title }))}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <Label name={t("Tailoring File")} className="col-md-3" />
+            <div className="col-md-6">
+              <Select
+                name="tailoringFile"
+                isClearable
+                options={tailoringFiles}
+                onChange={(value) => this.fetchProfiles("tailoringFile", value as string)}
+              />
+            </div>
+          </FormGroup>
+          <FormGroup>
+            <Label name={t("Tailoring Profile")} className="col-md-3" />
+            <div className="col-md-6">
+              <Select
+                name="tailoringProfileId"
+                isClearable
+                options={tailoringFileProfiles.map((type) => ({ value: type.id, label: type.title }))}
+              />
+            </div>
+          </FormGroup>
+          <hr />
+          <div className="form-group">
+            <div className="col-md-offset-3 col-md-6">{this.renderButtons()}</div>
           </div>
         </Form>
       </TopPanel>
