@@ -342,7 +342,7 @@ public class ScapAuditController {
             //Date earliest = Date.from(reqData.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
 
             ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
-            Date earliest = Date.from(reqData.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
+            //Date earliest = Date.from(reqData.getEarliest().orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
 
             // ScapAction action = ActionManager.scheduleXccdfEval(user, reqData.getIds(),
             //       reqData.getDataStreamName(), params.toString(), ovalfiles, earliest);
