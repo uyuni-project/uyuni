@@ -611,7 +611,12 @@ public class ToolbarTag extends TagSupport {
             tag.setAttribute("src", getImg());
 
             if (imgAlt != null) {
+                tag.setAttribute("alt", LocalizationService.getInstance().getMessage(imgAlt));
             }
+            return tag.render();
+        }
+        return "";
+    }
 
     private String renderIcon() {
         if (assertNotEmpty(getIcon())) {
@@ -691,6 +696,7 @@ public class ToolbarTag extends TagSupport {
 
         HtmlTag a = new HtmlTag("a");
         a.setAttribute("href", url);
+
         if (isSpaOff) {
             a.setAttribute("data-senna-off", "true");
         }
