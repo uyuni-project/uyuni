@@ -3895,70 +3895,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.deletebug" xml:space="preserve">
         <source>Delete Bug</source>
-        <target/>
+        <target state="translated">Vymazať chybu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.bugdeleted" xml:space="preserve">
         <source>Bug &lt;strong&gt;{0}&lt;/strong&gt; removed from patches &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Chyba &lt;strong&gt;{0}&lt;/strong&gt; odstránená z opráv &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.commadelimited" xml:space="preserve">
         <source>(Comma delimited)</source>
-        <target/>
+        <target state="translated">(Oddelené čiarkami)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.uniqueAdvisoryName" xml:space="preserve">
         <source>A patch with this advisory name already exists.</source>
-        <target/>
+        <target state="translated">Oprava s týmto názvom upozornenia už existuje.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.rhAdvisoryName" xml:space="preserve">
         <source>A Patch Advisory cannot begin with the letters 'RH'</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu nemôže začínať písmenami 'RH'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.id" xml:space="preserve">
         <source>Bug ID is required</source>
-        <target/>
+        <target state="translated">Vyžaduje sa ID chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.summary" xml:space="preserve">
         <source>Bug Summary is required</source>
-        <target/>
+        <target state="translated">Vyžaduje sa súhrn chyby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.idNonNumeric" xml:space="preserve">
         <source>Bug ID must be numeric</source>
-        <target/>
+        <target state="translated">ID chyby musí byť číselné</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.idUnique" xml:space="preserve">
         <source>Bug ID must be unique</source>
-        <target/>
+        <target state="translated">ID chyby musí byť unikátne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.error.summaryLength" xml:space="preserve">
         <source>Bug Summary cannot be greater than 4000 characters.</source>
-        <target/>
+        <target state="translated">Súhrn chyby nemôže mať viac ako 4000 znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
