@@ -3965,28 +3965,28 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.error.idLength" xml:space="preserve">
         <source>Bug Id cannot be greater than 18 characters.</source>
-        <target/>
+        <target state="translated">Id chyby nemôže mať viac ako 18 znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channels.updatechannels" xml:space="preserve">
         <source>Update Channels</source>
-        <target/>
+        <target state="translated">Aktualizovať kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.edit.channels.instructions" xml:space="preserve">
         <source>Choose the Channels which should be associated with this patch below. The number of packages referred to by this patch is displayed after the channel name. If you do not want this patch to apply to a specific channel, unselect it below.</source>
-        <target/>
+        <target state="translated">Nižšie zvoľte kanály, ktoré by mali byť spojené s touto opravou. Počet balíkov, na ktoré sa táto oprava vzťahuje, sa zobrazí za názvom kanála. Ak nechcete, aby sa táto oprava použila na konkrétny kanál, zrušte jej výber nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channels.updated.singular" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channel.</source>
-        <target/>
+        <target state="translated">Oprava &lt;strong&gt;{0}&lt;/strong&gt; bola úspešne priradená k &lt;strong&gt;{1}&lt;/strong&gt; kanálu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
           <context context-type="paramnotes">Errata foobar has been
@@ -3995,7 +3995,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.channels.updated.plural" xml:space="preserve">
         <source>Patch &lt;strong&gt;{0}&lt;/strong&gt; has been successfully assigned to &lt;strong&gt;{1}&lt;/strong&gt; channels.</source>
-        <target/>
+        <target state="translated">Oprava &lt;strong&gt;{0}&lt;/strong&gt; bola úspešne priradená k &lt;strong&gt;{1}&lt;/strong&gt; kanálom.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Channels.do</context>
           <context context-type="paramnotes">Errata foobar has been
@@ -4004,7 +4004,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageaddition" xml:space="preserve">
         <source>Confirm Package Addition</source>
-        <target/>
+        <target state="translated">Potvrdenie pridania balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4013,7 +4013,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.instructions" xml:space="preserve">
         <source>Below is the list of packages which you have selected to add to this patch.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam balíkov, ktoré ste vybrali na pridanie do tejto opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4022,7 +4022,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirmpackageremoval" xml:space="preserve">
         <source>Confirm Package Removal</source>
-        <target/>
+        <target state="translated">Potvrdenie odstránenia balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4031,7 +4031,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.remove.instructions" xml:space="preserve">
         <source>Below is the list of packages which you have selected to remove from this patch.  Click 'Confirm' to remove them.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam balíkov, ktoré ste vybrali na odstránenie z tejto opravy.  Kliknutím na 'Potvrdiť' ich odstránite.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4040,7 +4040,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.confirm.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
