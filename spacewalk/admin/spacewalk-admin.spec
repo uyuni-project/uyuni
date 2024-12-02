@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-admin
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only

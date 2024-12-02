@@ -13,7 +13,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -41,10 +41,10 @@
                     </div>
                     <div class="modal-footer">
                         <span id="edit-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">
+                        <button type="button" class="btn btn-primary" onClick="saveCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.save" />
                         </button>
                     </div>
@@ -57,7 +57,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-delete.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -72,10 +72,10 @@
                     </div>
                     <div class="modal-footer">
                         <span id="delete-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">
+                        <button type="button" class="btn btn-danger" onClick="deleteCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.delete" />
                         </button>
                     </div>
@@ -88,14 +88,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-subscriptions.title" /></h4>
                     </div>
                     <div id="modal-list-subscriptions-body" class="modal-body">
                         <!-- Content will be rendered here -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.close" />
                         </button>
                     </div>

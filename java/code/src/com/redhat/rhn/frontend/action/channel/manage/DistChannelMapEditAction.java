@@ -35,7 +35,6 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,14 +67,14 @@ public class DistChannelMapEditAction extends RhnAction {
         List<ChannelArch> arches = ChannelManager.getChannelArchitectures();
         List<Map<String, String>> channelArches = arches.stream()
                 .map(arch -> Map.of("label", arch.getName(), "value", arch.getLabel()))
-                .collect(Collectors.toList());
+                .toList();
         ctx.getRequest().setAttribute("channelArches", channelArches);
 
         // setup subscribable base channels
         List<Channel> subscribableBaseChannels = ChannelFactory.listSubscribableBaseChannels(user);
         List<Map<String, String>> channels = subscribableBaseChannels.stream()
                 .map(channel -> Map.of("label", channel.getName(), "value", channel.getLabel()))
-                .collect(Collectors.toList());
+                .toList();
         ctx.getRequest().setAttribute("channels", channels);
 
         Long dcmId = ctx.getParamAsLong(DCM_ID);

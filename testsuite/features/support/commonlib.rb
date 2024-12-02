@@ -65,7 +65,7 @@ end
 # @return [String, nil] The full product version if the command execution was successful and
 #   the output is not empty, otherwise nil.
 def product_version_full
-  cmd = 'salt-call --local grains.get product_version | tail -n 1'
+  cmd = 'venv-salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
   out.strip if code.zero? && !out.nil?
 end
@@ -584,28 +584,39 @@ end
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
 def channel_is_synced(channel)
+  sync_status = false
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
   if code.zero? && !result.include?('repo size: 0')
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
-    !new_code.zero?
+    sync_status = !new_code.zero?
   elsif result.include?('repo size: 0')
     if EMPTY_CHANNELS.include?(channel)
-      true
+      sync_status = true
     else
       _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
       log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
-      false
+      sync_status = false
     end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
-    new_code.zero?
+    sync_status = new_code.zero?
   end
+  if sync_status
+    begin
+      duration = channel_synchronization_duration(channel)
+      log "Channel #{channel} synchronized in #{duration} seconds"
+    rescue ScriptError => e
+      log "Error while checking synchronization duration: #{e.message}"
+      sync_status = false
+    end
+  end
+  sync_status
 end
 
 # This function initializes the API client
@@ -623,7 +634,8 @@ def new_api_client
   when 'xmlrpc'
     ApiTestXmlrpc.new(hostname)
   when 'http'
-    ApiTestHttp.new(hostname, ssl_verify)
+    # We use API_PROTOCOL env. variable only for debugging purposes from our local machine, so we can skip the SSL verification
+    ApiTestHttp.new(hostname, false)
   else
     if product == 'SUSE Manager'
       ApiTestXmlrpc.new(hostname)
@@ -691,6 +703,16 @@ def pillar_get(key, minion)
   get_target('server').run("#{cmd} #{system_name} pillar.get #{key}")
 end
 
+# Get a Salt pillar value from the master via Salt runner
+#
+# @param key [String] The key of the pillar to retrieve.
+# @return [String] The value of the specified pillar key.
+def salt_master_pillar_get(key)
+  output, _code = get_target('server').run('salt-run --out=yaml salt.cmd pillar.items')
+  pillars = YAML.load(output)
+  pillars.key?(key) ? pillars[key] : ''
+end
+
 # Wait for an action to be completed, passing the action id and a timeout
 #
 # @param actionid [String] The ID of the action to wait for.
@@ -709,10 +731,11 @@ end
 # @param channels [Array<String>] The list of channels to filter.
 # @param filters [Array<String>] The list of filters to apply.
 def filter_channels(channels, filters = [])
+  filtered_channels = channels.clone
   filters.each do |filter|
-    channels.delete_if { |channel| channel.include? filter }
+    filtered_channels.delete_if { |channel| channel.include? filter }
   end
-  channels
+  filtered_channels
 end
 
 # Mutex for processes accessing the API of the server via admin user

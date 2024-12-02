@@ -98,7 +98,7 @@
     <div align="right">
       <hr/>
       <rhn:hidden name="aid" value="${requestScope.aid}" />
-      <html:submit styleClass="btn btn-success">
+      <html:submit styleClass="btn btn-primary">
         <bean:message key="system.event.spmigration.rescheduleDryRun"/>
       </html:submit>
     </div>

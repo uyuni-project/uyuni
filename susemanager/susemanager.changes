@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Oct 14 15:59:44 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Enable bootstrapping for Ubuntu 24.04 LTS
+  * Add missing package python3-ply to bootstrap repo definition
+    (bsc#1228130)
+  * Add SUSE Manager bootstrap repo definition for Ubuntu 24.04
+  * Use different exit codes for different failures in mgr-setup
+    (bsc#1230139)
+  * Bump version to 5.1.0
+  * Remove yast2 dependency from installation
+
+-------------------------------------------------------------------
 Thu Aug 01 09:27:16 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0

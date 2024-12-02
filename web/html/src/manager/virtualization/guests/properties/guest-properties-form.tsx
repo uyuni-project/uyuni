@@ -110,7 +110,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"
-              className="btn-success"
+              className="btn-primary"
               text={this.props.submitText}
               disabled={this.state.isInvalid}
             />

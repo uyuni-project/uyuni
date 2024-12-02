@@ -64,7 +64,7 @@
 
         </rl:list>
         <hr />
-        <div class="text-right"><html:submit styleClass="btn btn-success" property="dispatch"><bean:message key="ssmchildsubconfirm.jsp.submit"/></html:submit></div>
+        <div class="text-right"><html:submit styleClass="btn btn-primary" property="dispatch"><bean:message key="ssmchildsubconfirm.jsp.submit"/></html:submit></div>
   </rl:listset>
 </body>
 </html>

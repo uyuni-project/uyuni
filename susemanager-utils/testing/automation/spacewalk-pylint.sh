@@ -48,16 +48,11 @@ utils/spacewalk-api
 utils/spacewalk-clone-by-date
 utils/spacewalk-common-channels
 utils/spacewalk-dump-schema
-utils/spacewalk-export
-utils/spacewalk-export-channels
-utils/spacewalk-final-archive
 utils/spacewalk-hostname-rename
 utils/spacewalk-manage-channel-lifecycle
-utils/spacewalk-manage-snapshots
 utils/spacewalk-sync-setup
 utils/spacewalk-utils.changes
 utils/sw-ldap-user-sync
-utils/sw-system-snapshot
 utils/systemSnapshot.py
 utils/taskotop
 spacewalk/certs-tools/

@@ -36,7 +36,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
       <AsyncButton
         id={"editButton"}
         action={() => child.current?.onEdit()}
-        defaultType="btn-success"
+        defaultType="btn-primary"
         disabled={icalLoading === true}
         text={(isEdit() ? t("Update") : t("Create")) + " " + (type === "schedule" ? t("Schedule") : t("Calendar"))}
       />

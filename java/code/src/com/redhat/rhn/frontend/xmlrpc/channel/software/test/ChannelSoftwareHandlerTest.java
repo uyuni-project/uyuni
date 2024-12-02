@@ -16,14 +16,12 @@ package com.redhat.rhn.frontend.xmlrpc.channel.software.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -48,7 +46,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.PackageDto;
-import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
@@ -58,7 +55,6 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.frontend.xmlrpc.errata.ErrataHandler;
-import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -135,8 +131,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     );
     private SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
-    private SystemHandler systemHandler = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager,
-            systemManager, serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
     private ChannelSoftwareHandler handler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
     private ErrataHandler errataHandler = new ErrataHandler();
 
@@ -310,109 +304,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c1 = ChannelFactoryTest.createTestChannel(admin);
         assertTrue(handler.isExisting(admin, c1.getLabel()));
         assertFalse(handler.isExisting(admin, c1.getLabel() + UUID.randomUUID()));
-    }
-
-    @Test
-    public void testSetSystemChannelsBaseChannel() throws Exception {
-
-        Channel base = ChannelFactoryTest.createTestChannel(admin);
-        assertTrue(base.isBaseChannel());
-        Server server = ServerFactoryTest.createTestServer(admin, true);
-        Channel child = ChannelFactoryTest.createTestChannel(admin);
-        child.setParentChannel(base);
-        ChannelFactory.save(child);
-        assertFalse(child.isBaseChannel());
-
-        Channel child2 = ChannelFactoryTest.createTestChannel(admin);
-        child2.setParentChannel(base);
-        ChannelFactory.save(child2);
-        assertFalse(child2.isBaseChannel());
-
-        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
-
-        int sid = server.getId().intValue();
-        int rc1 = sh.setBaseChannel(admin, sid, base.getLabel());
-        int rc2 = sh.setChildChannels(admin, sid, List.of(child.getLabel()));
-
-        server = reload(server);
-
-        // now verify
-        assertEquals(1, rc1);
-        assertEquals(1, rc2);
-        assertEquals(2, server.getChannels().size());
-        Channel newBase = server.getBaseChannel();
-        assertNotNull(newBase);
-        assertEquals(newBase.getLabel(), base.getLabel());
-
-        try {
-            sh.setBaseChannel(admin, sid, child.getLabel());
-            fail("setBaseChannel didn't complain when given no base channel");
-        }
-        catch (InvalidChannelException ice) {
-            // ice ice baby
-        }
-
-    }
-
-    @Test
-    public void testSetBaseChannel() throws Exception {
-        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
-
-        Channel c1 = ChannelFactoryTest.createTestChannel(admin);
-        Server server = ServerFactoryTest.createTestServer(admin, true);
-
-        assertEquals(0, server.getChannels().size());
-        int result = sh.setBaseChannel(admin, server.getId().intValue(), c1.getLabel());
-
-        server = reload(server);
-
-        assertEquals(1, result);
-        assertEquals(1, server.getChannels().size());
-
-        Channel c2 = ChannelFactoryTest.createTestChannel(admin);
-        assertNotEquals(c1.getLabel(), c2.getLabel());
-        result = sh.setBaseChannel(admin, server.getId().intValue(), c2.getLabel());
-
-        server = reload(server);
-
-        assertEquals(1, result);
-        assertTrue(server.getChannels().contains(c2));
-
-        //try to make it break
-        try {
-            sh.setBaseChannel(admin, server.getId().intValue(), TestUtils.randomString());
-            fail("subscribed system to invalid channel.");
-        }
-        catch (Exception e) {
-            //success
-        }
-
-        server = reload(server);
-        //make sure servers channel subscriptions weren't changed
-        assertEquals(1, result);
-        Channel subscribed = server.getChannels().iterator().next();
-        assertEquals(c2.getLabel(), subscribed.getLabel());
-
-        // try setting the base channel of an s390 server to
-        // IA-32.
-        try {
-
-            Channel c3 = ChannelFactoryTest.createTestChannel(admin);
-
-            // change the arch of the server
-            server.setServerArch(
-                    ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
-            ServerFactory.save(server);
-
-            int rc = sh.setBaseChannel(admin, server.getId().intValue(), c3.getLabel());
-
-            fail("allowed incompatible channel arch to be set, returned: " + rc);
-        }
-        catch (InvalidChannelException e) {
-            // success
-        }
     }
 
     @Test
@@ -870,35 +761,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, secondList.length - iniailList.length);
     }
-
-    @Test
-    public void testChannelSubscription() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin);
-        Channel baseChan = ChannelFactoryTest.createBaseChannel(admin);
-        Channel childChan = ChannelFactoryTest.createTestChannel(admin);
-        childChan.setParentChannel(baseChan);
-
-        SystemHandler sh = new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
-                serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
-
-        int return1 = sh.setBaseChannel(admin, server.getId().intValue(), baseChan.getLabel());
-        int return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of(childChan.getLabel()));
-
-        assertEquals(1, return1);
-        assertEquals(1, return2);
-        server = HibernateFactory.reload(server);
-        assertEquals(2, server.getChannels().size());
-        assertTrue(server.getChannels().contains(baseChan));
-        assertTrue(server.getChannels().contains(childChan));
-
-        return1 = sh.setBaseChannel(admin, server.getId().intValue(), "");
-        return2 = sh.setChildChannels(admin, server.getId().intValue(), List.of());
-        assertEquals(1, return1);
-        assertEquals(1, return2);
-        server = HibernateFactory.reload(server);
-        assertEquals(0, server.getChannels().size());
-    }
-
 
     @Test
     public void testCloneAll() throws Exception {

@@ -104,7 +104,7 @@
 
      <div class="form-group">
          <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
-             <html:submit styleClass="btn btn-success">
+             <html:submit styleClass="btn btn-primary">
                  <c:choose>
                      <c:when test = "${empty requestScope.create_mode}">
                          <bean:message key="snippetupdate.jsp.submit"/>

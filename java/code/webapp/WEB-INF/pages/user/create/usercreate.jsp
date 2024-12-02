@@ -240,10 +240,8 @@ function toggleAsterisk() {
             </div>
         </div>
     </div>
-
-<hr/>
-<div class="text-center">
-  <html:submit styleClass="btn btn-success">
+<div>
+  <html:submit styleClass="btn btn-primary">
     <bean:message key="usercreate.jsp.createlogin"/>
   </html:submit>
 </div>

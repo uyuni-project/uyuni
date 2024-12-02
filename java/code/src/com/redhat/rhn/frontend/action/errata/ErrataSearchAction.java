@@ -530,8 +530,8 @@ public class ErrataSearchAction extends BaseSearchAction {
             return false;
         }
 
-        if (dateSrch instanceof Boolean) {
-            return (Boolean) dateSrch;
+        if (dateSrch instanceof Boolean bool) {
+            return bool;
         }
         else if (dateSrch instanceof String) {
             return "on".equals(dateSrch);

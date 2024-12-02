@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -202,7 +201,7 @@ public class ChannelsJson {
         this.children = childrenIn.map(
                 (c) -> new ChannelJson(c.getId(), c.getLabel(), c.getName(), c.isCustom(), true,
                         c.isCloned(), c.getChannelArch().getLabel()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -223,7 +222,7 @@ public class ChannelsJson {
                     null
             );
             return channelWithArch;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     /**

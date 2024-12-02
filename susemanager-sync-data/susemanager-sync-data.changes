@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Oct 14 16:02:24 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Deploy a configuration file named oval.config.json to configure
+    OVAL data sources
+  * Add Ubuntu 24.04 support
+  * Add channel family for SLES 12 SP5 LTSS Extended Security
+  * Add SLES15-SP5-LTSS channel families
+  * Add MicroOS PPC channel family
+  * Set Ubuntu 22.04 to released
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
 Thu Aug 01 09:28:43 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6-0

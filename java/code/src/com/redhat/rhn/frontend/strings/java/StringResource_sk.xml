@@ -6083,7 +6083,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
-        <target state="needs-adaptation">Zavádzací skript bol úspešne vygenerovaný.  Môžete k nemu pristúpiť &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
+        <target state="translated">Zavádzací skript bol úspešne vygenerovaný.  Môžete k nemu pristúpiť &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
@@ -11495,14 +11495,14 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Perform a reboot, only if required</source>
         <target state="translated">Vykonať reštart, len ak je to potrebné</target>
       </trans-unit>
-    <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia dát OVAL</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Generovanie dát OVAL potrebných na zvýšenie presnosti dopytov auditu CVE</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

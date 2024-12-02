@@ -43,7 +43,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.persistence.FlushModeType;
@@ -540,12 +539,12 @@ public class ReportDbHibernateFactory {
     public String getBlobContents(Object blob) {
         // Returned by Hibernate, and also returned by mode queries
         // from an Oracle database
-        if (blob instanceof byte[]) {
-            return getByteArrayContents((byte[]) blob);
+        if (blob instanceof byte[] byt) {
+            return getByteArrayContents(byt);
         }
         // Returned only by mode queries from a Postgres database
-        if (blob instanceof Blob) {
-            return getByteArrayContents(blobToByteArray((Blob) blob));
+        if (blob instanceof Blob blb) {
+            return getByteArrayContents(blobToByteArray(blb));
         }
         return null;
     }
@@ -803,7 +802,7 @@ public class ReportDbHibernateFactory {
 
         List<List<E>> batches = IntStream.iterate(0, i -> i < size, i -> i + LIST_BATCH_MAX_SIZE)
                 .mapToObj(i -> list.subList(i, Math.min(i + LIST_BATCH_MAX_SIZE, size)))
-                .collect(Collectors.toList());
+                .toList();
         return batches.stream()
                 .map(b -> {
                     query.setParameterList(parameterName, b);

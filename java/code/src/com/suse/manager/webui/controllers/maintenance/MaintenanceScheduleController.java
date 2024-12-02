@@ -286,7 +286,7 @@ public class MaintenanceScheduleController {
         MM.lookupScheduleByUserAndId(user, scheduleId).ifPresentOrElse(
                 schedule -> {
                     List<EssentialServerDto> systems = SystemManager.systemsInSchedule(user, schedule, null);
-                    systemIds.addAll(systems.stream().map(EssentialServerDto::getId).collect(Collectors.toList()));
+                    systemIds.addAll(systems.stream().map(EssentialServerDto::getId).toList());
                 },
                 () -> Spark.halt(HttpStatus.SC_NOT_FOUND)
         );
@@ -308,7 +308,7 @@ public class MaintenanceScheduleController {
 
         if ("id".equals(pageHelper.getFunction())) {
             // Return only IDs for "select all" function
-            return json(response, systems.stream().map(SystemScheduleDto::getId).collect(Collectors.toList()),
+            return json(response, systems.stream().map(SystemScheduleDto::getId).toList(),
                     new TypeToken<>() { });
         }
 
@@ -344,7 +344,7 @@ public class MaintenanceScheduleController {
                 schedule -> {
                     // Get previously assigned system IDs
                     List<Long> systemsInSchedule = SystemManager.systemsInSchedule(user, schedule, null).stream()
-                            .map(EssentialServerDto::getId).collect(Collectors.toList());
+                            .map(EssentialServerDto::getId).toList();
                     try {
                         // New systems to assign
                         MM.assignScheduleToSystems(user, schedule,
@@ -431,7 +431,7 @@ public class MaintenanceScheduleController {
     }
 
     private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
-        return schedules.stream().map(MaintenanceScheduleController::scheduleToJson).collect(Collectors.toList());
+        return schedules.stream().map(MaintenanceScheduleController::scheduleToJson).toList();
     }
 
     private static MaintenanceScheduleJson scheduleToJson(MaintenanceSchedule schedule) {

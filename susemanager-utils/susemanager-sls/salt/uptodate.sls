@@ -45,3 +45,15 @@ mgr_keep_system_up2date_pkgs:
     - require:
       - sls: channels
       - mgr_keep_system_up2date_updatestack
+
+{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease'] >= 15 %}
+
+# zypper up does not evaluate reboot_suggested flags in patches. We need to do it manual
+mgr_flag_reboot_needed:
+  file.touch:
+    - name: /run/reboot-needed
+    - onlyif: '[ {{ patch_need_reboot|default(1) }} -eq 0 ]'
+    - require:
+      - pkg: mgr_keep_system_up2date_pkgs
+
+{% endif %}

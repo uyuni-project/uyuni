@@ -57,7 +57,6 @@ import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -153,14 +152,14 @@ public class MinionActionUtils {
                         return Stream.empty();
                     }
                 }
-            ).collect(Collectors.toList());
+            ).toList();
 
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()
                         .map(MinionServer::getMinionId)
                         .map(Stream::of)
                         .orElseGet(Stream::empty)
-        ).collect(Collectors.toList());
+        ).toList();
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 saltApi.running(new MinionList(minionIds));

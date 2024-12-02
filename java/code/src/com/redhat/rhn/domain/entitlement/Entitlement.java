@@ -75,13 +75,9 @@ public abstract class Entitlement implements Comparable<Entitlement> {
         if (this == o) {
             return true;
         }
-
-        if (!(o instanceof Entitlement)) {
+        if (!(o instanceof Entitlement that)) {
             return false;
         }
-
-        Entitlement that = (Entitlement) o;
-
         return new EqualsBuilder().append(label, that.label).isEquals();
     }
 

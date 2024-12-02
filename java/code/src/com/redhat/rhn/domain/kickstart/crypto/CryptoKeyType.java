@@ -115,10 +115,9 @@ public class CryptoKeyType {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof CryptoKeyType)) {
+        if (!(other instanceof CryptoKeyType castOther)) {
             return false;
         }
-        CryptoKeyType castOther = (CryptoKeyType) other;
         return new EqualsBuilder().append(this.getLabel(), castOther.getLabel()).isEquals();
     }
 

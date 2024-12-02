@@ -28,9 +28,7 @@ import java.util.Map;
 
 /**
  * Custom {@link Map} deserializer that handles arbitrary numbers properly
- * @deprecated the same behavior can be achieved using ToNumberPolicy.LONG_OR_DOUBLE with gson-2.8.9
  */
-@Deprecated
 public class MapDeserializer implements JsonDeserializer<Map<String, Object>> {
     @Override
     public Map<String, Object> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

@@ -12,7 +12,7 @@ import { flatten } from "utils";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import styles from "./login.module.less";
+import styles from "./login.module.scss";
 import logo from "./logo.svg";
 import mobileLogo from "./mobile-logo.svg";
 
@@ -103,7 +103,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             />
             <SubmitButton
               id="login-btn"
-              className={`btn-block btn-success ${styles.button}`}
+              className={`btn-block btn-primary ${styles.button}`}
               text={t("Sign In")}
               disabled={isLoading}
             />

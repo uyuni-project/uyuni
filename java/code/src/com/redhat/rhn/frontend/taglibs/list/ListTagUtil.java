@@ -104,11 +104,11 @@ public class ListTagUtil {
      */
     public static ListCommand getCurrentCommand(Tag caller, PageContext ctx) {
         ListTag parent = null;
-        if (!(caller instanceof ListTag)) {
+        if (!(caller instanceof ListTag listTag)) {
             parent = (ListTag) TagSupport.findAncestorWithClass(caller, ListTag.class);
         }
         else {
-            parent = (ListTag) caller;
+            parent = listTag;
         }
         if (parent != null) {
             return (ListCommand) ctx.getAttribute(parent.getUniqueName() + "_cmd");
@@ -550,7 +550,9 @@ public class ListTagUtil {
         for (String linkNameIn : linkNames) {
             String[] linkData = links.get(linkNameIn);
             ListTagUtil.write(pageContext, "<button ");
-            ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs");
+            ListTagUtil.write(pageContext, "class=\"btn btn-default btn-xs ");
+            ListTagUtil.write(pageContext, linkData[0]);
+
             // if the link is disabled...
             if (linkData[1] == null) {
                 ListTagUtil.write(pageContext, " disabled");
@@ -563,11 +565,7 @@ public class ListTagUtil {
             }
             ListTagUtil.write(pageContext, "\" title=\"");
             ListTagUtil.write(pageContext, linkData[3]);
-            ListTagUtil.write(pageContext, "\">");
-            ListTagUtil.write(pageContext, "<i class=\"");
-            ListTagUtil.write(pageContext, linkData[0]);
-            ListTagUtil.write(pageContext, "\"></i>");
-            ListTagUtil.write(pageContext, "</button>");
+            ListTagUtil.write(pageContext, "\"></button>");
         }
         ListTagUtil.write(pageContext, "</div>");
     }

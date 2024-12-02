@@ -87,7 +87,7 @@ public class AlphaBarHelper {
 
         ListTagUtil.write(pageContext,
                 "<div class=\"dropdown dropdown-alphabar\">" +
-                    "<a href=\"#\" class=\"dropdown-toggle\" data-toggle=\"dropdown\">" +
+                    "<a href=\"#\" class=\"dropdown-toggle\" data-bs-toggle=\"dropdown\">" +
                         ls.getMessage("alphabar.label") + " <span class=\"caret\"></span>" +
                     "</a>" +
                     "<ul class=\"dropdown-menu spacewalk-alphabar\">");

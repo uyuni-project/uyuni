@@ -18,7 +18,7 @@
         <hwclock>utc</hwclock>
 
         <rpm-excludedocs>true</rpm-excludedocs>
-        <type filesystem="ext3" image="pxe" initrd_system="dracut"/>
+        <type filesystem="ext3" image="pxe" initrd_system="dracut" compressed="true"/>
     </preferences>
 
     <drivers>

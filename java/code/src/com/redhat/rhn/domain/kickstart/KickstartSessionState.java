@@ -146,10 +146,9 @@ public class KickstartSessionState {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartSessionState)) {
+        if (!(other instanceof KickstartSessionState castOther)) {
             return false;
         }
-        KickstartSessionState castOther = (KickstartSessionState) other;
         return new EqualsBuilder().append(this.getId(),
                 castOther.getId()).append(this.getLabel(),
                 castOther.getLabel()).isEquals();

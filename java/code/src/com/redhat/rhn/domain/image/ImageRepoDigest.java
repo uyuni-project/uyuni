@@ -96,10 +96,9 @@ public class ImageRepoDigest extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageRepoDigest)) {
+        if (!(other instanceof ImageRepoDigest castOther)) {
             return false;
         }
-        ImageRepoDigest castOther = (ImageRepoDigest) other;
         return new EqualsBuilder()
                 .append(imageInfo, castOther.imageInfo)
                 .append(repoDigest, castOther.repoDigest)

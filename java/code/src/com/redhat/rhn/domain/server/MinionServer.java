@@ -15,6 +15,8 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
@@ -24,11 +26,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * MinionServer
@@ -168,10 +172,10 @@ public class MinionServer extends Server implements SaltConfigurable {
     public boolean doesOsSupportsMonitoring() {
         return isSLES12() || isSLES15() || isLeap15() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
-                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() ||
+                isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
                 isAlibaba2() || isAmazon2() || isAmazon2023() ||
-                isDebian12() || isDebian11() || isDebian10();
+                isDebian10() || isDebian11() || isDebian12();
     }
 
     /**
@@ -211,15 +215,30 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MinionServer)) {
+        if (!(other instanceof MinionServer otherMinion)) {
             return false;
         }
-        MinionServer otherMinion = (MinionServer) other;
         return new EqualsBuilder()
                 .appendSuper(super.equals(otherMinion))
                 .append(getMachineId(), otherMinion.getMachineId())
                 .append(getMinionId(), otherMinion.getMinionId())
                 .isEquals();
+    }
+
+
+    /**
+     * @return Return true when all assigned software channels have valid access tokens.
+     */
+    public boolean hasValidTokensForAllChannels() {
+
+        Set<Channel> tokenChannels = AccessTokenFactory.listByMinion(this)
+                .stream()
+                .filter(AccessToken::getValid)
+                .filter(t -> t.getExpiration().toInstant().isAfter(Instant.now()))
+                .flatMap(t -> t.getChannels().stream())
+                .collect(Collectors.toSet());
+
+        return tokenChannels.containsAll(getChannels()) && getChannels().containsAll(tokenChannels);
     }
 
     /**

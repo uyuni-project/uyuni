@@ -54,7 +54,7 @@ public class ChannelSyncFinished implements NotificationData {
      */
     @Override
     public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.info;
+        return NotificationMessage.NotificationMessageSeverity.INFO;
     }
 
     /**

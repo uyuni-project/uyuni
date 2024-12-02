@@ -17,6 +17,7 @@ require 'multi_test'
 require 'set'
 require 'timeout'
 require_relative 'code_coverage'
+require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
 
@@ -29,9 +30,13 @@ if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
 end
-if ENV['REDIS_HOST']
+if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
   $code_coverage_mode = true
   $stdout.puts('CODE COVERAGE MODE ENABLED.')
+end
+if ENV.fetch('QUALITY_INTELLIGENCE', false)
+  $quality_intelligence_mode = true
+  $stdout.puts('QUALITY INTELLIGENCE MODE ENABLED.')
 end
 
 # Context per feature
@@ -117,7 +122,10 @@ World(MiniTest::Assertions)
 $api_test = new_api_client
 
 # Init CodeCoverage Handler
-$code_coverage = CodeCoverage.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil)) if $code_coverage_mode
+$code_coverage = CodeCoverage.new if $code_coverage_mode
+
+# Init Quality Intelligence Handler
+$quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
 # Define the current feature scope
 Before do |scenario|
@@ -139,7 +147,7 @@ After do |scenario|
       print_server_logs
     end
   end
-  page.instance_variable_set(:@touched, false)
+  page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
 end
 
 # Test is web session is open
@@ -247,17 +255,18 @@ Before('@skip') do
   skip_this_scenario
 end
 
+Before('@skip_known_issue') do
+  raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
+end
+
 # Create a user for each feature
 Before do |scenario|
   feature_path = scenario.location.file
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
 
-  # Core features are always handled using admin user, the rest will use its own user based on feature filename
-  if (feature_path.include? 'core') || (feature_path.include? 'reposync') || (feature_path.include? 'finishing')
-    $current_user = 'admin'
-    $current_password = 'admin'
-  else
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
     step %(I create a user with name "#{$feature_filename}" and password "linux")
     add_context('user_created', true)
   end
@@ -374,6 +383,14 @@ end
 
 Before('@ubuntu2204_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2204_ssh_minion']
+end
+
+Before('@ubuntu2404_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_minion']
+end
+
+Before('@ubuntu2404_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_ssh_minion']
 end
 
 Before('@debian11_minion') do
@@ -681,13 +698,13 @@ end
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
   $stdout.puts
   $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end

@@ -7,7 +7,7 @@ import { IconTag } from "components/icontag";
 
 import { StoryRow } from "./layout";
 import stories from "./stories";
-import styles from "./storybook.module.less";
+import styles from "./storybook.module.scss";
 
 const STORAGE_KEY = "storybook-show-code";
 

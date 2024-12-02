@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -46,7 +45,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
 import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
-import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -470,7 +468,7 @@ public class SaltUtils {
                 }).orElseGet(Stream::empty))
                 // we sort by run order process multiple package changing states right
                 .sorted(Comparator.comparingInt(StateApplyResult::getRunNum))
-                .collect(Collectors.toList());
+                .toList();
         for (StateApplyResult<JsonElement> value : collect) {
             Map<String, Change<Xor<String, List<Pkg.Info>>>> delta = extractPackageDelta(value.getChanges());
             PackageChangeOutcome changeOutcome = applyChangesFromStateModule(delta, server);
@@ -837,24 +835,8 @@ public class SaltUtils {
     private void handleSubscribeChannels(ServerAction serverAction, JsonElement jsonResult, Action action) {
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             serverAction.setResultMsg("Successfully applied state: " + ApplyStatesEventMessage.CHANNELS);
-            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-
-            // if successful update channels in db and trigger pillar refresh
-            SystemManager.updateServerChannels(
-                    action.getSchedulerUser(),
-                    serverAction.getServer(),
-                    Optional.ofNullable(sca.getDetails().getBaseChannel()),
-                    sca.getDetails().getChannels());
         }
         else {
-            //set the token as invalid
-            SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
-            sca.getDetails().getAccessTokens().forEach(token -> {
-                token.setValid(false);
-                token.setMinion(null);
-                AccessTokenFactory.save(token);
-            });
-
             serverAction.setResultMsg("Failed to apply state: " + ApplyStatesEventMessage.CHANNELS + ".\n" +
                     getJsonResultWithPrettyPrint(jsonResult));
         }
@@ -1646,7 +1628,7 @@ public class SaltUtils {
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
-        ).map(Map.Entry::getValue).collect(Collectors.toList());
+        ).map(Map.Entry::getValue).toList();
         packages.retainAll(unchanged);
 
         Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
@@ -1706,7 +1688,7 @@ public class SaltUtils {
         return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
                 packageNames.get(e.getValue().getA()),
                 packageEvrsBySaltPackageKey.get(e.getKey()), e.getValue().getB(), server))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -1885,7 +1867,7 @@ public class SaltUtils {
                         result.getDnsFqdns().stream()
                     ),
                     result.getCustomFqdns().stream()
-                ).distinct().collect(Collectors.toList())
+                ).distinct().toList()
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
 
@@ -2144,8 +2126,8 @@ public class SaltUtils {
         minion.setLastBoot(bootTime.getTime() / 1000);
 
         // cleanup old reboot actions
-        List<ServerAction> serverActions = ActionFactory
-                .listServerActionsForServer(minion);
+        List<ServerAction> serverActions = ActionFactory.listServerActionsForServerAndTypes(minion,
+                List.of(ActionFactory.TYPE_REBOOT));
         int actionsChanged = 0;
         for (ServerAction sa : serverActions) {
             if (shouldCleanupAction(bootTime, sa)) {

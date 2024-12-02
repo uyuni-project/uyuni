@@ -56,7 +56,7 @@ const Panel = (props: Props) => {
             <HeadingLevel style={{ width: "85%" }}>
               {props.collapseId ? (
                 <div
-                  data-toggle="collapse"
+                  data-bs-toggle="collapse"
                   data-target={`#${props.collapseId}-panel-closable`}
                   className="accordion-toggle"
                 >

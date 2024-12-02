@@ -102,12 +102,13 @@ RES6 = [
     "openssh-clients",
 ]
 
-RES7 = [
-    "logrotate",
-    "venv-salt-minion",
-]
+RES7 = ["venv-salt-minion"]
 
-RES7_X86 = ["dmidecode"]
+RES7REQ = ["logrotate"]
+
+RES7OPT = ["logrotate*"]
+
+RES7_X86 = ["dmidecode*"]
 
 RES8 = [
     "redhat-rpm-config",
@@ -362,6 +363,10 @@ PKGLISTUBUNTU2004 = [
 ]
 
 PKGLISTUBUNTU2204 = [
+    "venv-salt-minion",
+]
+
+PKGLISTUBUNTU2404 = [
     "venv-salt-minion",
 ]
 
@@ -812,19 +817,19 @@ DATA = {
     "RES7-x86_64": {
         "PDID": [1251],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
     "SLL7-LTSS-x86_64": {
         "PDID": [2702, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
     "SLL7-OL-LTSS-x86_64": {
         "PDID": [2778, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7OPT,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
     "SLE-12-SP2-aarch64": {
@@ -1603,13 +1608,13 @@ DATA = {
     "centos-7-x86_64": {
         "PDID": [-12, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
     "centos-7-aarch64": {
         "PDID": [-31, 2361],
         "BETAPDID": [2363],
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
     "centos-8-x86_64": {
@@ -1631,17 +1636,17 @@ DATA = {
     },
     "centos-7-x86_64-uyuni": {
         "BASECHANNEL": "centos7-x86_64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
     "centos-7-ppc64le-uyuni": {
         "BASECHANNEL": "centos7-ppc64le",
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
     "centos-7-aarch64-uyuni": {
         "BASECHANNEL": "centos7-aarch64",
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
     "centos-8-x86_64-uyuni": {
@@ -1668,13 +1673,13 @@ DATA = {
     "oracle-7-x86_64": {
         "PDID": [-14, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/7/bootstrap/",
     },
     "oracle-7-aarch64": {
         "PDID": [-28, 2361],
         "BETAPDID": [2363],
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/7/bootstrap/",
     },
     "oracle-8-x86_64": {
@@ -1696,12 +1701,12 @@ DATA = {
     },
     "oracle-7-x86_64-uyuni": {
         "BASECHANNEL": "oraclelinux7-x86_64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/7/bootstrap/",
     },
     "oracle-7-aarch64-uyuni": {
         "BASECHANNEL": "oraclelinux7-aarch64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/7/bootstrap/",
     },
     "oracle-8-x86_64-uyuni": {
@@ -1739,23 +1744,23 @@ DATA = {
     "amazonlinux-2-x86_64": {
         "PDID": [-22, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2/bootstrap/",
     },
     "amazonlinux-2-aarch64": {
         "PDID": [-28, 2361],
         "BETAPDID": [2363],
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2/bootstrap/",
     },
     "amazonlinux-2-x86_64-uyuni": {
         "BASECHANNEL": "amazonlinux2-core-x86_64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2/bootstrap/",
     },
     "amazonlinux-2-aarch64-uyuni": {
         "BASECHANNEL": "amazonlinux2-core-aarch64",
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2/bootstrap/",
     },
     "amazonlinux-2023-x86_64-uyuni": {
@@ -1783,12 +1788,12 @@ DATA = {
     "RHEL7-x86_64": {
         "PDID": [-7, 1683],
         "BETAPDID": [2065],
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
     "RHEL7-x86_64-uyuni": {
         "BASECHANNEL": "rhel7-pool-uyuni-x86_64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/7/bootstrap/",
     },
     "SLE-ES8-x86_64": {
@@ -1827,12 +1832,12 @@ DATA = {
     },
     "alibaba-2-x86_64-uyuni": {
         "BASECHANNEL": "alibaba-2-x86_64",
-        "PKGLIST": RES7 + RES7_X86,
+        "PKGLIST": RES7 + RES7_X86 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/alibaba/2/bootstrap/",
     },
     "alibaba-2-aarch64-uyuni": {
         "BASECHANNEL": "alibaba-2-aarch64",
-        "PKGLIST": RES7,
+        "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/alibaba/2/bootstrap/",
     },
     "almalinux-8-x86_64": {
@@ -1971,6 +1976,13 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/22/4/bootstrap/",
         "TYPE": "deb",
     },
+    "ubuntu-24.04-amd64": {
+        "PDID": [-44, 2886],
+        "BETAPDID": [2887],
+        "PKGLIST": PKGLISTUBUNTU2404,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
+        "TYPE": "deb",
+    },
     "ubuntu-16.04-amd64-uyuni": {
         "BASECHANNEL": "ubuntu-16.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU1604,
@@ -1993,6 +2005,12 @@ DATA = {
         "BASECHANNEL": "ubuntu-22.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU2204,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/22/4/bootstrap/",
+        "TYPE": "deb",
+    },
+    "ubuntu-24.04-amd64-uyuni": {
+        "BASECHANNEL": "ubuntu-24.04-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTUBUNTU2404,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
     "debian9-amd64": {

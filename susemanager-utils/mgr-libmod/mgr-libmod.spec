@@ -17,7 +17,7 @@
 
 
 Name:           mgr-libmod
-Version:        5.1.0
+Version:        5.1.1
 Release:        0
 Summary:        Modular dependency resolver for content lifecycle management
 License:        MIT

@@ -1,0 +1,2 @@
+- create a fresh ssl context with re-read CA certificates from the
+  trust store for new HTTPS connections

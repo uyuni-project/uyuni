@@ -21,7 +21,7 @@ export default () => {
       formDirection="form-horizontal"
     >
       <Range prefix="port" label={t("Port range")} required labelClass="col-md-3" divClass="col-md-6" />
-      <SubmitButton className="btn-success" text={t("Submit")} />
+      <SubmitButton className="btn-primary" text={t("Submit")} />
     </Form>
   );
 };

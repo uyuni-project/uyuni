@@ -28,7 +28,7 @@ import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.checkin.CheckinCandidatesResolver;
 import com.redhat.rhn.taskomatic.task.checkin.SystemCheckinUtils;
 import com.redhat.rhn.taskomatic.task.checkin.SystemSummary;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import com.suse.manager.utils.SaltUtils;
@@ -47,7 +47,7 @@ import java.util.Set;
 /**
  * Provide services for salt ssh clients
  */
-public class SSHServiceDriver implements QueueDriver<SystemSummary> {
+public class SSHServiceDriver extends AbstractQueueDriver<SystemSummary> {
 
     // Synchronized set of systems we are currently talking to
     private static final Set<SystemSummary> CURRENT_SYSTEMS = Collections.synchronizedSet(new HashSet<>());
@@ -71,9 +71,6 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
         return CURRENT_SYSTEMS;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initialize() {
         this.checkinCandidatesResolver = new CheckinCandidatesResolver(
@@ -93,11 +90,8 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<SystemSummary> getCandidates() {
+    protected List<SystemSummary> getCandidates() {
         List<SystemSummary> candidates = new LinkedList<>();
 
         // Find Salt systems currently rebooting,
@@ -155,11 +149,8 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
         return candidates;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public QueueWorker makeWorker(SystemSummary system) {
+    protected QueueWorker makeWorker(SystemSummary system) {
         return new SSHServiceWorker(getLogger(), system,
                 GlobalInstanceHolder.SALT_API,
                 GlobalInstanceHolder.SALT_API.getSaltSSHService(),
@@ -167,33 +158,16 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
                 GlobalInstanceHolder.SALT_UTILS);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get().getInt(WORKER_THREADS_KEY, Config.get().getInt("taskomatic.ssh_push_workers", 2));
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         this.log = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return log;
@@ -245,13 +219,5 @@ public class SSHServiceDriver implements QueueDriver<SystemSummary> {
         HashMap<String, Object> params = new HashMap<>();
         params.put("job_label", JOB_LABEL);
         return delete.executeUpdate(params);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

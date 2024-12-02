@@ -7,6 +7,21 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  # pristine images for SSH minions use an old version of OS Salt
+  # Product Migration will be possible only if we update to latest
+  Scenario: Prerequisite: update OS Salt to the latest version
+    Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
+    When I follow "Software" in the content area
+    And I follow "Packages"
+    And I follow "Upgrade"
+    And I enter "salt" as the filtered latest package
+    And I click on the filter button
+    And I click on "Select All"
+    And I click on "Upgrade Packages"
+    And I click on "Confirm"
+    Then I should see a "package upgrades have been scheduled" text
+    And I wait until event "Package Install/Upgrade scheduled" is completed
+
   Scenario: Migrate this SSH minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"
     And I upgrade "sle15sp3_ssh_minion" with the last "salt" version
@@ -31,12 +46,6 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
     And I follow "Details" in the content area
     Then I should see a "SUSE Linux Enterprise Server 15 SP4" text
     And vendor change should be enabled for product migration on "sle15sp3_ssh_minion"
-
-  Scenario: Install the latest Salt on this SSH minion
-    When I migrate the non-SUMA repositories on "sle15sp3_ssh_minion"
-    And I enable repositories before installing Salt on this "sle15sp3_ssh_minion"
-    And I install Salt packages from "sle15sp3_ssh_minion"
-    And I disable repositories after installing Salt on this "sle15sp3_ssh_minion"
 
   Scenario: Subscribe the SSH-managed SLES minion to a SLES 15 SP4 child channel
     Given I am on the Systems overview page of this "sle15sp3_ssh_minion"

@@ -1,12 +1,17 @@
 // Save and verifiy the proxy settings
 function saveProxySettings() {
+  hostname = jQuery('#http-proxy-input-hostname').val();
+  username = escapeHtml(jQuery('#http-proxy-input-username').val());
+  password = jQuery('#http-proxy-input-password').val();
+
+  if (hostname.trim() !== "" && !isValidUrl(hostname)) {
+    alert("Proxy Hostname is not a valid URL.");
+    return;
+  }
+
   showSpinner('http-proxy-verify');
   jQuery('#http-proxy-verify').show(0);
   jQuery('#http-proxy-save').attr('disabled', true);
-
-  hostname = jQuery('#http-proxy-input-hostname').val();
-  username = jQuery('#http-proxy-input-username').val();
-  password = jQuery('#http-proxy-input-password').val();
   
   function onSuccess(settings) {
     jQuery('#http-proxy-save').prop('disabled', false);

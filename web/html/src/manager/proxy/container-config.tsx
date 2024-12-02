@@ -382,7 +382,7 @@ export function ProxyConfig() {
         )}
 
         <div className="col-md-offset-3 offset-md-3 col-md-6">
-          <SubmitButton id="submit-btn" className="btn-success" text={t("Generate")} disabled={!isValidated} />
+          <SubmitButton id="submit-btn" className="btn-primary" text={t("Generate")} disabled={!isValidated} />
           <AsyncButton
             id="clear-btn"
             defaultType="btn-default pull-right"

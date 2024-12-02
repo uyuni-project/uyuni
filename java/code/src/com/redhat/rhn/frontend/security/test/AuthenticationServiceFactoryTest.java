@@ -14,8 +14,8 @@
  */
 package com.redhat.rhn.frontend.security.test;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
@@ -61,7 +61,7 @@ public class AuthenticationServiceFactoryTest  {
 
         AuthenticationService service = factory.getAuthenticationService();
 
-        assertTrue(service instanceof PxtAuthenticationService);
+        assertInstanceOf(PxtAuthenticationService.class, service);
     }
 
 }

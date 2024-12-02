@@ -13,6 +13,10 @@ images:
 ##
 pullPolicy: "IfNotPresent"
 
+## registrySecret defines the name of secret to use to pull the images from the
+## registry with authentication. Leave empty for no authentication.
+registrySecret: ""
+
 ## uyuni server overall Persistent Volume access modes
 ## Must match those of existing PV or dynamic provisioner
 ## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/

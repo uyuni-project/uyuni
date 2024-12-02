@@ -557,10 +557,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+  $current_user = user
+  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
-  step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
+  user = get_context('user') || 'admin'
+  password = get_context('password') || 'admin'
+  step %(I am authorized as "#{user}" with password "#{password}")
 end
 
 When(/^I sign out$/) do
@@ -799,9 +803,11 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
   end
 end
 
-Then(/^I should not see a warning nor an error sign$/) do
-  raise ScriptError, 'Warning detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
-  raise ScriptError, 'Error detected' unless page.has_no_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
+Then(/^I should only see success signs in the product list$/) do
+  raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
+  raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
+  raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+  raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
@@ -863,7 +869,13 @@ When(/^I enter the hostname of "([^"]*)" as the filtered system name$/) do |host
 end
 
 When(/^I enter "([^"]*)" as the filtered package name$/) do |input|
-  raise 'Package name is not set' if input.empty?
+  raise ArgumentError, 'Package name is not set' if input.empty?
+
+  find('input[placeholder=\'Filter by Package Name: \']').set(input)
+end
+
+When(/^I enter "([^"]*)" as the filtered latest package$/) do |input|
+  raise ArgumentError, 'Package name is not set' if input.empty?
 
   find('input[placeholder=\'Filter by Package Name: \']').set(input)
 end

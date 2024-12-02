@@ -124,11 +124,9 @@ public class SystemMigration implements Serializable {
     @Override
     public boolean equals(Object obj) {
 
-        if (!(obj instanceof SystemMigration)) {
+        if (!(obj instanceof SystemMigration other)) {
             return false;
         }
-
-        SystemMigration other = (SystemMigration) obj;
 
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(this.getToOrg(), other.getToOrg())

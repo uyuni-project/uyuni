@@ -332,8 +332,6 @@ echo "    * querying schema version, database charactersets and database"
 if [ "$(spacewalk-cfg-get externaldb)" = "0" ] ; then
     if [ -f /usr/bin/smdba ] ; then
         /usr/bin/smdba space-overview > $DIR/db-control-report
-    elif [ -f /usr/bin/db-control ] && [ "$(spacewalk-cfg-get db_backend)" = "postgresql" ] ; then
-        /usr/bin/db-control report > $DIR/db-control-report
     fi
 fi
 

@@ -508,8 +508,7 @@ public class DataSetManipulator {
         List expanded = new LinkedList<>();
         for (Object obj : data) {
             expanded.add(obj);
-            if (obj instanceof Expandable) {
-                Expandable ex = (Expandable) obj;
+            if (obj instanceof Expandable ex) {
                 List children = ex.expand();
                 expanded.addAll(children);
 

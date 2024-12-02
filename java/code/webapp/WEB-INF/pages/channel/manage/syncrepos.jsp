@@ -18,7 +18,7 @@
             </div>
             <div class="panel-body">
                 <c:if test='${not empty log_url}'>
-                    <a class="btn btn-info" href='${log_url}' target="_blank"><c:out value='${last_sync}'/></a>
+                    <a class="btn btn-default" href='${log_url}' target="_blank"><c:out value='${last_sync}'/></a>
                 </c:if>
                 <c:if test='${empty log_url}'>
                     <c:out value='${last_sync}'/>
@@ -34,15 +34,15 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
-                    class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
-                    <rhn:icon type="repo-save"/>
-                    <bean:message key='repos.jsp.button-save'/>
-                </button>
                 <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-sync'/>"
-                        class="btn btn-success" ${in_progress || inactive ? 'disabled' : ''}>
+                        class="btn btn-default" ${in_progress || inactive ? 'disabled' : ''}>
                     <rhn:icon type="repo-sync"/>
                     <bean:message key='repos.jsp.button-sync'/>
+                </button>
+                <button type="submit" name="dispatch" value="<bean:message key='repos.jsp.button-save'/>"
+                    class="btn btn-primary" ${in_progress || inactive ? 'disabled' : ''}>
+                    <rhn:icon type="repo-save"/>
+                    <bean:message key='repos.jsp.button-save'/>
                 </button>
             </div>
         </div>

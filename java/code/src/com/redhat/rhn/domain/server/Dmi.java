@@ -168,10 +168,9 @@ public class Dmi extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Dmi)) {
+        if (!(other instanceof Dmi castOther)) {
             return false;
         }
-        Dmi castOther = (Dmi) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .append(vendor, castOther.vendor)
                                   .append(system, castOther.system)
@@ -285,10 +284,9 @@ public class Dmi extends BaseDomainHelper {
          */
         @Override
         public boolean equals(final Object other) {
-            if (!(other instanceof Bios)) {
+            if (!(other instanceof Bios castOther)) {
                 return false;
             }
-            Bios castOther = (Bios) other;
             return new EqualsBuilder().append(vendor, castOther.vendor)
                                       .append(version, castOther.version)
                                       .append(release, castOther.release)

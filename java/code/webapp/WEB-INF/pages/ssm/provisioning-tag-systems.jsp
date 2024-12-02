@@ -30,7 +30,7 @@
 
       <div class="form-group">
         <div class="col-md-offset-3 offset-md-3 col-md-6">
-          <input type="submit" value="<bean:message key='ssm.operations.provisioning.tagsystems.button'/>" class="btn btn-success" />
+          <input type="submit" value="<bean:message key='ssm.operations.provisioning.tagsystems.button'/>" class="btn btn-primary" />
         </div>
       </div>
     </html:form>

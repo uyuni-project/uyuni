@@ -122,11 +122,11 @@ public class LoginController {
             model.put("request_method", reqMethod);
         }
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
-        model.put("title", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + " - Sign In");
+        model.put("title", ConfigDefaults.get().getProductName() + " - Sign In");
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
         model.put("schemaUpgradeRequired", Json.GSON.toJson(LoginHelper.isSchemaUpgradeRequired()));
         model.put("webVersion", ConfigDefaults.get().getProductVersion());
-        model.put("productName", Config.get().getString(ConfigDefaults.PRODUCT_NAME));
+        model.put("productName", ConfigDefaults.get().getProductName());
         model.put("customHeader", Config.get().getString("java.custom_header"));
         model.put("customFooter", Config.get().getString("java.custom_footer"));
         model.put("legalNote", Config.get().getString("java.legal_note"));

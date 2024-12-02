@@ -199,7 +199,7 @@ class RemoteNode
   def extract(remote_node_file, test_runner_file)
     if @has_mgrctl
       tmp_file = File.join('/tmp/', File.basename(remote_node_file))
-      _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}")
+      _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
       raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
 
       success = get_target('localhost').scp_download(tmp_file, test_runner_file, host: @full_hostname)

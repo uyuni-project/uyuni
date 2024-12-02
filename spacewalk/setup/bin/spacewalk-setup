@@ -56,11 +56,6 @@ push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
 Spacewalk::Setup::load_answer_file(\%opts, \%answers, \@skip);
 my $product_name = $answers{'product_name'} || 'Spacewalk';
 
-my $hn = `/bin/hostname -f`;
-chomp($hn);
-$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq "");
-$answers{hostname} ||= "$hn";
-
 if (not $opts{"skip-fqdn-test"} and
     not (lc($answers{hostname}) eq $answers{hostname})) {
     print Spacewalk::Setup::loc(

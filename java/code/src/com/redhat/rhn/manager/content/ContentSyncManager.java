@@ -330,7 +330,7 @@ public class ContentSyncManager {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
-        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
+        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).toList()));
         return repos;
     }
 
@@ -395,13 +395,13 @@ public class ContentSyncManager {
                     MgrSyncStatus status = installedChannelLabels.contains(e.getChannelLabel()) ?
                             MgrSyncStatus.INSTALLED : MgrSyncStatus.AVAILABLE;
                     return new Tuple2<>(e, status);
-                }).collect(Collectors.toList());
+                }).toList();
 
         List<SUSEProduct> allSUSEProducts = SUSEProductFactory.findAllSUSEProducts();
 
         List<SUSEProduct> roots = allSUSEProducts.stream()
                 .filter(SUSEProduct::isBase)
-                .collect(Collectors.toList());
+                .toList();
 
         Map<Long, List<Long>> recommendedForBase = SUSEProductFactory.allRecommendedExtensions().stream().collect(
                 Collectors.groupingBy(
@@ -468,7 +468,7 @@ public class ContentSyncManager {
                             baseRepo.getA().getRepository().isSigned(),
                             baseRepo.getA().getRepository().getUrl(),
                             baseRepo.getA().getUpdateTag()
-                    )).collect(Collectors.toList());
+                    )).toList();
                     allChannels.addAll(baseChannels);
                     MgrSyncChannelDto baseChannel = baseChannels.get(0);
 
@@ -508,7 +508,7 @@ public class ContentSyncManager {
                     return new MgrSyncProductDto(
                             root.getFriendlyName(), root.getProductId(), root.getId(), root.getVersion(), false,
                             baseChannel, allChannels, extensions);
-                }).collect(Collectors.toList());
+                }).toList();
     }
 
     /**
@@ -863,11 +863,11 @@ public class ContentSyncManager {
         List<Long> repoIdsFromCredential = new LinkedList<>();
         List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
                 .map(SCCRepository::getSccId)
-                .collect(Collectors.toList());
+                .toList();
         List<SCCRepositoryJson> ptfRepos = repositories.stream()
                 .filter(r -> !availableRepoIds.contains(r.getSCCId()))
                 .filter(SCCRepositoryJson::isPtfRepository)
-                .collect(Collectors.toList());
+                .toList();
         generatePtfChannels(ptfRepos);
         Map<Long, SCCRepository> availableReposById = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(SCCRepository::getSccId, r -> r));
@@ -896,7 +896,7 @@ public class ContentSyncManager {
         List<SCCRepository> oesRepos = SCCCachingFactory.lookupRepositoriesByChannelFamily(OES_CHANNEL_FAMILY);
         List<SCCRepositoryJson> nonOESJRepos = repositories.stream()
             .filter(jsonRepo -> oesRepos.stream().noneMatch(oes -> oes.getSccId().equals(jsonRepo.getSCCId())))
-            .collect(Collectors.toList());
+            .toList();
 
         for (SCCRepositoryJson jsonRepo : nonOESJRepos) {
             SCCRepository repo = availableReposById.get(jsonRepo.getSCCId());
@@ -1088,7 +1088,7 @@ public class ContentSyncManager {
 
                     List<String> cList = Stream.concat(ptfInfo.getChannelParts().stream(), suffix.stream())
                             .filter(e -> !e.isBlank())
-                            .collect(Collectors.toList());
+                            .toList();
 
                     prodRepoLink.setChannelLabel(String.join("-", cList).toLowerCase().replaceAll("( for | )", "-"));
                     prodRepoLink.setChannelName(String.join(" ", cList));
@@ -1348,7 +1348,7 @@ public class ContentSyncManager {
         List<ContentSyncSource> sources = filterCredentials();
         List<SCCSubscriptionJson> subscriptions = sources.stream()
             .flatMap(source -> updateSubscriptions(source).stream())
-            .collect(Collectors.toList());
+            .toList();
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Found {} available subscriptions.", subscriptions.size());
@@ -1620,15 +1620,7 @@ public class ContentSyncManager {
             return sources.stream().map(source -> {
                 try {
                     SCCClient scc = getSCCClient(source);
-                    var tree1 = scc.productTree();
-                    // Non rpm client tools are not available in cloud rmt so we remove these products.
-                    if (sources.stream().allMatch(c -> c instanceof RMTContentSyncSource)) {
-                        // Remove Ubuntu and Debian products until RMT supports them
-                        tree1.removeIf(product -> product.getChannelLabel().contains("amd64") ||
-                                product.getParentChannelLabel().filter(label -> label.contains("amd64")).isPresent()
-                        );
-                    }
-                    return tree1;
+                    return scc.productTree();
                 }
                 catch (SCCClientException e) {
                     throw new ContentSyncException(e);
@@ -1637,7 +1629,7 @@ public class ContentSyncManager {
         });
 
         return tree.stream()             .filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -1659,7 +1651,7 @@ public class ContentSyncManager {
      * @return a list of repositories
      */
     public static List<SCCRepositoryJson> collectRepos(List<SCCProductJson> products) {
-        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
+        return products.stream().flatMap(p -> p.getRepositories().stream()).toList();
     }
 
     private static <T> Map<Long, T> productAttributeOverride(List<ProductTreeEntry> tree,
@@ -1703,7 +1695,7 @@ public class ContentSyncManager {
                     .setProductType(productType)
                     .setReleaseStage(releaseStage)
                     .build();
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
 
@@ -1960,7 +1952,7 @@ public class ContentSyncManager {
                 Stream.concat(
                         products.stream(),
                         getAdditionalProducts().stream()
-                ).collect(Collectors.toList()),
+                ).toList(),
                 loadStaticTree(), getAdditionalRepositories());
     }
 
@@ -1978,7 +1970,7 @@ public class ContentSyncManager {
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
         List<SCCProductJson> allProducts = overrideProductAttributes(
-                flattenProducts(products).collect(Collectors.toList()),
+                flattenProducts(products).toList(),
                 staticTree
         );
 
@@ -2123,7 +2115,7 @@ public class ContentSyncManager {
                 .map(SUSEProductSCCRepository::getProduct)
                 .distinct()
                 .flatMap(p -> getAvailableRepositories(p, p, entriesByProducts, repoIdsWithAuth))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -2167,7 +2159,7 @@ public class ContentSyncManager {
         return listProducts().stream().flatMap(p -> Stream.concat(
                 p.getChannels().stream(),
                 p.getExtensions().stream().flatMap(e -> e.getChannels().stream())
-        )).collect(Collectors.toList());
+        )).toList();
     }
 
     private Optional<String> getTokenFromURL(String url) {
@@ -2256,7 +2248,7 @@ public class ContentSyncManager {
         }
         List<SUSEProductSCCRepository> suseProductSCCRepositories = SUSEProductFactory.lookupPSRByChannelLabel(label);
         List<SUSEProduct> products = suseProductSCCRepositories.stream()
-                .map(SUSEProductSCCRepository::getProduct).collect(Collectors.toList());
+                .map(SUSEProductSCCRepository::getProduct).toList();
         Opt.consume(suseProductSCCRepositories.stream().findFirst(),
                 () -> {
                     throw new ContentSyncException("No product tree entry found for label: '" + label + "'");

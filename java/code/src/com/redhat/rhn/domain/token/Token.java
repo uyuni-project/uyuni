@@ -242,10 +242,9 @@ public class Token implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Token)) {
+        if (!(other instanceof Token castOther)) {
             return false;
         }
-        Token castOther = (Token) other;
         return new EqualsBuilder().append(getId(), castOther.getId())
                                   .append(getDisabled(), castOther.getDisabled())
                                   .append(getDeployConfigs(),
