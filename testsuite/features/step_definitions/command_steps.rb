@@ -162,8 +162,8 @@ When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*
 end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
-  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel) ||
-                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}")
+  channels_to_synchronize = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, channel).clone ||
+                            CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, "#{channel}-#{architecture}").clone
   channels_to_synchronize = filter_channels(channels_to_synchronize, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channel #{channel} or #{channel}-#{architecture} in #{product} product not found" if channels_to_synchronize.nil? || channels_to_synchronize.empty?
 
@@ -326,7 +326,7 @@ end
 When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_version|
   next if CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).nil?
 
-  channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION[product][os_product_version]
+  channels_to_kill = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
   channels_to_kill = filter_channels(channels_to_kill, ['beta']) unless $beta_enabled
   log "Killing channels:\n#{channels_to_kill}"
   time_spent = 0
@@ -416,7 +416,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)
+  channels_to_wait = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
   channels_to_wait = filter_channels(channels_to_wait, ['beta']) unless $beta_enabled
   raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_wait.nil?
 
@@ -446,11 +446,9 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
       sleep checking_rate
     end
   rescue StandardError => e
-    log e.message
-    unless $build_validation
-      # It might be that the MU repository is wrong, but we want to continue in any case
-      raise ScriptError, "These channels were not fully synced:\n #{channels_to_wait}"
-    end
+    log "These channels were not fully synced:\n #{channels_to_wait}. \n#{e.message}"
+    # It might be that the MU repository is wrong, but on BV we want to continue in any case
+    raise unless $build_validation
   end
 end
 
@@ -580,12 +578,17 @@ When(/^the server starts mocking an IPMI host$/) do
     raise ScriptError, 'File injection failed' unless success
   end
   server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
-  server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
+  # Check if ipmi_sim is already running
+  if server.run('pgrep -f ipmi_sim', verbose: false, check_errors: false)[1].zero?
+    log 'ipmi_sim is already running; skipping startup.'
+  else
+    server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
+  end
 end
 
 When(/^the server stops mocking an IPMI host$/) do
   get_target('server').run('pkill ipmi_sim')
-  get_target('server').run('pkill fake_ipmi_host.sh || :')
+  get_target('server').run('pkill --full fake_ipmi_host.sh || :', verbose: false, check_errors: false)
 end
 
 When(/^the controller starts mocking a Redfish host$/) do

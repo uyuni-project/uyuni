@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 25 10:43:38 CET 2024 - marina.latini@suse.com
+
+- version 5.0.15-0
+  * Create a fresh ssl context with re-read CA certificates from the
+    trust store for new HTTPS connections
+
+-------------------------------------------------------------------
 Tue Oct 29 14:56:41 CET 2024 - marina.latini@suse.com
 
 - version 5.0.14-0

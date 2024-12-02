@@ -49,14 +49,6 @@ if [ ! $UID -eq 0 ]; then
     exit $EXIT_VALIDATION_ERROR
 fi
 
-# check for uppercase chars in hostname
-HOSTNAME=`hostname -f`
-if [ "$HOSTNAME" != "$(echo $HOSTNAME | tr '[:upper:]' '[:lower:]')" ]
-then
-    echo "Uppercase characters are not allowed for $PRODUCT_NAME hostname."
-    exit $EXIT_VALIDATION_ERROR
-fi
-
 # ensure correct java version is being used (bsc#1049575)
 echo "Asserting correct java version..."
 update-alternatives --set java ${JVM}
@@ -524,8 +516,7 @@ ssl-server-key = $SERVER_KEY" >> /root/spacewalk-answers
         SWRET=$?
     fi
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
-        MY_DOMAIN=`hostname -d`
-        MANAGER_MAIL_FROM="$PRODUCT_NAME ($REALHOSTNAME) <root@$MY_DOMAIN>"
+        MANAGER_MAIL_FROM="$PRODUCT_NAME ($HOSTNAME) <root@$HOSTNAME>"
     fi
     if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf

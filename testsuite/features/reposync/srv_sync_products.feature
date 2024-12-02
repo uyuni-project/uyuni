@@ -177,6 +177,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I see "Setup Wizard" text
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should only see success signs in the product list
@@ -184,3 +185,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC
     When I execute mgr-sync refresh
+
+@scc_credentials
+  Scenario: Report the synchronization duration for SLES 15 SP4
+    When I report the synchronization duration for "sles15-sp4"

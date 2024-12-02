@@ -836,6 +836,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I see "Setup Wizard" text
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should only see success signs in the product list

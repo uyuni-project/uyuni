@@ -14,7 +14,6 @@
  */
 package com.suse.scc.client;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.manager.content.ProductTreeEntry;
@@ -211,7 +210,7 @@ public class SCCWebClient implements SCCClient {
         request.addHeader("SMS", uuid != null ? uuid : "undefined");
 
         // overwrite the default
-        request.addHeader("User-Agent", Config.get().getString(ConfigDefaults.PRODUCT_NAME) + "/" +
+        request.addHeader("User-Agent", ConfigDefaults.get().getProductName() + "/" +
                 ConfigDefaults.get().getProductVersion());
         if (LOG.isDebugEnabled()) {
             Arrays.stream(request.getAllHeaders()).forEach(h -> LOG.debug(h.toString()));

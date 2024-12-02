@@ -29,16 +29,45 @@ def __virtual__():
     """
     Only if the minion is a mgr server and the postgresql module is loaded
     """
+    mgradm = False
+    postgres = False
+
     # pylint: disable-next=undefined-variable
     if not __grains__.get("is_mgr_server"):
         return (False, "Minion is not a mgr server")
     # pylint: disable-next=undefined-variable
-    if "postgres.user_exists" not in __salt__:
+    if "postgres.user_exists" in __salt__:
+        postgres = True
+    if os.path.exists("/usr/bin/mgradm") and os.path.exists("/usr/bin/mgrctl"):
+        mgradm = True
+    if not postgres and not mgradm:
         return (
             False,
-            "Unable to load postgres module.  Make sure `postgres.bins_dir` is set.",
+            "Neither postgres module nor mgradm is available.",
         )
     return __virtualname__
+
+
+def _user_exists(dbuser):
+    # pylint: disable-next=undefined-variable
+    if "postgres.user_exists" in __salt__:
+        # pylint: disable-next=undefined-variable
+        return __salt__["postgres.user_exists"](dbuser)
+    elif os.path.exists("/usr/bin/mgradm"):
+        cmd = ["mgradm", "support", "sql", "-d", "reportdb", "--logLevel", "error"]
+        # pylint: disable-next=undefined-variable
+        result = __salt__["cmd.run_all"](
+            cmd, stdin="SELECT pg_roles.rolname as name FROM pg_roles;"
+        )
+
+        if result["retcode"] != 0:
+            raise CommandExecutionError(result["stderr"])
+
+        for line in result["stdout"].splitlines():
+            role = line.strip()
+            if role and role == dbuser.lower():
+                return True
+    return False
 
 
 def present(name, password):
@@ -71,14 +100,20 @@ def present(name, password):
             "--dbpassword",
             password,
         ]
-        # pylint: disable-next=undefined-variable
-        if __salt__["postgres.user_exists"](name):
+
+        if _user_exists(name):
             cmd.append("--modify")
         else:
             cmd.append("--add")
 
-        # pylint: disable-next=undefined-variable
-        result = __salt__["cmd.run_all"](cmd)
+        result = {}
+        if os.path.exists("/usr/bin/mgrctl"):
+            command = ["mgrctl", "exec", " ".join(cmd)]
+            # pylint: disable-next=undefined-variable
+            result = __salt__["cmd.run_all"](command)
+        else:
+            # pylint: disable-next=undefined-variable
+            result = __salt__["cmd.run_all"](cmd)
 
         if result["retcode"] != 0:
             ret["result"] = False
@@ -123,7 +158,7 @@ def absent(name, password):
 
     try:
         # pylint: disable-next=undefined-variable
-        if not __salt__["postgres.user_exists"](name):
+        if not _user_exists(name):
             # pylint: disable-next=undefined-variable
             if __opts__["test"]:
                 # pylint: disable-next=consider-using-f-string
@@ -144,8 +179,15 @@ def absent(name, password):
             password,
             "--delete",
         ]
-        # pylint: disable-next=undefined-variable
-        result = __salt__["cmd.run_all"](cmd)
+
+        result = {}
+        if os.path.exists("/usr/bin/mgrctl"):
+            command = ["mgrctl", "exec", " ".join(cmd)]
+            # pylint: disable-next=undefined-variable
+            result = __salt__["cmd.run_all"](command)
+        else:
+            # pylint: disable-next=undefined-variable
+            result = __salt__["cmd.run_all"](cmd)
 
         if result["retcode"] != 0:
             ret["result"] = False

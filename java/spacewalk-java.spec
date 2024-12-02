@@ -61,7 +61,7 @@ Name:           spacewalk-java
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
 Group:          Applications/Internet
-Version:        5.0.14
+Version:        5.0.15
 Release:        0
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
@@ -96,7 +96,6 @@ BuildRequires:  cglib
 BuildRequires:  classmate
 BuildRequires:  concurrent
 BuildRequires:  dom4j
-BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
 BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
@@ -184,7 +183,6 @@ Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
 Requires:       concurrent
-Requires:       dwr >= 3
 Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
@@ -582,8 +580,6 @@ install -m 644 conf/cobbler/snippets/redhat_register_using_salt    $RPM_BUILD_RO
 install -m 644 conf/cobbler/snippets/minion_script    $RPM_BUILD_ROOT%{spacewalksnippetsdir}/minion_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks $RPM_BUILD_ROOT%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script $RPM_BUILD_ROOT%{spacewalksnippetsdir}/wait_for_networkmanager_script
-
-ln -s -f %{_javadir}/dwr.jar $RPM_BUILD_ROOT%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_prefix}/share/rhn/search/lib
