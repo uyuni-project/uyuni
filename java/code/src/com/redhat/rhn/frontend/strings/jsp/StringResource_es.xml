@@ -3346,11 +3346,11 @@ del rol de Administrador de la organización.</target>
         <target>Los siguientes paquetes en este sistema están desactualizados y pueden ser actualizados.</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
-        <source>Latest Package</source>
+        <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>Paquete más reciente</target>
+        <target state="needs-adaptation">Paquete más reciente</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -10723,7 +10723,7 @@ Tenga en cuenta que podría ser necesario configurar manualmente estos scripts. 
         </context-group>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="needs-adaptation">Si desea volver a utilizar un perfil kickstart existente le recomendamos copiar-pegar la plantilla de los kickstarts /var/lib/rhn en lugar de su propio navegador. Esto se asegurará de que las variables de la plantilla se preserven y el proceso de registro funcione apropiadamente después del kickstart.</target>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source> <target state="needs-adaptation">Si desea volver a utilizar un perfil kickstart existente le recomendamos copiar-pegar la plantilla de los kickstarts /var/lib/rhn en lugar de su propio navegador. Esto se asegurará de que las variables de la plantilla se preserven y el proceso de registro funcione apropiadamente después del kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -20893,12 +20893,6 @@ para suscribir los sistemas a los canales de software durante el inicio de insta
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distro_create_new.jsp" xml:space="preserve">
-          <source>Create Distribution</source> <target>Crear distribución</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
           <source>Autoinstallable Distributions</source> <target>Distribuciones con posibilidad Kickstart</target>
         <context-group name="ctx">
@@ -27797,6 +27791,13 @@ given channel.</source>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+          <source>Create Distribution</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

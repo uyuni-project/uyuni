@@ -3475,11 +3475,11 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <target>Die folgenden Pakete auf diesem System sind abgelaufen und können aktualisiert werden.</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
-        <source>Latest Package</source>
+        <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>Neuestes Paket</target>
+        <target state="needs-adaptation">Neuestes Paket</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -11205,8 +11205,8 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-        <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
+        <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+        <target state="needs-adaptation"> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -22327,13 +22327,6 @@ den Tab &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Aktivierun
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.kickstartable_distro_create_new.jsp" xml:space="preserve">
-        <source>Create Distribution</source>
-        <target>Distribution erstellen</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
         <source>Autoinstallable Distributions</source>
         <target>Distributionen, die gekickstartet werden können</target>
@@ -29380,6 +29373,13 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+          <source>Create Distribution</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
