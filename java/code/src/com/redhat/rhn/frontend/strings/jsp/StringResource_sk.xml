@@ -4102,7 +4102,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
-        <target/>
+        <target state="translated">Balíky opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4111,7 +4111,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
-        <target/>
+        <target state="translated">Odstrániť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4120,7 +4120,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.instructions" xml:space="preserve">
         <source>The following packages are associated with this patch. To remove packages from this patch, select them, and click 'Remove Packages' below. To add packages to this patch, click 'add' above.</source>
-        <target/>
+        <target state="translated">Nasledujúce balíky sú spojené s touto opravou. Ak chcete odstrániť balíky z tejto opravy, vyberte ich a kliknite nižšie na 'Odstrániť balíky'. Ak chcete pridať balíky do tejto opravy, kliknite vyššie na 'pridať'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4129,7 +4129,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.toolbar" xml:space="preserve">
         <source>Publish Patch: </source>
-        <target/>
+        <target state="translated">Publikovať opravu: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4138,7 +4138,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
-        <target/>
+        <target state="translated">Potvrďte, že si želáte publikovať túto opravu. Publikovaním tejto opravy ju sprístupníte všetkým kanálom vybraným nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4147,7 +4147,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.channelname" xml:space="preserve">
         <source>Channel Name</source>
-        <target/>
+        <target state="translated">Názov kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4156,7 +4156,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.relevantpackages" xml:space="preserve">
         <source>Relevant Packages</source>
-        <target/>
+        <target state="translated">Príslušné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4165,7 +4165,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.publisherrata" xml:space="preserve">
         <source>Publish Patches</source>
-        <target/>
+        <target state="translated">Publikovať opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4174,7 +4174,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.nochannels" xml:space="preserve">
         <source>There are no channels available.</source>
-        <target/>
+        <target state="translated">Nie sú dostupné žiadne kanály.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4183,7 +4183,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.nochannelsselected" xml:space="preserve">
         <source>At least one channel must be selected.</source>
-        <target/>
+        <target state="translated">Musí byť vybraný aspoň jeden kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
