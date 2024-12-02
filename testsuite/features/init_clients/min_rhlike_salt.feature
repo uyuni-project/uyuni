@@ -7,6 +7,9 @@
 @rhlike_minion
 Feature: Bootstrap a Red Hat-like minion and do some basic operations on it
 
+  Scenario: Clean up sumaform leftovers on Red Hat-like minion
+    When I perform a full salt minion cleanup on "rhlike_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
