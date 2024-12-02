@@ -20,7 +20,7 @@
 <rhn:submitted />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input type="submit" class="btn btn-success" name="dispatch" value='<bean:message key="confirm.jsp.confirm"/>'/>
+            <input type="submit" class="btn btn-primary" name="dispatch" value='<bean:message key="confirm.jsp.confirm"/>'/>
         </div>
     </div>
 

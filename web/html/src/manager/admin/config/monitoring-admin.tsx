@@ -15,7 +15,7 @@ import { HelpLink } from "components/utils/HelpLink";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import styles from "./monitoring-admin.module.css";
+import styles from "./monitoring-admin.module.scss";
 import useMonitoringApi from "./use-monitoring-api";
 
 const { capitalize } = Utils;
@@ -315,7 +315,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       <React.Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
-          defaultType="btn-success"
+          defaultType="btn-default"
           icon="fa-play"
           text={t("Enable")}
           className={styles.gap_right}

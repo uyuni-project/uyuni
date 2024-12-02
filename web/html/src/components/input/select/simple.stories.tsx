@@ -29,7 +29,7 @@ export default () => {
           divClass="col-md-6"
           options={["beginner", "normal", "expert"]}
         />
-        <SubmitButton className="btn-success" text={t("Submit")} />
+        <SubmitButton className="btn-primary" text={t("Submit")} />
       </Form>
     </>
   );

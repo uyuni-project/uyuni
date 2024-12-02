@@ -23,7 +23,7 @@ const MaintenanceWindowsList = (props: MaintenanceListProps) => {
   const buttons = [
     <div className="btn-group pull-right">
       <Button
-        className="btn-default"
+        className="btn-primary"
         disabled={!window.isAdmin}
         icon="fa-plus"
         text={t("Create")}

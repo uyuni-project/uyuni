@@ -57,7 +57,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        Java web application files for Spacewalk
 License:        GPL-2.0-only
@@ -94,7 +94,6 @@ BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
 BuildRequires:  dom4j
-BuildRequires:  dwr >= 3
 BuildRequires:  glassfish-activation
 BuildRequires:  glassfish-jaxb-api
 BuildRequires:  glassfish-jaxb-runtime
@@ -180,7 +179,6 @@ Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       dwr >= 3
 Requires:       glassfish-activation
 Requires:       glassfish-jaxb-api
 Requires:       glassfish-jaxb-runtime
@@ -550,6 +548,8 @@ install -m 644 conf/rhn_java_sso.conf %{buildroot}%{_datadir}/rhn/config-default
 # Adjust product tree tag
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
+%else
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
 %endif
 # Adjust languages
 sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
@@ -581,8 +581,6 @@ install -m 644 conf/cobbler/snippets/redhat_register_using_salt    %{buildroot}%
 install -m 644 conf/cobbler/snippets/minion_script    %{buildroot}%{spacewalksnippetsdir}/minion_script
 install -m 644 conf/cobbler/snippets/sles_no_signature_checks %{buildroot}%{spacewalksnippetsdir}/sles_no_signature_checks
 install -m 644 conf/cobbler/snippets/wait_for_networkmanager_script %{buildroot}%{spacewalksnippetsdir}/wait_for_networkmanager_script
-
-ln -s -f %{_javadir}/dwr.jar %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/dwr.jar
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib

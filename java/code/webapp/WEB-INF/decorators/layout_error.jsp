@@ -33,8 +33,7 @@
 
     <c:set var="webTheme" value="${ConfigDefaults.get().getDefaultWebTheme()}"/>
     <!-- import styles -->
-    <link rel="stylesheet" href="/css/${webTheme}.css?cb=${cb_version}" id="web-theme" />
-    <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" id="updated-web-theme" />
+    <link rel="stylesheet" href="/css/updated-${webTheme}.css?cb=${cb_version}" />
 
     <!-- expose user preferred language to the application -->
     <c:set var="currentLocale" value="${ConfigDefaults.get().getDefaultLocale()}"/>
@@ -54,8 +53,7 @@
     <decorator:head />
   </head>
   <c:set var="webTheme" value="${GlobalInstanceHolder.USER_PREFERENCE_UTILS.getCurrentWebTheme(pageContext)}"/>
-  <c:set var="isUpdatedPage" value="${GlobalInstanceHolder.VIEW_HELPER.isBootstrapReady(pageContext.request.requestURI)}"/>
-  <body class="theme-${webTheme} ${isUpdatedPage ? 'new-theme' : 'old-theme'}" onload="<decorator:getProperty property="body.onload" />">
+  <body class="theme-${webTheme} new-theme" onload="<decorator:getProperty property="body.onload" />">
   <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
   <header class="navbar-pf navbar">

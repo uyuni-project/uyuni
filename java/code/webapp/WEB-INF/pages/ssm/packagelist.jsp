@@ -49,7 +49,7 @@
         <rhn:submitted/>
         <hr/>
         <input type="submit"
-               class="btn btn-success"
+               class="btn btn-primary"
                name="dispatch"
                value='<bean:message key="installpkgs.jsp.installpackages"/>'/>
     </div>

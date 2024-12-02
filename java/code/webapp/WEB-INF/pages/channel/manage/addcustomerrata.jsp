@@ -74,7 +74,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input class="btn btn-success" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''}/>
+                <input class="btn btn-primary" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''}/>
             </div>
         </div>
 

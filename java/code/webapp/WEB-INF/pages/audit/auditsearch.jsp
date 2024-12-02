@@ -81,7 +81,7 @@
         <rhn:csrf />
         <rhn:submitted />
         <div class="text-right mb-4">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-primary">
                 <rhn:icon type="header-search" />
                 <bean:message key="button.search"/>
             </button>
@@ -171,7 +171,7 @@
             </div>
         </div>
         <div class="text-right">
-            <button type="submit" class="btn btn-success">
+            <button type="submit" class="btn btn-primary">
                 <rhn:icon type="header-search" />
                 <bean:message key="button.search"/>
             </button>

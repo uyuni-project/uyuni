@@ -92,7 +92,7 @@
 
       <div class="text-left">
         <rhn:submitted />
-        <html:submit property="dispatch" styleClass="btn btn-success">
+        <html:submit property="dispatch" styleClass="btn btn-primary">
           <bean:message key="images.jsp.dispatch" />
         </html:submit>
       </div>

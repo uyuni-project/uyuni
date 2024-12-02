@@ -32,3 +32,8 @@ just comment out the API you don't use in this script.
 
 Place the script on the controller, in `spacewalk/testsuite/features/support`,
 make it executable with `chmod +x myscript.rb`, and run it with `./myscript.rb`.
+
+## Choose the API protocol
+
+You can choose the API protocol by setting the `API_PROTOCOL` environment variable. 
+You can set it to `http` to use the HTTP API or `xmlrpc` to use the XML-RPC API.

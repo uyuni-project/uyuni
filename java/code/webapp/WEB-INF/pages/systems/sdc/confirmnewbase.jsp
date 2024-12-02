@@ -62,7 +62,7 @@
                     <bean:message key="sdc.channels.confirmNewBase.cancel"/>
                 </html:submit>
 
-                <html:submit styleClass="btn btn-success" property="dispatch">
+                <html:submit styleClass="btn btn-primary" property="dispatch">
                     <bean:message key="sdc.channels.confirmNewBase.modifyBaseSoftwareChannel"/>
                 </html:submit>
             </div>

@@ -721,7 +721,7 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
     const buttons = (
       <div>
         <Button
-          className="btn-success"
+          className="btn-primary"
           text={t("Build")}
           title={t("Schedule build")}
           icon="fa-cogs"
@@ -800,7 +800,7 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
     const buttons = (
       <div>
         <Button
-          className="btn-success"
+          className="btn-primary"
           text={t("Inspect")}
           title={t("Schedule inspect")}
           icon="fa-search"

@@ -329,7 +329,6 @@ class CVEAudit extends React.Component<Props, State> {
             <div>
               <p>
                 <a
-                  className="btn btn-link"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={
@@ -341,7 +340,6 @@ class CVEAudit extends React.Component<Props, State> {
                   {t("MITRE CVE link")}
                 </a>
                 <a
-                  className="btn btn-link"
                   target="_blank"
                   rel="noopener noreferrer"
                   href={
@@ -527,6 +525,7 @@ class CVEAudit extends React.Component<Props, State> {
               this.state.statuses
             }
             data-senna-off="true"
+            className="btn btn-default"
           >
             <IconTag type="item-download-csv" />
             {t("Download CSV")}

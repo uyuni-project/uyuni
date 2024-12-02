@@ -52,7 +52,7 @@
                                        disabled class="btn"
                                    </c:when>
                                    <c:otherwise>
-                                       class="btn btn-success"
+                                       class="btn btn-primary"
                                     </c:otherwise>
                                 </c:choose>
                             >

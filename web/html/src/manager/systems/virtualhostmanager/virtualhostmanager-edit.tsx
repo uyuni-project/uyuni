@@ -192,7 +192,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="update-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
@@ -202,7 +202,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="create-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}
