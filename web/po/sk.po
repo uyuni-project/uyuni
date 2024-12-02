@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-02 08:18+0100\n"
-"PO-Revision-Date: 2024-11-28 18:48+0000\n"
+"PO-Revision-Date: 2024-12-02 16:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -5472,12 +5472,10 @@ msgid " Systems "
 msgstr " Systémy "
 
 #: ../html/src/manager/systems/all-list.tsx:52
-#, fuzzy
 msgid "Add a system"
 msgstr "Pridať systém"
 
 #: ../html/src/manager/systems/all-list.tsx:53
-#, fuzzy
 msgid "Add system"
 msgstr "Pridať systém"
 
