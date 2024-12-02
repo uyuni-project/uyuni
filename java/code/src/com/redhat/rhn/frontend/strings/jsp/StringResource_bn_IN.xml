@@ -3296,8 +3296,8 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
-        <source>Latest Package</source>
-        <target>সাম্প্রতিক প্যাকেজ</target>
+        <source>Package Name</source>
+        <target state="needs-adaptation">সাম্প্রতিক প্যাকেজ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
@@ -10615,11 +10615,12 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete" xml:space="preserve">
         <source>Delete Autoinstallation</source>
         <target>Kickstart মুছে ফেলুন</target>
@@ -21203,12 +21204,6 @@ Kickstart করার সময় অনুগ্রহ করে সিস্ট
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
         </trans-unit>
-        <trans-unit id="kickstart.kickstartable_distro_create_new.jsp" xml:space="preserve">
-          <source>Create Distribution</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-        </trans-unit>
         <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
           <source>Autoinstallable Distributions</source>
           <target>Kickstart করার যোগ্য ডিস্ট্রিবউশন</target>
@@ -27812,6 +27807,13 @@ given channel.</source>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+          <source>Create Distribution</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
