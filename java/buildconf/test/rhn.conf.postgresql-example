@@ -165,3 +165,5 @@ server.susemanager.scc_backup_srv_usr = 52156f60-8aa2-4165-8645-367efdc2a510
 
 # Disable remote commands from UI
 java.disable_remote_commands_from_ui = false
+
+reporting.hibernate.transform_hbm_xml.enabled=true
