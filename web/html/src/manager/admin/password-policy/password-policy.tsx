@@ -5,78 +5,57 @@ import { Form, Text, Check } from "components/input";
 import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { AsyncButton } from "components/buttons";
-import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-
-import usePasswordPolicyApi from "manager/admin/password-policy/use-password-policy-api";
+import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
 import { useState } from "react";
+import { PasswordPolicyProps } from "./password_policy_type";
 
-type PasswordPolicyProps = {
-  minLength: bigint;
-  maxLength: bigint;
-  digitsFlag: boolean;
-  lowerCharFlag: boolean;
-  upperCharFlag: boolean;
-  consecutiveCharFlag: boolean;
-  specialCharFlag: boolean;
-  specialCharList: string | null;
-  restrictedOccurrenceFlag: boolean;
-  maxCharOccurrence: bigint;
+const updatePolicy = (policyData) => {
+  return fetch('/rhn/manager/api/admin/config/password-policy', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(policyData),
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json().then((errorData) => {
+        throw errorData;
+      });
+    }
+    return response.json();
+  });
 };
 
-const PasswordPolicy = (props: PasswordPolicyProps) => {
-  const [policy, setPolicy] = useState({
-    properties: {
-      minLength: props.minLength.toString(),
-      maxLength: props.maxLength.toString(),
-      digitsFlag: props.digitsFlag,
-      lowerCharFlag: props.lowerCharFlag,
-      upperCharFlag: props.upperCharFlag,
-      consecutiveCharFlag: props.consecutiveCharFlag,
-      specialCharFlag: props.specialCharFlag,
-      specialCharList: props.specialCharList || "",
-      restrictedOccurrenceFlag: props.restrictedOccurrenceFlag,
-      maxCharOccurrence: props.maxCharOccurrence.toString(),
+const defaultPolicy = () => {
+  return fetch('/rhn/manager/api/admin/config/password-policy/default', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
     },
-    errors: {},
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json().then((errorData) => {
+        throw errorData;
+      });
+    }
+    return response.json();
   });
+};
 
-  const { updatePolicy } = usePasswordPolicyApi();
 
+const PasswordPolicy = (prop: PasswordPolicyProps) => {
   return (
     <TopPanel
       title={t("Server Configuration - Password Policy")}
       icon="fa-info-circle"
-      button={
-        <div className="pull-right btn-group">
-          <AsyncButton
-            id="savebutton"
-            className="btn-primary"
-            title={t("Save Password Policy")}
-            text={t("Save")}
-            icon="fa-save"
-            action={() =>
-              updatePolicy(policy.properties)
-                .then(() => {
-                  showSuccessToastr(t("Password Policy Changed"))
-                })
-                .catch((error) => {
-                  showErrorToastr(error, { autoHide: false });
-                })
-            }
-          />
-        </div>
-      }
     >
       <div className="page-summary">
+        <MessagesContainer />
         <p>{t("Set up your server local users password policy.")}</p>
       </div>
       <Form
-        model={policy.properties}
-        errors={policy.errors}
-        onChange={(newProperties) =>
-          setPolicy({ ...policy, properties: newProperties })
-        }
-        >
+        model={prop.policy}
+      >
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           <div className="col-md-8">
             {/* Minimum Length */}
@@ -94,7 +73,7 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
             {/* Maximum Length */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="minLength">{t("Max Password Length")}</label>
+                <label htmlFor="maxLength">{t("Max Password Length")}</label>
               </div>
               <Text
                 required
@@ -106,52 +85,52 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
             {/* Require Digits */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Require Digits")}</label>
+                <label htmlFor="digitFlag">{t("Require Digits")}</label>
               </div>
               <Check
-                name="digitsFlag"
-                key="digitsFlag"
+                name="digitFlag"
+                key="digitFlag"
                 divClass="col-md-2"
               />
             </div>
             {/* Require Lowercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Require Lowercase Characters")}</label>
+                <label htmlFor="lowerCharFlag">{t("Require Lowercase Characters")}</label>
               </div>
               <Check
-                 name="lowerCharFlag"
-                 key="lowerCharFlag"
-                 divClass="col-md-2"
-               />
+                name="lowerCharFlag"
+                key="lowerCharFlag"
+                divClass="col-md-2"
+              />
             </div>
             {/* Require Uppercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Require Uppercase Characters")}</label>
+                <label htmlFor="upperCharFlag">{t("Require Uppercase Characters")}</label>
               </div>
               <Check
                 name="upperCharFlag"
                 key="upperCharFlag"
                 divClass="col-md-2"
-                />
+              />
             </div>
             {/* Restrict Consecutive Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Restrict Consecutive Characters")}</label>
+                <label htmlFor="consecutiveCharsFlag">{t("Restrict Consecutive Characters")}</label>
               </div>
               <Check
-                name="consecutiveCharFlag"
-                key="consecutiveCharFlag"
+                name="consecutiveCharsFlag"
+                key="consecutiveCharsFlag"
                 divClass="col-md-2"
               />
             </div>
             {/* Require Special Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Require Special Characters")}</label>
-              </div>   
+                <label htmlFor="specialCharFlag">{t("Require Special Characters")}</label>
+              </div>
               <Check
                 name="specialCharFlag"
                 key="specialCharFlag"
@@ -161,38 +140,81 @@ const PasswordPolicy = (props: PasswordPolicyProps) => {
             {/* Allowed Special Characters */}
             <div className="row form-group">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Allowed Special Characters")}</label>
+                <label htmlFor="specialChars">{t("Allowed Special Characters")}</label>
               </div>
               <Text
-                required={policy.properties.specialCharFlag}
-                disabled={!policy.properties.specialCharFlag}
-                name="specialCharList"
+                disabled={!prop.policy.specialCharFlag}
+                name="specialChars"
                 divClass="col-md-4"
+                defaultValue={prop.defaults.specialChars?.toLocaleString()}
               />
             </div>
             {/* Restrict Character Occurrence */}
             <div className="row">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Restrict Character Occurrence")}</label>
+                <label htmlFor="restrictedOccurrenceFlag">{t("Restrict Characters Occurrences")}</label>
               </div>
               <Check
                 key="restrictedOccurrenceFlag"
                 name="restrictedOccurrenceFlag"
-                divClass="col-md-2"  
+                divClass="col-md-2"
               />
             </div>
             {/* Maximum Character Occurrence */}
             <div className="row form-group">
               <div className="col-md-4 text-left">
-                <label htmlFor="digitsFlag">{t("Restrict Character Occurrence")}</label>
+                <label htmlFor="maxCharacterOccurrence">{t("Max Characters Occurrences")}</label>
               </div>
               <Text
-                required={policy.properties.restrictedOccurrenceFlag}
-                disabled={!policy.properties.restrictedOccurrenceFlag}
-                name="maxCharOccurrence"
+                disabled={!prop.policy.restrictedOccurrenceFlag}
+                name="maxCharacterOccurrence"
                 divClass="col-md-2"
                 type="number"
+                defaultValue={prop.defaults.maxCharacterOccurrence.toLocaleString()}
               />
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-4 text-center">
+              <div className="btn-group">
+                <AsyncButton
+                  id="savebutton"
+                  className="btn-primary"
+                  title={t("Save Password Policy")}
+                  text={t("Save")}
+                  icon="fa-save"
+                  action={() =>
+                    updatePolicy(prop.policy)
+                      .then(() => {
+                        showSuccessToastr(t("Password Policy Changed"));
+                      })
+                      .catch((error) => {
+                        showErrorToastr(error, { autoHide: false });
+                      })
+                  }
+                />
+              </div>
+            </div>
+            <div className="col-md-4 text-center">
+              <div className="btn-group">
+                <AsyncButton
+                  id="resetbutton"
+                  className="btn-primary"
+                  title={t("Reset")}
+                  text={t("Reset")}
+                  icon="fa-refresh"
+                  action={() =>
+                    defaultPolicy()
+                      .then((policy) => {
+                        prop.policy = policy;
+                        showSuccessToastr(t("Password Policy reset to defaults"));
+                      })
+                      .catch((error) => {
+                        showErrorToastr(error, { autoHide: false });
+                      })
+                  }
+                />
+              </div>
             </div>
           </div>
         </Panel>
