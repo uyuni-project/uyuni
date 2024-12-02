@@ -625,6 +625,19 @@ public class SystemHandler extends BaseHandler {
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
                 .toList();
 
+        // consistent check
+        long bid = baseChannel.map(Channel::getId).orElse(-1L);
+        for (Server s : servers) {
+            if (bid == -1L) {
+                bid = s.getBaseChannel().getId();
+            }
+            for (Channel cch : childChannels) {
+                if (!cch.getParentChannel().getId().equals(bid)) {
+                    throw new InvalidParentChannelException();
+                }
+            }
+        }
+
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
                     serverIds,
