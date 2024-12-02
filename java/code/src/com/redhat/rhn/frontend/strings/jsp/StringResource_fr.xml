@@ -11201,8 +11201,8 @@ Veuillez noter qu'une configuration manuelle de ces scripts peut toujours être 
         </context-group>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-          <target>Si vous souhaitez réutiliser un profil Kickstart existant, nous recommandons que vous copier-coller le modèle de /var/lib/rhn/kickstarts à la place d'à partir de votre navigateur.  Cela garantira que les variables de modèle soient préservées et que le processus d'enregistrement fonctionne correctement après le kickstart.</target>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+          <target state="needs-adaptation">Si vous souhaitez réutiliser un profil Kickstart existant, nous recommandons que vous copier-coller le modèle de /var/lib/rhn/kickstarts à la place d'à partir de votre navigateur.  Cela garantira que les variables de modèle soient préservées et que le processus d'enregistrement fonctionne correctement après le kickstart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
