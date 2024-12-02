@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.channel.ChannelSyncFlag;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
+import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -203,7 +204,8 @@ public class AnnotationRegistry {
         ServerAppStream.class,
         AppStream.class,
         AppStreamApi.class,
-        TokenChannelAppStream.class
+        TokenChannelAppStream.class,
+        RhnConfiguration.class
     );
 
     /**

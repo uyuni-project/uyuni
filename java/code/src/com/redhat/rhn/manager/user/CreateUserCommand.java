@@ -84,7 +84,7 @@ public class CreateUserCommand {
     public ValidatorError[] validate() {
         errors = new ArrayList<>(); //clear validation errors
 
-        if (passwordErrors != null) {
+        if (passwordErrors != null && !user.getUsePamAuthentication()) {
             errors.addAll(passwordErrors); //add any password validation errors
         }
         validateEmail();
@@ -307,7 +307,7 @@ public class CreateUserCommand {
             user.setPassword(passwordIn);
         }
         else {
-            passwordErrors = PasswordValidationUtils.validatePasswordFromSatConfiguration(passwordIn).stream()
+            passwordErrors = PasswordValidationUtils.validatePasswordFromConfiguration(passwordIn).stream()
                     .map(PasswordPolicyCheckFail::toValidatorError)
                     .collect(Collectors.toList());
             if (passwordErrors.isEmpty()) {

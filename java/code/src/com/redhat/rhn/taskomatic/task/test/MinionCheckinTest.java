@@ -17,7 +17,8 @@ package com.redhat.rhn.taskomatic.task.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -49,7 +50,8 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        this.thresholdMax = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L)
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue()
                 .intValue() * 86400;
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }

@@ -70,7 +70,7 @@ public class UsersDetailsController {
     public String validatePassword(Request req, Response res, User user) {
         PasswordValidationRequest request = GSON.fromJson(req.body(), PasswordValidationRequest.class);
         List<PasswordPolicyCheckFail> fails =
-                PasswordValidationUtils.validatePasswordFromSatConfiguration(request.getPassword());
+                PasswordValidationUtils.validatePasswordFromConfiguration(request.getPassword());
         return json(GSON, res, ResultJson.success(fails), new TypeToken<>() { });
     }
 

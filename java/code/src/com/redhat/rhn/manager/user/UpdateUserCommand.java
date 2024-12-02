@@ -136,7 +136,7 @@ public class UpdateUserCommand {
         }
         else {
             List<PasswordPolicyCheckFail> errors =
-                    PasswordValidationUtils.validatePasswordFromSatConfiguration(unencryptedPassword);
+                    PasswordValidationUtils.validatePasswordFromConfiguration(unencryptedPassword);
             if (!errors.isEmpty()) {
                 throw new PasswordValidationException(errors);
             }

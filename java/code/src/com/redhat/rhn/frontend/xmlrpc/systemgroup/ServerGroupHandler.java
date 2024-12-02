@@ -18,7 +18,8 @@ import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.formula.Formula;
 import com.redhat.rhn.domain.formula.FormulaFactory;
@@ -431,7 +432,8 @@ public class ServerGroupHandler extends BaseHandler {
 
     private List<Long> activeSystemsInGroup(User loggedInUser, String systemGroupName) {
         ServerGroup sg = lookup(systemGroupName, loggedInUser);
-        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        Long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
         return serverGroupManager.listActiveServers(sg, threshold);
     }
 
@@ -474,7 +476,8 @@ public class ServerGroupHandler extends BaseHandler {
     @ReadOnly
     public List<Long> listInactiveSystemsInGroup(User loggedInUser,
             String systemGroupName) {
-        Long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        Long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
         return listInactiveSystemsInGroup(loggedInUser, systemGroupName,
                 threshold.intValue());
     }

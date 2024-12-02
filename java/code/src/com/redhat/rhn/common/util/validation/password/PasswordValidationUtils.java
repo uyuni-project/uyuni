@@ -38,8 +38,8 @@ public class PasswordValidationUtils {
      * @param password the password to validate
      * @return the errors map
      */
-    public static List<PasswordPolicyCheckFail> validatePasswordFromSatConfiguration(String password) {
-        List<PasswordPolicyCheck> checks =  buildChecksFromPolicy(PasswordPolicy.buildPasswordPolicyFromSatFactory());
+    public static List<PasswordPolicyCheckFail> validatePasswordFromConfiguration(String password) {
+        List<PasswordPolicyCheck> checks =  buildChecksFromPolicy(PasswordPolicy.buildFromFactory());
         return executeValidation(password, checks);
     }
 
@@ -57,39 +57,39 @@ public class PasswordValidationUtils {
 
     private static List<PasswordPolicyCheck> buildChecksFromPolicy(PasswordPolicy policy) {
         List<PasswordPolicyCheck> checks = new ArrayList<>();
-        // Check for uppercase letters
+    // Check for uppercase letters
         if (policy.isUpperCharFlag()) {
             checks.add(PasswordValidationUtils::upperCharCheck);
         }
-        // Check for lowercase letters
+    // Check for lowercase letters
         if (policy.isLowerCharFlag()) {
-            checks.add(PasswordValidationUtils::lowerCherCheck);
+            checks.add(PasswordValidationUtils::lowerCharCheck);
         }
-        // Check for digits
+    // Check for digits
         if (policy.isDigitFlag()) {
             checks.add(PasswordValidationUtils::digitCharCheck);
         }
-        // Check for consecutive characters
-        if (policy.isConsecutiveCharsFlag()) {
+    // Check for consecutive characters
+        if (policy.isLowerCharFlag()) {
             checks.add(PasswordValidationUtils::consecutiveCharCheck);
         }
-        // Check for maximum occurrences of any character
+    // Check for maximum occurrences of any character
         if (policy.isRestrictedOccurrenceFlag()) {
             checks.add(password -> restrictedCharCheck(password, policy.getMaxCharacterOccurrence()));
         }
-        // Check for special characters
+    // Check for special characters
         if (policy.isSpecialCharFlag()) {
             checks.add(password -> specialCharCheck(password, policy.getSpecialChars()));
         }
-        // Always check for no spaces, tabs, or newlines
+    // Always check for no spaces, tabs, or newlines
         checks.add(PasswordValidationUtils::spaceCharCheck);
-        // Always check for length requirements
+    // Always check for length requirements
         checks.add(password -> minLengthCheck(password, policy.getMinLength()));
         checks.add(password -> maxLengthCheck(password, policy.getMaxLength()));
         return checks;
     }
 
-    protected static Optional<PasswordPolicyCheckFail> lowerCherCheck(String password) {
+    protected static Optional<PasswordPolicyCheckFail> lowerCharCheck(String password) {
         return PSW_LOWERCHAR_REGEX.matcher(password).find() ?
                 Optional.empty() :
                 Optional.of(new PasswordPolicyCheckFail("error.nolowercasepassword", ""));

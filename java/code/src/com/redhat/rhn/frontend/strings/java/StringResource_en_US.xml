@@ -1354,6 +1354,27 @@
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
+        <source>Field {0} can't be equal or less than zero.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
+        <source>Field {0} can't be can't be greater or equal than field {1}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
+        <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Password maximum allowed character occurrences can't be less or equal than 0.</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="error.minpassword" xml:space="preserve">
         <source>Password must be at least {0} characters.</source>
         <context-group name="ctx">

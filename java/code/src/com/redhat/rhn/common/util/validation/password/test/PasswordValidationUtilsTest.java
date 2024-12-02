@@ -143,10 +143,18 @@ public class PasswordValidationUtilsTest {
     }
 
     @Test
-    public void testPasswordUsingDefaultSatConfigurations() {
+    public void testPasswordUsingConfigurations() {
         String password = "Abc123!er}{hjxc";
         List<PasswordPolicyCheckFail> errors =
-                PasswordValidationUtils.validatePasswordFromSatConfiguration(password);
+                PasswordValidationUtils.validatePasswordFromConfiguration(password);
         assertTrue(errors.isEmpty(), "Default valid password");
+    }
+
+    public void testPasswordUsingDefaults() {
+        String password = "Abc123!er}{hjxc";
+        List<PasswordPolicyCheckFail> errors =
+                PasswordValidationUtils.validatePasswordFromPolicy(password, PasswordPolicy.buildFromDefaults());
+        assertTrue(errors.isEmpty(), "Default valid password");
+
     }
 }

@@ -15,19 +15,20 @@
 
 package com.redhat.rhn.common.util.validation.password;
 
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 public class PasswordPolicy {
-    private final boolean upperCharFlag;
-    private final boolean lowerCharFlag;
-    private final boolean digitFlag;
-    private final boolean specialCharFlag;
-    private final String specialChars;
-    private final boolean consecutiveCharsFlag;
-    private final boolean restrictedOccurrenceFlag;
-    private final int maxCharacterOccurrence;
-    private final int minLength;
-    private final int maxLength;
+    private boolean upperCharFlag;
+    private boolean lowerCharFlag;
+    private boolean digitFlag;
+    private boolean specialCharFlag;
+    private String specialChars;
+    private boolean consecutiveCharsFlag;
+    private boolean restrictedOccurrenceFlag;
+    private int maxCharacterOccurrence;
+    private int minLength;
+    private int maxLength;
 
     /**
      * Class that holds the settings for the user password checks
@@ -61,63 +62,135 @@ public class PasswordPolicy {
         maxLength = maxLengthIn;
     }
 
-    public boolean isUpperCharFlag() {
-        return upperCharFlag;
-    }
-
-    public boolean isLowerCharFlag() {
-        return lowerCharFlag;
-    }
-
-    public boolean isDigitFlag() {
-        return digitFlag;
-    }
-
-    public boolean isSpecialCharFlag() {
-        return specialCharFlag;
-    }
-
-    public String getSpecialChars() {
-        return specialChars;
-    }
-
-    public boolean isConsecutiveCharsFlag() {
-        return consecutiveCharsFlag;
-    }
-
-    public boolean isRestrictedOccurrenceFlag() {
-        return restrictedOccurrenceFlag;
-    }
-
-    public int getMaxCharacterOccurrence() {
-        return maxCharacterOccurrence;
-    }
-
-    public int getMinLength() {
-        return minLength;
-    }
-
-    public int getMaxLength() {
-        return maxLength;
+    /**
+     * Class that holds the settings for the user password checks
+     */
+    public PasswordPolicy() {
     }
 
     /**
      * Helper method to build checks settings from SatConfiguration
      * @return the settings for the user password settings
      */
-    public static PasswordPolicy buildPasswordPolicyFromSatFactory() {
+    public static PasswordPolicy buildFromFactory() {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return new PasswordPolicy(
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_UPPER_CHAR_FLAG),
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_LOWER_CHAR_FLAG),
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_DIGIT_FLAG),
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_SPECIAL_CHAR_FLAG),
-                SatConfigFactory.getSatConfigValue(SatConfigFactory.PSW_CHECK_SPECIAL_CHARACTERS),
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_CONSECUTIVE_CHAR_FLAG),
-                SatConfigFactory.getSatConfigBooleanValue(SatConfigFactory.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG),
-                SatConfigFactory.getSatConfigIntValue(SatConfigFactory.PSW_CHECK_MAX_OCCURRENCE, 2),
-                SatConfigFactory.getSatConfigIntValue(SatConfigFactory.PSW_CHECK_LENGTH_MIN, 4),
-                SatConfigFactory.getSatConfigIntValue(SatConfigFactory.PSW_CHECK_LENGTH_MAX, 32)
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_upper_char_flag).getValue(),
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_lower_char_flag).getValue(),
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_digit_flag).getValue(),
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_special_char_flag).getValue(),
+                factory.getStringConfiguration(RhnConfiguration.KEYS.psw_check_special_characters).getValue(),
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_consecutive_char_flag).getValue(),
+                factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_restricted_occurrence_flag).getValue(),
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_max_occurrence).getValue(),
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_min).getValue(),
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue()
         );
     }
 
+
+    /**
+     * Helper method to get the defaults checks settings from SatConfiguration
+     * @return the default settings for the user password settings
+     */
+    public static PasswordPolicy buildFromDefaults() {
+            RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+            return new PasswordPolicy(
+                    factory.getBooleanConfiguration(
+                            RhnConfiguration.KEYS.psw_check_upper_char_flag).getDefaultValue(),
+                    factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_lower_char_flag).getDefaultValue(),
+                    factory.getBooleanConfiguration(RhnConfiguration.KEYS.psw_check_digit_flag).getDefaultValue(),
+                    factory.getBooleanConfiguration(
+                            RhnConfiguration.KEYS.psw_check_special_char_flag).getDefaultValue(),
+                    factory.getStringConfiguration(
+                            RhnConfiguration.KEYS.psw_check_special_characters).getDefaultValue(),
+                    factory.getBooleanConfiguration(
+                            RhnConfiguration.KEYS.psw_check_consecutive_char_flag).getDefaultValue(),
+                    factory.getBooleanConfiguration(
+                            RhnConfiguration.KEYS.psw_check_restricted_occurrence_flag).getDefaultValue(),
+                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_max_occurrence).getDefaultValue(),
+                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_min).getDefaultValue(),
+                    factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getDefaultValue()
+            );
+        }
+
+    public boolean isUpperCharFlag() {
+        return upperCharFlag;
+    }
+
+    public void setUpperCharFlag(boolean upperCharFlagIn) {
+        upperCharFlag = upperCharFlagIn;
+    }
+
+    public boolean isLowerCharFlag() {
+        return lowerCharFlag;
+    }
+
+    public void setLowerCharFlag(boolean lowerCharFlagIn) {
+        lowerCharFlag = lowerCharFlagIn;
+    }
+
+    public boolean isDigitFlag() {
+        return digitFlag;
+    }
+
+    public void setDigitFlag(boolean digitFlagIn) {
+        digitFlag = digitFlagIn;
+    }
+
+    public boolean isSpecialCharFlag() {
+        return specialCharFlag;
+    }
+
+    public void setSpecialCharFlag(boolean specialCharFlagIn) {
+        specialCharFlag = specialCharFlagIn;
+    }
+
+    public String getSpecialChars() {
+        return specialChars;
+    }
+
+    public void setSpecialChars(String specialCharsIn) {
+        specialChars = specialCharsIn;
+    }
+
+    public boolean isConsecutiveCharsFlag() {
+        return consecutiveCharsFlag;
+    }
+
+    public void setConsecutiveCharsFlag(boolean consecutiveCharsFlagIn) {
+        consecutiveCharsFlag = consecutiveCharsFlagIn;
+    }
+
+    public boolean isRestrictedOccurrenceFlag() {
+        return restrictedOccurrenceFlag;
+    }
+
+    public void setRestrictedOccurrenceFlag(boolean restrictedOccurrenceFlagIn) {
+        restrictedOccurrenceFlag = restrictedOccurrenceFlagIn;
+    }
+
+    public int getMaxCharacterOccurrence() {
+        return maxCharacterOccurrence;
+    }
+
+    public void setMaxCharacterOccurrence(int maxCharacterOccurrenceIn) {
+        maxCharacterOccurrence = maxCharacterOccurrenceIn;
+    }
+
+    public int getMinLength() {
+        return minLength;
+    }
+
+    public void setMinLength(int minLengthIn) {
+        minLength = minLengthIn;
+    }
+
+    public int getMaxLength() {
+        return maxLength;
+    }
+
+    public void setMaxLength(int maxLengthIn) {
+        maxLength = maxLengthIn;
+    }
 }

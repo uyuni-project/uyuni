@@ -22,7 +22,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.UserDefaults;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.user.UpdateUserCommand;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -132,10 +133,15 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
     @Test
     public void testValidPassword() {
         command.setEmail("jesusr@redhat.com");
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // = minlen
-        assertPassword(StringUtils.repeat("a", SatConfigFactory.getPswCheckLengthMin()), command);
+        assertPassword(StringUtils.repeat(
+                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_min).getValue()), command
+        );
         // = maxlen
-        assertPassword(StringUtils.repeat("a", SatConfigFactory.getPswCheckLengthMax()), command);
+        assertPassword(StringUtils.repeat(
+                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue()), command
+        );
 
         // random string
         String randomPassword = TestUtils.randomString();

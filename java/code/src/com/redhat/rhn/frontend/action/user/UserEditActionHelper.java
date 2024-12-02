@@ -75,7 +75,7 @@ public abstract class UserEditActionHelper extends RhnAction {
 
         //Make sure password is not empty
         if (!pw.isEmpty()) {
-            List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromSatConfiguration(pw);
+            List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromConfiguration(pw);
             failures.forEach(failure -> errors.add(
                     ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())

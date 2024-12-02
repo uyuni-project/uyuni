@@ -102,7 +102,7 @@ public class ResetPasswordSubmitAction extends UserEditActionHelper {
         }
 
         // Validate the rest of the password rules
-        List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromSatConfiguration(pw);
+        List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromConfiguration(pw);
         failures.forEach(failure -> errors.add(
                 ActionMessages.GLOBAL_MESSAGE,
                 new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())

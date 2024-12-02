@@ -12,7 +12,8 @@
 package com.suse.manager.metrics;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,8 @@ public class SystemsCollector extends Collector {
         String selectCountQuery = "SELECT COUNT(DISTINCT(server_id)) " +
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
-        long threshold = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
         long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)

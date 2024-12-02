@@ -98,19 +98,11 @@ public class AdminViewsController {
      * @return the view to show
      */
     public static ModelAndView showPasswordPolicy(Request request, Response response, User user) {
-        PasswordPolicy pc = PasswordPolicy.buildPasswordPolicyFromSatFactory();
+        PasswordPolicy pc = PasswordPolicy.buildFromFactory();
+        PasswordPolicy defaults = PasswordPolicy.buildFromDefaults();
         Map<String, Object> data = new HashMap<>();
-        data.put("minLength", pc.getMinLength());
-        data.put("maxLength", pc.getMaxLength());
-        data.put("digitsFlag", pc.isDigitFlag());
-        data.put("lowerCharFlag", pc.isLowerCharFlag());
-        data.put("upperCharFlag", pc.isUpperCharFlag());
-        data.put("consecutiveCharFlag", pc.isConsecutiveCharsFlag());
-        data.put("specialCharFlag", pc.isSpecialCharFlag());
-        data.put("specialCharList", GSON.toJson(pc.getSpecialChars()));
-        data.put("restrictedOccurrenceFlag", pc.isRestrictedOccurrenceFlag());
-        data.put("maxCharOccurrence", pc.getMaxCharacterOccurrence());
-        data.put("isUyuni", ConfigDefaults.get().isUyuni());
+        data.put("policy", GSON.toJson(pc));
+        data.put("defaults", GSON.toJson(defaults));
         return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
     }
 
