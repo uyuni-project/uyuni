@@ -23,19 +23,16 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.query.Query;
 import org.quartz.SchedulerException;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.persistence.TypedQuery;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
+
+import jakarta.persistence.NoResultException;
 
 /**
  * TaskoFactory
@@ -462,7 +459,7 @@ public class TaskoFactory extends HibernateFactory {
         try {
             return (TaskoRun) query.getSingleResult();
         }
-        catch (NoResultException e) {
+	catch (NoResultException e) {
             // Handle the case where no result is found
             return null;
         }
