@@ -123,6 +123,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -633,10 +634,15 @@ public class SystemHandler extends BaseHandler {
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
                                              List childLabels, Date earliestOccurrence) {
         //Get the logged in user and server
-        Set<Long> servers = sids.stream()
-                .map(sid -> lookupServer(loggedInUser, sid))
-                .map(Server::getId)
+        Set<Long> serverIds = new HashSet<>();
+        Set<Server> servers = sids.stream()
+                .map(sid -> {
+                    Server server = lookupServer(loggedInUser, sid);
+                    serverIds.add(server.getId());
+                    return server;
+                })
                 .collect(toSet());
+
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -666,9 +672,22 @@ public class SystemHandler extends BaseHandler {
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
                 .collect(Collectors.toList());
 
+        // consistent check
+        long bid = baseChannel.map(Channel::getId).orElse(-1L);
+        for (Server s : servers) {
+            if (bid == -1L) {
+                bid = s.getBaseChannel().getId();
+            }
+            for (Channel cch : childChannels) {
+                if (!cch.getParentChannel().getId().equals(bid)) {
+                    throw new InvalidParentChannelException();
+                }
+            }
+        }
+
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
-                    servers,
+                    serverIds,
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
