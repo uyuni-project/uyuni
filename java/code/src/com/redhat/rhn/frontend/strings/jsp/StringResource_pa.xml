@@ -10756,11 +10756,12 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
         </trans-unit>
         <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
-        </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="kickstartdatadelete.jsp.confirmdelete" xml:space="preserve">
         <source>Delete Autoinstallation</source>
         <context-group name="ctx">
