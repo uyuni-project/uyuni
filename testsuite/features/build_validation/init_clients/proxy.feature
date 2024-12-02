@@ -12,6 +12,7 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Clean up sumaform leftovers on a SUSE Manager proxy
     When I perform a full salt minion cleanup on "proxy"
+    And I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Install proxy software for build validation
     # uncomment when product is out:
@@ -43,8 +44,8 @@ Feature: Setup SUSE Manager proxy
 
   Scenario: Copy the server keys to the proxy
     When I copy server's keys to the proxy
-    
-  Scenario: Configure the proxy    
+
+  Scenario: Configure the proxy
     When I configure the proxy
     And I allow all SSL protocols on the proxy's apache
     And I reload the "apache2.service" service on "proxy"

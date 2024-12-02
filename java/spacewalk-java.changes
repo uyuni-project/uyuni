@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 25 08:53:46 CET 2024 - marina.latini@suse.com
+
+- version 4.3.83-0
+  * Fix compliance check as some packages were renamed (bsc#1233014)
+
+-------------------------------------------------------------------
 Tue Oct 29 16:47:01 CET 2024 - marina.latini@suse.com
 
 - version 4.3.82-0

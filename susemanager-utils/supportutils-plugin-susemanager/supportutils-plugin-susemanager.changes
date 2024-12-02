@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Nov 25 08:52:17 CET 2024 - marina.latini@suse.com
+
+- version 4.3.13-0
+  * Change supportconfig as some packages were renamed (bsc#1233014)
+
+-------------------------------------------------------------------
 Thu Jun 06 17:04:21 CEST 2024 - rosuna@suse.com
 
 - version 4.3.12-0

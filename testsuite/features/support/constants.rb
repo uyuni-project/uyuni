@@ -1211,18 +1211,20 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp5-updates-x86_64
         sles15-sp5-devel-uyuni-client-x86_64
       ],
-    'sles15-sp6' =>
+    'sles15-sp6' => # CHECKED
       %w[
         sle-product-sles15-sp6-pool-x86_64
         sle-product-sles15-sp6-updates-x86_64
         sle-module-basesystem15-sp6-pool-x86_64
         sle-module-basesystem15-sp6-updates-x86_64
-        sle-module-server-applications15-sp6-pool-x86_64
-        sle-module-server-applications15-sp6-updates-x86_64
         sle-module-desktop-applications15-sp6-pool-x86_64
         sle-module-desktop-applications15-sp6-updates-x86_64
-        sle-module-devtools15-sp6-updates-x86_64
         sle-module-devtools15-sp6-pool-x86_64
+        sle-module-devtools15-sp6-updates-x86_64
+        sle-module-python3-15-sp6-pool-x86_64
+        sle-module-python3-15-sp6-updates-x86_64
+        sle-module-server-applications15-sp6-pool-x86_64
+        sle-module-server-applications15-sp6-updates-x86_64
         sles15-sp6-devel-uyuni-client-x86_64
       ],
     'slesforsap15-sp5' =>
@@ -1630,7 +1632,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
   'sle-module-basesystem15-sp6-pool-x86_64' => 300,
-  'sle-module-basesystem15-sp6-updates-x86_64' => 60,
+  'sle-module-basesystem15-sp6-updates-x86_64' => 400,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1655,7 +1657,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-devtools15-sp4-updates-x86_64' => 600,
   'sle-module-devtools15-sp5-pool-x86_64' => 120,
   'sle-module-devtools15-sp5-updates-x86_64' => 300,
-  'sle-module-devtools15-sp6-updates-x86_64' => 60,
+  'sle-module-devtools15-sp6-updates-x86_64' => 240,
   'sle-module-devtools15-sp6-pool-x86_64' => 120,
   'sle-module-public-cloud15-sp4-pool-x86_64' => 840,
   'sle-module-public-cloud15-sp4-updates-x86_64' => 600,
@@ -1663,6 +1665,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-public-cloud15-sp5-updates-x86_64' => 420,
   'sle-module-python3-15-sp5-pool-x86_64' => 60,
   'sle-module-python3-15-sp5-updates-x86_64' => 60,
+  'sle-module-python3-15-sp6-pool-x86_64' => 60,
+  'sle-module-python3-15-sp6-updates-x86_64' => 60,
   'sle-module-server-applications15-sp2-pool-x86_64' => 60,
   'sle-module-server-applications15-sp2-updates-x86_64' => 120,
   'sle-module-server-applications15-sp3-pool-x86_64' => 60,
@@ -1712,6 +1716,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles15-sp3-devel-uyuni-client-x86_64' => 60,
   'sles15-sp4-devel-uyuni-client-x86_64' => 60,
   'sles15-sp5-devel-uyuni-client-x86_64' => 60,
+  'sles15-sp6-devel-uyuni-client-x86_64' => 60,
   'sll-9-updates-x86_64' => 720,
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 2640,
