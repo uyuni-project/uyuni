@@ -54,6 +54,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
+
 /**
  * KickstartFactory
  */
@@ -187,8 +188,8 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
         return (KickstartData)  HibernateFactory.getSession() .createNativeQuery("""
-                                SELECT * FROM RHNKSDATA WHERE 
-                                id = :id and 
+                                SELECT * FROM RHNKSDATA WHERE
+                                id = :id and
                                 org_id = :org_id
                                 """,
                 KickstartData.class)
@@ -205,8 +206,8 @@ public class KickstartFactory extends HibernateFactory {
     public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn,
             String cobblerId) {
         return (KickstartData)  HibernateFactory.getSession() .createNativeQuery("""
-                                SELECT * FROM RHNKSDATA WHERE 
-                                cobblerId = :id and 
+                                SELECT * FROM RHNKSDATA WHERE
+                                cobblerId = :id and
                                 org_id = :org_id
                                 """,
                 KickstartData.class)
@@ -228,8 +229,8 @@ public class KickstartFactory extends HibernateFactory {
         }
         return (KickstartData) HibernateFactory.getSession().
                 createNativeQuery("""
-                                SELECT * FROM RHNKSDATA WHERE 
-                                label = :label and 
+                                SELECT * FROM RHNKSDATA WHERE
+                                label = :label and
                                 org_id = :org_id
                                 """,
                         KickstartData.class)
@@ -252,8 +253,8 @@ public class KickstartFactory extends HibernateFactory {
         }
         return HibernateFactory.getSession().
                 createNativeQuery("""
-                                SELECT * FROM RHNKSDATA WHERE 
-                                lower(label) = lower(:label) and 
+                                SELECT * FROM RHNKSDATA WHERE
+                                lower(label) = lower(:label) and
                                 org_id = :org_id
                                 """,
                         KickstartData.class)
@@ -274,7 +275,7 @@ public class KickstartFactory extends HibernateFactory {
         }
         return (KickstartData) HibernateFactory.getSession().
                 createNativeQuery("""
-                                SELECT * FROM RHNKSDATA WHERE 
+                                SELECT * FROM RHNKSDATA WHERE
                                 label = :label
                                 """,
                         KickstartData.class)
@@ -758,7 +759,7 @@ public class KickstartFactory extends HibernateFactory {
         List<KickstartSession> ksessions = session.createNativeQuery("""
                            SELECT * FROM rhnKickStartSession WHERE
                            new_server_id = :server
-                           OR host_server_id = :server 
+                           OR host_server_id = :server
                            ORDER BY CREATED DESC
                 """,
                         KickstartSession.class)
@@ -781,8 +782,8 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         List<KickstartSession> ksessions = session.createNativeQuery(
                 """
-                        SELECT * FROM rhnKickstartSession 
-                        WHERE ksdata = :ksdata 
+                        SELECT * FROM rhnKickstartSession
+                        WHERE ksdata = :ksdata
                         AND kickstart_mode = :mode order by created desc
                         """)
                 .setParameter("kstree_id", ksdata.getId())
