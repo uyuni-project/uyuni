@@ -43,14 +43,15 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
-                    "<i class=\"fa fa-trash-o\" title=\"Delete User\">" +
-                    "</i>Delete User</a></div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
+                "<i class=\"fa fa-trash-o\" title=\"Delete User\">" +
+                "</i>Delete User</a></div><h1></h1></div>";
 
             setupDeletionTag("h1", "deletion-url", "", "user");
 
             verifyTag(output);
-        } catch (JspException e) {
+        }
+        catch (JspException e) {
             fail(e.toString());
         }
     }
@@ -60,12 +61,13 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
+            "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
 
             setupDeletionTag("h1", "deletion-url", "true_test()", "");
 
             verifyTag(output);
-        } catch (JspException e) {
+        }
+        catch (JspException e) {
             fail(e.toString());
         }
     }
@@ -74,9 +76,9 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
-                    "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
-                    "</div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
+                "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
+                "</div><h1></h1></div>";
 
             setupDeletionTag("h1", "deletion-url",
                     "first_true_acl(); second_true_acl(); is_foo(foo)",
@@ -86,7 +88,8 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
                     MockTwoAclHandler.class.getName());
 
             verifyTag(output);
-        } catch (Exception je) {
+        }
+        catch (Exception je) {
             fail(je.toString());
         }
     }
@@ -95,9 +98,9 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
-                    "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
-                    "</div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
+                "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
+                "</div><h1></h1></div>";
 
             setupDeletionTag("h1", "deletion-url",
                     "first_true_acl(); second_true_acl()", "user");
@@ -105,7 +108,8 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
             tt.setAclMixins(MockOneAclHandler.class.getName());
 
             verifyTag(output);
-        } catch (Exception je) {
+        }
+        catch (Exception je) {
             fail(je.toString());
         }
     }
@@ -115,7 +119,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         boolean flag = false;
         try {
             String output = "<div class=\"toolbar-h1\"><div class=\"" +
-                    "toolbar\"></div></div>";
+            "toolbar\"></div></div>";
 
             setupDeletionTag("h1", "deletion-url",
                     "true_test()", "user");
@@ -124,9 +128,11 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
 
             verifyTag(output);
             flag = true;
-        } catch (JspException je) {
+        }
+        catch (JspException je) {
             assertFalse(flag);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             fail(e.toString());
         }
     }
@@ -137,14 +143,15 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
-                    "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
-                    "</div><h1></h1></div>";
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
+                "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
+                "</div><h1></h1></div>";
 
             setupDeletionTag("h1", "deletion-url", "true_test()", "user");
 
             verifyTag(output);
-        } catch (JspException e) {
+        }
+        catch (JspException e) {
             fail(e.toString());
         }
     }
@@ -154,12 +161,13 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                    "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
+            "<div class=\"spacewalk-toolbar\"></div><h1></h1></div>";
 
             setupDeletionTag("h1", null, "true_test()", "user");
 
             verifyTag(output);
-        } catch (JspException e) {
+        }
+        catch (JspException e) {
             fail(e.toString());
         }
     }
