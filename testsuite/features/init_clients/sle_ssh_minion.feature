@@ -4,9 +4,6 @@
 @ssh_minion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
-  Scenario: Clean up sumaform leftovers on SLES SSH minion
-    When I perform a full salt minion cleanup on "ssh_minion"
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
