@@ -1769,3 +1769,18 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
+
+Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+  system_name = get_system_name(host)
+  last_event_id = get_last_event_id(system_name)
+  trigger_upgrade(system_name, package)
+  repeat_until_timeout(timeout: 300, message: 'Waiting for the new event to complete') do
+    current_events = fetch_event_history(system_name)
+
+    # Find the event with the highest ID (newest event)
+    new_event = current_events.max_by { |event| event[:id] }
+
+    # Check if there is a new event and its status is "Completed"
+    break if new_event && new_event[:id] > last_event_id && new_event[:status] == 'Completed' && new_event[:completed]
+  end
+end
