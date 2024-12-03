@@ -7,9 +7,6 @@
 @virthost_kvm
 Feature: Bootstrap a virtualization host minion and set it up for virtualization
 
-  Scenario: Clean up sumaform leftovers on KVM virtual host
-    When I perform a full salt minion cleanup on "kvm_server"
-
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
