@@ -4139,7 +4139,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification" xml:space="preserve">
         <source>Send Patch Notification</source>
-        <target/>
+        <target state="translated">Poslať oznámenie o oprave</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4148,7 +4148,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.instructions" xml:space="preserve">
         <source>You can send email to the administrators of systems to which this patch applies.</source>
-        <target/>
+        <target state="translated">Administrátorom systémov, na ktoré sa táto oprava aplikuje, môžete poslať e-mail.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4157,7 +4157,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.success" xml:space="preserve">
         <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizácia e-mailu o oprave bola naplánovaná na &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4166,7 +4166,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
-        <target/>
+        <target state="translated">Balíky opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/Packages.do
@@ -4175,7 +4175,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.addpackages" xml:space="preserve">
         <source>Add Packages</source>
-        <target/>
+        <target state="translated">Pridať balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4184,7 +4184,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.instructions" xml:space="preserve">
         <source>This is the list of available packages. To add packages to this patch, select them and click 'Add Packages'.&lt;br/&gt;The drop-down list below allows you to restrict the set of available packages by channel.</source>
-        <target/>
+        <target state="translated">Toto je zoznam dostupných balíkov. Ak chcete pridať balíky do tejto opravy, vyberte ich a kliknite na tlačidlo 'Pridať balíky'.&lt;br/&gt;Nižšie uvedený rozbaľovací zoznam umožňuje obmedziť sadu dostupných balíkov podľa kanála.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4193,7 +4193,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel" xml:space="preserve">
         <source>View: </source>
-        <target/>
+        <target state="translated">Zobrazenie: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4202,7 +4202,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewsubmit" xml:space="preserve">
         <source>View</source>
-        <target/>
+        <target state="translated">Zobraziť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4211,7 +4211,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4220,7 +4220,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.addpackages" xml:space="preserve">
         <source>Add Packages</source>
-        <target/>
+        <target state="translated">Pridať balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
