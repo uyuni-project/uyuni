@@ -24,7 +24,7 @@ https://confluence.suse.com/display/SUSEMANAGER/How+to+release+new+VM+images+for
 
 Add more tasks if needed.
 
-- [ ] For every new release, autobuild team will have to create the release projects like for example `SUSE:Products:SUSE-Manager-Server:4.3-2024-QU1:$arch`. Don't forget to check with them if projects are in place and if their release scripts are ready too. For the new projects to be created, ask autobuild to **NOT** use `QU` in the name because the projects with that keyword are not visible from the download page without login.
+- [ ] For every new release, autobuild team will have to create the release projects like for example `SUSE:Products:SUSE-Manager-Server:5.0-2024-12:$arch`. Don't forget to check with them if projects are in place and if their release scripts are ready too. For the new projects to be created, ask autobuild to **NOT** use `QU` in the name because the projects with that keyword are not visible from the download page without login.
   As example, see:
   ~~~
   Date: Wed, 03 Jul 2024 05:49:40 +0200
@@ -35,6 +35,10 @@ Add more tasks if needed.
   for SUMA 5.0
   Message-ID: <aa9a1104afba5469d52cbc418b95aae3@suse.de>
   ~~~
+  - [ ] Check that the prjconf of the requested projects have the `%current_milestone` set to the right value (for instance, `2024.12`).
+  - [ ] Same applies for:
+    - [ ] https://build.suse.de/project/show/Devel:Galaxy:Manager:5.0
+    - [ ] https://build.suse.de/project/show/Devel:Galaxy:Manager:VMImages:5.0
 - [ ] Ensure that the `<version>` tag in the `.kiwi` files is set to the last released maintenance update version for SUSE Manager (for example) `<version>5.0.0</version>`. If the version is older, prepare a SR for fixing it.
 - [ ] Check that the images are built in the Devel project
   - [ ] https://build.suse.de/package/show/Devel:Galaxy:Manager:5.0/SUSE-Manager-Server
