@@ -1297,7 +1297,7 @@ public class PackageManager extends BaseManager {
                         "left join rhnPackageKeyAssociation assoc on assoc.package_id = P.id " +
                         "left join rhnPackageKey KEY on KEY.id = assoc.key_id " +
                         "left join rhnPackageProvider PP on KEY.provider_id = PP.id")
-                .countFrom("rhnPackage P")
+                .countFrom("rhnPackage P inner join rhnPackageName PN on P.name_id = PN.id")
                 .where("P.org_id = :org_id")
                 .run(Map.of("org_id", orgId), pc, PagedSqlQueryBuilder::parseFilterAsText, PackageOverview.class);
     }
