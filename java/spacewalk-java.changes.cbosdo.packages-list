@@ -1,0 +1,2 @@
+- Fix missing FROM-clause entry for table 'pn' in managed software
+  list (bsc#1233450)
