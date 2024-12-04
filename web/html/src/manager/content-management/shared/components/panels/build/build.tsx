@@ -61,12 +61,12 @@ const Build = ({
           text={
             changesToBuild.length > 0
               ? t("Build ({count})", {
-                count: changesToBuild.filter(
-                  (s) =>
-                    s.includes(` ${statesEnum.findByKey(statesEnum.enum.ATTACHED.key).sign} `) ||
-                    s.includes(` ${statesEnum.findByKey(statesEnum.enum.DETACHED.key).sign} `)
-                ).length,
-              })
+                  count: changesToBuild.filter(
+                    (s) =>
+                      s.includes(` ${statesEnum.findByKey(statesEnum.enum.ATTACHED.key).sign} `) ||
+                      s.includes(` ${statesEnum.findByKey(statesEnum.enum.DETACHED.key).sign} `)
+                  ).length,
+                })
               : t("Build")
           }
           disabled={disabled}

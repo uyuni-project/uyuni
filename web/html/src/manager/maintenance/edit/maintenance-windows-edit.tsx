@@ -83,7 +83,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
             isLoading={(i) => setIcalLoading(i)}
           />
         ))}
-        {buttons}
+      {buttons}
     </InnerPanel>
   );
 };
