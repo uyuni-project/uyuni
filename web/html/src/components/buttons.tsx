@@ -162,8 +162,8 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled ?
-      "btn-unstyled " + (this.props.className ?? "")
+    const cssClasses = this.props.unstyled
+      ? "btn-unstyled " + (this.props.className ?? "")
       : "btn " + (this.props.className ?? "btn-default");
     return (
       <button
@@ -175,11 +175,9 @@ export class Button extends _ButtonBase<ButtonProps> {
         disabled={this.props.disabled}
       >
         {this.props.unstyled ? (
+          <>{this.renderIcon()}</>
+        ) : (
           <>
-            {this.renderIcon()}
-          </>
-          ) : (
-            <>
             {this.renderIcon()}
             {text}
           </>
@@ -206,8 +204,8 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled ?
-      "btn-unstyled " + (this.props.className ?? "")
+    const cssClasses = this.props.unstyled
+      ? "btn-unstyled " + (this.props.className ?? "")
       : "btn " + this.props.className;
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
@@ -229,10 +227,8 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         {...targetProps}
       >
         {this.props.unstyled ? (
-          <>
-            {this.renderIcon()}
-          </>
-          ) : (
+          <>{this.renderIcon()}</>
+        ) : (
           <>
             {this.renderIcon()}
             {text}

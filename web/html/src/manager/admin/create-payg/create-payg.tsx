@@ -37,10 +37,7 @@ const CreateProject = () => {
   const { onAction } = useLifecyclePaygActionsApi();
 
   return (
-    <TopPanel
-      title={t("Add new PAYG ssh connection data")}
-      icon="fa-plus"
-    >
+    <TopPanel title={t("Add new PAYG ssh connection data")} icon="fa-plus">
       <Form
         model={payg.properties}
         errors={payg.errors}
