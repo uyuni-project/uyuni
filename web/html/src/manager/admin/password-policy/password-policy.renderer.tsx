@@ -6,9 +6,9 @@ export const renderer = (
   id: string, policy: PasswordPolicyData, defaults: PasswordPolicyData
 ) => {
   SpaRenderer.renderNavigationReact(
-    <PasswordPolicy 
-    policy={policy} 
-    defaults={defaults}
+    <PasswordPolicy
+      policy={policy}
+      defaults={defaults}
     />,
     document.getElementById(id)
   );

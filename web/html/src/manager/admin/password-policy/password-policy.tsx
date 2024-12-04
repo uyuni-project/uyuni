@@ -6,7 +6,6 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import { AsyncButton } from "components/buttons";
 import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { useState } from "react";
 import { PasswordPolicyProps } from "./password_policy_type";
 
 const updatePolicy = (policyData) => {
