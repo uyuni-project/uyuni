@@ -26,7 +26,7 @@ Add more tasks if needed.
 
 - [ ] For every new release, autobuild team will have to create the release projects for both Serer and Proxy images using the schema `SUSE:Products:SUSE-Manager-Server:5.0-YYYY-MM:$arch` and `SUSE:Products:SUSE-Manager-Proxy:5.0-YYYY-MM:$arch`, like for example `SUSE:Products:SUSE-Manager-Server:5.0-2024-12:$arch`.
 - [ ] Check with @admd the list of images and their architectures to be released
-- [ ] Check with autobuild if the list provided by Abid matches with the list included in the scripts used by autobuild for the release```
+- [ ] Check with autobuild if the list provided by Abid matches with the list included in the scripts used by autobuild for the release
   As example, see:
   ~~~
   Date: Wed, 03 Jul 2024 05:49:40 +0200
@@ -67,9 +67,8 @@ Add more tasks if needed.
   - [ ] https://build.suse.de/package/show/Devel:Galaxy:Manager:VMImages:5.0/SUSE-Manager-Proxy
 - [ ] For the submission message specify the ijsc ID if any and the MU version. For example `Refreshed VM images for SUSE Manager 5.0 built on SLE Micro 5.5 and SUSE Manager 5.0.0. ijsc#MSQA-812`
   * Prepare the submission with:
-    *  `osc sr -A https://api.suse.de -m "Refreshed VM images for SUSE Manager 5.0 built on SLE Micro 5.5 and SUSE Manager 5.0.0. ijsc#MSQA-812" Devel:Galaxy:Manager:VMImages:5.0 SUSE-Manager-Server SUSE:SLE-15-SP5:Update:Products:Manager50:Update:CR`
-    *  `osc sr -A https://api.suse.de -m "Refreshed VM images for SUSE Manager 5.0 built on SLE Micro 5.5 and SUSE Manager 5.0.0. ijsc#MSQA-812" Devel:Galaxy:Manager:VMImages:5.0 SUSE-Manager-Proxy SUSE:SLE-15-SP5:Update:Products:Manager50:Update:CR`
-
+    - `osc sr -A https://api.suse.de -m "Refreshed VM images for SUSE Manager 5.0 built on SLE Micro 5.5 and SUSE Manager 5.X.Y. ijsc#MSQA-ID" Devel:Galaxy:Manager:VMImages:5.0 SUSE-Manager-Server SUSE:SLE-15-SP5:Update:Products:Manager50:Update:CR`. For example use `osc sr -A https://api.suse.de -m "Refreshed VM images for SUSE Manager 5.0 built on SLE Micro 5.5 and SUSE Manager 5.0.0. ijsc#MSQA-812" Devel:Galaxy:Manager:VMImages:5.0 SUSE-Manager-Server SUSE:SLE-15-SP5:Update:Products:Manager50:Update:CR`.
+    **Remember to create one SR for each image to be submitted, currently Server and Proxy.**
 - [ ] Send an e-mail to autobuild and specify the ID of the submit requests created against the CR project. They will have to accept your SRs. The maintenance team is not involved in this.
 - [ ] After autobuild has accepted the submit request, run the CI job [manager-5.0-releng-2obs](https://ci.suse.de/view/Manager/view/Manager-5.0/job/manager-5.0-releng-2obs/) with parameters, using as `spacewalk_branch` the branch `Manager-5.0`.
 - [ ] For any **new image** that will be added to the codestreams, fetch the group that will maintain them (one per package) and document this at the release card.
