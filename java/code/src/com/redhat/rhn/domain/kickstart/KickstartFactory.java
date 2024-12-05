@@ -521,7 +521,10 @@ public class KickstartFactory extends HibernateFactory {
     public static List<CryptoKey> lookupCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery("CryptoKey.findByOrg")
+        return session.createNativeQuery("""
+                    SELECT 0 AS dtype, c.* FROM rhnCryptoKey c
+                    WHERE c.org_id = :org_id
+                    """, CryptoKey.class)
                 .setParameter(ORG_ID, org.getId())
                 .list();
     }
@@ -783,7 +786,7 @@ public class KickstartFactory extends HibernateFactory {
         List<KickstartSession> ksessions = session.createNativeQuery(
                 """
                         SELECT * FROM rhnKickstartSession
-                        WHERE ksdata = :ksdata
+                        WHERE kstree_id = :kstree_id
                         AND kickstart_mode = :mode order by created desc
                         """)
                 .setParameter("kstree_id", ksdata.getId())

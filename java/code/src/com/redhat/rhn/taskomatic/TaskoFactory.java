@@ -459,7 +459,7 @@ public class TaskoFactory extends HibernateFactory {
         try {
             return (TaskoRun) query.getSingleResult();
         }
-	catch (NoResultException e) {
+        catch (NoResultException e) {
             // Handle the case where no result is found
             return null;
         }
