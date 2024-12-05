@@ -1,3 +1,4 @@
+import uyuni_health_check.config_loader
 import click
 from rich.markdown import Markdown
 
@@ -70,20 +71,19 @@ def cli(ctx, supportconfig_path, verbose):
     help="Stop looking for logs at this absolute time",
 )
 @click.pass_context
-def run(ctx, logs, from_datetime, to_datetime, since):
+def run(ctx: click.Context, logs: bool, from_datetime: str, to_datetime: str, since: int):
     """
     Start execution of Uyuni Health Check
 
     Build the necessary containers, deploy them, get the metrics and display them
 
     """
-    config = ctx.obj["config"]
-    verbose = ctx.obj["verbose"]
-    supportconfig_path = ctx.obj["supportconfig_path"]
+    config: uyuni_health_check.config_loader.ConfigLoader = ctx.obj["config"]
+    verbose: bool = ctx.obj["verbose"]
+    supportconfig_path: str | None = ctx.obj["supportconfig_path"]
 
     if not supportconfig_path:
         console.log("[red bold]You must provide a path to a supportconfig!")
-        console.print(Markdown("# Execution Finished"))
         exit(1)
 
     try:
@@ -109,28 +109,11 @@ def run(ctx, logs, from_datetime, to_datetime, since):
                 config=config, supportconfig_path=supportconfig_path
             )
 
-            # Fetch metrics from supportconfig-exporter
-            console.log("[bold]Fetching metrics from supportconfig-exporter")
-            metrics = (
-                uyuni_health_check.metrics.fetch_metrics_from_supportconfig_exporter(
-                    console
-                )
-            )
-
-            console.log("[bold]Preparing Prometheus")
-            prepare_prometheus(verbose=verbose)
+            # console.log("[bold]Preparing Prometheus")
+            # prepare_prometheus(verbose=verbose)
 
             console.log("[bold]Preparing Grafana")
             prepare_grafana(from_datetime, to_datetime, verbose=verbose, config=config)
-
-        console.print(Markdown("# Summary of metrics gatherered from Supportconfig"))
-        #uyuni_health_check.metrics.show_supportconfig_metrics(metrics, console)
-
-        console.print(Markdown("## Relevant Errors"))
-        show_error_logs_stats(from_datetime, to_datetime, since, console)
-
-        if logs:
-            show_full_error_logs(from_datetime, to_datetime, since, console)
 
         console.print(Markdown("# Execution Finished"))
 
@@ -143,11 +126,11 @@ def run(ctx, logs, from_datetime, to_datetime, since):
 def clean(ctx):
     verbose = ctx.obj["verbose"]
     uyuni_health_check.containers.manager.clean_containers(verbose=verbose)
-    console.print(Markdown("# Execution Finished"))
+    console.print(Markdown("# Execution Finished")) # TODO: Fix
 
 
 def main():
-    print(Markdown("# Uyuni Health Check"))
+    print(Markdown("# Uyuni Health Check")) # TODO: Fix
     cli()
 
 

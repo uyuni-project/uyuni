@@ -14,7 +14,7 @@ class ConfigLoader:
         self.jinja_env = Environment(loader=FileSystemLoader(self.templates_dir))
         self.load_config()
 
-    
+
     def load_config(self, file_path='config.ini'):
         self.global_config = configparser.ConfigParser()
         self.global_config.read(os.path.join(self.base_dir, "config.ini"))
@@ -44,7 +44,7 @@ class ConfigLoader:
                 json.dump(content, file)
             else:
                 file.write(content)
-        
+
     def get_config_dir_path(self, component):
         return os.path.join(self.base_dir, "config", component)
     
