@@ -19,7 +19,7 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
             "Skipped as the uyuni-health-check-grafana container is already running"
         )
     else:
-
+        build_grafana_image("health-check-grafana", config)
         grafana_cfg = conf.get_config_dir_path("grafana")
         console.log("GRAFANA CFG DIR: ",grafana_cfg)
         grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.template.json")
@@ -41,18 +41,21 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
                 f"{grafana_cfg}/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml",
                 "-v",
                 f"{grafana_cfg}/dashboards:/var/lib/grafana/dashboards",
-                "-e",
-                "GF_PATHS_PROVISIONING=/etc/grafana/provisioning",
-                "-e",
-                "GF_AUTH_ANONYMOUS_ENABLED=true",
-                "-e",
-                "GF_AUTH_ANONYMOUS_ORG_ROLE=Admin",
                 "--name",
                 "uyuni-health-check-grafana",
-                "docker.io/grafana/grafana:9.2.1",
-                "run.sh",
+                "health-check-grafana",
             ],
         )
+
+def build_grafana_image(image, config):
+    console.log(f"Building {image}")
+    if image_exists(image):
+        console.log(f"[yellow]Skipped as the {image} image is already present")
+        return
+
+    image_path = config.load_dockerfile_dir("grafana")
+    build_image(image, image_path=image_path)
+    console.log(f"[green]The {image} image was built successfully")
 
 def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_datetime, config=None):
     """

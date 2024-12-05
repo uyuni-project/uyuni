@@ -21,3 +21,9 @@ datasources:
   orgId: 1
   url: http://uyuni-health-check-prometheus:9090
   editable: false
+
+- name: infinity-ds
+  type: yesoreyeram-infinity-datasource
+  orgId: 1
+  uid: infinity
+
