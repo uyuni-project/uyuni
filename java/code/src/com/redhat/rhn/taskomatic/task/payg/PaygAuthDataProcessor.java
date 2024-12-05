@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
@@ -206,10 +207,9 @@ public class PaygAuthDataProcessor {
 
     private String buildQueryString(String query, String newKey, String newValue) {
         Map<String, String> queryparams = Arrays.stream(
-                        Optional.ofNullable(query)
-                                .orElse("")
-                                .split("&"))
-                .filter(p -> p.contains("=")) // filter out possible auth tokens
+                        Optional.ofNullable(query).orElse("").split("&"))
+                .filter(p -> !p.isEmpty())
+                .filter(p -> !MgrSyncUtils.isAuthToken(p)) // filter out possible auth tokens
                 .map(p -> {
                     String[] s = p.split("=", 2);
                     return new Tuple2<String, String>(s[0], s[1]);
