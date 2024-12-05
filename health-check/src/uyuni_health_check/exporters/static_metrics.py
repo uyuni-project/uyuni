@@ -54,15 +54,6 @@ class LogFileStaticMetric(StaticMetric):
     def is_present(self):
         return super().is_present()
 
-class XMLFileStaticMetric(StaticMetric):
-    def __init__(self, name, supportconfig_path, filepath, xmlpath):
-        super().__init(name, supportconfig_path, filepath)
-        self.xmlpath = xmlpath
-        
-    def get_value(self):
-        pass
-
-
 class StaticMetricFactory:
     @staticmethod
     def create_metric(name, supportconfig_path, filepath, pattern):
