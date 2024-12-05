@@ -52,9 +52,7 @@ public class MgrSyncUtils {
 
     // Source URL handling
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
-    public static final String OFFICIAL_SUSE_UPDATE_HOST = "updates.suse.com";
-    private static final List<String> OFFICIAL_UPDATE_HOSTS =
-            Arrays.asList(OFFICIAL_SUSE_UPDATE_HOST, OFFICIAL_NOVELL_UPDATE_HOST);
+    public static final String OFFICIAL_UPDATE_HOST_DOMAIN = ".suse.com";
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
             "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
 
@@ -214,12 +212,12 @@ public class MgrSyncUtils {
 
     /**
      * Convert network URL to file system URL.
-     *
+     * <p>
      * 1. URL point to localhost, return the normal URL, we have access
      * 2. URL from updates.suse.com, return the path
      * 3. legacy SMT mirror URL /repo/RPMMD/&lt;repo name&gt; if it exists
      * 4. finally, return host + path as path component
-     *
+     * <p>
      * A mirrorlist URL with query paramater is converted to a path:
      * - key=value => key/value
      * - sort alphabetically
@@ -246,7 +244,8 @@ public class MgrSyncUtils {
                 return uri;
             }
             String qPath = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
-                    .filter(p -> p.contains("=")) // filter out possible auth tokens
+                    .filter(p -> !p.isEmpty())
+                    .filter(p -> !isAuthToken(p)) // filter out possible auth tokens
                     .map(p -> String.join(File.separator, p.split("=", 2)))
                     .sorted()
                     .collect(Collectors.joining(File.separator));
@@ -257,7 +256,7 @@ public class MgrSyncUtils {
         catch (URISyntaxException e) {
             LOG.warn("Unable to parse URL: {}", urlString);
         }
-        //TODO: check if this if is needed
+
         if (sccDataPath == null) {
             throw new ContentSyncException("No local mirror path configured");
         }
@@ -266,7 +265,7 @@ public class MgrSyncUtils {
         File mirrorPath = new File(dataPath.getAbsolutePath(), host + File.separator + path);
 
         // Case 2
-        if (OFFICIAL_UPDATE_HOSTS.contains(host)) {
+        if (host.endsWith(OFFICIAL_UPDATE_HOST_DOMAIN) || host.equals(OFFICIAL_NOVELL_UPDATE_HOST)) {
             mirrorPath = new File(dataPath.getAbsolutePath(), path);
             LOG.info("SCC mirrorpath: {}", mirrorPath);
         }
@@ -302,5 +301,29 @@ public class MgrSyncUtils {
             cleanPath = dataPath.toPath();
         }
         return cleanPath.toUri().normalize();
+    }
+
+    /**
+     * Check, if a given string is an authentication token. The given string must not contain '&' signs
+     * which are used to separate query parameters. The expected input is a single query paramater
+     * @param queryParam a single query parameter string to test
+     * @return true if this is likely an authentication token. Otherwise false
+     */
+    public static boolean isAuthToken(String queryParam) {
+        if (queryParam.isBlank()) {
+            LOG.debug("empty queryParam is not an auth token");
+            return false;
+        }
+        else if (queryParam.contains("&")) {
+            throw new ContentSyncException("token must not contain the ampersand sign");
+        }
+        //     Could be an JWT token
+        boolean ret = !queryParam.contains("=") ||
+                // Our CDN tokens use this key
+                queryParam.startsWith("__token__=") ||
+                // typical Akamai token values
+                (queryParam.contains("exp=") && queryParam.contains("hmac="));
+        LOG.debug("{} isAuthToken: {}", queryParam, ret);
+        return ret;
     }
 }
