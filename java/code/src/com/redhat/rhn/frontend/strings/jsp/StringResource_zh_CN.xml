@@ -29164,8 +29164,8 @@ given channel.</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>监视</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">监视</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>

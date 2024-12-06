@@ -27082,7 +27082,8 @@ given channel.</source>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
+        <source>Monitor this Host</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
