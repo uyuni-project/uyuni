@@ -165,7 +165,15 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
             chanProps.put("repo_gpgcheck", "0");
             chanProps.put("pkg_gpgcheck", chan.isGPGCheck() ? "1" : "0");
         }
-        // For Type deb the packages are not signed. No need to set a GPG key here.
+        else {
+            // For Type deb the packages are not signed. But there are nasty warnings when none is given
+            if (minion.getOs().toLowerCase().contains("ubuntu")) {
+                chanProps.put("gpgkeyurl", "file:///usr/share/keyrings/ubuntu-archive-keyring.gpg");
+            }
+            else if (minion.getOs().toLowerCase().contains("debian")) {
+                chanProps.put("gpgkeyurl", "file:///usr/share/keyrings/debian-archive-keyring.gpg");
+            }
+        }
 
         // Flag to override dnf modularity failsafe mechanism (module_hotfixes)
         chanProps.put("cloned_nonmodular", chan.isCloned() && !chan.isModular());
