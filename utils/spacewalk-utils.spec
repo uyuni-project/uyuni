@@ -34,7 +34,7 @@ BuildRequires:  python3
 BuildRequires:  python3-rpm-macros
 BuildRequires:  uyuni-base-common
 
-# Required by spacewalk-hostname-rename
+# Required by spacewalk-hostname-rename, spacewalk-watch-channel-sync.sh
 Requires:       bash
 # Required by spacewalk-hostname-rename
 Requires:       cobbler
@@ -82,29 +82,6 @@ Requires:       spacewalk-backend-sql
 %description
 Utilities that may be run against a SUSE Manager server (supported) or an Uyuni server
 
-%package extras
-Summary:        Extra utilities that may run against a SUSE Manager/Uyuni server
-# Required by spacewalk-watch-channel-sync.sh
-Group:          Productivity/Other
-Requires:       bash
-# Required by sw-ldap-user-sync
-Requires:       python3-ldap
-# Required by sw-ldap-user-sync
-Requires:       python3-PyYAML
-# Required by migrate-system-profile
-Requires:       python3-rhnlib >= 2.5.20
-# Required by migrateSystemProfile.py
-Requires:       python3-uyuni-common-libs
-# Required by spacewalk-watch-channel-sync.sh
-Requires:       spacewalk-backend-tools >= 2.2.27
-# As spacewalk-utils owns {python3_sitelib}/utils
-Requires:       spacewalk-utils
-# Required by migrate-system-profile, migrateSystemProfile.py
-Requires(pre):  uyuni-base-common
-
-%description extras
-Extra utilities that may be run against a SUSE Manager server (unsupported) or an Uyuni server
-
 %prep
 %setup -q
 
@@ -134,6 +111,7 @@ popd
 %attr(755,root,root) %{_bindir}/spacewalk-manage-channel-lifecycle
 %attr(755,root,root) %{_bindir}/spacewalk-sync-setup
 %attr(755,root,root) %{_bindir}/taskotop
+%attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
@@ -148,19 +126,5 @@ popd
 %{_mandir}/man8/spacewalk-sync-setup.8.gz
 %{_mandir}/man8/taskotop.8.gz
 
-%files extras
-%defattr(-,root,root)
-%license COPYING.GPLv2 COPYING.GPLv3
-%attr(755,root,root) %{_bindir}/delete-old-systems-interactive
-%attr(755,root,root) %{_bindir}/migrate-system-profile
-%attr(755,root,root) %{_bindir}/spacewalk-api
-%attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
-%attr(755,root,root) %{_bindir}/sw-ldap-user-sync
-%{python3_sitelib}/utils/migrateSystemProfile.py*
-%{python3_sitelib}/utils/__pycache__/migrateSystemProfile.*
-%config(noreplace) %{_sysconfdir}/rhn/sw-ldap-user-sync.conf
-%{_mandir}/man8/delete-old-systems-interactive.8.gz
-%{_mandir}/man8/migrate-system-profile.8.gz
-%{_mandir}/man8/spacewalk-api.8.gz
 
 %changelog
