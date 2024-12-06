@@ -28989,8 +28989,8 @@ given channel.</source>
         <target>OD 이미지 빌드 호스트</target>
       </trans-unit>
       <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
-        <target state="final">모니터링</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">모니터링</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>

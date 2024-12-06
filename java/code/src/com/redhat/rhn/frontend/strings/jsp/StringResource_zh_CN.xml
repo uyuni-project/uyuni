@@ -29000,8 +29000,8 @@ given channel.</source>
         <target>操作系统映像构建主机</target>
       </trans-unit>
       <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
-        <target state="final">受监视主机</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">受监视主机</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
