@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:18+0100\n"
+"POT-Creation-Date: 2024-12-06 14:38+0100\n"
 "PO-Revision-Date: 2024-10-15 09:48+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -659,8 +659,8 @@ msgid "Unable to perform action."
 msgstr "動作を実行できません。"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:366
-#: ../html/src/components/states-picker.tsx:556
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
 #: ../html/src/manager/admin/setup/products/products.tsx:1130
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
@@ -860,21 +860,21 @@ msgstr ""
 "「システムの再起動」と「必要に応じてシステムを再起動」の状態は一緒に使用でき"
 "ません。"
 
-#: ../html/src/components/states-picker.tsx:152
+#: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
 msgstr "状態の割り当てが保存されました。"
 
-#: ../html/src/components/states-picker.tsx:170
+#: ../html/src/components/states-picker.tsx:173
 msgid "An error occurred on save."
 msgstr "保存時にエラーが発生しました。"
 
-#: ../html/src/components/states-picker.tsx:305
+#: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "状態が割り当てられていません。検索機能を利用して状態の検索と割り当てを行なっ"
 "てください。"
 
-#: ../html/src/components/states-picker.tsx:364
+#: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -890,25 +890,25 @@ msgstr ""
 msgid "Back"
 msgstr "戻る"
 
-#: ../html/src/components/states-picker.tsx:374
+#: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "変更点の保存"
 
-#: ../html/src/components/states-picker.tsx:389
+#: ../html/src/components/states-picker.tsx:392
 msgid "Reorder"
 msgstr "並べ替え"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in states"
 msgstr "状態の検索"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in configuration channels"
 msgstr "設定チャンネル内での検索"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -916,46 +916,46 @@ msgstr "設定チャンネル内での検索"
 msgid "Search"
 msgstr "検索"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit State Ranks"
 msgstr "状態ランクの編集"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit Channel Ranks"
 msgstr "チャンネルランクの編集"
 
-#: ../html/src/components/states-picker.tsx:434
+#: ../html/src/components/states-picker.tsx:437
 msgid "Edit the ranking of the states by dragging them."
 msgstr "状態のランキングを編集するには、それらをドラッグしてください。"
 
-#: ../html/src/components/states-picker.tsx:435
+#: ../html/src/components/states-picker.tsx:438
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr ""
 "設定チャンネルのランキングを編集するには、それらをドラッグしてください。"
 
-#: ../html/src/components/states-picker.tsx:440
+#: ../html/src/components/states-picker.tsx:443
 msgid "There are no states assigned."
 msgstr "状態が何も割り当てられていません。"
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 msgid "State Name"
 msgstr "状態名"
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 msgid "Channel Name"
 msgstr "チャンネル名"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 msgid "State Label"
 msgstr "状態ラベル"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 msgid "Channel Label"
 msgstr "チャンネルラベル"
 
-#: ../html/src/components/states-picker.tsx:450
+#: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -971,29 +971,29 @@ msgstr "チャンネルラベル"
 msgid "Description"
 msgstr "説明"
 
-#: ../html/src/components/states-picker.tsx:451
+#: ../html/src/components/states-picker.tsx:454
 msgid "Assign"
 msgstr "割り当て"
 
-#: ../html/src/components/states-picker.tsx:510
+#: ../html/src/components/states-picker.tsx:513
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
 msgstr "即時の状態の実行をスケジュールするシステムを選択し、確認します。"
 
-#: ../html/src/components/states-picker.tsx:520
+#: ../html/src/components/states-picker.tsx:523
 msgid "This table is empty"
 msgstr "このテーブルは空です"
 
-#: ../html/src/components/states-picker.tsx:527
-#: ../html/src/components/states-picker.tsx:569
+#: ../html/src/components/states-picker.tsx:530
+#: ../html/src/components/states-picker.tsx:572
 msgid "System Name"
 msgstr "システム名"
 
-#: ../html/src/components/states-picker.tsx:547
+#: ../html/src/components/states-picker.tsx:550
 msgid "Execute States"
 msgstr "状態の実行"
 
-#: ../html/src/components/states-picker.tsx:552
+#: ../html/src/components/states-picker.tsx:555
 msgid "Select Sytems"
 msgstr "システムの選択"
 
