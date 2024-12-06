@@ -59,3 +59,29 @@ CREATE TABLE IF NOT EXISTS suseISSPeripheralChannels
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_issperchan_pid_cid_uq
 ON suseISSPeripheralChannels (peripheral_id, channel_id);
+
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'iss_access_token_type_t') THEN
+        CREATE TYPE iss_access_token_type_t AS ENUM (
+            'issued',
+            'consumed'
+        );
+    ELSE
+        RAISE NOTICE 'type "iss_access_token_type_t" already exists, skipping';
+    END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS suseISSAccessToken
+(
+    id 	                BIGINT CONSTRAINT suse_isstoken_id_pk PRIMARY KEY
+                          GENERATED ALWAYS AS IDENTITY,
+    token               VARCHAR(1024) NOT NULL,
+    type                iss_access_token_type_t NOT NULL,
+    server_fqdn         VARCHAR(512) NOT NULL,
+    valid               BOOLEAN,
+    expiration_date     TIMESTAMPTZ NULL
+);
+
+CREATE INDEX IF NOT EXISTS suse_isstoken_server_fqdn_type_idx
+    ON suseISSAccessToken (server_fqdn, type);
