@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -25,13 +26,18 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
+import com.suse.manager.model.hub.TokenType;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -150,5 +156,33 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         List<IssPeripheralChannels> pcWithChild = hubFactory.listIssPeripheralChannelsByChannels(childChannel);
         assertEquals(1, pcWithChild.size());
+    }
+
+    @Test
+    public void testCreateAndLookupTokens() {
+        Instant expiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(60, ChronoUnit.DAYS);
+
+        long currentTokens = HibernateFactory.getSession()
+            .createQuery("SELECT COUNT(*) FROM IssAccessToken at", Long.class)
+            .uniqueResult();
+
+        hubFactory.saveToken("uyuni-hub.dev.local", "dummy-hub-token", TokenType.ISSUED, expiration);
+        hubFactory.saveToken("uyuni-peripheral.dev.local", "dummy-peripheral-token", TokenType.CONSUMED, expiration);
+
+        assertEquals(currentTokens + 2, HibernateFactory.getSession()
+            .createQuery("SELECT COUNT(*) FROM IssAccessToken at", Long.class)
+            .uniqueResult());
+
+        IssAccessToken hubAccessToken = hubFactory.lookupIssuedToken("dummy-hub-token");
+        assertNotNull(hubAccessToken);
+        assertEquals("uyuni-hub.dev.local", hubAccessToken.getServerFqdn());
+        assertEquals(TokenType.ISSUED, hubAccessToken.getType());
+        assertEquals(Date.from(expiration), hubAccessToken.getExpirationDate());
+
+        IssAccessToken peripheralAccessToken = hubFactory.lookupAccessTokenFor("uyuni-peripheral.dev.local");
+        assertNotNull(peripheralAccessToken);
+        assertEquals("dummy-peripheral-token", peripheralAccessToken.getToken());
+        assertEquals(TokenType.CONSUMED, peripheralAccessToken.getType());
+        assertEquals(Date.from(expiration), peripheralAccessToken.getExpirationDate());
     }
 }
