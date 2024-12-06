@@ -1,6 +1,6 @@
 ---
-name: QE - Add support for a new OS distribution version in the test framework
-about: Use this template when adding/replacing/deleting a client in the test framework
+name: QE - Add support for a new OS distribution version for BV in the test framework
+about: Use this template when adding/replacing/deleting a client for BV in the test framework
 title: 'Add support for <NEW_OPERATING_SYSTEM_NAME> in the Test Framework'
 labels: ["testsuite", "test-framework"]
 projects: ["SUSE/32"]
