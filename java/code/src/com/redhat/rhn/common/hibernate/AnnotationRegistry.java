@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.common.hibernate;
 
@@ -146,6 +142,7 @@ import com.suse.manager.model.attestation.CoCoEnvironmentTypeConverter;
 import com.suse.manager.model.attestation.CoCoResultTypeConverter;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
@@ -216,6 +213,7 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InternalState.class,
             InventoryPath.class,
+            IssAccessToken.class,
             IssHub.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
