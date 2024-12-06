@@ -299,7 +299,7 @@ elif [[ $ACTION = "check-channels" ]]; then
            if [ ! -d "$REPODATA_DIR/$ch" ]; then
                 echo "ERROR. Channel $ch. Cached metadata not generated."
            else
-               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/Release.gpg" ]]; then
+               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/repomd.xml.asc" ]]; then
                     echo "OK. Channel $ch. Cached metadata is signed."
                else
                     echo "ERROR. Channel $ch. Cached metadata is not signed."

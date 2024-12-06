@@ -1,0 +1,2 @@
+- Fix mgr-sign-metadata-ctl check-channels when checking for
+  signatures in repomd metadata (bsc#1233884)
