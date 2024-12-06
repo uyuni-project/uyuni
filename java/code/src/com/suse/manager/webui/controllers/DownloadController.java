@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
@@ -36,26 +32,22 @@ import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 
 import com.suse.cloud.CloudPaygManager;
-import com.suse.manager.webui.utils.TokenBuilder;
-import com.suse.utils.Opt;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenParser;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jose4j.jwt.JwtClaims;
-import org.jose4j.jwt.MalformedClaimException;
 import org.jose4j.jwt.NumericDate;
-import org.jose4j.jwt.consumer.InvalidJwtException;
-import org.jose4j.jwt.consumer.JwtConsumer;
-import org.jose4j.jwt.consumer.JwtConsumerBuilder;
 
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.security.Key;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -74,13 +66,6 @@ import spark.Response;
 public class DownloadController {
 
     private static final Logger LOG = LogManager.getLogger(DownloadController.class);
-
-    private static final Key KEY = TokenBuilder.getKeyForSecret(
-            TokenBuilder.getServerSecret().orElseThrow(
-                        () -> new IllegalArgumentException("Server has no key configured")));
-    private static final JwtConsumer JWT_CONSUMER = new JwtConsumerBuilder()
-            .setVerificationKey(KEY)
-            .build();
 
     // cached value to avoid multiple calls
     private final String mountPointPath;
@@ -580,47 +565,43 @@ public class DownloadController {
                 sanitizeToken(token), filename)
         );
         try {
-            JwtClaims claims = JWT_CONSUMER.processToClaims(token);
-            if (Optional.ofNullable(claims.getExpirationTime())
-                .map(exp -> exp.isBefore(NumericDate.now()))
+            Token parsedToken = new TokenParser().usingServerSecret().parse(token);
+            if (Optional.ofNullable(parsedToken.getExpirationTime())
+                .map(exp -> exp.isBefore(Instant.now()))
                 .orElse(false)) {
                 LOG.info("Forbidden: Token expired");
                 halt(HttpStatus.SC_FORBIDDEN, "Token expired");
             }
 
             // enforce channel claim
-            Optional<List<String>> channelClaim = Optional.ofNullable(claims.getStringListClaimValue("onlyChannels"))
-                    // new versions of getStringListClaimValue() return an empty list instead of null
-                    .filter(l -> !l.isEmpty());
-            Opt.consume(channelClaim,
-                    () -> LOG.info("Token ...{} does provide access to any channel",
-                            sanitizeToken(token)),
-                    channels -> {
-                if (!channels.contains(channel)) {
-                    LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
-                            sanitizeToken(token), channel);
-                    LOG.info("Token allow access only to the following channels: {}", String.join(",", channels));
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-                }
-            });
+            List<String> onlyChannels = parsedToken.getListClaim("onlyChannels", String.class);
+            if (CollectionUtils.isEmpty(onlyChannels)) {
+                LOG.info("Token ...{} does not provide access to any channel", () -> sanitizeToken(token));
+            }
+            else if (!onlyChannels.contains(channel)) {
+                LOG.info("Forbidden: Token ...{} does not provide access to channel {}",
+                    () -> sanitizeToken(token), () -> channel);
+                LOG.info("Token allow access only to the following channels: {}", () -> String.join(",", onlyChannels));
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(channel));
+            }
 
             // enforce org claim
-            Optional<Long> orgClaim = Optional.ofNullable(claims.getClaimValue("org", Long.class));
-            Opt.consume(orgClaim, () -> {
+            Long orgId = parsedToken.getClaim("org", Long.class);
+            if (orgId == null) {
                 LOG.info("Forbidden: Token does not specify the organization");
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
-            }, orgId -> {
-                if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                    LOG.info("Forbidden: Token does not provide access to channel {}", channel);
-                    halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel " + channel);
-                }
-            });
+            }
+            else if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
+                String sanitChannel = StringUtil.sanitizeLogInput(channel);
+                LOG.info("Forbidden: Token does not provide access to channel {}", sanitChannel);
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(sanitChannel));
+            }
         }
-        catch (InvalidJwtException | MalformedClaimException e) {
+        catch (TokenParsingException e) {
             LOG.info("Forbidden: Token ...{} is not valid to access {} in {}: {}",
-                    sanitizeToken(token), filename, channel, e.getMessage());
+                () -> sanitizeToken(token), () -> filename, () -> channel, () -> e.getMessage());
             halt(HttpStatus.SC_FORBIDDEN,
-                 String.format("Token is not valid to access %s in %s: %s", filename, channel, e.getMessage()));
+                "Token is not valid to access %s in %s: %s".formatted(filename, channel, e.getMessage()));
         }
     }
 
@@ -675,12 +656,12 @@ public class DownloadController {
         }
         else {
             try {
-                JwtClaims claims = JWT_CONSUMER.processToClaims(token);
-                boolean isValid = Optional.ofNullable(claims.getExpirationTime())
+                Token parsedToken = new TokenParser().usingServerSecret().parse(token);
+                boolean isValid = Optional.ofNullable(parsedToken.getExpirationTime())
                         .map(exp -> {
                             long timeDeltaSeconds = Duration.ofMinutes(EXPIRATION_TIME_MINUTES_IN_THE_FUTURE_TEMP_TOKEN)
                                     .toSeconds();
-                            long expireDeltaSeconds = exp.getValue() - NumericDate.now().getValue();
+                            long expireDeltaSeconds = exp.getEpochSecond() - NumericDate.now().getValue();
                             return expireDeltaSeconds > 0 && expireDeltaSeconds < timeDeltaSeconds;
                         })
                         .orElse(false);
@@ -690,7 +671,7 @@ public class DownloadController {
                     halt(HttpStatus.SC_FORBIDDEN, "Forbidden: Token is expired or is not a short-token");
                 }
             }
-            catch (InvalidJwtException | MalformedClaimException e) {
+            catch (TokenParsingException e) {
                 LOG.info("Forbidden: Short-token ...{} is not valid or is expired: {}",
                         sanitizeToken(token), e.getMessage());
                 halt(HttpStatus.SC_FORBIDDEN,
