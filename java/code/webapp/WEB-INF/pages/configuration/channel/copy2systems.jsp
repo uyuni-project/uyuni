@@ -9,7 +9,7 @@
     <meta name="name" value="copy2systems.jsp.header" />
 </head>
 <body>
-<%@ include     file="/WEB-INF/pages/common/fragments/configuration/channel/details-header.jspf"%>
+<%@ include file="/WEB-INF/pages/common/fragments/configuration/channel/details-header.jspf"%>
 
 <h2><bean:message key="copy2systems.jsp.header2" /></h2>
 
@@ -19,6 +19,12 @@
 <rl:listset name="systemSet">
     <rhn:csrf />
     <rhn:submitted />
+    <div class="text-right">
+        <input type="submit" class="btn btn-default"
+            name="dispatch"
+            value="${rhn:localize('copy2systems.jsp.doCopy')}"
+            />
+    </div>
         <!-- Start of Systems list -->
         <rl:list dataset="pageList"
                  name="systems"
@@ -38,13 +44,6 @@
                         </a>
                 </rl:column>
         </rl:list>
-        <hr />
-        <div class="text-right">
-                <input type="submit" class="btn btn-default"
-                                name="dispatch"
-                                value="${rhn:localize('copy2systems.jsp.doCopy')}"
-                                />
-        </div>
         <rhn:submitted/>
 </rl:listset>
 </body>

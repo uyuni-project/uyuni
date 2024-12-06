@@ -43,7 +43,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patches available in channels which are not assigned"),
     description: t(
       "The client is affected by a vulnerability and we have a patch for it," +
-        " but the channel(s) offering the patch are not assigned to the client."
+      " but the channel(s) offering the patch are not assigned to the client."
     ),
   },
   AFFECTED_PATCH_INAPPLICABLE_SUCCESSOR_PRODUCT: {
@@ -51,7 +51,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patches available in a Product Migration target"),
     description: t(
       "The client is affected by a vulnerability and we have a patch for it," +
-        " but applying the patch requires migrating the product to a newer version."
+      " but applying the patch requires migrating the product to a newer version."
     ),
   },
   AFFECTED_FULL_PATCH_APPLICABLE: {
@@ -79,7 +79,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, patch is unavailable in relevant channels"),
     description: t(
       "The client is affected by a vulnerability for which a patch has been released," +
-        " but the patch can't be found in the relevant channels."
+      " but the patch can't be found in the relevant channels."
     ),
   },
   AFFECTED_PARTIAL_PATCH_APPLICABLE: {
@@ -87,7 +87,7 @@ const PATCH_STATUS_LABEL = {
     label: t("Affected, partial patch available in assigned channel"),
     description: t(
       "The client is affected by a vulnerability and we have a patch for it," +
-        " but applying the patch will only update some of the vulnerable packages."
+      " but applying the patch will only update some of the vulnerable packages."
     ),
   },
   UNKNOWN: {
@@ -307,24 +307,40 @@ class CVEAudit extends React.Component<Props, State> {
               );
             })}
           </div>
-          <p>
-            <div className="btn-group">
-              <AsyncButton
-                id="bootstrap-btn"
-                defaultType="btn-default"
-                icon="fa-desktop"
-                text={t("Audit Servers")}
-                action={() => this.audit(TARGET_SERVER)}
-              />
-              <AsyncButton
-                id="bootstrap-btn"
-                defaultType="btn-default"
-                icon="fa-hdd-o"
-                text={t("Audit Images")}
-                action={() => this.audit(TARGET_IMAGE)}
-              />
-            </div>
-          </p>
+
+          <div className="btn-group d-block mb-4 mt-4">
+            <AsyncButton
+              id="bootstrap-btn"
+              defaultType="btn-default"
+              icon="fa-desktop"
+              text={t("Audit Servers")}
+              action={() => this.audit(TARGET_SERVER)}
+            />
+            <AsyncButton
+              id="bootstrap-btn"
+              defaultType="btn-default"
+              icon="fa-hdd-o"
+              text={t("Audit Images")}
+              action={() => this.audit(TARGET_IMAGE)}
+            />
+            <a
+              href={
+                "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
+                this.state.cveYear +
+                "-" +
+                this.state.cveNumber +
+                "&target=" +
+                this.state.resultType +
+                "&statuses=" +
+                this.state.statuses
+              }
+              data-senna-off="true"
+              className="btn btn-default pull-right"
+            >
+              <IconTag type="item-download-csv" />
+              {t("Download CSV")}
+            </a>
+          </div>
           {this.state.auditExecuted && (
             <div>
               <p>
@@ -513,23 +529,6 @@ class CVEAudit extends React.Component<Props, State> {
               }}
             />
           </Table>
-          <a
-            href={
-              "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
-              this.state.cveYear +
-              "-" +
-              this.state.cveNumber +
-              "&target=" +
-              this.state.resultType +
-              "&statuses=" +
-              this.state.statuses
-            }
-            data-senna-off="true"
-            className="btn btn-default"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>
         </TopPanel>
         Please note that underlying data needed for this audit is updated nightly. If systems were registered very
         recently or channel subscriptions have been changed in the last 24 hours it is recommended that an{" "}

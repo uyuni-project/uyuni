@@ -18,6 +18,12 @@
 <html:form action="/configuration/channel/ChooseFilesSubmit.do?ccid=${ccid}">
     <rhn:csrf />
         <rhn:submitted/>
+        <c:if test="${not empty requestScope.pageList}">
+            <div class="text-right">
+                <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="deploy.jsp.deployallbutton" /></html:submit>
+                <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="deploy.jsp.deployselectedbutton" /></html:submit>
+            </div>
+        </c:if>
         <rhn:list pageList="${requestScope.pageList}" noDataText="channelfiles.jsp.noFiles">
                 <rhn:listdisplay filterBy="deploy.jsp.filepath-header" set="${requestScope.set}">
                 <rhn:set value="${current.id}"/>
@@ -43,13 +49,6 @@
                         </rhn:column>
                 </rhn:listdisplay>
         </rhn:list>
-<c:if test="${not empty requestScope.pageList}">
-<hr />
-        <div class="text-right">
-                <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="deploy.jsp.deployallbutton" /></html:submit>
-                <html:submit styleClass="btn btn-default" property="dispatch"><bean:message key="deploy.jsp.deployselectedbutton" /></html:submit>
-        </div>
-</c:if>
 </html:form>
 </body>
 </html>
