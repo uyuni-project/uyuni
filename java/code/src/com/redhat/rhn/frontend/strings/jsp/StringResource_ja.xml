@@ -29008,8 +29008,8 @@ given channel.</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
-        <target state="final">監視対象ホスト</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">監視対象ホスト</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
