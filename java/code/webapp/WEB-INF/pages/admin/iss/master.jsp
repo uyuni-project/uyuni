@@ -27,6 +27,15 @@
         <rl:listset name="issSlaveListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <c:if test="${not empty requestScope.all}">
+                <div class="spacewalk-section-toolbar">
+                    <div class="action-button-wrapper">
+                        <rhn:submitted />
+                        <input type="submit" name="dispatch" class="btn btn-default"
+                                value='<bean:message key="iss.slave.remove"/>' />
+                    </div>
+                </div>
+            </c:if>
             <rl:list dataset="pageList" name="issSlaveList"
                      emptykey="iss.master.jsp.noslaves">
                 <rl:decorator name="SelectableDecorator" />
@@ -69,13 +78,6 @@
                 </rl:column>
 
             </rl:list>
-            <c:if test="${not empty requestScope.all}">
-                <div class="text-right">
-                    <rhn:submitted />
-                    <input type="submit" name="dispatch" class="btn btn-default"
-                           value='<bean:message key="iss.slave.remove"/>' />
-                </div>
-            </c:if>
         </rl:listset>
     </body>
 </html:html>

@@ -463,15 +463,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 buf.append("<span class=\"spacewalk-list-selection-btns\">");
                 buf.append(addButtonTo(buf, RequestContext.DISPATCH, UPDATE_LIST_KEY,
                                                     "update_list_key_id").render());
-                buf.append(" ");
-                buf.append(addButtonTo(buf,
-                                       RequestContext.DISPATCH, SELECT_ALL_KEY).render());
-
-                if (numItemsChecked > 0) {
-                    buf.append(" ");
-                    buf.append(addButtonTo(buf, RequestContext.DISPATCH, UNSELECT_ALL_KEY)
-                        .render());
-                }
                 buf.append("</span>");
             }
         }
@@ -772,6 +763,26 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 doSort(sortedColumn);
             }
 
+            StringWriter alphaBarContent = new StringWriter();
+            StringWriter paginationContent = new StringWriter();
+
+            int topAddonsContentLen = alphaBarContent.getBuffer().length() +
+                    paginationContent.getBuffer().length();
+
+            if (topAddonsContentLen > 0) {
+                out.println("<div class=\"spacewalk-list-top-addons\">");
+                out.println("<div class=\"spacewalk-list-alphabar\">");
+                out.print(alphaBarContent.getBuffer().toString());
+                out.println("</div>");
+                out.print(paginationContent.getBuffer().toString());
+                out.println("</div>");
+            }
+            if (isPaging()) {
+                out.print("<div class=\"row-0\">\n");
+                renderActionButtons(out);
+                out.println("</div>");
+            }
+
             out.print("<div class=\"spacewalk-list ");
             out.println(type + "\"");
             if (tableId != null) {
@@ -787,8 +798,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
              * the entries on a single page and is similar to how the perl code
              * behaves.
              */
-            StringWriter alphaBarContent = new StringWriter();
-            StringWriter paginationContent = new StringWriter();
 
             pageContext.pushBody(alphaBarContent);
             if (!getPageList().getIndex().isEmpty() &&
@@ -805,18 +814,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 renderBoundsVariables(paginationContent);
             }
             pageContext.popBody();
-
-            int topAddonsContentLen = alphaBarContent.getBuffer().length() +
-                    paginationContent.getBuffer().length();
-
-            if (topAddonsContentLen > 0) {
-                out.println("<div class=\"spacewalk-list-top-addons\">");
-                out.println("<div class=\"spacewalk-list-alphabar\">");
-                out.print(alphaBarContent.getBuffer().toString());
-                out.println("</div>");
-                out.print(paginationContent.getBuffer().toString());
-                out.println("</div>");
-            }
 
             out.print("<div class=\"panel panel-default\">");
 
@@ -943,11 +940,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 out.println("</span>");
             }
             out.println("</div>");
-            if (isPaging()) {
-                out.print("<div class=\"row-0\">\n");
-                renderActionButtons(out);
-                out.println("</div>");
-            }
             out.println("</div>");
 
             // close list

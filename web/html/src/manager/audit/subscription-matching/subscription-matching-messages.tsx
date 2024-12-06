@@ -110,8 +110,6 @@ class Messages extends React.Component<Props> {
               cell={(row) => row.info}
             />
           </Table>
-
-          <CsvLink name="message_report.csv" />
         </div>
       );
     } else {
@@ -119,10 +117,13 @@ class Messages extends React.Component<Props> {
     }
 
     return (
-      <div className="row col-md-12">
-        <h2>{t("Messages")}</h2>
+      < div className="row col-md-12" >
+        <div className="spacewalk-toolbar-h2">
+          {this.props.messages.length > 0 && <CsvLink name="subscription_report.csv" />}
+          <h2>{t("Messages")}</h2>
+        </div>
         {body}
-      </div>
+      </div >
     );
   }
 }
