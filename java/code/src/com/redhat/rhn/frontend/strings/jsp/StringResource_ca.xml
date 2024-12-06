@@ -3504,7 +3504,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
         <source>Package Name</source>
-        <target state="needs-adaptation">Últim paquet</target>
+        <target state="translated">Nom del paquet</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
@@ -11352,7 +11352,7 @@ Tingueu en compte que encara pot ser necessària alguna configuració manual d'a
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-adaptation"> Si voleu reutilitzar un perfil d'autoinstal·lació existent, us recomanem copiar-enganxar la plantilla des de /var/lib/rhn/kickstarts en lloc del vostre navegador.  D'aquesta manera s'assegurarà que les variables de plantilla es conservaran i el procés de registre funcionarà correctament després de l'autoinstal·lació.</target>
+        <target state="translated"> Si voleu reutilitzar un perfil d'autoinstal·lació existent, us recomanem que copieu i enganxeu la plantilla des de /var/lib/cobbler/templates en lloc de des del vostre navegador.  Això garantirà que les variables de la plantilla es conservin i que el procés de registre funcioni correctament després de l'autoinstal·lació.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -29002,8 +29002,8 @@ lt;/pgt;
         <target state="translated">Servidor de construcció d'imatges del SO</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
-        <target state="translated">Amfitrió monitoritzat</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">Amfitrió monitoritzat</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29875,13 +29875,13 @@ lt;/pgt;
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
         <target state="translated">Amb això seleccionat, es mostren els pedaços que ja formen part del canal. Això és útil quan un pedaç forma part de diversos canals, s'ha inclòs des d'un i cal associar-ne els paquets a un altre.</target>
       </trans-unit>
-    <trans-unit id="toolbar.create.distro" xml:space="preserve">
-          <source>Create Distribution</source>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+        <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="translated">Crea la distribució</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

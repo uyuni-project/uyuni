@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:18+0100\n"
-"PO-Revision-Date: 2024-11-28 18:48+0000\n"
+"POT-Creation-Date: 2024-12-06 14:38+0100\n"
+"PO-Revision-Date: 2024-12-02 16:48+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -659,8 +659,8 @@ msgid "Unable to perform action."
 msgstr "Nie je možné vykonať akciu."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:366
-#: ../html/src/components/states-picker.tsx:556
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
 #: ../html/src/manager/admin/setup/products/products.tsx:1130
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
@@ -862,21 +862,21 @@ msgstr ""
 "Stavy \"Reštartovať systém\" a \"Reštartovať systém v prípade potreby\" sa "
 "nemôžu používať spoločne."
 
-#: ../html/src/components/states-picker.tsx:152
+#: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
 msgstr "Priradenia stavov boli uložené."
 
-#: ../html/src/components/states-picker.tsx:170
+#: ../html/src/components/states-picker.tsx:173
 msgid "An error occurred on save."
 msgstr "Pri ukladaní sa vyskytla chyba."
 
-#: ../html/src/components/states-picker.tsx:305
+#: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
 msgstr ""
 "Neboli priradené žiadne stavy. Na nájdenie a priradenie stavov použite "
 "vyhľadávanie."
 
-#: ../html/src/components/states-picker.tsx:364
+#: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -892,25 +892,25 @@ msgstr ""
 msgid "Back"
 msgstr "Späť"
 
-#: ../html/src/components/states-picker.tsx:374
+#: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "Uložiť zmeny"
 
-#: ../html/src/components/states-picker.tsx:389
+#: ../html/src/components/states-picker.tsx:392
 msgid "Reorder"
 msgstr "Preusporiadať"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in states"
 msgstr "Hľadať v stavoch"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in configuration channels"
 msgstr "Hľadať v konfiguračných kanáloch"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -918,45 +918,45 @@ msgstr "Hľadať v konfiguračných kanáloch"
 msgid "Search"
 msgstr "Hľadať"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit State Ranks"
 msgstr "Upraviť poradia stavov"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit Channel Ranks"
 msgstr "Upraviť poradia kanálov"
 
-#: ../html/src/components/states-picker.tsx:434
+#: ../html/src/components/states-picker.tsx:437
 msgid "Edit the ranking of the states by dragging them."
 msgstr "Upraviť poradie kanálov ich pretiahnutím."
 
-#: ../html/src/components/states-picker.tsx:435
+#: ../html/src/components/states-picker.tsx:438
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "Upraviť poradie konfiguračných kanálov ich pretiahnutím."
 
-#: ../html/src/components/states-picker.tsx:440
+#: ../html/src/components/states-picker.tsx:443
 msgid "There are no states assigned."
 msgstr "Nie sú priradené žiadne stavy."
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 msgid "State Name"
 msgstr "Názov stavu"
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 msgid "Channel Name"
 msgstr "Názov kanála"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 msgid "State Label"
 msgstr "Označenie stavu"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 msgid "Channel Label"
 msgstr "Označenie kanála"
 
-#: ../html/src/components/states-picker.tsx:450
+#: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -972,31 +972,31 @@ msgstr "Označenie kanála"
 msgid "Description"
 msgstr "Popis"
 
-#: ../html/src/components/states-picker.tsx:451
+#: ../html/src/components/states-picker.tsx:454
 msgid "Assign"
 msgstr "Priradiť"
 
-#: ../html/src/components/states-picker.tsx:510
+#: ../html/src/components/states-picker.tsx:513
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
 msgstr ""
 "Vyberte systémy, ktoré chcete naplánovať na okamžité vykonanie stavu, a "
 "potvrďte."
 
-#: ../html/src/components/states-picker.tsx:520
+#: ../html/src/components/states-picker.tsx:523
 msgid "This table is empty"
 msgstr "Táto tabuľka je prázdna"
 
-#: ../html/src/components/states-picker.tsx:527
-#: ../html/src/components/states-picker.tsx:569
+#: ../html/src/components/states-picker.tsx:530
+#: ../html/src/components/states-picker.tsx:572
 msgid "System Name"
 msgstr "Názov systému"
 
-#: ../html/src/components/states-picker.tsx:547
+#: ../html/src/components/states-picker.tsx:550
 msgid "Execute States"
 msgstr "Vykonať stavy"
 
-#: ../html/src/components/states-picker.tsx:552
+#: ../html/src/components/states-picker.tsx:555
 msgid "Select Sytems"
 msgstr "Vybrať systémy"
 
@@ -5472,12 +5472,10 @@ msgid " Systems "
 msgstr " Systémy "
 
 #: ../html/src/manager/systems/all-list.tsx:52
-#, fuzzy
 msgid "Add a system"
 msgstr "Pridať systém"
 
 #: ../html/src/manager/systems/all-list.tsx:53
-#, fuzzy
 msgid "Add system"
 msgstr "Pridať systém"
 

@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-02 08:18+0100\n"
+"POT-Creation-Date: 2024-12-06 14:38+0100\n"
 "PO-Revision-Date: 2024-10-17 02:48+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -653,8 +653,8 @@ msgid "Unable to perform action."
 msgstr "작업을 수행할 수 없습니다."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
-#: ../html/src/components/states-picker.tsx:366
-#: ../html/src/components/states-picker.tsx:556
+#: ../html/src/components/states-picker.tsx:369
+#: ../html/src/components/states-picker.tsx:559
 #: ../html/src/manager/admin/setup/products/products.tsx:1130
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
@@ -853,19 +853,19 @@ msgid ""
 msgstr ""
 "'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
 
-#: ../html/src/components/states-picker.tsx:152
+#: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
 msgstr "상태 할당이 저장되었습니다."
 
-#: ../html/src/components/states-picker.tsx:170
+#: ../html/src/components/states-picker.tsx:173
 msgid "An error occurred on save."
 msgstr "저장하는 동안 오류가 발생했습니다."
 
-#: ../html/src/components/states-picker.tsx:305
+#: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
 msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를 찾아 지정하십시오."
 
-#: ../html/src/components/states-picker.tsx:364
+#: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:817
 #: ../html/src/manager/images/image-view.tsx:819
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:29
@@ -881,25 +881,25 @@ msgstr "상태가 지정되지 않았습니다. 검색을 사용하여 상태를
 msgid "Back"
 msgstr "뒤로"
 
-#: ../html/src/components/states-picker.tsx:374
+#: ../html/src/components/states-picker.tsx:377
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:185
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
 msgstr "변경사항 저장"
 
-#: ../html/src/components/states-picker.tsx:389
+#: ../html/src/components/states-picker.tsx:392
 msgid "Reorder"
 msgstr "다시 정렬"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in states"
 msgstr "상태에서 검색"
 
-#: ../html/src/components/states-picker.tsx:415
+#: ../html/src/components/states-picker.tsx:418
 msgid "Search in configuration channels"
 msgstr "구성 채널에서 검색"
 
-#: ../html/src/components/states-picker.tsx:421
+#: ../html/src/components/states-picker.tsx:424
 #: ../html/src/manager/header/search/search.tsx:77
 #: ../html/src/manager/header/search/search.tsx:86
 #: ../html/src/manager/minion/packages/package-states.tsx:214
@@ -907,45 +907,45 @@ msgstr "구성 채널에서 검색"
 msgid "Search"
 msgstr "검색"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit State Ranks"
 msgstr "상태 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:431
+#: ../html/src/components/states-picker.tsx:434
 msgid "Edit Channel Ranks"
 msgstr "채널 순위 편집"
 
-#: ../html/src/components/states-picker.tsx:434
+#: ../html/src/components/states-picker.tsx:437
 msgid "Edit the ranking of the states by dragging them."
 msgstr "드래그하여 상태의 순위를 편집하십시오."
 
-#: ../html/src/components/states-picker.tsx:435
+#: ../html/src/components/states-picker.tsx:438
 msgid "Edit the ranking of the configuration channels by dragging them."
 msgstr "드래그하여 구성 채널의 순위를 편집하십시오."
 
-#: ../html/src/components/states-picker.tsx:440
+#: ../html/src/components/states-picker.tsx:443
 msgid "There are no states assigned."
 msgstr "상태가 지정되지 않았습니다."
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:251
 msgid "State Name"
 msgstr "상태 이름"
 
-#: ../html/src/components/states-picker.tsx:448
+#: ../html/src/components/states-picker.tsx:451
 msgid "Channel Name"
 msgstr "채널 이름"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:264
 msgid "State Label"
 msgstr "상태 레이블"
 
-#: ../html/src/components/states-picker.tsx:449
+#: ../html/src/components/states-picker.tsx:452
 msgid "Channel Label"
 msgstr "채널 레이블"
 
-#: ../html/src/components/states-picker.tsx:450
+#: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:126
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
@@ -961,29 +961,29 @@ msgstr "채널 레이블"
 msgid "Description"
 msgstr "설명"
 
-#: ../html/src/components/states-picker.tsx:451
+#: ../html/src/components/states-picker.tsx:454
 msgid "Assign"
 msgstr "할당"
 
-#: ../html/src/components/states-picker.tsx:510
+#: ../html/src/components/states-picker.tsx:513
 msgid ""
 "Select the systems to schedule for immediate state execution and confirm."
 msgstr "즉시 상태 실행을 예약할 시스템을 선택하고 확인합니다."
 
-#: ../html/src/components/states-picker.tsx:520
+#: ../html/src/components/states-picker.tsx:523
 msgid "This table is empty"
 msgstr "이 테이블은 비어있습니다."
 
-#: ../html/src/components/states-picker.tsx:527
-#: ../html/src/components/states-picker.tsx:569
+#: ../html/src/components/states-picker.tsx:530
+#: ../html/src/components/states-picker.tsx:572
 msgid "System Name"
 msgstr "시스템 이름"
 
-#: ../html/src/components/states-picker.tsx:547
+#: ../html/src/components/states-picker.tsx:550
 msgid "Execute States"
 msgstr "실행 상태"
 
-#: ../html/src/components/states-picker.tsx:552
+#: ../html/src/components/states-picker.tsx:555
 msgid "Select Sytems"
 msgstr "시스템 선택"
 
