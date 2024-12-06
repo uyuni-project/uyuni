@@ -29165,8 +29165,8 @@ given channel.</source>
         <target>OS イメージビルドホスト</target>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitoring</source>
-        <target>モニタリング</target>
+        <source>Monitor this Host</source>
+        <target state="needs-adaptation">モニタリング</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
