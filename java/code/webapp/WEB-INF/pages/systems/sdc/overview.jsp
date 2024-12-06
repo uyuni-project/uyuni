@@ -263,7 +263,14 @@
       <!-- Channel subcriptions -->
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4><bean:message key="sdc.details.overview.subscribedchannels" arg0="/rhn/systems/details/SystemChannels.do?sid=${system.id}"/></h4>
+          <h4><bean:message key="sdc.details.overview.subscribedchannels" arg0="/rhn/systems/details/SystemChannels.do?sid=${system.id}"/>
+            <a href="/rhn/systems/details/SystemChannels.do?sid=${system.id}"
+              title="<bean:message key='sdc.details.overview.subscribedchannels.edit' />"
+              role="button"
+              class="js-spa btn-unstyled pull-right">
+                <rhn:icon type="item-edit" />
+            </a>
+          </h4>
         </div>
         <div class="panel-body">
           <c:if test="${system.baseChannel != null}">
@@ -370,7 +377,14 @@
       <!-- System Properties box -->
       <div class="panel panel-default">
         <div class="panel-heading">
-          <h4><bean:message key="sdc.details.overview.sysproperties" arg0="/rhn/systems/details/Edit.do?sid=${system.id}"/></h4>
+          <h4><bean:message key="sdc.details.overview.sysproperties" />
+            <a href="/rhn/systems/details/Edit.do?sid=${system.id}"
+              title="<bean:message key='sdc.details.overview.sysproperties.edit' />"
+              role="button"
+              class="js-spa btn-unstyled pull-right">
+                <rhn:icon type="item-edit" />
+            </a>
+          </h4>
         </div>
         <table class="table">
           <tr>

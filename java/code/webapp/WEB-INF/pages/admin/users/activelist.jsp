@@ -20,8 +20,9 @@
 <rl:listset name="userListSet">
 <rhn:csrf />
 <rhn:submitted />
-
-
+     <rl:csv dataset="pageList"
+        name="userList"
+        exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn"/>
 <!-- Start of active users list -->
 <rl:list dataset="pageList"
          width="100%"
@@ -65,9 +66,6 @@
     </rl:column>
 
 </rl:list>
-<rl:csv dataset="pageList"
-        name="userList"
-        exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn"/>
 </rl:listset>
 </body>
 </html>

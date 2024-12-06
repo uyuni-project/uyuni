@@ -16,7 +16,7 @@ enctype="multipart/form-data">
             <td><html:file property="cffUpload" /></td>
         </tr>
     </table>
-    <div class="text-right">
+    <div>
         <hr />
         <html:submit styleClass="btn btn-default" property="dispatch">
             <bean:message key="manage.jsp.uploadbutton"/>
