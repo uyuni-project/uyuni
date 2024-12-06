@@ -2,8 +2,8 @@ import uyuni_health_check.config_loader
 import click
 from rich.markdown import Markdown
 
-from grafana.grafana_manager import prepare_grafana
-from prometheus.prometheus_manager import prepare_prometheus
+from uyuni_health_check.grafana.grafana_manager import prepare_grafana
+from uyuni_health_check.prometheus.prometheus_manager import prepare_prometheus
 
 from uyuni_health_check.utils import console, HealthException, run_command
 from uyuni_health_check.loki.loki_manager import (

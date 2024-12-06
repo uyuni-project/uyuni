@@ -1,7 +1,7 @@
 from uyuni_health_check.containers.manager import podman
 from uyuni_health_check.utils import run_command, HealthException, console
 from uyuni_health_check.outputter import outputter
-from config_loader import ConfigLoader
+from uyuni_health_check.config_loader import ConfigLoader
 from rich.markdown import Markdown
 from datetime import datetime, timedelta
 from rich import print

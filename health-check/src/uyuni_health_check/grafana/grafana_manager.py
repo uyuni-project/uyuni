@@ -1,8 +1,7 @@
-import subprocess
 import json
-from config_loader import ConfigLoader
+from uyuni_health_check.config_loader import ConfigLoader
 from uyuni_health_check.utils import run_command, HealthException, console
-from containers.manager import (
+from uyuni_health_check.containers.manager import (
     console,
     build_image,
     image_exists,
