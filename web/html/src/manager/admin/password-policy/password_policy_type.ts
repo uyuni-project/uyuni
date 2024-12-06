@@ -13,5 +13,5 @@ export type PasswordPolicyData = {
 
 export type PasswordPolicyProps = {
   policy: PasswordPolicyData;
-  defaults: PasswordPolicyData
-}
+  defaults: PasswordPolicyData;
+};

@@ -9,10 +9,10 @@ import { MessagesContainer, showErrorToastr, showSuccessToastr } from "component
 import { PasswordPolicyProps } from "./password_policy_type";
 
 const updatePolicy = (policyData) => {
-  return fetch('/rhn/manager/api/admin/config/password-policy', {
-    method: 'POST',
+  return fetch("/rhn/manager/api/admin/config/password-policy", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(policyData),
   }).then((response) => {
@@ -26,10 +26,10 @@ const updatePolicy = (policyData) => {
 };
 
 const defaultPolicy = () => {
-  return fetch('/rhn/manager/api/admin/config/password-policy/default', {
-    method: 'GET',
+  return fetch("/rhn/manager/api/admin/config/password-policy/default", {
+    method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   }).then((response) => {
     if (!response.ok) {
@@ -41,20 +41,14 @@ const defaultPolicy = () => {
   });
 };
 
-
 const PasswordPolicy = (prop: PasswordPolicyProps) => {
   return (
-    <TopPanel
-      title={t("Server Configuration - Password Policy")}
-      icon="fa-info-circle"
-    >
+    <TopPanel title={t("Server Configuration - Password Policy")} icon="fa-info-circle">
       <div className="page-summary">
         <MessagesContainer />
         <p>{t("Set up your server local users password policy.")}</p>
       </div>
-      <Form
-        model={prop.policy}
-      >
+      <Form model={prop.policy} >
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           <div className="col-md-8">
             {/* Minimum Length */}
@@ -62,87 +56,56 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
               <div className="col-md-4 text-left">
                 <label htmlFor="minLength">{t("Min Password Length")}</label>
               </div>
-              <Text
-                required
-                name="minLength"
-                divClass="col-md-2"
-                type="number"
-              />
+              <Text required name="minLength" divClass="col-md-2" type="number" />
             </div>
             {/* Maximum Length */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="maxLength">{t("Max Password Length")}</label>
               </div>
-              <Text
-                required
-                name="maxLength"
-                divClass="col-md-2"
-                type="number"
-              />
+              <Text required name="maxLength" divClass="col-md-2" type="number" />
             </div>
             {/* Require Digits */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="digitFlag">{t("Require Digits")}</label>
               </div>
-              <Check
-                name="digitFlag"
-                key="digitFlag"
-                divClass="col-md-2"
-              />
+              <Check name="digitFlag" key="digitFlag" divClass="col-md-2" />
             </div>
             {/* Require Lowercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="lowerCharFlag">{t("Require Lowercase Characters")}</label>
               </div>
-              <Check
-                name="lowerCharFlag"
-                key="lowerCharFlag"
-                divClass="col-md-2"
-              />
+              <Check name="lowerCharFlag" key="lowerCharFlag" divClass="col-md-2" />
             </div>
             {/* Require Uppercase Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="upperCharFlag">{t("Require Uppercase Characters")}</label>
               </div>
-              <Check
-                name="upperCharFlag"
-                key="upperCharFlag"
-                divClass="col-md-2"
-              />
+              <Check name="upperCharFlag" key="upperCharFlag" divClass="col-md-2" />
             </div>
             {/* Restrict Consecutive Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="consecutiveCharsFlag">{t("Restrict Consecutive Characters")}</label>
               </div>
-              <Check
-                name="consecutiveCharsFlag"
-                key="consecutiveCharsFlag"
-                divClass="col-md-2"
-              />
+              <Check name="consecutiveCharsFlag" key="consecutiveCharsFlag" divClass="col-md-2" />
             </div>
             {/* Require Special Characters */}
             <div className="row">
               <div className="col-md-4 text-left">
                 <label htmlFor="specialCharFlag">{t("Require Special Characters")}</label>
               </div>
-              <Check
-                name="specialCharFlag"
-                key="specialCharFlag"
-                divClass="col-md-2"
-              />
+              <Check name="specialCharFlag" key="specialCharFlag" divClass="col-md-2" />
             </div>
             {/* Allowed Special Characters */}
             <div className="row form-group">
               <div className="col-md-4 text-left">
                 <label htmlFor="specialChars">{t("Allowed Special Characters")}</label>
               </div>
-              <Text
-                disabled={!prop.policy.specialCharFlag}
+              <Text disabled={!prop.policy.specialCharFlag}
                 name="specialChars"
                 divClass="col-md-4"
                 defaultValue={prop.defaults.specialChars?.toLocaleString()}
@@ -153,11 +116,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
               <div className="col-md-4 text-left">
                 <label htmlFor="restrictedOccurrenceFlag">{t("Restrict Characters Occurrences")}</label>
               </div>
-              <Check
-                key="restrictedOccurrenceFlag"
-                name="restrictedOccurrenceFlag"
-                divClass="col-md-2"
-              />
+              <Check key="restrictedOccurrenceFlag" name="restrictedOccurrenceFlag" divClass="col-md-2" />
             </div>
             {/* Maximum Character Occurrence */}
             <div className="row form-group">
