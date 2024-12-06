@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui;
 
@@ -32,6 +28,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
+import com.suse.manager.iss.SyncController;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -253,6 +250,9 @@ public class Router implements SparkApplication {
         // Storybook
         StorybookController.initRoutes(jade);
 
+        // ISSv3 Sync
+        initISSv3Routes();
+
         // if the calls above opened Hibernate session, close it now
         HibernateFactory.closeSession();
     }
@@ -280,19 +280,26 @@ public class Router implements SparkApplication {
         });
     }
 
-    private void initVirtualizationRoutes(JadeTemplateEngine jade, VirtManager virtManager) {
+    private static void initVirtualizationRoutes(JadeTemplateEngine jade, VirtManager virtManager) {
         VirtualGuestsController virtualGuestsController = new VirtualGuestsController(virtManager);
         VirtualNetsController virtualNetsController = new VirtualNetsController(virtManager);
         VirtualPoolsController virtualPoolsController = new VirtualPoolsController(virtManager);
+
         virtualGuestsController.initRoutes(jade);
         virtualNetsController.initRoutes(jade);
         virtualPoolsController.initRoutes(jade);
     }
 
-    private void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {
+    private static void initContentManagementRoutes(JadeTemplateEngine jade, KubernetesManager kubernetesManager) {
         ImageBuildController imageBuildController = new ImageBuildController(kubernetesManager);
         ImageStoreController.initRoutes(jade);
         ImageProfileController.initRoutes(jade);
         ImageBuildController.initRoutes(jade, imageBuildController);
+    }
+
+    private static void initISSv3Routes() {
+        SyncController syncController = new SyncController();
+
+        syncController.initRoutes();
     }
 }
