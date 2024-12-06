@@ -62,16 +62,7 @@ export function SearchPanel(props: SearchPanelProps) {
         {props.selectable && props.selectedCount > 0 && (
           <span>
             {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
-            <button className="btn-link" onClick={props.onClear}>
-              {t("Clear")}
-            </button>
-            &nbsp;/&nbsp;
           </span>
-        )}
-        {props.selectable && (
-          <button className="btn-link" onClick={props.onSelectAll}>
-            {t("Select All")}
-          </button>
         )}
       </div>
     </div>

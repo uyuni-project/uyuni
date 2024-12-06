@@ -114,7 +114,6 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
               }}
             />
           </Table>
-          <CsvLink name="subscription_report.csv" />
         </div>
       );
     } else {
@@ -123,7 +122,10 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
 
     return (
       <div className="row col-md-12">
-        <h2>{t("Your subscriptions")}</h2>
+        <div className="spacewalk-toolbar-h2">
+          {Object.keys(this.props.subscriptions).length > 0 && <CsvLink name="subscription_report.csv" />}
+          <h2>{t("Your subscriptions")}</h2>
+        </div>
         {body}
       </div>
     );

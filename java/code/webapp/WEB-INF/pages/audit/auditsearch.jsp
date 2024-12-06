@@ -80,12 +80,6 @@
         <html:form action="/audit/Search.do">
         <rhn:csrf />
         <rhn:submitted />
-        <div class="text-right mb-4">
-            <button type="submit" class="btn btn-primary">
-                <rhn:icon type="header-search" />
-                <bean:message key="button.search"/>
-            </button>
-        </div>
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>Machine / Time range</h4>
@@ -120,6 +114,12 @@
                     <html:hidden property="startMilli" />
                     <html:hidden property="endMilli" />
                 </div>
+            </div>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">
+                    <rhn:icon type="header-search" />
+                    <bean:message key="button.search"/>
+                </button>
             </div>
         </div>
 
@@ -169,12 +169,12 @@
                     </tr>
                 </table>
             </div>
-        </div>
-        <div class="text-right">
-            <button type="submit" class="btn btn-primary">
-                <rhn:icon type="header-search" />
-                <bean:message key="button.search"/>
-            </button>
+            <div class="panel-footer">
+                <button type="submit" class="btn btn-primary">
+                    <rhn:icon type="header-search" />
+                    <bean:message key="button.search"/>
+                </button>
+            </div>
         </div>
         </html:form>
     </div>

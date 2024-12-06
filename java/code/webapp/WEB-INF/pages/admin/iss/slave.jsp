@@ -20,6 +20,15 @@
         <rl:listset name="issMasterListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <c:if test="${not empty requestScope.all}">
+                <div class="spacewalk-section-toolbar">
+                    <div class="action-button-wrapper">
+                        <rhn:submitted />
+                        <input type="submit" name="dispatch" class="btn btn-default"
+                            value='<bean:message key="iss.master.remove"/>' />
+                    </div>
+                </div>
+            </c:if>
             <rl:list dataset="pageList" name="issMasterList"
                      emptykey="iss.slave.jsp.nomasters">
                 <rl:decorator name="SelectableDecorator" />
@@ -46,13 +55,6 @@
                     <c:out value="${current.numMasterOrgs - current.numMappedMasterOrgs}" />
                 </rl:column>
             </rl:list>
-            <c:if test="${not empty requestScope.all}">
-                <div class="text-right">
-                    <rhn:submitted />
-                    <input type="submit" name="dispatch" class="btn btn-default"
-                           value='<bean:message key="iss.master.remove"/>' />
-                </div>
-            </c:if>
         </rl:listset>
     </body>
 </html:html>

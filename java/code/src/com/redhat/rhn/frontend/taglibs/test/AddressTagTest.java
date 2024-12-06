@@ -111,7 +111,7 @@ public class AddressTagTest extends RhnBaseTestCase {
         return "<strong>Mailing Address</strong>" +
                 "<div class=\"alert alert-info\">Address not filled in</div>" +
                 "<a class=\"btn btn-default\" href=\"/EditAddress.do?type=M&amp;uid=" +
-                uid + "\">Fill in this address</a>";
+                uid + "\">Add address</a>";
     }
 
 }

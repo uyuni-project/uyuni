@@ -33,7 +33,7 @@ export function VirtualSystems(props: Props) {
 
   return (
     <>
-      <h1>
+      <h1 className="mb-5">
         <IconTag type="header-system" />
         {t("Virtual Systems")}
         <a
@@ -43,6 +43,12 @@ export function VirtualSystems(props: Props) {
         >
           <IconTag type="header-help" />
         </a>
+        <div className="pull-right">
+          <a href="/rhn/manager/systems/csv/virtualSystems" title="Download CSV" className="btn btn-default" data-senna-off="true">
+            <IconTag type="item-download-csv" />
+            Download CSV
+          </a>
+        </div>
       </h1>
 
       <Table
@@ -105,13 +111,6 @@ export function VirtualSystems(props: Props) {
           }}
         />
       </Table>
-
-      <div className="spacewalk-csv-download">
-        <a href="/rhn/manager/systems/csv/virtualSystems" className="btn btn-default" data-senna-off="true">
-          <IconTag type="item-download-csv" />
-          Download CSV
-        </a>
-      </div>
     </>
   );
 }

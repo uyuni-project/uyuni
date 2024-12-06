@@ -78,8 +78,6 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
             />
           </Table>
 
-          <CsvLink name="unmatched_product_report.csv" />
-
           <UnmatchedSystemPopUp
             systems={this.props.systems}
             products={this.props.products}
@@ -94,7 +92,10 @@ class UnmatchedProducts extends React.Component<UnmatchedProductsProps> {
 
     return (
       <div className="row col-md-12">
-        <h2>{t("Unmatched Products")}</h2>
+        <div className="spacewalk-toolbar-h2">
+          {this.props.unmatchedProductIds.length > 0 && <CsvLink name="subscription_report.csv" />}
+          <h2>{t("Unmatched Products")}</h2>
+        </div>
         {body}
       </div>
     );

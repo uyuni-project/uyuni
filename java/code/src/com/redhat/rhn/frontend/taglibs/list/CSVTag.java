@@ -186,7 +186,7 @@ public class CSVTag extends BodyTagSupport {
      */
     private void renderExport() throws JspException {
         IconTag i = new IconTag("item-download-csv");
-        String exportLink = "<div class=\"spacewalk-csv-download\">" +
+        String exportLink = "<div class=\"spacewalk-csv-download test\">" +
                 "<a class=\"btn btn-default\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
                 makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
                 "listdisplay.csv") + "</a></div>";
