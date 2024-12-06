@@ -1,4 +1,5 @@
 #
+# Copyright (c) 2024 SUSE LLC
 # Copyright (c) 2008--2018 Red Hat, Inc.
 #
 # This software is licensed to you under the GNU General Public License,
@@ -245,6 +246,7 @@ suseImageStore                     :: suseCredentials web_customer suseImageStor
 suseISSHub                         :: suseCredentials
 suseISSPeripheral                  :: suseCredentials
 suseISSPeripheralChannels          :: suseISSPeripheral rhnChannel
+suseISSAccessToken                 :: iss_access_token_type_t
 suseMaintenanceCalendar            :: web_customer
 suseMaintenanceSchedule            :: web_customer suseMaintenanceCalendar
 suseMgrServerInfo                  :: rhnServer rhnPackageEVR suseCredentials
