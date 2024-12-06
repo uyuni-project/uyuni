@@ -18,7 +18,7 @@
 <c:set var="notSelectable" value="True" />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <html:submit styleClass="btn btn-success" property="dispatch">
+            <html:submit styleClass="btn btn-primary" property="dispatch">
                 <bean:message key="confirm.jsp.confirm" />
             </html:submit>
         </div>

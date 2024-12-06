@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.config.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -90,7 +90,7 @@ public class ConfigRevisionActionTest extends RhnBaseTestCase {
                    ActionFactory.TYPE_CONFIGFILES_DEPLOY);
 
         assertNotNull(a);
-        assertTrue(a instanceof ConfigAction);
+        assertInstanceOf(ConfigAction.class, a);
         assertNotNull(a.getActionType());
 
         ConfigAction a2 = (ConfigAction) ActionFactoryTest.createAction(user,

@@ -8,14 +8,14 @@ import { docsLocale } from "core/user-preferences";
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { IconTag as Icon } from "components/icontag";
-import { Messages, Utils as MessagesUtils } from "components/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import styles from "./monitoring-admin.module.css";
+import styles from "./monitoring-admin.module.scss";
 import useMonitoringApi from "./use-monitoring-api";
 
 const { capitalize } = Utils;
@@ -315,7 +315,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       <React.Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
-          defaultType="btn-success"
+          defaultType="btn-default"
           icon="fa-play"
           text={t("Enable")}
           className={styles.gap_right}

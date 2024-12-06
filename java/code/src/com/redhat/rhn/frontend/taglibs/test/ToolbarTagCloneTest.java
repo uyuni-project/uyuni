@@ -41,7 +41,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCloneNoAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
             "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 
@@ -65,7 +65,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     @Test
     public void testCreateAclMultipleMixinsMultipleAcls() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
             "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 
@@ -82,7 +82,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     @Test
     public void testCreateAclMultipleAclsSingleMixin() throws Exception {
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
             "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\">" +
             "</i>Clone Autoinstallation</a></div><h1></h1></div>";
 
@@ -120,7 +120,7 @@ public class ToolbarTagCloneTest extends BaseTestToolbarTag {
     public void testCloneAcl() throws Exception {
         // setup mock objects
         String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"Clone-url\" class=\"btn btn-default\">" +
             "<i class=\"fa fa-files-o\" title=\"Clone Autoinstallation\"></i>" +
             "Clone Autoinstallation</a></div><h1></h1></div>";
 

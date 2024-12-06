@@ -293,6 +293,30 @@ public class DistUpgradeManager extends BaseManager {
                     baseSuccessors.stream().forEach(bp -> logger.debug(bp.getFriendlyName()));
                 }
 
+                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
+                currentCombination.add(baseProduct);
+                currentCombination.addAll(installedExtensions);
+
+                // Liberty Migration should always add the Liberty Products
+                for (SUSEProduct successorProduct : baseSuccessors) {
+                    if (successorProduct.getName().equals("rhel-base") &&
+                            successorProduct.getVersion().equals("8")) {
+                        Set<SUSEProduct> liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(successorProduct)
+                                .stream()
+                                .filter(e -> e.getName().equals("res"))
+                                .collect(Collectors.toSet());
+                        installedExtensions.addAll(liberties);
+                    }
+                    else if (successorProduct.getName().equals("el-base") &&
+                            successorProduct.getVersion().equals("9")) {
+                        Set<SUSEProduct> liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(successorProduct)
+                                .stream()
+                                .filter(e -> e.getName().equals("sll"))
+                                .collect(Collectors.toSet());
+                        installedExtensions.addAll(liberties);
+                    }
+                }
+
                 // extension_successors = installed_extensions.map {|e| [e] + e.successors }
                 final List<List<SUSEProduct>> extensionSuccessors = new ArrayList<>(installedExtensions.size());
                 for (SUSEProduct e : installedExtensions) {
@@ -306,10 +330,6 @@ public class DistUpgradeManager extends BaseManager {
                         logger.debug("-----------------------");
                     }
                 }
-
-                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
-                currentCombination.add(baseProduct);
-                currentCombination.addAll(installedExtensions);
 
                 // base_successors.each do |base|
                 //   available_extensions = installed_extensions.map do |ext|
@@ -756,7 +776,7 @@ public class DistUpgradeManager extends BaseManager {
             List<SUSEProduct> missingAddonSuccessors = installedProducts.orElse(new SUSEProductSet()).getAddonProducts()
                     .stream()
                     .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
-                    .collect(Collectors.toList());
+                    .toList();
 
             if (missingAddonSuccessors.isEmpty()) {
                 logger.debug("Found valid migration target: {}", t);
@@ -764,7 +784,7 @@ public class DistUpgradeManager extends BaseManager {
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
-                        .collect(Collectors.toList());
+                        .toList();
                 if (logger.isWarnEnabled()) {
                     logger.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
                 }

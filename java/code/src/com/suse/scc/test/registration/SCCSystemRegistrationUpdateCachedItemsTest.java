@@ -34,7 +34,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
@@ -59,7 +58,7 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         this.testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 

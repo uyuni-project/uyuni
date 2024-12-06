@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Messages, MessageType } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
 
 export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSeverity, sccForwardWarning) => {
   let messages: MessageType[] = [];

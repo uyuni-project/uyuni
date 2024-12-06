@@ -8,8 +8,8 @@ import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { IconTag } from "components/icontag";
 import { SystemLink } from "components/links";
-import { Utils as MessagesUtils } from "components/messages";
-import { MessageType } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
+import { MessageType } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { TabLabel } from "components/tab-container";
 import { Column } from "components/table/Column";
@@ -183,13 +183,13 @@ const SystemPicker = (props: SystemPickerProps) => {
               <ModalButton
                 target="cancel-confirm"
                 text={t("Save Changes")}
-                className="btn-success"
+                className="btn-primary"
                 disabled={!hasChanges}
               />
             ) : (
               <AsyncButton
                 action={onAssign}
-                defaultType="btn-success"
+                defaultType="btn-primary"
                 text={t("Save Changes")}
                 disabled={!hasChanges}
               />

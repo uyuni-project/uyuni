@@ -5,13 +5,11 @@ NAME := spacewalk-utils
 
 SUBDIR  = utils
 
-FILES	= __init__ systemSnapshot migrateSystemProfile depsolver cloneByDate
-SCRIPTS = sw-system-snapshot migrate-system-profile spacewalk-api \
-	  spacewalk-common-channels delete-old-systems-interactive spacewalk-hostname-rename \
+FILES	= __init__ depsolver cloneByDate
+SCRIPTS = spacewalk-common-channels spacewalk-hostname-rename \
 	  spacewalk-clone-by-date spacewalk-sync-setup spacewalk-manage-channel-lifecycle \
-	  spacewalk-export spacewalk-export-channels spacewalk-final-archive sw-ldap-user-sync \
-	  taskotop spacewalk-manage-snapshots spacewalk-watch-channel-sync.sh
-CONFIGS = spacewalk-common-channels.ini sw-ldap-user-sync.conf
+	  taskotop spacewalk-watch-channel-sync.sh
+CONFIGS = spacewalk-common-channels.ini
 
 DOCBOOK = $(wildcard /usr/bin/docbook2man)
 

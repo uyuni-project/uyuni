@@ -7,8 +7,8 @@ import { ActionSchedule } from "components/action-schedule";
 import { ActionChain } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
@@ -185,8 +185,8 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
                 href="#"
-                data-toggle="modal"
-                data-target="#channelServersPopup"
+                data-bs-toggle="modal"
+                data-bs-target="#channelServersPopup"
                 onClick={() => this.showServersListPopUp(channel)}
               >
                 {channel.servers.length}
@@ -200,11 +200,19 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
               const newBaseId = this.state.baseChanges.get(channel.base.id);
               const baseOptions = channel.allowedBaseChannels
                 .filter((c) => !c.custom)
-                .map((c) => <option value={c.id}>{c.name}</option>)
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ))
                 .concat(defaultOption);
               const customOptions = channel.allowedBaseChannels
                 .filter((c) => c.custom)
-                .map((c) => <option value={c.id}>{c.name}</option>);
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}
+                  </option>
+                ));
 
               return (
                 <select
@@ -433,8 +441,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() =>
                       this.showServersListPopUp(
                         allowed.newBaseChannel ? allowed.newBaseChannel.name : "",
@@ -449,8 +457,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() =>
                       this.showServersListPopUp(
                         allowed.newBaseChannel ? allowed.newBaseChannel.name : t("(none)"),
@@ -468,7 +476,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
           <hr />
           <dl className="col-lg-12">
             {allowed.childChannels.map((child) => (
-              <dt className="row">
+              <dt className="row" key={child.id}>
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
                     {child.name}
@@ -629,7 +637,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
   };
 
   render() {
-    const rows = this.props.allowedChanges.map((allowed) => {
+    const rows = this.props.allowedChanges.map((allowed: SsmAllowedChildChannelsDto) => {
       const newBaseName = allowed.newBaseChannel
         ? allowed.newBaseChannel.name
         : t("(Couldn't determine new base channel)");
@@ -663,8 +671,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.servers)}
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
@@ -674,8 +682,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}
                   >
                     <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
@@ -688,7 +696,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
           <hr />
           <dl className="col-lg-12">
             {allowed.childChannels.map((child) => (
-              <dt className="row">
+              <dt className="row" key={child.id}>
                 <div className="col-md-6">
                   <ChannelLink id={child.id} newWindow={true}>
                     {child.name + (child.recommended ? " (R)" : "")}
@@ -1068,7 +1076,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
             <Footer page={this.state.page}>
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 disabled={this.state.allowedBaseChannels.length === 0}
                 text={t("Next")}
@@ -1095,7 +1103,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
               />
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 text={t("Next")}
                 action={this.onGotoConfirm}
@@ -1124,7 +1132,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
                 text={t("Prev")}
                 handler={this.backToChildChannels}
               />
-              <AsyncButton id="confirm-btn" defaultType="btn-success" text={t("Confirm")} action={this.onConfirm} />
+              <AsyncButton id="confirm-btn" defaultType="btn-primary" text={t("Confirm")} action={this.onConfirm} />
             </Footer>
           }
         />

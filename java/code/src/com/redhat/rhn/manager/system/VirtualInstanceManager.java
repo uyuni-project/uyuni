@@ -118,19 +118,19 @@ public class VirtualInstanceManager extends BaseManager {
                         vCpus, memory);
             }
             else if (info.getEventType().equals(EVENT_TYPE_EXISTS)) {
-                virtualInstances.stream().forEach(virtualInstance ->
+                virtualInstances.forEach(virtualInstance ->
                 updateGuestVirtualInstance(virtualInstance, name, state, server,
                         virtualInstance.getGuestSystem(), vCpus, memory));
             }
             else if (info.getEventType().equals(EVENT_TYPE_REMOVED)) {
-                virtualInstances.stream().forEach(vinst::deleteVirtualInstanceOnly);
+                virtualInstances.forEach(vinst::deleteVirtualInstanceOnly);
             }
         }
 
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
+            virtualInstances.forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
         }
     }
 
@@ -149,35 +149,33 @@ public class VirtualInstanceManager extends BaseManager {
         VirtualInstanceFactory vinst = VirtualInstanceFactory.getInstance();
         List<String> uuidsToRemove = server.getGuests().stream().map(VirtualInstance::getUuid)
                 .collect(Collectors.toList());
-        vms.entrySet().stream().forEach(
-                vmEntry -> {
-                    String name = vmEntry.getKey();
-                    String guid = vmEntry.getValue().replaceAll("-", "");
+        vms.forEach((name, value) -> {
+            String guid = value.replace("-", "");
 
-                    guid = fixUuidIfSwappedUuidExists(guid);
-                    uuidsToRemove.remove(guid);
-                    List<VirtualInstance> virtualInstances =
-                            vinst.lookupVirtualInstanceByUuid(guid);
+            guid = fixUuidIfSwappedUuidExists(guid);
+            uuidsToRemove.remove(guid);
+            List<VirtualInstance> virtualInstances =
+                    vinst.lookupVirtualInstanceByUuid(guid);
 
-                    Map<String, String> vmData = optionalVmData.get(name);
-                    VirtualInstanceState st = (vmData != null && vmData.get("vmState") != null) ?
-                            vinst.getState(vmData.get("vmState"))
-                                    .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
+            Map<String, String> vmData = optionalVmData.get(name);
+            VirtualInstanceState st = (vmData != null && vmData.get("vmState") != null) ?
+                    vinst.getState(vmData.get("vmState"))
+                            .orElse(vinst.getUnknownState()) : vinst.getUnknownState();
 
-                    if (virtualInstances.isEmpty()) {
-                        addGuestVirtualInstance(guid, name, type, st, server, null);
-                    }
-                    else {
-                        virtualInstances.stream().forEach(virtualInstance ->
-                            updateGuestVirtualInstance(virtualInstance, name, st, server,
-                                    virtualInstance.getGuestSystem()));
-                    }
-                });
+            if (virtualInstances.isEmpty()) {
+                addGuestVirtualInstance(guid, name, type, st, server, null);
+            }
+            else {
+                virtualInstances.forEach(virtualInstance ->
+                        updateGuestVirtualInstance(virtualInstance, name, st, server,
+                                virtualInstance.getGuestSystem()));
+            }
+        });
 
         for (String uuid : uuidsToRemove) {
             List<VirtualInstance> virtualInstances =
                     vinst.lookupVirtualInstanceByUuid(uuid);
-            virtualInstances.stream().forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
+            virtualInstances.forEach(VirtualInstanceManager::deleteGuestVirtualInstance);
         }
     }
 
@@ -371,7 +369,7 @@ public class VirtualInstanceManager extends BaseManager {
                 return virtUuidSwapped;
             }
         }
-        catch (IllegalArgumentException e) {
+        catch (IllegalArgumentException ignored) {
         }
         return uuid;
     }

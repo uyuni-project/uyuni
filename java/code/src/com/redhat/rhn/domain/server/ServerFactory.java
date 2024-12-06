@@ -42,6 +42,7 @@ import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
+import com.redhat.rhn.manager.audit.OsReleasePair;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -66,6 +67,7 @@ import org.hibernate.type.StandardBasicTypes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -250,6 +252,19 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * List the <b>unique</b> set of pairs of os and release versions used by servers
+     *
+     * @return the set of unique pairs of os and release version used by servers
+     * */
+    public static Set<OsReleasePair> listAllServersOsAndRelease() {
+        List<Object[]> result = SINGLETON.listObjectsByNamedQuery("Server.listAllServersOsAndRelease",
+                Collections.emptyMap());
+
+        return result.stream().map(row -> new OsReleasePair((String) row[0], (String) row[1]))
+                .collect(Collectors.toSet());
+    }
+
+    /**
      * Return a map from Salt minion IDs to System IDs.
      * Map entries are limited to systems that are visible by the specified user.
      *
@@ -362,7 +377,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -445,7 +460,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).collect(Collectors.toList());
+                .map(Server::getId).toList();
 
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -535,7 +550,7 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
-        List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
+        List<Long> sids = systems.stream().map(SystemOverview::getId).toList();
         Session session = HibernateFactory.getSession();
         Query<Long> query = session.getNamedQuery("Server.findServersPendingRebootAction");
         query.setParameter("systemIds", sids);
@@ -623,7 +638,7 @@ public class ServerFactory extends HibernateFactory {
         DataResult<Map<String, Object>> dr = mode.execute(params);
 
         return dr.stream().map(m -> new SystemIDInfo((Long) m.get("id"), (String) m.get("name")))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

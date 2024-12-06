@@ -181,11 +181,9 @@ public class RhnSetElement implements Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof RhnSetElement)) {
+        if (!(obj instanceof RhnSetElement rse)) {
             return false;
         }
-
-        RhnSetElement rse = (RhnSetElement)obj;
         return new EqualsBuilder().append(userid, rse.getUserId())
                                   .append(label, rse.getLabel())
                                   .append(element, rse.getElement())

@@ -37,7 +37,7 @@
                     <div class="col-lg-6">
                         ${pack.packageArch.name}
                         <c:forEach items="${packArches}" var="tmpPack">
-                            <a class="btn btn-info" href="/rhn/software/packages/Details.do?pid=${tmpPack.id}">
+                            <a href="/rhn/software/packages/Details.do?pid=${tmpPack.id}">
                                 ${tmpPack.packageArch.name}
                             </a>
                         </c:forEach>
@@ -216,7 +216,7 @@
                             <div class="input-group">
                                 <div class="form-control">${pack.file}</div>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-info" href="${url}" data-senna-off="true">Download ${pack.packageSizeString}</a>
+                                    <a class="btn btn-default" href="${url}" data-senna-off="true">Download ${pack.packageSizeString}</a>
                                 </span>
                             </div>
                         </c:if>
@@ -224,7 +224,7 @@
                             <div class="input-group">
                                 <div class="form-control">${pack.file}</div>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-info" disabled="disabled">Download</button>
+                                    <button class="btn btn-default" disabled="disabled">Download</button>
                                 </span>
                             </div>
                             <span class="help-block"><bean:message key="package.jsp.missingfile"/></span>
@@ -240,7 +240,7 @@
                             <div class="input-group">
                                 <div class="form-control">${srpm_path}</div>
                                 <span class="input-group-btn">
-                                    <a class="btn btn-info" href="${srpm_url}" data-senna-off="true">Download</a>
+                                    <a class="btn btn-default" href="${srpm_url}" data-senna-off="true">Download</a>
                                 </span>
                             </div>
                         </c:if>
@@ -263,7 +263,7 @@
                             </label>
                             <div class="col-lg-6">
                             <c:if test="${debugInfoUrl != null}">
-                                <a class="btn btn-info" href="${debugInfoUrl}" data-senna-off="true"><bean:message key="package.jsp.download"/></a>
+                                <a href="${debugInfoUrl}" data-senna-off="true"><bean:message key="package.jsp.download"/></a>
                                 <c:if test="${debugInfoFtp}" >
                                     <span class="help-block">
                                         <bean:message key="debuginfo.external" />
@@ -284,7 +284,7 @@
                             </label>
                             <div class="col-lg-6">
                             <c:if test="${debugSourceUrl != null}">
-                                <a class="btn btn-info" href="${debugSourceUrl}" data-senna-off="true"><bean:message key="package.jsp.download"/></a>
+                                <a href="${debugSourceUrl}" data-senna-off="true"><bean:message key="package.jsp.download"/></a>
                             </c:if>
                             <c:if test="${debugSourceUrl == null}">
                                 <bean:message key="package.jsp.unavailable" />

@@ -35,7 +35,7 @@ When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} stop", check_errors: false)
   else
     node.run("systemctl stop #{pkgname}", check_errors: false)
@@ -47,7 +47,7 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} start", check_errors: false)
   else
     node.run("systemctl start #{pkgname}", check_errors: false)
@@ -59,7 +59,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} restart", check_errors: false)
   else
     node.run("systemctl restart #{pkgname}", check_errors: false)
@@ -70,6 +70,24 @@ When(/^I refresh salt-minion grains on "(.*?)"$/) do |minion|
   node = get_target(minion)
   salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   node.run("#{salt_call} saltutil.refresh_grains")
+end
+
+When(/^I setup a git_pillar environment on the Salt master$/) do
+  file = 'salt_git_pillar_setup.sh'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} setup", check_errors: true, verbose: true)
+end
+
+When(/^I clean up the git_pillar environment on the Salt master$/) do
+  file = 'salt_git_pillar_setup.sh'
+
+  # Execute "salt_git_pillar_setup.sh setup" on the server
+  get_target('server').run("sh /tmp/#{file} clean", check_errors: true, verbose: true)
 end
 
 When(/^I wait at most (\d+) seconds until Salt master sees "([^"]*)" as "([^"]*)"$/) do |key_timeout, minion, key_type|
@@ -87,6 +105,11 @@ end
 When(/^I wait until Salt client is inactive on "([^"]*)"$/) do |minion|
   salt_minion = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   step %(I wait until "#{salt_minion}" service is inactive on "#{minion}")
+end
+
+When(/^I wait until Salt master can reach "([^"]*)"$/) do |minion|
+  system_name = get_system_name(minion)
+  get_target('server').run_until_ok("bash -c 'until timeout 5s salt #{system_name} test.ping; do :; done'")
 end
 
 When(/^I wait until no Salt job is running on "([^"]*)"$/) do |minion|
@@ -126,7 +149,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -377,6 +400,16 @@ Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, mi
   end
 end
 
+Then(/^the pillar data for "([^"]*)" should be empty on the Salt master$/) do |key|
+  output = salt_master_pillar_get(key)
+  raise "Output value is not empty: #{output}" unless output == ''
+end
+
+Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on the Salt master$/) do |key, value|
+  output = salt_master_pillar_get(key)
+  raise "Output value is different than #{value}: #{output}" unless output.to_s.strip == value
+end
+
 Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   url = "https://#{get_target('server').full_hostname}/rhn/manager/download/#{channel}/getPackage/#{rpm}"
   url = "#{url}?#{@token}" if @token
@@ -385,7 +418,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
-      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+      URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
         tmpfile.write(urlfile.read)
       end
     rescue OpenURI::HTTPError => e
@@ -476,17 +509,21 @@ Then(/^the salt event log on server should contain no failures$/) do
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
+  # ignore the error if there is only the expected hoag-dummy package lock installation failure from min_salt_lock_packages.feature
   output, _code = get_target('server').run("python3 /tmp/#{file}")
-  count_failures = output.to_s.scan(/false/).length
-  output = output.join.to_s if output.respond_to?(:join)
-  # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
-  ignore_error = false
-  ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
-  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+  filtered_output =
+    output
+    .split(/(?=# Failure \d+)/)
+    .reject do |block|
+      block.include?('remove lock to allow installation of hoag-dummy')
+    end
+  count_failures = filtered_output.to_s.scan(/false/).length
+  filtered_output = filtered_output.join.to_s if filtered_output.respond_to?(:join)
+  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{filtered_output}\n" if count_failures.nonzero?
 end
 
 # salt-ssh steps
@@ -526,33 +563,38 @@ end
 
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
-  if use_salt_bundle
-    if transactional_system?(host)
-      node.run('transactional-update --continue -n pkg rm venv-salt-minion', check_errors: false)
-      # Transactional systems could have also installed salt-minion via sumaform
-      _result, code = node.run('rpm -q salt-minion', check_errors: false)
-      node.run('transactional-update --continue -n pkg rm salt-minion', check_errors: false) if code.zero?
-      node.run('rm -Rf /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt', check_errors: false) if code.zero?
-    elsif rh_host?(host)
-      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 venv-salt-minion', check_errors: false)
-    elsif deb_host?(host)
-      node.run('apt-get --assume-yes remove venv-salt-minion && apt-get --assume-yes purge venv-salt-minion && apt-get --assume-yes autoremove', check_errors: false)
+
+  # Define config directory based on bundle usage
+  config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
+
+  # Define cleanup paths based on bundle usage
+  cleanup_paths =
+    if use_salt_bundle
+      '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
     else
-      node.run('zypper --non-interactive remove --clean-deps -y venv-salt-minion', check_errors: false)
+      '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
     end
-    node.run('rm -Rf /root/salt /var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /etc/venv-salt-minion /var/tmp/.root*', check_errors: false)
-  else
-    if transactional_system?(host)
-      node.run('transactional-update --continue -n pkg rm salt salt-minion', check_errors: false)
-    elsif rh_host?(host)
-      node.run('yum -y remove --setopt=clean_requirements_on_remove=1 salt salt-minion', check_errors: false)
-    elsif deb_host?(host)
-      node.run('apt-get --assume-yes remove salt-common salt-minion && apt-get --assume-yes purge salt-common salt-minion && apt-get --assume-yes autoremove', check_errors: false)
-    else
-      node.run('zypper --non-interactive remove --clean-deps -y salt salt-minion', check_errors: false)
-    end
-    node.run('rm -Rf /root/salt /var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /etc/salt /var/tmp/.root*', check_errors: false)
+
+  # Selective file cleanup within the configuration directory
+  node.run("rm -f #{config_dir}/grains #{config_dir}/minion_id", check_errors: false)
+  node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
+  node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
+
+  # Additional cleanup for cached and runtime files
+  node.run("rm -Rf /root/salt #{cleanup_paths}", check_errors: false)
+
+  # Package removal using the existing step
+  package_list = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
+  step %(I remove package "#{package_list}" from this "#{host}" without error control)
+
+  # Conditional additional package removal
+  if transactional_system?(host) && use_salt_bundle
+    # Check if salt-minion is installed, remove if present from sumaform
+    _result, code = node.run('rpm -q salt-minion', check_errors: false)
+    step %(I remove package "salt-minion" from this "#{host}" without error control) if code.zero?
   end
+
+  # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)
 end
 
@@ -562,9 +604,10 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
-  path = generate_temp_file('top.sls', script)
-  inject_salt_pillar_file(path, 'top.sls')
-  `rm #{path}`
+  temp_file = generate_temp_file('top.sls', script)
+  inject_salt_pillar_file(temp_file.path, 'top.sls')
+  temp_file.close
+  temp_file.unlink
 end
 
 When(/^I install the package download endpoint pillar file on the server$/) do
@@ -587,8 +630,8 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   dest = "/srv/formula_metadata/#{formula}/#{file}"
 
   get_target('server').run("mkdir -p /srv/formula_metadata/#{formula}")
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
 end

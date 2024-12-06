@@ -7,6 +7,7 @@ $input-height: 35px;
   }
 }
 
+div.form-control,
 .form-control,
 .form-control--react-select > div:first-of-type {
   color: $eos-bc-gray-1000;
@@ -25,8 +26,6 @@ $input-height: 35px;
     background: #fff;
   }
 
-  // This is like writing `div&`, except this nonsense is valid syntax, see https://stackoverflow.com/a/28357148/1470607
-  @at-root #{selector-unify(&, div)},
   &[disabled],
   &[readonly],
   fieldset[disabled] & {
@@ -73,7 +72,6 @@ $input-height: 35px;
   &::placeholder {
     color: $input-placeholder;
     opacity: 1;
-    background: $gray-lighter;
   }
 
 }
@@ -121,11 +119,14 @@ select[size] {
 .input-group-text {
   --bs-border-width: 1px;
   font-size: 1em;
+  line-height: 1.5;
   background: $gray-lighter;
   padding: 6px 12px;
 
   > .fa {
     margin: 0 !important;
+    font-size: inherit;
+    line-height: inherit;
   }
 }
 

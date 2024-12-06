@@ -70,6 +70,15 @@ module.exports = {
       },
     ],
     "sort-imports": "off",
+    // We use a `DEPRECATED_` prefix for old components that doesn't conform with this rule
+    "react/jsx-pascal-case": "off",
+    "no-restricted-imports": [
+      "error",
+      {
+        name: "node-gettext",
+        message: "Please import from `core/intl/node-gettext` instead.",
+      },
+    ],
     ...(process.env.NODE_ENV === "production" ? productionRules : {}),
   },
 

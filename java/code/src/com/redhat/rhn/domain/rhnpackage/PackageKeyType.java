@@ -70,11 +70,10 @@ public class PackageKeyType extends BaseDomainHelper implements Comparable<Packa
      */
     @Override
     public boolean equals(Object keyType) {
-
-        if (keyType instanceof PackageKeyType) {
-            PackageKeyType type = (PackageKeyType) keyType;
-            return new EqualsBuilder().append(this.label, type.getLabel()).append(getId(),
-                    type.getId()).isEquals();
+        if (keyType instanceof PackageKeyType type) {
+            return new EqualsBuilder()
+                    .append(this.label, type.getLabel())
+                    .append(getId(), type.getId()).isEquals();
         }
         return false;
     }

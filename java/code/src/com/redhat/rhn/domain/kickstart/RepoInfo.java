@@ -207,11 +207,9 @@ public class RepoInfo {
             return true;
         }
 
-        if (!(obj instanceof RepoInfo)) {
+        if (!(obj instanceof RepoInfo that)) {
             return false;
         }
-        RepoInfo that = (RepoInfo)obj;
-
         EqualsBuilder builder = new EqualsBuilder();
         builder.append(name, that.name);
         builder.append(baseUrl, that.baseUrl);

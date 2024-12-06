@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { Button } from "components/buttons";
-import { Messages, MessageType } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 
@@ -316,13 +316,6 @@ class FormulaForm extends React.Component<Props, State> {
                     {({ validate, clearValues }: { validate: any; clearValues: any }) => (
                       <div className="btn-group">
                         <Button
-                          id="save-btn"
-                          icon="fa-floppy-o"
-                          text="Save Formula"
-                          className={"btn btn-success"}
-                          handler={() => this.saveFormula(validate?.())}
-                        />
-                        <Button
                           id="reset-btn"
                           icon="fa-eraser"
                           text="Clear values"
@@ -330,6 +323,13 @@ class FormulaForm extends React.Component<Props, State> {
                           handler={() =>
                             clearValues?.(() => window.confirm("Are you sure you want to clear all values?"))
                           }
+                        />
+                        <Button
+                          id="save-btn"
+                          icon="fa-floppy-o"
+                          text="Save Formula"
+                          className={"btn btn-primary"}
+                          handler={() => this.saveFormula(validate?.())}
                         />
                       </div>
                     )}

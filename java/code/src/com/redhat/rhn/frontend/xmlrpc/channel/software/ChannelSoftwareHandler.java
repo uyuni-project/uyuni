@@ -101,7 +101,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ChannelSoftwareHandler
@@ -1516,7 +1515,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
     @ReadOnly
     public List<ErrataOverview> listErrata(User loggedInUser, String channelLabel)
         throws NoSuchChannelException {
-        return listErrata(loggedInUser, channelLabel, (Date) null);
+        return listErrata(loggedInUser, channelLabel, null);
     }
 
     /**
@@ -3163,8 +3162,8 @@ public class ChannelSoftwareHandler extends BaseHandler {
 
     public long applyChannelState(User user, List<Integer> sids) {
         try {
-            List<Long> serverIds = sids.stream().map(Integer::longValue).collect(Collectors.toList());
-            List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).collect(Collectors.toList());
+            List<Long> serverIds = sids.stream().map(Integer::longValue).toList();
+            List<MinionServer> minionServers = MinionServerFactory.lookupByIds(serverIds).toList();
             return ChannelManager.applyChannelState(user, minionServers).orElse(0L);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {

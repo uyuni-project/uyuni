@@ -50,7 +50,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 /**
@@ -92,7 +91,7 @@ public class ResponseMappers {
                     historyEntryResponse.setVersion(entry.getVersion());
                     return historyEntryResponse;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         properties.setHistoryEntries(historyEntries);
         return properties;
@@ -122,7 +121,7 @@ public class ResponseMappers {
                             .getOrDefault(sourceDb.getChannel().getId(), null));
                     return projectSourceResponse;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -156,7 +155,7 @@ public class ResponseMappers {
                     );
                     return environmentResponse;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -178,7 +177,7 @@ public class ResponseMappers {
                 projectDB.getSources()
                         .stream()
                         .flatMap(source -> stream(source.asSoftwareSource()))
-                        .collect(Collectors.toList()),
+                        .toList(),
                 swSourcesWithUnsyncedPatches, sourceTagetChannelIds
         ));
         project.setFilters(mapProjectFilterFromDB(projectDB.getProjectFilters()));
@@ -209,11 +208,11 @@ public class ResponseMappers {
                     contentProjectResumeResponse.setEnvironments(
                             environments.stream()
                                     .map(ContentEnvironment::getName)
-                                    .collect(Collectors.toList())
+                                    .toList()
                     );
                     return contentProjectResumeResponse;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -240,12 +239,12 @@ public class ResponseMappers {
                     contentFilterResponse.setProjects(
                             projects.stream()
                                     .map(p -> new ImmutablePair<>(p.getLabel(), p.getName()))
-                                    .collect(Collectors.toList())
+                                    .toList()
                     );
                     return contentFilterResponse;
                 })
                 .sorted(Comparator.comparing(FilterResponse::getName))
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
@@ -271,7 +270,7 @@ public class ResponseMappers {
                     contentProjectFilterResponse.setState(projectFilter.getState().toString());
                     return contentProjectFilterResponse;
                 })
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -283,6 +282,6 @@ public class ResponseMappers {
     public static List<ProjectMessageResponse> mapProjectMessagesFromDB(List<ContentValidationMessage> messages) {
         return messages.stream()
                 .map(m -> new ProjectMessageResponse(m.getMessage(), m.getType(), m.getEntity()))
-                .collect(Collectors.toList());
+                .toList();
     }
 }

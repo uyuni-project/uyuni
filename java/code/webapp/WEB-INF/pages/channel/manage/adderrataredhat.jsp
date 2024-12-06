@@ -26,6 +26,16 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label class="col-lg-3 control-label">
+                    <bean:message key="channel.manage.errata.listalreadyincludedlabel"/>
+                </label>
+                <div class="col-lg-6">
+                    <input type="checkbox" name="list_already_included" ${list_already_included ? 'checked' : ''}/>
+                    <bean:message key="channel.manage.errata.listalreadyincludedmsg"/>
+                </div>
+            </div>
+
             <c:if test="${selected_channel != null}">
                 <rhn:hidden name="selected_channel_old"  value="${selected_channel}"/>
             </c:if>
@@ -71,7 +81,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input class="btn btn-success" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''}/>
+                <input class="btn btn-primary" type="submit" name="dispatch"  value="<bean:message key='frontend.actions.channels.manager.add.submit'/>" ${empty pageList ? 'disabled' : ''}/>
             </div>
         </div>
 

@@ -7,6 +7,8 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
 const autoprefixer = require("autoprefixer");
 
+const GenerateStoriesPlugin = require("./plugins/generate-stories-plugin");
+
 const DEVSERVER_WEBSOCKET_PATHNAME = "/ws";
 
 module.exports = (env, argv) => {
@@ -34,18 +36,15 @@ module.exports = (env, argv) => {
       },
       // TODO: Copy all font licenses too
       { from: path.resolve(__dirname, "../branding/img"), to: path.resolve(__dirname, "../dist/img") },
-      // Any non-compiled CSS, Less files will be compiled by their entry points
+      // Any non-compiled CSS files will be compiled by their entry points
       {
         from: path.resolve(__dirname, "../branding/css/*.css"),
         context: path.resolve(__dirname, "../branding/css"),
         to: path.resolve(__dirname, "../dist/css"),
       },
-      /**
-       * Scripts and dependencies we're migrating from susemanager-frontend-libs to spacewalk-web
-       */
       {
-        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.min.js"),
-        to: path.resolve(__dirname, "../dist/javascript/legacy"),
+        from: path.resolve(__dirname, "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"),
+        to: path.resolve(__dirname, "../dist/javascript/legacy/bootstrap-webpack.js"),
       },
       {
         from: path.resolve(__dirname, "../node_modules/jquery/dist/jquery.min.js"),
@@ -82,15 +81,16 @@ module.exports = (env, argv) => {
     new MiniCssExtractPlugin({
       chunkFilename: "css/[name].css",
     }),
+    new GenerateStoriesPlugin({
+      inputDir: path.resolve(__dirname, "../manager"),
+      outputFile: path.resolve(__dirname, "../manager/storybook/stories.generated.ts"),
+    }),
   ];
 
   if (isProductionMode) {
     pluginsInUse = [
       ...pluginsInUse,
       new LicenseCheckerWebpackPlugin({
-        // If we want, we could check licenses at build time via https://github.com/openSUSE/obs-service-format_spec_file or similar in the future
-        // allow: [...],
-        // emitError: true,
         outputFilename: "../vendors/npm.licenses.structured.js",
         outputWriter: path.resolve(__dirname, "../vendors/licenses.template.ejs"),
       }),
@@ -103,10 +103,6 @@ module.exports = (env, argv) => {
   return {
     entry: {
       "javascript/manager/main": "./manager/index.ts",
-      "css/uyuni": path.resolve(__dirname, "../branding/css/uyuni.less"),
-      "css/susemanager-fullscreen": path.resolve(__dirname, "../branding/css/susemanager-fullscreen.less"),
-      "css/susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.less"),
-      "css/susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.less"),
       "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
       "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.scss"),
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
@@ -118,19 +114,33 @@ module.exports = (env, argv) => {
       publicPath: "/",
       hashFunction: "md5",
     },
+    node: {
+      __filename: true,
+      __dirname: true,
+    },
     devtool: isProductionMode ? "source-map" : "eval-source-map",
     module: {
       rules: [
         {
-          test: /\.(ts|js)x?$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-          },
+          oneOf: [
+            {
+              resourceQuery: /raw/,
+              type: "asset/source",
+            },
+            {
+              test: /\.(ts|js)x?$/,
+              exclude: /node_modules/,
+              use: [
+                {
+                  loader: "babel-loader",
+                },
+              ],
+            },
+          ],
         },
         {
           // Stylesheets that are imported directly by components
-          test: /(components|core|manager)\/.*\.(css|less)$/,
+          test: /(components|core|manager)\/.*\.css$/,
           exclude: /node_modules/,
           use: [
             MiniCssExtractPlugin.loader,
@@ -140,23 +150,6 @@ module.exports = (env, argv) => {
                 modules: true,
               },
             },
-            { loader: "less-loader" },
-          ],
-        },
-        {
-          // Global stylesheets
-          test: /branding\/.*\.less$/,
-          exclude: /node_modules/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            {
-              loader: "css-loader",
-              options: {
-                // NB! This is crucial, we don't consume Bootstrap etc as a module, but as a regular style
-                modules: false,
-              },
-            },
-            { loader: "less-loader" },
           ],
         },
         {

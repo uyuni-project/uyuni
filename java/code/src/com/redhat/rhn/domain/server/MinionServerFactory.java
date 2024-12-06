@@ -38,7 +38,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -54,7 +53,7 @@ import javax.persistence.criteria.Root;
  */
 public class MinionServerFactory extends HibernateFactory {
 
-    private static Logger log = LogManager.getLogger(MinionServerFactory.class);
+    private static final Logger LOG = LogManager.getLogger(MinionServerFactory.class);
 
     /**
      * Lookup all Servers that belong to an org
@@ -76,13 +75,13 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static Stream<MinionServer> lookupVisibleToUser(User user) {
         return user.getServers().stream().flatMap(
-                s -> s.asMinionServer().map(Stream::of).orElseGet(Stream::empty)
+                s -> s.asMinionServer().stream()
         );
     }
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     /**
@@ -154,7 +153,7 @@ public class MinionServerFactory extends HibernateFactory {
      */
     public static Stream<MinionServer> lookupByIds(List<Long> ids) {
         return ServerFactory.lookupByIds(ids).stream().flatMap(server ->
-           server.asMinionServer().map(Stream::of).orElseGet(Stream::empty)
+                server.asMinionServer().stream()
         );
     }
 
@@ -325,7 +324,7 @@ public class MinionServerFactory extends HibernateFactory {
         List<MinionSummary> allMinions = MinionServerFactory.findQueuedMinionSummaries(action.getId());
         return allMinions.stream().filter(
                 minionSummary -> MinionServerFactory.findByMinionId(minionSummary.getMinionId())
-                .map(server -> server.isDeniedOnPayg())
-                .orElse(false)).collect(Collectors.toList());
+                .map(Server::isDeniedOnPayg)
+                .orElse(false)).toList();
     }
 }

@@ -33,8 +33,12 @@ input[type="checkbox"] {
 }
 
 .checkbox {
-  margin-bottom: 10px;
   margin-top: 10px;
+  margin-bottom: 10px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   & + .checkbox {
     margin-top: -5px;
@@ -76,4 +80,11 @@ input[type="checkbox"] {
   .checkbox {
     min-height: 28px;
   }
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

@@ -53,7 +53,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -288,7 +287,7 @@ public class EditAction extends LookupDispatchAction {
          */
         List<String> bugIds = params.stream()
                 .filter(param -> param.startsWith("buglistId"))
-                .collect(Collectors.toList());
+                .toList();
 
         User user = new RequestContext(request).getCurrentUser();
         // Make sure advisoryName is unique

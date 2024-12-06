@@ -137,10 +137,9 @@ public class KickstartIpRange implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof KickstartIpRange)) {
+        if (!(other instanceof KickstartIpRange castOther)) {
             return false;
         }
-        KickstartIpRange castOther = (KickstartIpRange) other;
         return new EqualsBuilder().append(ksdata, castOther.ksdata)
                                   .append(org, castOther.org)
                                   .append(min, castOther.min)

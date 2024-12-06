@@ -1,0 +1,2 @@
+- Cleanup the setup script (bsc#1231255)
+- Remove now unneeded hostname calls (bsc#1231255)

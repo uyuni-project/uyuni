@@ -1,8 +1,6 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-success,
-.btn-warning,
 .btn-danger {
   color: inherit;
   font-weight: bold;
@@ -38,7 +36,7 @@
   }
 
   // Branding hover effect
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
     // background: #686565;
     border: 2px solid transparent;
     bottom: -2px;
@@ -85,7 +83,7 @@
       border-color: $eos-bc-pine-500;
       color: $eos-bc-pine-500;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
         background: $eos-bc-pine-500;
       }
     }
@@ -104,7 +102,7 @@
       border-color: $eos-bc-white;
       color: $eos-bc-white;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
         background: $eos-bc-white;
       }
     }
@@ -123,51 +121,14 @@
       border-color: $eos-bc-persimmon-500;
       color: $eos-bc-gray-1000;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
         background: $eos-bc-gray-900;
       }
     }
   }
 }
 
-.btn-success {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      background: transparent;
-      border-color: $eos-bc-persimmon-500;
-      color: $eos-bc-gray-1000;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
-        background: $eos-bc-persimmon-500;
-      }
-    }
-  }
-}
-
-.btn-info {
-  &,
-  &:active,
-  &:focus,
-  &:disabled,
-  &.disabled {
-    &,
-    &:hover {
-      border-color: $eos-bc-cerulean-500;
-
-      &:not(:disabled):not(.disabled):not(.text-muted):hover {
-        color: $white;
-      }
-    }
-  }
-}
-
 // Warning shouldn't currently be used anywhere, but cover it just in case
-.btn-warning,
 .btn-danger {
   &,
   &:active,
@@ -185,7 +146,7 @@
         border-color: $eos-bc-red-900;
       }
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
         background: $eos-bc-gray-900;
       }
     }
@@ -198,7 +159,7 @@
   height: $input-height;
   z-index: 100;
 
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
@@ -220,7 +181,7 @@ th {
   a {
     border: none;
     padding: 0;
-    font-weight: bold;
-    color: $eos-bc-gray-1000;
+    font-weight: bold !important;
+    color: $eos-bc-gray-1000 !important;
   }
 }

@@ -94,8 +94,7 @@ public class ImagePackageKey implements Serializable {
     @Override
     public boolean equals(Object other) {
 
-        if (other instanceof ImagePackageKey) {
-            ImagePackageKey otherPack = (ImagePackageKey) other;
+        if (other instanceof ImagePackageKey otherPack) {
             return new EqualsBuilder()
                     .append(this.getName(), otherPack.getName())
                     .append(this.getEvr(), otherPack.getEvr())

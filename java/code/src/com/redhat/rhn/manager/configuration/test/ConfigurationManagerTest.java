@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.configuration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -447,7 +448,7 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
 
         DataResult dr = cm.listGlobalChannels(user, pc);
         assertEquals(1, dr.getTotalSize());
-        assertTrue(dr.get(0) instanceof ConfigChannelDto);
+        assertInstanceOf(ConfigChannelDto.class, dr.get(0));
         assertEquals(1, ((ConfigChannelDto)dr.get(0)).getSystemCount().intValue());
     }
 

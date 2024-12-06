@@ -493,10 +493,9 @@ public class ImageInfo extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageInfo)) {
+        if (!(other instanceof ImageInfo castOther)) {
             return false;
         }
-        ImageInfo castOther = (ImageInfo) other;
         return new EqualsBuilder()
                 .append(id, castOther.id)
                 .isEquals();

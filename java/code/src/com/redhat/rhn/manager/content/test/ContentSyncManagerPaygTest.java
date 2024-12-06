@@ -229,9 +229,8 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
                 () -> assertContains(noAuthRepos, "oraclelinux9"),
                 () -> assertContains(noAuthRepos, "almalinux8"),
                 () -> assertContains(noAuthRepos, "almalinux9"),
-                // Ubuntu and Debian should be excluded until RMT supports them
-                () -> assertNotContains(noAuthRepos, "debian-11-pool"),
-                () -> assertNotContains(noAuthRepos, "ubuntu-2204-amd64-main")
+                () -> assertContains(noAuthRepos, "debian-11-pool"),
+                () -> assertContains(noAuthRepos, "ubuntu-2204-amd64-main")
             );
         }
         finally {

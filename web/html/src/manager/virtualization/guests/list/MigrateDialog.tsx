@@ -3,8 +3,8 @@ import * as React from "react";
 import _isNil from "lodash/isNil";
 
 import { DangerDialog } from "components/dialog/DangerDialog";
-import { Form } from "components/input/Form";
-import { Select } from "components/input/Select";
+import { Select } from "components/input";
+import { Form } from "components/input/form/Form";
 
 type Props = {
   /** The modal dialog id */
@@ -47,7 +47,7 @@ export function MigrateDialog(props: Props) {
           props.onClose();
         }
       }}
-      btnClass="btn-success"
+      btnClass="btn-primary"
       content={
         <Form
           model={model}

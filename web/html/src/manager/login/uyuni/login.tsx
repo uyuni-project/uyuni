@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
@@ -92,7 +92,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                   />
                   <SubmitButton
                     id="login-btn"
-                    className="btn-block btn-success"
+                    className="btn-block btn-primary"
                     text={t("Sign In")}
                     disabled={isLoading}
                   />

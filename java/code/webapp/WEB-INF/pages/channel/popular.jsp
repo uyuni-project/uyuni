@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <td>
-                <INPUT type="submit" class="btn btn-success form-input-inline"
+                <INPUT type="submit" class="btn btn-primary form-input-inline"
                        value="<bean:message key='channels.popular.jsp.button'/>">
             </td>
         </tr>

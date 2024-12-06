@@ -1,13 +1,15 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.4
+    project: openSUSE:Leap:15.6
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.4
+    repository: openSUSE_Leap_15.6
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.4
+    repository: openSUSE_Leap_15.6
+  Leap_sle:
+    url: https://download.opensuse.org/update/leap/15.6/sle
 artifacts:
   - artifact: simple-core
     # How comes that package is not noarch?
@@ -23,7 +25,7 @@ artifacts:
     repository: Uyuni_Other
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar

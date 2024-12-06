@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.errata.test;
 import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -69,6 +70,7 @@ import com.suse.utils.Opt;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -118,8 +120,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         List<Errata> addedList = ErrataFactory.addToChannel(errataList, channel, user, false);
         Errata added = addedList.get(0);
         assertTrue(channel.getPackages().contains(errataPack));
-        List<ErrataFile> errataFile =
-            ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
+
+        List<ErrataFile> errataFile = ErrataFactory.lookupErrataFilesByErrataAndFileType(added.getId(), "RPM");
+        // Sort the list to have the latest entry created at index 0
+        errataFile.sort(Comparator.comparing(ErrataFile::getId).reversed());
         assertTrue(errataFile.get(0).getPackages().contains(errataPack));
 
     }
@@ -127,15 +131,15 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateAndLookupVendorAndUserErrata() throws Exception {
         Errata userErrata = createTestErrata(user.getOrg().getId());
-        assertTrue(userErrata instanceof Errata);
+        assertInstanceOf(Errata.class, userErrata);
         assertNotNull(userErrata.getId());
         assertNotNull(userErrata.getAdvisory());
 
         //Lookup the user errata
         Errata errata = ErrataFactory.lookupById(userErrata.getId());
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(userErrata.getId(), errata.getId());
-        assertEquals(userErrata.getAdvisory(), userErrata.getAdvisory());
+        assertEquals(userErrata.getAdvisory(), errata.getAdvisory());
 
         List<Errata> erratas = ErrataFactory.lookupVendorAndUserErrataByAdvisoryAndOrg(
                 userErrata.getAdvisory(), user.getOrg());
@@ -143,17 +147,17 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertEquals(erratas.size(), 1);
         assertTrue(erratas.stream().allMatch(e -> e.getId().equals(userErrata.getId())));
         assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userErrata.getAdvisoryName())));
-        assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
+        assertTrue(erratas.stream().allMatch(e -> e != null));
 
         //create vendor errata with same name as user errata
         Errata vendorErrata = createTestErrata(null, Optional.of(userErrata.getAdvisory()));
-        assertTrue(vendorErrata instanceof Errata);
+        assertInstanceOf(Errata.class, vendorErrata);
         assertNotNull(vendorErrata.getId());
         assertNotNull(vendorErrata.getAdvisory());
 
         //Lookup the vendor errata
         errata = ErrataFactory.lookupById(vendorErrata.getId());
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(vendorErrata.getId(), errata.getId());
         assertEquals(vendorErrata.getAdvisory(), errata.getAdvisory());
         assertEquals(vendorErrata.getAdvisory(), userErrata.getAdvisory());
@@ -166,23 +170,23 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         assertTrue(erratas.stream().allMatch(e -> e.getId().equals(vendorErrata.getId()) ||
                 e.getId().equals(userErrata.getId())));
         assertTrue(erratas.stream().allMatch(e -> e.getAdvisoryName().equals(userErrata.getAdvisory())));
-        assertTrue(erratas.stream().allMatch(e -> e instanceof Errata));
+        assertTrue(erratas.stream().allMatch(e -> e != null));
     }
 
     @Test
     public void testCreateAndLookupErrata() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
-        assertTrue(testErrata instanceof Errata);
+        assertInstanceOf(Errata.class, testErrata);
         assertNotNull(testErrata.getId());
         Long pubid = testErrata.getId();
         String pubname = testErrata.getAdvisoryName();
 
         //Lookup the errata
         Errata errata = ErrataFactory.lookupById(pubid);
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(pubid, errata.getId());
         errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, user.getOrg());
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(pubname, errata.getAdvisoryName());
     }
 
@@ -190,17 +194,17 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAndLookupErrataNullOrg() throws Exception {
         //create an errata with null Org
         Errata testErrata = createTestErrata(null);
-        assertTrue(testErrata instanceof Errata);
+        assertInstanceOf(Errata.class, testErrata);
         assertNotNull(testErrata.getId());
         Long pubid = testErrata.getId();
         String pubname = testErrata.getAdvisoryName();
 
         //Lookup the errata by null Org
         Errata errata = ErrataFactory.lookupById(pubid);
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(pubid, errata.getId());
         errata = ErrataFactory.lookupByAdvisoryAndOrg(pubname, null);
-        assertTrue(errata instanceof Errata);
+        assertInstanceOf(Errata.class, errata);
         assertEquals(pubname, errata.getAdvisoryName());
 
         //Lookup the errata by user's Org
@@ -545,7 +549,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                         p.getPackageName().getName() + "-" +
                                 p.getPackageEvr().toUniversalEvrString() + "." +
                                 p.getPackageArch().getLabel()
-                ).collect(Collectors.toList()),
+                ).toList(),
                 List.of(testMinionServer.getId())
         );
 

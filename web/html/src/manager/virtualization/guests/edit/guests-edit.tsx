@@ -5,9 +5,9 @@ import * as React from "react";
 import _isEqual from "lodash/isEqual";
 
 import { ActionChain } from "components/action-schedule";
-import { getOrderedItemsFromModel } from "components/input/FormMultiInput";
+import { getOrderedItemsFromModel } from "components/input/form-multi-input/FormMultiInput";
 import { TopPanel } from "components/panels/TopPanel";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import { SimpleActionApi } from "../../SimpleActionApi";
 import { GuestProperties } from "../GuestProperties";

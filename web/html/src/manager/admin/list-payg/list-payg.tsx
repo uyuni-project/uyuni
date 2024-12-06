@@ -10,7 +10,7 @@ import PaygStatus from "manager/admin/payg-shared/common/payg-status";
 import { Button } from "components/buttons";
 import { FromNow } from "components/datetime/FromNow";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { ServerMessageType } from "components/messages";
+import { ServerMessageType } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -156,7 +156,7 @@ const ListPayg = (props: Props) => {
             <Button
               id="addPAYG"
               icon="fa-plus"
-              className={"btn-success"}
+              className={"btn-primary"}
               text={t("Add PAYG Connection")}
               handler={addPayg}
             />

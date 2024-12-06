@@ -1,0 +1,4 @@
+The HUB XMLRPC API port use to be blocked by our internal firewall.
+If you want to run these scripts from your local machine, use a SSH tunnel:
+
+ssh -L 2830:<server_fqdn>:2830 root@<server_fqdn>

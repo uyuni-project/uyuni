@@ -283,6 +283,7 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
       errors: [],
       warnings: [],
       previewed: deferred,
+      executing: jQuery.Deferred(),
       result: {
         minions: new Map(),
       },

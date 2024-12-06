@@ -84,9 +84,6 @@ fi
 info "Checking disk for content signature"
 check_content_signature $storage_disk
 
-info "Creating partition on disk $storage_disk"
-create_partition $storage_disk
-
 info "Creating $storage_fs filesystem"
 create_filesystem $storage_disk $storage_fs
 
@@ -96,9 +93,6 @@ mount_storage $storage_disk $storage_location_tmp
 if [ "$database_disk" != "$storage_disk" ]; then
     info "Checking data base disk for content signature"
     check_content_signature $database_disk
-
-    info "Creating partition on disk $database_disk"
-    create_partition $database_disk
 
     info "Creating $storage_fs filesystem"
     create_filesystem $database_disk $storage_fs

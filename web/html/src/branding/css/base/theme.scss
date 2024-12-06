@@ -699,13 +699,20 @@ h1 .fa-stack {
     @extend .pull-right;
     padding: 0.5em 1em;
     a {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    a:not(.btn) {
       border-right: 1px solid $gray-light;
       padding: 0 0.5em;
     }
     a:hover {
       text-decoration: none;
     }
-    a:last-child {
+    a:not(.btn):last-child {
       border-right: 0;
     }
   }
@@ -1057,6 +1064,9 @@ a time:hover {
   .action-button-wrapper {
     float: right;
     overflow: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     button,
     input,
@@ -1267,10 +1277,6 @@ select.small-select {
   }
 }
 
-.panel-body .min-height-panel {
-  min-height: 20px;
-}
-
 .text-truncate {
   text-overflow: ellipsis;
 }
@@ -1332,6 +1338,8 @@ tr.changed > td {
 
 .badge {
   font-size: 12px;
+  border-radius: 10px;
+  background: $badge-bg;
 }
 
 // We can reenable these after the theme migration is complete

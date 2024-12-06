@@ -3,10 +3,10 @@ import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 
 import { Button } from "components/buttons";
 import { Combobox } from "components/combobox";
-import { Check } from "components/input/Check";
-import { Form } from "components/input/Form";
-import { Radio } from "components/input/Radio";
-import { Text } from "components/input/Text";
+import { Check } from "components/input/check/Check";
+import { Form } from "components/input/form/Form";
+import { Radio } from "components/input/radio/Radio";
+import { Text } from "components/input/text/Text";
 
 type ScheduleEditProps = {
   isEdit: boolean;

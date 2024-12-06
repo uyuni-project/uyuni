@@ -56,11 +56,6 @@ push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
 Spacewalk::Setup::load_answer_file(\%opts, \%answers, \@skip);
 my $product_name = $answers{'product_name'} || 'Spacewalk';
 
-my $hn = `/bin/hostname -f`;
-chomp($hn);
-$hn = Sys::Hostname::hostname if(!defined $hn || $hn eq "");
-$answers{hostname} ||= "$hn";
-
 if (not $opts{"skip-fqdn-test"} and
     not (lc($answers{hostname}) eq $answers{hostname})) {
     print Spacewalk::Setup::loc(
@@ -241,7 +236,9 @@ sub setup_cobbler {
 
   my %options = ();
   Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
-  system(COBBLER_COMMAND . " --apache2-config-directory " . $options{'httpd_config_dir'} . " -f " . $answers->{'hostname'});
+
+  Spacewalk::Setup::system_or_exit([COBBLER_COMMAND, '--apache2-config-directory', $options{'httpd_config_dir'}, '-f', $answers->{'hostname'}], 1,
+               'Could not setup cobbler');
 
   my $skip_rhnconf = 0;
   open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);

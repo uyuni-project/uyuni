@@ -60,9 +60,12 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -292,6 +295,26 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testSetDetailsDates() throws Exception {
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+
+        Map<String, Object> details = new HashMap<>();
+        Date expectedDate = Date.from(LocalDate.of(1989, 4, 1).atStartOfDay().toInstant(ZoneOffset.UTC));
+        // Set using Date instance (XMLRPC)
+        details.put("issue_date", expectedDate);
+        // Set using ISO-8601 String (JSON over HTTP)
+        details.put("update_date", "1989-04-01T00:00:00Z");
+
+        int result = handler.setDetails(user, errata.getAdvisoryName(), details);
+
+        assertEquals(1, result);
+
+        Errata updatedErrata = ErrataManager.lookupErrata(errata.getId(), user);
+        assertEquals(expectedDate, updatedErrata.getIssueDate());
+        assertEquals(expectedDate, updatedErrata.getUpdateDate());
+    }
+
+    @Test
     public void testListAffectedSystems() throws Exception {
         //no affected systems
         Errata userErrata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -305,7 +328,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package unpatched1 = createTestPackage(user, channel1, "noarch");
         createLaterTestPackage(user, userErrata, channel1, unpatched1);
 
-        Server server1 = createTestServer(user, Stream.of(channel1).collect(Collectors.toList()));
+        Server server1 = createTestServer(user, Stream.of(channel1).toList());
         createTestInstalledPackage(unpatched1, server1);
 
         UpdateErrataCacheCommand uECC = new UpdateErrataCacheCommand();
@@ -328,7 +351,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package unpatchedPkg2 = createTestPackage(admin, channel2, "noarch");
         createLaterTestPackage(admin, vendorErrata, channel2, unpatchedPkg2);
 
-        Server server2 = createTestServer(admin, Stream.of(channel2).collect(Collectors.toList()));
+        Server server2 = createTestServer(admin, Stream.of(channel2).toList());
         createTestInstalledPackage(unpatchedPkg2, server2);
 
         uECC.updateErrataCacheForServer(server2.getId(), false);

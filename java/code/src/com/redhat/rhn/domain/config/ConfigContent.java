@@ -185,10 +185,9 @@ public class ConfigContent extends BaseDomainHelper {
    */
    @Override
    public boolean equals(Object object) {
-       if (object == null || !(object instanceof ConfigContent)) {
+       if (!(object instanceof ConfigContent that)) {
            return false;
        }
-       ConfigContent that = (ConfigContent) object;
        return new EqualsBuilder()
            .append(this.getChecksum(), that.getChecksum())
            .append(this.isBinary(), that.isBinary())

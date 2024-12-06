@@ -1,25 +1,25 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.5
+    project: openSUSE:Leap:15.6
     repository: standard
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.5
+    repository: openSUSE_Leap_15.6
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.5
+    repository: openSUSE_Leap_15.6
   Leap_sle:
-    url: https://download.opensuse.org/update/leap/15.5/sle
+    url: https://download.opensuse.org/update/leap/15.6/sle
 artifacts:
   - artifact: asm
     package: objectweb-asm
     jar: asm-all
-    repository: Uyuni_Other
+    repository: Leap_sle
   - artifact: antlr
     package: antlr-java
     repository: Leap
   - artifact: bcel
-    repository: Leap
+    repository: Leap_sle
   - artifact: byte-buddy
     package: byte-buddy
     repository: Leap_sle
@@ -47,7 +47,7 @@ artifacts:
     repository: Leap
   - artifact: commons-codec
     package: apache-commons-codec
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-collections
     package: apache-commons-collections
     repository: Leap
@@ -56,23 +56,23 @@ artifacts:
     repository: Leap
   - artifact: commons-discovery
     package: jakarta-commons-discovery
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-el
     package: apache-commons-el
     repository: Leap
   - artifact: commons-fileupload
     package: apache-commons-fileupload
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-io
     package: apache-commons-io
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-jexl
     package: apache-commons-jexl
     jar: commons-jexl\.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap
+    repository: Leap_sle
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
@@ -82,13 +82,11 @@ artifacts:
     repository: Leap
   - artifact: commons-compress
     package: apache-commons-compress
-    repository: Leap_sle
-  - artifact: concurrent
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: concurrentlinkedhashmap-lru
     repository: Uyuni_Other
   - artifact: dom4j
-    repository: Leap
+    repository: Leap_sle
   - artifact: ehcache-core
     package: ehcache
     repository: Uyuni_Other
@@ -125,14 +123,14 @@ artifacts:
     repository: Leap
   - artifact: httpclient
     package: httpcomponents-client
-    repository: Leap
+    repository: Leap_sle
   - artifact: httpcore
     package: httpcomponents-core
     jar: httpcore.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: httpcore-nio
     package: httpcomponents-core
-    repository: Leap
+    repository: Leap_sle
   - artifact: jade4j
     repository: Uyuni_Other
   - artifact: jakarta-persistence-api
@@ -145,7 +143,7 @@ artifacts:
     package: java-saml
     repository: Uyuni_Other
   - artifact: javassist
-    repository: Leap_sle
+    repository: Leap
   - artifact: jboss-logging
     repository: Leap
   - artifact: jctools-core
@@ -160,17 +158,17 @@ artifacts:
   - artifact: log4j-core
     jar: log4j-core.jar
     package: log4j
-    repository: Leap_sle
+    repository: Leap
   - artifact: log4j-api
     jar: log4j-api.jar
     package: log4j
-    repository: Leap_sle
+    repository: Leap
   - artifact: log4j-slf4j-impl
     jar: log4j-slf4j-impl.jar
     package: log4j-slf4j
-    repository: Leap_sle
+    repository: Leap
   - artifact: jsch
-    repository: Leap_sle
+    repository: Leap
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Leap
@@ -260,7 +258,7 @@ artifacts:
     jar: api
     repository: Leap
   - artifact: snakeyaml
-    repository: Leap
+    repository: Leap_sle
   - artifact: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
@@ -272,8 +270,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: stax2-api
     package: woodstox
-    repository: Uyuni_Other
-  - artifact: stringtree-json
     repository: Uyuni_Other
   - artifact: struts
     repository: Uyuni_Other
@@ -291,10 +287,10 @@ artifacts:
     repository: Uyuni_Other
   - artifact: xalan-j2
     jar: xalan-j2.jar
-    repository: Leap
+    repository: Leap_sle
   - artifact: xalan-j2-serializer
     package: xalan-j2
-    repository: Leap
+    repository: Leap_sle
   - artifact: xerces-j2
     repository: Leap
   - artifact: xmlsec
@@ -305,22 +301,22 @@ artifacts:
   - artifact: jasper
     package: tomcat-lib
     jar: jasper\.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: jasper-el
     package: tomcat-lib
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-el-3.0-api
     package: tomcat-el-3_0-api
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-jsp-2.3-api
     package: tomcat-jsp-2_3-api
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-juli
     package: tomcat-lib
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-servlet-4.0-api
     package: tomcat-servlet-4_0-api
-    repository: Leap_sle
+    repository: Leap
 
   - artifact: hamcrest-core
     repository: Leap
@@ -348,6 +344,6 @@ artifacts:
   - artifact: glassfish-activation
     repository: Uyuni_Other
   - artifact: istack-commons-runtime
-    repository: Leap_sle
+    repository: Leap
   - artifact: stax-ex
     repository: Uyuni_Other

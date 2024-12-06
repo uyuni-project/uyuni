@@ -205,7 +205,7 @@ public class ServerGroupFactory extends HibernateFactory {
                     .map(Server::asMinionServer)
                     .flatMap(Opt::stream)
                     .map(MinionServer::getMinionId)
-                    .collect(Collectors.toList());
+                    .toList();
             SINGLETON.removeObject(group);
             saltApi.refreshPillar(new MinionList(minions));
         }

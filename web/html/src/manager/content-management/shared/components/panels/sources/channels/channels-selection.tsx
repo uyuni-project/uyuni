@@ -8,8 +8,8 @@ import { ProjectSoftwareSourceType } from "manager/content-management/shared/typ
 
 import { BaseChannelType, ChannelTreeType, ChildChannelType, isBaseChannel } from "core/channels/type/channels.type";
 
-import { Select } from "components/input/Select";
-import { Loading } from "components/utils/Loading";
+import { Select } from "components/input";
+import { Loading } from "components/utils/loading/Loading";
 import { VirtualList } from "components/virtual-list";
 
 import BaseChannel from "./base-channel";
@@ -17,7 +17,7 @@ import { useChannelsWithMandatoryApi, useLoadSelectOptions } from "./channels-ap
 import ChannelsFilters from "./channels-filters";
 import { getInitialFiltersState } from "./channels-filters-state";
 import ChannelProcessor from "./channels-processor";
-import styles from "./channels-selection.module.css";
+import styles from "./channels-selection.module.scss";
 
 type PropsType = {
   isSourcesApiLoading: boolean;
@@ -192,46 +192,48 @@ const ChannelsSelection = (props: PropsType) => {
       {rows && (
         <div className="row" style={{ display: "flex" }}>
           <div className="col-lg-3 control-label">
-            <label className="row" style={{ marginBottom: "30px" }}>
+            <label className={`row ${styles.gapped_label}`}>
               {`${t("Child Channels")} (${selectedChannelIds.size})`}
             </label>
-            <div className="row panel panel-default panel-body text-left">
-              <div style={{ position: "relative" }}>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Search a channel"
-                  value={search}
-                  onChange={(event) => {
-                    const newSearch = event.target.value;
-                    setSearch(newSearch);
-                    onSearch(newSearch);
+            <div className="row panel panel-default text-left">
+              <div className="panel-body ">
+                <div style={{ position: "relative" }}>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search a channel"
+                    value={search}
+                    onChange={(event) => {
+                      const newSearch = event.target.value;
+                      setSearch(newSearch);
+                      onSearch(newSearch);
+                    }}
+                  />
+                  <span className={`${styles.search_icon_container} clear`}>
+                    <i
+                      onClick={() => {
+                        setSearch("");
+                        onSearch("");
+                      }}
+                      className="fa fa-times-circle-o no-margin"
+                      title={t("Clear Search")}
+                    />
+                  </span>
+                </div>
+                <hr />
+                <ChannelsFilters
+                  activeFilters={activeFilters}
+                  onChange={(value) => {
+                    const newActiveFilters = xor(activeFilters, [value]);
+                    setActiveFilters(newActiveFilters);
+                    channelProcessor.setActiveFilters(newActiveFilters).then((newRows) => {
+                      if (newRows) {
+                        setRows(newRows);
+                      }
+                    });
                   }}
                 />
-                <span className={`${styles.search_icon_container} clear`}>
-                  <i
-                    onClick={() => {
-                      setSearch("");
-                      onSearch("");
-                    }}
-                    className="fa fa-times-circle-o no-margin"
-                    title={t("Clear Search")}
-                  />
-                </span>
               </div>
-              <hr />
-              <ChannelsFilters
-                activeFilters={activeFilters}
-                onChange={(value) => {
-                  const newActiveFilters = xor(activeFilters, [value]);
-                  setActiveFilters(newActiveFilters);
-                  channelProcessor.setActiveFilters(newActiveFilters).then((newRows) => {
-                    if (newRows) {
-                      setRows(newRows);
-                    }
-                  });
-                }}
-              />
             </div>
           </div>
           <VirtualList items={rows} renderItem={Row} defaultItemHeight={29} itemKey={(row) => row.base.id} />

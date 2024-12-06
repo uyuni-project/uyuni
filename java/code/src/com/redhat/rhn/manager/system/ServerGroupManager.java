@@ -357,7 +357,7 @@ public class ServerGroupManager {
         // Trigger pillar refresh
         List<String> minionIds = servers.stream()
                 .flatMap(s -> Opt.stream(s.asMinionServer()))
-                .map(MinionServer::getMinionId).collect(Collectors.toList());
+                .map(MinionServer::getMinionId).toList();
         saltApi.refreshPillar(new MinionList(minionIds));
     }
 

@@ -7,10 +7,10 @@ import { AsyncButton, Button } from "components/buttons";
 import { Combobox, ComboboxItem } from "components/combobox";
 import { Check, Form } from "components/input";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages, MessageType, Utils as MsgUtils } from "components/messages";
+import { Messages, MessageType, Utils as MsgUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Toggler } from "components/toggler";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import { localizedMoment } from "utils";
 import Network, { JsonResult } from "utils/network";
@@ -93,7 +93,7 @@ export default function SchedulePlaybook({ playbook, onBack }: SchedulePlaybookP
         handler={onBack}
       />
       <AsyncButton
-        defaultType="btn-success"
+        defaultType="btn-primary"
         action={schedule}
         title={t("Schedule playbook execution")}
         text={t("Schedule")}

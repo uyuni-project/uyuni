@@ -2,8 +2,8 @@ import * as React from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionLink } from "components/links";
-import { Messages, MessageType } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 import Network from "utils/network";
@@ -96,7 +96,7 @@ class Proxy extends React.Component<Props, State> {
     const buttons = [
       <AsyncButton
         id="bootstrap-btn"
-        defaultType="btn-success"
+        defaultType="btn-primary"
         icon="fa-plus"
         text={t("Change Proxy")}
         action={this.onSet}

@@ -156,7 +156,7 @@ public class SsmManager {
         List<Long> serverIds = ServerFactory.findServersInSetByChannel(user, baseChannelId);
         return serverIds.stream()
                 .map(ServerFactory::lookupById)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -181,7 +181,7 @@ public class SsmManager {
                 Stream.empty();
 
         List<ChannelSelectionResult> allResults = Stream.concat(withBaseChannelResults, noBaseChannelResults)
-                                                        .collect(Collectors.toList());
+                                                        .toList();
 
         //success channel selections
         Stream<ChannelSelectionResult> succeededResults = allResults.stream().filter(e -> !e.isError());
@@ -215,7 +215,7 @@ public class SsmManager {
                 )
         ).flatMap(Function.identity());
 
-        return Stream.concat(succededResults, erroredResults).collect(Collectors.toList());
+        return Stream.concat(succededResults, erroredResults).toList();
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithNoBaseChannel(
@@ -295,7 +295,7 @@ public class SsmManager {
         boolean newBaseIsCompatible = true;
         if (baseChange) {
             if (currentBase.isPresent()) {
-                List<EssentialChannelDto> compatibleBaseChannels = ChannelManager
+                Set<EssentialChannelDto> compatibleBaseChannels = ChannelManager
                         .listCompatibleBaseChannelsForChannel(user, currentBase.get());
                 newBaseIsCompatible =
                         // new base is in the compatible channels list
@@ -305,7 +305,7 @@ public class SsmManager {
             }
             else {
                 // system doesn't have a base
-                List<EssentialChannelDto> availableBaseChannels = ChannelManager.listBaseChannelsForSystem(user, srv);
+                Set<EssentialChannelDto> availableBaseChannels = ChannelManager.listBaseChannelsForSystem(user, srv);
                 newBaseIsCompatible = availableBaseChannels.stream()
                         .anyMatch(abc -> abc.getId().equals(srvChange.getNewBaseId().orElse(null)));
             }
@@ -496,7 +496,7 @@ public class SsmManager {
                 }
                 else if (change.getNewBaseId() > 0) {
                     // explicit base channel change
-                    List<EssentialChannelDto> compatibleBases = ChannelManager
+                    Set<EssentialChannelDto> compatibleBases = ChannelManager
                             .listCompatibleBaseChannelsForChannel(user, currentBase);
                     Channel newBase = compatibleBases.stream()
                             .filter(cb -> cb.getId() == change.getNewBaseId())
@@ -512,7 +512,7 @@ public class SsmManager {
                     ac.getServers()
                             .addAll(oldBaseServers.stream()
                                     .map(SsmServerDto::from)
-                                    .collect(Collectors.toList()));
+                                    .toList());
 
                     fillChildChannels(user, ac, newBase.getId());
                     result.add(ac);
@@ -527,7 +527,7 @@ public class SsmManager {
                     ac.getServers()
                             .addAll(oldBaseServers.stream()
                                     .map(SsmServerDto::from)
-                                    .collect(Collectors.toList()));
+                                    .toList());
 
                     fillChildChannels(user, ac, change.getOldBaseId());
                     result.add(ac);

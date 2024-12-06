@@ -20,7 +20,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
@@ -34,13 +34,10 @@ import java.util.Map;
  *
  *
  */
-public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
+public class ChannelRepodataDriver extends AbstractQueueDriver<Map<String, Object>> {
 
     private Logger logger = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void initialize() {
         WriteMode resetChannelRepodata = ModeFactory.getWriteMode(TaskConstants.MODE_NAME,
@@ -61,19 +58,8 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
         }
     }
 
-    /**
-     * @return Returns boolean canContinue
-     */
     @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * @return Returns candidates
-     */
-    @Override
-    public List<Map<String, Object>> getCandidates() {
+    protected List<Map<String, Object>> getCandidates() {
         SelectMode select = ModeFactory.getMode(TaskConstants.MODE_NAME,
                 TaskConstants.TASK_QUERY_REPOMD_DRIVER_QUERY);
 
@@ -85,45 +71,23 @@ public class ChannelRepodataDriver implements QueueDriver<Map<String, Object>> {
         return Collections.emptyList();
     }
 
-    /**
-     * @return Returns Logger
-     */
     @Override
     public Logger getLogger() {
         return logger;
     }
-
-    /**
-     * {@inheritDoc}
-     */
 
     @Override
     public void setLogger(Logger loggerIn) {
         logger = loggerIn;
     }
 
-    /**
-     * @return Returns max workers
-     */
     @Override
     public int getMaxWorkers() {
         return ConfigDefaults.get().getTaskoChannelRepodataWorkers();
     }
 
-    /**
-     * @param workItem work item
-     * @return Returns channel repodata worker object
-     */
     @Override
-    public QueueWorker makeWorker(Map<String, Object> workItem) {
+    protected QueueWorker makeWorker(Map<String, Object> workItem) {
         return new ChannelRepodataWorker(workItem, getLogger());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isBlockingTaskQueue() {
-        return false;
     }
 }

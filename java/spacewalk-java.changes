@@ -1,4 +1,51 @@
 -------------------------------------------------------------------
+Mon Nov 18 18:32:19 CET 2024 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Limit frontend-log message size (bsc#1231900)
+
+-------------------------------------------------------------------
+Mon Oct 14 15:47:47 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Enable the synchronization of OVAL data
+  * Enable the configuration of OVAL data sources
+  * Add support for OVAL based CVE auditing to SLE & Leap Micro
+  * Fixed stretched button issue in Audit Search and Subscription Matching
+    pages
+  * Fix date input in 'errata.setDetails' endpoint in the HTTP API
+  * Fix layout mismatch in patches management
+  * Fix column alignment on repository and system pages
+  * Integrate UI debugging stories
+  * Require correct scap packages for Ubuntu and Debian (bsc#1227746)
+  * Add detection of Ubuntu 24.04
+  * Remove session timeout from webapp, in order to use the persisting
+    one in /etc/tomcat/web.xml
+  * Allow changing base channel to SUSE Liberty Linux LTSS when the
+    system is on SUSE Liberty Linux (bsc#1228326)
+  * Implement product migration from RHEL and Clones to SUSE Liberty
+    Linux
+  * Remove system also from Proxy SSH known_hosts (bsc#1228345)
+  * Remove restrictions for Debian repositories in public cloud
+  * Fix NullPointerException when generating subscription matcher
+    input (bsc#1228638)
+  * Open bootstrap script directory URL in a new page (bsc#1225603)
+  * Delay package list refresh when Salt was updated (bsc#1217978)
+  * Add SLE-Micro 5 to the list of systems which support monitoring
+    (bsc#1227334)
+  * Add all SLE-Micro systems to the list of systems which get PTF
+    repositories
+  * Use custom select instead of errata view for better performance
+    (bsc#1225619)
+  * Fix the date format output when using the HTTP API to use ISO8601
+    format (bsc#1227543)
+  * Bump version to 5.1.0
+  * Change localhost PAYG header to match SUSE Manager product
+  * ErrataManager.truncateErrata now tries to clean orphan erratas
+    at the end (erratas with no channel)
+  * Improve score comparison in system search to fix ISE (bsc#1228412)
+
+-------------------------------------------------------------------
 Wed Jul 31 17:12:14 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.12-0

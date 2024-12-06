@@ -85,14 +85,14 @@ public class Scrubber {
             return null;
         }
 
-        if (value instanceof String) {
-            return scrubString((String) value);
+        if (value instanceof String str) {
+            return scrubString(str);
         }
-        else if (value instanceof Map) {
-            return scrubMap((Map) value);
+        else if (value instanceof Map map) {
+            return scrubMap(map);
         }
-        else if (value instanceof List) {
-            return scrubList((List) value);
+        else if (value instanceof List lst) {
+            return scrubList(lst);
         }
         else if (value.getClass().isArray()) {
             return scrubArray((Object[]) value);

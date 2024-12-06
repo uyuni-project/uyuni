@@ -16,22 +16,22 @@
                         <div class="panel-body">
                             <form class="form-horizontal" role="form">
                                 <div class="form-group">
-                                    <label for="http-proxy-input-hostname" class="col-xs-4 control-label">HTTP Proxy Hostname:</label>
-                                    <div class="col-xs-8">
+                                    <label for="http-proxy-input-hostname" class="col-4 control-label">HTTP Proxy Hostname:</label>
+                                    <div class="col-8">
                                         <p class="form-control-static http-proxy-hostname"></p>
                                       <input type="text" class="form-control http-proxy-hostname" id="http-proxy-input-hostname" placeholder="Hostname:Port">
                                     </div>
                                   </div>
                                   <div class="form-group">
-                                    <label for="http-proxy-input-username" class="col-xs-4 control-label">HTTP Proxy Username:</label>
-                                    <div class="col-xs-8">
+                                    <label for="http-proxy-input-username" class="col-4 control-label">HTTP Proxy Username:</label>
+                                    <div class="col-8">
                                         <p class="form-control-static http-proxy-username"></p>
                                       <input type="text" class="form-control http-proxy-username" id="http-proxy-input-username" value="" placeholder="Username">
                                     </div>
                                   </div>
                                   <div class="form-group">
-                                    <label for="http-proxy-input-password" class="col-xs-4 control-label">HTTP Proxy Password:</label>
-                                    <div class="col-xs-8">
+                                    <label for="http-proxy-input-password" class="col-4 control-label">HTTP Proxy Password:</label>
+                                    <div class="col-8">
                                         <p class="form-control-static http-proxy-password"></p>
                                       <input type="password" autocomplete="new-password" class="form-control http-proxy-password" id="http-proxy-input-password" value="" placeholder="Password">
                                     </div>
@@ -40,7 +40,7 @@
                         </div>
                         <div class="panel-footer">
                             <div class="text-right">
-                                <button id="http-proxy-save" class="btn btn-success">Save and Verify</button>
+                                <button id="http-proxy-save" class="btn btn-primary">Save and Verify</button>
                             </div>
                             <div class="text-left">
                                 <a id="http-proxy-verify" href="#"><i class="fa fa-check-square text-success"></i></a>

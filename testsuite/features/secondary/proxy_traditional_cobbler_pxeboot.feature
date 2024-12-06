@@ -15,14 +15,14 @@ Feature: PXE boot a terminal with Cobbler and traditional proxy
   As the system administrator
   I want to PXE boot one host with Cobbler
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "proxy"
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
   Scenario: Configure PXE part of DHCP on the proxy
+    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I click on "Expand All Sections"
@@ -35,7 +35,7 @@ Feature: PXE boot a terminal with Cobbler and traditional proxy
   Scenario: Apply the highstate after the formula setup
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   # We currently test Cobbler with SLES 15 SP4, even on Uyuni
   Scenario: Install the TFTP boot package on the server for Cobbler tests
@@ -125,7 +125,7 @@ Feature: PXE boot a terminal with Cobbler and traditional proxy
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Download the profile from the UI
     When I follow the left menu "Systems > Autoinstallation > Profiles"
