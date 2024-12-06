@@ -28562,7 +28562,7 @@ canal  {0}. Les systèmes abonnés vont perdre leur accès aux paquetages spéci
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
+        <source>Monitor this Host</source>
       <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">

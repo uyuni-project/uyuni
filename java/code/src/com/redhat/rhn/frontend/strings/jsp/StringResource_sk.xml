@@ -4049,7 +4049,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
-        <target/>
+        <target state="translated">Balíky opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4058,7 +4058,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.removepackages" xml:space="preserve">
         <source>Remove Packages</source>
-        <target/>
+        <target state="translated">Odstrániť balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4067,7 +4067,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.list.instructions" xml:space="preserve">
         <source>The following packages are associated with this patch. To remove packages from this patch, select them, and click 'Remove Packages' below. To add packages to this patch, click 'add' above.</source>
-        <target/>
+        <target state="translated">Nasledujúce balíky sú spojené s touto opravou. Ak chcete odstrániť balíky z tejto opravy, vyberte ich a kliknite nižšie na 'Odstrániť balíky'. Ak chcete pridať balíky do tejto opravy, kliknite vyššie na 'pridať'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/ListPackages.do
@@ -4076,7 +4076,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.toolbar" xml:space="preserve">
         <source>Publish Patch: </source>
-        <target/>
+        <target state="translated">Publikovať opravu: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4085,7 +4085,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.instructions" xml:space="preserve">
         <source>Please confirm that you wish to publish this patch. Publishing this patch will make it available to all of the Channels selected below.</source>
-        <target/>
+        <target state="translated">Potvrďte, že si želáte publikovať túto opravu. Publikovaním tejto opravy ju sprístupníte všetkým kanálom vybraným nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4094,7 +4094,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.channelname" xml:space="preserve">
         <source>Channel Name</source>
-        <target/>
+        <target state="translated">Názov kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4103,7 +4103,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.relevantpackages" xml:space="preserve">
         <source>Relevant Packages</source>
-        <target/>
+        <target state="translated">Príslušné balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4112,7 +4112,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.publisherrata" xml:space="preserve">
         <source>Publish Patches</source>
-        <target/>
+        <target state="translated">Publikovať opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4121,7 +4121,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.nochannels" xml:space="preserve">
         <source>There are no channels available.</source>
-        <target/>
+        <target state="translated">Nie sú dostupné žiadne kanály.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4130,7 +4130,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.publish.nochannelsselected" xml:space="preserve">
         <source>At least one channel must be selected.</source>
-        <target/>
+        <target state="translated">Musí byť vybraný aspoň jeden kanál.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/SelectChannels.do
@@ -4139,7 +4139,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.senderratanotification" xml:space="preserve">
         <source>Send Patch Notification</source>
-        <target/>
+        <target state="translated">Poslať oznámenie o oprave</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4148,7 +4148,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.instructions" xml:space="preserve">
         <source>You can send email to the administrators of systems to which this patch applies.</source>
-        <target/>
+        <target state="translated">Administrátorom systémov, na ktoré sa táto oprava aplikuje, môžete poslať e-mail.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4157,7 +4157,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.notify.success" xml:space="preserve">
         <source>A patch mail update has been scheduled for &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizácia e-mailu o oprave bola naplánovaná na &lt;a href="/rhn/errata/manage/Edit.do?eid={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/Notify.do
@@ -4166,7 +4166,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.erratapackages" xml:space="preserve">
         <source>Patches Packages</source>
-        <target/>
+        <target state="translated">Balíky opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/Packages.do
@@ -4175,7 +4175,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.addpackages" xml:space="preserve">
         <source>Add Packages</source>
-        <target/>
+        <target state="translated">Pridať balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4184,7 +4184,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.instructions" xml:space="preserve">
         <source>This is the list of available packages. To add packages to this patch, select them and click 'Add Packages'.&lt;br/&gt;The drop-down list below allows you to restrict the set of available packages by channel.</source>
-        <target/>
+        <target state="translated">Toto je zoznam dostupných balíkov. Ak chcete pridať balíky do tejto opravy, vyberte ich a kliknite na tlačidlo 'Pridať balíky'.&lt;br/&gt;Nižšie uvedený rozbaľovací zoznam umožňuje obmedziť sadu dostupných balíkov podľa kanála.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4193,7 +4193,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewlabel" xml:space="preserve">
         <source>View: </source>
-        <target/>
+        <target state="translated">Zobrazenie: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4202,7 +4202,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.viewsubmit" xml:space="preserve">
         <source>View</source>
-        <target/>
+        <target state="translated">Zobraziť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4211,7 +4211,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.package" xml:space="preserve">
         <source>Package</source>
-        <target/>
+        <target state="translated">Balík</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4220,7 +4220,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.addpackages" xml:space="preserve">
         <source>Add Packages</source>
-        <target/>
+        <target state="translated">Pridať balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4229,7 +4229,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4238,7 +4238,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.nopackages" xml:space="preserve">
         <source>No Packages.</source>
-        <target/>
+        <target state="translated">Žiadne balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/PackagesAdd.do
@@ -4247,7 +4247,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; balíky pridané do opravy &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4256,7 +4256,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; balík pridaný do opravy &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/AddPackagesConfirm.do
@@ -4265,7 +4265,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; balíky odstránené z opravy &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4274,7 +4274,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; balík odstránený z opravy &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
@@ -4283,91 +4283,91 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary" xml:space="preserve">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
-        <target/>
+        <target state="translated">Nasledujúce opravy sa použijú aspoň na jeden systém, ku ktorému máte administrátorský prístup.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.all.jsp.summary" xml:space="preserve">
         <source>The following patch list represents all patches accessible by your organization.</source>
-        <target/>
+        <target state="translated">Nasledujúci zoznam opráv predstavuje všetky opravy, ktoré sú prístupné vašej organizácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summary" xml:space="preserve">
         <source>Below is a list of systems affected by this patch.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémov ovplyvnených touto opravou.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.summarywithacl" xml:space="preserve">
         <source>You can select one or more systems and apply this patch to them.  Only systems with Management system type can be selected.</source>
-        <target/>
+        <target state="translated">Môžete vybrať jeden alebo viac systémov a použiť na ne túto opravu.  Vybrať možno len systémy s typom systému Management.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.header" xml:space="preserve">
         <source>Affected Systems</source>
-        <target/>
+        <target state="translated">Ovplyvnené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.apply" xml:space="preserve">
         <source>Apply Patches</source>
-        <target/>
+        <target state="translated">Aplikovať opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.status" xml:space="preserve">
         <source>Status</source>
-        <target/>
+        <target state="translated">Stav</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.entitle" xml:space="preserve">
         <source>System Types</source>
-        <target/>
+        <target state="translated">Typy systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.none" xml:space="preserve">
         <source>N/A</source>
-        <target/>
+        <target state="translated">N/A</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.jsp.pending" xml:space="preserve">
         <source>Pending</source>
-        <target/>
+        <target state="translated">Čakajúce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="affectedsystems.applynone" xml:space="preserve">
         <source>No Systems Selected.</source>
-        <target/>
+        <target state="translated">Žiadne systémy neboli vybrané.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/SystemsAffected</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.header" xml:space="preserve">
         <source>Confirm Patch Update:</source>
-        <target/>
+        <target state="translated">Potvrdenie aktualizácie opravy:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="confirm.jsp.summary" xml:space="preserve">
         <source>The following systems will have &lt;strong&gt;{0}&lt;/strong&gt; applied to them:</source>
-        <target/>
+        <target state="translated">Na nasledujúce systémy sa použije &lt;strong&gt;{0}&lt;/strong&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
           <context context-type="paramnotes">The following systems will have RHSA-2004:577 applied to them:</context>
@@ -4375,77 +4375,77 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="confirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/ErrataConfirm</context>
         </context-group>
       </trans-unit>
       <trans-unit id="multiorg.jsp.email" xml:space="preserve">
         <source>Email</source>
-        <target/>
+        <target state="translated">E-mail</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.allusers.summary" xml:space="preserve">
         <source>The following is a list of all users on this @@PRODUCT_NAME@@ (across organizations). Note that you will only have access to modify the details of users that are members of this organization you are currently logged into ({0}), and only if you have organization administrator privileges for this organization.</source>
-        <target/>
+        <target state="translated">Nasleduje zoznam všetkých používateľov tohto @@PRODUCT_NAME@@ (naprieč organizáciami). Treba poznamenať, že prístup k úprave údajov používateľov, ktorí sú členmi tejto organizácie, do ktorej ste práve prihlásení ({0}), budete mať len vtedy, ak máte pre túto organizáciu administrátorské práva organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.allusers.title" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">Používatelia naprieč @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.allusers.title1" xml:space="preserve">
         <source>Users Across @@PRODUCT_NAME@@ - External Authentication</source>
-        <target/>
+        <target state="translated">Používatelia naprieč @@PRODUCT_NAME@@ - Externé overenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.config.title" xml:space="preserve">
         <source>System Group Configuration</source>
-        <target/>
+        <target state="translated">Konfigurácia systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.sg.title" xml:space="preserve">
         <source>System Group Configuration - External Authentication</source>
-        <target/>
+        <target state="translated">Konfigurácia systémových skupín - Externé overenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/ExtAuthSgMapping.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgdetails.jsp.header" xml:space="preserve">
         <source>Organization Details</source>
-        <target/>
+        <target state="translated">Podrobnosti o organizácii</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
-        <target/>
+        <target state="translated">Konfigurácia @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="satconfig.jsp.description" xml:space="preserve">
         <source>As @@PRODUCT_NAME@@ Admin you can configure, whether Organization Administrators may configure Organization Configuration. Organizaton Configuration settings may have huge impact on the @@PRODUCT_NAME@@ performance.</source>
-        <target/>
+        <target state="translated">Ako administrátor @@PRODUCT_NAME@@ môžete konfigurovať, či správcovia organizácie môžu nastavovať konfiguráciu organizácie. Nastavenia konfigurácie organizácie môžu mať veľký vplyv na výkon @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.header" xml:space="preserve">
         <source>Organization Configuration</source>
-        <target/>
+        <target state="translated">Konfigurácia organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -28817,7 +28817,7 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
+        <source>Monitor this Host</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
