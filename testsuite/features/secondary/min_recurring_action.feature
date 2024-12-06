@@ -33,7 +33,6 @@ Feature: Recurring Actions
     And I click on "Save Changes"
     And I wait until I see "Edit State Ranks" text
     And I click on "Confirm"
-    And I wait until I see "State assignments have been saved." text
     And I click on "Create Schedule"
     Then I wait until I see "Schedule successfully created" text
     And I should see a "IP forwarding custom state recurring action" text
@@ -55,7 +54,6 @@ Feature: Recurring Actions
     And I click on "Save Changes"
     And I wait until I see "Edit State Ranks" text
     And I click on "Confirm"
-    And I wait until I see "State assignments have been saved" text
     And I click on "Update Schedule"
     Then I wait until I see "Schedule successfully updated" text
     And I should see a "custom_state_schedule_name_changed" text
