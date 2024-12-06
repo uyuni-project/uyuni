@@ -14755,7 +14755,7 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
       </trans-unit>
       <trans-unit id="channelfiles.jsp.removeselected" xml:space="preserve">
-        <source>Remove Selected Files</source>
+        <source>Remove Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelFiles.do</context>
         </context-group>
@@ -15668,7 +15668,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.configfile" xml:space="preserve">
-        <source>Delete This File Revision</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -15680,7 +15680,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.deletefile" xml:space="preserve">
-        <source>Delete This File</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
@@ -24398,13 +24398,13 @@ given channel.</source>
         <source>Add new slave</source>
       </trans-unit>
       <trans-unit id="iss.slave.remove" xml:space="preserve">
-        <source>Remove selected slaves</source>
+        <source>Remove slaves</source>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
       </trans-unit>
       <trans-unit id="iss.master.remove" xml:space="preserve">
-        <source>Remove selected masters</source>
+        <source>Remove masters</source>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>

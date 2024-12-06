@@ -322,8 +322,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                           "?url_bounce=" +
                           encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                         }
-                        className="btn-xs btn-default pull-right"
-                        text={t("Edit")}
+                        className="btn-unstyled pull-right"
                         title={t("Edit profile")}
                       />
                     )}
@@ -347,8 +346,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                         "?url_bounce=" +
                         encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                       }
-                      className="btn-xs btn-default pull-right"
-                      text={t("Edit")}
+                      className="btn-unstyled pull-right"
                       title={t("Edit store")}
                     />
                   )}
@@ -658,6 +656,7 @@ class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
                 </div>
               )}
             </BootstrapPanel>
+
           </div>
         </div>
         {data.customData && Object.keys(data.customData).length > 0 && (
@@ -723,10 +722,17 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
     const buttons = (
       <div>
         <Button
+          className="btn-default"
+          text={t("Cancel")}
+          title={t("Cancel")}
+          handler={() => {
+            jQuery("#build-modal").modal("hide");
+          }}
+        />
+        <Button
           className="btn-primary"
           text={t("Build")}
           title={t("Schedule build")}
-          icon="fa-cogs"
           handler={() => {
             if (this.props.onBuild)
               this.props.onBuild(
@@ -735,15 +741,6 @@ class BuildDialog extends React.Component<BuildDialogProps, BuildDialogState> {
                 this.props.data.buildServer.id,
                 this.state.model.earliest
               );
-            jQuery("#build-modal").modal("hide");
-          }}
-        />
-        <Button
-          className="btn-default"
-          text={t("Cancel")}
-          title={t("Cancel")}
-          icon="fa-close"
-          handler={() => {
             jQuery("#build-modal").modal("hide");
           }}
         />
@@ -802,21 +799,19 @@ class InspectDialog extends React.Component<InspectDialogProps, InspectDialogSta
     const buttons = (
       <div>
         <Button
-          className="btn-primary"
-          text={t("Inspect")}
-          title={t("Schedule inspect")}
-          icon="fa-search"
+          className="btn-default"
+          text={t("Cancel")}
+          title={t("Cancel")}
           handler={() => {
-            if (this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
             jQuery("#inspect-modal").modal("hide");
           }}
         />
         <Button
-          className="btn-default"
-          text={t("Cancel")}
-          title={t("Cancel")}
-          icon="fa-close"
+          className="btn-primary"
+          text={t("Inspect")}
+          title={t("Schedule inspect")}
           handler={() => {
+            if (this.props.onInspect) this.props.onInspect(this.props.data.id, this.state.model.earliest);
             jQuery("#inspect-modal").modal("hide");
           }}
         />
