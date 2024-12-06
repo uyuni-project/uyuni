@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.virtualization;
 
@@ -64,9 +60,10 @@ import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsBaseA
 import com.suse.manager.webui.controllers.virtualization.gson.VirtualGuestsUpdateActionJson;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.VirtManager;
-import com.suse.manager.webui.utils.TokenBuilder;
-import com.suse.manager.webui.utils.WebSockifyTokenBuilder;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.manager.webui.utils.token.TokenParser;
+import com.suse.manager.webui.utils.token.WebSockifyTokenBuilder;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -77,7 +74,6 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.jose4j.lang.JoseException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -471,7 +467,11 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
      * @return the new JWT token
      */
     public String refreshConsoleToken(Request request, Response response, User user) {
-        if (!TokenBuilder.verifyToken(request.body())) {
+        boolean verified = new TokenParser()
+            .usingServerSecret()
+            .verify(request.body());
+
+        if (!verified) {
             LOG.error("Invalid token");
             Spark.halt(HttpStatus.SC_FORBIDDEN, "Invalid token");
         }
@@ -524,17 +524,17 @@ public class VirtualGuestsController extends AbstractVirtualizationController {
     }
 
     private String getConsoleToken(String hostname, int port) {
-        String token = null;
         try {
-            WebSockifyTokenBuilder tokenBuilder = new WebSockifyTokenBuilder(hostname, port);
-            tokenBuilder.useServerSecret();
-            token = tokenBuilder.getToken();
+            return new WebSockifyTokenBuilder(hostname, port)
+                .usingServerSecret()
+                .build()
+                .getSerializedForm();
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             LOG.error("Service unavailable", e);
             Spark.halt(HttpStatus.SC_SERVICE_UNAVAILABLE);
+            return null;
         }
-        return token;
     }
 
     /**
