@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.utils;
 
@@ -20,22 +16,30 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.CSRFTokenValidator;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.Languages;
+import com.suse.manager.webui.controllers.login.LoginController.LoginResult;
 import com.suse.manager.webui.services.ThrottlingService;
 import com.suse.manager.webui.services.TooManyCallsException;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenParser;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.ParameterizedTypeImpl;
 
 import com.google.gson.Gson;
@@ -56,6 +60,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.servlet.http.HttpServletResponse;
+
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
 import spark.Request;
@@ -70,17 +76,66 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class SparkApplicationHelper {
 
+    private static final Logger LOGGER = LogManager.getLogger(SparkApplicationHelper.class);
+
     private static final String TEMPLATE_ROOT = "com/suse/manager/webui";
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
     private static final ThrottlingService THROTTLER = GlobalInstanceHolder.THROTTLING_SERVICE;
+    private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
 
     /**
      * Private constructor.
      */
     private SparkApplicationHelper() {
+    }
+
+    /**
+     * Use in routes to specify the method requires api key authentication
+     *
+     * @param route the route
+     * @return the route
+     */
+    public static Route usingTokenAuthentication(RouteWithToken route) {
+        return (request, response) -> {
+            String authorization = request.headers("Authorization");
+            if (authorization == null || !authorization.startsWith("Bearer")) {
+                Spark.halt(HttpServletResponse.SC_BAD_REQUEST);
+            }
+
+            String serializedToken = authorization.substring(7);
+            Token token = parseToken(serializedToken);
+            IssAccessToken issuedToken = new HubFactory().lookupIssuedToken(serializedToken);
+
+            if (issuedToken == null || token == null || issuedToken.isExpired() || !issuedToken.isValid()) {
+                response.status(HttpServletResponse.SC_UNAUTHORIZED);
+                return json(response, new LoginResult(false, "Invalid token provided"), new TypeToken<>() { });
+            }
+
+            try {
+                return route.handle(request, response, token);
+            }
+            finally {
+                var authenticationService = AuthenticationServiceFactory.getInstance().getAuthenticationService();
+                authenticationService.invalidate(request.raw(), response.raw());
+            }
+        };
+    }
+
+    private static Token parseToken(String serializedToken) {
+        try {
+            return new TokenParser()
+                .usingServerSecret()
+                .verifyingNotBefore()
+                .verifyingExpiration()
+                .parse(serializedToken);
+        }
+        catch (TokenParsingException ex) {
+            LOGGER.debug("Unable to parse token {}. Request will be rejected.", serializedToken, ex);
+            return null;
+        }
     }
 
     /**
