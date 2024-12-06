@@ -17,7 +17,7 @@ class ConfigLoader:
 
     def load_config(self, file_path='config.ini'):
         self.global_config = configparser.ConfigParser()
-        self.global_config.read(os.path.join(self.base_dir, "config.ini"))
+        self.global_config.read(os.path.join(self.base_dir, file_path))
 
     def load_yaml(self, filename):
         file_path = os.path.join(self.config_dir, filename)
@@ -47,7 +47,7 @@ class ConfigLoader:
 
     def get_config_dir_path(self, component):
         return os.path.join(self.base_dir, "config", component)
-    
+
     def get_config_file_path(self, component):
         return os.path.join(self.base_dir, "config", component, "config.yaml")
 
