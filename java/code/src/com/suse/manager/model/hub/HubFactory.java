@@ -16,6 +16,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -84,5 +85,43 @@ public class HubFactory extends HibernateFactory {
                 .createQuery("FROM IssPeripheralChannels WHERE channel = :channel", IssPeripheralChannels.class)
                 .setParameter("channel", channelIn)
                 .list();
+    }
+
+    /**
+     * Store a new access token
+     * @param fqdn the FQDN of the server
+     * @param token the token to establish a connection with the specified server
+     * @param type the type of token
+     * @param expiration when the token is no longer valid
+     */
+    public void saveToken(String fqdn, String token, TokenType type, Instant expiration) {
+        var accessToken = new IssAccessToken(type, token, fqdn, expiration);
+        getSession().save(accessToken);
+    }
+
+    /**
+     * Returns the issued access token information matching the given token
+     * @param token the string representation of the token
+     * @return the issued token, if present
+     */
+    public IssAccessToken lookupIssuedToken(String token) {
+        return getSession()
+            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.token = :token", IssAccessToken.class)
+            .setParameter("type", TokenType.ISSUED)
+            .setParameter("token", token)
+            .uniqueResult();
+    }
+
+    /**
+     * Returns the access token for the specified FQDN
+     * @param fqdn the FQDN of the peripheral/hub
+     * @return the access token associated to the entity, if present
+     */
+    public IssAccessToken lookupAccessTokenFor(String fqdn) {
+        return getSession()
+            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn", IssAccessToken.class)
+            .setParameter("type", TokenType.CONSUMED)
+            .setParameter("fqdn", fqdn)
+            .uniqueResult();
     }
 }
