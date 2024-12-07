@@ -49,6 +49,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sapnwbootstrap-formula \
     drbd-formula \
     habootstrap-formula \
+    saline-formula \
     salt-shaptools \
     inter-server-sync \
     golang-github-prometheus-node_exporter \
