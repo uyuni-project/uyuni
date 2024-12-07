@@ -37,6 +37,7 @@ def _new_channel_dict(**kwargs):
         "name": kwargs.get("name") or label,
         "summary": kwargs.get("summary") or label,
         "description": kwargs.get("description") or label,
+        "status": kwargs.get("status") or "pending",
         "basedir": kwargs.get("basedir") or "/",
         "channel_arch": kwargs.get("channel_arch") or "i386",
         "channel_families": [kwargs.get("channel_family") or label],
@@ -61,7 +62,7 @@ class ChannelAlreadyExistsException(Exception):
     """
 
 
-def create_channel(channel_label, channel_arch, org_id=1):
+def create_test_channel(channel_label, channel_arch, status="pending", org_id=1):
     """
     Create a new test channel with label :channel_label using the channel family private-channel-family-1
     :channel_arch: eg: "x86_64"
@@ -77,6 +78,7 @@ def create_channel(channel_label, channel_arch, org_id=1):
             channel_family=channel_family_label,
             org_id=org_id,
             channel_arch=channel_arch,
+            status=status,
         )
         c = rhnChannel.Channel()
         c.load_from_dict(vdict)
@@ -97,7 +99,7 @@ def create_content_source(
     metadata_signed="N",
     org_id=1,
     source_type="yum",
-    repo_id=1,
+    repo_id=5,
 ):
     """
     Create a new content source and associate it with the given channel
@@ -128,7 +130,7 @@ def create_content_source(
 
         fetch_source_id_query = rhnSQL.prepare(
             """
-            SELECT id from rhnContentSource LIMIT 1"""
+            SELECT id from rhnContentSource ORDER BY id DESC LIMIT 1"""
         )
         fetch_source_id_query.execute()
         source_id = fetch_source_id_query.fetchone_dict()["id"]
@@ -147,8 +149,13 @@ def create_content_source(
         )
         associate_repo_channel_query.execute(source_id=source_id, channel_id=channel_id)
         rhnSQL.commit()
+        print(
+            f"INFO: Successfully created new source {repo_label} for channel {channel_label}"
+        )
     except errors.lookup(UNIQUE_VIOLATION):
-        print(f"INFO: Source {repo_label} already exists!")
+        print(
+            f"INFO: Source '{repo_label}' for channel '{channel_label}' already exists!"
+        )
     finally:
         rhnSQL.closeDB()
 
@@ -209,6 +216,38 @@ def get_channel_info_by_label(channel_label):
     channel = rhnChannel.channel_info(channel_label)
     rhnSQL.closeDB()
     return channel or None
+
+
+def get_all_channels():
+    """
+    Return the list of all channels in a dict containing the channel label with the corresponding status
+
+    """
+    rhnSQL.initDB()
+    h = rhnSQL.prepare(
+        """
+        SELECT label as channel_label, status from rhnChannel
+        """
+    )
+    h.execute()
+    return h.fetchall_dict()
+
+
+def update_channel_status(channel_label, new_status):
+    """
+    Update the status ('pending', 'in_progress', 'failed', ...) of the channel that has the given channel_label
+    """
+    if not channel_label:
+        return
+    rhnSQL.initDB()
+    print(f"INFO: Updating the status of channel {channel_label} to {new_status}")
+    h = rhnSQL.prepare(
+        """
+        UPDATE rhnChannel SET status = :new_status WHERE label = :channel_label
+    """
+    )
+    h.execute(new_status=new_status, channel_label=channel_label)
+    rhnSQL.closeDB()
 
 
 class NoSourceFoundForChannel(Exception):
