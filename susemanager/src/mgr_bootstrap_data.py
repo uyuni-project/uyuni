@@ -1589,6 +1589,30 @@ DATA = {
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/0/bootstrap/",
     },
+    "SL-MICRO-6.1-aarch64": {
+        "PDID": [2775, 2764],
+        "BETAPDID": [2767],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
+    },
+    "SL-MICRO-6.1-ppc64le": {
+        "PDID": [2777, 2899],
+        "BETAPDID": [2900],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
+    },
+    "SL-MICRO-6.1-s390x": {
+        "PDID": [2776, 2765],
+        "BETAPDID": [2768],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
+    },
+    "SL-MICRO-6.1-x86_64": {
+        "PDID": [2774, 2763],
+        "BETAPDID": [2766],
+        "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
+    },
     'openSUSE-Leap-15.3-x86_64-uyuni' : {
         'BASECHANNEL' : 'opensuse_leap15_3-x86_64', 'PKGLIST' : PKGLIST15_TRAD + PKGLIST15_SALT + PKGLIST15_X86_ARM,
         'DEST' : DOCUMENT_ROOT + '/pub/repositories/opensuse/15/3/bootstrap/'
