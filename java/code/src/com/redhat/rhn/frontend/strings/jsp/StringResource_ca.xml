@@ -29003,7 +29003,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation">Amfitrió monitoritzat</target>
+        <target state="translated">Supervisa aquest amfitrió</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
