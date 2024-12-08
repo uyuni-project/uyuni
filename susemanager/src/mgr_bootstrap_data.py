@@ -67,11 +67,6 @@ PKGLIST15_PPC = [
 
 PKGLIST15_Z = []
 
-
-PKGLISTUBUNTU1804 = [
-    "venv-salt-minion",
-]
-
 PKGLISTUBUNTU2004 = [
     "venv-salt-minion",
 ]
@@ -81,43 +76,6 @@ PKGLISTUBUNTU2204 = [
 ]
 
 PKGLISTUBUNTU2404 = [
-    "venv-salt-minion",
-]
-
-PKGLISTDEBIAN9 = [
-    "gnupg1",
-    "gnupg1-curl",
-    "gnupg1-l10n",
-    "dmidecode",
-    "gnupg",
-    "gnupg1",
-    "venv-salt-minion*",
-]
-
-
-PKGLISTDEBIAN10 = [
-    # gnupg dependencies
-    "dirmngr",
-    "dmidecode",
-    "gnupg",
-    "gnupg-l10n",
-    "gnupg-utils",
-    "gpg",
-    "gpg-agent",
-    "gpgconf",
-    "gpgsm",
-    "gpg-wks-client",
-    "gpg-wks-server",
-    "libassuan0",
-    "libksba8",
-    "libldap-2.4-2",
-    "libldap-common",
-    "libsasl2-2",
-    "libsasl2-modules",
-    "libsasl2-modules-db",
-    "libsodium23",
-    "pinentry-curses",
-    # end of gnupg dependencies
     "venv-salt-minion",
 ]
 
@@ -453,21 +411,6 @@ DATA = {
     "SLE4HPC-12-SP5-aarch64": {
         "PDID": [1872],
         "BETAPDID": [1744],
-        "PKGLIST": PKGLIST12,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/5/bootstrap/",
-    },
-    "OES2018-x86_64": {
-        "PDID": 45,
-        "PKGLIST": PKGLIST12,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/2/bootstrap/",
-    },
-    "OES2018-SP1-x86_64": {
-        "PDID": 46,
-        "PKGLIST": PKGLIST12,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/3/bootstrap/",
-    },
-    "OES2018-SP2-x86_64": {
-        "PDID": -9,
         "PKGLIST": PKGLIST12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/12/5/bootstrap/",
     },
@@ -1309,13 +1252,6 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/9/bootstrap/",
     },
-    "ubuntu-18.04-amd64": {
-        "PDID": [-1, 1918],
-        "BETAPDID": [2062],
-        "PKGLIST": PKGLISTUBUNTU1804,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/18/4/bootstrap/",
-        "TYPE": "deb",
-    },
     "ubuntu-20.04-amd64": {
         "PDID": [-18, 2113],
         "BETAPDID": [2112],
@@ -1337,12 +1273,6 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
-    "ubuntu-18.04-amd64-uyuni": {
-        "BASECHANNEL": "ubuntu-18.04-pool-amd64-uyuni",
-        "PKGLIST": PKGLISTUBUNTU1804,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/18/4/bootstrap/",
-        "TYPE": "deb",
-    },
     "ubuntu-20.04-amd64-uyuni": {
         "BASECHANNEL": "ubuntu-20.04-pool-amd64-uyuni",
         "PKGLIST": PKGLISTUBUNTU2004,
@@ -1361,20 +1291,6 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/ubuntu/24/4/bootstrap/",
         "TYPE": "deb",
     },
-    "debian9-amd64": {
-        "PDID": [-19, 2208],
-        "BETAPDID": [2209],
-        "PKGLIST": PKGLISTDEBIAN9,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/9/bootstrap/",
-        "TYPE": "deb",
-    },
-    "debian10-amd64": {
-        "PDID": [-20, 2210],
-        "BETAPDID": [2211],
-        "PKGLIST": PKGLISTDEBIAN10,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/10/bootstrap/",
-        "TYPE": "deb",
-    },
     "debian11-amd64": {
         "PDID": [-32, 2410],
         "BETAPDID": [2411],
@@ -1387,18 +1303,6 @@ DATA = {
         "BETAPDID": [2676],
         "PKGLIST": PKGLISTDEBIAN12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/12/bootstrap/",
-        "TYPE": "deb",
-    },
-    "debian9-amd64-uyuni": {
-        "BASECHANNEL": "debian-9-pool-amd64-uyuni",
-        "PKGLIST": PKGLISTDEBIAN9,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/9/bootstrap/",
-        "TYPE": "deb",
-    },
-    "debian10-amd64-uyuni": {
-        "BASECHANNEL": "debian-10-pool-amd64-uyuni",
-        "PKGLIST": PKGLISTDEBIAN10,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/10/bootstrap/",
         "TYPE": "deb",
     },
     "debian11-amd64-uyuni": {
