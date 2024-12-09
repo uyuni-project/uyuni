@@ -600,7 +600,8 @@ end
 
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
-  skip_this_scenario unless $scc_credentials
+  $stdout.puts "DEBUG"
+  # skip_this_scenario unless $scc_credentials
 end
 
 # do some tests only if there is a private network

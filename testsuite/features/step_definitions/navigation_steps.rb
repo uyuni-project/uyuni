@@ -174,8 +174,7 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  product_key = $is_gh_validation && !$build_validation ? 'Fake' : product
-  select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
+  select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|

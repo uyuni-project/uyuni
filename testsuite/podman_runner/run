@@ -10,6 +10,12 @@ export AUTH_REGISTRY=auth_registry
 set -x
 set -e
 
+# Disable firewall so we can connect to debug
+sudo ufw disable
+
+# make sure docker is installed because we need the socket
+# sudo apt -y install docker.io
+
 ./00_setup_env.sh
 ./01_setup_tmp_dirs.sh
 ./02_setup_network.sh

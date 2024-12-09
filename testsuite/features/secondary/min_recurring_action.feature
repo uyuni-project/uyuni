@@ -1,7 +1,6 @@
 # Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_recurring_actions
 Feature: Recurring Actions
 
@@ -65,6 +64,8 @@ Feature: Recurring Actions
     And I follow the event "Apply recurring states [util.syncstates] scheduled" completed during last minute
     And I should see a "SLS: util.syncstates" text
 
+# This fails in github actions...
+@skip_if_github_validation
   Scenario: Cleanup: Disable IP forwarding
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area
@@ -163,6 +164,8 @@ Feature: Recurring Actions
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
+# Skip until we have updates in the SCC fake
+@skip_if_github_validation
   Scenario: Pre-requisite: check that there are updates available
     Given I am on the Systems overview page of this "sle_minion"
     And I wait until I see "Software Updates Available" text, refreshing the page

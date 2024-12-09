@@ -1,6 +1,6 @@
 # Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+# bootstrap channels do not work in gh validation yet
 @scope_changing_software_channels
 @scc_credentials
 Feature: Channel subscription via SSM
