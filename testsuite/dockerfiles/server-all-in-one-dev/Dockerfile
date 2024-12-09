@@ -32,4 +32,5 @@ RUN /usr/bin/minima sync -c /etc/minima.yaml && \
     rm -rf /srv/www/htdocs/pub/repositories/
 RUN cd /srv/www/htdocs/pub && ln -s TestRepoRpmUpdates AnotherRepo
 RUN mkdir /etc/pki/rpm-gpg && wget -c http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/repodata/repomd.xml.key -O  /etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key
+COPY mirror /mirror
 
