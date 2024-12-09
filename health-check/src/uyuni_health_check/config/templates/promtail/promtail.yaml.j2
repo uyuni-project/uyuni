@@ -2,6 +2,10 @@ server:
   http_listen_port: 9081
   grpc_listen_port: 0
 
+limits_config:
+  max_line_size: 0
+  max_line_size_truncate: false
+
 positions:
   filename: /tmp/positions.yaml
 

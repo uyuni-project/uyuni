@@ -28,7 +28,7 @@ def download_component_build_image(image, config, verbose=False):
         return
 
     # Fetch the logcli binary from the latest release
-    url = f"https://github.com/grafana/loki/releases/download/v2.9.2/{image}-linux-amd64.zip"
+    url = f"https://github.com/grafana/loki/releases/download/v3.3.0/{image}-linux-amd64.zip"
     #    url = f"https://github.com/grafana/loki/releases/download/v2.8.6/{image}-linux-amd64.zip"
     dest_dir = config.load_dockerfile_dir(image)
     response = requests.get(url)
