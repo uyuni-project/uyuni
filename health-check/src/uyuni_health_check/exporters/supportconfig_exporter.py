@@ -67,7 +67,7 @@ class SupportConfigMetricsCollector:
         for attr in attrs_to_expose:
             prop = {
                 "name": attr,
-                "value": re.findall(f"^{attr}: ([0-9]+)$", content, re.MULTILINE)[-1],
+                "value": int(re.findall(f"^{attr}: ([0-9]+)$", content, re.MULTILINE)[-1]),
             }
             ret.append(prop)
         return ret
@@ -132,6 +132,7 @@ class SupportConfigMetricsCollector:
     def merge_metrics(self):
         ret = {
             "tomcat": [],
+            "hw": [],
             "salt_configuration": {},
             "salt_keys": {},
             "salt_jobs": {},
@@ -141,6 +142,9 @@ class SupportConfigMetricsCollector:
 
         if hasattr(self, 'max_threads_ipv4'):
             ret["tomcat"].append({"name": "max_threads_ipv4", "value": self.max_threads_ipv4})
+
+        if hasattr(self, 'cpu_count'):
+            ret["hw"].append({"name": "cpu_count", "value": self.cpu_count})
 
         if hasattr(self,'salt_configuration'):
             ret["salt_configuration"] = self.salt_configuration

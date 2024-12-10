@@ -5,11 +5,15 @@ from abc import ABC, abstractmethod
 metrics_config = {
     "tomcat_xmx_size": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf",
-        "pattern": r'-Xmx(\d)+([kKmMgG])'
+        "pattern": r'-Xmx(\d)+([kKmMgG])',
     },
     "max_threads_ipv4": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/server.xml",
-        "pattern": r'<Connector[^>]*address="127\.0\.0\.1"[^>]*maxThreads="(\d+)"[^>]*\/>'
+        "pattern": r'<Connector[^>]*address="127\.0\.0\.1"[^>]*maxThreads="(\d+)"[^>]*\/>',
+    },
+    "cpu_count": {
+        "filepath": "hardware.txt",
+        "pattern": r'CPU\(s\):\s+(\d+)',
     },
 }
 
