@@ -1,0 +1,2 @@
+- Require spacewalk-config installed before this package to have
+  the CA certificate moved to the correct place (bsc#1227660)
