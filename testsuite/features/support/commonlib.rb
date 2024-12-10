@@ -752,46 +752,13 @@ def api_unlock
   end
 end
 
-# Function to fetch the current list of events
-#
-# @param hostname String The hostname of the system from requested
-def fetch_event_history(hostname)
-  output, _code = get_target('server').run("spacecmd -u admin -p admin system_listeventhistory #{hostname}", check_errors: true)
-  events = []
-  current_event = {}
-
-  output.split("\n").each do |line|
-    case line
-    when /^Id:\s+(\d+)$/
-      current_event[:id] = Regexp.last_match(1).to_i
-    when /^History type:\s+(.+)$/
-      current_event[:history_type] = Regexp.last_match(1)
-    when /^Status:\s+(.+)$/
-      current_event[:status] = Regexp.last_match(1)
-    when /^Completed:\s+(.+)$/
-      begin
-        current_event[:completed] = Time.parse(Regexp.last_match(1))
-      rescue ArgumentError
-        current_event[:completed] = nil
-      end
-    end
-
-    if current_event.key?(:id) && current_event.key?(:completed)
-      events << current_event
-      current_event = {}
-    end
-  end
-
-  events
-end
-
 # Function to get the highest event ID (latest event)
 #
-# @param hostname String The hostname of the system from requested
-def get_last_event_id(hostname)
-  events = fetch_event_history(hostname)
-  last_event = events.max_by { |event| event[:id] }
-  last_event ? last_event[:id] : nil
+# @param host String The hostname of the system from requested
+def get_last_event(host)
+  node = get_target(host)
+  system_id = get_system_id(node)
+  $api_test.system.get_event_history(system_id, 0, 1)[0]
 end
 
 # Function to trigger the upgrade command
