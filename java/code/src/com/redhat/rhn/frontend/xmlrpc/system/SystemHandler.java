@@ -127,6 +127,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -564,8 +565,15 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedule an action to change the channels of the given system. Works for both traditional
      * and Salt systems.
      * This method accepts labels for the base and child channels.
-     * If the user provides an empty string for the channelLabel, the current base channel and
-     * all child channels will be removed from the system.
+     * If the user provides an empty string for the baseChannelLabel and an empty list for the childLabels,
+     * the current base channel and all child channels will be removed from the system.
+     * If the user provides only a different baseChannelLabel and an empty list for childLabels,
+     * the new base channel is assigned to the system and we search for compatible child channels for the assigned one.
+     * If the base channel stay empty, all the child channels from the list should be compatible with the currently
+     * assigned base channel. The currently assigned child channels are exchanged with the channels provided in
+     * the childLabels list.
+     * When both baseChannelLabel and childLabels are provided, the compatibility is checked, and the system
+     * gets these new set of channels assigned.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
@@ -596,7 +604,7 @@ public class SystemHandler extends BaseHandler {
                 .collect(toSet());
 
         for (Server s : servers) {
-            if (baseChannel.map(Channel::getChannelArch)
+            if (baseChannel.isPresent() && baseChannel.map(Channel::getChannelArch)
                     .filter(arch -> arch.isCompatible(s.getServerArch()))
                     .isEmpty()) {
                 throw new InvalidChannelException();
@@ -624,6 +632,19 @@ public class SystemHandler extends BaseHandler {
         List<Channel> childChannels = channelIds.stream()
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
                 .toList();
+
+        // consistent check
+        long bid = baseChannel.map(Channel::getId).orElse(-1L);
+        for (Server s : servers) {
+            if (bid == -1L) {
+                bid = s.getBaseChannel().getId();
+            }
+            for (Channel cch : childChannels) {
+                if (!cch.getParentChannel().getId().equals(bid)) {
+                    throw new InvalidParentChannelException();
+                }
+            }
+        }
 
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,

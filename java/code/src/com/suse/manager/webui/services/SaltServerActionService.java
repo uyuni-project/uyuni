@@ -538,8 +538,26 @@ public class SaltServerActionService {
 
     private void executeForRegularMinions(Action actionIn, boolean forcePackageListRefresh,
             boolean isStagingJob, Optional<Long> stagingJobMinionServerId, List<MinionSummary> minionSummaries) {
-        for (Map.Entry<LocalCall<?>, List<MinionSummary>> entry : callsForAction(actionIn, minionSummaries)
-                .entrySet()) {
+        Map<LocalCall<?>, List<MinionSummary>> localCalls = new HashMap<>();
+        try {
+             localCalls = callsForAction(actionIn, minionSummaries);
+        }
+        catch (RuntimeException e) {
+            LOG.error("Failed to prepare salt calls: ", e);
+            List<Long> failedServerIds  = minionSummaries.stream()
+                    .map(MinionSummary::getServerId).toList();
+            if (!failedServerIds.isEmpty()) {
+                actionIn.getServerActions().stream()
+                        .filter(sa -> failedServerIds.contains(sa.getServer().getId()))
+                        .forEach(sa -> {
+                            sa.setStatus(STATUS_FAILED);
+                            sa.setResultMsg("Error preparing salt call: " + e.getMessage());
+                            sa.setCompletionTime(new Date());
+                        });
+            }
+            return;
+        }
+        for (Map.Entry<LocalCall<?>, List<MinionSummary>> entry : localCalls.entrySet()) {
             LocalCall<?> call = entry.getKey();
             final List<MinionSummary> targetMinions;
             Map<Boolean, List<MinionSummary>> results;
@@ -2481,7 +2499,16 @@ public class SaltServerActionService {
 
             sa.setRemainingTries(sa.getRemainingTries() - 1);
 
-            Map<LocalCall<?>, List<MinionSummary>> calls = callsForAction(action, List.of(new MinionSummary(minion)));
+            Map<LocalCall<?>, List<MinionSummary>> calls = new HashMap<>();
+            try {
+                calls = callsForAction(action, List.of(new MinionSummary(minion)));
+            }
+            catch (RuntimeException e) {
+                sa.setStatus(STATUS_FAILED);
+                sa.setResultMsg("Error preparing salt call: " + e.getMessage());
+                sa.setCompletionTime(new Date());
+                return;
+            }
 
             for (LocalCall<?> call : calls.keySet()) {
                 Optional<Result<JsonElement>> result;

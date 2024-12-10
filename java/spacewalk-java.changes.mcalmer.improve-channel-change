@@ -1,0 +1,4 @@
+- Support removing all channels with scheduleChangeChannels()
+- Support finding compatible child channels when changing the
+  base channels with scheduleChangeChannels()
+- Check consistence of base and child channels (bsc#1232713)
