@@ -63,7 +63,7 @@ General template for leavers of the SUSE Manager team.
   - [ ] SUSE Manager Team Retrospective
 - [ ] Slack
   - [ ] Update workflows (daily standup, meetings, etc.)
-  - [ ] Remove from groups (ticket on https://sd.suse.com)
+  - [ ] Remove from groups (left menu -> `...` -> `People` -> `User Groups`)
     - [ ] `susemanager-engineers`
     - [ ] `susemanager-infra`, if leaver is part of the [Infra squad](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics)
     - [ ] `susemanager-coordinators`, if leaver is a [squad coordinator](https://confluence.suse.com/display/SUSEMANAGER/Squads%2C+People+and+Topics)
