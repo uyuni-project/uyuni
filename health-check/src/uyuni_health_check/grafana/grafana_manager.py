@@ -35,6 +35,8 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
                 "-p",
                 "3000:3000",
                 "-v",
+                f"{grafana_cfg}/alerts.yaml:/etc/grafana/provisioning/alerting/alerts.yaml",
+                "-v",
                 f"{grafana_cfg}/datasources.yaml:/etc/grafana/provisioning/datasources/ds.yaml",
                 "-v",
                 f"{grafana_cfg}/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml",

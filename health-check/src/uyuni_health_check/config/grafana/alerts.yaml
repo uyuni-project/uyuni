@@ -1,0 +1,92 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: alert-eval
+      folder: alerts
+      interval: 1m
+      rules:
+        - uid: ce6i8dhdhj400e
+          title: More worker threads than CPUs
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_configuration[name="worker_threads"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $B - $A < 0
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          isPaused: false
