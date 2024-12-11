@@ -48,7 +48,7 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
         <MessagesContainer />
         <p>{t("Set up your server local users password policy.")}</p>
       </div>
-      <Form model={prop.policy} >
+      <Form model={prop.policy}>
         <Panel headingLevel="h2" title={t("Password Policy Settings")}>
           <div className="col-md-8">
             {/* Minimum Length */}
