@@ -5,7 +5,6 @@ FROM ${BASE}:${VERSION}
 RUN zypper -n --gpg-auto-import-keys ref && \
       zypper -n install \
       java-17-openjdk-devel \
-      openssh \
       rsync \
       apache-ivy \
       ant \
