@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023--2024 SUSE LLC
+ * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -9,15 +9,17 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.cloud.domain;
+package com.redhat.rhn.domain;
 
-import com.redhat.rhn.domain.Labeled;
+/**
+ * Indicates that an implementing class has a label.
+ */
+public interface Labeled {
 
-public enum BillingDimension implements Labeled {
-    MANAGED_SYSTEMS,
-    MONITORING;
-
-    public String getLabel() {
-        return this.name().toLowerCase();
-    }
+    /**
+     * Returns the label associated with this object.
+     *
+     * @return the label of this object
+     */
+    String getLabel();
 }
