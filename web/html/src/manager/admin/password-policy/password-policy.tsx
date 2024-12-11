@@ -1,12 +1,13 @@
-import { Check, Form, Text } from "components/input";
-import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+import { hot } from "react-hot-loader/root";
 
 import { AsyncButton } from "components/buttons";
-import { Panel } from "components/panels/Panel";
-import { PasswordPolicyProps } from "./password_policy_type";
-import { TopPanel } from "components/panels/TopPanel";
-import { hot } from "react-hot-loader/root";
 import withPageWrapper from "components/general/with-page-wrapper";
+import { Check, Form, Text } from "components/input";
+import { Panel } from "components/panels/Panel";
+import { TopPanel } from "components/panels/TopPanel";
+import { MessagesContainer, showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
+
+import { PasswordPolicyProps } from "./password_policy_type";
 
 const updatePolicy = (policyData) => {
   return fetch("/rhn/manager/api/admin/config/password-policy", {
