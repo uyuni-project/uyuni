@@ -105,7 +105,8 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
               <div className="col-md-4 text-left">
                 <label htmlFor="specialChars">{t("Allowed Special Characters")}</label>
               </div>
-              <Text disabled={!prop.policy.specialCharFlag}
+              <Text
+                disabled={!prop.policy.specialCharFlag}
                 name="specialChars"
                 divClass="col-md-4"
                 defaultValue={prop.defaults.specialChars?.toLocaleString()}
