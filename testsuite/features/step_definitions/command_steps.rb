@@ -1772,12 +1772,12 @@ end
 
 Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
   system_name = get_system_name(host)
-  last_event_before_upgrade = get_last_event(system_name)
-  last_event = []
+  last_event_before_upgrade = get_last_event(host)
+  last_event = last_event_before_upgrade
   trigger_upgrade(system_name, package)
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
-    last_event = get_last_event(system_name)
-    break if last_event[:id] > last_event_before_upgrade[:id] && (last_event['summary'].include? 'Package Install/Upgrade')
+    last_event = get_last_event(host)
+    break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
-  wait_action_complete(last_event[:id])
+  wait_action_complete(last_event['id'])
 end
