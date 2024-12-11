@@ -46,7 +46,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,7 +120,7 @@ public class SystemChannelsAction extends RhnLookupDispatchAction {
         }
 
 
-        Set<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, s);
 
         List<EssentialChannelDto> rhnChannels = new LinkedList<>();
         List<EssentialChannelDto> customChannels = new LinkedList<>();
