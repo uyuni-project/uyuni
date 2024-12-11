@@ -39,8 +39,8 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               <h1 className={styles.h1}>{product.bodyTitle}</h1>
               <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
               <p>
-                {t("Learn more about {product}:", {
-                  product: product.key,
+                {t("Learn more about {productName}:", {
+                  productName: product.key,
                 })}
                 <a href={product.url} className={styles.learnMore} target="_blank" rel="noopener noreferrer">
                   {t("View website")}
