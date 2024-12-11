@@ -136,8 +136,8 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
             <div className="col-md-4 text-center">
               <div className="btn-group">
                 <AsyncButton
-                  id="savebutton"
-                  className="btn-primary"
+                  id="saveButton"
+                  className="btn-primary btn-large"
                   title={t("Save Password Policy")}
                   text={t("Save")}
                   icon="fa-save"
@@ -156,8 +156,8 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
             <div className="col-md-4 text-center">
               <div className="btn-group">
                 <AsyncButton
-                  id="resetbutton"
-                  className="btn-primary"
+                  id="resetButton"
+                  className="btn-primary btn-large"
                   title={t("Reset")}
                   text={t("Reset")}
                   icon="fa-refresh"
