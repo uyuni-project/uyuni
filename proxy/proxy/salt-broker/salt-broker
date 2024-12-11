@@ -101,7 +101,6 @@ class AbstractChannelProxy(multiprocessing.Process):
     def __init__(self, opts):
         self.opts = opts
         self.backend_connected = False
-        self.backend_ever_connected = False
         if "master" not in self.opts:
             raise self.ChannelException(
                 '[{}] No "master" opts is provided'.format(
@@ -142,6 +141,12 @@ class AbstractChannelProxy(multiprocessing.Process):
 
             if self.opts["wait_for_backend"]:
                 while not self.backend_connected:
+                    if self.backend.closed:
+                        log.warning(
+                            "Backend %s socket was closed while waiting for it. Terminating...",
+                            self.backend_type,
+                        )
+                        return
                     time.sleep(0.5)
 
             log.debug(
@@ -156,7 +161,16 @@ class AbstractChannelProxy(multiprocessing.Process):
             self.frontend.bind(self._frontend_uri)
 
             # Forward all messages
-            zmq.proxy(self.frontend, self.backend)
+            log.info("Staring ZMQ proxy on %s and %s sockets", self.frontend_type, self.backend_type)
+            try:
+                zmq.proxy(self.frontend, self.backend)
+            except Exception as e:
+                log.error(
+                    "Error while processing proxy with %s and %s sockets. Terminating...",
+                    self.frontend_type,
+                    self.backend_type
+                )
+                return
 
         except zmq.ZMQError as zmq_error:
             if self.reconnect_retries == 0:
@@ -198,14 +212,8 @@ class AbstractChannelProxy(multiprocessing.Process):
                 elif mon_evt["event"] == zmq.EVENT_CONNECTED:
                     log.info("{} socket connected".format(self.backend_type))
                     self.backend_connected = True
-                    self.backend_ever_connected = True
                     self.reconnect_retries = self.opts["drop_after_retries"]
                 elif mon_evt["event"] == zmq.EVENT_CONNECT_RETRIED:
-                    if (
-                        not self.backend_ever_connected
-                        and self.opts["wait_for_backend"]
-                    ):
-                        continue
                     if self.reconnect_retries == 0:
                         log.warning(
                             "Closing {} socket due to retry attempts reached!".format(
