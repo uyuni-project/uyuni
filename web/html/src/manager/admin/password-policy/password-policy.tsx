@@ -133,8 +133,6 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                 defaultValue={prop.defaults.maxCharacterOccurrence.toLocaleString()}
               />
             </div>
-          </div>
-          <div className="row">
             <div className="col-md-4 text-center">
               <div className="btn-group">
                 <AsyncButton
@@ -153,10 +151,6 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                       })
                   }
                 />
-              </div>
-            </div>
-            <div className="col-md-4 text-center">
-              <div className="btn-group">
                 <AsyncButton
                   id="resetButton"
                   className="btn-primary btn-large"
