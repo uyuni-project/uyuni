@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -30,6 +30,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-RPM-SUSE-Channel." text
     And I wait until the channel "fake-rpm-suse-channel" has been synced
 
+@sle_minion
   Scenario: Verify state of Fake-RPM-SUSE-Channel channel
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
     And solver file for "fake-rpm-suse-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
@@ -92,6 +93,19 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-Base-Channel-RH-like." text
     And I wait until the channel "fake-base-channel-rh-like" has been synced
 
+@rhlike_minion
+  Scenario: Synchronize Fake-Base-Channel-AppStream channel
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-Base-Channel-AppStream"
+    And I follow "Repositories" in the content area
+    And I follow "Sync"
+    And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Fake-Base-Channel-AppStream." text
+    And I wait until the channel "fake-base-channel-appstream" has been synced
+
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Synchronize the repository in the terminal channel
@@ -105,6 +119,7 @@ Feature: Synchronize fake channels
     Then I should see a "Repository sync scheduled for Fake-RPM-Terminal-Channel." text
     And I wait until the channel "fake-rpm-terminal-channel" has been synced
 
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Verify state of Fake-RPM-Terminal-Channel custom channel

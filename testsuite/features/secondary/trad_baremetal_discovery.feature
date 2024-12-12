@@ -73,7 +73,7 @@ Feature: Bare metal discovery
     And I should see a "Number of disks" text
     And I should see a "1" text
     And I should see a "MAC Address(es)" text
-    And I check the MAC address value
+    And I check the MAC address value of the "sle_client"
 
   Scenario: Check unprovisioned system details
     When I follow the left menu "Systems > System List"

@@ -1,14 +1,15 @@
-# Copyright (c) 2018-2021 SUSE LLC.
+# Copyright (c) 2018-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @sle_minion
 @scope_configuration_channels
 Feature: State Configuration channels
   In order to configure systems through Salt
   I want to be able to use channels from the state tab
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create the 1st state channel
     When I follow the left menu "Configuration > Channels"
@@ -60,7 +61,7 @@ Feature: State Configuration channels
     And I check "statechannel-cbox"
     And I check "statechannel2-cbox"
     When I click on "Save Changes"
-    Then I should see a "Edit Channel Ranks" text
+    And I wait until I see "Edit Channel Ranks" text
     And I should see a "My State Channel (statechannel)" link
     And I should see a "My State Channel (statechannel2)" link
     When I click on "Confirm"
@@ -70,10 +71,10 @@ Feature: State Configuration channels
     And I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     And I click on "Search" in element "search-row"
-    Then I should see a "Execute States" button
+    And I wait until I see "Execute States" text
     When I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
-    When I wait until event "Apply states [custom] scheduled by admin" is completed
+    When I wait until event "Apply states [custom] scheduled" is completed
     And I wait until file "/root/statechannel" exists on "sle_minion"
     And I wait until file "/root/statechannel2" exists on "sle_minion"
 
@@ -84,7 +85,7 @@ Feature: State Configuration channels
     And I should see a "statechannel3" text
     And I check "statechannel3-cbox"
     When I click on "Save Changes"
-    Then I should see a "Edit Channel Ranks" text
+    And I wait until I see "Edit Channel Ranks" text
     And I should see a "My State Channel (statechannel)" link
     And I should see a "My State Channel (statechannel2)" link
     And I should see a "statechannel3 (statechannel3)" link

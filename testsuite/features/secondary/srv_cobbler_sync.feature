@@ -1,6 +1,7 @@
 # Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_cobbler
 Feature: Run Cobbler Sync via WebUI
 
@@ -42,5 +43,5 @@ Feature: Run Cobbler Sync via WebUI
     And I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see the correct timestamp for task "Cobbler Sync:"
 
-  Scenario: Cleanup: clean Cobbler
+  Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors

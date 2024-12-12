@@ -1,0 +1,15 @@
+
+## Container features BEGIN ###
+
+# IMMUTABLE ORDER
+
+# initialize Uyuni server
+- features/github_validation/core/first_settings.feature
+- features/core/srv_user_preferences.feature
+- features/reposync/srv_create_fake_channels.feature
+- features/reposync/srv_create_fake_repositories.feature
+- features/reposync/srv_sync_fake_channels.feature
+- features/reposync/srv_create_activationkey.feature
+- features/core/srv_osimage.feature
+- features/core/srv_docker.feature
+## Container features END ###

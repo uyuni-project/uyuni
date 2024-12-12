@@ -5,8 +5,8 @@
 @scc_credentials
 Feature: Channel subscription via SSM
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
 @sle_minion
 @susemanager
@@ -94,7 +94,7 @@ Feature: Channel subscription via SSM
   Scenario: Check via API old channels are still the same on openSUSE minion before channel change completes
     When I refresh the metadata for "sle_minion"
     Then channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be disabled on "sle_minion"
+    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development))" should be disabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -102,7 +102,7 @@ Feature: Channel subscription via SSM
 @sle_minion
   Scenario: Check channel change has completed for the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
-    When I wait until event "Subscribe channels scheduled by admin" is completed
+    When I wait until event "Subscribe channels scheduled" is completed
     Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
 
 @sle_minion

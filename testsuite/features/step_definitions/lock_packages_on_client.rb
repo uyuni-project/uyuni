@@ -16,22 +16,22 @@ end
 Then(/^package "(.*?)" is reported as locked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, '//i[@class=\'fa fa-lock\']/../a')
-  raise 'No packages locked' if locked_pkgs.empty?
-  raise "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise ScriptError, 'No packages locked' if locked_pkgs.empty?
+  raise ScriptError, "Package #{pkg} not found as locked" unless locked_pkgs.find { |a| a.text.match?(/^#{pkg}/) }
 end
 
 Then(/^package "(.*?)" is reported as unlocked$/) do |pkg|
   find(:xpath, "(//a[text()='#{pkg}'])[1]")
   locked_pkgs = all(:xpath, '//i[@class=\'fa fa-lock\']/../a')
 
-  raise "Package #{pkg} found as locked" if locked_pkgs.find { |a| a.text =~ /^#{pkg}/ }
+  raise ScriptError, "Package #{pkg} found as locked" if locked_pkgs.find { |a| a.text.match?(/^#{pkg}/) }
 end
 
 Then(/^the package scheduled is "(.*?)"$/) do |pkg|
   match = find(:xpath, '//li[@class=\'list-group-item\']//li')
 
-  raise 'List of packages not found' unless match
-  raise "Package #{pkg} not found" unless match.text =~ /^#{pkg}/
+  raise ScriptError, 'List of packages not found' unless match
+  raise ScriptError, "Package #{pkg} not found" unless match.text.match?(/^#{pkg}/)
 end
 
 Then(/^the action status is "(.*?)"$/) do |status|
@@ -68,5 +68,5 @@ Then(/^only packages "(.*?)" are reported as pending to be unlocked$/) do |pkgs|
   xpath_query = "//td[i[@class='fa fa-clock-o'] and span[@class='label label-info' and contains(text(), 'Unlocking...')]]"
   matches = all(:xpath, xpath_query)
 
-  raise "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
+  raise ScriptError, "Matches count #{matches.size} is different than packages count #{pkgs.size}" if matches.size != pkgs.size
 end

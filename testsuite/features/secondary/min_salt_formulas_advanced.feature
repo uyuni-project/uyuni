@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2018 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_formulas
@@ -7,8 +7,8 @@ Feature: Use advanced features of Salt formulas
   As an authorized user
   I want to be able to install and use Salt formulas
 
-   Scenario: Log in as admin user
-      Given I am authorized for the "Admin" section
+   Scenario: Log in as org admin user
+      Given I am authorized
 
   Scenario: Install a test formula package on the server
      When I install "form.yml" to custom formula metadata directory "testform"
@@ -84,7 +84,8 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I wait for "1" seconds
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "text4" on "sle_minion"
@@ -101,10 +102,11 @@ Feature: Use advanced features of Salt formulas
      When I follow "test-formula-group" in the content area
      And I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "" on "sle_minion"
+     When I wait for "1" seconds
+     Then the pillar data for "testing:str" should be "" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -141,7 +143,8 @@ Feature: Use advanced features of Salt formulas
      And I enter "pw1" as "testing#pw"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I wait for "1" seconds
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"
@@ -188,7 +191,8 @@ Feature: Use advanced features of Salt formulas
      And I enter "min_pw3" as "testing#pw_opt"
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "min_text1" on "sle_minion"
+     When I wait for "1" seconds
+     Then the pillar data for "testing:str" should be "min_text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "min_text2" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "min_text3" on "sle_minion"
      And the pillar data for "testing:str_opt" should be "min_text4" on "sle_minion"
@@ -204,10 +208,11 @@ Feature: Use advanced features of Salt formulas
   Scenario: Clear values in minion formula and verify that the pillar is set to group values
      When I follow "Formulas" in the content area
      And I follow first "Testform" in the content area
-     And I click on "Clear values" and confirm
+     And I click on "Clear values" and confirm alert box
      And I click on "Save Formula"
      Then I should see a "Formula saved" text
-     And the pillar data for "testing:str" should be "text1" on "sle_minion"
+     When I wait for "1" seconds
+     Then the pillar data for "testing:str" should be "text1" on "sle_minion"
      And the pillar data for "testing:str_def" should be "defvalue" on "sle_minion"
      And the pillar data for "testing:str_or_null" should be "None" on "sle_minion"
      And the pillar data for "testing" should not contain "str_opt" on "sle_minion"

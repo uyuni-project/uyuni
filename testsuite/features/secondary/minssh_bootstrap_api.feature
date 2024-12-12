@@ -12,10 +12,11 @@
 @scope_salt_ssh
 @scope_onboarding
 @ssh_minion
+@skip_if_github_validation
 Feature: Register a salt-ssh system via API
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SSH minion system profile before API bootstrap test
     Given I am on the Systems overview page of this "ssh_minion"
@@ -33,7 +34,7 @@ Feature: Register a salt-ssh system via API
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
 
   Scenario: Check new API bootstrapped salt-ssh system in System Overview page
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
 
@@ -56,6 +57,7 @@ Feature: Register a salt-ssh system via API
     Given I am on the Systems overview page of this "ssh_minion"
     Then I check for failed events on history event page
 
+@susemanager
   Scenario: API bootstrap: subscribe SSH minion to base channel
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
@@ -70,7 +72,23 @@ Feature: Register a salt-ssh system via API
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
+
+@uyuni
+  Scenario: API bootstrap: subscribe SSH minion to base channel
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I follow "Software" in the content area
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.5 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled" is completed
 
 @proxy
   Scenario: Cleanup and flush the firewall rules

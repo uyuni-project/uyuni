@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -15,8 +15,8 @@
 @proxy
 Feature: Move a SSH minion from a proxy to direct connection
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete minion system profile before bootstrap
     Given I am on the Systems overview page of this "ssh_minion"
@@ -36,7 +36,8 @@ Feature: Move a SSH minion from a proxy to direct connection
     And I select "1-SUSE-SSH-KEY-x86_64" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: Check initial connection from minion to proxy
@@ -61,7 +62,7 @@ Feature: Move a SSH minion from a proxy to direct connection
     And I wait until I see "scheduled" text
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check direct connection
     Given I am on the Systems overview page of this "ssh_minion"
@@ -81,7 +82,7 @@ Feature: Move a SSH minion from a proxy to direct connection
     And I wait until I see "scheduled" text
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check registration on proxy of minion
     Given I am on the Systems overview page of this "proxy"

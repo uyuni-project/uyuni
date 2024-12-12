@@ -67,7 +67,7 @@ Feature: Bootstrap a virtualization host minion and set it up for virtualization
   Scenario: Apply the KVM virtualization host formula via the highstate
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     Then service "libvirtd" is enabled on "kvm_server"
 
   Scenario: Restart the minion to enable libvirt_events engine configuration

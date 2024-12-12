@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @proxy
 @sle12sp5_buildhost
 Feature: Prepare buildhost and build OS image for SLES 12 SP5
@@ -18,16 +19,25 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     When I create an activation key including custom channels for "sle12sp5_buildhost" via API
 
   Scenario: Bootstrap the SLES 12 SP5 build host
-    When I bootstrap minion client "sle12sp5_buildhost" using bootstrap script with activation key "1-sle12sp5_buildhost_key" from the proxy
-    And I wait at most 10 seconds until Salt master sees "sle12sp5_buildhost" as "unaccepted"
-    And I accept "sle12sp5_buildhost" key in the Salt master
+    When I follow the left menu "Systems > Bootstrapping"
+    Then I should see a "Bootstrap Minions" text
+    When I enter the hostname of "sle12sp5_buildhost" as "hostname"
+    And I enter "22" as "port"
+    And I enter "root" as "user"
+    And I enter "linux" as "password"
+    And I select "1-sle12sp5_buildhost_key" from "activationKeys"
+    And I select the hostname of "proxy" from "proxies" if present
+    And I click on "Bootstrap"
+    And I wait until I see "Bootstrap process initiated." text
     And I wait at most 500 seconds until onboarding is completed for "sle12sp5_buildhost"
 
-  Scenario: Apply the highstate to the SLES 12 SP5 build host
-    Given I am on the Systems overview page of this "sle12sp5_buildhost"
-    When I wait until no Salt job is running on "sle12sp5_buildhost"
-    And I apply highstate on "sle12sp5_buildhost"
-    And I wait until file "/var/lib/Kiwi/repo/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm" exists on "sle12sp5_buildhost"
+  Scenario: Check the new SLES 12 SP5 bootstrapped build host in System Overview page
+    When I follow the left menu "Salt > Keys"
+    Then I should see a "accepted" text
+    When I follow the left menu "Systems > System List > All"
+    And I wait until I see the name of "sle12sp5_buildhost", refreshing the page
+    And I wait until onboarding is completed for "sle12sp5_buildhost"
+    Then the Salt master can reach "sle12sp5_buildhost"
 
   Scenario: Create an OS image profile for SLES 12 SP5 with activation key
     When I follow the left menu "Images > Profiles"
@@ -59,6 +69,7 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     And I am on the image store of the Kiwi image for organization "1"
     Then I should see the name of the image for "sle12sp5_terminal"
 
+@skip_if_containerized_server
   Scenario: Move the SLES 12 SP5 image to the branch server
     When I apply state "image-sync" to "proxy"
     Then the image for "sle12sp5_terminal" should exist on the branch server

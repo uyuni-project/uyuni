@@ -15,10 +15,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "RHEL and Liberty" as the filtered product description
     Then I should see a "RHEL and Liberty 8 Base" text
-    When I select "x86_64" in the dropdown list of the architecture filter
+    When I select "x86_64" from "product-arch-filter"
     Then I should see a "RHEL and Liberty 8 Base" text
 
 @scc_credentials
@@ -106,6 +107,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
     When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
     And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
+    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
+
+@containerized_server
+@proxy
+@uyuni
+  Scenario: Add openSUSE Leap Micro 5.5 product, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "leap-micro5.5" channels with arch "x86_64"
+    And I use spacewalk-common-channel to add all "leap-micro5.5-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap-micro5.5-x86_64" have finished
+    And I wait until all synchronized channels for "leap-micro5.5-client-tools-x86_64" have finished
 
 @proxy
 @susemanager
@@ -163,3 +175,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
   Scenario: Trigger a refresh of the products synched from SCC
     When I execute mgr-sync refresh
+
+@scc_credentials
+  Scenario: Report the synchronization duration for SLES 15 SP4
+    When I report the synchronization duration for "sles15-sp4"

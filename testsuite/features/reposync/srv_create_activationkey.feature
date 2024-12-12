@@ -118,6 +118,7 @@ Feature: Create activation keys
     And I click on "Create Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been created" text
 
+@scc_credentials
   Scenario: Create an activation key for the terminal
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"

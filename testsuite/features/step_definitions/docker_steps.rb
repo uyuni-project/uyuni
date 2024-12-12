@@ -31,7 +31,7 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
       break
     end
   end
-  raise 'unable to find the image id' if image_id.zero?
+  raise KeyError, 'unable to find the image id' if image_id.zero?
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image build did not complete') do
     image_details = $api_test.image.get_details(image_id)
@@ -53,7 +53,7 @@ When(/^I wait at most (\d+) seconds until image "([^"]*)" with version "([^"]*)"
       break
     end
   end
-  raise 'unable to find the image id' if image_id.zero?
+  raise SystemCallError, 'unable to find the image id' if image_id.zero?
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'image inspection did not complete') do
     image_details = $api_test.image.get_details(image_id)
@@ -71,7 +71,7 @@ When(/^I wait at most (\d+) seconds until all "([^"]*)" container images are bui
   repeat_until_timeout(timeout: timeout.to_i, message: 'at least one image was not built correctly') do
     step 'I follow the left menu "Images > Image List"'
     step 'I wait until I do not see "There are no entries to show." text'
-    raise 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
+    raise SystemCallError, 'error detected while building images' if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Failed\')]]')
     break if has_xpath?('//tr[td[text()=\'Container Image\']][td//*[contains(@title, \'Built\')]]', count: count)
 
     sleep 5
@@ -120,17 +120,17 @@ Then(/^the list of packages of image "([^"]*)" with version "([^"]*)" is not emp
       break
     end
   end
-  raise 'unable to find the image id' if image_id.zero?
+  raise ScriptError, 'unable to find the image id' if image_id.zero?
 
   image_details = $api_test.image.get_details(image_id)
   log "Image Details: #{image_details}"
-  raise 'the list of image packages is empty' if (image_details['installedPackages']).zero?
+  raise ScriptError, 'the list of image packages is empty' if (image_details['installedPackages']).zero?
 end
 
 Then(/^the image "([^"]*)" with version "([^"]*)" doesn't exist via API calls$/) do |image_non_exist, version|
   images_list = $api_test.image.list_images
   images_list.each do |element|
-    raise "#{image_non_exist} should not exist anymore" if element['name'] == image_non_exist && element['version'] == version.strip
+    raise ScriptError, "#{image_non_exist} should not exist anymore" if element['name'] == image_non_exist && element['version'] == version.strip
   end
 end
 
@@ -144,15 +144,15 @@ end
 When(/^I list image store types and image stores via API$/) do
   store_types = $api_test.image.store.list_image_store_types
   log "Store types: #{store_types}"
-  raise 'We have only type support for Registry and OS Image store type! New method added?! please update the tests' unless store_types.length == 2
-  raise 'We should have Registry as supported type' unless store_types.find { |store_type| store_type['label'] == 'registry' }
-  raise 'We should have OS Image as supported type' unless store_types.find { |store_type| store_type['label'] == 'os_image' }
+  raise ScriptError, 'We have only type support for Registry and OS Image store type! New method added?! please update the tests' unless store_types.length == 2
+  raise ScriptError, 'We should have Registry as supported type' unless store_types.find { |store_type| store_type['label'] == 'registry' }
+  raise ScriptError, 'We should have OS Image as supported type' unless store_types.find { |store_type| store_type['label'] == 'os_image' }
 
   stores = $api_test.image.store.list_image_stores
   log "Image Stores: #{stores}"
   registry = stores.find { |store| store['storetype'] == 'registry' }
-  raise "Label #{registry['label']} is different than 'galaxy-registry'" unless registry['label'] == 'galaxy-registry'
-  raise "URI #{registry['uri']} is different than '#{$no_auth_registry}'" unless registry['uri'] == $no_auth_registry.to_s
+  raise ScriptError, "Label #{registry['label']} is different than 'galaxy-registry'" unless registry['label'] == 'galaxy-registry'
+  raise ScriptError, "URI #{registry['uri']} is different than '#{$no_auth_registry}'" unless registry['uri'] == $no_auth_registry.to_s
 end
 
 When(/^I set and get details of image store via API$/) do
@@ -202,7 +202,7 @@ When(/^I list image profiles via API$/) do
   ima_profiles = $api_test.image.profile.list_image_profiles
   log ima_profiles
   imagelabel = ima_profiles.select { |image| image['label'] = 'fakeone' }
-  raise "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
+  raise ScriptError, "label of container should be fakeone! #{imagelabel[0]['label']} != 'fakeone'" unless imagelabel[0]['label'] == 'fakeone'
 end
 
 When(/^I set and get profile details via API$/) do

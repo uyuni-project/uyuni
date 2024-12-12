@@ -24,7 +24,7 @@ When(/^I create a (leap|sles|rhlike|deblike) virtual machine named "([^"]*)" (wi
     name = 'sles-disk-image-template.qcow2'
     net = 'salt-sles'
     os = 'sle15sp4'
-    mac = ENV.fetch('MAC_MIN_NESTED', 'RANDOM')
+    mac = 'RANDOM'
   when 'rhlike'
     name = 'rhlike-disk-image-template.qcow2'
     net = 'salt-rhlike'
@@ -338,8 +338,9 @@ Then(/^"([^"]*)" virtual machine on "([^"]*)" should (not stop|stop) on reboot((
   output, _code = node.run("virsh dumpxml #{inactive} #{vm}")
   tree = Nokogiri::XML(output)
   on_reboot = tree.xpath('//on_reboot/text()')[0].to_s
-  successful_reboot = (on_reboot == 'destroy' && stop == 'stop') || (on_reboot == 'restart' && stop == 'not stop')
-  raise ScriptError, "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}" unless successful_reboot
+  unless (on_reboot == 'destroy' && stop == 'stop') || (on_reboot == 'restart' && stop == 'not stop')
+    raise ScriptError, "Invalid reboot configuration #{next_start}: on_reboot: #{on_reboot}"
+  end
 end
 
 Then(/^"([^"]*)" virtual machine on "([^"]*)" should be UEFI enabled$/) do |vm, host|

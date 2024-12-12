@@ -1,16 +1,17 @@
-# Copyright (c) 2020-2022 SUSE LLC
+# Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_activationkey.feature
 # If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @scope_salt_ssh
 @ssh_minion
 Feature: Register a Salt system to be managed via SSH tunnel
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: remove package before ssh tunnel test
     When I remove package "milkyway-dummy" from this "ssh_minion" without error control
@@ -34,7 +35,8 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I select the hostname of "proxy" from "proxies" if present
     And I check "manageWithSSH"
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "ssh_minion"
 
   Scenario: The contact method is SSH tunnel on this minion
@@ -51,8 +53,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    When I force picking pending events on "ssh_minion" if necessary
-    Then I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    Then I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove a package from this SSH tunnel minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -65,8 +66,7 @@ Feature: Register a Salt system to be managed via SSH tunnel
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I force picking pending events on "ssh_minion" if necessary
-    Then I wait until event "Package Removal scheduled by admin" is completed
+    Then I wait until event "Package Removal scheduled" is completed
 
   Scenario: Run a remote command on this SSH tunnel minion
     When I follow the left menu "Salt > Remote Commands"
@@ -91,6 +91,6 @@ Feature: Register a Salt system to be managed via SSH tunnel
 
   Scenario: Cleanup: register a SSH minion after SSH tunnel tests
     When I call system.bootstrap() on host "ssh_minion" and salt-ssh "enabled"
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"

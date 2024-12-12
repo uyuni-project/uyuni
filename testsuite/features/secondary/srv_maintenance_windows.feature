@@ -1,13 +1,18 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+# skip if container because we do not have a domain name and the
+# javascript validation fails on validating the URL
+# this needs to be fixed
+
+@skip_if_github_validation
 @scope_maintenance_windows
 @sle_minion
-@sle_client
+@rhlike_minion
 Feature: Maintenance windows
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create single calendar
     When I follow the left menu "Schedule > Maintenance Windows > Calendars"
@@ -64,7 +69,7 @@ Feature: Maintenance windows
     Then I should see a "System properties changed" text
 
   Scenario: Assign systems to a multi schedule using SSM
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -104,7 +109,7 @@ Feature: Maintenance windows
     Then I should see a "1 package install has been scheduled for" text
 
   Scenario: Detach systems from schedules
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"

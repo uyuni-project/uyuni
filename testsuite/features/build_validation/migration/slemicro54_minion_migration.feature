@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @slemicro54_minion
@@ -51,6 +51,7 @@ Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
     And I wait until event "Subscribe channels scheduled by admin" is completed
+
   # bsc#1085436 - Apache returns 403 Forbidden after a zypper refresh on minion
   Scenario: Check the new channel is working
     When I refresh the metadata for "slemicro54_minion"

@@ -16,6 +16,7 @@
 #
 
 GIT_REPO="/tmp/test_salt_git_pillar.git"
+MARKER_FILE="/tmp/sshd.pid"
 
 if [ "$1" == "setup" ]; then
 	echo "Setting up git_pillar environment and restarting Salt master and Salt API"
@@ -41,6 +42,14 @@ EOF
 	cp /root/.ssh/authorized_keys /root/.ssh/authorized_keys_backup_gitpillar
 	cat /var/lib/salt/.ssh/mgr_ssh_id.pub >> /root/.ssh/authorized_keys
 
+  # Start sshd if not already running
+  if ! pgrep -x "sshd" > /dev/null; then
+      ssh-keygen -A
+      /usr/sbin/sshd -D &
+      SSHD_PID=$!
+      echo $SSHD_PID > "$MARKER_FILE"
+  fi
+
 	cat << 'EOF' > /etc/salt/master.d/zz-testing-gitpillar.conf
 ext_pillar:
   - suma_minion: True
@@ -60,5 +69,15 @@ if [ "$1" == "clean" ]; then
 	rm /etc/salt/master.d/zz-testing-gitpillar.conf
 	cp /root/.ssh/authorized_keys_backup_gitpillar /root/.ssh/authorized_keys
 	rm /root/.ssh/authorized_keys_backup_gitpillar
+  # Check if we started sshd and stop it
+  if [ -f "$MARKER_FILE" ]; then
+      SSHD_PID=$(cat "$MARKER_FILE")
+      if ps -p "$SSHD_PID" > /dev/null 2>&1; then
+          kill "$SSHD_PID"
+      fi
+      rm -f "$MARKER_FILE"
+  else
+      echo "No marker file found. sshd might not have been started by this script."
+  fi
 	systemctl restart salt-master salt-api
 fi

@@ -39,7 +39,7 @@ Feature: Synchronize extra products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "Ubuntu" as the filtered product description
-    And I select "amd64-deb" in the dropdown list of the architecture filter
+    And I select "amd64-deb" from "product-arch-filter"
     And I wait until I see "Ubuntu 22.04" text
     And I select "Ubuntu 22.04" as a product
     Then I should see the "Ubuntu 22.04" selected

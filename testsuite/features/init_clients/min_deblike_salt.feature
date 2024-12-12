@@ -21,7 +21,7 @@ Feature: Bootstrap a Debian-like minion and do some basic operations on it
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "deblike_minion", refreshing the page
     And I wait until onboarding is completed for "deblike_minion"
     And I query latest Salt changes on Debian-like system "deblike_minion"
@@ -51,7 +51,7 @@ Feature: Bootstrap a Debian-like minion and do some basic operations on it
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Detect latest Salt changes on the Debian-like minion
     When I query latest Salt changes on Debian-like system "deblike_minion"

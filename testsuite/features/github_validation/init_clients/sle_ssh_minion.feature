@@ -14,7 +14,8 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I enter the hostname of "ssh_minion" as "hostname"
     And I enter "linux" as "password"
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
 

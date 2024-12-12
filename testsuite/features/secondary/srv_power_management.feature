@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_power_management
 @scope_cobbler
 @sle_minion
@@ -55,7 +56,7 @@ Feature: IPMI Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_client" client
     And I follow the left menu "Systems > System Set Manager > Overview"

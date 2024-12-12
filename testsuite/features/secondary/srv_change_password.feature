@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features when running in sequential:
@@ -11,7 +11,7 @@ Feature: Change the user's password
   As an authorized user
   I want enter a new password
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Change the password to a new password

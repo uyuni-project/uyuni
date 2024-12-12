@@ -120,6 +120,11 @@ When(/^I change Access Control List on "(.*?)" directory to "(.*?)"$/) do |bkp_d
   log "\n*** Taking backup, this might take a while ***\n"
 end
 
+Then(/^I take a backup with smdba in folder "(.*?)"$/) do |backup_dir|
+  command = "smdba backup-hot --enable=on --backup-dir=#{backup_dir}"
+  $output, _code = get_target('server').run(command, timeout: 600, check_errors: true)
+end
+
 Then(/^base backup is taken$/) do
   assert_includes($output, 'Finished')
 end
@@ -156,7 +161,7 @@ When(/^I restore database from the backup$/) do
   log "\n*** Restoring database from the backup. This will may take a while. ***\n\n"
   output, code = get_target('server').run('smdba backup-restore')
   log "#{output}\n\n"
-  raise 'Restore Failed' unless code.zero?
+  raise SystemCallError, 'Restore Failed' unless code.zero?
 end
 
 Then(/^I disable backup in the directory "(.*?)"$/) do |_arg1|

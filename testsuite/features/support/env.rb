@@ -10,20 +10,33 @@ require 'capybara/cucumber'
 require 'cucumber'
 # require 'simplecov'
 require 'minitest/autorun'
+require 'minitest/unit'
 require 'securerandom'
 require 'selenium-webdriver'
 require 'multi_test'
 require 'set'
-require_relative 'twopence_env'
+require 'timeout'
+require_relative 'code_coverage'
+require_relative 'quality_intelligence'
+require_relative 'remote_nodes_env'
 require_relative 'commonlib'
+
+$stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
 # code coverage analysis
 # SimpleCov.start
 
-server = ENV.fetch('SERVER', nil)
 if ENV['DEBUG']
   $debug_mode = true
   $stdout.puts('DEBUG MODE ENABLED.')
+end
+if ENV['REDIS_HOST'] && ENV.fetch('CODE_COVERAGE', false)
+  $code_coverage_mode = true
+  $stdout.puts('CODE COVERAGE MODE ENABLED.')
+end
+if ENV.fetch('QUALITY_INTELLIGENCE', false)
+  $quality_intelligence_mode = true
+  $stdout.puts('QUALITY INTELLIGENCE MODE ENABLED.')
 end
 
 # Context per feature
@@ -43,6 +56,8 @@ $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 $server_instance_id = ENV.fetch('SERVER_INSTANCE_ID', nil) if ENV['SERVER_INSTANCE_ID']
 $current_user = 'admin'
 $current_password = 'admin'
+$chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
+$chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -50,14 +65,14 @@ $stdout.sync = true
 STARTTIME = Time.new.to_i
 Capybara.default_max_wait_time = ENV['CAPYBARA_TIMEOUT'] ? ENV['CAPYBARA_TIMEOUT'].to_i : 10
 DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
-$is_cloud_provider = ENV.fetch('PROVIDER').include? 'aws'
-$is_container_provider = ENV.fetch('PROVIDER').include? 'podman'
-$is_container_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
+$is_cloud_provider = ENV['PROVIDER'].include? 'aws'
+$is_gh_validation = ENV['PROVIDER'].include? 'podman'
+$is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
-$is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
+$api_protocol = ENV.fetch('API_PROTOCOL', nil) if ENV['API_PROTOCOL'] # force the API protocol to be used. You can use 'http' or 'xmlrpc'
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -70,42 +85,34 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-# register chromedriver headless mode
+# register chromedriver in headless mode
 def capybara_register_driver
-  Capybara.register_driver(:headless_chrome) do |app|
-    client = Selenium::WebDriver::Remote::Http::Default.new
+  Capybara.register_driver :selenium_chrome_headless do |app|
     # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client.read_timeout = 180
-    # Chrome driver options
-    chrome_options = %w[no-sandbox disable-dev-shm-usage ignore-certificate-errors disable-gpu window-size=2048,2048 js-flags=--max_old_space_size=2048]
-    chrome_options << 'headless' unless $debug_mode
-    capabilities = Selenium::WebDriver::Remote::Capabilities.chrome(
-      chromeOptions: {
-        args: chrome_options,
-        w3c: false,
-        prefs: {
-          download: {
-            prompt_for_download: false,
-            default_directory: '/tmp/downloads'
-          }
-        }
-      },
-      unexpectedAlertBehaviour: 'accept',
-      unhandledPromptBehavior: 'accept'
+    client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 240)
+    chrome_options = Selenium::WebDriver::Chrome::Options.new(
+      args: %w[disable-dev-shm-usage ignore-certificate-errors window-size=2048,2048 js-flags=--max_old_space_size=2048]
     )
+    chrome_options.args << 'headless=new' unless $debug_mode
+    chrome_options.args << "remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
+    chrome_options.add_preference('prompt_for_download', false)
+    chrome_options.add_preference('download.default_directory', '/tmp/downloads')
+    chrome_options.add_preference('unhandledPromptBehavior', 'accept')
+    chrome_options.add_preference('unexpectedAlertBehaviour', 'accept')
 
-    Capybara::Selenium::Driver.new(app, browser: :chrome, desired_capabilities: capabilities, http_client: client)
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options, http_client: client)
   end
 end
 
+# register chromedriver headless mode
 $capybara_driver = capybara_register_driver
 Selenium::WebDriver.logger.level = :error unless $debug_mode
-Capybara.default_driver = :headless_chrome
-Capybara.javascript_driver = :headless_chrome
+Capybara.default_driver = :selenium_chrome_headless
+Capybara.javascript_driver = :selenium_chrome_headless
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
-Capybara.app_host = "https://#{server}"
+Capybara.app_host = "https://#{ENV.fetch('SERVER', nil)}"
 Capybara.server_port = 8888 + ENV['TEST_ENV_NUMBER'].to_i
 $stdout.puts "Capybara APP Host: #{Capybara.app_host}:#{Capybara.server_port}"
 
@@ -114,6 +121,12 @@ World(MiniTest::Assertions)
 
 # Initialize the API client
 $api_test = new_api_client
+
+# Init CodeCoverage Handler
+$code_coverage = CodeCoverage.new if $code_coverage_mode
+
+# Init Quality Intelligence Handler
+$quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 
 # Define the current feature scope
 Before do |scenario|
@@ -135,7 +148,7 @@ After do |scenario|
       print_server_logs
     end
   end
-  page.instance_variable_set(:@touched, false)
+  page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
 end
 
 # Test is web session is open
@@ -170,8 +183,6 @@ def click_details_if_present
     click_button('Details')
   rescue Capybara::ElementNotFound
     log "Button 'Details' not found on the page."
-  rescue Capybara::ElementNotInteractable
-    log "Button 'Details' found but not interactable."
   end
 end
 
@@ -190,6 +201,31 @@ def relog_and_visit_previous_url
   end
 end
 
+# Process the code coverage for each feature when it ends
+def process_code_coverage
+  return if $feature_path.nil?
+
+  feature_filename = $feature_path.split(%r{(\.feature|/)})[-2]
+  $code_coverage.jacoco_dump(feature_filename)
+  $code_coverage.push_feature_coverage(feature_filename)
+end
+
+# Dump feature code coverage into a Redis DB
+After do |scenario|
+  next unless $code_coverage_mode
+  next unless $feature_path != scenario.location.file
+
+  process_code_coverage
+  $feature_path = scenario.location.file
+end
+
+# Dump feature code coverage into a Redis DB, for the last feature
+AfterAll do
+  next unless $code_coverage_mode
+
+  process_code_coverage
+end
+
 # get the Cobbler log output when it fails
 After('@scope_cobbler') do |scenario|
   if scenario.failed?
@@ -203,6 +239,8 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
+  next unless Capybara::Session.instance_created?
+
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
 
@@ -216,17 +254,22 @@ Before('@skip') do
   skip_this_scenario
 end
 
+# Create a user for each feature
+Before do |scenario|
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
+  next if get_context('user_created') == true
+
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context('user_created', true)
+  end
+end
+
 # do some tests only if the corresponding node exists
 Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
-end
-
-Before('@paygo_server') do
-  skip_this_scenario unless $is_using_paygo_server
-end
-
-Before('@skip_if_paygo_server') do
-  skip_this_scenario if $is_using_paygo_server
 end
 
 Before('@sle_client') do
@@ -672,19 +715,24 @@ Before('@skip_if_cloud') do
   skip_this_scenario if $is_cloud_provider
 end
 
-# do some tests if executed in cloud environment
+# skip tests if executed in cloud environment
 Before('@cloud') do
   skip_this_scenario unless $is_cloud_provider
 end
 
-# skip tests if executed in containers for the github validation
+# skip tests if executed in containers for the GitHub validation
 Before('@skip_if_github_validation') do
-  skip_this_scenario if $is_container_provider
+  skip_this_scenario if $is_gh_validation
 end
 
 # skip tests if the server runs in a container
-Before('@skip_if_container_server') do
-  skip_this_scenario if $is_container_server
+Before('@skip_if_containerized_server') do
+  skip_this_scenario if $is_containerized_server
+end
+
+# do test only if we have a containerized server
+Before('@containerized_server') do
+  skip_this_scenario unless $is_containerized_server
 end
 
 # only test for excessive SCC accesses if SCC access is being logged
@@ -707,13 +755,13 @@ end
 # have more infos about the errors
 def print_server_logs
   $stdout.puts '=> /var/log/rhn/rhn_web_ui.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_ui.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end
   $stdout.puts
   $stdout.puts '=> /var/log/rhn/rhn_web_api.log'
-  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date=\'5 minutes ago\' \'+%Y-%m-%d %H:%M:%S\')" \' $0 > limit\'')
+  out, _code = get_target('server').run('tail -n20 /var/log/rhn/rhn_web_api.log | awk -v limit="$(date --date="5 minutes ago" "+%Y-%m-%d %H:%M:%S")" " $0 > limit"')
   out.each_line do |line|
     $stdout.puts line.to_s
   end

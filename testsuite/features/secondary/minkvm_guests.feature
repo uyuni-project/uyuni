@@ -3,16 +3,17 @@
 
 # This feature is not idempotent, we leave the system registered in order to have the history of events
 # available.
-
-# This feature has not dependencies and it can run in parallel with other features.
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
+# This feature has no dependencies and it can run in parallel with other features.
 
 @scope_virtualization
 @virthost_kvm
 @scope_cobbler
 Feature: Manage KVM virtual machines via the GUI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
@@ -114,10 +115,10 @@ Feature: Manage KVM virtual machines via the GUI
 
   Scenario: Attach an image to a cdrom on a KVM virtual machine
     When I click on "Edit" in row "test-vm"
+    And I wait until I do not see "Loading..." text
+    And I store "" into file "/tmp/test-image.iso" on "kvm_server"
     # WORKAROUND: bsc#1213220 Virtualization page stuck on Loading
     And I wait until I do not see "Loading..." text, refreshing the page
-    And I store "" into file "/tmp/test-image.iso" on "kvm_server"
-    And I wait until I do not see "Loading..." text
     And I enter "/tmp/test-image.iso" as "disk2_source_file"
     And I click on "Update"
     Then I should see a "Hosted Virtual Systems" text
@@ -341,7 +342,7 @@ Feature: Manage KVM virtual machines via the GUI
     And "test-net2" virtual network on "kvm_server" should have "192.168.130.1" IPv4 address with 24 prefix
 
 # Start provisioning scenarios
-
+@susemanager
 @scc_credentials
   Scenario: Create auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"
@@ -355,6 +356,7 @@ Feature: Manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallable Distributions" text
     And I should see a "SLE-15-SP4-KVM" link
 
+@susemanager
 @scc_credentials
   Scenario: Create auto installation profile
     And I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -367,6 +369,7 @@ Feature: Manage KVM virtual machines via the GUI
     Then I should see a "Autoinstallation: 15-sp4-kvm" text
     And I should see a "Autoinstallation Details" text
 
+@susemanager
 @scc_credentials
   Scenario: Configure auto installation profile
     When I enter "self_update=0" as "kernel_options"
@@ -377,6 +380,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I follow "Autoinstallation File"
     Then I should see a "SLE-15-SP4-KVM" text
 
+@susemanager
 @scc_credentials
   Scenario: Create an auto installing KVM virtual machine
     Given I am on the "Virtualization" page of this "kvm_server"
@@ -398,6 +402,7 @@ Feature: Manage KVM virtual machines via the GUI
     And "test-vm2" virtual machine on "kvm_server" should not stop on reboot at next start
     And I wait at most 1000 seconds until Salt master sees "test-vm2" as "unaccepted"
 
+@susemanager
 @scc_credentials
   Scenario: VNC console for the auto installing KVM virtual machine
     When I click on "Graphical Console" in row "test-vm2"
@@ -405,6 +410,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I wait until I see the VNC graphical console
     And I close the last opened window
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -413,6 +419,7 @@ Feature: Manage KVM virtual machines via the GUI
     And I click on "Delete Autoinstallation"
     Then I should not see a "15-sp4-kvm" text
 
+@susemanager
 @scc_credentials
   Scenario: Cleanup: remove the auto installation distribution
     When I follow the left menu "Systems > Autoinstallation > Distributions"

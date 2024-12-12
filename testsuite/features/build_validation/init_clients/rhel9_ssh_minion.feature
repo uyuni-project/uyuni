@@ -21,17 +21,18 @@ Feature: Bootstrap a Rhel 9 SSH minion
     And I select "1-rhel9_ssh_minion_key" from "activationKeys"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "rhel9_ssh_minion"
 
-  @proxy
+@proxy
   Scenario: Check connection from Rhel 9 SSH minion to proxy
     Given I am on the Systems overview page of this "rhel9_ssh_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-  @proxy
+@proxy
   Scenario: Check registration on proxy of Rhel 9 SSH minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area

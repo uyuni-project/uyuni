@@ -123,7 +123,7 @@ Raising it will still fail the test case:
 
 ```ruby
   def list_all_actions()
-    return (@connection.call("schedule.list_all_actions", @sid) || [])
+    @connection.call("schedule.list_all_actions", @sid) || []
   end
 ```
 
@@ -141,14 +141,15 @@ So if nil is returned, it is because something *ELSE* happened. The developer is
 ## Ruby is a bit functional
 
 ```ruby
-  def list_chains()
-    chains = @connection.call("actionchain.list_chains", @sid)
-    labels = []
-    for chain in chains
-      labels.push(chain['label'])
-    end
-    return labels
-  end
+
+def list_chains()
+  chains = @connection.call("actionchain.list_chains", @sid)
+  labels = []
+  chains.each { |chain|
+    labels.push(chain['label'])
+  }
+  return labels
+end
 ```
 
 Don't think about methods on `how` do I get to the result. Thing more about `what`: "I need the label of every element".

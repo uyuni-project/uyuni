@@ -1,4 +1,4 @@
-# Copyright (c) 2022 SUSE LLC
+# Copyright (c) 2022-2004 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature: as this feature disables/re-enables monitoring capabilities
@@ -8,15 +8,16 @@
 @scope_res
 @deblike_minion
 Feature: Monitor SUMA environment with Prometheus on a Debian-like Salt minion
-  In order to monitor Uyuni server
+  In order to monitor SUSE Manager server
   As an authorized user
   I want to enable Prometheus exporters
 
+@skip_if_github_validation
   Scenario: Pre-requisite: enable Prometheus exporters repository on the Debian-like minion
     When I enable the necessary repositories before installing Prometheus exporters on this "deblike_minion"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Apply Prometheus exporter formulas on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
@@ -38,18 +39,22 @@ Feature: Monitor SUMA environment with Prometheus on a Debian-like Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
+@skip_if_github_validation
   Scenario: Apply highstate for Prometheus exporters on the Debian-like minion
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
+
+@skip_if_github_validation
+  Scenario: Wait for services
+     When I wait until "node" exporter service is active on "deblike_minion"
+     And I wait until "apache" exporter service is active on "deblike_minion"
+     And I wait until "postgres" exporter service is active on "deblike_minion"
 
   Scenario: Visit monitoring endpoints on the Debian-like minion
-    When I wait until "node" exporter service is active on "deblike_minion"
     And I visit "Prometheus node exporter" endpoint of this "deblike_minion"
-    And I wait until "apache" exporter service is active on "deblike_minion"
     And I visit "Prometheus apache exporter" endpoint of this "deblike_minion"
-    And I wait until "postgres" exporter service is active on "deblike_minion"
     And I visit "Prometheus postgres exporter" endpoint of this "deblike_minion"
 
   Scenario: Cleanup: undo Prometheus exporter formulas on the Debian-like minion
@@ -58,11 +63,13 @@ Feature: Monitor SUMA environment with Prometheus on a Debian-like Salt minion
     And I click on "Save"
     Then I wait until I see "Formula saved" text
 
+@skip_if_github_validation
   Scenario: Cleanup: apply highstate after test monitoring on the Debian-like minion
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
+@skip_if_github_validation
   Scenario: Cleanup: disable Prometheus exporters repository on the Debian-like minion
     When I disable the necessary repositories before installing Prometheus exporters on this "deblike_minion" without error control

@@ -1,16 +1,12 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
-#
-# This feature can cause failures in the following features:
-# - features/secondary/proxy_as_pod_basic_tests.feature:
-# If the minion is not properly bootstrapped again.
 
 @sle_minion
 @proxy
 Feature: Move a minion from a proxy to direct connection
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete minion system profile before bootstrap
     Given I am on the Systems overview page of this "sle_minion"
@@ -61,8 +57,8 @@ Feature: Move a minion from a proxy to direct connection
     And I wait until I see "scheduled" text
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled by admin" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check direct connection
     Given I am on the Systems overview page of this "sle_minion"
@@ -73,7 +69,7 @@ Feature: Move a minion from a proxy to direct connection
   Scenario: Change connection back to a proxy via SSM
     # be sure that the old events are older than 1 minute
     Given I wait for "120" seconds
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_minion" client
     And I should see "1" systems selected for SSM
@@ -87,8 +83,8 @@ Feature: Move a minion from a proxy to direct connection
     Given I am on the Systems overview page of this "sle_minion"
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled by admin" completed during last minute, refreshing the page
-    And I wait until I see the event "Apply states [channels] scheduled by admin" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [bootstrap.set_proxy] scheduled" completed during last minute, refreshing the page
+    And I wait until I see the event "Apply states [channels] scheduled" completed during last minute, refreshing the page
 
   Scenario: Check registration on proxy of minion
     Given I am on the Systems overview page of this "proxy"

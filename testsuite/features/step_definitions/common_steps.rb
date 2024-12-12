@@ -23,23 +23,31 @@ end
 When(/^I mount as "([^"]+)" the ISO from "([^"]+)" in the server, validating its checksum$/) do |name, url|
   # When using a mirror it is automatically mounted at /mirror
   if $mirror
-    iso_path = $is_container_provider ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
+    iso_path = $is_containerized_server ? url.sub(/^https?:\/\/[^\/]+/, '/srv/mirror') : url.sub(/^https?:\/\/[^\/]+/, '/mirror')
   else
     iso_path = "/tmp/#{name}.iso"
-    get_target('server').run("wget --no-check-certificate -O #{iso_path} #{url}", timeout: 1500)
+    get_target('server').run("curl --insecure -o #{iso_path} #{url}", runs_in_container: false, timeout: 1500)
   end
 
   iso_dir = File.dirname(iso_path)
   original_iso_name = url.split('/').last
   checksum_path = get_checksum_path(iso_dir, original_iso_name, url)
 
-  raise ScriptError, 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
+  raise 'SHA256 checksum validation failed' unless validate_checksum_with_file(original_iso_name, iso_path, checksum_path)
 
-  mount_point = "/srv/www/htdocs/pub/#{name}"
-  cmd = "mkdir -p #{mount_point} && " \
-        "grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab && " \
-        "umount #{iso_path}; mount #{iso_path}"
-  get_target('server').run(cmd, verbose: true)
+  if $is_containerized_server
+    mount_point = '/srv/www/distributions'
+    get_target('server').run("mkdir -p #{mount_point}")
+    # this needs to be run outside the container
+    get_target('server').run("mgradm distro copy #{iso_path} #{name}", runs_in_container: false, verbose: true)
+    get_target('server').run("ln -s #{mount_point}/#{name} /srv/www/htdocs/pub/")
+  else
+    mount_point = "/srv/www/htdocs/pub/#{name}"
+    cmd = "mkdir -p #{mount_point} && " \
+          "grep #{iso_path} /etc/fstab || echo '#{iso_path}  #{mount_point}  iso9660  loop,ro,_netdev  0 0' >> /etc/fstab && " \
+          "umount #{iso_path}; mount #{iso_path}"
+    get_target('server').run(cmd, verbose: true)
+  end
 end
 
 Then(/^the hostname for "([^"]*)" should be correct$/) do |host|
@@ -72,7 +80,7 @@ end
 Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   node = get_target(host)
   interface, code = node.run("ip -6 address show #{node.public_interface}")
-  raise unless code.zero?
+  raise RuntimeError unless code.zero?
 
   lines = interface.lines
   # selects only lines with IPv6 addresses and proceeds to form an array with only those addresses
@@ -82,7 +90,7 @@ Then(/^the IPv6 address for "([^"]*)" should be correct$/) do |host|
   # confirms that the IPv6 address shown on the page is part of that list and, therefore, valid
   ipv6_address = find(:xpath, '//td[text()=\'IPv6 Address:\']/following-sibling::td[1]').text
   log "IPv6 address: #{ipv6_address}"
-  raise "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
+  raise ScriptError, "List of IPv6 addresses: #{ipv6_addresses_list} doesn't include #{ipv6_address}" unless ipv6_addresses_list.include? ipv6_address
 end
 
 Then(/^the system ID for "([^"]*)" should be correct$/) do |host|
@@ -204,15 +212,16 @@ When(/^I follow the event "([^"]*)" completed during last minute$/) do |event|
 end
 
 # spacewalk errors steps
-Then(/^the up2date logs on client should contain no Traceback error$/) do
+Then(/^the up2date logs on "([^"]*)" should contain no Traceback error$/) do |host|
+  node = get_target(host)
   cmd = 'if grep "Traceback" /var/log/up2date ; then exit 1; else exit 0; fi'
-  _out, code = get_target('client').run(cmd)
-  raise 'error found, check the client up2date logs' if code.nonzero?
+  _out, code = node.run(cmd)
+  raise ScriptError, 'error found, check the client up2date logs' if code.nonzero?
 end
 
 # action chains
 When(/^I check radio button "(.*?)"$/) do |arg1|
-  raise "#{arg1} can't be checked" unless choose(arg1)
+  raise ScriptError, "#{arg1} can't be checked" unless choose(arg1)
 end
 
 When(/^I check radio button "(.*?)", if not checked$/) do |arg1|
@@ -221,7 +230,7 @@ end
 
 When(/^I check default base channel radio button of this "([^"]*)"$/) do |host|
   default_base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
-  raise "#{default_base_channel} can't be checked" unless choose(default_base_channel)
+  raise ScriptError, "#{default_base_channel} can't be checked" unless choose(default_base_channel)
 end
 
 When(/^I enter as remote command this script in$/) do |multiline|
@@ -232,15 +241,16 @@ end
 When(/^I check the ram value of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_ram_value = 'grep MemTotal /proc/meminfo |awk \'{print $2}\''
-  ram_value, _local, _remote, _code = node.test_and_store_results_together(get_ram_value, 'root', 600)
+  ram_value, _err, _code = node.ssh(get_ram_value)
   ram_value = ram_value.gsub(/\s+/, '')
   ram_mb = ram_value.to_i / 1024
   step %(I should see a "#{ram_mb}" text)
 end
 
-When(/^I check the MAC address value$/) do
+When(/^I check the MAC address value of the "([^"]*)"$/) do |host|
+  node = get_target(host)
   get_mac_address = 'cat /sys/class/net/eth0/address'
-  mac_address, _local, _remote, _code = get_target('client').test_and_store_results_together(get_mac_address, 'root', 600)
+  mac_address, _err, _code = node.ssh(get_mac_address)
   mac_address = mac_address.gsub(/\s+/, '')
   mac_address.downcase!
   step %(I should see a "#{mac_address}" text)
@@ -249,7 +259,7 @@ end
 Then(/^I should see the CPU frequency of the "([^"]*)"$/) do |host|
   node = get_target(host)
   get_cpu_freq = 'cat /proc/cpuinfo  | grep -i \'CPU MHz\'' # | awk '{print $4}'"
-  cpu_freq, _local, _remote, _code = node.test_and_store_results_together(get_cpu_freq, 'root', 600)
+  cpu_freq, _err, _code = node.ssh(get_cpu_freq)
   get_cpu = cpu_freq.gsub(/\s+/, '')
   cpu = get_cpu.split('.')
   cpu = cpu[0].gsub(/[^\d]/, '')
@@ -263,7 +273,7 @@ Then(/^I should see the power is "([^"]*)"$/) do |status|
 
       find(:xpath, '//button[@value="Get status"]').click
     end
-    raise "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
+    raise ScriptError, "Power status #{status} not found" unless check_text_and_catch_request_timeout_popup?(status)
   end
 end
 
@@ -332,12 +342,198 @@ Then(/^"([^"]*)" should exist in the metadata for "([^"]*)"$/) do |file, host|
   raise "File #{dir_file}/*#{file} not exist" unless out.lines.count >= 1
 end
 
+# WORKAROUND for https://github.com/SUSE/spacewalk/issues/20318
+When(/^I install the needed packages for highstate in build host$/) do
+  packages = 'bea-stax
+  bea-stax-api
+  btrfsmaintenance
+  btrfsprogs
+  btrfsprogs-udev-rules
+  catatonit
+  checkmedia
+  containerd
+  cryptsetup
+  cryptsetup-lang
+  dbus-1-x11
+  device-mapper
+  docker
+  dpkg
+  fontconfig
+  git-core
+  git-gui
+  gitk
+  grub2-snapper-plugin
+  iptables
+  java-17-openjdk-headless
+  javapackages-filesystem
+  javapackages-tools
+  jing
+  kernel-default
+  kernel-firmware-all
+  kernel-firmware-amdgpu
+  kernel-firmware-ath10k
+  kernel-firmware-ath11k
+  kernel-firmware-atheros
+  kernel-firmware-bluetooth
+  kernel-firmware-bnx2
+  kernel-firmware-brcm
+  kernel-firmware-chelsio
+  kernel-firmware-dpaa2
+  kernel-firmware-i915
+  kernel-firmware-intel
+  kernel-firmware-iwlwifi
+  kernel-firmware-liquidio
+  kernel-firmware-marvell
+  kernel-firmware-media
+  kernel-firmware-mediatek
+  kernel-firmware-mellanox
+  kernel-firmware-mwifiex
+  kernel-firmware-network
+  kernel-firmware-nfp
+  kernel-firmware-nvidia
+  kernel-firmware-platform
+  kernel-firmware-prestera
+  kernel-firmware-qcom
+  kernel-firmware-qlogic
+  kernel-firmware-radeon
+  kernel-firmware-realtek
+  kernel-firmware-serial
+  kernel-firmware-sound
+  kernel-firmware-ti
+  kernel-firmware-ueagle
+  kernel-firmware-usb-network
+  kiwi-boot-descriptions
+  kiwi-man-pages
+  kiwi-systemdeps
+  kiwi-systemdeps-bootloaders
+  kiwi-systemdeps-containers
+  kiwi-systemdeps-core
+  kiwi-systemdeps-disk-images
+  kiwi-systemdeps-filesystems
+  kiwi-systemdeps-image-validation
+  kiwi-systemdeps-iso-media
+  kiwi-tools
+  kpartx
+  libaio1
+  libasound2
+  libbtrfs0
+  libburn4
+  libcontainers-common
+  libdevmapper-event1_03
+  libefa1
+  libfmt8
+  libfontconfig1
+  libfreebl3
+  libfreebl3-hmac
+  libibverbs
+  libibverbs1
+  libip6tc2
+  libisoburn1
+  libisofs6
+  libjpeg8
+  libjte1
+  liblcms2-2
+  liblmdb-0_9_17
+  liblttng-ust0
+  liblvm2cmd2_03
+  liblzo2-2
+  libmd0
+  libmediacheck6
+  libmlx4-1
+  libmlx5-1
+  libmpath0
+  libnetfilter_conntrack3
+  libnfnetlink0
+  libnftnl11
+  libnuma1
+  libpcsclite1
+  libpwquality1
+  libpwquality-lang
+  librados2
+  librbd1
+  librdmacm1
+  libreiserfscore0
+  libsgutils2-1_47-2
+  libsha1detectcoll1
+  libsnapper5
+  libsoftokn3
+  libsoftokn3-hmac
+  liburcu6
+  libX11-6
+  libX11-data
+  libXau6
+  libxcb1
+  libXext6
+  libXft2
+  libxkbcommon0
+  libxml2-tools
+  libXmuu1
+  libXrender1
+  libxslt1
+  libXss1
+  lvm2
+  make
+  make-lang
+  mdadm
+  mozilla-nspr
+  mozilla-nss
+  mozilla-nss-certs
+  mtools
+  multipath-tools
+  openssl
+  patch
+  pcsc-lite
+  perl-TimeDate
+  postfix
+  python3-cssselect
+  python3-docopt
+  python3-kiwi
+  python3-lxml
+  python3-simplejson
+  python3-solv
+  python3-xattr
+  qemu-block-curl
+  qemu-block-rbd
+  qemu-tools
+  rdma-core
+  rdma-ndd
+  relaxngDatatype
+  rollback-helper
+  runc
+  saxon9
+  saxon9-scripts
+  screen
+  sg3_utils
+  skopeo
+  snapper
+  snapper-zypp-plugin
+  sqlite3-tcl
+  squashfs
+  syslinux
+  tcl
+  thin-provisioning-tools
+  timezone-java
+  tk
+  umoci
+  xalan-j2
+  xerces-j2
+  xhost
+  xkeyboard-config
+  xkeyboard-config-lang
+  xml-commons-apis
+  xml-commons-resolver
+  xorriso
+  xtables-plugins'
+  get_target('build_host').run("zypper --non-interactive in #{packages}", timeout: 600)
+end
+
+# metadata steps
 Then(/^I should have '([^']*)' in the patch metadata for "([^"]*)"$/) do |text, host|
   node = get_target(host)
   arch, _code = node.run('uname -m')
   arch.chomp!
   # TODO: adapt for architectures
-  cmd = "zgrep '#{text}' /var/cache/zypp/raw/spacewalk:fake-rpm-suse-channel/repodata/*updateinfo.xml.gz"
+  cmd = "zgrep '#{text}' /var/cache/zypp/raw/susemanager:fake-rpm-suse-channel/repodata/*updateinfo.xml.gz"
   node.run(cmd, timeout: 500)
 end
 
@@ -350,12 +546,11 @@ Given(/^metadata generation finished for "([^"]*)"$/) do |channel|
   get_target('server').run_until_ok("ls /var/cache/rhn/repodata/#{channel}/*updateinfo.xml.gz")
 end
 
-When(/^I push package "([^"]*)" into "([^"]*)" channel$/) do |arg1, arg2|
-  srvurl = "https://#{get_target('server').full_hostname}/APP"
-  command = "rhnpush --server=#{srvurl} -u admin -p admin --nosig -c #{arg2} #{arg1}"
-  get_target('server').run(command, timeout: 500)
-  # TODO: instead of next line, wait for package to appear inside /var/spacewalk/packages
-  get_target('server').run('ls -lR /var/spacewalk/packages', timeout: 500)
+When(/^I push package "([^"]*)" into "([^"]*)" channel through "([^"]*)"$/) do |package_filepath, channel, minion|
+  command = "mgrpush -u admin -p admin --server=#{get_target('server').full_hostname} --nosig -c #{channel} #{package_filepath}"
+  get_target(minion).run(command, timeout: 500)
+  package_filename = File.basename(package_filepath)
+  get_target('server').run_until_ok("find /var/spacewalk/packages -name \"#{package_filename}\" | grep -q \"#{package_filename}\"", timeout: 500)
 end
 
 Then(/^I should see package "([^"]*)" in channel "([^"]*)"$/) do |pkg, channel|

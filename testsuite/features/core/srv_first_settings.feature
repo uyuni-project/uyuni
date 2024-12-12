@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -8,7 +8,9 @@
 # - features/secondary/min_action_chain.feature
 # - features/secondary/min_rhlike_remote_command.feature
 # - features/secondary/minssh_action_chain.feature
-# - features/secondary/srv_distro_cobbler.feature
+# - features/secondary/srv_cobbler_buildiso.feature
+# - features/secondary/srv_cobbler_distro.feature
+# - features/secondary/srv_cobbler_profile.feature
 # - features/secondary/srv_mainpage.feature
 # - features/secondary/srv_users.feature
 
@@ -17,9 +19,12 @@ Feature: Very first settings
   As the admin user
   I want to create the organisation, the first users and set the HTTP proxy
 
+  Scenario: Cleanup Salt files
+    When I run "rm -Rf /srv/salt/*" on "server"
+
+@skip_if_containerized_server
   Scenario: Create admin user and first organization
     Given I access the host the first time
-    And I run "rm -Rf /srv/salt/*" on "server"
     When I go to the home page
     And I enter "SUSE Test" as "orgName"
     And I enter "admin" as "login"
@@ -29,9 +34,6 @@ Feature: Very first settings
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
     And I enter "galaxy-noise@suse.de" as "email"
-    # for some reason, as noted on https://github.com/SUSE/spacewalk/issues/19369,
-    # this is the only way to make sure the welcome text is shown in the following page
-    And I wait for "5" seconds
     And I click on "Create Organization"
     Then I am logged in
 
@@ -40,13 +42,6 @@ Feature: Very first settings
 
   Scenario: Wait for refresh of list of products to finish
     When I wait until mgr-sync refresh is finished
-
-  Scenario: Use correct kernel image on the server
-    When I remove package "kernel-default-base" from this "server"
-    And I install package "kernel-default" on this "server"
-
-  Scenario: Reboot the server to use the new kernel
-    When I reboot the server through SSH
 
   Scenario: Create testing username
     When I follow the left menu "Users > User List > Active"

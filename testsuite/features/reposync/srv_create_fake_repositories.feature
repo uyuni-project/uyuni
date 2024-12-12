@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -30,6 +30,25 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
+@rhlike_minion
+  Scenario: Create a fake AppStream repository
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "Create Repository"
+    And I enter "fake-appstream-repo" as "label"
+    And I enter "http://localhost/pub/TestRepoAppStream/" as "url"
+    And I click on "Create Repository"
+    Then I should see a "Repository created successfully" text
+    And I should see "metadataSigned" as checked
+
+@rhlike_minion
+  Scenario: Disable metadata check for the fake AppStream repository
+    When I follow the left menu "Software > Manage > Repositories"
+    And I follow "fake-appstream-repo"
+    And I uncheck "metadataSigned"
+    And I click on "Update Repository"
+    Then I should see a "Repository updated successfully" text
+    And I should see "metadataSigned" as unchecked
+
 @sle_minion
   Scenario: Add the fake RPM repository to the SUSE fake child channel
     When I follow the left menu "Software > Manage > Channels"
@@ -53,7 +72,7 @@ Feature: Create fake repositories for each fake child channel
     And I click on "Save Repositories"
     Then I should see a "Test-Child-Channel-x86_64 repository information was successfully updated" text
 
-  @rhlike_minion
+@rhlike_minion
   Scenario: Add the fake RPM repository to the RedHat-like base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Base-Channel-RH-like"
@@ -64,6 +83,18 @@ Feature: Create fake repositories for each fake child channel
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
     Then I should see a "Fake-Base-Channel-RH-like repository information was successfully updated" text
+
+@rhlike_minion
+  Scenario: Add the fake AppStream repository to the AppStream base channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Fake-Base-Channel-AppStream"
+    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
+    And I click on "Update Channel"
+    Then I should see a "Channel Fake-Base-Channel-AppStream updated" text
+    When I follow "Repositories" in the content area
+    And I select the "fake-appstream-repo" repo
+    And I click on "Save Repositories"
+    Then I should see a "Fake-Base-Channel-AppStream repository information was successfully updated" text
 
   Scenario: Create a fake repository for i586
     When I follow the left menu "Software > Manage > Repositories"
@@ -113,6 +144,7 @@ Feature: Create fake repositories for each fake child channel
     And I click on "Save Repositories"
     Then I should see a "Fake-Base-Channel-Debian-like repository information was successfully updated" text
 
+@pxeboot_minion
 @uyuni
 @scc_credentials
   Scenario: Add the repository to the terminal child channel

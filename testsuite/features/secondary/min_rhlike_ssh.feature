@@ -12,12 +12,13 @@
 # If the cleanup bootstrap scenario fails,
 # the minion will not be reachable in those features
 
+@skip_if_github_validation
 @scope_res
 @rhlike_minion
 Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operations on it
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete the Red Hat-like minion before SSH minion tests
     When I am on the Systems overview page of this "rhlike_minion"
@@ -36,8 +37,9 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
-    And I follow the left menu "Systems > Overview"
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"
 
@@ -66,7 +68,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Check events history for failures on SSH-managed Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
@@ -83,7 +85,7 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     When I wait for "15" seconds
     And I expand the results for "rhlike_minion"
     Then I should see a "rhel centos fedora" text
-    And I should see a "REDHAT_SUPPORT_PRODUCT" text
+    And I should see a "ROCKY_SUPPORT_PRODUCT" text
 
   Scenario: Check events history for failures on SSH-managed Red Hat-like minion
     Given I am on the Systems overview page of this "rhlike_minion"
@@ -106,8 +108,9 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     And I enter "linux" as "password"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
-    And I follow the left menu "Systems > Overview"
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "rhlike_minion", refreshing the page
     And I wait until onboarding is completed for "rhlike_minion"
 
@@ -122,4 +125,4 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed

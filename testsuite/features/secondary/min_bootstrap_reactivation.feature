@@ -1,6 +1,7 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Bootstrapping with reactivation key
@@ -8,8 +9,8 @@ Feature: Bootstrapping with reactivation key
   As an authorized user
   I want to avoid re-registration with invalid input parameters
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Generate a re-activation key
     Given I am on the Systems overview page of this "sle_minion"
@@ -50,9 +51,10 @@ Feature: Bootstrapping with reactivation key
     And I enter "root" as "user"
     And I enter "linux" as "password"
     And I enter the reactivation key of "sle_minion"
+    And I select "1-SUSE-KEY-x86_64" from "activationKeys"
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
@@ -61,7 +63,7 @@ Feature: Bootstrapping with reactivation key
     When I follow "Events" in the content area
     And I follow "History" in the content area
     And I wait until I see "Server reactivated as Salt minion" text, refreshing the page
-    And I wait until event "Apply states [certs, channels, packages, services.salt-minion] scheduled by admin" is completed
+    And I wait until event "Apply states [certs, channels, packages, services.salt-minion] scheduled" is completed
 
   Scenario: Cleanup: delete SLES minion after reactivation tests
     Given I am on the Systems overview page of this "sle_minion"
@@ -83,6 +85,6 @@ Feature: Bootstrapping with reactivation key
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"

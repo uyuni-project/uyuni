@@ -77,8 +77,8 @@ When(/^I bootstrap (traditional|minion) client "([^"]*)" using bootstrap script 
   boostrap_script = 'bootstrap-general.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{boostrap_script}"
   dest = "/tmp/#{boostrap_script}"
-  return_code = file_inject(target, source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   system_name = get_system_name(host)
   output, = target.run("sed -i '/^set timeout /c\\set timeout #{DEFAULT_TIMEOUT}' /tmp/#{boostrap_script} && expect -f /tmp/#{boostrap_script} #{system_name}", verbose: true)
@@ -112,8 +112,8 @@ When(/^I bootstrap client "([^"]*)" using bootstrap script with activation key "
   expect_file_to_bootstrap = 'bootstrap_trad_to_min.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{expect_file_to_bootstrap}"
   dest = "/tmp/#{expect_file_to_bootstrap}"
-  return_code = file_inject(target, source, dest)
-  raise 'File injection failed' unless return_code.zero?
+  success = file_inject(target, source, dest)
+  raise 'File injection failed' unless success
 
   output, = target.run("expect -f /tmp/#{expect_file_to_bootstrap} #{bootstrap_script} #{system_name} #{react_key}", verbose: true)
   unless output.include? '-bootstrap complete-'

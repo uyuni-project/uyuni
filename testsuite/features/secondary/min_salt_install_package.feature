@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -14,7 +14,7 @@ Feature: Install a patch on the client via Salt through the UI
     And I wait until refresh package list on "sle_minion" is finished
     Then spacecmd should show packages "virgo-dummy-1.0" installed on "sle_minion"
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: ensure the errata cache is computed before patching Salt minion
@@ -44,7 +44,7 @@ Feature: Install a patch on the client via Salt through the UI
 
   Scenario: Cleanup: remove virgo-dummy package from SLE minion
     When I disable repository "test_repo_rpm_pool" on this "sle_minion"
-    When I remove package "virgo-dummy" from this "sle_minion" without error control
+    And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I refresh the metadata for "sle_minion"
     And I refresh packages list via spacecmd on "sle_minion"
     And I wait until refresh package list on "sle_minion" is finished

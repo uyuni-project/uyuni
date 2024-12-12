@@ -7,7 +7,7 @@
 # setup wizard
 
 Then(/^HTTP proxy verification should have succeeded$/) do
-  raise 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+  raise ScriptError, 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
@@ -15,7 +15,7 @@ When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
 end
 
 When(/^I ask to add new credentials$/) do
-  raise 'Click on plus icon failed' unless find('i.fa-plus-circle').click
+  raise ScriptError, 'Click on plus icon failed' unless find('i.fa-plus-circle').click
 end
 
 When(/^I enter the SCC credentials$/) do
@@ -29,25 +29,25 @@ end
 When(/^I wait until the SCC credentials are valid$/) do
   scc_username, _scc_password = ENV['SCC_CREDENTIALS'].split('|')
   within(:xpath, "//h3[contains(text(), '#{scc_username}')]/../..") do
-    raise 'Success icon not found' unless find('i.text-success', wait: 30)
+    raise ScriptError, 'Success icon not found' unless find('i.text-success', wait: 30)
   end
 end
 
 Then(/^the credentials for "([^"]*)" should be invalid$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Failure icon not found' unless find('i.text-danger', wait: DEFAULT_TIMEOUT)
+    raise ScriptError, 'Failure icon not found' unless find('i.text-danger', wait: DEFAULT_TIMEOUT)
   end
 end
 
 When(/^I make the credentials for "([^"]*)" primary$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Click on star icon failed' unless find('i.fa-star-o').click
+    raise ScriptError, 'Click on star icon failed' unless find('i.fa-star-o').click
   end
 end
 
 Then(/^the credentials for "([^"]*)" should be primary$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Star icon not selected' unless find('i.fa-star')
+    raise ScriptError, 'Star icon not selected' unless find('i.fa-star')
   end
 end
 
@@ -63,34 +63,26 @@ end
 
 When(/^I ask to edit the credentials for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Click on pencil icon failed' unless find('i.fa-pencil').click
+    raise ScriptError, 'Click on pencil icon failed' unless find('i.fa-pencil').click
   end
 end
 
 When(/^I ask to delete the credentials for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Click on trash icon failed' unless find('i.fa-trash-o').click
+    raise ScriptError, 'Click on trash icon failed' unless find('i.fa-trash-o').click
   end
 end
 
 When(/^I view the subscription list for "([^"]*)"$/) do |user|
   within(:xpath, "//h3[contains(text(), '#{user}')]/../..") do
-    raise 'Click on list icon failed' unless find('i.fa-th-list').click
+    raise ScriptError, 'Click on list icon failed' unless find('i.fa-th-list').click
   end
-end
-
-When(/^I select "(.*?)" in the dropdown list of the architecture filter$/) do |architecture|
-  # let the the select2js box filter open the hidden options
-  xpath_query = '//div[@id=\'s2id_product-arch-filter\']/ul/li/input'
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
-  # select the desired option
-  raise "Architecture #{architecture} not found" unless find(:xpath, "//div[@id='select2-drop']/ul/li/div[contains(text(), '#{architecture}')]").click
 end
 
 When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
+  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
@@ -107,7 +99,7 @@ end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" contains "([^"]+)" text$/) do |timeout, item, text|
   within(:xpath, "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]") do
-    raise "could not find text #{text} for tree item #{item}" unless check_text_and_catch_request_timeout_popup?(text, timeout: timeout.to_i)
+    raise ScriptError, "could not find text #{text} for tree item #{item}" unless check_text_and_catch_request_timeout_popup?(text, timeout: timeout.to_i)
   end
 end
 
@@ -122,25 +114,25 @@ When(/^I open the sub-list of the product "(.*?)"((?: if present)?)$/) do |produ
   begin
     find(:xpath, xpath).click
   rescue Capybara::ElementNotFound
-    raise "xpath: #{xpath} not found" if if_present.empty?
+    raise ScriptError, "xpath: #{xpath} not found" if if_present.empty?
   end
 end
 
 When(/^I select the addon "(.*?)"$/) do |addon|
   # click on the checkbox of the sublist to select the addon product
   xpath = "//span[contains(text(), '#{addon}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
+  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(true)
 end
 
 Then(/^I should see that the "(.*?)" product is "(.*?)"$/) do |product, recommended|
   xpath = "//span[text()[normalize-space(.) = '#{product}'] and ./span/text() = '#{recommended}']"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
+  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath)
 end
 
 Then(/^I should see the "(.*?)" selected$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]"
   within(:xpath, xpath) do
-    raise "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
+    raise ScriptError, "#{find(:xpath, '.')['data-identifier']} is not checked" unless find(:xpath, './div/input[@type=\'checkbox\']').checked?
   end
 end
 
@@ -158,7 +150,7 @@ When(/^I wait until I see "(.*?)" product has been added$/) do |product|
 end
 
 When(/^I click the Add Product button$/) do
-  raise 'xpath: button#addProducts not found' unless find('button#addProducts').click
+  raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
 Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
@@ -171,33 +163,33 @@ Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
   raise ScriptError, "Not included:\n #{match}" unless output.include? match
 
   match = "[I] SLE-Module-Server-Applications15-#{sp_version}-Pool for x86_64 Server Applications Module 15 #{sp_version} x86_64 [sle-module-server-applications15-#{sp_version.downcase}-pool-x86_64]"
-  raise "Not included:\n #{match}" unless output.include? match
+  raise ScriptError, "Not included:\n #{match}" unless output.include? match
 end
 
 When(/^I click the channel list of product "(.*?)"$/) do |product|
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/button[contains(@class, 'showChannels')]"
-  raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+  raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
 end
 
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise "Link #{arg2} not found" unless find_link(arg2)
-    raise "Link #{arg3} not found" unless find_link(arg3)
+    raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
+    raise ScriptError, "Link #{arg3} not found" unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
-    raise "Link #{arg2} not found" unless find_link(arg2)
+    raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
   end
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
   system_name = get_system_name(host)
   within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
-    raise "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
+    raise ScriptError, "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
   end
 end
 
@@ -314,12 +306,12 @@ Then(/^I should see the toggler "([^"]*)"$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = '//i[contains(@class, \'fa-toggle-on\')]'
-    raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
+    raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath)
   when 'disabled'
     xpath = '//i[contains(@class, \'fa-toggle-off\')]'
-    raise "xpath: #{xpath} not found" unless find(:xpath, xpath)
+    raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath)
   else
-    raise 'Invalid target status.'
+    raise NotImplementedError, 'Invalid target status.'
   end
 end
 
@@ -327,12 +319,12 @@ When(/^I click on the "([^"]*)" toggler$/) do |target_status|
   case target_status
   when 'enabled'
     xpath = '//i[contains(@class, \'fa-toggle-on\')]'
-    raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+    raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   when 'disabled'
     xpath = '//i[contains(@class, \'fa-toggle-off\')]'
-    raise "xpath: #{xpath} not found" unless find(:xpath, xpath).click
+    raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).click
   else
-    raise 'Invalid target status.'
+    raise NotImplementedError, 'Invalid target status.'
   end
 end
 
@@ -344,11 +336,11 @@ Then(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel,
 
   case target_status
   when 'selected'
-    raise "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id)
+    raise ScriptError, "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id)
   when 'unselected'
-    raise "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id)
+    raise ScriptError, "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id)
   else
-    raise 'Invalid target status.'
+    raise NotImplementedError, 'Invalid target status.'
   end
 end
 
@@ -361,11 +353,11 @@ Then(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |t
 
   case target_status
   when 'selected'
-    raise "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id, disabled: true)
+    raise ScriptError, "#{channel_checkbox_id} is not selected" unless has_checked_field?(channel_checkbox_id, disabled: true)
   when 'unselected'
-    raise "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id, disabled: true)
+    raise ScriptError, "#{channel_checkbox_id} is selected" if has_checked_field?(channel_checkbox_id, disabled: true)
   else
-    raise 'Invalid target status.'
+    raise NotImplementedError, 'Invalid target status.'
   end
 end
 
@@ -397,9 +389,9 @@ Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_
 
   case target_status
   when 'selected'
-    raise "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
+    raise ScriptError, "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
   when 'unselected'
-    raise "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
+    raise ScriptError, "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
   else
     log "Target status #{target_status} not supported"
   end
@@ -412,7 +404,7 @@ Then(/^the notification badge and the table should count the same amount of mess
 
   if table_notifications_count == '0'
     log 'All notification-messages are read, I expect no notification badge'
-    raise "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
+    raise ScriptError, "xpath: #{badge_xpath} found" if has_xpath?(badge_xpath)
   else
     log "Unread notification-messages count = #{table_notifications_count}"
     raise ScriptError, "xpath: #{badge_xpath} not found" unless find(:xpath, badge_xpath)
@@ -453,7 +445,7 @@ end
 When(/^I delete it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_delete_button = "//button[@title='#{target_button}']"
-    raise "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
+    raise ScriptError, "xpath: #{xpath_for_delete_button} not found" unless find(:xpath, xpath_for_delete_button).click
 
     step 'I wait until I see "1 message deleted successfully." text'
   end
@@ -462,7 +454,7 @@ end
 When(/^I mark as read it via the "([^"]*)" button$/) do |target_button|
   if count_table_items != '0'
     xpath_for_read_button = "//button[@title='#{target_button}']"
-    raise "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
+    raise ScriptError, "xpath: #{xpath_for_read_button} not found" unless find(:xpath, xpath_for_read_button).click
 
     step 'I wait until I see "1 message read status updated successfully." text'
   end
@@ -483,7 +475,7 @@ When(/^I check for failed events on history event page$/) do
     end
   end
   count_failures = failings.length
-  raise "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
+  raise ScriptError, "\nFailures in event history found:\n\n#{failings}" if count_failures.nonzero?
 end
 
 Then(/^I should see a list item with text "([^"]*)" and a (success|failing|warning|pending|refreshing) bullet$/) do |text, bullet_type|

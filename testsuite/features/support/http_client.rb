@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC.
+# Copyright (c) 2022-2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'faraday'
@@ -29,6 +29,7 @@ class HttpClient
     short_name = name.split('.')[-1]
     call_type =
       if short_name.start_with?('list', 'get', 'is', 'find') || name.start_with?('system.search.', 'packages.search.') || ['errata.applicableToChannels'].include?(name)
+
         'GET'
       else
         'POST'
@@ -87,10 +88,10 @@ class HttpClient
         end
       end
     unless answer.status == 200
-      raise "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
+      raise ScriptError, "Unexpected HTTP status code #{answer.status}" if answer.body.empty?
 
       json_body = JSON.parse(answer.body)
-      raise "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
+      raise ScriptError, "Unexpected HTTP status code #{answer.status}, message: #{json_body['message']}"
     end
 
     # Return either new session cookie or HTTP body

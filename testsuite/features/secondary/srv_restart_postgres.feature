@@ -13,6 +13,5 @@ Feature: Restart the PostgreSQL service
     And I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     And I wait until I see "MinionActionExecutor" in file "/var/log/rhn/rhn_taskomatic_daemon.log" on "server"
-

@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
@@ -6,11 +6,12 @@
 # - features/secondary/min_bootstrap_script.feature
 # If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @scope_onboarding
 Feature: Bootstrap a Salt minion via the GUI using SSH key
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
     Given I am on the Systems overview page of this "sle_minion"
@@ -54,7 +55,8 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     And I enter "linux" as "privKeyPwd"
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
-    And I wait until I see "Bootstrap process initiated." text
+    # workaround for bsc#1222108
+    And I wait at most 480 seconds until I see "Bootstrap process initiated." text
 
   Scenario: Check new minion bootstrapped with SSH key in System Overview page
     When I follow the left menu "Salt > Keys"

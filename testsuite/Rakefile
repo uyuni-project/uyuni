@@ -227,13 +227,13 @@ namespace :jenkins do
   task :generate_rake_files_init_clients, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      next if minion.include?('proxy') || minion.include?('monitoring')
+      next if minion.include?('proxy') or minion.include?('monitoring')
 
-      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25592
+      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25594
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '',
-        File.basename(minion, '.feature'),
+        File.basename(minion,'.feature'),
         'features/build_validation/init_clients',
         "run_sets/build_validation/build_validation_init_client_#{modified_client}.yml"
       )
@@ -261,7 +261,7 @@ namespace :jenkins do
   task :generate_rake_files_add_activation_keys, [:instances] do |_t, args|
     minions = args[:instances]
     minions.each do |minion|
-      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25592
+      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25594
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
       Rake::Task['jenkins:generate_rake_run_step'].invoke(
         '_add_activation_key',
@@ -279,7 +279,7 @@ namespace :jenkins do
     minions.each do |minion|
       next if minion.include?('proxy') || minion.include?('monitoring')
 
-      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25592
+      # WORKAROUND: renaming should be removed once this issue is done https://github.com/SUSE/spacewalk/issues/25594
       modified_client = minion.gsub(/ssh_minion$/, 'sshminion')
 
       Rake::Task['jenkins:generate_rake_run_step'].invoke(

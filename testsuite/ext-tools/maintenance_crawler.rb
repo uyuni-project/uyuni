@@ -107,15 +107,13 @@ class MaintenanceCrawler
   # Retrieves HTML for the given url, extract all links and assets and return in a hash
   def crawl_url(url)
     begin
-      html = Nokogiri::HTML(URI.parse(url).open.read)
+      html = open(url)
+      html = Nokogiri::HTML(html)
+      links = html.css('a').map { |link| process_url link['href'] }.compact
+      { links: links.uniq }
     rescue StandardError => e
       puts "Error reading #{url} :: #{e}" if @verbose
-      return
     end
-
-    links = html.css('a').map { |link| process_url link['href'] }.compact
-
-    { links: links.uniq }
   end
 
   def process_url(url)

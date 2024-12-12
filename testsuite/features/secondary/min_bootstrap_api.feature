@@ -5,11 +5,12 @@
 # - features/secondary/min_bootstrap_negative.feature
 # If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @scope_onboarding
 Feature: Register a Salt minion via API
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before API bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -26,7 +27,7 @@ Feature: Register a Salt minion via API
   Scenario: Check new minion bootstrapped via API in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
@@ -46,6 +47,7 @@ Feature: Register a Salt minion via API
     Given I am on the Systems overview page of this "sle_minion"
     Then I run spacecmd listeventhistory for "sle_minion"
 
+@susemanager
   Scenario: API bootstrap: subscribe to base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -60,7 +62,7 @@ Feature: Register a Salt minion via API
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
 @uyuni
   Scenario: API bootstrap: subscribe to base channel
@@ -81,7 +83,7 @@ Feature: Register a Salt minion via API
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Check events history for failures on SLES minion after API bootstrap
     Given I am on the Systems overview page of this "sle_minion"

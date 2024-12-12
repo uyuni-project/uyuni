@@ -1,4 +1,4 @@
-# Copyright (c) 2021 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT License.
 #
 # This feature can cause failures in the following features:
@@ -12,8 +12,8 @@ Feature: Deleting channels with children or clones is not allowed
   Using the tool spacewalk-remove-channel, we cannot delete a channel if it has a child
   or a clone created from it
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Clone the first channel before deletion from tool test
     When I follow the left menu "Software > Manage > Channels"

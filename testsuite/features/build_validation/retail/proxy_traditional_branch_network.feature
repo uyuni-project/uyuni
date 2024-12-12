@@ -3,6 +3,7 @@
 
 @proxy
 @private_net
+@skip_if_containerized_server
 Feature: Prepare the branch server for PXE booting
   In order to use SUSE Manager for Retail solution
   As the system administrator

@@ -1,6 +1,7 @@
 # Copyright 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @no_mirror
 Feature: SCC user credentials in the Setup Wizard
   As a systems administrator

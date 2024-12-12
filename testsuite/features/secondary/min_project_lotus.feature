@@ -1,15 +1,16 @@
-# Copyright (c) 2023 SUSE LLC
+# Copyright (c) 2023-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_minion
+@susemanager
 @scope_project_lotus
 Feature: Project Lotus
   In order to manage Program Temporary Fixes (PTFs)
   As an authorized user
   I want to be able to install and remove them through the WebUI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Pre-requisite: Create custom channel for PTFs
     When I follow the left menu "Software > Manage > Channels"
@@ -39,24 +40,13 @@ Feature: Project Lotus
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
-@uyuni_or_head
-  Scenario: Pre-requisite: Sync PTF repository in Uyuni
+  Scenario: Pre-requisite: Sync PTF repository
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I follow "Sync"
     # no need to click on "Sync Now" as it's automatically enabled by default on Uyuni
     Then I should see a "Repository sync is running" text
-    When I wait until the channel "sles15sp4-ptfs" has been synced
-
-@susemanager_43
-  Scenario: Pre-requisite: Sync PTF repository in SUSE Manager
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Custom Channel for SLES15SP4 PTFs"
-    And I follow "Repositories" in the content area
-    And I follow "Sync"
-    And I click on "Sync Now"
-    Then I should see a "Repository sync scheduled" text
     When I wait until the channel "sles15sp4-ptfs" has been synced
 
   Scenario: Pre-requisite: Add custom channel to minion
@@ -84,7 +74,7 @@ Feature: Project Lotus
     And I click on "Install PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove PTF through PTFs tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -95,7 +85,7 @@ Feature: Project Lotus
     And I click on "Remove PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
 
   Scenario: Install PTF through Packages tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -108,7 +98,7 @@ Feature: Project Lotus
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove PTF through Packages tab
     Given I am on the Systems overview page of this "sle_minion"
@@ -121,7 +111,7 @@ Feature: Project Lotus
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: Delete custom channel for PTFs
     When I follow the left menu "Software > Manage > Channels"

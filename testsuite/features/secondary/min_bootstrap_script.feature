@@ -1,21 +1,25 @@
 # Copyright (c) 2019-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
-#
-# 1) delete SLES minion and register again with bootstrap script
-# 2) subscribe minion to a base channels
-# 3) install and remove a package
-#
 # This feature can cause failures in the following features:
 # - features/secondary/minssh_tunnel.feature
-# If the minion fails to bootstrap again.
+# If the minion fails to bootstrap
 
+# TODO: This feature is not working within a proxy containerized environment
+#       due to the fact that the mgr-bootstrap command is not available in the proxy
+#       container. Reported Bug: https://bugzilla.suse.com/show_bug.cgi?id=1220864
+
+@skip_if_containerized_server
+@skip_if_github_validation
 @sle_minion
 @scope_onboarding
 Feature: Register a Salt minion with a bootstrap script
+  1) delete SLES minion and register again with bootstrap script
+  2) subscribe minion to a base channels
+  3) install and remove a package
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -33,13 +37,14 @@ Feature: Register a Salt minion with a bootstrap script
     Then I should see "sle_minion" via spacecmd
 
   Scenario: Check if onboarding for the script-bootstrapped minion was successful
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Detect latest Salt changes on the script-bootstrapped SLES minion
     When I query latest Salt changes on "sle_minion"
 
+@susemanager
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
@@ -54,20 +59,36 @@ Feature: Register a Salt minion with a bootstrap script
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
-  Scenario: Install a package to the script-bootstrapped SLES minion
+@uyuni
+  Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
-    And I follow "Install"
-    And I enter "orion-dummy" as the filtered package name
-    And I click on the filter button
-    And I check row with "orion-dummy" and arch of "sle_minion"
-    And I click on "Install Selected Packages"
-    And I click on "Confirm"
-    Then I should see a "1 package install has been scheduled for" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
-    Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
+    And I follow "Software Channels" in the content area
+    And I wait until I do not see "Loading..." text
+    And I check radio button "openSUSE Leap 15.5 (x86_64)"
+    And I wait until I do not see "Loading..." text
+    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Fake-RPM-SUSE-Channel"
+    And I click on "Next"
+    Then I should see a "Confirm Software Channel Change" text
+    When I click on "Confirm"
+    Then I should see a "Changing the channels has been scheduled." text
+    And I wait until event "Subscribe channels scheduled" is completed
+
+  Scenario: Install a package to the script-bootstrapped SLES minion
+   Given I am on the Systems overview page of this "sle_minion"
+   When I follow "Software" in the content area
+   And I follow "Install"
+   And I enter "orion-dummy" as the filtered package name
+   And I click on the filter button
+   And I check row with "orion-dummy" and arch of "sle_minion"
+   And I click on "Install Selected Packages"
+   And I click on "Confirm"
+   Then I should see a "1 package install has been scheduled for" text
+   When I wait until event "Package Install/Upgrade scheduled" is completed
+   Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
   Scenario: Run a remote command on normal SLES minion
     When I follow the left menu "Salt > Remote Commands"

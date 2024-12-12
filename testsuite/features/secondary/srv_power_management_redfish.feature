@@ -1,13 +1,14 @@
 # Copyright (c) 2021-2022 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_power_management
 @scope_cobbler
 @sle_minion
 Feature: Redfish Power management
 
   Scenario: Setup a Redfish host
-    When the server starts mocking a Redfish host
+    When the controller starts mocking a Redfish host
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -19,7 +20,7 @@ Feature: Redfish Power management
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Provisioning" in the content area
     And I follow "Power Management" in the content area
-    And I enter the server hostname as the redfish server address
+    And I enter the controller hostname as the redfish server address
     And I enter "ipmiusr" as "powerUsername"
     And I enter "test" as "powerPassword"
     And I select "Redfish" from "powerType"
@@ -51,7 +52,7 @@ Feature: Redfish Power management
     Then I should see the power is "On"
 
   Scenario: Check power management SSM configuration for Redfish
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I click on the clear SSM button
     And I check the "sle_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"
@@ -93,10 +94,10 @@ Feature: Redfish Power management
     And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
 
   Scenario: Cleanup: tear down the Redfish host
-    When the server stops mocking a Redfish host
+    When the controller stops mocking a Redfish host
 
   Scenario: Cleanup: remove remaining systems from SSM after Redfish power management tests
     When I click on the clear SSM button
 
-  Scenario: Cleanup: clean Cobbler
+  Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
