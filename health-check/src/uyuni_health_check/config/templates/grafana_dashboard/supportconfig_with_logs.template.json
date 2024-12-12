@@ -26,16 +26,49 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 3,
   "links": [],
   "panels": [
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 108,
+      "options": {
+        "alertInstanceLabelFilter": "",
+        "alertName": "",
+        "dashboardAlerts": false,
+        "groupBy": [],
+        "groupMode": "default",
+        "maxItems": 20,
+        "sortOrder": 1,
+        "stateFilter": {
+          "error": true,
+          "firing": true,
+          "noData": false,
+          "normal": false,
+          "pending": true
+        },
+        "viewMode": "list"
+      },
+      "pluginVersion": "11.3.1",
+      "title": "Alerts",
+      "type": "alertlist"
+    },
     {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "id": 71,
       "panels": [],
@@ -79,7 +112,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 1
+        "y": 7
       },
       "id": 100,
       "options": {
@@ -156,7 +189,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 1
+        "y": 7
       },
       "id": 101,
       "options": {
@@ -235,7 +268,7 @@
         "h": 5,
         "w": 7,
         "x": 6,
-        "y": 1
+        "y": 7
       },
       "id": 97,
       "options": {
@@ -330,7 +363,7 @@
         "h": 5,
         "w": 7,
         "x": 13,
-        "y": 1
+        "y": 7
       },
       "id": 106,
       "options": {
@@ -351,7 +384,7 @@
             "count"
           ],
           "fields": "/.*/",
-          "values": true
+          "values": false
         },
         "showUnfilled": true,
         "sizing": "auto",
@@ -425,7 +458,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 6
+        "y": 12
       },
       "id": 102,
       "options": {
@@ -502,7 +535,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 6
+        "y": 12
       },
       "id": 103,
       "options": {
@@ -582,7 +615,7 @@
         "h": 5,
         "w": 7,
         "x": 6,
-        "y": 6
+        "y": 12
       },
       "id": 105,
       "options": {
@@ -602,8 +635,8 @@
           "calcs": [
             "count"
           ],
-          "fields": "/.*/",
-          "values": true
+          "fields": "/^A$/",
+          "values": false
         },
         "showUnfilled": true,
         "sizing": "auto",
@@ -677,7 +710,7 @@
         "h": 5,
         "w": 7,
         "x": 13,
-        "y": 6
+        "y": 12
       },
       "id": 104,
       "options": {
@@ -698,7 +731,7 @@
             "count"
           ],
           "fields": "/.*/",
-          "values": true
+          "values": false
         },
         "showUnfilled": true,
         "sizing": "auto",
@@ -764,7 +797,7 @@
         "h": 9,
         "w": 10,
         "x": 0,
-        "y": 11
+        "y": 17
       },
       "id": 91,
       "options": {
@@ -878,7 +911,7 @@
         "h": 5,
         "w": 7,
         "x": 10,
-        "y": 11
+        "y": 17
       },
       "id": 107,
       "options": {
@@ -938,7 +971,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 26
       },
       "id": 63,
       "panels": [],
@@ -1009,7 +1042,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 27
       },
       "id": 65,
       "options": {
@@ -1054,7 +1087,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 32
       },
       "id": 67,
       "options": {
@@ -1092,12 +1125,8 @@
     "list": [
       {
         "current": {
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "loki",
@@ -1129,6 +1158,6 @@
   "timezone": "",
   "title": "Supportconfig with Logs",
   "uid": "AvmqWWUik",
-  "version": 1,
+  "version": 4,
   "weekStart": ""
 }
