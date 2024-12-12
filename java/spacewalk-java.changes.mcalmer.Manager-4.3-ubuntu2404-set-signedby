@@ -1,2 +1,0 @@
-- Set Signed-by for debian repositories also for unsigned repos to
-  prevent warning messages (bsc#1234251)
