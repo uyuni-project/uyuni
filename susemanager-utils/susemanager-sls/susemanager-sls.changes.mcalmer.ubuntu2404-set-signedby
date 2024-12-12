@@ -1,2 +1,0 @@
-- Do not set "Trusted" for debian repositories when the repo
-  should be signed
