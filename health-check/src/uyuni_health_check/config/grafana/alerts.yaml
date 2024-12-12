@@ -5,6 +5,113 @@ groups:
       folder: alerts
       interval: 1m
       rules:
+        - uid: be6llqu083474c
+          title: Likely Salt Performance issues - SaltReqTimeout
+          condition: B
+          data:
+            - refId: A
+              queryType: range
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                direction: backward
+                editorMode: builder
+                expr: sum(count_over_time({job="salt"} |~ `(?i)SaltReqTimeoutError` [$__auto]))
+                intervalMs: 1000
+                legendFormat: ""
+                maxDataPoints: 43200
+                queryType: range
+                refId: A
+                step: ""
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: We detected more than 10 `SaltReqTimeout` errors in the logs in the past 1 month. This is likely indicative of Salt performance issues.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: ee6lmldzgwf0gd
+          title: Issues that potentially degrade Salt performance
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: builder
+                expr: sum(count_over_time({job="salt"} |~ `(?i)an extra return was detected|the public keys did not match|Event with bad payload received|Received minion error from` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 150
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: "We found more than 150 of \"an extra return was detected\", \"the public keys did not match\", \"Event with bad payload received\", or \"Received minion error from\" messages in the logs over the past month. \n\nThese issues might be decreasing Salt performance."
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
         - uid: ce6i8dhdhj400e
           title: More worker threads than CPUs
           condition: C
