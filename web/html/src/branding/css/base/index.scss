@@ -1,16 +1,14 @@
-@import "../base/theme.scss";
-@import "../base/tables.scss";
-@import "../base/error.scss";
-@import "../base/tools.scss";
-@import "../base/setup-wizard.scss";
-@import "../base/notifications.scss";
-@import "../base/fixes.scss";
-@import "../base/network.scss";
-@import "../base/inputs.scss";
-@import "../base/forms.scss";
-@import "../base/hr.scss";
-
-@import "./legacy-pages/login.scss";
+@import "./theme.scss";
+@import "./tables.scss";
+@import "./error.scss";
+@import "./tools.scss";
+@import "./setup-wizard.scss";
+@import "./notifications.scss";
+@import "./fixes.scss";
+@import "./network.scss";
+@import "./inputs.scss";
+@import "./forms.scss";
+@import "./hr.scss";
 
 @import "./components/titles.scss";
 @import "./components/alerts.scss";
@@ -36,7 +34,7 @@
 @import "./components/lists.scss";
 @import "./components/dropdown-menu.scss";
 
-@import "./bootstrap-fixes.scss";
+@import "./bootstrap/legacy-fixes.scss";
 
 // Responsive overrides
-@import "../base/responsive-rules.scss";
+@import "./responsive-rules.scss";

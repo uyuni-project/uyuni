@@ -64,6 +64,5 @@
         </c:if>
       </script>
     </div>
-    <button id="scroll-top"><i class='fa fa-angle-up'></i></button>
   </body>
 </html:html>

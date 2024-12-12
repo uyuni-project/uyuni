@@ -170,16 +170,14 @@ module.exports = (env, argv) => {
           test: /\.(png|jpe?g|gif|svg)$/i,
           type: "asset/resource",
           generator: {
-            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
-            filename: "img/[base]",
+            filename: "img/[hash][ext][query]",
           },
         },
         {
           test: /\.(eot|ttf|woff|woff2)$/i,
           type: "asset/resource",
           generator: {
-            // TODO: Revert this to `fonts/[hash][ext][query]` after the Bootstrap migration is done
-            filename: "fonts/[base]",
+            filename: "fonts/[hash][ext][query]",
           },
         },
         // See https://getbootstrap.com/docs/5.3/getting-started/webpack/
@@ -194,6 +192,14 @@ module.exports = (env, argv) => {
             {
               // Interprets `@import` and `url()` like `import/require()` and will resolve them
               loader: "css-loader",
+              options: {
+                modules: {
+                  auto: true,
+                  localIdentName: isProductionMode
+                    ? "[hash:base64:5]" // This is the default value for CSS modules
+                    : "[path][name]__[local]--[hash:base64:5]",
+                },
+              },
             },
             {
               // Loader for webpack to process CSS with PostCSS
@@ -207,6 +213,11 @@ module.exports = (env, argv) => {
             {
               // Loads a SASS/SCSS file and compiles it to CSS
               loader: "sass-loader",
+              options: {
+                sassOptions: {
+                  loadPaths: path.resolve(__dirname, "../"),
+                },
+              },
             },
           ],
         },
