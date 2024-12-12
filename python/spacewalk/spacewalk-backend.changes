@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:20:01 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Support '^' in RPM version string when importing appstreams
+  * Detect and update errata when not all repository packages are
+    linked (bsc#1227644)
+  * Require 5.1 database schema
+  * Fix mgr-sign-metadata-ctl check-channels when checking for
+    signatures in repomd metadata (bsc#1233884)
+  * Set default RPM package summary if it's missing (bsc#1232530)
+
+-------------------------------------------------------------------
 Mon Oct 14 15:44:04 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
