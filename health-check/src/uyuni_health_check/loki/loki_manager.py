@@ -102,6 +102,9 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=
 
     if supportconfig_path:
         opts = {
+            "journalctl_log_path": os.path.join(
+                supportconfig_path, "spacewalk-debug/systemd/journalctl.log"
+            ),
             "rhn_logs_path": os.path.join(
                 supportconfig_path, "spacewalk-debug/rhn-logs/rhn/"
             ),
@@ -120,6 +123,7 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=
         }
     else:
         opts = {
+            "journalctl_log_path": "/var/log/journal/*/*.journal",
             "rhn_logs_path": "/var/log/rhn/",
             "cobbler_logs_file": "/var/log/cobbler.log",
             "salt_logs_path": "/var/log/salt/",
