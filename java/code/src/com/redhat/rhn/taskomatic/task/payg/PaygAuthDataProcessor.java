@@ -306,6 +306,7 @@ public class PaygAuthDataProcessor {
         PaygSshDataFactory.savePaygSshData(instance);
         return credentials;
     }
+
     /**
      * Invalidate PAYG Instance credentials
      * @param instance the instance
@@ -318,5 +319,4 @@ public class PaygAuthDataProcessor {
                 CredentialsFactory.storeCredentials(credentials);
             });
     }
-
 }
