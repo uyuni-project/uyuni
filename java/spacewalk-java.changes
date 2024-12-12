@@ -1,4 +1,61 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:11:40 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Prevent class cast exceptions when getting cobbler profiles
+    (bsc#1227759)
+  * Fix parsing UpdateAvailable notifications (bsc#1228261)
+  * Ensure icon fonts are loaded correctly on buttons (bsc#1231378)
+  * Ignore missing or unreadable paths when parsing the configuration
+  * Show Confidential Compute Attestation tab also for Salt SSH managed
+    clients
+  * Introduce API endpoint to get the product name
+  * Do not iterate over all actions when only reboot actions are handled
+  * Use external hostname in title of traceback emails
+  * Allow group assignment for foreign servers (bsc#1222447)
+  * saltboot: add MAC based terminal naming (jsc#SUMA-314)
+  * Chained proxy configuration creates refactoring
+  * Allow the listing of already included patches when importing them
+    into a custom channel (bsc#1228856)
+  * Update numerous page layouts
+  * Remove concurrent dependency
+  * Remove stringtree-json dependency in favor of gson
+  * Ensure the reporting db uses a lowercase username (bsc#1220494)
+  * Fix NPE if child channel has no parent (bsc#1231053)
+  * Create a fresh SSL context with re-read CA certificates from the
+    trust store for new HTTPS connections
+  * Adapt changing software channels to first perform the changes in
+    the database and to apply the channel state later. This allows
+    better handling of offline minions (bsc#1216683)
+  * Prepare package for SUSE Multi-Linux Manager 5.1
+  * Add proxy option to provisionSystem API (bsc#1232125)
+  * Fix enabled flag for users listed via API (bsc#1233431)
+  * Adapt SUMA/Uyuni new version update checker for containers
+  * Prevent return duplicated packages on XML-RPC API endpoint
+    `listLatestUpgradablePackages` (bsc#1231430)
+  * Search input placeholder text change on the Upgrade package page
+  * Enhance buttons readability and consistency across the product
+  * Update UI tip pointing to new kickstarts template directory
+    (bsc#1221219)
+  * Re-wording 'Monitoring' to 'Monitor this host' on the UI
+    systems properties page (bsc#1212161)
+  * Only show versions for 'kernel-default' in CLM Live Patching
+    template (bsc#1233400)
+  * Fix All Managed packages list (bsc#1233450)
+  * Fix missing FROM-clause entry for table 'pn' in managed software
+    list (bsc#1233450)
+  * Update login page layout
+  * Reduce bundle size for the web UI
+  * Remove DWR from the package dependency since it's no longer used
+  * Set Signed-by for Debian repositories also for unsigned repos to
+    prevent warning messages (bsc#1234251)
+  * Support removing all channels with scheduleChangeChannels()
+  * Support finding compatible child channels when changing the
+    base channels with scheduleChangeChannels()
+  * Check consistence of base and child channels (bsc#1232713)
+  * Fix appstream list of packages in stream (bsc#1231459)
+
+-------------------------------------------------------------------
 Mon Nov 18 18:32:19 CET 2024 - marina.latini@suse.com
 
 - version 5.1.2-0

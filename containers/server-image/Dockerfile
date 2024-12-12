@@ -49,6 +49,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sapnwbootstrap-formula \
     drbd-formula \
     habootstrap-formula \
+    saline-formula \
     salt-shaptools \
     inter-server-sync \
     golang-github-prometheus-node_exporter \
@@ -143,7 +144,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.1.1
+LABEL org.opencontainers.image.version=5.1.2
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

@@ -18,7 +18,9 @@ URIs: {{protocol}}://{{ args['token'] }}@{{hostname}}:{{port}}/rhn/manager/downl
 {%- endif %}
 Suites: {{ chan }}/
 Components:
+{%- if not salt['pillar.get']('mgr_metadata_signing_enabled', false) %}
 Trusted: yes
+{%- endif %}
 {%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
 Signed-By: {{ args['gpgkeyurl'][7:] }}
 {%- endif %}

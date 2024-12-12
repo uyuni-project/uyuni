@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:25:29 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Force login to spacecmd from spacewalk-hostname-rename (bsc#1229848)
+  * Remove unmaintained snapshot and export tools from package
+    `spacewalk-utils-extras`
+  * Add openSUSE Leap Micro 6.0 and 6.1 with Uyuni Client Tools
+  * Add Uyuni Client Tools for SL Micro 6.1
+  * Remove tools from spacewalk-utils-extra and move them to Uyuni
+    contrib repository
+
+-------------------------------------------------------------------
 Mon Oct 14 15:56:01 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

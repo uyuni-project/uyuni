@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:24:01 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Update the versions of the java build dependencies
+
+-------------------------------------------------------------------
 Mon Oct 14 15:53:28 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

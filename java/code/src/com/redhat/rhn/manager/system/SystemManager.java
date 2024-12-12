@@ -3629,6 +3629,13 @@ public class SystemManager extends BaseManager {
      * the {@link UpdateBaseChannelCommand} and {@link UpdateChildChannelsCommand}.
      * This method regenerate the Tokens and Pillar Data synchronous, but does not
      * trigger a 'state.apply' for channels.
+     * <br/>
+     * To unsubscribe from all channels, set baseChannel to empty and provide an empty list of child channels
+     * To switch the base channel and let it find compatible child channels to the currently subscribed child channels,
+     * just provide the new base channel and provide an empty list for the child channels
+     * If no base channel is provided, the list of child channels should have the currently assigned base channel as
+     * parent.
+     * If both, base and child channels are provided, the system will be changed to use the defined channels
      *
      * @param user the user changing the channels
      * @param server the server for which to change channels
@@ -3640,30 +3647,29 @@ public class SystemManager extends BaseManager {
                                             Server server,
                                             Optional<Channel> baseChannel,
                                             Collection<Channel> childChannels) {
-        long baseChannelId =
-                baseChannel.map(Channel::getId).orElse(-1L);
 
-        // if there's no base channel present the there are no child channels to set
-        List<Long> childChannelIds = baseChannel.isPresent() ?
-                childChannels.stream().map(Channel::getId).collect(Collectors.toList()) :
-                emptyList();
+        long baseChannelId = baseChannel.map(Channel::getId).orElse(-1L);
+        List<Long> childChannelIds = childChannels.stream().map(Channel::getId).collect(Collectors.toList());
 
-        UpdateBaseChannelCommand baseChannelCommand =
-                new UpdateBaseChannelCommand(
-                        user,
-                        server,
-                        baseChannelId);
+        if (baseChannel.isPresent() || childChannels.isEmpty()) {
+            UpdateBaseChannelCommand baseChannelCommand = new UpdateBaseChannelCommand(
+                    user,
+                    server,
+                    baseChannelId);
 
-        UpdateChildChannelsCommand childChannelsCommand =
-                new UpdateChildChannelsCommand(
-                        user,
-                        server,
-                        childChannelIds);
+            baseChannelCommand.skipChannelChangedEvent(true);
+            baseChannelCommand.store();
+        }
 
-        baseChannelCommand.skipChannelChangedEvent(true);
-        baseChannelCommand.store();
-        childChannelsCommand.skipChannelChangedEvent(true);
-        childChannelsCommand.store();
+        if (!childChannels.isEmpty()) {
+            UpdateChildChannelsCommand childChannelsCommand = new UpdateChildChannelsCommand(
+                    user,
+                    server,
+                    childChannelIds);
+
+            childChannelsCommand.skipChannelChangedEvent(true);
+            childChannelsCommand.store();
+        }
 
         // Calling this asynchronous block execution util main thread close the Hibernate Session
         // as we require the result, we must call this synchronous

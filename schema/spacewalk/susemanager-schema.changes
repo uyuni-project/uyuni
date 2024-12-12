@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:30:26 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Store direct call request in action details
+  * Allow group assignment for foreign servers (bsc#1222447)
+  * Ensure the reporting db uses a lowercase username (bsc#1220494)
+  * Do not use Postgres extensions dblink and pgcrypto
+  * Improve appstreams context selection (bsc#1231459)
+
+-------------------------------------------------------------------
 Mon Oct 14 16:00:55 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
