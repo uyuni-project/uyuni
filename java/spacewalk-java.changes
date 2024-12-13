@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Dec 13 15:02:20 CET 2024 - rosuna@suse.com
+
+- version 5.1.5-0
+  * Do not set gpgkeyurl with default values (bsc#1234251)
+
+-------------------------------------------------------------------
 Thu Dec 12 16:06:49 CET 2024 - rosuna@suse.com
 
 - version 5.1.4-0
