@@ -28,6 +28,7 @@ Add more tasks if needed.
 - [ ] Merge the PR for the translations with the option `Merge pull request`
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Adjust the version number in `web/conf/rhn_web.conf` (`web.version.uyuni`)
+  - [ ] In the same PR, also make sure that the version specified in the webui version is the same that will also be on that push.sh script in uyuni-tools (https://github.com/uyuni-project/uyuni-tools/blob/main/push.sh#L27). Fix it in another PR otherwise.
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if schema migration directories exist last SUSE Manager versions and Uyuni (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if any of the packages in the  microservices folder needs to be tagged. **There's a specific procedure to follow**
