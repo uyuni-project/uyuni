@@ -23,6 +23,13 @@ Trusted: yes
 {%- endif %}
 {%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
 Signed-By: {{ args['gpgkeyurl'][7:] }}
+{%- elif args['gpgkeyurl'] is not defined %}
+{#- bsc#1234251 #}
+{%- if grains['os'] == 'Debian' %}
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+{%- elif grains['os'] == 'Ubuntu' %}
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg
+{%- endif %}
 {%- endif %}
 {%- else %}
 {%- if args['gpgkeyurl'] is defined and args['gpgkeyurl'].startswith('file:///') %}
