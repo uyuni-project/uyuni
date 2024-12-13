@@ -553,12 +553,6 @@ Then(/^the repo file should contain the (custom|normal) download endpoint on the
   raise ScriptError, 'Some parameters are not as expected' unless real_uri.scheme == expected_uri.scheme && real_uri.host == expected_uri.host && real_uri.port == expected_uri.port
 end
 
-When(/^I copy "([^"]*)" to "([^"]*)"$/) do |file_path, host|
-  node = get_target(host)
-  success = file_inject(node, file_path, file_path)
-  raise ScriptError, 'File injection failed' unless success
-end
-
 When(/^I copy "([^"]*)" file from "([^"]*)" to "([^"]*)"$/) do |file_path, from_host, to_host|
   from_node = get_target(from_host)
   to_node = get_target(to_host)
@@ -852,13 +846,12 @@ When(/^I register this client for SSH push via tunnel$/) do
            "    \"Password:\"                                              {send \"linux\r\"}\n" \
            "  }\n" \
            "}\n"
-  path = generate_temp_file('push-registration.exp', script)
-  step "I copy \"#{path}\" to \"server\""
-  `rm #{path}`
+  temp_file = generate_temp_file('push-registration.exp', script)
+  expect_filepath = '/tmp/push-registration.exp'
+  get_target('server').inject(temp_file.path, expect_filepath)
   # perform the registration
-  filename = File.basename(path)
   bootstrap_timeout = 600
-  get_target('server').run("expect #{filename}", timeout: bootstrap_timeout, verbose: true)
+  get_target('server').run("expect #{expect_filepath}", timeout: bootstrap_timeout, verbose: true)
   # restore files from backups
   get_target('server').run('mv /etc/hosts.BACKUP /etc/hosts')
   get_target('server').run('mv /etc/sysconfig/rhn/up2date.BACKUP /etc/sysconfig/rhn/up2date')
