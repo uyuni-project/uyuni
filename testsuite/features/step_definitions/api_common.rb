@@ -480,7 +480,8 @@ end
 # schedule API
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
-  assert_includes($api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label)
+  map = $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }
+  raise NoMatchingPatternError, "Expected #{label} to be include on #{map}" unless map.to_s.include?(label)
 end
 
 Then(/^I cancel all scheduled actions$/) do
