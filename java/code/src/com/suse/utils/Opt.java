@@ -13,7 +13,7 @@
  * in this software or its documentation.
  */
 package com.suse.utils;
-
+// TEST
 
 import com.redhat.rhn.domain.product.Tuple2;
 
