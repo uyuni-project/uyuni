@@ -31,6 +31,7 @@ Add more tasks if needed.
 - [ ] Ask the Doc Squad to submit an update of the doc package to `Devel:Galaxy:Manager:5.0` project, and ask them to warn the translators so they can start their work. A Merge Request for the [documentation.suse.com repository](https://gitlab.suse.de/susedoc/docserv-external-tree-suma) should get created a few days before the release
 - [ ] After the branch freeze, ask [Orion](https://suse.slack.com/archives/C02DDMY6R0R) to prepare the PR for the code translations. If nobody from Orion is available, ask @parlt91. They will add us as reviewers.
 - [ ] Increase `web.version` in `web/conf/rhn_web.conf` (`x.y.z+1`) in `Manager-5.0` branch
+  - [ ] In the same PR, also make sure that the version specified in the webui version is the same that will also be on that push.sh script in uyuni-tools (https://github.com/uyuni-project/uyuni-tools/blob/main/push.sh#L27). Fix it in another PR otherwise.
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://confluence.suse.com/display/SUSEMANAGER/Maintenance+Update+procedure)
 - [ ] Check if schema migration directories exist between older and newer SUSE Manager version (more at https://confluence.suse.com/display/SUSEMANAGER/Maintenance+Update+procedure)
 - [ ] Push changes to `Manager-5.0` branch
