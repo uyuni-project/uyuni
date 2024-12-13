@@ -1,2 +1,0 @@
-- Prevent warning message for unsigned debian repositories
-  when using new deb822 format (bsc#1234251)
