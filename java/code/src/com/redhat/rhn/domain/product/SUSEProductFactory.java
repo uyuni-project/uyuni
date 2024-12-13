@@ -752,7 +752,7 @@ public class SUSEProductFactory extends HibernateFactory {
                 "JOIN SUSEProduct ext ON x.extensionProduct = ext " +
                 "JOIN SUSEProductChannel pc ON pc.product = ext " +
                 "JOIN pc.channel.packages pkg " +
-                "WHERE pkg.packageName.name LIKE 'kernel-default%' " +
+                "WHERE pkg.packageName.name = 'kernel-default' " +
                 "AND x.rootProduct = :product", PackageEvr.class)
                 .setParameter("product", product)
                 .getResultStream();

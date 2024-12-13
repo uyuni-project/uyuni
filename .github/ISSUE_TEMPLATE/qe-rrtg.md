@@ -12,7 +12,7 @@ assignees: ''
 
 *Blockers found in a CI of a branch that impedes to submit that branch*
 
-**Version reviewed to be submitted:** 4.x / Uyuni
+**Version reviewed to be submitted:** 4.x / 5.x / Uyuni
 
 - Keep in mind that depending on the week, we need to be more focused on some branches due to MU submissions being prepared.
 - Please, check the [calendar](https://confluence.suse.com/display/SUSEMANAGER/Release+calendar) and edit the field above.
@@ -58,5 +58,3 @@ assignees: ''
   - [4.3 NUE](https://ci.suse.de/view/Manager/view/Manager-4.3/job/manager-4.3-dev-acceptance-tests-NUE/), [4.3 PRV](https://ci.suse.de/view/Manager/view/Manager-4.3/job/manager-4.3-dev-acceptance-tests-PRV/)
   - [Uyuni Podman](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-podman/)
   - [Uyuni K3s](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-master-dev-acceptance-tests-K3S/)
-  - [openQA offline installation (4.3)](https://ci.suse.de/view/Manager/view/Manager-qe/job/manager-4.3-qe-openqa-offline-installation/)
-  - [openQA online installation (4.3)](https://ci.suse.de/view/Manager/view/Manager-qe/job/manager-4.3-qe-openqa-installation-online/)
