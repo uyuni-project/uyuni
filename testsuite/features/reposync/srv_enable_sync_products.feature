@@ -6,10 +6,17 @@ Feature: Be able to list available products and enable them
   As root user
   I want to be able to list available products and enable them
 
+@susemanager
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
     Then I should get "[ ] SUSE Linux Enterprise Desktop 15 SP3 x86_64"
 
+@uyuni
+  Scenario: List available products
+    When I execute mgr-sync "list products" with user "admin" and password "admin"
+    Then I should get "[ ] openSUSE Leap 15.5 x86_64"
+
+@susemanager
   Scenario: List all available products
     When I execute mgr-sync "list products -e"
     Then I should get "[ ] SUSE Linux Enterprise Desktop 15 SP3 x86_64"

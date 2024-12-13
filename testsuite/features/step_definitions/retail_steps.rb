@@ -10,16 +10,16 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
 
   # Distribution
   repos = 'os_pool_repo os_update_repo '
-  repos += 'testing_overlay_devel_repo ' unless $build_validation || product_version_full.include?('-released')
+  repos += 'testing_overlay_devel_repo ' unless $build_validation || $is_containerized_server || product_version_full.include?('-released')
 
   # Server Applications, proxy product and modules, proxy devel
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if os_family.match?(/^sles/) && os_version.match?(/^15/)
     repos += 'proxy_module_pool_repo proxy_module_update_repo ' \
              'proxy_product_pool_repo proxy_product_update_repo ' \
              'module_server_applications_pool_repo module_server_applications_update_repo '
     repos += 'proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
-  elsif os_family =~ /^opensuse/
-    repos += 'proxy_pool_repo '
+  elsif os_family.match?(/^opensuse/)
+    repos += 'proxy_pool_repo ' unless $is_containerized_server
   end
 
   get_target('proxy').run("zypper mr --#{action} #{repos}", verbose: true)
@@ -42,6 +42,55 @@ When(/^I start tftp on the proxy$/) do
   end
 end
 
+When(/^I set up the private network on the terminals$/) do
+  proxy = net_prefix + PRIVATE_ADDRESSES['proxy']
+  # /etc/sysconfig/network/ifcfg-eth1 and /etc/resolv.conf
+  nodes = [get_target('sle_minion')]
+  conf = "STARTMODE='auto'\\nBOOTPROTO='dhcp'"
+  file = '/etc/sysconfig/network/ifcfg-eth1'
+  script2 = "-e '/^#/d' -e 's/^search /search example.org /' -e '$anameserver #{proxy}' -e '/^nameserver /d'"
+  file2 = '/etc/resolv.conf'
+  nodes.each do |node|
+    next if node.nil?
+
+    node.run("echo -e \"#{conf}\" > #{file} && sed -i #{script2} #{file2} && ifup eth1")
+  end
+  # /etc/sysconfig/network-scripts/ifcfg-eth1 and /etc/sysconfig/network
+  nodes = [get_target('rhlike_minion')]
+  file = '/etc/sysconfig/network-scripts/ifcfg-eth1'
+  conf2 = 'GATEWAYDEV=eth0'
+  file2 = '/etc/sysconfig/network'
+  nodes.each do |node|
+    next if node.nil?
+
+    domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
+    conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
+    service =
+      if node.os_family.match?(/^rocky/)
+        'NetworkManager'
+      else
+        'network'
+      end
+    node.run("echo -e \"#{conf}\" > #{file} && echo -e \"#{conf2}\" > #{file2} && systemctl restart #{service}")
+  end
+  # /etc/netplan/01-netcfg.yaml
+  nodes = [get_target('deblike_minion')]
+  source = "#{File.dirname(__FILE__)}/../upload_files/01-netcfg.yaml"
+  dest = '/etc/netplan/01-netcfg.yaml'
+  nodes.each do |node|
+    next if node.nil?
+
+    success = file_inject(node, source, dest)
+    raise ScriptError, 'File injection failed' unless success
+
+    node.run('netplan apply')
+  end
+  # PXE boot minion
+  if $pxeboot_mac
+    step 'I restart the network on the PXE boot minion'
+  end
+end
+
 Then(/^"([^"]*)" should communicate with the server using public interface$/) do |host|
   node = get_target(host)
   _result, return_code = node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}", check_errors: false)
@@ -51,6 +100,85 @@ Then(/^"([^"]*)" should communicate with the server using public interface$/) do
     node.run("ping -n -c 1 -I #{node.public_interface} #{get_target('server').public_ip}")
   end
   get_target('server').run("ping -n -c 1 #{node.public_ip}")
+end
+
+When(/^I rename the proxy for Retail$/) do
+  node = get_target('proxy')
+  node.run('sed -i "s/^proxy_fqdn:.*$/proxy_fqdn: proxy.example.org/" /etc/uyuni/proxy/config.yaml')
+end
+
+When(/^I connect the second interface of the proxy to the private network$/) do
+  node = get_target('proxy')
+  _result, return_code = node.run('which nmcli')
+  if return_code.zero?
+    # Network manager: we give eth1 precedence over eth0
+    #                  otherwise the name server we get from DHCP is lost at the end of the list
+    #                  (the name servers list in resolv.conf is limited to 3 entries)
+    cmd = 'nmcli connection modify "Wired connection 1" ipv4.dns-priority 20 && ' \
+          'nmcli device modify eth0 ipv4.dns-priority 20 && ' \
+          'nmcli connection modify "Wired connection 2" ipv4.dns-priority 10 && ' \
+          'nmcli device modify eth1 ipv4.dns-priority 10'
+  else
+    # Wicked: is there a way to give eth1 precedence?
+    #         we use a static setting for the name server instead
+    static_dns = net_prefix + PRIVATE_ADDRESSES['dhcp_dns']
+    cmd = 'echo -e "BOOTPROTO=dhcp\nSTARTMODE=auto\n" > /etc/sysconfig/network/ifcfg-eth1 && ' \
+          'ifup eth1 && ' \
+          "sed -i 's/^NETCONFIG_DNS_STATIC_SERVERS=\".*\"/NETCONFIG_DNS_STATIC_SERVERS=\"#{static_dns}\"/' /etc/sysconfig/network/config && " \
+          'netconfig update -f'
+  end
+  node.run(cmd)
+end
+
+When(/^I restart all proxy containers$/) do
+  node = get_target('proxy')
+  node.run('systemctl restart uyuni-proxy-httpd.service')
+  node.run('systemctl restart uyuni-proxy-salt-broker.service')
+  node.run('systemctl restart uyuni-proxy-squid.service')
+  node.run('systemctl restart uyuni-proxy-ssh.service')
+  node.run('systemctl restart uyuni-proxy-tftpd.service')
+end
+
+Then(/^the "([^"]*)" host should be present on private network$/) do |host|
+  node = get_target('proxy')
+  output, return_code = node.run("ping -n -c 1 -I #{node.private_interface} #{net_prefix}#{PRIVATE_ADDRESSES[host]}")
+  raise SystemCallError, "Terminal #{host} does not answer on eth1: #{output}" unless return_code.zero?
+end
+
+Then(/^name resolution should work on private network$/) do
+  node = get_target('proxy')
+  # direct name resolution
+  %w[proxy.example.org dns.google.com].each do |dest|
+    output, return_code = node.run("host #{dest}", check_errors: false)
+    raise SystemCallError, "Direct name resolution of #{dest} on proxy doesn't work: #{output}" unless return_code.zero?
+
+    log output.to_s
+  end
+  # reverse name resolution
+  [node.private_ip, '8.8.8.8'].each do |dest|
+    output, return_code = node.run("host #{dest}", check_errors: false)
+    raise SystemCallError, "Reverse name resolution of #{dest} on proxy doesn't work: #{output}" unless return_code.zero?
+
+    log output.to_s
+  end
+end
+
+When(/^I restart the network on the PXE boot minion$/) do
+  # We have no IPv4 address on that machine yet,
+  # so the only way to contact it is via IPv6 link-local.
+  # We convert MAC address to IPv6 link-local address:
+  mac = $pxeboot_mac.tr(':', '')
+  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%eth1"
+  file = 'restart-network-pxeboot.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  # We have no direct access to the PXE boot minion
+  # so we run the command from the proxy
+  get_target('proxy').run("expect -f /tmp/#{file} #{ipv6}")
 end
 
 When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
@@ -71,29 +199,30 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   file = 'reboot-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
 
-When(/^I create bootstrap script for "([^"]+)" hostname and set the activation key "([^"]*)" in the bootstrap script on the proxy$/) do |host, key|
+When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activation key on "([^"]*)"$/) do |hostname, key, host|
+  node = get_target(host)
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
   # force_bundle = use_salt_bundle ? '--force-bundle' : ''
-  # get_target('proxy').run("mgr-bootstrap #{force_bundle}")
-  get_target('proxy').run("mgr-bootstrap --hostname=#{host} --activation-keys=#{key}")
+  # get_target(host).run("mgr-bootstrap #{force_bundle}")
+  node.run("mgr-bootstrap --hostname=#{hostname} --activation-keys=#{key}")
 
-  output, _code = get_target('proxy').run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
-  raise "Key: #{key} not included" unless output.include? key
-  raise "Hostname: #{host} not included" unless output.include? host
+  output, _code = node.run('cat /srv/www/htdocs/pub/bootstrap/bootstrap.sh')
+  raise ScriptError, "Key: #{key} not included" unless output.include? key
+  raise ScriptError, "Hostname: #{hostname} not included" unless output.include? hostname
 end
 
 When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   file = 'bootstrap-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}", verbose: true)
@@ -107,8 +236,8 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   file = 'uyuni.key'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   system_name = get_system_name('pxeboot_minion')
   get_target('server').run("salt-cp #{system_name} #{dest} #{dest}")
@@ -119,8 +248,8 @@ When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   file = 'wait-end-of-cleanup-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}")
@@ -129,8 +258,8 @@ end
 When(/^I prepare the retail configuration file on server$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   dest = '/tmp/massive-import-terminals.yml'
-  return_code = file_inject(get_target('server'), source, dest)
-  raise "File #{file} couldn't be copied to server" unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, "File #{file} couldn't be copied to server" unless success
 
   sed_values = "s/<PROXY_HOSTNAME>/#{get_target('proxy').full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "
@@ -160,7 +289,7 @@ end
 
 Then(/^I should see the terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
-  terminals.each { |terminal| step %(I should see a "#{terminal}" text) }
+  terminals.each { |terminal| step %(I wait until I see the "#{terminal}" system, refreshing the page) }
 end
 
 Then(/^I should not see any terminals imported from the configuration file$/) do
@@ -412,5 +541,5 @@ end
 Then(/^the image for "([^"]*)" should exist on the branch server$/) do |host|
   image = compute_kiwi_profile_name(host)
   images, _code = get_target('proxy').run('ls /srv/saltboot/image/')
-  raise "Image #{image} for #{host} does not exist" unless images.include? image
+  raise ScriptError, "Image #{image} for #{host} does not exist" unless images.include? image
 end

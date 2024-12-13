@@ -11,7 +11,7 @@
   - [Buttons](#buttons)
   - [Text input](#text-input)
   - [Operating system](#operating-system)
-  - [SUSE Manager utilities](#suse-manager-utilities)
+  - [Uyuni utilities](#uyuni-utilities)
   - [Registration and channels](#registration-and-channels)
   - [Events](#events)
   - [Salt](#salt)
@@ -230,7 +230,7 @@ For a test with a regular expression, there is ```I should see a text like "..."
 
 ```gherkin
   When I wait until I see "Software Updates Available" text, refreshing the page
-  When I wait until I do not see "Apply highstate scheduled by admin" text, refreshing the page
+  When I wait until I do not see "Apply highstate scheduled" text, refreshing the page
   When I wait until I see the name of "sle_minion", refreshing the page
   When I wait until I do not see the name of "sle_minion", refreshing the page
   When I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
@@ -543,7 +543,7 @@ Note that the text area variant handles the new lines characters while the other
 
 ```gherkin
   When I wait until onboarding is completed for "rhlike_minion"
-  When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+  When I wait until event "Package Install/Upgrade scheduled" is completed
 ```
 
 ### Salt
@@ -624,11 +624,12 @@ For example:
 
 * Create a test virtual machine on a given host
 
-The virtual machine is created without SUSE Manager, directly on the virtual host
+The virtual machine is created without Uyuni, directly on the virtual host
 using `qemu-img` and `virt-install`
 
 ```gherkin
-  When I create "test-vm" virtual machine on "virt-server"
+  When I create a leap virtual machine named "test-vm" without cloudinit on "virt-server"
+  When I create a sles virtual machine named "test-vm" with cloudinit on "virt-server"
   When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
 ```
 
@@ -664,6 +665,18 @@ Then "test-vm" virtual machine on "virt-server" should boot using autoyast
 Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
 Then "test-vm" virtual machine on "virt-server" should stop on reboot
 Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
+```
+
+* Stop a virtual machine
+
+```gherkin
+  When I stop the virtual machine named "test-vm" on "kvm_server"
+```
+
+* Delete a virtual machine
+
+```gherkin
+  When I delete the virtual machine named "test-vm" on "kvm_server"
 ```
 
 * Remove disk images from a storage pool

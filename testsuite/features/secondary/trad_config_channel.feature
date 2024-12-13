@@ -121,7 +121,7 @@ Feature: Configuration management of traditional clients
     And I click on "Schedule Compare"
     Then I should see a "1 files scheduled for comparison." text
     When I run "rhn_check -vvv" on "sle_client"
-    And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
+    And I wait until event "Show differences between profiled config files and deployed config files scheduled" is completed
     Then I should see a "Differences exist" link
     When I follow "Differences exist"
     Then I should not see a "Differences exist in a file that is not readable by all. Re-deployment of configuration file is recommended." text
@@ -201,7 +201,7 @@ Feature: Configuration management of traditional clients
     And I click on "Schedule Compare"
     Then I should see a "3 files scheduled for comparison." text
     When I run "rhn_check -vvv" on "sle_client"
-    And I wait until event "Show differences between profiled config files and deployed config files scheduled by admin" is completed
+    And I wait until event "Show differences between profiled config files and deployed config files scheduled" is completed
     Then I should see a "Differences exist" link
     And I should see a "/etc/mgr-test-file.cnf (rev. 2) Differences exist" text
     And I should see a "/etc/sysconfig/language (rev. 1)" text

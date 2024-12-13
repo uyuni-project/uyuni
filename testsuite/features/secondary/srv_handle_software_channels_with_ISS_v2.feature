@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 Feature: Export and import software channels with new ISS implementation
   Distribute software between servers
   Run export and import with ISS v2
@@ -9,8 +10,8 @@ Feature: Export and import software channels with new ISS implementation
     When I install packages "inter-server-sync" on this "server"
     Then "inter-server-sync" should be installed on "server"
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Clone a channel with patches
     When I follow the left menu "Software > Manage > Channels"

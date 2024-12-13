@@ -3,6 +3,8 @@
 #
 # This feature depends on:
 # - features/build_validation/retail/proxy_traditional_branch_network.feature
+#   or
+#   features/build_validation/retail/proxy_container_branch_network.feature
 # - features/build_validation/retail/sle12sp5_buildhost_build_kiwi_image.feature
 
 @proxy
@@ -20,12 +22,12 @@ Feature: PXE boot a SLES 12 SP5 retail terminal
     When I reboot the Retail terminal "sle12sp5_terminal"
     And I wait at most 180 seconds until Salt master sees "sle12sp5_terminal" as "unaccepted"
     And I accept "sle12sp5_terminal" key in the Salt master
-    And I follow the left menu "Systems > Overview"
+    And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle12sp5_terminal", refreshing the page
     And I follow this "sle12sp5_terminal" link
     And I follow "Events"
     And I follow "History"
-    And I wait until I see the event "added system entitlement" completed during last minute, refreshing the page
+    And I wait until I see "added system entitlement" text, refreshing the page
     And I wait until event "Apply states [saltboot]" is completed
     And I follow "Software" in the content area
     And I follow "Software Channels" in the content area

@@ -33,3 +33,4 @@ for error in errors:
     except ValueError as e:
         print("JSON cannot be parsed due to {0}".format(e))
         continue
+

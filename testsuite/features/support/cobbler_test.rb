@@ -183,7 +183,6 @@ class CobblerTest
   # 'distros|profiles|systems|repos' as the table name,
   # 'name' as the column and the name of the item.
   #
-  # @param element_type [String] The type of the element.
   # @param name [String] The name of the distro.
   def element_exists(element_type, name)
     exists(element_type, 'name', name)

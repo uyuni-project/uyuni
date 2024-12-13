@@ -1,23 +1,28 @@
-# Copyright (c) 2021-2023 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# We also test 'Bootstrapping using the command line' in this feature with the following script:
+# https://github.com/uyuni-project/uyuni/blob/master/java/conf/cobbler/snippets/minion_script
 
+@skip_if_github_validation
+@skip_if_containerized_server
 @proxy
 @private_net
 @pxeboot_minion
 @scope_cobbler
-Feature: PXE boot a terminal with Cobbler
-  In order to automate client system installations in Uyuni
+Feature: PXE boot a terminal with Cobbler and traditional proxy
+  In order to automate client system installations with a traditional proxy
   As the system administrator
   I want to PXE boot one host with Cobbler
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "proxy"
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Start Cobbler monitoring
     When I start local monitoring of Cobbler
 
   Scenario: Configure PXE part of DHCP on the proxy
+    Given I am on the Systems overview page of this "proxy"
     When I follow "Formulas" in the content area
     And I follow first "Dhcpd" in the content area
     And I click on "Expand All Sections"
@@ -30,9 +35,9 @@ Feature: PXE boot a terminal with Cobbler
   Scenario: Apply the highstate after the formula setup
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
-   # We currently test Cobbler with SLES 15 SP4, even on Uyuni
+  # We currently test Cobbler with SLES 15 SP4, even on Uyuni
   Scenario: Install the TFTP boot package on the server for Cobbler tests
     When I install package tftpboot-installation on the server
     And I wait for "tftpboot-installation-SLE-15-SP4-x86_64" to be installed on "server"
@@ -120,7 +125,14 @@ Feature: PXE boot a terminal with Cobbler
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
+
+  Scenario: Download the profile from the UI
+    When I follow the left menu "Systems > Autoinstallation > Profiles"
+    And I follow "15-sp4-cobbler"
+    And I follow "Autoinstallation File" in the content area
+    And I follow "Download Autoinstallation File"
+    Then I should see a "<profile " text
 
   Scenario: Cleanup: remove the auto installation profile
     When I follow the left menu "Systems > Autoinstallation > Profiles"
@@ -149,5 +161,6 @@ Feature: PXE boot a terminal with Cobbler
     And I wait until Salt client is inactive on the PXE boot minion
     Then "pxeboot_minion" should not be registered
 
+@flaky
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors

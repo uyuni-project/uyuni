@@ -208,7 +208,7 @@ Feature: Action chain on traditional clients
     Then I should be able to see all these actions in the action chain
     When I schedule the action chain
     And I wait until there are no more action chains
-    Then I should see scheduled action, called "System reboot scheduled by admin"
+    Then I should see scheduled action, called "System reboot scheduled"
     When I cancel all scheduled actions
     And I wait until there are no more scheduled actions
     And I delete the action chain

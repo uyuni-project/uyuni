@@ -63,7 +63,7 @@ Feature: Reconfigure the server's hostname
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Check all new server certificates on the minions
     When I check all certificates after renaming the server hostname
@@ -131,7 +131,7 @@ Feature: Reconfigure the server's hostname
     When I follow "States" in the content area
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Check all new server certificates on the minions
     When I check all certificates after renaming the server hostname

@@ -18,20 +18,24 @@ Feature: Bootstrap a Salt minion via the GUI
     And I select the hostname of "proxy" from "proxies" if present
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
+    And I report the bootstrap duration for "sle_minion"
 
-  Scenario: Check the new bootstrapped minion in System Overview page
+  Scenario: Check the new bootstrapped minion in System List page
     When I follow the left menu "Salt > Keys"
     And I wait until I do not see "Loading..." text
     Then I should see a "accepted" text
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
     Then the Salt master can reach "sle_minion"
+    And I report the onboarding duration for "sle_minion"
 
+@susemanager
   Scenario: Use correct kernel image on the SLES minion
     When I remove package "kernel-default-base" from this "sle_minion"
     And I install package "kernel-default" on this "sle_minion"
 
+@susemanager
   Scenario: Reboot the SLES minion to use the new kernel
     When I reboot the "sle_minion" host through SSH, waiting until it comes back
 

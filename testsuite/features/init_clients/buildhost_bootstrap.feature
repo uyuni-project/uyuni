@@ -1,8 +1,8 @@
-# Copyright (c) 2016-2022 SUSE LLC
+# Copyright (c) 2016-2023 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @buildhost
-Feature: Bootstrap a Salt build host via the GUI
+Feature: Bootstrap a build host via the GUI
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

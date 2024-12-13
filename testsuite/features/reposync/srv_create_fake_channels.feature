@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in:
@@ -128,6 +128,7 @@ Feature: Create fake channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-RPM-Terminal-Channel created." text
 
+@deblike_minion
   Scenario: Add Debian-like AMD64 base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -145,6 +146,7 @@ Feature: Create fake channels
     And I click on "Create Channel"
     Then I should see a "Channel Fake-Base-Channel-Debian-like created." text
 
+@rhlike_minion
   Scenario: Add a RedHat-like base channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -156,3 +158,16 @@ Feature: Create fake channels
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
     Then I should see a "Channel Fake-Base-Channel-RH-like created." text
+
+@rhlike_minion
+  Scenario: Add a fake AppStream base channel
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Create Channel"
+    And I enter "Fake-Base-Channel-AppStream" as "Channel Name"
+    And I enter "fake-base-channel-appstream" as "Channel Label"
+    And I select "None" from "Parent Channel"
+    And I select "x86_64" from "Architecture:"
+    And I enter "Fake-Base-Channel-AppStream for testing" as "Channel Summary"
+    And I enter "Description for Fake-Base-Channel-AppStream." as "Channel Description"
+    And I click on "Create Channel"
+    Then I should see a "Channel Fake-Base-Channel-AppStream created." text

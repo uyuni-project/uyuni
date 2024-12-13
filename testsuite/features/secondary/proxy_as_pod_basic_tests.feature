@@ -50,12 +50,12 @@ Feature: Containerized Proxy
     And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
-    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
+    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
     And I copy "/tmp/proxy_container_config.tar.gz" file from "server" to "proxy"
     And I run "tar xzf /tmp/proxy_container_config.tar.gz -C /etc/uyuni/proxy/" on "proxy"
 
   Scenario: Set-up the Containerized Proxy service to support Avahi
-    And I add avahi hosts in Containerized Proxy configuration
+    And I add avahi hosts in containerized proxy configuration
 
   Scenario: Start Containerized Proxy services
     When I start the "uyuni-proxy-pod" service on "proxy"
@@ -65,9 +65,9 @@ Feature: Containerized Proxy
     And I wait until "uyuni-proxy-squid" service is active on "proxy"
     And I wait until "uyuni-proxy-ssh" service is active on "proxy"
     And I wait until "uyuni-proxy-tftpd" service is active on "proxy"
-    And I wait until port "8022" is listening on "proxy"
-    And I wait until port "8080" is listening on "proxy"
-    And I wait until port "443" is listening on "proxy"
+    And I wait until port "8022" is listening on "proxy" container
+    And I wait until port "8080" is listening on "proxy" container
+    And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
   Scenario: Containerized Proxy should be registered automatically
@@ -131,7 +131,7 @@ Feature: Containerized Proxy
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
-    And I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    And I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Pre-requisite: subscribe system to Fake Channel
     Given I am on the Systems overview page of this "sle_minion"
@@ -145,7 +145,7 @@ Feature: Containerized Proxy
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Pre-requisite: downgrade milkyway-dummy to lower version
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
@@ -187,7 +187,7 @@ Feature: Containerized Proxy
     And I should see a "milkyway-dummy" text
     And I click on "Confirm"
     Then I should see a "2 package removals have been scheduled for" text
-    And I wait until event "Package Removal scheduled by admin" is completed
+    And I wait until event "Package Removal scheduled" is completed
 
   @susemanager
   Scenario: Cleanup: subscribe system back to default base channel
@@ -213,7 +213,7 @@ Feature: Containerized Proxy
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   @uyuni
   Scenario: Cleanup: subscribe system back to default base channel
@@ -234,7 +234,7 @@ Feature: Containerized Proxy
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Run a remote command on Salt minion
     When I follow the left menu "Salt > Remote Commands"
@@ -253,14 +253,14 @@ Feature: Containerized Proxy
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I click on "Update Package List"
-    And I wait until event "Package List Refresh scheduled by admin" is completed
+    And I wait until event "Package List Refresh scheduled" is completed
 
   Scenario: Check that Hardware Refresh button works on a Salt minion
     When I follow "Details" in the content area
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    And I wait until event "Hardware List Refresh scheduled by admin" is completed
+    And I wait until event "Hardware List Refresh scheduled" is completed
 
   Scenario: Create a configuration channel named "Pod Proxy Channel"
     When I follow the left menu "Configuration > Channels"
@@ -312,7 +312,7 @@ Feature: Containerized Proxy
     And I should see a "Reboot system" button
     When I click on "Reboot system"
     Then I should see a "Reboot scheduled for system" text
-    And I wait at most 600 seconds until event "System reboot scheduled by admin" is completed
+    And I wait at most 600 seconds until event "System reboot scheduled" is completed
     Then I should see a "This action's status is: Completed" text
 
   Scenario: Cleanup: Unregister a Salt minion in the Containerized Proxy

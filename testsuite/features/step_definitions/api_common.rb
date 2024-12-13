@@ -10,7 +10,8 @@ require 'socket'
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
-  $client_id = $api_test.system.search_by_name(system_name).first['id']
+  first_match = $api_test.system.search_by_name(system_name).first
+  $client_id = first_match['id'] unless first_match.nil?
   refute_nil($client_id, "Could not find system with hostname #{system_name}")
 end
 
@@ -140,7 +141,7 @@ When(/^I call user\.list_roles\(\) on user "([^"]*)"$/) do |user|
 end
 
 Then(/^I should get at least one role that matches "([^"]*)" suffix$/) do |suffix|
-  refute(@roles.find_all { |el| el =~ /#{suffix}/ }.empty?)
+  refute(@roles.find_all { |el| el.match?(/#{suffix}/) }.empty?)
 end
 
 Then(/^I should get role "([^"]*)"$/) do |rolename|
@@ -273,26 +274,26 @@ end
 # activationkey namespace
 
 Then(/^I should get some activation keys$/) do
-  raise if $api_test.activationkey.get_activation_keys_count < 1
+  raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
 When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
   key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise 'Key creation failed' if key.nil?
-  raise 'Bad key name' if key != "1-#{id}"
+  raise ScriptError, 'Key creation failed' if key.nil?
+  raise ScriptError, 'Bad key name' if key != "1-#{id}"
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
-  raise unless $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.verify(activation_key)
 end
 
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
-  raise unless $api_test.activationkey.delete(activation_key)
-  raise if $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.delete(activation_key)
+  raise ScriptError if $api_test.activationkey.verify(activation_key)
 end
 
 When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
-  raise unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
+  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
 end
 
 Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
@@ -302,7 +303,7 @@ Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |d
     log "  #{k}: #{v}"
   end
   log
-  raise unless details['description'] == description
+  raise ScriptError unless details['description'] == description
 end
 
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
@@ -479,7 +480,8 @@ end
 # schedule API
 
 Then(/^I should see scheduled action, called "(.*?)"$/) do |label|
-  assert_includes($api_test.schedule.list_in_progress_actions.map { |a| a['name'] }, label)
+  map = $api_test.schedule.list_in_progress_actions.map { |a| a['name'] }
+  raise NoMatchingPatternError, "Expected #{label} to be include on #{map}" unless map.to_s.include?(label)
 end
 
 Then(/^I cancel all scheduled actions$/) do
@@ -651,14 +653,28 @@ When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "
   # this call will raise a SystemCallError if matching systems already exist, the Error message will include a list of the matchings system IDs
   sid = $api_test.system.create_system_profile(name, 'hostname' => hostname)
   $stdout.puts "system_id: #{sid}"
+
   $api_test.system.create_system_record_with_sid(sid, kslabel)
   # this works only with a 2 column table where the key is in the left column
   variables = values.rows_hash
   $api_test.system.set_variables(sid, variables)
 end
 
-When(/^I create a kickstart tree via the API$/) do
-  $api_test.kickstart.tree.create_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
+  case distro_name
+  when 'fedora_kickstart_distro_api'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
+  when 'testdistro'
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+  else
+    # Raise an error for unrecognized value
+    raise ArgumentError, "Unrecognized value: #{distro_name}"
+  end
+end
+
+When(/^I create a "([^"]*)" profile via the API using import file for "([^"]*)" distribution$/) do |profile_name, distro_name|
+  canonical_path = Pathname.new(File.join(File.dirname(__FILE__), '/../upload_files/autoinstall/cobbler/mock/empty.xml')).cleanpath
+  $api_test.kickstart.create_profile_using_import_file(profile_name, distro_name, canonical_path)
 end
 
 When(/^I create a kickstart tree with kernel options via the API$/) do
@@ -667,4 +683,37 @@ end
 
 When(/^I update a kickstart tree via the API$/) do
   $api_test.kickstart.tree.update_distro('fedora_kickstart_distro_api', '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'generic_rpm', 'self_update=0', 'self_update=1')
+end
+
+When(/^I delete profile and distribution using the API for "([^"]*)" kickstart tree$/) do |distro_name|
+  $api_test.kickstart.tree.delete_tree_and_profiles(distro_name)
+end
+
+When(/I verify channel "([^"]*)" is( not)? modular via the API/) do |channel_label, not_modular|
+  is_modular = $api_test.channel.appstreams.modular?(channel_label)
+  expected = not_modular.nil?
+
+  raise ScriptError "channel '#{channel_label}' is modular? Expected: #{expected} - got: #{is_modular}" unless is_modular == expected
+end
+
+When(/channel "([^"]*)" is( not)? present in the modular channels listed via the API/) do |channel, not_present|
+  modular_channels = $api_test.channel.appstreams.list_modular_channels
+  is_present = modular_channels.include?(channel)
+  expected = not_present.nil?
+
+  raise ScriptError "Expected #{modular_channels} to include '#{channel}'? #{expected} - got: #{is_present}" unless is_present == expected
+end
+
+When(/"([^"]*)" module streams "([^"]*)" are available for channel "([^"]*)" via the API/) do |module_name, streams, channel_label|
+  expected_streams = streams.split(',').map(&:strip)
+  available_streams = $api_test.channel.appstreams.list_module_streams(channel_label)
+
+  expected_streams.each do |expected_stream|
+    found =
+      available_streams.any? do |stream|
+        stream['module'] == module_name && stream['stream'] == expected_stream
+      end
+
+    raise ScriptError, "Stream '#{expected_stream}' for module '#{module_name}' not found in the available streams for channel '#{channel_label}'" unless found
+  end
 end

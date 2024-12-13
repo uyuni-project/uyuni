@@ -54,7 +54,7 @@ Feature: Action chains on several systems at once
     And I cancel all scheduled actions
 
   Scenario: Add an action chain using system set manager for SSH minion and SLE minion
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I check the "sle_minion" client
     And I check the "ssh_minion" client
     And I follow the left menu "Systems > System Set Manager > Overview"

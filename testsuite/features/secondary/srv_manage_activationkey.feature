@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2023 SUSE LLC
+# Copyright (c) 2010-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Manipulate activation keys
@@ -6,8 +6,8 @@ Feature: Manipulate activation keys
   As the testing user
   I want to create and edit activation keys
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Create an activation key for i586
     When I follow the left menu "Systems > Activation Keys"
@@ -65,6 +65,8 @@ Feature: Manipulate activation keys
     And I click on "Delete Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key i586 has been deleted." text
 
+@scc_credentials
+@susemanager
   Scenario: Create an activation key with a channel and a package list for x86_64
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Create Key"
@@ -79,6 +81,23 @@ Feature: Manipulate activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
 
+@scc_credentials    
+@uyuni
+  Scenario: Create an activation key with a channel and a package list for x86_64
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Create Key"
+    And I wait until I do not see "Loading..." text
+    And I enter "SUSE Test PKG Key x86_64" as "description"
+    And I enter "SUSE-TEST-x86_64" as "key"
+    And I enter "20" as "usageLimit"
+    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
+    And I click on "Create Activation Key"
+    And I follow "Packages"
+    And I enter "sed" as "packages"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key SUSE Test PKG Key x86_64 has been modified." text
+
+@scc_credentials
   Scenario: Delete the x86_64 activation key with packages
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE Test PKG Key x86_64" in the content area

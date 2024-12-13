@@ -1,10 +1,11 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
 # - features/secondary/min_salt_mgrcompat_state.feature
 # If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @sle_minion
 @scope_salt
 Feature: Management of minion keys
@@ -12,8 +13,8 @@ Feature: Management of minion keys
   As an authorized user
   I want to verify all the minion key management features in the UI
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before exploring the onboarding page
     Given I am on the Systems overview page of this "sle_minion"

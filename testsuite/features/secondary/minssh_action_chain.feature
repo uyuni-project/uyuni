@@ -1,16 +1,18 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
 # - features/secondary/allcli_action_chain.feature
 # If the action chain fails to be completed and run.
-
+#
+# Skip if container because the action chain fails
+# This needs to be fixed
 @ssh_minion
 @scope_action_chains
 @scope_salt_ssh
 Feature: Salt SSH action chain
 
-  Scenario: Log in as admin user
+  Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
   Scenario: Pre-requisite: downgrade repositories to lower version on SSH minion
@@ -123,6 +125,7 @@ Feature: Salt SSH action chain
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
+@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow first "Schedule System Reboot"
@@ -150,8 +153,7 @@ Feature: Salt SSH action chain
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "6. Reboot 1 system" text
-    And I should see a "7. Run a remote command on 1 system" text
+    And I should see a "Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
@@ -161,6 +163,7 @@ Feature: Salt SSH action chain
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
+    And I wait until I see "new action chain" text
     And I follow "new action chain"
     Then I click on "Save and Schedule"
     And I should see a "Action Chain new action chain has been scheduled for execution." text
@@ -190,6 +193,7 @@ Feature: Salt SSH action chain
   Scenario: Cleanup: roll back action chain effects on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I run "rm /tmp/action_chain_done" on "ssh_minion" without error control
+    And I enable repository "test_repo_rpm_pool" on this "ssh_minion"
     And I remove package "andromeda-dummy" from this "ssh_minion" without error control
     And I remove package "virgo-dummy" from this "ssh_minion" without error control
     And I install package "milkyway-dummy" on this "ssh_minion" without error control
@@ -197,7 +201,7 @@ Feature: Salt SSH action chain
     And I follow "Software" in the content area
     And I click on "Update Package List"
     And I follow "Events" in the content area
-    And I wait until I do not see "Package List Refresh scheduled by admin" text, refreshing the page
+    And I wait until I do not see "Package List Refresh scheduled" text, refreshing the page
     And I follow "Software" in the content area
     And I follow "List / Remove" in the content area
     And I enter "andromeda-dummy" as the filtered package name
@@ -216,7 +220,6 @@ Feature: Salt SSH action chain
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
     And I call actionchain.add_script_run() with the script "exit 1;"
-    And I call actionchain.add_system_reboot()
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty

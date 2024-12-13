@@ -12,10 +12,12 @@ Feature: OpenSCAP audit of Debian-like Salt minion
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
+  @skip_if_github_validation
   Scenario: Enable all the necessary repositories for OpenSCAP on Debian-like minion
     When I enable Debian-like "universe" repository on "deblike_minion"
     And I enable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
 
+  @skip_if_github_validation
   Scenario: Install the OpenSCAP packages on the Debian-like minion
     Given I am on the Systems overview page of this "deblike_minion"
     When I refresh the metadata for "deblike_minion"
@@ -72,9 +74,11 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     And I click on "Update Organization"
     Then I should see a "Organization SUSE Test was successfully updated." text
 
+  @skip_if_github_validation
   Scenario: Cleanup: remove the OpenSCAP packages from the Debian-like minion
     When I remove OpenSCAP dependencies from "deblike_minion"
 
+  @skip_if_github_validation
   Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Debian-like minion
     When I disable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
     And I disable Debian-like "universe" repository on "deblike_minion"

@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.channel;
 
+import static java.util.Comparator.comparing;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
@@ -1755,9 +1756,9 @@ public class ChannelManager extends BaseManager {
      *
      * @param usr requesting list
      * @param s Server to check against
-     * @return Set of Channel objects that match
+     * @return List of Channel objects that match
      */
-    public static Set<EssentialChannelDto> listBaseChannelsForSystem(User usr, Server s) {
+    public static List<EssentialChannelDto> listBaseChannelsForSystem(User usr, Server s) {
 
         Set<EssentialChannelDto> channelDtos = new HashSet<>();
         PackageEvr releaseEvr = PackageManager.lookupReleasePackageEvrFor(s);
@@ -1794,7 +1795,7 @@ public class ChannelManager extends BaseManager {
             channelDtos.add(new EssentialChannelDto(dcm.getChannel()));
         }
 
-        return channelDtos;
+        return channelDtos.stream().sorted(comparing(EssentialChannelDto::getName)).collect(Collectors.toList());
     }
 
     /**
@@ -1868,9 +1869,9 @@ public class ChannelManager extends BaseManager {
      *
      * @param u      User of interest
      * @param inChan Base-channel of interest
-     * @return Set of channels that a system subscribed to "c" could be re-subscribed to
+     * @return List of channels that a system subscribed to "c" could be re-subscribed to
      */
-    public static Set<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
+    public static List<EssentialChannelDto> listCompatibleBaseChannelsForChannel(User u, Channel inChan) {
 
         // Get all the custom-channels owned by this org and add them
         Set<EssentialChannelDto> retval = ChannelFactory.listCustomBaseChannelsForSSM(u, inChan)
@@ -1912,7 +1913,7 @@ public class ChannelManager extends BaseManager {
             }
         }
 
-       return retval;
+       return retval.stream().sorted(comparing(EssentialChannelDto::getName)).collect(Collectors.toList());
     }
 
     /**

@@ -42,7 +42,7 @@ def product
     $product = 'SUSE Manager'
     return 'SUSE Manager'
   end
-  raise 'Could not determine product'
+  raise NotImplementedError, 'Could not determine product'
 end
 
 # Returns the version of the product
@@ -65,7 +65,7 @@ end
 # @return [String, nil] The full product version if the command execution was successful and
 #   the output is not empty, otherwise nil.
 def product_version_full
-  cmd = 'salt-call --local grains.get product_version | tail -n 1'
+  cmd = 'venv-salt-call --local grains.get product_version | tail -n 1'
   out, code = get_target('server').run(cmd)
   out.strip if code.zero? && !out.nil?
 end
@@ -75,8 +75,8 @@ end
 # @return [Boolean] true if the product is 'Uyuni' or the product version is 'head', '5.0', '4.3', or '4.2'
 # - false otherwise
 def use_salt_bundle
-  # Use venv-salt-minion in Uyuni, or SUMA Head, 4.2 and 4.3
-  product == 'Uyuni' || %w[head 4.3 4.2].include?(product_version)
+  # Use venv-salt-minion in Uyuni, or SUMA Head, 5.0, 4.2 and 4.3
+  product == 'Uyuni' || %w[head 5.0 4.3 4.2].include?(product_version)
 end
 
 # WARN: It's working for /24 mask, but couldn't not work properly with others
@@ -183,7 +183,7 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, options)
+  click_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -197,7 +197,7 @@ end
 # @param locator [String, nil] The locator for the link to click.
 # @param options [Hash] Additional options for the click action.
 def click_link_and_wait(locator = nil, **options)
-  click_link(locator, options)
+  click_link(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -211,7 +211,7 @@ end
 # @param locator [String] (optional) The locator for the link or button to click.
 # @param options [Hash] (optional) Additional options for the click operation.
 def click_link_or_button_and_wait(locator = nil, **options)
-  click_link_or_button(locator, options)
+  click_link_or_button(locator, **options)
   begin
     warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
   rescue StandardError => e
@@ -231,20 +231,6 @@ module CapybaraNodeElementExtension
   end
 end
 
-#
-# Finds an element using the given arguments and options, waits for it to be visible,
-# and then clicks on it. Returns the element after extending it with the
-# CapybaraNodeElementExtension module.
-#
-# @param args [Array] The arguments to be passed to the `find` method.
-# @param options [Hash] The options to be passed to the `find` method.
-# @param optional_filter_block [Block] An optional filter block to be passed to the `find` method.
-# @return [Capybara::Node::Element] The element after extending it with the CapybaraNodeElementExtension module.
-def find_and_wait_click(*args, **options, &optional_filter_block)
-  element = find(*args, options, &optional_filter_block)
-  element.extend(CapybaraNodeElementExtension)
-end
-
 # Determines the type of client based on the given name.
 #
 # @param name [String] the name of the client
@@ -257,6 +243,20 @@ def get_client_type(name)
   end
 end
 
+#
+# Finds an element using the given arguments and options, waits for it to be visible,
+# and then clicks on it. Returns the element after extending it with the
+# CapybaraNodeElementExtension module.
+#
+# @param args [Array] The arguments to be passed to the `find` method.
+# @param options [Hash] The options to be passed to the `find` method.
+# @param optional_filter_block [Block] An optional filter block to be passed to the `find` method.
+# @return [Capybara::Node::Element] The element after extending it with the CapybaraNodeElementExtension module.
+def find_and_wait_click(*args, **options, &optional_filter_block)
+  element = find(*args, **options, &optional_filter_block)
+  element.extend(CapybaraNodeElementExtension)
+end
+
 # Determines if a host is a SUSE host based on its name.
 #
 # @param name [String] The name of the host.
@@ -265,12 +265,33 @@ def suse_host?(name)
   (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
 end
 
-# Determines if the given host name is a slemicro host.
+# Determines if the given host name is a SLE/SL Micro host.
 #
 # @param name [String] The host name to check.
-# @return [Boolean] Returns true if the host name contains 'slemicro' or 'micro', false otherwise.
+# @return [Boolean] Returns true if the system is a SLE/SL Micro one
 def slemicro_host?(name)
-  (name.include? 'slemicro') || (name.include? 'micro')
+  node = get_target(name)
+  os_family = node.os_family
+  (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
+end
+
+# Determines if the given host name is a openSUSE Leap Micro host.
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
+def leapmicro_host?(name)
+  node = get_target(name)
+  os_family = node.os_family
+  os_family.include?('opensuse-leap-micro')
+end
+
+# Determines if the given host name is a transactional system
+# At the moment only SLE/SL Micro and openSUSE Leap Micro
+#
+# @param name [String] The host name to check.
+# @return [Boolean] Returns true if the system is a transactional system
+def transactional_system?(name)
+  slemicro_host?(name) || leapmicro_host?(name)
 end
 
 # Determines if a given host name belongs to a Red Hat-like distribution.
@@ -318,17 +339,22 @@ end
 # Extracts logs from a given node.
 #
 # @param [Node] node - The node from which to extract the logs.
+# @param [Host] - The host from which to extract the logs.
 # @raise [ScriptError] if the download of the log archive fails.
-def extract_logs_from_node(node)
+def extract_logs_from_node(node, host)
   begin
     os_family = node.os_family
-    node.run('zypper --non-interactive install tar') if os_family =~ /^opensuse/
+    if os_family.match?(/^opensuse/) && !$is_gh_validation && !transactional_system?(host)
+      node.run('zypper --non-interactive install tar')
+    elsif transactional_system?(host)
+      node.run('transactional-update --continue -n pkg install tar')
+    end
     node.run('journalctl > /var/log/messages', check_errors: false)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
     `mkdir logs` unless Dir.exist?('logs')
-    code = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
-    raise ScriptError, 'Download log archive failed' unless code.zero?
+    success = file_extract(node, "/tmp/#{node.full_hostname}-logs.tar.xz", "logs/#{node.full_hostname}-logs.tar.xz")
+    raise ScriptError, 'Download log archive failed' unless success
   rescue RuntimeError => e
     $stdout.puts e.message
   end
@@ -383,7 +409,15 @@ end
 # @param [Node] node The node object representing the system.
 # @return [String] The system ID.
 def get_system_id(node)
-  $api_test.system.search_by_name(node.full_hostname).first['id']
+  # TODO: Remove this retrying code when this issue https://github.com/SUSE/spacewalk/issues/24084 is fixed:
+  result = []
+  repeat_until_timeout(message: "The API can't see the system id for '#{node.full_hostname}'", timeout: 10) do
+    result = $api_test.system.search_by_name(node.full_hostname)
+    break if result.any?
+
+    sleep 1
+  end
+  result.first['id']
 end
 
 # Checks if a host has shut down within a specified timeout period.
@@ -462,13 +496,17 @@ end
 #   Defaults to the server obtained from the `get_target` method.
 # @return [Array<String>] An array of GPG keys.
 def get_gpg_keys(node, target = get_target('server'))
-  os_version, os_family = get_os_version(node)
+  os_version = node.os_version
+  os_family = node.os_family
   case os_family
   when /^sles/
     # HACK: SLE 15 uses SLE 12 GPG key
-    os_version = 12 if os_version =~ /^15/
-    # SLE12 GPG keys don't contain service pack strings
-    os_version = os_version.split('-')[0] if os_version =~ /^12/
+    if os_version.start_with?('15')
+      os_version = 12
+    elsif os_version.start_with?('12')
+      # SLE12 GPG keys don't contain service pack strings
+      os_version = os_version.slice(0, 2)
+    end
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 sle#{os_version}*", check_errors: false)
   when /^centos/
     gpg_keys, _code = target.run("cd /srv/www/htdocs/pub/ && ls -1 #{os_family}#{os_version}* res*", check_errors: false)
@@ -508,30 +546,30 @@ end
 def get_system_name(host)
   case host
   # The PXE boot minion and the terminals are not directly accessible on the network,
-  # therefore they are not represented by a twopence node
+  # therefore they are not represented by a RemoteNode
   when 'pxeboot_minion'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.Intel-Genuine-None-/ || word =~ /example.pxeboot-/ || word =~ /example.Intel/ || word =~ /pxeboot-/
+        word.match?(/example.Intel-Genuine-None-/) || word.match?(/example.pxeboot-/) || word.match?(/example.Intel/) || word.match?(/pxeboot-/)
       end
     system_name = 'pxeboot.example.org' if system_name.nil?
   when 'sle12sp5_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle12sp5terminal-/
+        word.match?(/example.sle12sp5terminal-/)
       end
     system_name = 'sle12sp5terminal.example.org' if system_name.nil?
   when 'sle15sp4_terminal'
     output, _code = get_target('server').run('salt-key')
     system_name =
       output.split.find do |word|
-        word =~ /example.sle15sp4terminal-/
+        word.match?(/example.sle15sp4terminal-/)
       end
     system_name = 'sle15sp4terminal.example.org' if system_name.nil?
   when 'containerized_proxy'
-    system_name = get_target('proxy').full_hostname.sub('proxy', 'pod-pxy')
+    system_name = get_target('proxy').full_hostname.sub('proxy', 'pod-proxy')
   else
     begin
       node = get_target(host)
@@ -575,7 +613,7 @@ def update_controller_ca
 
   puts `certutil -d sql:/root/.pki/nssdb -t TC -n "susemanager" -D;
   rm /etc/pki/trust/anchors/*;
-  wget http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -O /etc/pki/trust/anchors/#{server_name}.cert &&
+  curl http://#{server_ip}/pub/RHN-ORG-TRUSTED-SSL-CERT -o /etc/pki/trust/anchors/#{server_name}.cert &&
   update-ca-certificates &&
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
@@ -585,38 +623,64 @@ end
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
 def channel_is_synced(channel)
+  sync_status = false
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
   if code.zero? && !result.include?('repo size: 0')
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
-    # Channel synced if no .new files exist
-    !new_code.zero?
+    log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
+    sync_status = !new_code.zero?
   elsif result.include?('repo size: 0')
-    _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
-    code.zero?
+    if EMPTY_CHANNELS.include?(channel)
+      sync_status = true
+    else
+      _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
+      log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
+      sync_status = false
+    end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
-    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -s /var/cache/rhn/repodata/#{channel}/Packages"
+    command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
-    # Channel synced if Release and Packages files exist
-    new_code.zero?
+    log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
+    sync_status = new_code.zero?
   end
+  if sync_status
+    begin
+      duration = channel_synchronization_duration(channel)
+      log "Channel #{channel} synchronized in #{duration} seconds"
+    rescue ScriptError => e
+      log "Error while checking synchronization duration: #{e.message}"
+      sync_status = false
+    end
+  end
+  sync_status
 end
 
 # This function initializes the API client
 #
 # The API client is determined based on the `$debug_mode` and `product` variables.
 # If `$debug_mode` is true or the `product` is 'SUSE Manager', an `ApiTestXmlrpc` client is created.
-# Otherwise, an `ApiTestHttp` client is created with the `ssl_verify` parameter set to the negation of `$is_container_provider`.
+# Otherwise, an `ApiTestHttp` client is created with the `ssl_verify` parameter set to the negation of `$is_gh_validation`.
 #
 # @return [ApiTestXmlrpc, ApiTestHttp] The created API client.
 def new_api_client
-  ssl_verify = !$is_container_provider
-  if $debug_mode || product == 'SUSE Manager'
-    ApiTestXmlrpc.new(get_target('server', refresh: true).full_hostname)
+  hostname = get_target('server').full_hostname
+  ssl_verify = !$is_gh_validation
+
+  case $api_protocol
+  when 'xmlrpc'
+    ApiTestXmlrpc.new(hostname)
+  when 'http'
+    # We use API_PROTOCOL env. variable only for debugging purposes from our local machine, so we can skip the SSL verification
+    ApiTestHttp.new(hostname, false)
   else
-    ApiTestHttp.new(get_target('server', refresh: true).full_hostname, ssl_verify)
+    if product == 'SUSE Manager'
+      ApiTestXmlrpc.new(hostname)
+    else
+      ApiTestHttp.new(hostname, ssl_verify)
+    end
   end
 end
 
@@ -684,7 +748,7 @@ end
 # @return [String] The value of the specified pillar key.
 def salt_master_pillar_get(key)
   output, _code = get_target('server').run('salt-run --out=yaml salt.cmd pillar.items')
-  pillars = YAML.safe_load(output)
+  pillars = YAML.load(output)
   pillars.key?(key) ? pillars[key] : ''
 end
 
@@ -706,8 +770,23 @@ end
 # @param channels [Array<String>] The list of channels to filter.
 # @param filters [Array<String>] The list of filters to apply.
 def filter_channels(channels, filters = [])
+  filtered_channels = channels.clone
   filters.each do |filter|
-    channels.delete_if { |channel| channel.include? filter }
+    filtered_channels.delete_if { |channel| channel.include? filter }
   end
-  channels
+  filtered_channels
+end
+
+# Mutex for processes accessing the API of the server via admin user
+def api_lock?
+  File.open('server_api_call.lock', File::CREAT) do |file|
+    return !file.flock(File::LOCK_EX)
+  end
+end
+
+# Unlock the Mutex for processes accessing the API of the server via admin user
+def api_unlock
+  File.open('server_api_call.lock') do |file|
+    file.flock(File::LOCK_UN)
+  end
 end

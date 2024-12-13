@@ -28,12 +28,12 @@ Feature: Setup Containerized Proxy
     And I wait until "tftp" service is inactive on "proxy"
 
   Scenario: Generate Containerized Proxy configuration
-    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of Containerized Proxy on the server
+    When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
     And I copy "/tmp/proxy_container_config.tar.gz" file from "server" to "proxy"
     And I run "tar xzf /tmp/proxy_container_config.tar.gz -C /etc/uyuni/proxy/" on "proxy"
 
   Scenario: Set-up the Containerized Proxy service to support Avahi
-    And I add avahi hosts in Containerized Proxy configuration
+    And I add avahi hosts in containerized proxy configuration
 
   Scenario: Start Containerized Proxy services
     When I start the "uyuni-proxy-pod" service on "proxy"
@@ -43,9 +43,9 @@ Feature: Setup Containerized Proxy
     And I wait until "uyuni-proxy-squid" service is active on "proxy"
     And I wait until "uyuni-proxy-ssh" service is active on "proxy"
     And I wait until "uyuni-proxy-tftpd" service is active on "proxy"
-    And I wait until port "8022" is listening on "proxy"
-    And I wait until port "8080" is listening on "proxy"
-    And I wait until port "443" is listening on "proxy"
+    And I wait until port "8022" is listening on "proxy" container
+    And I wait until port "8080" is listening on "proxy" container
+    And I wait until port "443" is listening on "proxy" container
     And I visit "Proxy" endpoint of this "proxy"
 
   Scenario: Containerized Proxy should be registered automatically

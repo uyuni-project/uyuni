@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp3_ssh_minion
@@ -6,7 +6,7 @@ Feature: Migrate a SLES 15 SP3 Salt SSH minion to 15 SP4
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
-  
+
   # pristine images for SSH minions use an old version of OS Salt
   # Product Migration will be possible only if we update to latest
   Scenario: Prerequisite: update OS Salt to the latest version

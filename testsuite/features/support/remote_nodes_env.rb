@@ -2,15 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 require 'require_all'
-require 'twopence'
-require_relative 'twopence_init'
+require_relative 'remote_node'
 
 # Raise a warning if any of these environment variables is missing
-raise 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
+raise ArgumentError, 'Server IP address or domain name variable empty' if ENV['SERVER'].nil?
 
 warn 'Proxy IP address or domain name variable empty' if ENV['PROXY'].nil?
 unless $build_validation
-  warn 'Traditional client IP address or domain name variable empty' if ENV['CLIENT'].nil?
   warn 'Minion IP address or domain name variable empty' if ENV['MINION'].nil?
   warn 'Buildhost IP address or domain name variable empty' if ENV['BUILD_HOST'].nil?
   warn 'Red Hat-like minion IP address or domain name variable empty' if ENV['RHLIKE_MINION'].nil?
@@ -18,11 +16,9 @@ unless $build_validation
   warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
   warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
   warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
-  warn 'Nested VM hostname empty' if ENV['MIN_NESTED'].nil?
-  warn 'Nested VM MAC address empty' if ENV['MAC_MIN_NESTED'].nil?
 end
 
-# Dictionaries to obtain host or node from the Twopence objects
+# Dictionaries to obtain host or node from the RemoteNode objects
 $node_by_host = {}
 $host_by_node = {}
 
@@ -35,9 +31,9 @@ if ENV['SCC_CREDENTIALS']
   $scc_credentials = !scc_username.to_s.empty? && !scc_password.to_s.empty?
 end
 
-# Get the Twopence node passing the host (includes lazy initialization)
+# Get the RemoteNode passing the host (includes lazy initialization)
 def get_target(host, refresh: false)
   node = $node_by_host[host]
-  node = twopence_init(host) if node.nil? || refresh
+  node = RemoteNode.new(host) if node.nil? || refresh == true
   node
 end

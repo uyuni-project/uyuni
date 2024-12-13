@@ -1,0 +1,16 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/docs/Guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Core features BEGIN ###
+
+# IMMUTABLE ORDER
+
+- features/init_clients/proxy_traditional.feature
+- features/init_clients/proxy_container.feature
+- features/init_clients/proxy_traditional_branch_network.feature
+# - features/init_clients/proxy_container_branch_network.feature
+
+## Core features END ###

@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2023 SUSE LLC.
+# Copyright (c) 2015-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -12,12 +12,13 @@
 # - features/secondary/min_move_from_and_to_proxy.feature
 # If the minion fails to bootstrap again.
 
+@skip_if_github_validation
 @sle_minion
 @scope_salt
 Feature: Verify that Salt mgrcompat state works when the new module.run syntax is enabled
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Remove mgrcompat module from minion synced modules and schedule Hardware Refresh
     Given I remove "minion/extmods/states/mgrcompat.py" from salt cache on "sle_minion"
@@ -26,7 +27,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Remove saltutil grain and mgrcompat module from minion and schedule Hardware Refresh
@@ -38,7 +39,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     When I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Delete SLES minion system profile before mgrcompat test
@@ -64,7 +65,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until onboarding is completed for "sle_minion"
 
   Scenario: Check if onboarding for the minion with the new module.run syntax was successful
-    When I follow the left menu "Systems > Overview"
+    When I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "sle_minion", refreshing the page
     And I wait until onboarding is completed for "sle_minion"
 
@@ -79,7 +80,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I follow "Hardware"
     And I click on "Schedule Hardware Refresh"
     Then I should see a "You have successfully scheduled a hardware profile refresh" text
-    When I wait until event "Hardware List Refresh scheduled by admin" is completed
+    When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Cleanup: Delete profile of the minion and disable new module.run syntax

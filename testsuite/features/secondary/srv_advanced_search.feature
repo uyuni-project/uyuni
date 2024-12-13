@@ -1,16 +1,15 @@
-# Copyright (c) 2022-2023 SUSE LLC.
+# Copyright (c) 2022-2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
-@scope_monitoring
+@scope_spacewalk_utils
 @sle_minion
-@sle_client
 Feature: Advanced Search
-  In order to check and maintain the clients and minions
+  In order to check and maintain the minions
   As an authorized user
   I want to be able to search for specific systems according to location or other characteristics
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: No search results - inverse results
     Given I clean the search index on the server

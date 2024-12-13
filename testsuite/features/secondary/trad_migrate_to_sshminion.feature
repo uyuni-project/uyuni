@@ -25,7 +25,7 @@ Feature: Migrate a traditional client into a Salt SSH minion
     And I click on "Confirm"
     And I run "rhn_check -vvv" on "sle_client"
     Then I should see a "1 package install has been scheduled for" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
     Then "orion-dummy-1.1-1.1" should be installed on "sle_client"
 
   Scenario: Change contact method of activation key to ssh-push

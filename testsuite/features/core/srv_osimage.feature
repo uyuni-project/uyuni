@@ -5,6 +5,7 @@
 # If the "kiwikiwi" user fails to be created:
 # - features/secondary/buildhost_osimage_build_image.feature
 
+
 Feature: Prepare server for using Kiwi
 
   Scenario: Log in as admin user

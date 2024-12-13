@@ -35,7 +35,7 @@ When(/^I stop salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} stop", check_errors: false)
   else
     node.run("systemctl stop #{pkgname}", check_errors: false)
@@ -47,7 +47,7 @@ When(/^I start salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} start", check_errors: false)
   else
     node.run("systemctl start #{pkgname}", check_errors: false)
@@ -59,7 +59,7 @@ When(/^I restart salt-minion on "(.*?)"$/) do |minion|
   pkgname = use_salt_bundle ? 'venv-salt-minion' : 'salt-minion'
   os_version = node.os_version
   os_family = node.os_family
-  if os_family =~ /^sles/ && os_version =~ /^11/
+  if os_family.match?(/^sles/) && os_version.match?(/^11/)
     node.run("rc#{pkgname} restart", check_errors: false)
   else
     node.run("systemctl restart #{pkgname}", check_errors: false)
@@ -149,7 +149,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family =~ /^opensuse/ ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -185,10 +185,11 @@ end
 Then(/^"(.*?)" should have been reformatted$/) do |host|
   system_name = get_system_name(host)
   output, _code = get_target('server').run("salt #{system_name} file.file_exists /intact")
-  raise "Minion #{host} is intact" unless output.include? 'False'
+  raise ScriptError, "Minion #{host} is intact" unless output.include? 'False'
 end
 
 # user salt steps
+
 # WORKAROUND : Click preview button retry to fix https://github.com/SUSE/spacewalk/issues/24893
 When(/^I click on preview$/) do
   # Define the maximum number of attempts
@@ -241,11 +242,12 @@ end
 Then(/^I should see "([^"]*)" in the command output for "([^"]*)"$/) do |text, host|
   system_name = get_system_name(host)
   within("pre[id='#{system_name}-results']") do
-    raise "Text '#{text}' not found in the results of #{system_name}" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found in the results of #{system_name}" unless check_text_and_catch_request_timeout_popup?(text)
   end
 end
 
 # Salt formulas
+
 When(/^I manually install the "([^"]*)" formula on the server$/) do |package|
   get_target('server').run('zypper --non-interactive refresh')
   get_target('server').run("zypper --non-interactive install --force #{package}-formula")
@@ -283,9 +285,9 @@ server_id_use_crc: adler32
 enable_legacy_startup_events: False
 enable_fqdns_grains: False
 start_event_grains:
- - machine_id
- - saltboot_initrd
- - susemanager)
+  - machine_id
+  - saltboot_initrd
+  - susemanager)
   step %(I store "#{content}" into file "susemanager.conf" in salt minion config directory on "#{host}")
 end
 
@@ -301,11 +303,11 @@ When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   if has_xpath?(xpath_query, wait: 2)
-    raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
+    raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
     xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
-    raise "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
+    raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
@@ -331,13 +333,13 @@ Then(/^the timezone on "([^"]*)" should be "([^"]*)"$/) do |minion, timezone|
   output, _code = node.run('date +%Z')
   result = output.strip
   result = 'CET' if result == 'CEST'
-  raise "The timezone #{timezone} is different to #{result}" unless result == timezone
+  raise ScriptError, "The timezone #{timezone} is different to #{result}" unless result == timezone
 end
 
 Then(/^the keymap on "([^"]*)" should be "([^"]*)"$/) do |minion, keymap|
   node = get_target(minion)
   output, _code = node.run('grep \'KEYMAP=\' /etc/vconsole.conf')
-  raise "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
+  raise ScriptError, "The keymap #{keymap} is different to the output: #{output.strip}" unless output.strip == "KEYMAP=#{keymap}"
 end
 
 Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
@@ -345,7 +347,7 @@ Then(/^the language on "([^"]*)" should be "([^"]*)"$/) do |minion, language|
   output, _code = node.run('grep \'RC_LANG=\' /etc/sysconfig/language')
   unless output.strip == "RC_LANG=\"#{language}\""
     output, _code = node.run('grep \'LANG=\' /etc/locale.conf')
-    raise "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
+    raise ScriptError, "The language #{language} is different to the output: #{output.strip}" unless output.strip == "LANG=#{language}"
   end
 end
 
@@ -371,21 +373,21 @@ end
 Then(/^the pillar data for "([^"]*)" should be "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
   if value == ''
-    raise "Output has more than one line: #{output}" unless output.split("\n").length == 1
+    raise ScriptError, "Output has more than one line: #{output}" unless output.split("\n").length == 1
   else
-    raise "Output value wasn't found: #{output}" unless output.split("\n").length > 1
-    raise "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
+    raise ScriptError, "Output value wasn't found: #{output}" unless output.split("\n").length > 1
+    raise ScriptError, "Output value is different than #{value}: #{output}" unless output.split("\n")[1].strip == value
   end
 end
 
 Then(/^the pillar data for "([^"]*)" should contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
-  raise "Output doesn't contain #{value}: #{output}" unless output.include? value
+  raise ScriptError, "Output doesn't contain #{value}: #{output}" unless output.include? value
 end
 
 Then(/^the pillar data for "([^"]*)" should not contain "([^"]*)" on "([^"]*)"$/) do |key, value, minion|
   output, _code = pillar_get(key, minion)
-  raise "Output contains #{value}: #{output}" if output.include? value
+  raise ScriptError, "Output contains #{value}: #{output}" if output.include? value
 end
 
 Then(/^the pillar data for "([^"]*)" should be empty on "([^"]*)"$/) do |key, minion|
@@ -416,7 +418,7 @@ Given(/^I try to download "([^"]*)" from channel "([^"]*)"$/) do |rpm, channel|
   Tempfile.open(rpm) do |tmpfile|
     @download_path = tmpfile.path
     begin
-      open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
+      URI.open(url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |urlfile|
         tmpfile.write(urlfile.read)
       end
     rescue OpenURI::HTTPError => e
@@ -438,13 +440,13 @@ end
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I see "([^"]*)" fingerprint$/) do |host|
@@ -452,13 +454,13 @@ When(/^I see "([^"]*)" fingerprint$/) do |host|
   salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
   output, _code = node.run("#{salt_call} --local key.finger")
   fing = output.split("\n")[1].strip!
-  raise "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
+  raise ScriptError, "Text: #{fing} not found" unless check_text_and_catch_request_timeout_popup?(fing)
 end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
   xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I refresh page until I see "(.*?)" hostname as text$/) do |minion|
@@ -507,17 +509,21 @@ Then(/^the salt event log on server should contain no failures$/) do
   file = 'salt_event_parser.py'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # print failures from salt event log
+  # ignore the error if there is only the expected hoag-dummy package lock installation failure from min_salt_lock_packages.feature
   output, _code = get_target('server').run("python3 /tmp/#{file}")
-  count_failures = output.to_s.scan(/false/).length
-  output = output.join.to_s if output.respond_to?(:join)
-  # Ignore the error if there is only the expected failure from min_salt_lock_packages.feature
-  ignore_error = false
-  ignore_error = output.include?('remove lock') if count_failures == 1 && !$build_validation
-  raise "\nFound #{count_failures} failures in salt event log:\n#{output}\n" if count_failures.nonzero? && !ignore_error
+  filtered_output =
+    output
+    .split(/(?=# Failure \d+)/)
+    .reject do |block|
+      block.include?('remove lock to allow installation of hoag-dummy')
+    end
+  count_failures = filtered_output.to_s.scan(/false/).length
+  filtered_output = filtered_output.join.to_s if filtered_output.respond_to?(:join)
+  raise ScriptError, "\nFound #{count_failures} failures in salt event log:\n#{filtered_output}\n" if count_failures.nonzero?
 end
 
 # salt-ssh steps
@@ -526,7 +532,7 @@ When(/^I install Salt packages from "(.*?)"$/) do |host|
   pkgs = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   if suse_host?(host)
     target.run("test -e /usr/bin/zypper && zypper --non-interactive install -y #{pkgs}", check_errors: false)
-  elsif slemicro_host?(host)
+  elsif transactional_system?(host)
     target.run("test -e /usr/bin/zypper && transactional-update -n pkg install #{pkgs}", check_errors: false)
   elsif rh_host?(host)
     target.run("test -e /usr/bin/yum && yum -y install #{pkgs}", check_errors: false)
@@ -558,8 +564,10 @@ end
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
 
-  # Define config directory and cleanup paths based on bundle usage
+  # Define config directory based on bundle usage
   config_dir = use_salt_bundle ? '/etc/venv-salt-minion' : '/etc/salt'
+
+  # Define cleanup paths based on bundle usage
   cleanup_paths =
     if use_salt_bundle
       '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
@@ -572,12 +580,15 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node.run("find #{config_dir}/minion.d/ -type f ! -name '00-venv.conf' -delete", check_errors: false)
   node.run("rm -f #{config_dir}/pki/minion/*", check_errors: false)
 
+  # Additional cleanup for cached and runtime files
+  node.run("rm -Rf /root/salt #{cleanup_paths}", check_errors: false)
+
   # Package removal using the existing step
   package_list = use_salt_bundle ? 'venv-salt-minion' : 'salt salt-minion'
   step %(I remove package "#{package_list}" from this "#{host}" without error control)
 
   # Conditional additional package removal
-  if slemicro_host?(host) && use_salt_bundle
+  if transactional_system?(host) && use_salt_bundle
     # Check if salt-minion is installed, remove if present from sumaform
     _result, code = node.run('rpm -q salt-minion', check_errors: false)
     step %(I remove package "salt-minion" from this "#{host}" without error control) if code.zero?
@@ -596,9 +607,10 @@ When(/^I install a salt pillar top file for "([^"]*)" with target "([^"]*)" on t
   files.split(/, */).each do |file|
     script += "    - '#{file}'\n"
   end
-  path = generate_temp_file('top.sls', script)
-  inject_salt_pillar_file(path, 'top.sls')
-  `rm #{path}`
+  temp_file = generate_temp_file('top.sls', script)
+  inject_salt_pillar_file(temp_file.path, 'top.sls')
+  temp_file.close
+  temp_file.unlink
 end
 
 When(/^I install the package download endpoint pillar file on the server$/) do
@@ -613,7 +625,7 @@ end
 When(/^I delete the package download endpoint pillar file from the server$/) do
   filepath = '/srv/pillar/pkg_endpoint.sls'
   return_code = file_delete(get_target('server'), filepath)
-  raise 'File deletion failed' unless return_code.zero?
+  raise ScriptError, 'File deletion failed' unless return_code.zero?
 end
 
 When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do |file, formula|
@@ -621,8 +633,8 @@ When(/^I install "([^"]*)" to custom formula metadata directory "([^"]*)"$/) do 
   dest = "/srv/formula_metadata/#{formula}/#{file}"
 
   get_target('server').run("mkdir -p /srv/formula_metadata/#{formula}")
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('server').run("chmod 644 #{dest}")
 end

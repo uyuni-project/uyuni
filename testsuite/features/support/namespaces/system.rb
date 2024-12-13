@@ -24,7 +24,7 @@ class NamespaceSystem
   # @raise [StandardError] If the systems cannot be listed or the server cannot be found.
   def retrieve_server_id(server)
     systems = list_systems
-    raise 'Cannot list systems' if systems.nil?
+    raise StandardError, 'Cannot list systems' if systems.nil?
 
     server_id = systems
                 .select { |s| s['name'] == server }
@@ -182,6 +182,25 @@ class NamespaceSystem
   # @return [Array<Hash>] An array of errata objects.
   def get_systems_errata(system_ids)
     @test.call('system.getRelevantErrata', sessionKey: @test.token, sids: system_ids)
+  end
+
+  # Returns the event history for a system.
+  #
+  # @param system_id [String] The ID of the system.
+  # @param offset [Integer] Number of results to skip
+  # @param limit [Integer] Maximum number of results
+  # @return [Array<Hash>] An array of events
+  def get_event_history(system_id, offset, limit)
+    @test.call('system.getEventHistory', sessionKey: @test.token, sid: system_id, offset: offset, limit: limit)
+  end
+
+  # Returns the event details for a system.
+  #
+  # @param system_id [String] The ID of the system.
+  # @param event_id [String] The ID of the event.
+  # @return [Hash] The event details
+  def get_event_details(system_id, event_id)
+    @test.call('system.getEventDetails', sessionKey: @test.token, sid: system_id, eid: event_id)
   end
 end
 

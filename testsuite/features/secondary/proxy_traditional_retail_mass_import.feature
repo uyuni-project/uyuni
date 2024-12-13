@@ -6,6 +6,7 @@
 # * if there is no private network ($private_net is nil)
 # * if there is no PXE boot minion ($pxeboot_mac is nil)
 
+@skip_if_containerized_server
 @skip_if_github_validation
 @proxy
 @private_net
@@ -44,16 +45,16 @@ Feature: Mass import of Retail terminals behind a traditional proxy
     When I follow "States" in the content area
     And I enable repositories before installing branch server
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
     And I disable repositories after installing branch server
 
   Scenario: Bootstrap the PXE boot minion
-    When I create bootstrap script for "proxy.example.org" hostname and set the activation key "1-TERMINAL-KEY-x86_64" in the bootstrap script on the proxy
+    When I create the bootstrap script for "proxy.example.org" hostname and "1-TERMINAL-KEY-x86_64" activation key on "proxy"
     And I bootstrap pxeboot minion via bootstrap script on the proxy
     # Workaround: Increase timeout temporarily get rid of timeout issues
     And I wait at most 350 seconds until Salt master sees "pxeboot_minion" as "unaccepted"
     And I accept key of pxeboot minion in the Salt master
-    Then I follow the left menu "Systems > Overview"
+    Then I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "pxeboot_minion", refreshing the page
 
   Scenario: Check connection from bootstrapped terminal to proxy
@@ -74,7 +75,7 @@ Feature: Mass import of Retail terminals behind a traditional proxy
     And I click on "Install Selected Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
-    When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+    When I wait until event "Package Install/Upgrade scheduled" is completed
 
   Scenario: Remove the package from the bootstrapped terminal
     Given I am on the Systems page
@@ -87,7 +88,7 @@ Feature: Mass import of Retail terminals behind a traditional proxy
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled" text
-    When I wait until event "Package Removal scheduled by admin" is completed
+    When I wait until event "Package Removal scheduled" is completed
 
   Scenario: Cleanup: make sure salt-minion is stopped after mass import
     When I wait until Salt client is inactive on the PXE boot minion
@@ -158,7 +159,7 @@ Feature: Mass import of Retail terminals behind a traditional proxy
     Given I am on the Systems overview page of this "proxy"
     When I follow "States" in the content area
     And I click on "Apply Highstate"
-    And I wait until event "Apply highstate scheduled by admin" is completed
+    And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Cleanup: reset TFTP defaults
     When I stop the "tftp" service on "proxy"

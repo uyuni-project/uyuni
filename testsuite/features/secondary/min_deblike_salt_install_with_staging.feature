@@ -3,13 +3,14 @@
 #
 # This feature relies on having properly configured
 #   /etc/rhn/rhn.conf
-# file on your SUSE Manager server.
+# file on your Uyuni server.
 #
 # For the scope of these tests, we configure it as follows:
 #   java.salt_content_staging_window = 0.033 (2 minutes)
 #   java.salt_content_staging_advance = 0.05 (3 minutes)
 # which means "between 3 and 1 minutes before package installation or patching"
 
+@skip_if_github_validation
 @deblike_minion
 @scope_deblike
 @scope_content_staging

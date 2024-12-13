@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_cobbler
+@skip_if_github_validation
 Feature: Cobbler buildiso
   Builds several ISOs with Cobbler and checks the configuration files and ISOs afterwards.
 
@@ -90,7 +91,8 @@ Feature: Cobbler buildiso
   Scenario: Cleanup: Remove buildiso tmpdir and built ISO file in the Cobbler buildiso context
     When I cleanup after Cobbler buildiso
 
-  Scenario: Cleanup: clean Cobbler
+@flaky
+  Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors
 
   Scenario: Logout from the Cobbler API

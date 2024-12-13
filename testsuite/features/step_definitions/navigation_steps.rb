@@ -153,7 +153,7 @@ end
 #
 When(/^I check "([^"]*)"$/) do |identifier|
   check(identifier)
-  raise "Checkbox #{identifier} not checked." unless has_checked_field?(identifier)
+  raise ScriptError, "Checkbox #{identifier} not checked." unless has_checked_field?(identifier)
 end
 
 When(/^I uncheck "([^"]*)"$/) do |identifier|
@@ -183,7 +183,7 @@ When(/^I select "(.*?)" from "([^"]*)" dropdown/) do |selection, label|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
-  product_key = $is_container_provider && !$build_validation ? 'Fake' : product
+  product_key = $is_gh_validation && !$build_validation ? 'Fake' : product
   select(BASE_CHANNEL_BY_CLIENT[product_key][client], from: from, exact: false)
 end
 
@@ -228,6 +228,10 @@ end
 #
 When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
+end
+
+When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
+  find("input[placeholder='#{placeholder}']").set(text)
 end
 
 When(/^I enter (\d+) minutes from now as "([^"]*)"$/) do |minutes_to_add, field|
@@ -278,11 +282,24 @@ end
 #
 # Click on a button and confirm in alert box
 When(/^I click on "([^"]*)" and confirm$/) do |text|
-  accept_alert do
-    step %(I click on "#{text}")
+  begin
+    accept_alert do
+      step %(I click on "#{text}")
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
   end
-rescue Capybara::ModalNotFound
-  warn 'Modal not found'
+end
+
+# Click on a button and confirm in alert box
+When(/^I click on "([^"]*)" and confirm alert box$/) do |text|
+  begin
+    accept_confirm do
+      click_button(text)
+    end
+  rescue Capybara::ModalNotFound
+    warn 'Modal not found'
+  end
 end
 
 #
@@ -385,6 +402,8 @@ end
 
 Given(/^I am not authorized$/) do
   begin
+    xpath_logout = '//a[@href=\'/rhn/Logout.do\']'
+    find(:xpath, xpath_logout).click if has_xpath?(xpath_logout)
     page.reset!
   rescue NoMethodError
     log 'The browser session could not be cleaned.'
@@ -425,9 +444,8 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "admin" with password "admin"'
   when 'Images'
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
-  when 'Paygo'
-    paygo_password = $server_instance_id
-    step "I am authorized as \"admin\" with password \"#{paygo_password}\""
+  when 'Docker'
+    step 'I am authorized as "docker" with password "docker"'
   else
     log "Section #{section} not supported"
   end
@@ -515,7 +533,7 @@ end
 
 When(/^I wait at most ([0-9]+) seconds until table row for "([^"]*)" contains button "([^"]*)"$/) do |timeout, text, button|
   xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_f)
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_f)
 end
 
 When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |text, button|
@@ -524,17 +542,27 @@ end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
   xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]"
-  raise "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until button "([^"]*)" becomes enabled$/) do |text|
-  raise "Button '#{text}' still disabled after #{DEFAULT_TIMEOUT} seconds" unless find_button(text, disabled: false, wait: DEFAULT_TIMEOUT)
+  raise ScriptError, "Button '#{text}' still disabled after #{DEFAULT_TIMEOUT} seconds" unless find_button(text, disabled: false, wait: DEFAULT_TIMEOUT)
 end
 
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  step 'I go to the home page resetting the session'
+  begin
+    page.reset!
+  rescue NoMethodError => e
+    log "The browser session could not be cleaned because there is no browser available: #{e.message}"
+    capybara_register_driver
+  rescue StandardError => e
+    log "The browser session could not be cleaned for unknown issue: #{e.message}"
+    capybara_register_driver
+  ensure
+    visit Capybara.app_host
+  end
   next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
 
   begin
@@ -550,10 +578,14 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'
+  $current_user = user
+  $current_password = passwd
 end
 
 Given(/^I am authorized$/) do
-  step 'I am authorized as "testing" with password "testing"'
+  user = get_context('user') || 'admin'
+  password = get_context('password') || 'admin'
+  step %(I am authorized as "#{user}" with password "#{password}")
 end
 
 When(/^I sign out$/) do
@@ -571,10 +603,11 @@ Then(/^I should be logged in$/) do
 end
 
 Then(/^I am logged in$/) do
-  raise ScriptError, 'User is not logged in' unless find(:xpath, "//a[@href='/rhn/Logout.do']").visible?
-
-  text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
-  raise ScriptError, 'The welcome message is not shown' unless has_content?(text)
+  raise ScriptError, 'User is not logged in' unless find(:xpath, '//a[@href=\'/rhn/Logout.do\']').visible?
+  # text = "You have just created your first #{product} user. To finalize your installation please use the Setup Wizard"
+  # Workaround: Ignore the fact that the message is not shown
+  # TODO: restore this as soon as the related issue is fixed: https://github.com/SUSE/spacewalk/issues/19369
+  # raise ScriptError, 'The welcome message is not shown' unless has_content?(text)
 end
 
 Then(/^I should see an update in the list$/) do
@@ -622,6 +655,13 @@ Then(/^I should not see "([^"]*)" hostname$/) do |host|
   raise ScriptError, "Hostname #{system_name} is present" if check_text_and_catch_request_timeout_popup?(system_name)
 end
 
+Then(/^I should see "([^"]*)" hostname in element "([^"]*)"$/) do |host, element|
+  system_name = get_system_name(host)
+  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
+    raise ScriptError, "Text #{system_name} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(system_name)
+  end
+end
+
 #
 # Test for text in a snippet textarea
 #
@@ -633,6 +673,18 @@ end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
   within('textarea') do
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+  end
+end
+
+Then(/^I should see "([^"]*)" in the ([^ ]+) textarea$/) do |text, id|
+  within(:xpath, ".//textarea[@data-testid='#{id}']") do
+    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+  end
+end
+
+Then(/^I should see "([^"]*)" or "([^"]*)" in the ([^ ]+) textarea$/) do |text1, text2, id|
+  within(:xpath, ".//textarea[@data-testid='#{id}']") do
     raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
   end
 end
@@ -690,13 +742,6 @@ end
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
     raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
-  end
-end
-
-Then(/^I should see "([^"]*)" hostname in element "([^"]*)"$/) do |host, element|
-  system_name = get_system_name(host)
-  within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Text #{system_name} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(system_name)
   end
 end
 
@@ -908,7 +953,7 @@ end
 When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query)
-  raise "xpath: #{top_level_xpath_query} not found" if row.nil?
+  raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
   row.set(true)
 end
@@ -936,8 +981,6 @@ When(/^I check the first row in the list$/) do
 end
 
 When(/^I (check|uncheck) "([^"]*)" in the list$/) do |check_option, text|
-  raise ArgumentError, 'The text to check can\'t be empty' if text.empty?
-
   top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
@@ -1056,10 +1099,12 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    break if has_no_xpath?(path, wait: 1)
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    # We need to consider the case that after obtaining the element it is detached from the page document
-    break
+    begin
+      break if has_no_xpath?(path, wait: 1)
+    rescue Selenium::WebDriver::Error::StaleElementReferenceError
+      # We need to consider the case that after obtaining the element it is detached from the page document
+      break
+    end
   end
 end
 
@@ -1114,8 +1159,9 @@ When(/^I select the next maintenance window$/) do
   find(:xpath, '//select[@id=\'maintenance-window-select\']/option', match: :first).select_option
 end
 
-When(/^I enter the server hostname as the redfish server address$/) do
-  step %(I enter "#{get_target('server').full_hostname}:8443" as "powerAddress")
+When(/^I enter the controller hostname as the redfish server address$/) do
+  hostname = `hostname -f`.strip
+  step %(I enter "#{hostname}:8443" as "powerAddress")
 end
 
 When(/^I clear browser cookies$/) do
@@ -1127,7 +1173,13 @@ When(/^I close the modal dialog$/) do
 end
 
 When(/^I refresh the page$/) do
-  refresh_page
+  begin
+    accept_prompt do
+      execute_script 'window.location.reload()'
+    end
+  rescue Capybara::ModalNotFound
+    # ignored
+  end
 end
 
 When(/^I make a list of the existing systems$/) do

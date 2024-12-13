@@ -24,14 +24,14 @@ Feature: Bootstrap a Rhel 9 Salt minion
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "rhel9_minion"
 
-  @proxy
+@proxy
   Scenario: Check connection from Rhel 9 Salt minion to proxy
     Given I am on the Systems overview page of this "rhel9_minion"
     When I follow "Details" in the content area
     And I follow "Connection" in the content area
     Then I should see "proxy" short hostname
 
-  @proxy
+@proxy
   Scenario: Check registration on proxy of Rhel 9 Salt minion
     Given I am on the Systems overview page of this "proxy"
     When I follow "Details" in the content area
