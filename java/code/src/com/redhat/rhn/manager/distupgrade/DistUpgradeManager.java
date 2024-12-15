@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
@@ -71,6 +72,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Business logic for performing distribution upgrades.
@@ -290,7 +292,7 @@ public class DistUpgradeManager extends BaseManager {
                 baseSuccessors.addAll(baseProduct.getUpgrades());
                 if (logger.isDebugEnabled()) {
                     logger.debug("Found '{}' successors for the base product.", baseSuccessors.size());
-                    baseSuccessors.stream().forEach(bp -> logger.debug(bp.getFriendlyName()));
+                    baseSuccessors.forEach(bp -> logger.debug(bp.getFriendlyName()));
                 }
 
                 final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
@@ -319,37 +321,39 @@ public class DistUpgradeManager extends BaseManager {
                 //   end
                 //   combinations += [base].product(*available_extensions)
                 // end
-                List<List<SUSEProduct>> combinations = baseSuccessors.stream().flatMap(baseSucc -> {
-                    // first compute extensions successors compatible with the base successor
-                    List<List<SUSEProduct>> compatibleExtensionSuccessors = extensionSuccessors.stream()
-                            .map(extensionSucc -> extensionSucc.stream()
-                                    .filter(succ -> extAvailableForRoot(succ, baseSucc))
-                                    .collect(toList()))
-                            .filter(list -> !list.isEmpty())
-                            .collect(toList());
+                List<List<SUSEProduct>> combinations = baseSuccessors.stream()
+                        .flatMap(baseSucc -> {
+                            // first compute extensions successors compatible with the base successor
+                            List<List<SUSEProduct>> compatibleExtensionSuccessors = extensionSuccessors.stream()
+                                    .map(extensionSucc -> extensionSucc.stream()
+                                            .filter(succ -> extAvailableForRoot(succ, baseSucc))
+                                            .toList())
+                                    .filter(list -> !list.isEmpty())
+                                    .collect(toList());
 
-                    if (logger.isDebugEnabled()) {
-                        if (compatibleExtensionSuccessors.isEmpty()) {
-                            logger.debug("No extension successors for base successor {}", baseSucc.getFriendlyName());
-                        }
-                        else {
-                            logger.debug("Found extension successors for base successor {}:",
-                                    baseSucc.getFriendlyName());
-                            // let's print out list of list with friendly names
-                            compatibleExtensionSuccessors.stream()
-                                    .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
-                                    .forEach(css -> logger.debug(css));
-                            logger.debug("-----------------------");
-                        }
-                    }
+                            if (logger.isDebugEnabled()) {
+                                if (compatibleExtensionSuccessors.isEmpty()) {
+                                    logger.debug("No extension successors for base successor {}",
+                                            baseSucc.getFriendlyName());
+                                }
+                                else {
+                                    logger.debug("Found extension successors for base successor {}:",
+                                            baseSucc.getFriendlyName());
+                                    // let's print out list of list with friendly names
+                                    compatibleExtensionSuccessors.stream()
+                                            .map(css -> css.stream().map(SUSEProduct::getFriendlyName).toList())
+                                            .forEach(css -> logger.debug(css));
+                                    logger.debug("-----------------------");
+                                }
+                            }
 
-                    // the base successor will be always on the 1st position in the combinations below
-                    compatibleExtensionSuccessors.add(0, List.of(baseSucc));
+                            // the base successor will be always on the 1st position in the combinations below
+                            compatibleExtensionSuccessors.add(0, List.of(baseSucc));
 
-                    return Lists.combinations(compatibleExtensionSuccessors).stream();
-                })
-                .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
-                .collect(toList());
+                            return Lists.combinations(compatibleExtensionSuccessors).stream();
+                        })
+                        .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
+                        .toList();
 
                 for (List<SUSEProduct> combination : combinations) {
                     SUSEProduct base = combination.get(0);
@@ -363,9 +367,9 @@ public class DistUpgradeManager extends BaseManager {
                         result.add(new SUSEProductSet(base, Collections.emptyList()));
                     }
                     else {
-                        List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
-
-                        // Liberty Migration should always add the Liberty Products
+                        // Take care that all recommended extensions are in the target
+                        List<SUSEProduct> addonProducts = ensureRecommendedAddons(base,
+                                combination.subList(1, combination.size()));
                         addLibertyLinuxAddonIfMissing(base, addonProducts);
 
                         //No Product Channels means, no subscription to access the channels
@@ -387,6 +391,16 @@ public class DistUpgradeManager extends BaseManager {
                 return result;
             }
         );
+    }
+
+    private static List<SUSEProduct> ensureRecommendedAddons(SUSEProduct baseIn, List<SUSEProduct> addonProducts) {
+        return  Stream.concat(
+                addonProducts.stream(),
+                SUSEProductFactory.allRecommendedExtensionsOfRoot(baseIn)
+                        .stream()
+                        .map(SUSEProductExtension::getExtensionProduct)
+                        .filter(p -> !addonProducts.contains(p))
+        ).collect(Collectors.toList());
     }
 
     /**
