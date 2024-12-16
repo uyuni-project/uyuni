@@ -11,9 +11,7 @@ RUN zypper -n --gpg-auto-import-keys ref && \
       ant-junit \
       servletapi5 \
       cpio \
-      spacecmd \
-      expect \
-      wget && \
+      spacecmd &&
     zypper addrepo --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/SLE_15_SP6/ systemsmanagement:uyuni:utils && \
     zypper addrepo --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/SLE15-Uyuni-Client-Tools/SLE_15/systemsmanagement:Uyuni:Stable:SLE15-Uyuni-Client-Tools.repo && \
     zypper -n install obs-to-maven yarn prometheus && \
