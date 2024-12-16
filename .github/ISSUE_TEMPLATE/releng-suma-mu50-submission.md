@@ -46,7 +46,7 @@ Add more tasks if needed.
 Add more tasks if needed (for example, asking Maintenace to change the channel definitions).
 
 - [ ] Check all the [tests for the relevant version](https://ci.suse.de/view/Manager/): everything should be green, or otherwise submission must be approved by the RRTG
-- [ ] Tag everything with `tito tag --use-release=0`
+- [ ] Tag everything with `tito tag --use-release=0`. Do NOT tag if the version has not been already bumped in `web/conf/rhn_web.conf` (`web.version.uyuni`), as requested in one of the previous points.
 - [ ] Check that the job `manager-5.0-releng-2obs` and `manager-5.0-uyunitools-2obs` have packaged and submitted the changes from `Manager-5.0` branch into the relevant https://build.suse.de/project/subprojects/Devel:Galaxy:Manager:5.0 project.
 - [ ] Prepare the submissions with `mu-massive-task` or `patch-creator`. For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package) and document this at the release card.
 - [ ] For submitting to **SL Micro 6.0** the client tools, salt and salt bundle, remember that you can't use `patch-creator`; instead use the script `submit-slmicro6_clienttools` that will explain step by step what to submit and how.
