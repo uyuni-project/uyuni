@@ -43,14 +43,20 @@ export function VirtualSystems(props: Props) {
         >
           <IconTag type="header-help" />
         </a>
-        <div className="pull-right">
-          <a href="/rhn/manager/systems/csv/virtualSystems" title="Download CSV" className="btn btn-default" data-senna-off="true">
+      </h1>
+      <div className="spacewalk-section-toolbar">
+        <div className="action-button-wrapper">
+          <a
+            href="/rhn/manager/systems/csv/virtualSystems"
+            title="Download CSV"
+            className="btn btn-default"
+            data-senna-off="true"
+          >
             <IconTag type="item-download-csv" />
             Download CSV
           </a>
         </div>
-      </h1>
-
+      </div>
       <Table
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}

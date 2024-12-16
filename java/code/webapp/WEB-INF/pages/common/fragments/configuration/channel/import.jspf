@@ -6,14 +6,12 @@
 
 <!-- Import file from another channel  -->
 <h4><bean:message key="addfiles.jsp.import.jspf.title" /> </h4>
-
-<div class="text-right">
-    <html:submit  property="dispatch" styleClass="btn btn-default">
-        <bean:message key="addfiles.jsp.import.jspf.submit" />
-    </html:submit>
-</div>
-
     <html:form action="/configuration/ChannelImportFilesSubmit.do?ccid=${ccid}">
+    <div class="text-right">
+        <html:submit  property="dispatch" styleClass="btn btn-default">
+            <bean:message key="addfiles.jsp.import.jspf.submit" />
+        </html:submit>
+    </div>
     <rhn:csrf />
         <html:hidden property="submitted" value="true"/>
         <rhn:list
