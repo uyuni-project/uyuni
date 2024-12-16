@@ -13,7 +13,7 @@ RUN zypper -n --gpg-auto-import-keys ref && \
       servletapi5 \
       cpio \
       spacecmd \
-      prometheus &&
+      prometheus && \
     zypper addrepo --no-gpgcheck obs://systemsmanagement:Uyuni:Utils systemsmanagement:uyuni:utils && \
     zypper -n install obs-to-maven yarn && \
     zypper clean -a

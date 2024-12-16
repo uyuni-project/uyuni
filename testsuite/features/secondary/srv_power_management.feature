@@ -25,12 +25,12 @@ Feature: IPMI Power management
     And I should see a "Save" button
 
   Scenario: Save power management values
-    When I enter "127.0.0.1" as "powerAddress"
+    When I enter "fakeipmi" as "powerAddress"
     And I enter "ipmiusr" as "powerUsername"
     And I enter "test" as "powerPassword"
     And I click on "Save"
     Then I should see a "Power settings saved" text
-    And the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_minion"
+    And the cobbler report should contain "Power Management Address       : fakeipmi" for "sle_minion"
     And the cobbler report should contain "Power Management Username      : ipmiusr" for "sle_minion"
     And the cobbler report should contain "Power Management Password      : test" for "sle_minion"
     And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
@@ -75,7 +75,7 @@ Feature: IPMI Power management
     Then I should see a "Configuration successfully saved for 1 system(s)" text
     And the cobbler report should contain "Power Management Username      : testing" for "sle_minion"
     And the cobbler report should contain "Power Management Password      : qwertz" for "sle_minion"
-    And the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_minion"
+    And the cobbler report should contain "Power Management Address       : fakeipmi" for "sle_minion"
     And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
 
   Scenario: Check power management SSM operation

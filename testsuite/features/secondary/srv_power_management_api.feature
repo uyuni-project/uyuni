@@ -15,11 +15,11 @@ Feature: IPMI Power management API
     Then power management results should have "ipmilan" for "powerType"
 
   Scenario: Save power management values  for API test
-    When I set power management value "127.0.0.1" for "powerAddress"
+    When I set power management value "fakeipmi" for "powerAddress"
     And I set power management value "ipmiusr" for "powerUsername"
     And I set power management value "test" for "powerPassword"
     And I set power management value "ipmilan" for "powerType"
-    Then the cobbler report should contain "Power Management Address       : 127.0.0.1" for "sle_minion"
+    Then the cobbler report should contain "Power Management Address       : fakeipmi" for "sle_minion"
     And the cobbler report should contain "Power Management Username      : ipmiusr" for "sle_minion"
     And the cobbler report should contain "Power Management Password      : test" for "sle_minion"
     And the cobbler report should contain "Power Management Type          : ipmilan" for "sle_minion"
