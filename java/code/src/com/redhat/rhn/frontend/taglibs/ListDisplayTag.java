@@ -585,7 +585,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
             return;
         }
 
-        out.println("<div class=\"col-sm-12 text-right\">");
+        out.println("<div class=\"action-button-wrapper\">");
         if (getButton2() != null && AclManager.hasAcl(getButton2Acl(),
                 (HttpServletRequest) pageContext.getRequest(), getMixins())) {
 
@@ -778,7 +778,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 out.println("</div>");
             }
             if (isPaging()) {
-                out.print("<div class=\"row-0\">\n");
+                out.print("<div class=\"spacewalk-section-toolbar\">\n");
                 renderActionButtons(out);
                 out.println("</div>");
             }
