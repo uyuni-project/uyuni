@@ -1372,11 +1372,11 @@
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
-          <context context-type="paramnotes">Password maximum allowed character occurrences can't be less or equal than 0.</context>
+          <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.minpassword" xml:space="preserve">
-        <source>Password must be at least {0} characters.</source>
+        <source>Passwords must be at least {0} characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords must be no shorter than 8 characters.</context>
@@ -1389,7 +1389,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
-        <source>Password cannot be more than {0} characters.</source>
+        <source>Passwords cannot be more than {0} characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
@@ -1401,25 +1401,25 @@
         </context-group>
       </trans-unit>
       <trans-unit id="error.nodigitspassword" xml:space="preserve">
-        <source>Password must contain at least one digit.</source>
+        <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.nouppercasepassword" xml:space="preserve">
-        <source>Password must contain at least one upper case character.</source>
+        <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve">
-        <source>Password must contain at least one lower case character.</source>
+        <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
       </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
-        <source>Password must contain at least one special character, allowed special characters are: {0}.</source>
+        <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
