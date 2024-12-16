@@ -23,7 +23,13 @@
     <rl:listset name="keySet">
     <rhn:csrf />
     <rhn:submitted />
-
+        <div class="spacewalk-section-toolbar">
+            <div class="action-button-wrapper">
+                <rl:csv dataset="pageList"
+                name="keyList"
+                exportColumns="id, label, description, serverCount, lastModified" />
+            </div>
+        </div>
 
         <rl:list dataset="pageList"
                  name="keyList"
@@ -71,11 +77,6 @@
 
 
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                        name="keyList"
-                        exportColumns="id, label, description, serverCount, lastModified" />
-
     </rl:listset>
 
 </body>

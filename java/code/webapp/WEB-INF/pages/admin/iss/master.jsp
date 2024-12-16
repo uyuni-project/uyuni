@@ -76,7 +76,6 @@
                         <c:out value="${current.numAllowedOrgs}" />
                     </c:if>
                 </rl:column>
-
             </rl:list>
         </rl:listset>
     </body>

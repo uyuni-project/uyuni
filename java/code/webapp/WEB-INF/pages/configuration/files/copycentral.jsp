@@ -6,7 +6,7 @@
 <body>
 
 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/header.jspf" %>
-<h2><bean:message key="copycentral.jsp.header"/></h2>
+<h2><bean:message key="copycentral.jsp.header"/></h2> TESt
 
 <div class="page-summary">
   <p>
@@ -17,8 +17,9 @@
 </div>
 
 <form method="post" name="rhn_list" action="/rhn/configuration/file/CopyFileCentralSubmit.do?type=${requestScope.type}&amp;cfid=${file.id}&amp;crid=${revision.id}">
-  <jsp:include page="/WEB-INF/pages/common/fragments/configuration/files/copyfile_rows.jsp" />
-  <rhn:csrf />
+<rhn:csrf />  
+<jsp:include page="/WEB-INF/pages/common/fragments/configuration/files/copyfile_rows.jsp" />
+  
 </form>
 
 </body>

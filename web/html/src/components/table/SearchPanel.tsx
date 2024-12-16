@@ -60,9 +60,7 @@ export function SearchPanel(props: SearchPanelProps) {
           &nbsp;&nbsp;
         </span>
         {props.selectable && props.selectedCount > 0 && (
-          <span>
-            {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
-          </span>
+          <span>{t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;</span>
         )}
       </div>
     </div>

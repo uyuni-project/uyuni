@@ -25,13 +25,14 @@
 <div class="page-summary" style="padding-top: 10px;">
 <p><bean:message key="org.trust.summary" arg0="${fn:escapeXml(org.name)}"/></p>
 </div>
-<div class="spacewalk-section-toolbar">
-   <div class="action-button-wrapper">
-     <rhn:submitted/>
-     <input class="btn btn-default" type="submit" name ="confirm" value="${rhn:localize('org.trust.modify')}" />
-   </div>
-</div>
+
 <rl:listset name="trustedOrgs">
+   <div class="spacewalk-section-toolbar">
+      <div class="action-button-wrapper">
+      <rhn:submitted/>
+      <input class="btn btn-default" type="submit" name ="confirm" value="${rhn:localize('org.trust.modify')}" />
+      </div>
+   </div>
    <rhn:csrf />
    <rl:list
       dataset="pageList"
@@ -61,11 +62,6 @@
         ${current.numTrusted}
       </rl:column>
    </rl:list>
-   <hr/>
-   <div class="text-right">
-     <rhn:submitted/>
-     <input class="btn btn-default" type="submit" name ="confirm" value="${rhn:localize('org.trust.modify')}" />
-   </div>
 </rl:listset>
 </body>
 </html>

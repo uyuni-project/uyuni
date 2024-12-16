@@ -18,6 +18,12 @@
 <rhn:csrf />
 <rhn:submitted />
 
+<div class="spacewalk-section-toolbar">
+  <div class="action-button-wrapper">
+    <rl:csv dataset="pageList" name="systemCurrencyList"
+        exportColumns="id, serverName, critical, important, moderate, low, bug, enhancement, score" />
+  </div>
+</div>
 <div class="full-width-wrapper" style="clear: both;">
         <rl:list
                 dataset="pageList"
@@ -172,8 +178,6 @@
                            <c:out value="${current.score}" />
                 </rl:column>
         </rl:list>
-    <rl:csv dataset="pageList" name="systemCurrencyList"
-        exportColumns="id, serverName, critical, important, moderate, low, bug, enhancement, score" />
 </rl:listset>
 </body>
 </html>

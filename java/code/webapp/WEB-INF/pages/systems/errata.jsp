@@ -30,6 +30,9 @@
     <c:if test="${requestScope.showApplyErrata == 'true'}">
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
+                <rl:csv name="errataList"
+                    exportColumns="associatedSystem,errataAdvisoryType,advisoryName,advisorySynopsis,errataStatus,updateDate"
+                    header="${system.name}"/>
                 <html:submit styleClass="btn btn-default" property="dispatch">
                     <bean:message key="errata.jsp.apply"/>
                 </html:submit>
@@ -153,11 +156,6 @@
             ${current.updateDate}
         </rl:column>
     </rl:list>
-    <c:if test="${requestScope.showApplyErrata == 'true'}">
-        <rl:csv name="errataList"
-                exportColumns="associatedSystem,errataAdvisoryType,advisoryName,advisorySynopsis,errataStatus,updateDate"
-                header="${system.name}"/>
-    </c:if>
     <rhn:submitted/>
 </rl:listset>
 </body>

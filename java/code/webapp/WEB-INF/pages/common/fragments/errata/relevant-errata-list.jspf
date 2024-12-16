@@ -1,6 +1,13 @@
 <rl:listset name="groupSet" legend="errata">
     <rhn:csrf />
-
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <rl:csv
+                name="errataList"
+                exportColumns="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate"
+                header="${system.name}"/>
+        </div>
+    </div>
     <rl:list emptykey="${emptyListKey}">
 
         <rl:decorator name="PageSizeDecorator"/>
@@ -85,11 +92,4 @@
         </c:if>
 
     </rl:list>
-
-
-  <rl:csv
-        name="errataList"
-        exportColumns="errataAdvisoryType,advisoryName,advisorySynopsis,affectedSystemCount,updateDate"
-        header="${system.name}"/>
-
 </rl:listset>

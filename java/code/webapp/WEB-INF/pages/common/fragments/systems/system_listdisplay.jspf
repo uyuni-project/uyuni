@@ -11,7 +11,17 @@
         <c:set var="namestyle" value="first-column"/>
     </c:otherwise>
 </c:choose>
-
+<!-- CVE Exporter -->
+<div class="spacewalk-section-toolbar">
+    <div class="action-button-wrapper">
+        <!-- CVE Exporter -->
+        <c:if test = "${empty noCsv}">
+            <rl:csv dataset="pageList"
+                    name="systemList"
+                    exportColumns="name,id,securityErrata,bugErrata,enhancementErrata,outdatedPackages,lastCheckin,entitlementLevel,channelLabels"/>
+        </c:if>
+    </div>
+</div>
 <rl:list
         dataset="pageList"
         name="systemList"
@@ -164,13 +174,6 @@
         </rl:column>
     </c:if>
 </rl:list>
-
-<!-- CVE Exporter -->
-<c:if test = "${empty noCsv}">
-    <rl:csv dataset="pageList"
-            name="systemList"
-            exportColumns="name,id,securityErrata,bugErrata,enhancementErrata,outdatedPackages,lastCheckin,entitlementLevel,channelLabels"/>
-</c:if>
 
 <rhn:csrf />
 <rhn:submitted/>

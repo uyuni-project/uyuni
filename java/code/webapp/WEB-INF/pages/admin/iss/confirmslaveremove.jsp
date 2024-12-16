@@ -17,6 +17,15 @@
         <rl:listset name="issSlaveListSet">
             <rhn:csrf />
             <rhn:submitted />
+            <c:if test="${not empty requestScope.all}">
+                <div class="spacewalk-section-toolbar">
+                    <div class="action-button-wrapper">
+                        <rhn:submitted />
+                        <input type="submit" name="dispatch" class="btn btn-danger"
+                            value='<bean:message key="iss.confirm.remove.slaves"/>' />
+                        </div>
+                </div>
+            </c:if>
             <rl:list dataset="pageList" name="issSlaveList"
                      emptykey="iss.confirmslaveremove.jsp.nomasters">
                 <rl:column sortable="true" headerkey="iss.slave.name" sortattr="slave">
@@ -43,13 +52,6 @@
                     </c:if>
                 </rl:column>
             </rl:list>
-            <c:if test="${not empty requestScope.all}">
-                <div class="text-right">
-                    <rhn:submitted />
-                    <input type="submit" name="dispatch" class="btn btn-danger"
-                           value='<bean:message key="iss.confirm.remove.slaves"/>' />
-                </div>
-            </c:if>
         </rl:listset>
     </body>
 </html:html>

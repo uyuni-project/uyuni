@@ -26,6 +26,14 @@
 <rl:listset name="userConfirmListSet">
     <rhn:csrf />
     <rhn:submitted />
+      <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+          <rl:csv dataset="pageList"
+            name="userConfirmList"
+            exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn"/>
+            <input class="btn btn-primary" type="submit" name="dispatch" value="<bean:message key='userconfirm.jsp.confirm'/>" />
+        </div>
+      </div>
         <rl:list dataset="pageList"
          width="100%"
          name="userConfirmList"
@@ -33,19 +41,7 @@
                  alphabarcolumn="userLogin">
                 <rl:decorator name="PageSizeDecorator"/>
                 <%@ include file="/WEB-INF/pages/common/fragments/user/userlist_columns.jspf" %>
-
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                name="userConfirmList"
-                exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn"/>
-
-        <div class="text-right">
-        <hr />
-        <input class="btn btn-primary" type="submit" name="dispatch" value="<bean:message key='userconfirm.jsp.confirm'/>" />
-        </div>
-
 </rl:listset>
-
 </body>
 </html>
