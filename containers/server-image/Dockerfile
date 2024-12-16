@@ -74,6 +74,11 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd-krb5 \
     sssd-tools
 
+# We do not want to install the uyuni-tools in the container
+# but we don't want to remove the pattern or the release package
+RUN rpm -e --allmatches --nodeps mgrctl
+RUN rpm -e --allmatches --nodeps mgradm
+
 RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN mkdir -p /etc/postgres_exporter \
