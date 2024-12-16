@@ -4452,70 +4452,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description" xml:space="preserve">
         <source>Below you configure your organization to use staging content, errata e-mail notifications and SCAP settings.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Nižšie konfigurujete svoju organizáciu na používanie obsahu na usporiadanie, e-mailových oznámení o opravách chýb a nastavení SCAP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgconfig.jsp.description.noteditable" xml:space="preserve">
         <source>Below is your organization configuration listed. See, how staging content, errata e-mail notifications and SCAP settings are configured.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Nižšie je uvedená konfigurácia vašej organizácie. Pozrite si, ako je nakonfigurovaný obsah na usporiadanie, e-mailové oznámenia o opravách chýb a nastavenia SCAP.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.name.jsp" xml:space="preserve">
         <source>Organization Name</source>
-        <target/>
+        <target state="translated">Názov organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.active.users.jsp" xml:space="preserve">
         <source>Active Users</source>
-        <target/>
+        <target state="translated">Aktívni používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.systems.jsp" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.system.groups.jsp" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target state="translated">Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.orgadm-mgmt.jsp" xml:space="preserve">
         <source>Allow Organization Admin to manage Organization Configuration</source>
-        <target/>
+        <target state="translated">Umožniť administrátorovi organizácie spravovať konfiguráciu organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.staging-content.jsp" xml:space="preserve">
         <source>Enable Staging Contents</source>
-        <target/>
+        <target state="translated">Povoliť obsahy na usporiadanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.errata-emails.jsp" xml:space="preserve">
         <source>Enable Patch E-mail Notifications (for users belonging to this organization)</source>
-        <target/>
+        <target state="translated">Povoliť e-mailové oznámenia o opravách (pre používateľov patriacich do tejto organizácie)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.sizelimit-hint.jsp" xml:space="preserve">
         <source>Enter the limit size in bytes. Zero means no limit.</source>
-        <target/>
+        <target state="translated">Zadať veľkosť obmedzenia v bajtoch. Nula znamená žiadny limit.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
