@@ -4,7 +4,8 @@
 ARG INIT_IMAGE=uyuni/init:latest
 FROM $INIT_IMAGE
 
-ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
+# Value could also be susemanager
+ARG PRODUCT
 
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
@@ -24,8 +25,38 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf
 RUN zypper ref && zypper --non-interactive up
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
     ${EXTRAPACKAGES} \
-    ${PRODUCT_PATTERN_PREFIX}_server \
-    ${PRODUCT_PATTERN_PREFIX}_retail \
+    python3-ws4py \
+    salt-api \
+    salt-master \
+    cobbler \
+    java-17-openjdk \
+    postgresql16-server \
+    postgresql16-contrib \
+    cpu-mitigations-formula \
+    liberate-formula \
+    openvpn-formula \
+    smdba \
+    spacewalk-base-minimal \
+    spacewalk-postgresql \
+    spacewalk-reports \
+    spacewalk-utils \
+    supportutils-plugin-salt \
+    supportutils-plugin-susemanager \
+    susemanager \
+    susemanager-tools \
+    bind-formula \
+    branch-network-formula \
+    dhcpd-formula \
+    image-sync-formula \
+    pxe-formula \
+    saltboot-formula \
+    tftpd-formula \
+    vsftpd-formula \
+    python3-susemanager-retail \
+    susemanager-retail-tools \
+    release-notes-$PRODUCT \
+    $PRODUCT-docs_en \
+    $PRODUCT-docs_en-pdf \
     billing-data-service \
     grub2-x86_64-efi \
     grub2-arm64-efi \
@@ -34,6 +65,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     susemanager-tftpsync \
     golang-github-prometheus-node_exporter \
     prometheus-postgres_exporter \
+    golang-github-lusitaniae-apache_exporter \
     golang-github-QubitProducts-exporter_exporter \
     prometheus-jmx_exporter \
     prometheus-jmx_exporter-tomcat \
