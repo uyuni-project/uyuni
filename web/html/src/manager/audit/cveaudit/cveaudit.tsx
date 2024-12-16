@@ -251,7 +251,11 @@ class CVEAudit extends React.Component<Props, State> {
   render() {
     return (
       <span>
-        <TopPanel title={t("CVE Audit")} icon="fa-search" helpUrl="reference/audit/audit-cve-audit.html">
+        <TopPanel
+          title={t("CVE Audit")}
+          icon="fa-search"
+          helpUrl="reference/audit/audit-cve-audit.html"
+        >
           <Messages
             items={this.state.messages.map((msg) => {
               return { severity: "warning", text: msg };
@@ -307,39 +311,42 @@ class CVEAudit extends React.Component<Props, State> {
               );
             })}
           </div>
-
-          <div className="btn-group d-block mb-4 mt-4">
-            <AsyncButton
-              id="bootstrap-btn"
-              defaultType="btn-default"
-              icon="fa-desktop"
-              text={t("Audit Servers")}
-              action={() => this.audit(TARGET_SERVER)}
-            />
-            <AsyncButton
-              id="bootstrap-btn"
-              defaultType="btn-default"
-              icon="fa-hdd-o"
-              text={t("Audit Images")}
-              action={() => this.audit(TARGET_IMAGE)}
-            />
-            <a
-              href={
-                "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
-                this.state.cveYear +
-                "-" +
-                this.state.cveNumber +
-                "&target=" +
-                this.state.resultType +
-                "&statuses=" +
-                this.state.statuses
-              }
-              data-senna-off="true"
-              className="btn btn-default pull-right"
-            >
-              <IconTag type="item-download-csv" />
-              {t("Download CSV")}
-            </a>
+          <div className="spacewalk-section-toolbar">
+            <div className="btn-group">
+              <AsyncButton
+                id="bootstrap-btn"
+                defaultType="btn-default"
+                icon="fa-desktop"
+                text={t("Audit Servers")}
+                action={() => this.audit(TARGET_SERVER)}
+              />
+              <AsyncButton
+                id="bootstrap-btn"
+                defaultType="btn-default"
+                icon="fa-hdd-o"
+                text={t("Audit Images")}
+                action={() => this.audit(TARGET_IMAGE)}
+              />
+            </div>
+            <div className="action-button-wrapper">
+              <a
+                href={
+                  "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
+                  this.state.cveYear +
+                  "-" +
+                  this.state.cveNumber +
+                  "&target=" +
+                  this.state.resultType +
+                  "&statuses=" +
+                  this.state.statuses
+                }
+                data-senna-off="true"
+                className="btn btn-default"
+              >
+                <IconTag type="item-download-csv" />
+                {t("Download CSV")}
+              </a>
+            </div>
           </div>
           {this.state.auditExecuted && (
             <div>

@@ -20,6 +20,7 @@
             <c:if test="${not empty requestScope.all}">
                 <div class="spacewalk-section-toolbar">
                     <div class="action-button-wrapper">
+                        <rhn:submitted />
                         <input type="submit" name="dispatch" class="btn btn-danger"
                             value='<bean:message key="iss.confirm.remove.masters"/>' />
                     </div>

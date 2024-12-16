@@ -52,6 +52,11 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
     if (Object.keys(this.props.subscriptions).length > 0) {
       body = (
         <div>
+          <div className="spacewalk-section-toolbar">
+            <div className="action-button-wrapper">
+              <CsvLink name="subscription_report.csv" />
+            </div>
+          </div>
           <Table
             data={this.buildRows(this.props.subscriptions)}
             identifier={(row) => row.id}
@@ -122,10 +127,7 @@ class Subscriptions extends React.Component<SubscriptionsProps> {
 
     return (
       <div className="row col-md-12">
-        <div className="spacewalk-toolbar-h2">
-          {Object.keys(this.props.subscriptions).length > 0 && <CsvLink name="subscription_report.csv" />}
-          <h2>{t("Your subscriptions")}</h2>
-        </div>
+        <h2>{t("Your subscriptions")}</h2>
         {body}
       </div>
     );

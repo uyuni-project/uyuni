@@ -654,7 +654,6 @@ class ImageViewOverview extends React.Component<ImageViewOverviewProps> {
                 </div>
               )}
             </BootstrapPanel>
-
           </div>
         </div>
         {data.customData && Object.keys(data.customData).length > 0 && (
