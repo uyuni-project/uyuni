@@ -11,6 +11,7 @@ Code for building packages in SUSE that need generated code not tracked in git.
 """
 import os
 import shutil
+import tarfile
 
 from tito.builder import Builder
 from tito.common import  run_command, debug, info_out
@@ -93,7 +94,12 @@ class ContainerBuilder(Builder):
         gitdir = os.path.join(self.git_root, self.relative_project_dir)
         for path in os.listdir(gitdir):
             file_path = os.path.join(gitdir, path)
-            if os.path.isfile(file_path):
+            if path == "root":
+                # Create a root.tar.gz file from the files in root folder
+                target_path = os.path.join(self.rpmbuild_sourcedir, "root.tar.gz")
+                tar(os.path.join(gitdir, path), target_path)
+                self.sources.append(target_path)
+            elif os.path.isfile(file_path):
                 target_path = os.path.join(self.rpmbuild_sourcedir, path)
                 self.copy_source(file_path, target_path)
 
@@ -129,6 +135,14 @@ class ContainerBuilder(Builder):
         self.sources.append(target_script)
 
 
+def tar(src, dest):
+    '''
+    Create a dest tar.gz file from the files in the src folder.
+    '''
+    debug(f"Compressing {src} into {dest}")
+    with tarfile.open(dest, "w:gz") as tarball:
+        for name in os.listdir(src):
+            tarball.add(os.path.join(src, name), name)
 
 
 class ChartBuilder(ContainerBuilder):

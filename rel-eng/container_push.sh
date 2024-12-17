@@ -65,5 +65,35 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
   sed "/^#\!BuildTag:/s/BuildTag:/BuildTag: ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i ${SRPM_PKG_DIR}/Dockerfile
 
   rm ${SRPM_PKG_DIR}/${PKG_NAME}.spec
+elif [ -f "${SRPM_PKG_DIR}/${PKG_NAME}.kiwi" ]; then
+  PRODUCT=uyuni
+  if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+    # SUSE Manager settings
+    VERSION=$(echo ${PRODUCT_VERSION} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
+    PRODUCT=susemanager
+    ARCH=
+    # OBS cannot find the dependencies with a placeholder or %_arch from the project config.
+    # The best solution is to only use the architecture in the path of the images to release,
+    # not intermediary ones.
+    if [ "${NAME}" != "init" ]; then
+        ARCH="\/%ARCH%"
+    fi
+    sed "s/uyuni\/init/suse\/manager\/${VERSION}\/init/g" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/uyuni\//suse\/manager\/${VERSION}${ARCH}\//g" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/prefix=\"org\.opensuse\.uyuni\"/prefix=\"com.suse.manager\"/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/Uyuni Project/SUSE LLC/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/Uyuni/SUSE Manager/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/www.uyuni-project\.org/www.suse.com\/products\/multi-linux-manager/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "s/registry.opensuse.org\/uyuni/registry.suse.com\/suse\/manager\/${VERSION}\/%ARCH%/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "/<suse_label_helper:add_prefix /a<label name=\"com.suse.eula\" value=\"${EULA}\"/>" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "/<suse_label_helper:add_prefix /a<label name=\"com.suse.release-stage\" value=\"${RELEASE_STAGE}\"/>" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "/<suse_label_helper:add_prefix /a<label name=\"com.suse.lifecycle-url\" value=\"https://www.suse.com/lifecycle/\"/>" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+    sed "/<suse_label_helper:add_prefix /a<label name=\"com.suse.supportlevel=\" value=\"l3\"/>" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+  fi
+
+  sed "s/%PRODUCT_VERSION%/${PRODUCT_VERSION}/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+  sed "s/%PRODUCT%/${PRODUCT}/" -i ${SRPM_PKG_DIR}/${PKG_NAME}.kiwi
+  
+  rm ${SRPM_PKG_DIR}/${PKG_NAME}.spec
 fi
 

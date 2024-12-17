@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-License-Identifier: MIT -->
+<!-- 
+    Copyright (c) 2024 SUSE LLC
+
+All modifications and additions to the file contributed by third parties
+remain the property of their copyright owners, unless otherwise agreed
+upon.
+-->
+<!-- OBS-AddTag: uyuni/server:%PRODUCT_VERSION% uyuni/server:%PRODUCT_VERSION%.%RELEASE% uyuni/server:latest -->
+<!-- OBS-Imagerepo: obsrepositories:/ -->
+
+<image schemaversion="6.5" name="server-image" xmlns:suse_label_helper="com.suse.label_helper">
+  <description type="system">
+    <author>Uyuni Project</author>
+    <contact>https://www.uyuni-project.org</contact>
+    <specification>Uyuni Server Container Image</specification>
+  </description>
+  <preferences>
+      <type image="docker" derived_from="obsrepositories:/uyuni/init">
+      <containerconfig
+          name="uyuni/server"
+          tag="%PRODUCT_VERSION%"
+          maintainer="Uyuni Project (https://www.uyuni-project.org/)"
+          additionaltags="%PRODUCT_VERSION%.%RELEASE%,latest">
+        <labels>
+          <suse_label_helper:add_prefix prefix="org.opensuse.uyuni.server">
+            <label name="org.opencontainers.image.name" value="server-image"/>
+            <label name="org.opencontainers.image.title" value="Uyuni server container"/>
+            <label name="org.opencontainers.image.description" value="All-in-one Uyuni server container"/>
+            <label name="org.opencontainers.image.version" value="5.1.2"/>
+            <label name="org.opencontainers.image.created" value="%BUILDTIME%"/>
+            <label name="org.opencontainers.image.vendor" value="Uyuni Project"/>
+            <label name="org.opencontainers.image.source" value="https://www.uyuni-project.org/"/>
+            <label name="org.opencontainers.image.url" value="https://www.uyuni-project.org/"/>
+            <label name="org.opensuse.reference" value="registry.opensuse.org/uyuni/server:%PRODUCT_VERSION%.%RELEASE%"/>
+            <label name="org.openbuildservice.disturl" value="%DISTURL%"/>
+          </suse_label_helper:add_prefix>
+        <label name="org.uyuni.version" value="%PRODUCT_VERSION%"/>
+        </labels>
+        <subcommand execute="/usr/lib/systemd/systemd"/>
+      </containerconfig>
+    </type>
+    <version>%PRODUCT_VERSION%</version>
+    <packagemanager>zypper</packagemanager>
+    <rpm-check-signatures>false</rpm-check-signatures>
+    <rpm-excludedocs>true</rpm-excludedocs>
+  </preferences>
+  <repository type="rpm-md">
+    <source path="obsrepositories:/"/>
+  </repository>
+  <packages type="image">
+    <package name="shim" arch="x86_64"/>
+    <package name="shim" arch="aarch64"/>
+    <package name="syslinux" arch="x86_64"/>
+    <package name="syslinux-x86_64" arch="aarch64"/>
+    <package name="syslinux-x86_64" arch="s390x"/>
+    <package name="syslinux-x86_64" arch="ppc64le"/>
+    <package name="python3-ws4py"/>
+    <package name="salt-api"/>
+    <package name="salt-master"/>
+    <package name="cobbler"/>
+    <package name="java-17-openjdk"/>
+    <package name="postgresql16-server"/>
+    <package name="postgresql16-contrib"/>
+    <package name="cpu-mitigations-formula"/>
+    <package name="liberate-formula"/>
+    <package name="openvpn-formula"/>
+    <package name="smdba"/>
+    <package name="spacewalk-base-minimal"/>
+    <package name="spacewalk-postgresql"/>
+    <package name="spacewalk-reports"/>
+    <package name="spacewalk-utils"/>
+    <package name="supportutils-plugin-salt"/>
+    <package name="supportutils-plugin-susemanager"/>
+    <package name="susemanager"/>
+    <package name="susemanager-tools"/>
+    <package name="bind-formula"/>
+    <package name="branch-network-formula"/>
+    <package name="dhcpd-formula"/>
+    <package name="image-sync-formula"/>
+    <package name="pxe-formula"/>
+    <package name="saltboot-formula"/>
+    <package name="tftpd-formula"/>
+    <package name="vsftpd-formula"/>
+    <package name="python3-susemanager-retail"/>
+    <package name="susemanager-retail-tools"/>
+    <package name="release-notes-%PRODUCT%"/>
+    <package name="%PRODUCT%-docs_en"/>
+    <package name="%PRODUCT%-docs_en-pdf"/>
+    <package name="billing-data-service"/>
+    <package name="grub2-x86_64-efi"/>
+    <package name="grub2-arm64-efi"/>
+    <package name="grub2-powerpc-ieee1275"/>
+    <package name="ed"/>
+    <package name="susemanager-tftpsync"/>
+    <package name="golang-github-prometheus-node_exporter"/>
+    <package name="prometheus-postgres_exporter"/>
+    <package name="golang-github-lusitaniae-apache_exporter"/>
+    <package name="golang-github-QubitProducts-exporter_exporter"/>
+    <package name="prometheus-jmx_exporter"/>
+    <package name="prometheus-jmx_exporter-tomcat"/>
+    <package name="spacecmd"/>
+    <package name="grafana-formula"/>
+    <package name="locale-formula"/>
+    <package name="prometheus-exporters-formula"/>
+    <package name="prometheus-formula"/>
+    <package name="registry-formula"/>
+    <package name="virtualization-formulas"/>
+    <package name="uyuni-config-formula"/>
+    <package name="saphanabootstrap-formula"/>
+    <package name="sapnwbootstrap-formula"/>
+    <package name="drbd-formula"/>
+    <package name="habootstrap-formula"/>
+    <package name="saline-formula"/>
+    <package name="salt-shaptools"/>
+    <package name="inter-server-sync"/>
+    <package name="golang-github-prometheus-node_exporter"/>
+    <package name="prometheus-postgres_exporter"/>
+    <package name="golang-github-QubitProducts-exporter_exporter"/>
+    <package name="prometheus-jmx_exporter"/>
+    <package name="spacecmd"/>
+    <package name="javamail"/>
+    <package name="libyui-ncurses-pkg16"/>
+    <package name="virtual-host-gatherer-libcloud"/>
+    <package name="virtual-host-gatherer-Libvirt"/>
+    <package name="virtual-host-gatherer-Nutanix"/>
+    <package name="virtual-host-gatherer-VMware"/>
+    <package name="vim"/>
+    <package name="python3-pygit2"/>
+    <package name="ipmitool"/>
+    <package name="sssd"/>
+    <package name="sssd-dbus"/>
+    <package name="sssd-ldap"/>
+    <package name="sssd-ad"/>
+    <package name="sssd-ipa"/>
+    <package name="sssd-krb5"/>
+    <package name="sssd-tools"/>
+  </packages>
+
+</image>
