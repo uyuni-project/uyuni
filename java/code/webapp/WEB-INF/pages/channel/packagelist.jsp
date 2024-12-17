@@ -15,6 +15,9 @@
     <rl:listset name="packageSet">
     <rhn:csrf />
     <rhn:submitted />
+    <rl:csv dataset="pageList"
+      name="packageList"
+      exportColumns="id, nvrea, provider" />
 
     <rhn:hidden name="cid" value="${cid}" />
 
@@ -57,14 +60,7 @@
                           >
                           <c:out value="${current.provider}" />
                 </rl:column>
-
-
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                        name="packageList"
-                        exportColumns="id, nvrea, provider" />
-
     </rl:listset>
 
 </body>
