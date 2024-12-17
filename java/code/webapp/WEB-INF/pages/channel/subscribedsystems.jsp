@@ -20,7 +20,9 @@
 <rhn:csrf />
 
 <rhn:hidden name="cid" value="${cid}" />
-
+        <rl:csv dataset="pageList"
+            name="systemList"
+            exportColumns="id, name,entitlementLevel" />
         <rl:list dataset="pageList"
                         name="systemList"
                         decorator="SelectableDecorator"
@@ -60,10 +62,6 @@
 
 
         </rl:list>
-        <rl:csv dataset="pageList"
-                        name="systemList"
-                        exportColumns="id, name,entitlementLevel" />
-
                 <rhn:submitted/>
 
 
