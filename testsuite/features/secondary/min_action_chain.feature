@@ -207,7 +207,7 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "salt_minion_action_chain_to_delete"
-    And I follow "delete action chain" in the content area
+    And I follow "Delete Action Chains" in the content area
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
