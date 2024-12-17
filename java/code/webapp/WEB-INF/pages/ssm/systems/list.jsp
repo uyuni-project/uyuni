@@ -9,7 +9,7 @@
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
 <h2>
-  <bean:message key="ssm.list.systems.header" /> TEst
+  <bean:message key="ssm.list.systems.header" />
 </h2>
 <p><bean:message key="ssm.list.systems.summary" /></p>
 <c:set var="notSelectable" value="true"/>

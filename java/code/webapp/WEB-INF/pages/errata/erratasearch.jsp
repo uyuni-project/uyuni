@@ -177,10 +177,15 @@
 
   <c:if test="${(search_string != null && search_string != '') || param.optionIssueDateSearch != null }">
   <hr />
-
+  
   <c:set var="pageList" value="${requestScope.pageList}" />
   <rl:listset name="searchSet" legend="errata">
     <rhn:csrf />
+    <div class="spacewalk-section-toolbar">
+      <rl:csv dataset="pageList"
+        name="searchResults"
+        exportColumns="advisoryType,advisoryName,advisorySynopsis,issueDate"/>
+    </div>
     <rl:list name="searchResults" dataset="pageList"
              emptykey="erratasearch.jsp.noerrata" width="100%">
 
@@ -301,9 +306,6 @@
       </rl:column>
 
     </rl:list>
-    <rl:csv dataset="pageList"
-            name="searchResults"
-            exportColumns="advisoryType,advisoryName,advisorySynopsis,issueDate"/>
 
     <!-- there are two forms here, need to keep the formvars around for pagination-->
     <html:hidden property="search_string" value="${search_string}" />

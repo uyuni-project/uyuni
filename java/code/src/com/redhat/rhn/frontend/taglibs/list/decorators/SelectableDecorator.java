@@ -128,9 +128,21 @@ public class SelectableDecorator extends BaseListDecorator {
                     ls.getMessage(ListDisplayTag.UPDATE_LIST_KEY));
             tag.setAttribute("id", "update_list_key_id");
             tag.setBody(ls.getMessage(ListDisplayTag.UPDATE_LIST_KEY));
+            buf.append(tag.render()).append("&nbsp;");
+
+            tag.setAttribute("value",
+                    ls.getMessage(ListDisplayTag.SELECT_ALL_KEY));
+            tag.setBody(ls.getMessage(ListDisplayTag.SELECT_ALL_KEY));
+            buf.append(tag.render()).append("&nbsp;");
 
             String selectedName = ListTagUtil.makeSelectedAmountName(listName);
             String selected = (String) pageContext.getRequest().getAttribute(selectedName);
+            if (!NULL_SELECTION.equals(selected) &&  selected != null) {
+                tag.setAttribute("value",
+                        ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
+                tag.setBody(ls.getMessage(ListDisplayTag.UNSELECT_ALL_KEY));
+                buf.append(tag.render()).append("\n");
+            }
             buf.append("</span>");
             ListTagUtil.write(pageContext, buf.toString());
         }
