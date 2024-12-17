@@ -19,6 +19,11 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.NotificationType;
+import com.redhat.rhn.domain.notification.types.SCCOptOutWarning;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -29,12 +34,15 @@ import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -54,6 +62,16 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext arg0) throws JobExecutionException {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
+            NotificationMessage lastNotification = UserNotificationFactory
+                    .getLastNotificationMessageByType(NotificationType.SCCOptOutWarning);
+
+            if (lastNotification == null || lastNotification.getCreated().before(DateUtils.addMonths(new Date(), -3))) {
+                NotificationMessage notificationMessage =
+                        UserNotificationFactory.createNotificationMessage(new SCCOptOutWarning());
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
+                        Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+            }
+
             if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
                     GlobalInstanceHolder.PAYG_MANAGER.hasSCCCredentials()) {
                 log.warn("SUSE Manager PAYG instances must forward registration data to SCC when " +
