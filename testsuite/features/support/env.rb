@@ -69,6 +69,7 @@ $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
+$is_using_paygo_server = (ENV.fetch('IS_USING_PAYGO_SERVER', 'False') == 'True')
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
@@ -270,6 +271,14 @@ end
 # do some tests only if the corresponding node exists
 Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
+end
+
+Before('@paygo_server') do
+  skip_this_scenario unless $is_using_paygo_server
+end
+
+Before('@skip_if_paygo_server') do
+  skip_this_scenario if $is_using_paygo_server
 end
 
 Before('@sle_client') do

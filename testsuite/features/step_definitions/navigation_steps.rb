@@ -446,6 +446,9 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
     step 'I am authorized as "kiwikiwi" with password "kiwikiwi"'
   when 'Docker'
     step 'I am authorized as "docker" with password "docker"'
+  when 'Paygo'
+    paygo_password = $server_instance_id
+    step "I am authorized as \"admin\" with password \"#{paygo_password}\""
   else
     log "Section #{section} not supported"
   end
