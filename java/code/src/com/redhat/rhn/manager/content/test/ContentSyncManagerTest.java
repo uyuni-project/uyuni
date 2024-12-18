@@ -2449,6 +2449,38 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         csm.updateRepositoriesPayg();
     }
 
+    @Test
+    public void testGetTokenFromUrl() {
+        class CSM extends ContentSyncManager {
+            public Optional<String> getTokenFromURLTest(String url) {
+                return getTokenFromURL(url);
+            }
+        }
+        Map<String, Optional<String>> urlMap = Map.of("http://my.host.top/?os=RHEL",
+                Optional.empty(),
+                "http://my.host.top/?__token__=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                        "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
+                Optional.of("__token__=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                        "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60"),
+                "http://my.host.top/?NoaBh00JIaJwSozVS2BK1G6x27JmfPxfKiiMZBlZ4SD1x3S_VUt7805g_G4XB0ShvcKDO4A5uhzv" +
+                        "o74HNzCEAYhMxG8dIw0ZIMla3FzxXCKR5gUaW6PeLjCHG4LrgoXa3zG7KPyy8OQMSAni9F1bs2fqOjKqgQ",
+                Optional.of("NoaBh00JIaJwSozVS2BK1G6x27JmfPxfKiiMZBlZ4SD1x3S_VUt7805g_G4XB0ShvcKDO4A5uhzv" +
+                        "o74HNzCEAYhMxG8dIw0ZIMla3FzxXCKR5gUaW6PeLjCHG4LrgoXa3zG7KPyy8OQMSAni9F1bs2fqOjKqgQ"),
+                "http://my.host.top/",
+                Optional.empty(),
+                "http://my.host.top/?susetk=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                        "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
+                Optional.of("susetk=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                        "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60"),
+                "http://my.host.top/?hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
+                Optional.empty(),
+                "http://my.host.top/?exp=18976547",
+                Optional.empty());
+
+        CSM csm = new CSM();
+        urlMap.forEach((url, result) -> assertEquals(result, csm.getTokenFromURLTest(url)));
+    }
+
     /**
      * {@inheritDoc}
      */
