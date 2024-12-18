@@ -30,6 +30,7 @@ class RemoteNode
     ssh('rm -f /etc/motd && touch /etc/motd', host: @target) unless @host == 'localhost'
     out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip
+    puts "DEBUG JORDI: hostname: #{@hostname}"
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
