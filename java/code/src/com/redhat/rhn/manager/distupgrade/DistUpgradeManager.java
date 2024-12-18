@@ -304,22 +304,7 @@ public class DistUpgradeManager extends BaseManager {
 
                 // Liberty Migration should always add the Liberty Products
                 for (SUSEProduct successorProduct : baseSuccessors) {
-                    if (successorProduct.getName().equals("rhel-base") &&
-                            successorProduct.getVersion().equals("8")) {
-                        Set<SUSEProduct> liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(successorProduct)
-                                .stream()
-                                .filter(e -> e.getName().equals("res"))
-                                .collect(Collectors.toSet());
-                        installedExtensions.addAll(liberties);
-                    }
-                    else if (successorProduct.getName().equals("el-base") &&
-                            successorProduct.getVersion().equals("9")) {
-                        Set<SUSEProduct> liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(successorProduct)
-                                .stream()
-                                .filter(e -> e.getName().equals("sll"))
-                                .collect(Collectors.toSet());
-                        installedExtensions.addAll(liberties);
-                    }
+                    addLibertyLinuxAddonIfMissing(successorProduct, installedExtensions);
                 }
 
                 // extension_successors = installed_extensions.map {|e| [e] + e.successors }
@@ -408,6 +393,41 @@ public class DistUpgradeManager extends BaseManager {
                 return result;
             }
         );
+    }
+
+    /**
+     * Liberty Migration should always add the Liberty Products
+     * If the migration ends in Liberty linux, add Suse Liberty Linux extension (if not already present)
+     *
+     * @param baseProduct   the base product
+     * @param addonProducts the list of addon products
+     */
+    private static void addLibertyLinuxAddonIfMissing(SUSEProduct baseProduct, List<SUSEProduct> addonProducts) {
+        List<SUSEProduct> liberties = new ArrayList<>();
+
+        if (baseProduct.getName().equals("rhel-base") &&
+                baseProduct.getVersion().equals("8")) {
+            liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(baseProduct)
+                    .stream()
+                    .filter(e -> e.getName().equals("res"))
+                    .collect(Collectors.toList());
+        }
+        else if (baseProduct.getName().equals("el-base") &&
+                baseProduct.getVersion().equals("9")) {
+            liberties = SUSEProductFactory.findAllExtensionsOfRootProduct(baseProduct)
+                    .stream()
+                    .filter(e -> e.getName().equals("sll"))
+                    .collect(Collectors.toList());
+        }
+
+        for (SUSEProduct liberty : liberties) {
+            if (addonProducts.stream()
+                    .filter(e -> e.getId() == liberty.getId())
+                    .findFirst()
+                    .isEmpty()) {
+                addonProducts.add(liberty);
+            }
+        }
     }
 
     /**
