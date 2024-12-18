@@ -751,3 +751,20 @@ def api_unlock
     file.flock(File::LOCK_UN)
   end
 end
+
+# Function to get the highest event ID (latest event)
+#
+# @param host String The hostname of the system from requested
+def get_last_event(host)
+  node = get_target(host)
+  system_id = get_system_id(node)
+  $api_test.system.get_event_history(system_id, 0, 1)[0]
+end
+
+# Function to trigger the upgrade command
+#
+# @param hostname String The hostname of the system from requested
+# @param package String The package name where it will trigger an upgrade
+def trigger_upgrade(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+end
