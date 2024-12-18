@@ -302,11 +302,6 @@ public class DistUpgradeManager extends BaseManager {
                 currentCombination.add(baseProduct);
                 currentCombination.addAll(installedExtensions);
 
-                // Liberty Migration should always add the Liberty Products
-                for (SUSEProduct successorProduct : baseSuccessors) {
-                    addLibertyLinuxAddonIfMissing(successorProduct, installedExtensions);
-                }
-
                 // extension_successors = installed_extensions.map {|e| [e] + e.successors }
                 final List<List<SUSEProduct>> extensionSuccessors = new ArrayList<>(installedExtensions.size());
                 for (SUSEProduct e : installedExtensions) {
@@ -374,6 +369,10 @@ public class DistUpgradeManager extends BaseManager {
                     }
                     else {
                         List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
+
+                        // Liberty Migration should always add the Liberty Products
+                        addLibertyLinuxAddonIfMissing(base, addonProducts);
+
                         //No Product Channels means, no subscription to access the channels
                         if (addonProducts.stream()
                                 .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
