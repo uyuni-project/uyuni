@@ -37,6 +37,8 @@ class RemoteNode
     if @host == 'server'
       _out, _err, code = ssh('which mgrctl', host: @target)
       @has_mgrctl = code.zero?
+      puts "DEBUG JORDI; has mgrctl in #{@target}" if @has_mgrctl
+      puts "DEBUG JORDI; has NO mgrctl in #{@target}" unless @has_mgrctl
       # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
       run('rm -f /etc/motd && touch /etc/motd')
       out, _code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
