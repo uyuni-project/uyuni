@@ -1663,4 +1663,13 @@ EMPTY_CHANNELS = %w[
   sle-module-server-applications15-sp4-pool-x86_64
   sle-module-server-applications15-sp4-updates-x86_64
   sle15-sp4-installer-updates-x86_64
+  opensuse_leap15_5-x86_64
+  opensuse_leap15_5-x86_64-non-oss
+  opensuse_leap15_5-x86_64-non-oss-updates
+  opensuse_leap15_5-x86_64-updates
+  opensuse_leap15_5-x86_64-backports-updates
+  opensuse_leap15_5-x86_64-sle-updates
+  opensuse_leap15_5-uyuni-client-devel-x86_64
+  opensuse_leap15_5-uyuni-client-x86_64
+  uyuni-proxy-devel-leap-x86_64
 ].freeze
