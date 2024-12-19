@@ -369,7 +369,7 @@ public class TestUtils {
      */
     public static void saveAndFlush(Object obj) throws HibernateException {
         Session session = HibernateFactory.getSession();
-        session.save(obj);
+        session.saveOrUpdate(obj);
         session.flush();
     }
 
@@ -535,6 +535,19 @@ public class TestUtils {
      */
     public static <T> T saveAndReload(T o) {
         TestUtils.saveAndFlush(o);
+        return reload(o);
+    }
+
+    /**
+     * Merge an object from DB
+     * @param o to merge
+     * @param <T> type of object to merge
+     * @return Object fresh from DB
+     */
+    public static <T> T merge(T o) {
+        Session session = HibernateFactory.getSession();
+        session.merge(o);
+        session.flush();
         return reload(o);
     }
 
