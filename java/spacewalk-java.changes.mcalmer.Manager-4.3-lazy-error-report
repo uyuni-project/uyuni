@@ -1,0 +1,2 @@
+- Show an error notification only when we invalidate the
+  payg credentials (bsc#1228956)
