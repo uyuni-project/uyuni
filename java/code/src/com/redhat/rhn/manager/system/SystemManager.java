@@ -123,6 +123,7 @@ import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
+import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
@@ -3624,8 +3625,17 @@ public class SystemManager extends BaseManager {
     }
 
     /**
-     * Update the the base and child channels of a server. Calls
+     * Update the base and child channels of a server. Calls
      * the {@link UpdateBaseChannelCommand} and {@link UpdateChildChannelsCommand}.
+     * This method regenerate the Tokens and Pillar Data synchronous, but does not
+     * trigger a 'state.apply' for channels.
+     * <br/>
+     * To unsubscribe from all channels, set baseChannel to empty and provide an empty list of child channels
+     * To switch the base channel and let it find compatible child channels to the currently subscribed child channels,
+     * just provide the new base channel and provide an empty list for the child channels
+     * If no base channel is provided, the list of child channels should have the currently assigned base channel as
+     * parent.
+     * If both, base and child channels are provided, the system will be changed to use the defined channels
      *
      * @param user the user changing the channels
      * @param server the server for which to change channels
@@ -3633,36 +3643,39 @@ public class SystemManager extends BaseManager {
      * @param childChannels the full list of child channels to set. Any channel no provided will be unsubscribed.
      * and will be used when regenerating the Pillar data for Salt minions.
      */
-    public static void updateServerChannels(User user,
+    public void updateServerChannels(User user,
                                             Server server,
                                             Optional<Channel> baseChannel,
                                             Collection<Channel> childChannels) {
-        long baseChannelId =
-                baseChannel.map(Channel::getId).orElse(-1L);
 
-        // if there's no base channel present the there are no child channels to set
-        List<Long> childChannelIds = baseChannel.isPresent() ?
-                childChannels.stream().map(Channel::getId).collect(Collectors.toList()) :
-                emptyList();
+        long baseChannelId = baseChannel.map(Channel::getId).orElse(-1L);
+        List<Long> childChannelIds = childChannels.stream().map(Channel::getId).collect(Collectors.toList());
 
-        UpdateBaseChannelCommand baseChannelCommand =
-                new UpdateBaseChannelCommand(
-                        user,
-                        server,
-                        baseChannelId);
+        if (baseChannel.isPresent() || childChannels.isEmpty()) {
+            UpdateBaseChannelCommand baseChannelCommand = new UpdateBaseChannelCommand(
+                    user,
+                    server,
+                    baseChannelId);
 
-        UpdateChildChannelsCommand childChannelsCommand =
-                new UpdateChildChannelsCommand(
-                        user,
-                        server,
-                        childChannelIds);
+            baseChannelCommand.skipChannelChangedEvent(true);
+            baseChannelCommand.store();
+        }
 
-        baseChannelCommand.skipChannelChangedEvent(true);
-        baseChannelCommand.store();
-        childChannelsCommand.skipChannelChangedEvent(true);
-        childChannelsCommand.store();
+        if (!childChannels.isEmpty()) {
+            UpdateChildChannelsCommand childChannelsCommand = new UpdateChildChannelsCommand(
+                    user,
+                    server,
+                    childChannelIds);
 
-        MessageQueue.publish(new ChannelsChangedEventMessage(server.getId(), user.getId()));
+            childChannelsCommand.skipChannelChangedEvent(true);
+            childChannelsCommand.store();
+        }
+
+        // Calling this asynchronous block execution util main thread close the Hibernate Session
+        // as we require the result, we must call this synchronous
+        ChannelsChangedEventMessageAction channelsChangeAction =
+                new ChannelsChangedEventMessageAction(saltApi);
+        channelsChangeAction.execute(new ChannelsChangedEventMessage(server.getId(), user.getId()));
 
     }
 
