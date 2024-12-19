@@ -17,7 +17,8 @@ package com.redhat.rhn.domain.product;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
-import org.hibernate.annotations.Type;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,25 +28,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 /**
- * SUSEProductSCCRepository - link Product with Repository and hold data for channels
+ * ChannelTemplate - link Product with Repository and hold data for channels
  */
 @Entity
-@Table(name = "suseProductSCCRepository", uniqueConstraints =
+@Table(name = "suseChannelTemplate", uniqueConstraints =
 @UniqueConstraint(columnNames = {"product_id", "root_product_id", "repo_id"}))
-@NamedQueries({
-        @NamedQuery(
-                name = "SUSEProductSCCRepository.lookupByLabel",
-                query = "select pr from SUSEProductSCCRepository pr where pr.channelLabel = :label")
-})
-public class SUSEProductSCCRepository extends BaseDomainHelper {
+@NamedQuery(
+        name = "ChannelTemplate.lookupByLabel",
+        query = "FROM ChannelTemplate pr WHERE pr.channelLabel = :label")
+public class ChannelTemplate extends BaseDomainHelper {
 
     private Long id;
     private SUSEProduct product;
@@ -65,8 +62,7 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "prdrepo_seq")
-    @SequenceGenerator(name = "prdrepo_seq", sequenceName = "suse_prdrepo_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -125,7 +121,6 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
     /**
      * @return Returns the mandatory.
      */
-    @Type(type = "yes_no")
     @Column(name = "mandatory")
     public boolean isMandatory() {
         return mandatory;
@@ -253,6 +248,40 @@ public class SUSEProductSCCRepository extends BaseDomainHelper {
      */
     public void setGpgKeyFingerprint(String gpgKeyFingerprintIn) {
         gpgKeyFingerprint = gpgKeyFingerprintIn;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof ChannelTemplate)) {
+            return false;
+        }
+        ChannelTemplate otherCast = (ChannelTemplate) other;
+        return new EqualsBuilder()
+                .append(getChannelLabel(), otherCast.getChannelLabel())
+                .append(getProduct(), otherCast.getProduct())
+                .append(getRootProduct(), otherCast.getRootProduct())
+                .append(getRepository(), otherCast.getRepository())
+                .append(getChannelName(), otherCast.getChannelName())
+                .append(isMandatory(), otherCast.isMandatory())
+                .append(getUpdateTag(), otherCast.getUpdateTag())
+                .append(getGpgKeyUrl(), otherCast.getGpgKeyUrl())
+                .isEquals();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder()
+                .append(getChannelLabel())
+                .append(getProduct())
+                .append(getRootProduct())
+                .append(getRepository())
+                .toHashCode();
     }
 
     @Override
