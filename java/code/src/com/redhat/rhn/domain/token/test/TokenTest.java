@@ -41,6 +41,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class TokenTest extends RhnBaseTestCase {
 
         Session session = HibernateFactory.getSession();
         token2 = (Token) session.getNamedQuery("Token.findById")
-                                   .setLong("id", token1.getId())
+                                   .setParameter("id", token1.getId(), LongType.INSTANCE)
                                    .uniqueResult();
 
         assertEquals(token1, token2);

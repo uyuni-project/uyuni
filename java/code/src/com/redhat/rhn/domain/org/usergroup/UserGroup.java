@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.org.usergroup;
 
 import com.redhat.rhn.domain.role.Role;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -26,7 +27,7 @@ import java.util.Date;
  *
  * DB table: RHNUSERGROUP
  */
-public interface UserGroup {
+public interface UserGroup extends Serializable {
 
     /**
      * Getter for id

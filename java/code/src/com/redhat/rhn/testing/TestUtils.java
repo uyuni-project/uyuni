@@ -42,6 +42,8 @@ import org.apache.struts.action.ActionMessages;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -267,7 +269,7 @@ public class TestUtils {
     public static Object lookupFromCacheById(Long id, String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                        .setLong("id", id)
+                        .setParameter("id", id, LongType.INSTANCE)
                         //Retrieve from cache if there
                         .setCacheable(true)
                         .uniqueResult();
@@ -284,7 +286,7 @@ public class TestUtils {
                                                 String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                      .setString("label", label)
+                      .setParameter("label", label, StringType.INSTANCE)
                       //Retrieve from cache if there
                       .setCacheable(true)
                       .uniqueResult();
