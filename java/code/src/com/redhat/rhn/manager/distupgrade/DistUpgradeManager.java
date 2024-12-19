@@ -415,10 +415,7 @@ public class DistUpgradeManager extends BaseManager {
         }
 
         for (SUSEProduct liberty : liberties) {
-            if (addonProducts.stream()
-                    .filter(e -> e.getId() == liberty.getId())
-                    .findFirst()
-                    .isEmpty()) {
+            if (addonProducts.stream().noneMatch(e -> e.getId() == liberty.getId())) {
                 addonProducts.add(liberty);
             }
         }
