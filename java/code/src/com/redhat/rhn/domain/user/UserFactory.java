@@ -37,6 +37,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
 
 import java.sql.Types;
 import java.util.Arrays;
@@ -446,7 +448,7 @@ public  class UserFactory extends HibernateFactory {
     public static RhnTimeZone getTimeZone(int id) {
         Session session = HibernateFactory.getSession();
         return (RhnTimeZone) session.getNamedQuery("RhnTimeZone.loadTimeZoneById")
-                .setInteger("tid", id)
+                .setParameter("tid", id, IntegerType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -461,7 +463,7 @@ public  class UserFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (RhnTimeZone) session
                 .getNamedQuery("RhnTimeZone.loadTimeZoneByOlsonName")
-                .setString("ton", olsonName)
+                .setParameter("ton", olsonName, StringType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();

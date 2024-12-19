@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.Session;
+import org.hibernate.type.StringType;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -70,7 +71,7 @@ public class ActionTypeTest extends RhnBaseTestCase {
     private ActionType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ActionType) session.getNamedQuery("ActionType.findByLabel")
-                                .setString("label", label)
+                                .setParameter("label", label, StringType.INSTANCE)
                                 //Retrieve from cache if there
                                 .setCacheable(true)
                                 .uniqueResult();

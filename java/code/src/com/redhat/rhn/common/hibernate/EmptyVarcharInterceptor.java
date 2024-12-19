@@ -17,7 +17,6 @@ package com.redhat.rhn.common.hibernate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.EmptyInterceptor;
-import org.hibernate.type.StringType;
 import org.hibernate.type.Type;
 
 import java.io.Serializable;
@@ -59,8 +58,7 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
         boolean modified = false;
 
         for (int i = 0; i < types.length; i++) {
-            // type is string (VARCHAR) and state is empty string
-            if ((types[i] instanceof StringType) && "".equals(state[i])) {
+            if ("".equals(state[i])) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("Object {} is setting empty string {}", entity.getClass().getCanonicalName(),
                             propertyNames[i]);

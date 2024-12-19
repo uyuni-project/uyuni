@@ -484,12 +484,12 @@ public class KickstartFactory extends HibernateFactory {
         Query<CryptoKey> query = null;
         if (org != null) {
             query = session.getNamedQuery("CryptoKey.findByDescAndOrg")
-                           .setParameter("description", description)
+                           .setParameter("description", description, StringType.INSTANCE)
                            .setParameter(ORG_ID, org.getId(), LongType.INSTANCE);
         }
         else {
             query = session.getNamedQuery("CryptoKey.findByDescAndNullOrg")
-                           .setParameter("description", description);
+                           .setParameter("description", description, StringType.INSTANCE);
         }
         return query.uniqueResult();
     }
@@ -545,7 +545,8 @@ public class KickstartFactory extends HibernateFactory {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
         Query<SslCryptoKey> query = session.getNamedQuery("SslCryptoKey.findByIdAndOrg");
-        return query.setParameter("key_id", keyId, LongType.INSTANCE)
+        return query
+                .setParameter("key_id", keyId, LongType.INSTANCE)
                 .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
                 .uniqueResult();
     }
@@ -575,7 +576,7 @@ public class KickstartFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         KickstartableTree retval = (KickstartableTree)
                 session.getNamedQuery("KickstartableTree.findByLabelAndOrg")
-                .setParameter(LABEL, label)
+                .setParameter(LABEL, label, StringType.INSTANCE)
                 .setParameter(ORG_ID, org.getId(), LongType.INSTANCE)
                 .uniqueResult();
         // If we don't find by label + org then

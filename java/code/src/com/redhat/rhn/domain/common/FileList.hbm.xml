@@ -34,10 +34,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     </class>
 
-    <query name="FileList.findByIdAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.common.FileList as f where f.id = :id
-                 and f.org = :org_id]]>
-    </query>
     <query name="FileList.findByLabelAndOrg">
         <![CDATA[from com.redhat.rhn.domain.common.FileList as f where f.label = :label
                  and f.org = :org_id]]>

@@ -20,13 +20,14 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  *
  * ConfigChannelListProcessor
  */
-public class ConfigChannelListProcessor {
+public class ConfigChannelListProcessor implements Serializable {
 
     private void check(ConfigChannel cc) {
         if (cc == null) {
