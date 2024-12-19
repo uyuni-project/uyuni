@@ -76,7 +76,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.hibernate.criterion.Restrictions;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -1525,8 +1524,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @return the errata action
      */
     private ErrataAction errataActionFromAction(Action action) {
-        return (ErrataAction) HibernateFactory.getSession().createCriteria(ErrataAction.class)
-                .add(Restrictions.idEq(action.getId())).uniqueResult();
+        String sql = "SELECT * FROM rhnAction WHERE id = :id";
+        return HibernateFactory.getSession()
+                            .createNativeQuery(sql, ErrataAction.class)
+                            .setParameter("id", action.getId())
+                            .getSingleResult();
     }
 
     /**

@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.token.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
@@ -81,8 +82,9 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
         PackageName pname = PackageNameTest.createTestPackageName();
 
         Long testid = 100L;
-        String query = "PackageArch.findById";
-        PackageArch parch = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
+        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult();
 
         p.setToken(key.getToken());
         p.setPackageName(pname);
