@@ -21,6 +21,7 @@ import com.suse.manager.matcher.MatcherJsonIO;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.LongType;
 
 import java.util.List;
 
@@ -96,7 +97,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public void cleanStalePins() {
         getSession()
             .getNamedQuery("PinnedSubscription.cleanStalePins")
-            .setLong("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, LongType.INSTANCE)
             .executeUpdate();
     }
 

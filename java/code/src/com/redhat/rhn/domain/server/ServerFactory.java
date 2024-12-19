@@ -62,7 +62,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.hibernate.query.Query;
+import org.hibernate.type.LongType;
 import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.StringType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -115,10 +117,11 @@ public class ServerFactory extends HibernateFactory {
 
         Session session = HibernateFactory.getSession();
         return (CustomDataValue) session.getNamedQuery(
-                "CustomDataValue.findByServerAndKey").setParameter("server",
-                        server).setParameter("key", key)
-                        // Retrieve from cache if there
-                        .setCacheable(true).uniqueResult();
+                "CustomDataValue.findByServerAndKey")
+                .setParameter("server", server)
+                .setParameter("key", key)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -793,9 +796,9 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
         return (ServerGroupType) HibernateFactory.getSession().getNamedQuery("ServerGroupType.findByLabel")
-                .setString("label", label)
-                // Retrieve from cache if there
-                .setCacheable(true).uniqueResult();
+                .setParameter("label", label, StringType.INSTANCE)
+                .setCacheable(true)
+                .uniqueResult();
 
     }
 
@@ -897,9 +900,9 @@ public class ServerFactory extends HibernateFactory {
     public static ServerArch lookupServerArchByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ServerArch) session.getNamedQuery("ServerArch.findByLabel")
-                .setString("label", label)
-                // Retrieve from cache if there
-                .setCacheable(true).uniqueResult();
+                .setParameter("label", label, StringType.INSTANCE)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -923,8 +926,7 @@ public class ServerFactory extends HibernateFactory {
     public static CPUArch lookupCPUArchByName(String name) {
         Session session = HibernateFactory.getSession();
         return (CPUArch) session.getNamedQuery("CPUArch.findByName")
-                .setString("name", name)
-                // Retrieve from cache if there
+                .setParameter("name", name, StringType.INSTANCE)
                 .setCacheable(true).uniqueResult();
     }
 
@@ -1299,7 +1301,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupByTagName")
-                .setString("tag_name", tagName)
+                .setParameter("tag_name", tagName, StringType.INSTANCE)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
@@ -1311,7 +1313,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupById")
-                .setLong("id", tagId)
+                .setParameter("id", tagId, LongType.INSTANCE)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
