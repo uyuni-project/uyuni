@@ -22,6 +22,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -87,9 +89,12 @@ public class CommonFactory extends HibernateFactory {
         Session session = null;
         //look for Kickstart data by id
         session = HibernateFactory.getSession();
-        return (FileList) session.getNamedQuery("FileList.findByIdAndOrg")
-                                      .setLong("id", idIn)
-                                      .setLong("org_id", org.getId())
+        return session.createNativeQuery("""
+                                      SELECT * from rhnFileList
+                                      WHERE id = :id
+                                      and org_id = :org_id """, FileList.class)
+                                      .setParameter("id", idIn, LongType.INSTANCE)
+                                      .setParameter("org_id", org.getId(), LongType.INSTANCE)
                                       .uniqueResult();
     }
 
@@ -103,8 +108,10 @@ public class CommonFactory extends HibernateFactory {
         Session session = null;
         //look for Kickstart data by label
         session = HibernateFactory.getSession();
-        return (FileList) session.getNamedQuery("FileList.findByLabelAndOrg").setString("label", labelIn)
-        .setLong("org_id", org.getId()).uniqueResult();
+        return (FileList) session.getNamedQuery("FileList.findByLabelAndOrg")
+                .setParameter("label", labelIn, StringType.INSTANCE)
+                .setParameter("org_id", org.getId(), LongType.INSTANCE)
+                .uniqueResult();
     }
 
     /**
@@ -150,7 +157,7 @@ public class CommonFactory extends HibernateFactory {
     public static TinyUrl lookupTinyUrl(String tokenIn) {
         Session session = HibernateFactory.getSession();
         return (TinyUrl) session.getNamedQuery("TinyUrl.findByToken")
-                                      .setString("token", tokenIn)
-                                      .uniqueResult();
+                .setParameter("token", tokenIn, StringType.INSTANCE)
+                .uniqueResult();
     }
 }

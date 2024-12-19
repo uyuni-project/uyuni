@@ -23,6 +23,7 @@ import com.redhat.rhn.frontend.action.kickstart.KickstartDetailsEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
 import org.hibernate.Session;
+import org.hibernate.type.LongType;
 import org.junit.jupiter.api.Test;
 
 public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
@@ -63,8 +64,8 @@ public class KickstartDeleteActionTest extends BaseKickstartEditTestCase {
     private KickstartData lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
-                          .setLong("id", id)
-                          .setLong("org_id", user.getOrg().getId())
+                          .setParameter("id", id, LongType.INSTANCE)
+                          .setParameter("org_id", user.getOrg().getId(), LongType.INSTANCE)
                           .uniqueResult();
     }
 }

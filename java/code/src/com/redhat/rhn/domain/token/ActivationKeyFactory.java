@@ -33,6 +33,7 @@ import com.redhat.rhn.frontend.struts.Scrubber;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StringType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,7 @@ public class ActivationKeyFactory extends HibernateFactory {
 
         return (ActivationKey) HibernateFactory.getSession()
             .getNamedQuery("ActivationKey.findByKey")
-                                      .setString("key", key)
+                                      .setParameter("key", key, StringType.INSTANCE)
                                       .uniqueResult();
     }
 
