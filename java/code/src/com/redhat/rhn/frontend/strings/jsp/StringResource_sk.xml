@@ -4522,70 +4522,70 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="org-config.scapfile-upload.jsp" xml:space="preserve">
         <source>Enable Upload Of Detailed SCAP Files</source>
-        <target/>
+        <target state="translated">Povoliť nahranie podrobných súborov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
         <source>SCAP File Upload Size Limit</source>
-        <target/>
+        <target state="translated">Obmedzenie veľkosti nahrávania súborov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
-        <target/>
+        <target state="translated">Umožniť vymazanie výsledkov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scap-retention-period" xml:space="preserve">
         <source>Allow Deletion After (period in days)</source>
-        <target/>
+        <target state="translated">Umožniť vymazanie po (doba v dňoch)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.id.jsp" xml:space="preserve">
         <source>Organization ID</source>
-        <target/>
+        <target state="translated">ID organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.actkeys.jsp" xml:space="preserve">
         <source>Activation Keys</source>
-        <target/>
+        <target state="translated">Aktivačné kľúče</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.kickstart.profiles.jsp" xml:space="preserve">
         <source>Autoinstallation Profiles</source>
-        <target/>
+        <target state="translated">Profily automatickej inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.config.channels.jsp" xml:space="preserve">
         <source>Configuration Channels</source>
-        <target/>
+        <target state="translated">Konfiguračné kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="organizations.jsp.toolbar" xml:space="preserve">
         <source>Organizations</source>
-        <target/>
+        <target state="translated">Organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organizations.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.displayname" xml:space="preserve">
         <source>Organization</source>
-        <target/>
+        <target state="translated">Organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
