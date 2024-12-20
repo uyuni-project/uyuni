@@ -24,15 +24,16 @@ import com.redhat.rhn.frontend.dto.ChannelOverview;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 /**
  * ChannelFamilyFactory
@@ -78,12 +79,27 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByLabel(String label, Org org) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
-        c.add(Restrictions.eq("label", label));
-        c.add(Restrictions.or(Restrictions.eq("org", org),
-              Restrictions.isNull("org")));
-        return (ChannelFamily) c.uniqueResult();
+        String sql = "SELECT * FROM rhnChannelFamily WHERE label = :label AND (org_id = :org OR org_id IS NULL)";
+        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
+        query.setParameter("label", label);
+
+        // Handle org being null
+        if (org != null) {
+            query.setParameter("org", org.getId());
+        }
+        else {
+            query.setParameter("org",   -1);
+        }
+
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error retrieving ChannelFamily", e);
+        }
     }
 
     /**
@@ -211,17 +227,32 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * Lookup the List of ChannelFamily objects that are labled starting
      * with the passed in label param
      * @param label to query against
-     * @param orgIn owning the Channel.  Pass in NULL if you want a NULL org channel
+     * @param org owning the Channel.  Pass in NULL if you want a NULL org channel
      * @return List of Channel objects
      */
     @SuppressWarnings("unchecked")
-    public static List<ChannelFamily> lookupByLabelLike(String label, Org orgIn) {
-        Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
-        c.add(Restrictions.like("label", label + "%"));
-        c.add(Restrictions.or(Restrictions.eq("org", orgIn),
-              Restrictions.isNull("org")));
-        return c.list();
+    public static List<ChannelFamily> lookupByLabelLike(String label, Org org) {
+        String sql = "SELECT * FROM rhnChannelFamily WHERE label LIKE :label AND (org_id = :org OR org_id IS NULL)";
+        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
+        query.setParameter("label", label);
+
+        // Handle org being null
+        if (org != null) {
+            query.setParameter("org", org.getId());
+        }
+        else {
+            query.setParameter("org",   -1);
+        }
+
+        try {
+            return query.getResultList();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error retrieving ChannelFamily", e);
+        }
     }
 
     /**
@@ -243,8 +274,9 @@ public class ChannelFamilyFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ChannelFamily> getAllChannelFamilies() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(ChannelFamily.class);
-        return c.list();
+        String sql = "SELECT * FROM rhnChannelFamily";
+        TypedQuery<ChannelFamily> query =
+                getSession().createNativeQuery(sql, ChannelFamily.class);
+        return query.getResultList();
     }
 }

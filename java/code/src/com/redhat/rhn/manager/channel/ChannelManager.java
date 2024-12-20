@@ -2101,7 +2101,7 @@ public class ChannelManager extends BaseManager {
     */
    public static Channel getOriginalChannel(Channel channel) {
        while (channel.isCloned()) {
-           channel = channel.getOriginal();
+           channel = channel.asCloned().map(ClonedChannel::getOriginal).orElse(channel);
        }
        return channel;
     }
@@ -2434,7 +2434,7 @@ public class ChannelManager extends BaseManager {
         if (c.isCloned()) {
             Map<String, Long> params = new HashMap<>();
             params.put("cid", c.getId());
-            params.put("ocid", c.getOriginal().getId());
+            params.put("ocid", c.asCloned().map(ClonedChannel::getOriginal).orElseThrow().getId());
             SelectMode m = ModeFactory.getMode(ERRATA_QUERIES,
                                         "list_errata_needing_sync");
             return m.execute(params);
@@ -2456,7 +2456,7 @@ public class ChannelManager extends BaseManager {
         if (c.isCloned()) {
             Map<String, Long> params = new HashMap<>();
             params.put("cid", c.getId());
-            params.put("ocid", c.getOriginal().getId());
+            params.put("ocid", c.asCloned().map(ClonedChannel::getOriginal).orElseThrow().getId());
             SelectMode m = ModeFactory.getMode(ERRATA_QUERIES,
                     "list_packages_needing_sync");
             return m.execute(params);
@@ -2481,7 +2481,7 @@ public class ChannelManager extends BaseManager {
             Map<String, Object> params = new HashMap<>();
             params.put("cid", c.getId());
             params.put("set_label", setLabel);
-            params.put("ocid", c.getOriginal().getId());
+            params.put("ocid", c.asCloned().map(ClonedChannel::getOriginal).orElseThrow().getId());
             SelectMode m = ModeFactory.getMode(ERRATA_QUERIES, "list_packages_needing_sync_from_set");
             return m.execute(params);
         }
