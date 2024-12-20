@@ -1,0 +1,2 @@
+- Make the list for package actions unique so it can be passed
+  to salt (bsc#1232042)

@@ -45,7 +45,7 @@ Add more tasks if needed.
 Add more tasks if needed (for example, asking Maintenace to change the channel definitions).
 
 - [ ] Check all the [tests for the relevant version](https://ci.suse.de/view/Manager/): everything should be green, or otherwise submission must be approved by the RRTG
-- [ ] Tag everything with `tito tag --use-release=0`
+- [ ] Tag everything with `tito tag --use-release=0`. Do NOT tag if the version has not been already bumped in `web/conf/rhn_web.conf` (`web.version.uyuni`), as requested in one of the previous points.
 - [ ] Check that the `manager-4.3-releng-2obs` job has packaged latest and submitted the changes from `Manager-4.3` branch into the relevant https://build.suse.de/project/subprojects/Devel:Galaxy:Manager:4.3 project.
 - [ ] Prepare the submissions with `mu-massive-task` or `patch-creator`. For any new packages that will be added to the codestreams, fetch the groups what will maintain them (one per package) and document this at the release card.
 - [ ] Add the IDs (and notes, if any), to the JIRA ticket, and ping the Maintenance Team at [#discuss-susemamanager-maintenance](https://app.slack.com/client/T02863RC2AC/C02DEF2U0E5)

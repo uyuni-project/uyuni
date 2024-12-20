@@ -31,7 +31,7 @@ Add more tasks if needed.
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if schema migration directories exist last SUSE Manager versions and Uyuni (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if any of the packages in the  microservices folder needs to be tagged. **There's a specific procedure to follow**
-- [ ] Tag everything in `uyuni-project/uyuni:master` with `tito tag --use-release=0` and push
+- [ ] Tag everything in `uyuni-project/uyuni:master` with `tito tag --use-release=0` and push. Do NOT tag if the version has not been already bumped in `web/conf/rhn_web.conf` (`web.version.uyuni`), as requested in one of the previous points.
 - [ ] Additionally, tag everything in `uyuni-project/uyuni-tools:main` with `tito tag --use-release=0` and push. Please notice `tito-wrapper` will not work here, but so far it is only a single package to tag.
 - [ ] Check that the job [uyuni-Master-releng-2obs](https://ci.suse.de/view/Manager/view/Uyuni/job/uyuni-Master-releng-2obs/) job has packaged the whole tagging and submitted the changes from `uyuni-project/uyuni:master` branch into https://build.opensuse.org/project/show/systemsmanagement:Uyuni:Master (changes will propagate to the client tools for linked packages)
 - [ ] Run `rel-eng/uyuni-check-version` at the Git repository, to check what other packages need changes and adjust them.

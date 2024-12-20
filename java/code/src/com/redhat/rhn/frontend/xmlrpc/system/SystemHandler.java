@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
@@ -126,6 +127,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -182,8 +184,6 @@ import com.redhat.rhn.manager.system.DuplicateSystemGrouping;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
-import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
-import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -406,7 +406,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - the server corresponding to sid cannot be found.
      *   - the channel corresponding to cid is not a valid child channel.
-     *   - the user doesn't have subscribe access to any one of the current or
+     *   - the user doesn't have subscribed access to any one of the current or
      *     new child channels.
      * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
      * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
@@ -425,12 +425,12 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     @Deprecated
-    public int setChildChannels(User loggedInUser, Integer sid,
-            List channelIdsOrLabels)
-                    throws FaultException {
+    public int setChildChannels(User loggedInUser, Integer sid, List channelIdsOrLabels) throws FaultException {
 
         //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
+        List<String> channelLabels = new ArrayList<>();
+        String baseChannel = "";
 
         // Determine if user passed in a list of channel ids or labels... note: the list
         // must contain all ids or labels (i.e. not a combination of both)
@@ -438,6 +438,21 @@ public class SystemHandler extends BaseHandler {
         if (!channelIdsOrLabels.isEmpty()) {
             if (channelIdsOrLabels.get(0) instanceof String) {
                 receivedLabels = true;
+                Channel channel = ChannelFactory.lookupByLabel((String) channelIdsOrLabels.get(0));
+                if (channel == null) {
+                    throw new InvalidChannelLabelException();
+                }
+                if (channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
+                baseChannel = channel.getParentChannel().getLabel();
+            }
+            else {
+                Channel channel = ChannelFactory.lookupById(Long.valueOf((Integer) channelIdsOrLabels.get(0)));
+                if (channel == null || channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
+                baseChannel = channel.getParentChannel().getLabel();
             }
 
             // check to make sure that the objects are all the same type
@@ -446,80 +461,22 @@ public class SystemHandler extends BaseHandler {
                     if (!(object instanceof String)) {
                         throw new InvalidChannelListException();
                     }
+                    channelLabels.add((String) object);
                 }
                 else {
                     if (!(object instanceof Integer)) {
                         throw new InvalidChannelListException();
                     }
+                    channelLabels.add(ChannelFactory.lookupById(Long.valueOf((Integer) object)).getLabel());
                 }
             }
         }
 
-        List<Long> channelIds = new ArrayList<>();
-        if (receivedLabels) {
-            channelIds = ChannelFactory.getChannelIds(channelIdsOrLabels);
-
-            // if we weren't able to retrieve channel ids for all labels provided,
-            // one or more of the labels must be invalid...
-            if (channelIds.size() != channelIdsOrLabels.size()) {
-                throw new InvalidChannelLabelException();
-            }
-        }
-        else {
-            // unfortunately, the interface only allows Integer input (not Long);
-            // therefore, convert the input to Long, since channel ids are
-            // internally represented as Long
-            for (Object channelId : channelIdsOrLabels) {
-                channelIds.add(Long.valueOf((Integer) channelId));
-            }
-        }
-
-        UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(loggedInUser,
-                server, channelIds);
-        cmd.setScheduleApplyChannelsState(true);
-        cmd.store();
+        scheduleChangeChannels(loggedInUser, sid, baseChannel, channelLabels, new Date());
 
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.childchannel"));
 
-        return 1;
-    }
-
-    /**
-     * Sets the base channel for the given server to the given channel
-     * @param loggedInUser The current user
-     * @param sid The id for the server
-     * @param cid The id for the channel
-     * @return Returns 1 if successful, exception otherwise
-     * @throws FaultException A FaultException is thrown if:
-     *   - the server corresponding to sid cannot be found.
-     *   - the channel corresponding to cid is not a base channel.
-     *   - the user doesn't have subscribe access to either the current or
-     *     the new base channel.
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel)
-     *
-     * @apidoc.doc Assigns the server to a new baseChannel.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param_desc("int", "cid", "channel ID")
-     * @apidoc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int setBaseChannel(User loggedInUser, Integer sid, Integer cid)
-            throws FaultException {
-        //Get the logged in user and server
-        Server server = lookupServer(loggedInUser, sid);
-        UpdateBaseChannelCommand cmd =
-                new UpdateBaseChannelCommand(
-                        loggedInUser, server, cid.longValue());
-        cmd.setScheduleApplyChannelsState(true);
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new InvalidChannelException(
-                    LocalizationService.getInstance()
-                    .getMessage(ve.getKey(), ve.getValues()));
-        }
         return 1;
     }
 
@@ -532,10 +489,11 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - the server corresponding to sid cannot be found.
      *   - the channel corresponding to cid is not a base channel.
-     *   - the user doesn't have subscribe access to either the current or
+     *   - the user doesn't have subscribed access to either the current or
      *     the new base channel.
      * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
      * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
+     * Internally it is already implemented using scheduleChangeChannels
      *
      *
      * @apidoc.doc Assigns the server to a new base channel.  If the user provides an empty
@@ -551,31 +509,8 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         Server server = lookupServer(loggedInUser, sid);
 
-        UpdateBaseChannelCommand cmd = null;
-        if (StringUtils.isEmpty(channelLabel)) {
-            // if user provides an empty string for the channel label, they are requesting
-            // to remove the base channel
-            cmd = new UpdateBaseChannelCommand(loggedInUser, server, -1L);
-        }
-        else {
-            List<String> channelLabels = new ArrayList<>();
-            channelLabels.add(channelLabel);
+        scheduleChangeChannels(loggedInUser, sid, channelLabel, emptyList(), new Date());
 
-            List<Long> channelIds = ChannelFactory.getChannelIds(channelLabels);
-
-            if (!channelIds.isEmpty()) {
-                cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
-                cmd.setScheduleApplyChannelsState(true);
-            }
-            else {
-                throw new InvalidChannelLabelException();
-            }
-        }
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new InvalidChannelException(LocalizationService.getInstance()
-                    .getMessage(ve.getKey(), ve.getValues()));
-        }
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.basechannel"));
         return 1;
@@ -630,8 +565,15 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedule an action to change the channels of the given system. Works for both traditional
      * and Salt systems.
      * This method accepts labels for the base and child channels.
-     * If the user provides an empty string for the channelLabel, the current base channel and
-     * all child channels will be removed from the system.
+     * If the user provides an empty string for the baseChannelLabel and an empty list for the childLabels,
+     * the current base channel and all child channels will be removed from the system.
+     * If the user provides only a different baseChannelLabel and an empty list for childLabels,
+     * the new base channel is assigned to the system and we search for compatible child channels for the assigned one.
+     * If the base channel stay empty, all the child channels from the list should be compatible with the currently
+     * assigned base channel. The currently assigned child channels are exchanged with the channels provided in
+     * the childLabels list.
+     * When both baseChannelLabel and childLabels are provided, the compatibility is checked, and the system
+     * gets these new set of channels assigned.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
@@ -642,11 +584,6 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
                                              List childLabels, Date earliestOccurrence) {
-        //Get the logged in user and server
-        Set<Long> servers = sids.stream()
-                .map(sid -> lookupServer(loggedInUser, sid))
-                .map(Server::getId)
-                .collect(toSet());
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -654,9 +591,29 @@ public class SystemHandler extends BaseHandler {
             List<Long> channelIds = ChannelFactory.getChannelIds(singletonList(baseChannelLabel));
             long baseChannelId = channelIds.stream().findFirst().orElseThrow(InvalidChannelLabelException::new);
             baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
+            if (baseChannel.filter(Channel::isBaseChannel).isEmpty()) {
+                throw new InvalidChannelException();
+            }
         }
         // else if the user provides an empty string for the channel label, they are requesting
         // to remove the base channel
+
+        //Get the logged in user and server
+        Set<Server> servers = sids.stream()
+                .map(sid -> lookupServer(loggedInUser, sid))
+                .collect(toSet());
+
+        for (Server s : servers) {
+            if (baseChannel.isPresent() && baseChannel.map(Channel::getChannelArch)
+                    .filter(arch -> arch.isCompatible(s.getServerArch()))
+                    .isEmpty()) {
+                throw new InvalidChannelException();
+            }
+        }
+
+        Set<Long> serverIds = servers.stream()
+                .map(Server::getId)
+                .collect(toSet());
 
         // check if user passed a list of labels for the child channels
         if (childLabels.stream().anyMatch(e -> !(e instanceof String))) {
@@ -676,9 +633,22 @@ public class SystemHandler extends BaseHandler {
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
                 .toList();
 
+        // consistent check
+        long bid = baseChannel.map(Channel::getId).orElse(-1L);
+        for (Server s : servers) {
+            if (bid == -1L) {
+                bid = s.getBaseChannel().getId();
+            }
+            for (Channel cch : childChannels) {
+                if (!cch.getParentChannel().getId().equals(bid)) {
+                    throw new InvalidParentChannelException();
+                }
+            }
+        }
+
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
-                    servers,
+                    serverIds,
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
@@ -723,7 +693,7 @@ public class SystemHandler extends BaseHandler {
         Channel baseChannel = server.getBaseChannel();
         List<Map<String, Object>> returnList = new ArrayList<>();
 
-        Set<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
+        List<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
         for (EssentialChannelDto ch : list) {
             Boolean currentBase = (baseChannel != null) &&
                     baseChannel.getId().equals(ch.getId());

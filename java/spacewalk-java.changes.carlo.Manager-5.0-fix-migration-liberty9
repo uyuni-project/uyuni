@@ -1,0 +1,3 @@
+- Fixed migration options after migrating a minion to
+  Liberty Linux 9 (bsc#1233258)
+
