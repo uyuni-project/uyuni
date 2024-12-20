@@ -39,10 +39,10 @@ import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductExtension;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -426,15 +426,15 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         SCCRepository addon = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, addon);
 
-        SUSEProductSCCRepository spsca = new SUSEProductSCCRepository();
-        spsca.setProduct(targetAddonProduct);
-        spsca.setRootProduct(targetBaseProduct);
-        spsca.setRepository(addon);
-        spsca.setChannelLabel("missing-addon-channel");
-        spsca.setParentChannelLabel(targetBaseChannel.getLabel());
-        spsca.setChannelName(targetBaseChannel.getLabel());
-        spsca.setMandatory(true);
-        spsca = TestUtils.saveAndReload(spsca);
+        ChannelTemplate template = new ChannelTemplate();
+        template.setProduct(targetAddonProduct);
+        template.setRootProduct(targetBaseProduct);
+        template.setRepository(addon);
+        template.setChannelLabel("missing-addon-channel");
+        template.setParentChannelLabel(targetBaseChannel.getLabel());
+        template.setChannelName(targetBaseChannel.getLabel());
+        template.setMandatory(true);
+        template = TestUtils.saveAndReload(template);
 
         // Verify that target products are returned correctly
 
@@ -820,4 +820,186 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         return channel;
     }
 
+    /**
+     * Test for getTargetProductSets():
+     * Product migration from Rocky Linux 9 includes as target RHEL and Liberty 9 Base
+     * which in turn should show SUSE Liberty Linux 9 x86_64 as an extension
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testProductMigrationFromRocky9() throws Exception {
+        // Setup source product Rocky Linux 9 and SUSE Manager Client Tools addon
+        ChannelFamily family = createTestChannelFamily();
+
+        SUSEProduct sourceBaseProductRocky9 = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceBaseProductRocky9.setName("rockylinux");
+        sourceBaseProductRocky9.setVersion("9");
+        sourceBaseProductRocky9.setFriendlyName("Test Rocky Linux 9 x86_64");
+        sourceBaseProductRocky9 = TestUtils.saveAndReload(sourceBaseProductRocky9);
+        Channel sourceBaseChannelRocky9 = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceBaseProductRocky9,
+                user);
+        SUSEProductTestUtils.populateRepository(sourceBaseProductRocky9, sourceBaseChannelRocky9,
+                sourceBaseProductRocky9, sourceBaseChannelRocky9, user);
+
+
+        SUSEProduct sourceAddonManagerTools = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddonManagerTools.setName("el-managertools");
+        sourceAddonManagerTools.setVersion("9");
+        sourceAddonManagerTools.setFriendlyName("Test SUSE Manager Client Tools for RHEL, Liberty and Clones 9 x86_64");
+        SUSEProductExtension eManagerTools = new SUSEProductExtension(
+                sourceBaseProductRocky9, sourceAddonManagerTools, sourceBaseProductRocky9, false);
+        TestUtils.saveAndReload(eManagerTools);
+        Channel sourceChildChannelManagerTools = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonManagerTools, sourceBaseChannelRocky9, user);
+        SUSEProductTestUtils.populateRepository(sourceBaseProductRocky9, sourceBaseChannelRocky9,
+                sourceAddonManagerTools, sourceChildChannelManagerTools, user);
+
+        // Setup target product RHEL and Liberty 9 Base
+        SUSEProduct targetBaseProductRhel9 = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetBaseProductRhel9.setName("el-base");
+        targetBaseProductRhel9.setVersion("9");
+        targetBaseProductRhel9.setFriendlyName("Test RHEL and Liberty 9 Base");
+        targetBaseProductRhel9 = TestUtils.saveAndReload(targetBaseProductRhel9);
+        Channel targetBaseChannelRhel9 = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProductRhel9,
+                user);
+        SUSEProductTestUtils.populateRepository(targetBaseProductRhel9, targetBaseChannelRhel9,
+                targetBaseProductRhel9, targetBaseChannelRhel9, user);
+
+        SUSEProductExtension eTargetRhelManagerTools = new SUSEProductExtension(
+                targetBaseProductRhel9, sourceAddonManagerTools, targetBaseProductRhel9, false);
+        TestUtils.saveAndReload(eTargetRhelManagerTools);
+
+        SUSEProduct targetAddonLiberty9 = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetAddonLiberty9.setName("sll");
+        targetAddonLiberty9.setVersion("9");
+        targetAddonLiberty9.setFriendlyName("Test SUSE Liberty Linux 9 x86_64");
+        SUSEProductExtension eLiberty9 = new SUSEProductExtension(
+                targetBaseProductRhel9, targetAddonLiberty9, targetBaseProductRhel9, false);
+        TestUtils.saveAndReload(eLiberty9);
+        Channel targeChildChannelLiberty9 = SUSEProductTestUtils.createChildChannelsForProduct(
+                targetAddonLiberty9, targetBaseChannelRhel9, user);
+        SUSEProductTestUtils.populateRepository(targetBaseProductRhel9, targetBaseChannelRhel9,
+                targetAddonLiberty9, targeChildChannelLiberty9, user);
+
+
+        targetBaseProductRhel9.setDowngrades(Collections.singleton(sourceBaseProductRocky9));
+        sourceBaseProductRocky9.setUpgrades(Collections.singleton(targetBaseProductRhel9));
+
+        List<SUSEProduct> sourceAddonsRocky9 = new ArrayList<>();
+        sourceAddonsRocky9.add(sourceAddonManagerTools);
+
+        SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProductRocky9, sourceAddonsRocky9);
+
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
+        List<SUSEProductSet> targetProductSets =
+                DistUpgradeManager.getTargetProductSets(Optional.of(sourceProducts), arch, user);
+
+        //tests
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+
+        for (SUSEProductSet target : targetProductSets) {
+            if (target.getBaseProduct().getId() == targetBaseProductRhel9.getId()) {
+                assertEquals("el-base", target.getBaseProduct().getName());
+                assertEquals("9", target.getBaseProduct().getVersion());
+
+                List<SUSEProduct> addonProducts = target.getAddonProducts();
+                assertEquals(2, addonProducts.size());
+                for (SUSEProduct addonProduct : addonProducts) {
+                    if (addonProduct.getId() == sourceAddonManagerTools.getId()) {
+                        assertEquals("el-managertools", targetProductSets.get(0).getAddonProducts().get(0).getName());
+                    }
+                    else if (addonProduct.getId() == targetAddonLiberty9.getId()) {
+                        assertEquals("sll", targetProductSets.get(0).getAddonProducts().get(1).getName());
+                    }
+                    else {
+                        fail("unexpected addon " + addonProduct);
+                    }
+                }
+
+            }
+            else {
+                fail("unexpected product " + target.getBaseProduct());
+            }
+        }
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+
+        assertNotNull(targetProductSets);
+        assertEquals(1, targetProductSets.size());
+        assertEquals(2, targetProductSets.get(0).getAddonProducts().size());
+    }
+
+
+    /**
+     * Test for getTargetProductSets():
+     * Product migration from RHEL and Liberty 9 Base
+     * should show no migrations possible
+     *
+     * @throws Exception if anything goes wrong
+     */
+    @Test
+    public void testProductMigrationFromLiberty9() throws Exception {
+        // Setup source product RHEL and Liberty 9 Base
+        ChannelFamily family = createTestChannelFamily();
+
+        SUSEProduct sourceBaseProductRhel9 = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceBaseProductRhel9.setName("el-base");
+        sourceBaseProductRhel9.setVersion("9");
+        sourceBaseProductRhel9.setFriendlyName("Test RHEL and Liberty 9 Base");
+        sourceBaseProductRhel9 = TestUtils.saveAndReload(sourceBaseProductRhel9);
+        Channel sourceBaseChannelRhel9 = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceBaseProductRhel9,
+                user);
+        SUSEProductTestUtils.populateRepository(sourceBaseProductRhel9, sourceBaseChannelRhel9,
+                sourceBaseProductRhel9, sourceBaseChannelRhel9, user);
+
+
+        SUSEProduct sourceAddonManagerTools = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddonManagerTools.setName("el-managertools");
+        sourceAddonManagerTools.setVersion("9");
+        sourceAddonManagerTools.setFriendlyName("Test SUSE Manager Client Tools for RHEL, Liberty and Clones 9 x86_64");
+        SUSEProductExtension eManagerTools = new SUSEProductExtension(
+                sourceBaseProductRhel9, sourceAddonManagerTools, sourceBaseProductRhel9, false);
+        TestUtils.saveAndReload(eManagerTools);
+        Channel sourceChildChannelManagerTools = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonManagerTools, sourceBaseChannelRhel9, user);
+        SUSEProductTestUtils.populateRepository(sourceBaseProductRhel9, sourceBaseChannelRhel9,
+                sourceAddonManagerTools, sourceChildChannelManagerTools, user);
+
+
+        SUSEProduct sourceAddonLiberty9 = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddonLiberty9.setName("sll");
+        sourceAddonLiberty9.setVersion("9");
+        sourceAddonLiberty9.setFriendlyName("Test SUSE Liberty Linux 9 x86_64");
+        SUSEProductExtension eLiberty9 = new SUSEProductExtension(
+                sourceBaseProductRhel9, sourceAddonLiberty9, sourceBaseProductRhel9, false);
+        TestUtils.saveAndReload(eLiberty9);
+        Channel sourceChildChannelLiberty9 = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonLiberty9, sourceBaseChannelRhel9, user);
+        SUSEProductTestUtils.populateRepository(sourceBaseProductRhel9, sourceBaseChannelRhel9,
+                sourceAddonLiberty9, sourceChildChannelLiberty9, user);
+
+
+        List<SUSEProduct> sourceAddonsLiberty9 = new ArrayList<>();
+        sourceAddonsLiberty9.add(sourceAddonLiberty9);
+        sourceAddonsLiberty9.add(sourceAddonManagerTools);
+
+        SUSEProductSet sourceProducts = new SUSEProductSet(sourceBaseProductRhel9, sourceAddonsLiberty9);
+
+        ChannelArch arch = ChannelFactory.findArchByLabel("channel-x86_64");
+        List<SUSEProductSet> targetProductSets = DistUpgradeManager.getTargetProductSets(
+                Optional.of(sourceProducts), arch, user);
+
+        //tests
+        assertNotNull(targetProductSets);
+        assertEquals(0, targetProductSets.size());
+
+        targetProductSets = DistUpgradeManager.removeIncompatibleTargets(
+                Optional.of(sourceProducts), targetProductSets, Optional.empty());
+
+        assertNotNull(targetProductSets);
+        assertEquals(0, targetProductSets.size());
+    }
 }

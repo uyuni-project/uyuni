@@ -18,9 +18,9 @@ package com.redhat.rhn.frontend.xmlrpc.sync.content;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.manager.content.ContentSyncException;
@@ -252,7 +252,7 @@ public class ContentSyncHandler extends BaseHandler {
 
         List<String> mandatoryChannelLabels =
                 SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
-                .map(SUSEProductSCCRepository::getChannelLabel)
+                .map(ChannelTemplate::getChannelLabel)
                 .collect(Collectors.toList());
 
         LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);

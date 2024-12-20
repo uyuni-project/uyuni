@@ -2006,10 +2006,36 @@ public class ActionManager extends BaseManager {
     public static void addPackageActionDetails(Collection<Action> actions,
             List<Map<String, Long>> packageMaps) {
         if (packageMaps != null) {
+            List<Map<String, Long>> pkgMaps;
+
+            if (actions.iterator().next().getActionType().equals(ActionFactory.TYPE_PACKAGES_REMOVE)) {
+                // our packages.pkgremove state is handling duplicates
+                pkgMaps = packageMaps;
+            }
+            else {
+                long noarch = PackageFactory.lookupPackageArchByLabel("noarch").getId();
+                long all = PackageFactory.lookupPackageArchByLabel("all-deb").getId();
+                Map<String, Map<String, Long>> uPkgMap = new HashMap<>();
+                // For other salt pkg states (pkg.installed), name + arch must be unique.
+                for (Map<String, Long> p : packageMaps) {
+                    long archId = p.getOrDefault("arch_id", noarch);
+                    String name = String.valueOf(p.get("name_id"));
+                    if (archId == noarch || archId == all) {
+                        if (uPkgMap.keySet().stream().noneMatch(k -> k.startsWith(name + "."))) {
+                            uPkgMap.put(name, p);
+                        }
+                    }
+                    else if (!uPkgMap.containsKey(name)) {
+                        String key = name + "." + p.get("arch_id");
+                        uPkgMap.put(key, p);
+                    }
+                }
+                pkgMaps = new ArrayList<>(uPkgMap.values());
+            }
             List<Map<String, Object>> paramList =
                 actions.stream().flatMap(action -> {
                     String packageParameter = getPackageParameter(action);
-                    return packageMaps.stream().map(packageMap -> {
+                    return pkgMaps.stream().map(packageMap -> {
                         Map<String, Object> params = new HashMap<>();
                         params.put("action_id", action.getId());
                         params.put("name_id", packageMap.get("name_id"));
