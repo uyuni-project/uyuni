@@ -41,7 +41,6 @@ Feature: Managing channels
     Then I should see a "Invalid channel name, please see the format described below" text
 
 # Fails because this product is not in the SCC Fake mirror in gh
-@skip_if_github_validation
 @scc_credentials
   Scenario: Fail when trying to use reserved names for channels
     When I follow the left menu "Software > Manage > Channels"
@@ -53,7 +52,6 @@ Feature: Managing channels
     Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
 
 # Fails because this product is not in the SCC Fake mirror in gh
-@skip_if_github_validation
 @scc_credentials
   Scenario: Fail when trying to use reserved labels for channels
     When I follow the left menu "Software > Manage > Channels"
@@ -74,7 +72,6 @@ Feature: Managing channels
     Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 created." text
 
 # Fails because this product is not in the SCC Fake mirror in gh
-@skip_if_github_validation
 @scc_credentials
   Scenario: Fail when trying to change the channel name to a reserved name
     When I follow the left menu "Software > Manage > Channels"
