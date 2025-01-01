@@ -86,7 +86,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static Mode getModeInternal(Session session, String name, String mode) {
-        Map modes = (Map)factory.getObject(name);
+        Map<String, ParsedMode> modes = (Map<String, ParsedMode>)factory.getObject(name);
         ParsedMode pm = (ParsedMode)modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -111,7 +111,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static SelectMode getSelectMode(Session session, String name, String mode) {
-        Map modes = (Map) factory.getObject(name);
+        Map<String, ParsedMode> modes = (Map<String, ParsedMode>) factory.getObject(name);
         ParsedMode pm = (ParsedMode) modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -150,9 +150,10 @@ public class ModeFactory implements ManifestFactoryBuilder {
      *             to parseURL.
      * @param mode The mode to retrieve
      * @param clazz The class you would like the returned objects to be.
+     * @param <T> The type of the class
      * @return The requested mode
      */
-    public static SelectMode getMode(String name, String mode, Class clazz) {
+    public static <T> SelectMode getMode(String name, String mode, Class<T> clazz) {
         SelectMode ret = getSelectMode(name, mode);
         ret.setClassString(clazz.getName());
         return ret;
@@ -165,9 +166,10 @@ public class ModeFactory implements ManifestFactoryBuilder {
      *             to parseURL.
      * @param mode The mode to retrieve
      * @param clazz The class you would like the returned objects to be.
+     * @param <T> The type of the class
      * @return The requested mode
      */
-    public static SelectMode getMode(Session session, String name, String mode, Class clazz) {
+    public static <T> SelectMode getMode(Session session, String name, String mode, Class<T> clazz) {
         SelectMode ret = getSelectMode(session, name, mode);
         ret.setClassString(clazz.getName());
         return ret;
@@ -235,7 +237,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * This function really shouldn't be here, but I need it for the
      * unit tests.
      */
-    public static Collection getKeys() {
+    public static Collection<String> getKeys() {
         return factory.getKeys();
     }
 
@@ -246,8 +248,8 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * This function really shouldn't be here, but I need it for the
      * unit tests.
      */
-    public static Map getFileKeys(String name) {
-        return (Map)factory.getObject(name);
+    public static Map<String, ParsedMode> getFileKeys(String name) {
+        return (Map<String, ParsedMode>)factory.getObject(name);
     }
 }
 
