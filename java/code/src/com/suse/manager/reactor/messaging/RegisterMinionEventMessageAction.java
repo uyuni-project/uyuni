@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
@@ -336,6 +337,58 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // this is the time to update SystemInfo
             MinionList minionTarget = new MinionList(minionId);
             saltApi.updateSystemInfo(minionTarget);
+            scheduleCoCoAttestation(registeredMinion);
+            schedulePackageListRefresh(registeredMinion);
+        }
+    }
+
+    /**
+     * Schedule a Confidential Compute Attestation when the minion has CoCoAttestation
+     * enabled and attestOnBoot is enabled
+     *
+     * @param minion the minion
+     */
+    private void scheduleCoCoAttestation(MinionServer minion) {
+        if (minion.getOptCocoAttestationConfig()
+                .filter(ServerCoCoAttestationConfig::isEnabled)
+                .filter(ServerCoCoAttestationConfig::isAttestOnBoot)
+                .isEmpty()) {
+            // no attestation configured or wanted on startup
+            return;
+        }
+
+        try {
+            // eariest 1 minute later to finish the boot process
+            // randomize a bit to prevent an attestation storm on a mass reboot action
+            int rand = ThreadLocalRandom.current().nextInt(60, 90);
+            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
+            attestationManager.scheduleAttestationActionFromSystem(minion.getOrg(), minion, scheduleAt);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule attestation action. ", e);
+        }
+    }
+
+    /**
+     * Schedule a package list refresh when the minion supports transactional update
+     *
+     * @param minion the minion
+     */
+    private void schedulePackageListRefresh(MinionServer minion) {
+        if (!minion.doesOsSupportsTransactionalUpdate()) {
+            // no package list refresh wanted on startup
+            return;
+        }
+
+        try {
+            // eariest 1 minute later to finish the boot process
+            // randomize a bit to prevent a package list refresh storm on a mass reboot action
+            int rand = ThreadLocalRandom.current().nextInt(60, 90);
+            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
+            ActionManager.schedulePackageRefresh(Optional.empty(), minion, scheduleAt);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule package list refresh action. ", e);
         }
     }
 
