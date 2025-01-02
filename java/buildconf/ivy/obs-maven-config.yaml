@@ -148,7 +148,7 @@ artifacts:
     repository: Leap
   - artifact: jctools-core
     package: jctools
-    repository: Leap
+    repository: Leap_sle
   - artifact: jdom
     repository: Leap
   - artifact: joda-time
