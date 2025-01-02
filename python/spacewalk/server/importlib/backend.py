@@ -78,7 +78,6 @@ sequences = {
     "suseEula": "suse_eula_id_seq",
     "suseProducts": "suse_products_id_seq",
     "suseSCCRepository": "suse_sccrepository_id_seq",
-    "suseProductSCCRepository": "suse_prdrepo_id_seq",
 }
 
 
@@ -2021,16 +2020,16 @@ class Backend:
         """
         insert_pr = self.dbmodule.prepare(
             """
-            INSERT INTO suseProductSCCRepository
-                   (id, product_id, root_product_id, repo_id, channel_label, parent_channel_label,
+            INSERT INTO suseChannelTemplate
+                   (product_id, root_product_id, repo_id, channel_label, parent_channel_label,
                     channel_name, mandatory, update_tag)
-            VALUES (:id, :product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
+            VALUES (:product_id, :root_id, :repo_id, :channel_label, :parent_channel_label,
                     :channel_name, :mandatory, :update_tag)
             """
         )
         delete_pr = self.dbmodule.prepare(
             """
-            DELETE FROM suseProductSCCRepository
+            DELETE FROM suseChannelTemplate
              WHERE product_id = :product_id
                AND root_product_id = :root_id
                AND repo_id = :repo_id
@@ -2038,7 +2037,7 @@ class Backend:
         )
         update_pr = self.dbmodule.prepare(
             """
-            UPDATE suseProductSCCRepository
+            UPDATE suseChannelTemplate
                SET channel_label = :channel_label,
                    parent_channel_label = :parent_channel_label,
                    channel_name = :channel_name,
@@ -2052,7 +2051,7 @@ class Backend:
         # pylint: disable-next=invalid-name
         _query_pr = self.dbmodule.prepare(
             """
-            SELECT product_id, root_product_id, repo_id FROM suseProductSCCRepository
+            SELECT product_id, root_product_id, repo_id FROM suseChannelTemplate
             """
         )
         _query_pr.execute()
@@ -2082,15 +2081,14 @@ class Backend:
                 toupdate[6].append(int(item["root_pdid"]))
                 toupdate[7].append(int(item["repo_pdid"]))
                 continue
-            toinsert[0].append(self.sequences["suseProductSCCRepository"].next())
-            toinsert[1].append(int(item["product_pdid"]))
-            toinsert[2].append(int(item["root_pdid"]))
-            toinsert[3].append(int(item["repo_pdid"]))
-            toinsert[4].append(item["channel_label"])
-            toinsert[5].append(item["parent_channel_label"])
-            toinsert[6].append(item["channel_name"])
-            toinsert[7].append(item["mandatory"])
-            toinsert[8].append(item["update_tag"])
+            toinsert[0].append(int(item["product_pdid"]))
+            toinsert[1].append(int(item["root_pdid"]))
+            toinsert[2].append(int(item["repo_pdid"]))
+            toinsert[3].append(item["channel_label"])
+            toinsert[4].append(item["parent_channel_label"])
+            toinsert[5].append(item["channel_name"])
+            toinsert[6].append(item["mandatory"])
+            toinsert[7].append(item["update_tag"])
         for ident in existing_data:
             product_id, rootid, repo_id = ident.split("-", 2)
             todelete[0].append(int(product_id))
