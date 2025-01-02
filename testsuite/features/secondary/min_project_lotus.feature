@@ -45,8 +45,8 @@ Feature: Project Lotus
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I follow "Sync"
-    # no need to click on "Sync Now" as it's automatically enabled by default on Uyuni
-    Then I should see a "Repository sync is running" text
+    And I click on "Sync Now"
+    Then I should see a "Repository sync scheduled for Custom Channel for SLES15SP4 PTFs" text
     When I wait until the channel "sles15sp4-ptfs" has been synced
 
   Scenario: Pre-requisite: Add custom channel to minion
