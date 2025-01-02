@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -85,6 +86,12 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("mgrcompat_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> mainframeSysinfo = Optional.empty();
+
+    @SerializedName("mgrcompat_|-sap_workloads_|-sap.get_workloads_|-module_run")
+    private Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> sapWorkloads = Optional.empty();
+
+    @SerializedName("mgrcompat_|-container_runtime_|-container_runtime.get_container_runtime_|-module_run")
+    private Optional<StateApplyResult<Ret<String>>> containerRuntime = Optional.empty();
 
     /**
      * @return the grains
@@ -244,4 +251,19 @@ public class HwProfileUpdateSlsResult {
         )).orElseGet(Collections::emptyList);
     }
 
+    /**
+     * Get system SAP workloads
+     * @return the list of system SAP workloads
+     */
+    public Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> getSAPWorkloads() {
+        return sapWorkloads;
+    }
+
+    /**
+     * Get the container runtime.
+     * @return the container runtime
+     */
+    public String getContainerRuntime() {
+        return containerRuntime.map(retStateApplyResultIn -> retStateApplyResultIn.getChanges().getRet()).orElse(null);
+    }
 }
