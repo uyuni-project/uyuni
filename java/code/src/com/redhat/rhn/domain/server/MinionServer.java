@@ -41,6 +41,8 @@ public class MinionServer extends Server implements SaltConfigurable {
     private Set<AccessToken> accessTokens = new HashSet<>();
     private Set<Pillar> pillars = new HashSet<>();
     private Date rebootRequiredAfter;
+    private String containerRuntime;
+    private String uname;
 
     /**
      * Constructs a MinionServer instance.
@@ -332,5 +334,33 @@ public class MinionServer extends Server implements SaltConfigurable {
 
     public void setRebootRequiredAfter(Date rebootRequiredAfterIn) {
         rebootRequiredAfter = rebootRequiredAfterIn;
+    }
+
+    /**
+     * @return the container runtime
+     */
+    public String getContainerRuntime() {
+        return containerRuntime;
+    }
+
+    /**
+     * @param containerRuntimeIn the container runtime to set
+     */
+    public void setContainerRuntime(String containerRuntimeIn) {
+        this.containerRuntime = containerRuntimeIn;
+    }
+
+    /**
+     * @return the uname
+     */
+    public String getUname() {
+        return uname;
+    }
+
+    /**
+     * @param unameIn the uname to set
+     */
+    public void setUname(String unameIn) {
+        uname = unameIn;
     }
 }
