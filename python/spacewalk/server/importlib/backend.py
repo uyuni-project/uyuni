@@ -1024,10 +1024,9 @@ class Backend:
         for op_type in ['insert', 'update', 'delete']:
             op_values = getattr(dml, op_type)
             for table_name, values_hash in list(op_values.items()):
-                if table_name == 'rhnErrata':
-                    field = 'id'
-                elif 'errata_id' in values_hash:
-                    field = 'errata_id'
+                field = "id"
+                if "errata_id" in values_hash and table_name != "rhnErrata":
+                    field = "errata_id"
 
                 # Now we know in which field to look for changes
                 for erratum_id in values_hash[field]:
