@@ -169,6 +169,32 @@ fqdns:
 {% endif%}
 {%- endif%}
 
+{% if grains['os_family'] == 'Suse' %}
+sap_workloads:
+  mgrcompat.module_run:
+    - name: sap.get_workloads
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_modules
+{%- else %}
+      - mgrcompat: sync_modules
+{%- endif %}
+{% endif %}
+
+uname:
+  cmd.run:
+    - name: uname -r -v
+
+container_runtime:
+  mgrcompat.module_run:
+    - name: container_runtime.get_container_runtime
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_modules
+{%- else %}
+      - mgrcompat: sync_modules
+{%- endif %}
+
 include:
   - util.syncstates
   - util.syncmodules

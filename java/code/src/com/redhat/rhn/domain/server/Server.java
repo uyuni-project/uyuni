@@ -145,6 +145,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private Boolean hasConfigFeature;
     private Set<ServerAppStream> appStreams = new HashSet<>();
 
+    private Set<SAPWorkload> sapWorkloads = new HashSet<>();
+
     private String cpe;
 
     public static final String VALID_CNAMES = "valid_cnames_";
@@ -2666,5 +2668,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean hasAppStreamModuleEnabled(String module, String stream) {
         return getAppStreams().stream().anyMatch(it -> it.getName().equals(module) && it.getStream().equals(stream));
+    }
+
+    /**
+     * Getter for SAPWorkloads
+     *
+     * @return Set of SAPWorkload
+     */
+    public Set<SAPWorkload> getSapWorkloads() {
+        return sapWorkloads;
+    }
+
+    /**
+     * Setter for SAPWorkloads
+     *
+     * @param sapWorkloadsIn to set
+     */
+    public void setSapWorkloads(Set<SAPWorkload> sapWorkloadsIn) {
+        sapWorkloads = sapWorkloadsIn;
     }
 }
