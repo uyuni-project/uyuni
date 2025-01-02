@@ -29,13 +29,13 @@ logfile = '/var/log/rhn/mgr-create-bootstrap-repo/mgr-create-bootstrap-repo.log'
 UYUNI = None
 
 _sql_synced_proucts = rhnSQL.Statement("""
-   SELECT sp.product_id id, spsr.root_product_id
+   SELECT sp.product_id id, ct.root_product_id
      FROM suseProducts sp
-     JOIN suseProductSCCRepository spsr ON spsr.product_id = sp.id
-LEFT JOIN rhnChannel c ON spsr.channel_label = c.label
-    WHERE spsr.mandatory = 'Y'
- GROUP BY sp.id, spsr.root_product_id
-   HAVING COUNT(c.label) = COUNT(spsr.mandatory)
+     JOIN suseChannelTemplate ct ON ct.product_id = sp.id
+LEFT JOIN rhnChannel c ON ct.channel_label = c.label
+    WHERE ct.mandatory = 'Y'
+ GROUP BY sp.id, ct.root_product_id
+   HAVING COUNT(c.label) = COUNT(ct.mandatory)
 """)
 
 _sql_find_root_channel_label = """
@@ -193,13 +193,13 @@ from rhnChannel c0
 join suseProductChannel spc ON spc.channel_id = c0.id
 join suseProducts p ON spc.product_id = p.id
 join (
-     select sp.product_id , spsr.root_product_id
+     select sp.product_id , ct.root_product_id
        from suseProducts sp
-       join suseProductSCCRepository spsr ON spsr.product_id = sp.id
-  left join rhnChannel c ON spsr.channel_label = c.label
-      where spsr.mandatory = 'Y'
-   group by sp.id, spsr.root_product_id
-     having COUNT(c.label) = COUNT(spsr.mandatory)
+       join suseChannelTemplate ct ON ct.product_id = sp.id
+  left join rhnChannel c ON ct.channel_label = c.label
+      where ct.mandatory = 'Y'
+   group by sp.id, ct.root_product_id
+     having COUNT(c.label) = COUNT(ct.mandatory)
    ) X on X.product_id = p.product_id
 where X.product_id in ( %s )
 """;
