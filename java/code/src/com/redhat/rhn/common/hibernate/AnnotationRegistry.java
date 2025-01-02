@@ -85,6 +85,7 @@ import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.scc.SCCRepositoryTokenAuth;
 import com.redhat.rhn.domain.scc.SCCSubscription;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
@@ -203,7 +204,8 @@ public class AnnotationRegistry {
         ServerAppStream.class,
         AppStream.class,
         AppStreamApi.class,
-        TokenChannelAppStream.class
+        TokenChannelAppStream.class,
+        SAPWorkload.class
     );
 
     /**
