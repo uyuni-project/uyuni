@@ -59,14 +59,15 @@ public class SCCRepositoryCloudRmtAuth extends SCCRepositoryAuth {
     public String getUrl() {
         try {
             URI url = new URI(getRepo().getUrl());
-            if (!url.getHost().startsWith(MgrSyncUtils.OFFICIAL_SUSE_UPDATE_HOST)) {
+            if (!url.getHost().endsWith(MgrSyncUtils.OFFICIAL_UPDATE_HOST_DOMAIN)) {
                 /*
                 SCC data contain repositories which point to external server and are free to access.
                 Examples are openSUSE and nVidia repositories. These repos are not available on the RMT servers
-                and the URLs shoudl not be re-written. Creating them at type {@link SCCRepositoryNoAuth}
+                and the URLs should not be re-written. Creating them at type {@link SCCRepositoryNoAuth}
                 requires to get the json definition of the repo somehow as input into
                 {@link ContentSyncManager#refreshRepositoriesAuthentication}. Otherwise the repo will be removed again.
                 Just returning the original URL here is better to understand.
+                We expect that all repositories which have the domain .suse.com are available on the RMT servers.
                 */
                 return getRepo().getUrl();
             }

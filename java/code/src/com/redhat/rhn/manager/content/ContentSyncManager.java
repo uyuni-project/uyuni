@@ -116,8 +116,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -788,8 +786,6 @@ public class ContentSyncManager {
             // "fromdir" - convert into local file URL
             .map(local -> MgrSyncUtils.urlToFSPath(jrepo.getUrl(), repo.getName(), local.getPath()).toString())
             .orElse(jrepo.getUrl());
-
-
 
         Optional<String> tokenOpt = getTokenFromURL(url);
 
@@ -2180,12 +2176,17 @@ public class ContentSyncManager {
         )).toList();
     }
 
-    private Optional<String> getTokenFromURL(String url) {
+    protected Optional<String> getTokenFromURL(String url) {
         Optional<String> token = Optional.empty();
-        Pattern p = Pattern.compile("/?\\?([^?&=]+)$");
-        Matcher m = p.matcher(url);
-        if (m.find()) {
-            token = Optional.of(m.group(1));
+        try {
+            URI uri = new URI(url);
+            token = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
+                    .filter(p -> !p.isEmpty())
+                    .filter(MgrSyncUtils::isAuthToken)
+                    .findFirst();
+        }
+        catch (URISyntaxException e) {
+            LOG.warn("Unable to parse URL: {}", url);
         }
         return token;
     }
