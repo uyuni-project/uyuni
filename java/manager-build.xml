@@ -58,6 +58,12 @@
     <delete dir="${test.results.dir}" />
   </target>
 
+  <target name="clean-ivy" description="Cleans up all ivy related files">
+    <delete dir="${basedir}/buildconf/ivy/repository/manager-43" />
+    <delete dir="${basedir}/.obs-to-maven-cache" />
+    <delete dir="${user.home}/.ivy2/cache/manager-43" />
+  </target>
+
   <target name="obs-to-maven" description="Updates local maven repository with OBS jars">
     <exec failonerror="true" executable="obs-to-maven">
       <arg line="-d ${basedir}/buildconf/ivy/obs-maven-config.yaml ${basedir}/buildconf/ivy/repository" />
