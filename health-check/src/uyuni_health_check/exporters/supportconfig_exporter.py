@@ -30,6 +30,7 @@ class SupportConfigMetricsCollector:
 
         self.supportconfig_path = supportconfig_path
         self.static_metrics_collection = static_metrics.create_static_metrics_collection(self.supportconfig_path)
+        self.disk_layout = []
         self.parse()
 
     def parse(self):
@@ -41,11 +42,32 @@ class SupportConfigMetricsCollector:
             self.salt_configuration = self.read_salt_configuration()
 
         self.get_static_metrics()
+        self.parse_disk_layout()
 
     def _parse_command(self, command_block):
         lines = command_block.strip().split("\n")
         command = lines[0][2:]
         return command, lines[1:]
+
+    def parse_disk_layout(self):
+        diskinfo_path = os.path.join(self.supportconfig_path, "spacewalk-debug/diskinfo")
+        if not os.path.isfile(diskinfo_path):
+            return
+        with open(diskinfo_path) as f:
+            # skip header
+            next(f)
+            for line in f:
+                # Filesystem, size, used, avail, use%, mounted on
+                cols = line.split()
+                if len(cols) < 6:
+                    continue
+                self.disk_layout.append({
+                    "mounted on": cols[5],
+                    "size": cols[1],
+                    "available": cols[3],
+                    "use %": cols[4],
+                    "filesystem": cols[0],
+                })
 
     def exists_salt_configuration_file(self):
         if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")):
@@ -133,6 +155,8 @@ class SupportConfigMetricsCollector:
         ret = {
             "tomcat": [],
             "hw": [],
+            "memory": [],
+            "disk": self.disk_layout,
             "salt_configuration": {},
             "salt_keys": {},
             "salt_jobs": {},
@@ -155,6 +179,20 @@ class SupportConfigMetricsCollector:
         if hasattr(self,'salt_jobs'):
             ret["salt_jobs"] = self.salt_jobs
 
+        ret['memory'] = self._append_memory_props()
+
+        return ret
+
+    def _append_memory_props(self):
+        ret = []
+        for prop in ["mem", "swap"]:
+            for prop_type in ["total", "used", "free"]:
+                prop_name = f"{prop}_{prop_type}"
+                if hasattr(self, prop_name):
+                    ret.append({
+                        "name": prop_name,
+                        "value": getattr(self, prop_name),
+                    })
         return ret
 
     def write_metrics(self):
