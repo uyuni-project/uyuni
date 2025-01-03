@@ -41,7 +41,7 @@ import javax.servlet.jsp.tagext.TagSupport;
  *
  *                 Phone: 650-555-1212
  *                 Fax: 650-555-1212
- *                 Edit This Address (this is a link)
+ *                 Edit (this is a link)
  * </pre>
  *
  */
@@ -213,7 +213,7 @@ public class AddressTag extends TagSupport {
                       .append("&amp;uid=")
                       .append(user.getId())
                       .append("\">")
-                      .append(ls.getMessage("Edit this address"))
+                      .append(ls.getMessage("Edit"))
                       .append("</a>");
             }
             else {
@@ -229,7 +229,7 @@ public class AddressTag extends TagSupport {
                       .append("&amp;uid=")
                       .append(user.getId())
                       .append("\">")
-                      .append(ls.getMessage("Fill in this address"))
+                      .append(ls.getMessage("Add address"))
                       .append("</a>");
             }
 
