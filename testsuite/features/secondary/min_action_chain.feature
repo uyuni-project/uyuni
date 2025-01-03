@@ -78,7 +78,7 @@ Feature: Action chains on Salt minions
     And I enter "virgo-dummy" as the filtered package name
     And I click on the filter button
     And I check "virgo-dummy" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I check radio button "schedule-by-action-chain"
     And I click on "Confirm"
     Then I should see a "Action has been successfully added to the Action Chain" text
@@ -202,7 +202,7 @@ Feature: Action chains on Salt minions
     When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "new action chain"
-    And I follow "delete action chain" in the content area
+    And I follow "delete action" in the content area
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
