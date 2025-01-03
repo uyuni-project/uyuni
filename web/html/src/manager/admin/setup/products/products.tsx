@@ -147,7 +147,12 @@ class ProductsPageWrapper extends React.Component {
           noToolsChannelSubscription: metadata.noToolsChannelSubscription,
         });
 
-        if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+        if (
+          currentObject.state.noToolsChannelSubscription &&
+          currentObject.state.issMaster &&
+          !currentObject.state.refreshNeeded &&
+          !currentObject.state.refreshRunning
+        ) {
           currentObject.setState({
             errors: MessagesUtils.warning(
               t(
