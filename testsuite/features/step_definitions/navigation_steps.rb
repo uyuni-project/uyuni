@@ -678,8 +678,8 @@ end
 #
 # Test for a visible link in the whole page
 #
-Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise ScriptError, "Link #{text} is not visible" unless check_text_and_catch_request_timeout_popup?(text)
+Then(/^I should see a "([^"]*)" link$/) do |text|
+  raise ScriptError, "Link #{text} is not visible" unless has_link?(text)
 end
 
 #
