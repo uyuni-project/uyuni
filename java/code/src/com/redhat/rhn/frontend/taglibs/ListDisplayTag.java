@@ -460,9 +460,18 @@ public class ListDisplayTag extends ListDisplayTagBase {
         StringBuilder buf = new StringBuilder();
         if (set != null) {
             if (showSetButtons) {
-                buf.append("<span class=\"spacewalk-list-selection-btns\">");
+                buf.append("<span class=\"spacewalk-list-selection-btns test\">");
                 buf.append(addButtonTo(buf, RequestContext.DISPATCH, UPDATE_LIST_KEY,
                                                     "update_list_key_id").render());
+                buf.append(" ");
+                buf.append(addButtonTo(buf,
+                                        RequestContext.DISPATCH, SELECT_ALL_KEY).render());
+
+                if (numItemsChecked > 0) {
+                    buf.append(" ");
+                    buf.append(addButtonTo(buf, RequestContext.DISPATCH, UNSELECT_ALL_KEY)
+                    .render());
+                }
                 buf.append("</span>");
             }
         }
@@ -763,8 +772,33 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 doSort(sortedColumn);
             }
 
+            /*
+             * If pageList contains an index and pageList.size() (what we are
+             * displaying on the page) is less than pageList.getTotalSize() (the
+             * total number of items in the data result), render alphabar. This
+             * prevents the alphabar from showing up on pages that show all of
+             * the entries on a single page and is similar to how the perl code
+             * behaves.
+             */
+
             StringWriter alphaBarContent = new StringWriter();
             StringWriter paginationContent = new StringWriter();
+
+            pageContext.pushBody(alphaBarContent);
+            if (!getPageList().getIndex().isEmpty() &&
+                    getPageList().size() < getPageList().getTotalSize()) {
+
+                //renderViewAllLink(alphaBarContent);
+                renderAlphabar(alphaBarContent);
+            }
+            pageContext.popBody();
+
+            pageContext.pushBody(paginationContent);
+            if (isPaging()) {
+                renderPagination(paginationContent, true);
+                renderBoundsVariables(paginationContent);
+            }
+            pageContext.popBody();
 
             int topAddonsContentLen = alphaBarContent.getBuffer().length() +
                     paginationContent.getBuffer().length();
@@ -789,31 +823,6 @@ public class ListDisplayTag extends ListDisplayTagBase {
                 out.print(" id=\"" + tableId + "\"");
             }
             out.println(">");
-
-            /*
-             * If pageList contains an index and pageList.size() (what we are
-             * displaying on the page) is less than pageList.getTotalSize() (the
-             * total number of items in the data result), render alphabar. This
-             * prevents the alphabar from showing up on pages that show all of
-             * the entries on a single page and is similar to how the perl code
-             * behaves.
-             */
-
-            pageContext.pushBody(alphaBarContent);
-            if (!getPageList().getIndex().isEmpty() &&
-                    getPageList().size() < getPageList().getTotalSize()) {
-
-                //renderViewAllLink(alphaBarContent);
-                renderAlphabar(alphaBarContent);
-            }
-            pageContext.popBody();
-
-            pageContext.pushBody(paginationContent);
-            if (isPaging()) {
-                renderPagination(paginationContent, true);
-                renderBoundsVariables(paginationContent);
-            }
-            pageContext.popBody();
 
             out.print("<div class=\"panel panel-default\">");
 
