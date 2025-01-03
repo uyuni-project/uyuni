@@ -15,6 +15,30 @@ metrics_config = {
         "filepath": "hardware.txt",
         "pattern": r'CPU\(s\):\s+(\d+)',
     },
+    "mem_total": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Mem:\s+(\d+)\s+\d+\s+\d+',
+    },
+    "mem_used": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Mem:\s+\d+\s+(\d+)\s+\d+',
+    },
+    "mem_free": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Mem:\s+\d+\s+\d+\s+(\d+)',
+    },
+    "swap_total": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Swap:\s+(\d+)\s+\d+\s+\d+',
+    },
+    "swap_used": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Swap:\s+\d+\s+(\d+)\s+\d+',
+    },
+    "swap_free": {
+        "filepath": "basic-health-check.txt",
+        "pattern": r'Swap:\s+\d+\s+\d+\s+(\d+)',
+    },
 }
 
 class StaticMetric(ABC):
@@ -41,6 +65,9 @@ class LogFileStaticMetric(StaticMetric):
             pattern = re.compile(self.pattern)
             match = re.search(pattern, content)
 
+            if not match:
+                return -1
+
             if self.name == "tomcat_xmx_size":
                 xmx_value = match.group(1) if match else None
                 xmx_unit = match.group(2) if match else None
@@ -54,7 +81,7 @@ class LogFileStaticMetric(StaticMetric):
                     return int(xmx_value) * 1024 * 1024
             else:
                 return int(match.group(1))
-            
+
     def is_present(self):
         return super().is_present()
 

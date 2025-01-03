@@ -26,7 +26,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -70,6 +70,245 @@
         "x": 0,
         "y": 6
       },
+      "id": 109,
+      "panels": [],
+      "title": "Memory",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "kbytes"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "value"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "mode": "gradient",
+                  "type": "gauge",
+                  "valueDisplayMode": "text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 7
+      },
+      "id": 110,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [
+            {
+              "selector": "",
+              "text": "",
+              "type": "string"
+            }
+          ],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "memory",
+          "source": "url",
+          "type": "json",
+          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "RAM",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "mounted on"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "filesystem"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "left"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 9,
+        "x": 6,
+        "y": 7
+      },
+      "id": 111,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.3.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "disk",
+          "source": "url",
+          "type": "json",
+          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Disk layout",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "available": 2,
+              "filesystem": 4,
+              "mounted on": 0,
+              "size": 1,
+              "use %": 3
+            },
+            "renameByName": {
+              "mounted on": ""
+            }
+          }
+        }
+      ],
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
       "id": 71,
       "panels": [],
       "title": "Uyuni and Salt Health",
@@ -112,7 +351,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 7
+        "y": 16
       },
       "id": 100,
       "options": {
@@ -189,7 +428,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 7
+        "y": 16
       },
       "id": 101,
       "options": {
@@ -268,7 +507,7 @@
         "h": 5,
         "w": 7,
         "x": 6,
-        "y": 7
+        "y": 16
       },
       "id": 97,
       "options": {
@@ -363,7 +602,7 @@
         "h": 5,
         "w": 7,
         "x": 13,
-        "y": 7
+        "y": 16
       },
       "id": 106,
       "options": {
@@ -458,7 +697,7 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 12
+        "y": 21
       },
       "id": 102,
       "options": {
@@ -535,7 +774,7 @@
         "h": 5,
         "w": 3,
         "x": 3,
-        "y": 12
+        "y": 21
       },
       "id": 103,
       "options": {
@@ -615,7 +854,7 @@
         "h": 5,
         "w": 7,
         "x": 6,
-        "y": 12
+        "y": 21
       },
       "id": 105,
       "options": {
@@ -710,7 +949,7 @@
         "h": 5,
         "w": 7,
         "x": 13,
-        "y": 12
+        "y": 21
       },
       "id": 104,
       "options": {
@@ -797,7 +1036,7 @@
         "h": 9,
         "w": 10,
         "x": 0,
-        "y": 17
+        "y": 26
       },
       "id": 91,
       "options": {
@@ -911,7 +1150,7 @@
         "h": 5,
         "w": 7,
         "x": 10,
-        "y": 17
+        "y": 26
       },
       "id": 107,
       "options": {
@@ -971,7 +1210,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 35
       },
       "id": 63,
       "panels": [],
@@ -1026,8 +1265,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1042,7 +1280,7 @@
         "h": 5,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 36
       },
       "id": 65,
       "options": {
@@ -1065,7 +1303,7 @@
             "uid": "H9O3Mj3nk"
           },
           "editorMode": "code",
-          "expr": " sum by (job) (count_over_time({job=~\"$Component\"} |~ `(?i)error|(?i)severe|(?i)critical|(?i)fatal` [$__interval]))",
+          "expr": " sum by (job) (count_over_time({job=~\"$Component\"} |~ `(?i)error|(?i)severe|(?i)critical|(?i)fatal|(?i)exception` [$__interval]))",
           "legendFormat": "{{job}}",
           "queryType": "range",
           "refId": "A"
@@ -1087,7 +1325,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 41
       },
       "id": 67,
       "options": {
