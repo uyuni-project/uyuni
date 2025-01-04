@@ -173,7 +173,7 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
     @Test
     public void testTokens() {
         Map<String, Boolean> tokenMap = Map.of("os=RHEL", false,
-                "__token__=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*~" +
+                "auth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*~" +
                         "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60", true,
                 "NoaBh00JIaJwSozVS2BK1G6x27JmfPxfKiiMZBlZ4SD1x3S_VUt7805g_G4XB0ShvcKDO4A5uhzvo74HNzCEAYh" +
                         "MxG8dIw0ZIMla3FzxXCKR5gUaW6PeLjCHG4LrgoXa3zG7KPyy8OQMSAni9F1bs2fqOjKqgQ", true,
