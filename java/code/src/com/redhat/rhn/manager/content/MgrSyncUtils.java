@@ -321,7 +321,7 @@ public class MgrSyncUtils {
         //     Could be an JWT token
         boolean ret = !queryParam.contains("=") ||
                 // Our CDN tokens use this key
-                queryParam.startsWith("__token__=") ||
+                queryParam.startsWith("auth=") ||
                 // typical Akamai token values
                 (queryParam.contains("exp=") && queryParam.contains("hmac="));
         LOG.debug("{} isAuthToken: {}", queryParam, ret);
