@@ -14,6 +14,7 @@ package com.suse.manager.hub;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -24,6 +25,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -33,6 +35,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.cert.Certificate;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -80,6 +83,42 @@ public class DefaultIssInternalClient implements IssInternalClient {
         }
 
         return responseObject;
+    }
+
+    @Override
+    public ManagerInfoJson getManagerInfo() throws IOException {
+        return invokeGetMethod("managerinfo", ManagerInfoJson.class);
+    }
+
+    @Override
+    public void setManagerInfo(ManagerInfoJson managerInfo) throws IOException {
+        invokePostMethod("managerinfo", managerInfo, Void.class);
+    }
+
+    @Override
+    public void storeReportDbCredentials(String username, String password) throws IOException {
+        invokePostMethod("storeReportDbCredentials", Map.of("username", username, "password", password), Void.class);
+    }
+
+    private <Res> Res invokeGetMethod(String apiMethod, Class<Res> responseClass) throws IOException {
+        HttpGet request = new HttpGet(("https://%s/rhn/iss/sync/%s").formatted(remoteHost, apiMethod));
+        request.setHeader("Authorization", "Bearer " + accessToken);
+
+        HttpResponse response = httpClientAdapter.executeRequest(request);
+        int statusCode = response.getStatusLine().getStatusCode();
+        // Ensure we get a valid response
+        if (statusCode != HttpStatus.SC_OK) {
+            throw new IOException("Unexpected response code %d".formatted(statusCode));
+        }
+
+        // Parse the response object, if specified
+        if (!Void.class.equals(responseClass)) {
+            try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
+                return GSON.fromJson(responseReader, responseClass);
+            }
+        }
+
+        return null;
     }
 
     private <Req, Res> Res invokePostMethod(String apiMethod, Req requestObject, Class<Res> responseClass)
