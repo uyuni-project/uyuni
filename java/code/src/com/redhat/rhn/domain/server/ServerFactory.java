@@ -1580,16 +1580,16 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Remove MgrServerInfo from minion
      *
-     * @param minion the minion
+     * @param server the minion
      */
-    public static void dropMgrServerInfo(MinionServer minion) {
-        MgrServerInfo serverInfo = minion.getMgrServerInfo();
+    public static void dropMgrServerInfo(Server server) {
+        MgrServerInfo serverInfo = server.getMgrServerInfo();
         if (serverInfo == null) {
             return;
         }
         ReportDBCredentials credentials = serverInfo.getReportDbCredentials();
         CredentialsFactory.removeCredentials(credentials);
         SINGLETON.removeObject(serverInfo);
-        minion.setMgrServerInfo(null);
+        server.setMgrServerInfo(null);
     }
 }
