@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.GeneratedSelectMode;
 import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
@@ -195,5 +197,93 @@ public class ReportDBHelper {
     public void analyzeReportDb(Session session) {
         var m = ModeFactory.getCallableMode(session, "GeneralReport_queries", "analyze_reportdb");
         m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Check if a specific user is configured in the database
+     * @param session the session
+     * @param username the username to search for
+     * @return return true when the user exists, otherwise return false
+     */
+    public boolean hasDBUser(Session session, String username) {
+        final String sqlStatement = "SELECT usename FROM pg_catalog.pg_user WHERE usesuper='t'";
+        var m = new GeneratedSelectMode("select.pg_catalog.user", session, sqlStatement, Collections.emptyList());
+        DataResult<Map<String, String>> result = m.execute();
+        return result.stream().map(e -> e.get("usename")).anyMatch(n -> n.equalsIgnoreCase(username));
+    }
+
+    /**
+     * Create a new user in the given database and grant permissions
+     * @param session the session
+     * @param dbName the db name
+     * @param username the new username
+     * @param password the new password
+     */
+    public void createDBUser(Session session, String dbName, String username, String password) {
+        final String sql = """
+                CREATE ROLE :user WITH LOGIN PASSWORD ':password'
+                NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION
+                """;
+        final List<String> params = List.of("user", "password");
+
+        Map<String, String> parameters = Map.of("user", username, "password", password, "dbname", dbName);
+        var i = new GeneratedWriteMode("create.role", session, sql, params);
+        i.executeUpdate(parameters);
+
+        final String sql2 = "GRANT CONNECT ON DATABASE :dbname TO :user";
+        final List<String> params2 = List.of("dbname", "user");
+        i = new GeneratedWriteMode("create.grant.connect", session, sql2, params2);
+        i.executeUpdate(parameters);
+
+        final String sql3 = "GRANT USAGE ON SCHEMA public TO :user";
+        final List<String> params3 = List.of("user");
+        i = new GeneratedWriteMode("create.grant.usage", session, sql3, params3);
+        i.executeUpdate(parameters);
+
+        final String sql4 = "GRANT SELECT ON ALL TABLES IN SCHEMA public TO :user";
+        i = new GeneratedWriteMode("create.grant.select.tables", session, sql4, params3);
+        i.executeUpdate(parameters);
+
+        final String sql5 = "GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO :user";
+        i = new GeneratedWriteMode("create.grant.select.sequences", session, sql5, params3);
+        i.executeUpdate(parameters);
+    }
+
+    /**
+     * Change the password for the given username
+     * @param session the session
+     * @param username the username
+     * @param password the new password to set
+     */
+    public void changeDBPassword(Session session, String username, String password) {
+        Map<String, String> parameters = Map.of("user", username, "password", password);
+        final String sql = "ALTER USER :user PASSWORD ':password'";
+        final List<String> params = List.of("user", "password");
+        var i = new GeneratedWriteMode("alter.user", session, sql, params);
+        i.executeUpdate(parameters);
+    }
+
+    /**
+     * Drop a given user
+     * @param session the session
+     * @param username the username to drop
+     */
+    public void dropDBUser(Session session, String username) {
+        List<String> restricted = List.of("postgres",
+                Config.get().getString(ConfigDefaults.REPORT_DB_USER),
+                Config.get().getString(ConfigDefaults.DB_USER));
+        if (restricted.contains(username)) {
+            throw new IllegalArgumentException("Forbidden to drop restricted user: " + username);
+        }
+
+        Map<String, String> parameters = Map.of("user", username);
+        final String sql = "DROP OWNED BY :user";
+        final List<String> params = List.of("user");
+        var i = new GeneratedWriteMode("drop.owned", session, sql, params);
+        i.executeUpdate(parameters);
+
+        final String sql2 = "DROP ROLE :user";
+        i = new GeneratedWriteMode("drop.role", session, sql2, params);
+        i.executeUpdate(parameters);
     }
 }
