@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.GeneratedSelectMode;
 import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
@@ -195,5 +197,71 @@ public class ReportDBHelper {
     public void analyzeReportDb(Session session) {
         var m = ModeFactory.getCallableMode(session, "GeneralReport_queries", "analyze_reportdb");
         m.execute(new HashMap<>(), new HashMap<>());
+    }
+
+    /**
+     * Check if a specific user is configured in the database
+     * @param session the session
+     * @param username the username to search for
+     * @return return true when the user exists, otherwise return false
+     */
+    public boolean hasDBUser(Session session, String username) {
+        final String sqlStatement = "SELECT usename FROM pg_catalog.pg_user";
+        var m = new GeneratedSelectMode("select.pg_catalog.user", session, sqlStatement, Collections.emptyList());
+        DataResult<Map<String, String>> result = m.execute();
+        return result.stream().map(e -> e.get("usename")).anyMatch(n -> n.equalsIgnoreCase(username));
+    }
+
+    /**
+     * Create a new user in the given database and grant permissions
+     * @param session the session
+     * @param dbName the db name
+     * @param username the new username
+     * @param password the new password
+     */
+    public void createDBUser(Session session, String dbName, String username, String password) {
+        final String sql = """
+                CREATE ROLE %1$s WITH LOGIN PASSWORD ''%2$s'' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+                GRANT CONNECT ON DATABASE %3$s TO %1$s;
+                GRANT USAGE ON SCHEMA public TO %1$s;
+                GRANT SELECT ON ALL TABLES IN SCHEMA public TO %1$s;
+                GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO %1$s;
+                """.formatted(username, password, dbName);
+        var i = new GeneratedWriteMode("grant.permissions", session, sql, Collections.emptyList());
+        i.executeUpdate(Collections.emptyMap());
+    }
+
+    /**
+     * Change the password for the given username
+     * @param session the session
+     * @param username the username
+     * @param password the new password to set
+     */
+    public void changeDBPassword(Session session, String username, String password) {
+        final String sql = "ALTER USER %1$s PASSWORD ''%2$s''".formatted(username, password);
+        var i = new GeneratedWriteMode("alter.user", session, sql, Collections.emptyList());
+        i.executeUpdate(Collections.emptyMap());
+    }
+
+    /**
+     * Drop a given user
+     * @param session the session
+     * @param username the username to drop
+     */
+    public void dropDBUser(Session session, String username) {
+        List<String> restricted = List.of("postgres",
+                Config.get().getString(ConfigDefaults.REPORT_DB_USER),
+                Config.get().getString(ConfigDefaults.DB_USER));
+        if (restricted.contains(username)) {
+            throw new IllegalArgumentException("Forbidden to drop restricted user: " + username);
+        }
+
+        final String sql = """
+            DROP OWNED BY %1$s;
+            DROP ROLE %1$s;
+            """.formatted(username);
+
+        var i = new GeneratedWriteMode("drop.user", session, sql, Collections.emptyList());
+        i.executeUpdate(Collections.emptyMap());
     }
 }

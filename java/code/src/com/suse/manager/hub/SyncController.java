@@ -20,12 +20,23 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
+import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.ConnectionManager;
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
+import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
 import com.suse.manager.model.hub.IssAccessToken;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -39,6 +50,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.Map;
+import java.util.Optional;
 
 import spark.Request;
 import spark.Response;
@@ -77,7 +90,85 @@ public class SyncController {
         post("/iss/sync/register", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::register))));
         post("/iss/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
         post("/iss/sync/generateCredentials",
-            asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
+        get("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
+        post("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::setManagerInfo))));
+        post("/iss/sync/storeReportDbCredentials",
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
+        post("/iss/sync/removeReportDbCredentials",
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
+    }
+
+    private String removeReportDbCredentials(Request request, Response response, IssAccessToken token) {
+        Map<String, String> creds = GSON.fromJson(request.body(), Map.class);
+        String dbname = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
+
+        if (dbname.isBlank() || !creds.containsKey("username")) {
+            LOGGER.error("Bad Request: Invalid Data");
+            return badRequest(response, "Invalid data");
+        }
+        ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
+        try {
+            ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
+            ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
+            String username = creds.get("username");
+            if (dbHelper.hasDBUser(localRh.getSession(), username)) {
+                dbHelper.dropDBUser(localRh.getSession(), username);
+                localRcm.commitTransaction();
+                return success(response);
+            }
+            LOGGER.error("Bad Request: DB User '{}' does not exist", username);
+        }
+        catch (Exception e) {
+            LOGGER.error("Bad Request: removing user failed", e);
+        }
+        localRcm.rollbackTransaction();
+        return badRequest(response, "Request failed");
+    }
+
+    private String setReportDbCredentials(Request request, Response response, IssAccessToken token) {
+        Map<String, String> creds = GSON.fromJson(request.body(), Map.class);
+        String dbname = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
+
+        if (dbname.isBlank() || !(creds.containsKey("username") && creds.containsKey("password"))) {
+            LOGGER.error("Bad Request: Invalid Data");
+            return badRequest(response, "Invalid data");
+        }
+        ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
+        try {
+            ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
+            ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
+            if (dbHelper.hasDBUser(localRh.getSession(), creds.get("username"))) {
+                dbHelper.changeDBPassword(localRh.getSession(), creds.get("username"), creds.get("password"));
+            }
+            else {
+                dbHelper.createDBUser(localRh.getSession(), dbname,
+                        creds.get("username"), creds.get("password"));
+            }
+            localRcm.commitTransaction();
+            return success(response);
+        }
+        catch (Exception e) {
+            LOGGER.error("Bad Request: setting user/password failed", e);
+        }
+        localRcm.rollbackTransaction();
+        return badRequest(response, "Request failed");
+    }
+
+    private String setManagerInfo(Request request, Response response, IssAccessToken token) {
+        ManagerInfoJson managerInfo = GSON.fromJson(request.body(), ManagerInfoJson.class);
+        Optional<Server> peripheralServer = ServerFactory.findByFqdn(token.getServerFqdn());
+        if (peripheralServer.isEmpty()) {
+            LOGGER.error("Request failed - unable to find peripheral system for fqdn {}", token.getServerFqdn());
+            return badRequest(response, "Request failed");
+        }
+        SystemManager.updateMgrServerInfo(peripheralServer.get(), managerInfo);
+        return success(response);
+    }
+
+    private String getManagerInfo(Request request, Response response, IssAccessToken token) {
+        ManagerInfoJson managerInfo = hubManager.collectManagerInfo(token);
+        return success(response, managerInfo);
     }
 
     // Basic ping to check if the system is up

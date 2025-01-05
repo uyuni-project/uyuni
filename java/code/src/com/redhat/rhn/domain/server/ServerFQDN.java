@@ -106,6 +106,9 @@ public class ServerFQDN extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
         if (o instanceof ServerFQDN toCompare) {
             return new EqualsBuilder()
                     .append(name, toCompare.name)
