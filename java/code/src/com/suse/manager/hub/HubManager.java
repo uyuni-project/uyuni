@@ -11,14 +11,27 @@
 
 package com.suse.manager.hub;
 
+import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MgrServerInfo;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemManagerUtils;
+import com.redhat.rhn.manager.system.SystemsExistException;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -28,6 +41,7 @@ import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -38,11 +52,17 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.CertificateUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
+import java.text.MessageFormat;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Business logic to manage ISSv3 Sync
@@ -55,7 +75,11 @@ public class HubManager {
 
     private final IssClientFactory clientFactory;
 
+    private final SystemEntitlementManager systemEntitlementManager;
+
     private TaskomaticApi taskomaticApi;
+
+    private static final Logger LOG = LogManager.getLogger(HubManager.class);
 
     private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
 
@@ -63,7 +87,8 @@ public class HubManager {
      * Default constructor
      */
     public HubManager() {
-        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi());
+        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi(),
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
     }
 
     /**
@@ -72,13 +97,16 @@ public class HubManager {
      * @param clientFactoryIn the ISS client factory
      * @param mirrorCredentialsManagerIn the mirror credentials manager
      * @param taskomaticApiIn the TaskomaticApi object
+     * @param systemEntitlementManagerIn the system entitlement manager
      */
     public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
-                      MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn) {
+                      MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn,
+                      SystemEntitlementManager systemEntitlementManagerIn) {
         this.hubFactory = hubFactoryIn;
         this.clientFactory = clientFactoryIn;
         this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
         this.taskomaticApi = taskomaticApiIn;
+        this.systemEntitlementManager = systemEntitlementManagerIn;
     }
 
     /**
@@ -147,7 +175,7 @@ public class HubManager {
             throws TaskomaticApiException {
         ensureValidToken(accessToken);
 
-        return createServer(role, accessToken.getServerFqdn(), rootCA);
+        return createServer(role, accessToken.getServerFqdn(), rootCA, null);
     }
 
     /**
@@ -179,7 +207,7 @@ public class HubManager {
             remoteToken = externalClient.generateAccessToken(ConfigDefaults.get().getHostname());
         }
 
-        registerWithToken(remoteServer, role, rootCA, remoteToken);
+        registerWithToken(user, remoteServer, role, rootCA, remoteToken);
     }
 
     /**
@@ -204,7 +232,7 @@ public class HubManager {
         // Verify this server is not already registered as hub or peripheral
         ensureServerNotRegistered(remoteServer);
 
-        registerWithToken(remoteServer, role, rootCA, remoteToken);
+        registerWithToken(user, remoteServer, role, rootCA, remoteToken);
     }
 
     /**
@@ -237,16 +265,103 @@ public class HubManager {
         return saveCredentials(hub, username, password);
     }
 
-    private void registerWithToken(String remoteServer, IssRole role, String rootCA, String remoteToken)
+    /**
+     * Set the User and Password for the report database in MgrServerInfo.
+     * That trigger also a state apply to set this user in the report database.
+     *
+     * @param user the user
+     * @param server the Mgr Server
+     * @param forcePwChange force a password change
+     */
+    public void setReportDbUser(User user, Server server, boolean forcePwChange)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        // Create a report db user when system is a mgr server
+        if (!server.isMgrServer()) {
+            return;
+        }
+        // create default user with random password
+        MgrServerInfo mgrServerInfo = server.getMgrServerInfo();
+        if (StringUtils.isAnyBlank(mgrServerInfo.getReportDbName(), mgrServerInfo.getReportDbHost())) {
+            // no reportdb configured
+            return;
+        }
+
+        String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
+        ReportDBCredentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
+                .map(existingCredentials -> {
+                    if (forcePwChange) {
+                        existingCredentials.setPassword(password);
+                        CredentialsFactory.storeCredentials(existingCredentials);
+                    }
+
+                    return existingCredentials;
+                })
+                .orElseGet(() -> {
+                    String randomSuffix = RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
+                    // Ensure the username is stored lowercase in the database, since the script
+                    // uyuni-setup-reportdb-user will convert it to lowercase anyway
+                    String username = "hermes_" + randomSuffix.toLowerCase();
+
+                    ReportDBCredentials reportCreds = CredentialsFactory.createReportCredentials(username, password);
+                    CredentialsFactory.storeCredentials(reportCreds);
+                    return reportCreds;
+                });
+
+        mgrServerInfo.setReportDbCredentials(credentials);
+
+        Optional<IssPeripheral> issPeripheral = server.getFqdns().stream()
+                .flatMap(fqdn -> hubFactory.lookupIssPeripheralByFqdn(fqdn.getName()).stream())
+                .findFirst();
+        if (issPeripheral.isPresent()) {
+            IssPeripheral remoteServer = issPeripheral.get();
+            IssAccessToken token = hubFactory.lookupAccessTokenFor(remoteServer.getFqdn());
+
+            IssInternalClient internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(),
+                    token.getToken(), remoteServer.getRootCa());
+            internalApi.storeReportDbCredentials(credentials.getUsername(), credentials.getPassword());
+            String summary = "Report Database credentials changed by " + user.getLogin();
+            String details = MessageFormat.format("""
+            The Report Database credentials were changed by {0}.
+            Report Database User: {1}
+            """, user.getLogin(), credentials.getUsername());
+            SystemManager.addHistoryEvent(server, summary, details);
+        }
+    }
+
+    /**
+     * Collect data about a Manager Server
+     * @param accessToken the accesstoken
+     * @return return {@link ManagerInfoJson}
+     */
+    public ManagerInfoJson collectManagerInfo(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return collectManagerInfo();
+    }
+
+    private ManagerInfoJson collectManagerInfo() {
+        String reportDbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
+        // we need to provide the external hostname
+        String reportDbHost = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME, "");
+        int reportDbPort = Config.get().getInt(ConfigDefaults.REPORT_DB_PORT, 5432);
+        String version = ConfigDefaults.get().getProductVersion().split("\\s")[0];
+
+        return new ManagerInfoJson(
+                version,
+                StringUtils.isNoneBlank(reportDbName, reportDbHost),
+                reportDbName, reportDbHost, reportDbPort);
+    }
+
+    private void registerWithToken(User user, String remoteServer, IssRole role, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
-        IssServer registeredServer = createServer(role, remoteServer, rootCA);
-        registerToRemote(registeredServer, remoteToken, rootCA);
+        IssServer registeredServer = createServer(role, remoteServer, rootCA, user);
+        registerToRemote(user, registeredServer, remoteToken, rootCA);
     }
 
-    private void registerToRemote(IssServer remoteServer, String remoteToken, String rootCA)
+    private void registerToRemote(User user, IssServer remoteServer, String remoteToken, String rootCA)
         throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
 
         // Create a client to connect to the internal API of the remote server
@@ -265,11 +380,22 @@ public class HubManager {
             // if the remote server is a peripheral, generate the scc credentials for it
             HubSCCCredentials credentials = generateCredentials(peripheral);
             internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
+
+            // Query Report DB connection values and set create a User
+            ManagerInfoJson managerInfo = internalApi.getManagerInfo();
+            Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
+                    remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
+            boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
+            if (changed) {
+                setReportDbUser(user, peripheralServer, false);
+            }
         }
         else if (remoteServer instanceof IssHub hub) {
             // If remote server is a hub, ask for the credentials
             SCCCredentialsJson credentialsJson = internalApi.generateCredentials();
             saveCredentials(hub, credentialsJson.getUsername(), credentialsJson.getPassword());
+
+            internalApi.setManagerInfo(collectManagerInfo());
         }
         else {
             throw new IllegalStateException("Unknown IssServer class " + remoteServer.getClass());
@@ -351,7 +477,8 @@ public class HubManager {
         return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
     }
 
-    private IssServer createServer(IssRole role, String serverFqdn, String rootCA) throws TaskomaticApiException {
+    private IssServer createServer(IssRole role, String serverFqdn, String rootCA, User user)
+            throws TaskomaticApiException {
         taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
         return switch (role) {
             case HUB -> {
@@ -362,6 +489,7 @@ public class HubManager {
             case PERIPHERAL -> {
                 IssPeripheral peripheral = new IssPeripheral(serverFqdn, rootCA);
                 hubFactory.save(peripheral);
+                getOrCreateManagerSystem(systemEntitlementManager, user, serverFqdn, Set.of(serverFqdn));
                 yield peripheral;
             }
         };
@@ -395,4 +523,68 @@ public class HubManager {
         }
     }
 
+    /**
+     * Retrieves or create a server system
+     *
+     * @param systemEntitlementManagerIn the system entitlement manager
+     * @param creator                  the user creating the server system
+     * @param serverName               the FQDN of the proxy system
+     * @return the proxy system
+     */
+    private Server getOrCreateManagerSystem(
+            SystemEntitlementManager systemEntitlementManagerIn,
+            User creator, String serverName, Set<String> fqdns
+    ) {
+        Optional<Server> existing = ServerFactory.findByAnyFqdn(fqdns);
+        if (existing.isPresent()) {
+            Server server = existing.get();
+            if (!(server.hasEntitlement(EntitlementManager.SALT) ||
+                    server.hasEntitlement(EntitlementManager.FOREIGN))) {
+                throw new SystemsExistException(List.of(server.getId()));
+            }
+            // Add the FQDNs as some may not be already known
+            server.getFqdns().addAll(fqdns.stream()
+                    .filter(fqdn -> !fqdn.contains("*"))
+                    .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
+
+            server.updateServerInfo();
+            SystemManager.updateSystemOverview(server.getId());
+            return server;
+        }
+        Server server = ServerFactory.createServer();
+        server.setName(serverName);
+        server.setHostname(serverName);
+        server.setOrg(Optional.ofNullable(creator).map(User::getOrg).orElse(OrgFactory.getSatelliteOrg()));
+        server.setCreator(creator);
+
+        String uniqueId = SystemManagerUtils.createUniqueId(List.of(serverName));
+        server.setDigitalServerId(uniqueId);
+        server.setMachineId(uniqueId);
+        server.setOs("(unknown)");
+        server.setRelease("(unknown)");
+        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
+                null, new SecureRandom()));
+        server.setAutoUpdate("N");
+        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        server.setLastBoot(System.currentTimeMillis() / 1000);
+        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.save(server);
+
+        server.getFqdns().addAll(fqdns.stream()
+                .filter(fqdn -> !fqdn.contains("*"))
+                .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
+
+        server.updateServerInfo();
+
+        MgrServerInfo serverInfo = new MgrServerInfo();
+        serverInfo.setServer(server);
+        server.setMgrServerInfo(serverInfo);
+
+        ServerFactory.save(server);
+
+        // No need to call `updateSystemOverview`
+        // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
+        systemEntitlementManagerIn.setBaseEntitlement(server, EntitlementManager.FOREIGN);
+        return server;
+    }
 }
