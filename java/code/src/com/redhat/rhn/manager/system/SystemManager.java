@@ -34,7 +34,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -121,11 +120,10 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
@@ -3807,92 +3805,35 @@ public class SystemManager extends BaseManager {
     /**
      * Update MgrServerInfo with current grains data
      *
-     * @param minion the minion which is a Mgr Server
-     * @param grains grains from the minion
+     * @param server the server which is a Mgr Server
+     * @param info info from peripheral server
+     * @return return true when the report db infos where changed
      */
-    public static void updateMgrServerInfo(MinionServer minion, ValueMap grains) {
+    public static boolean updateMgrServerInfo(Server server, ManagerInfoJson info) {
         // Check for Uyuni Server and create basic info
-        if (grains.getOptionalAsBoolean("is_mgr_server").orElse(false)) {
-            MgrServerInfo serverInfo = Optional.ofNullable(minion.getMgrServerInfo()).orElse(new MgrServerInfo());
+        if (info != null) {
+            MgrServerInfo serverInfo = Optional.ofNullable(server.getMgrServerInfo()).orElse(new MgrServerInfo());
             String oldHost = serverInfo.getReportDbHost();
             String oldName = serverInfo.getReportDbName();
 
             serverInfo.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null,
-                    grains.getOptionalAsString("version").orElse("0"),
-                    "1", minion.getPackageType()));
-            serverInfo.setReportDbName(grains.getValueAsString("report_db_name"));
-            serverInfo.setReportDbHost(grains.getValueAsString("report_db_host"));
-            serverInfo.setReportDbPort((grains.getValueAsLong("report_db_port").orElse(5432L)).intValue());
-            serverInfo.setServer(minion);
-            minion.setMgrServerInfo(serverInfo);
+                    info.getVersion(), "1", server.getPackageType()));
+            serverInfo.setReportDbName(info.getReportDbName());
+            serverInfo.setReportDbHost(info.getReportDbHost());
+            serverInfo.setReportDbPort(info.getReportDbPort());
+            serverInfo.setServer(server);
+            server.setMgrServerInfo(serverInfo);
 
-            if (!StringUtils.isAnyBlank(oldHost, oldName) &&
+            // something changed, we better reset the user
+            return StringUtils.isAnyBlank(oldHost, oldName) ||
                     !(oldHost.equals(serverInfo.getReportDbHost()) &&
-                            oldName.equals(serverInfo.getReportDbName()))) {
-                // something changed, we better reset the user
-                setReportDbUser(minion, false);
-            }
+                            oldName.equals(serverInfo.getReportDbName()));
         }
         else {
-            ServerFactory.dropMgrServerInfo(minion);
+            ServerFactory.dropMgrServerInfo(server);
             // Should we try to drop the credentials on the reportdb?
         }
-    }
-
-    /**
-     * Set the User and Password for the report database in MgrServerInfo.
-     * It trigger also a state apply to set this user in the report database.
-     *
-     * @param minion the Mgr Server
-     * @param forcePwChange force a password change
-     */
-    public static void setReportDbUser(MinionServer minion, boolean forcePwChange) {
-        // Create a report db user when system is a mgr server
-        if (!minion.isMgrServer()) {
-            return;
-        }
-        // create default user with random password
-        MgrServerInfo mgrServerInfo = minion.getMgrServerInfo();
-        if (StringUtils.isAnyBlank(mgrServerInfo.getReportDbName(), mgrServerInfo.getReportDbHost())) {
-            // no reportdb configured
-            return;
-        }
-
-        String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
-        ReportDBCredentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
-            .map(existingCredentials -> {
-                if (forcePwChange) {
-                    existingCredentials.setPassword(password);
-                    CredentialsFactory.storeCredentials(existingCredentials);
-                }
-
-                return existingCredentials;
-            })
-            .orElseGet(() -> {
-                String randomSuffix = RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
-                // Ensure the username is stored lowercase in the database, since the script uyuni-setup-reportdb-user
-                // will convert it to lowercase anyway
-                String username = "hermes_" + randomSuffix.toLowerCase();
-
-                ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(username, password);
-                CredentialsFactory.storeCredentials(reportCredentials);
-
-                return reportCredentials;
-            });
-
-        mgrServerInfo.setReportDbCredentials(credentials);
-
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("report_db_user", credentials.getUsername());
-        pillar.put("report_db_password", credentials.getPassword());
-
-        MessageQueue.publish(new ApplyStatesEventMessage(
-                minion.getId(),
-                minion.getCreator() != null ? minion.getCreator().getId() : null,
-                        false,
-                        pillar,
-                        ApplyStatesEventMessage.REPORTDB_USER
-                ));
+        return false;
     }
 
     /**

@@ -324,13 +324,29 @@ public class OrgFactory extends HibernateFactory {
 
     /**
      * Get the default organization.
-     *
-     * Currently looks up the org with ID 1.
+     * Currently, it searches for the org with the lowest org id which has a sat_admin
      *
      * @return Default organization
      */
     public static Org getSatelliteOrg() {
-        return lookupById(1L);
+        return findOrgsWithSatAdmin().stream().findFirst().orElse(lookupById(1L));
+    }
+
+    /**
+     * Find all Organizations which has a sat_admin (SUSE Manager Administrator) ordered by its ID.
+     * @return return an ordered list of {@link Org} which have a sat_admin
+     */
+    public static List<Org> findOrgsWithSatAdmin() {
+        return getSession().createNativeQuery("""
+            SELECT distinct org.*, null as reg_token_id
+              FROM web_contact wc
+              JOIN web_customer org ON wc.org_id = org.id
+              JOIN rhnUserGroupMembers ugm ON wc.id = ugm.user_id
+             WHERE ugm.user_group_id in (SELECT id
+                                           FROM rhnUserGroup
+                                          WHERE group_type = 1)
+          ORDER BY org.id;
+          """, Org.class).getResultList();
     }
 
     /**
