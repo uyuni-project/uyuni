@@ -56,6 +56,7 @@ public class MgrServerInfo implements Serializable {
      */
     public MgrServerInfo() {
         super();
+        reportDbPort = 5432;
     }
 
     /**
