@@ -29,7 +29,12 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -45,8 +50,12 @@ import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
@@ -165,7 +174,16 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         clientFactoryMock = mock(IssClientFactory.class);
 
         mockTaskomaticApi = new MockTaskomaticApi();
-        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi);
+        SaltApi saltApi = new TestSaltApi();
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+        );
+
+        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
+                sysEntMgr);
     }
 
     @AfterEach
@@ -195,7 +213,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         // Extract all methods that don't have a valid first parameter
         List<String> unprotectedMethods = publicClassMethods.stream()
-            .filter(method -> !allowedFirstParameters.contains(method.getParameterTypes()[0]))
+            .filter(method -> method.getParameterTypes().length == 0 ||
+                    !allowedFirstParameters.contains(method.getParameterTypes()[0]))
             .map(Method::toGenericString)
             .toList();
 
