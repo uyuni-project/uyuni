@@ -1872,6 +1872,7 @@ public class SaltUtils {
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
         server.setContainerRuntime(result.getContainerRuntime());
+        server.setUname(result.getUname());
 
         var sapWorkloads = result.getSAPWorkloads()
                 .map(m -> m.getChanges().getRet())

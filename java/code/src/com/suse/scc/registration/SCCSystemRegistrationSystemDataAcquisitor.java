@@ -125,10 +125,12 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                     .map(entry -> new SAPJson(entry.getKey(), entry.getValue()))
                     .collect(Collectors.toSet())
             );
-            hwInfo.setUname(srv.getRunningKernel());
 
             srv.asMinionServer().ifPresent(
-                minionServer -> hwInfo.setContainerRuntime(minionServer.getContainerRuntime())
+                minionServer -> {
+                    hwInfo.setContainerRuntime(minionServer.getContainerRuntime());
+                    hwInfo.setUname(minionServer.getUname());
+                }
             );
 
             String login = rci.getOptSccLogin().orElseGet(() -> {

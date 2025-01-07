@@ -202,6 +202,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
+            <property name="uname" column="uname" type="string" length="255" />
             <property name="containerRuntime" column="container_runtime" type="string" length="20" />
             <property name="rebootRequiredAfter" column="reboot_required_after" type="timestamp" />
             <property name="osFamily" column="os_family"  type="string" length="32" />

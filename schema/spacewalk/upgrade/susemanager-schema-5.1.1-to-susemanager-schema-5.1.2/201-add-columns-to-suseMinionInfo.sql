@@ -9,4 +9,8 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
-UPDATE suseSCCRegCache SET scc_reg_required = 'Y';
+ALTER TABLE suseMinionInfo ADD COLUMN IF NOT EXISTS
+    container_runtime VARCHAR(20);
+
+ALTER TABLE suseMinionInfo ADD COLUMN IF NOT EXISTS
+    uname VARCHAR(255);

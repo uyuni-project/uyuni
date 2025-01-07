@@ -181,6 +181,10 @@ sap_workloads:
 {%- endif %}
 {% endif %}
 
+uname:
+  cmd.run:
+    - name: uname -r -v
+
 container_runtime:
   mgrcompat.module_run:
     - name: container_runtime.get_container_runtime

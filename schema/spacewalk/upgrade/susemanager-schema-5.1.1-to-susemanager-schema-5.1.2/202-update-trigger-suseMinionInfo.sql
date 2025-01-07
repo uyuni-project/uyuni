@@ -25,5 +25,5 @@ create trigger
 suse_minion_info_up_trig
 after update on suseMinionInfo
 for each row
-when (OLD.container_runtime is distinct from NEW.container_runtime)
+when (OLD.container_runtime is distinct from NEW.container_runtime OR OLD.uname is distinct from NEW.uname)
 execute procedure suse_minion_info_up_trig_fun();

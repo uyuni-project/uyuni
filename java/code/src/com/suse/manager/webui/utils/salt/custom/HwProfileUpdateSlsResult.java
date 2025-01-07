@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -92,6 +93,9 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("mgrcompat_|-container_runtime_|-container_runtime.get_container_runtime_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> containerRuntime = Optional.empty();
+
+    @SerializedName("cmd_|-uname_|-uname -r -v_|-run")
+    private Optional<StateApplyResult<CmdResult>> uname = Optional.empty();
 
     /**
      * @return the grains
@@ -265,5 +269,13 @@ public class HwProfileUpdateSlsResult {
      */
     public String getContainerRuntime() {
         return containerRuntime.map(retStateApplyResultIn -> retStateApplyResultIn.getChanges().getRet()).orElse(null);
+    }
+
+    /**
+     * Get the uname result
+     * @return the uname
+     */
+    public String getUname() {
+        return uname.map(ret -> ret.getChanges().getStdout()).orElse(null);
     }
 }
