@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -125,6 +126,8 @@ public class RecurringActionManager extends BaseManager {
                 return new RecurringHighstate(false);
             case CUSTOMSTATE:
                 return new RecurringState(false);
+            case SCAPPOLICY:
+                return new RecurringScapPolicy(false);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }
