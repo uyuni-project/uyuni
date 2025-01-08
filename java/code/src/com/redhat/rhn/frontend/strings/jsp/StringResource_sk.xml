@@ -4662,7 +4662,7 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="systems.nopunc.displayname" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
@@ -4673,42 +4673,46 @@ not be modified on this page. Instead, please visit the "Users" top-level
 navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;*Tip:&lt;/strong&gt; Na tejto stránke nie je možné zmeniť oprávnenia
+administrátora organizácie. Namiesto toho navštívte vyššie navigačnú kartu "Používatelia"
+na najvyššej úrovni, aby ste získali prístup k profilom jednotlivých používateľov
+vo vašej organizácii. Rolu administrátora organizácie môžete udeliť alebo odobrať
+v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov.</target>
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Tip:&lt;/strong&gt; Táto organizácia je vaša predvolená organizácia pre @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
-        <target/>
+        <target state="translated">neobmedzené</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.notApplicable" xml:space="preserve">
         <source>N/A</source>
-        <target/>
+        <target state="translated">N/A</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementDetails.header.entitlementUsage" xml:space="preserve">
         <source>Entitlement Usage</source>
-        <target/>
+        <target state="translated">Využívanie oprávnení</target>
       </trans-unit>
       <trans-unit id="probedetails.jsp.start_date" xml:space="preserve">
         <source>Start date:</source>
-        <target/>
+        <target state="translated">Dátum začiatku:</target>
       </trans-unit>
       <trans-unit id="probedetails.jsp.end_date" xml:space="preserve">
         <source>End date:</source>
-        <target/>
+        <target state="translated">Dátum konca:</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date" xml:space="preserve">
         <source>Issue Start Date: </source>
-        <target/>
+        <target state="translated">Dátum začiatku vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date" xml:space="preserve">
         <source>Issue End Date: </source>
-        <target/>
+        <target state="translated">Dátum konca vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
