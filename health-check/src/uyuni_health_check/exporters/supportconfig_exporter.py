@@ -31,6 +31,20 @@ class SupportConfigMetricsCollector:
         self.supportconfig_path = supportconfig_path
         self.static_metrics_collection = static_metrics.create_static_metrics_collection(self.supportconfig_path)
         self.disk_layout = []
+        self.roles = [
+            {
+                'name':'master',
+                'value': 0,
+            },
+            {
+                'name':'proxy',
+                'value': 0,
+            },
+            {
+                'name': 'client',
+                'value': 0,
+            },
+        ]
         self.parse()
 
     def parse(self):
@@ -43,6 +57,21 @@ class SupportConfigMetricsCollector:
 
         self.get_static_metrics()
         self.parse_disk_layout()
+        self.parse_roles()
+
+    def parse_roles(self):
+        mapping = {
+            'plugin-susemanagerclient.txt': 'client',
+            'plugin-susemanagerproxy.txt': 'proxy',
+            'plugin-susemanager.txt': 'master'
+        }
+
+        for file, role in mapping.items():
+            file_path = os.path.join(self.supportconfig_path, file)
+            if os.path.exists(file_path):
+                for role_obj in self.roles:
+                    if role_obj["name"] == role:
+                        role_obj["value"] = 1
 
     def _parse_command(self, command_block):
         lines = command_block.strip().split("\n")
@@ -160,6 +189,7 @@ class SupportConfigMetricsCollector:
             "salt_configuration": {},
             "salt_keys": {},
             "salt_jobs": {},
+            "misc": self.roles,
         }
         if hasattr(self,'tomcat_xmx_size'):
             ret["tomcat"].append({"name": "tomcat_xmx_size", "value": self.tomcat_xmx_size})

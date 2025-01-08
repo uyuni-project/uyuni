@@ -36,7 +36,7 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 5,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -322,24 +322,19 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "semi-dark-green",
             "mode": "thresholds"
           },
+          "fieldMinMax": false,
           "mappings": [],
-          "max": 80,
+          "max": 128,
+          "min": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 16
-              },
-              {
-                "color": "dark-red",
-                "value": 64
               }
             ]
           },
@@ -365,8 +360,8 @@
           "fields": "/^value$/",
           "values": true
         },
-        "showThresholdLabels": true,
-        "showThresholdMarkers": true,
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
         "sizing": "auto"
       },
       "pluginVersion": "11.3.1",
@@ -406,17 +401,14 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 1024,
+          "max": 128,
+          "min": 20,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 64
               }
             ]
           },
@@ -443,7 +435,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
+        "showThresholdMarkers": false,
         "sizing": "auto"
       },
       "pluginVersion": "11.3.1",
@@ -676,16 +668,13 @@
           },
           "mappings": [],
           "max": 1022,
+          "min": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 256
               }
             ]
           },
@@ -712,7 +701,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
+        "showThresholdMarkers": false,
         "sizing": "auto"
       },
       "pluginVersion": "11.3.1",
@@ -753,16 +742,13 @@
           },
           "mappings": [],
           "max": 1024,
+          "min": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 256
               }
             ]
           },
@@ -789,7 +775,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true,
+        "showThresholdMarkers": false,
         "sizing": "auto"
       },
       "pluginVersion": "11.3.1",
@@ -1265,7 +1251,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1363,8 +1350,12 @@
     "list": [
       {
         "current": {
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "salt"
+          ],
+          "value": [
+            "salt"
+          ]
         },
         "datasource": {
           "type": "loki",
@@ -1396,6 +1387,6 @@
   "timezone": "",
   "title": "Supportconfig with Logs",
   "uid": "AvmqWWUik",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }

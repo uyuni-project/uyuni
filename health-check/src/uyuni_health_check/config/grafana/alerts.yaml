@@ -53,7 +53,7 @@ groups:
                 type: threshold
           noDataState: OK
           execErrState: Error
-          for: 1m
+          for: 10s
           annotations:
             summary: We detected more than 10 `SaltReqTimeout` errors in the logs in the past 1 month. This is likely indicative of Salt performance issues.
           labels:
@@ -105,7 +105,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 10s
           annotations:
             summary: "We found more than 150 of \"an extra return was detected\", \"the public keys did not match\", \"Event with bad payload received\", or \"Received minion error from\" messages in the logs over the past month. \n\nThese issues might be decreasing Salt performance."
           labels:
@@ -195,5 +195,535 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 10s
+          isPaused: false
+        - uid: de95ua0ku5zb4f
+          title: Insufficient RAM (master)
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 15000000 > $A && $B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below minimum spec of 16GB for a master server.
+          for: 10s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: cz95ua0ku5zb4f
+          title: Insufficient RAM (proxy)
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 1800000 > $A && $B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below minimum spec of 16GB for a proxy server.
+          for: 10s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: ee95ufv80exa8d
+          title: Recommended RAM increase (master)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 30000000 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below recommended value of 32GB for a master server.
+          for: 10s
+          labels:
+            component: hw
+            issue: recommended_spec
+          isPaused: false
+        - uid: cz95ufv80exa8d
+          title: Recommended RAM increase (proxy)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 7700000 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below recommended value of 8GB for a proxy server.
+          for: 10s
+          labels:
+            component: hw
+            issue: recommended_spec
+          isPaused: false
+        - uid: de95uybcn1ji8a
+          title: Insufficient CPU count (master)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 4 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The CPU count is below minimum value of 4 for a master server.
+          for: 10s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: cz95uybcn1ji8a
+          title: Insufficient CPU count (proxy)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 2 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The CPU count is below minimum value of 2 for a proxy server.
+          for: 10s
+          labels:
+            component: hw
+            issue: min_spec
           isPaused: false
