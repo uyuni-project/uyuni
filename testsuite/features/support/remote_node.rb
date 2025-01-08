@@ -28,14 +28,17 @@ class RemoteNode
     @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
     # Remove /etc/motd, or any output from run will contain the content of /etc/motd
     ssh('rm -f /etc/motd && touch /etc/motd', host: @target) unless @host == 'localhost'
-    out, _err, _code = ssh('hostname', host: @target)
+    out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip
+    puts "DEBUG JORDI: hostname: #{@hostname}"
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 
     $named_nodes[host] = @hostname
     if @host == 'server'
       _out, _err, code = ssh('which mgrctl', host: @target)
       @has_mgrctl = code.zero?
+      puts "DEBUG JORDI; has mgrctl in #{@target}" if @has_mgrctl
+      puts "DEBUG JORDI; has NO mgrctl in #{@target}" unless @has_mgrctl
       # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
       run('rm -f /etc/motd && touch /etc/motd')
       out, _code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
@@ -99,6 +102,9 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
+    puts "DEBUG!!!!!"
+    puts "has mgrctl" if @has_mgrctl
+    puts "NO mgrctl" unless @has_mgrctl
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
