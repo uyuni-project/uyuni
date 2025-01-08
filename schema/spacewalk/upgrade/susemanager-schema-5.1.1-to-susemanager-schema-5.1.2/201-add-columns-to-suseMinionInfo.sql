@@ -10,7 +10,7 @@
 --
 
 ALTER TABLE suseMinionInfo ADD COLUMN IF NOT EXISTS
-    container_runtime VARCHAR(20);
+    container_runtime VARCHAR;
 
 ALTER TABLE suseMinionInfo ADD COLUMN IF NOT EXISTS
-    uname VARCHAR(255);
+    uname VARCHAR;

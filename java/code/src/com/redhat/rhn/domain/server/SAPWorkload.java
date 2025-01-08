@@ -33,7 +33,7 @@ public class SAPWorkload {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "system_id")
+    @Column(name = "sap_system_id")
     private String systemIdSAP;
 
     @Column(name = "instance_type")

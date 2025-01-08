@@ -11,7 +11,7 @@
 
 CREATE TABLE IF NOT EXISTS suseServerSAPWorkload (
     id BIGINT CONSTRAINT suse_sap_workload_id_pk PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    system_id VARCHAR(5) NOT NULL,
-    instance_type VARCHAR(128) NOT NULL,
+    sap_system_id VARCHAR NOT NULL,
+    instance_type VARCHAR NOT NULL,
     server_id NUMERIC NOT NULL REFERENCES rhnServer(id) ON DELETE CASCADE
 );
