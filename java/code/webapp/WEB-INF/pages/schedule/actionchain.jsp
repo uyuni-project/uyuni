@@ -78,7 +78,7 @@
                                 <div class="system-list" id="system-list-${group.sortOrder}"></div>
                             </td>
                             <td>
-                                <a class="delete-group" href="#"><i class="fa fa-trash-o"></i>delete action</a>
+                                <a class="delete-group" href="#"><i class="fa fa-trash-o"></i>Delete</a>
                             </td>
                         </tr>
                     </c:forEach>
