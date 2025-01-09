@@ -37,9 +37,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
@@ -918,11 +916,9 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> listAllKickstartData() {
-        Session session = getSession();
-        Criteria c = session.createCriteria(KickstartData.class);
-        // Hibernate does not filter out duplicate references by default
-        c.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-        return c.list();
+        return HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT DISTINCT * from rhnksdata
+                                      """, KickstartData.class).getResultList();
     }
 
     /**
