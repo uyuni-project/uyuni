@@ -67,46 +67,53 @@
         </and>
     </condition>
 
+    <!-- The command to execute to deploy, for each deployment mode -->
     <condition property="deploy.executor.command" value="sh">
         <equals arg1="${deploy.mode}" arg2="local"/>
     </condition>
 
-    <condition property="deploy.executor.parameters" value="-c">
-        <equals arg1="${deploy.mode}" arg2="local"/>
-    </condition>
-
     <condition property="deploy.executor.command" value="ssh">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
-    </condition>
-
-    <condition property="deploy.executor.parameters" value="${ssh.command.args}">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
+        <or>
+            <equals arg1="${deploy.mode}" arg2="remote"/>
+            <equals arg1="${deploy.mode}" arg2="remote-container"/>
+        </or>
     </condition>
 
     <condition property="deploy.executor.command" value="mgrctl">
         <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
-    <condition property="deploy.executor.parameters" value="exec ${mgrctl.backend.parameter} -i --">
-        <equals arg1="${deploy.mode}" arg2="container"/>
+    <!-- The parameters for the executor, for each deployment mode -->
+    <condition property="deploy.executor.parameters" value="-c">
+        <equals arg1="${deploy.mode}" arg2="local"/>
     </condition>
 
-    <condition property="deploy.executor.command" value="ssh">
-        <equals arg1="${deploy.mode}" arg2="remote-container"/>
+    <condition property="deploy.executor.parameters" value="${ssh.command.args}">
+        <equals arg1="${deploy.mode}" arg2="remote"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="exec ${mgrctl.backend.parameter} -i --">
+        <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
     <condition property="deploy.executor.parameters" value="${ssh.command.args} mgrctl exec ${mgrctl.backend.parameter} -i --">
         <equals arg1="${deploy.mode}" arg2="remote-container"/>
     </condition>
 
+    <!-- True if the deployment mode requires a SSH connection -->
     <condition property="deploy.requires.ssh" value="true">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
+        <or>
+            <equals arg1="${deploy.mode}" arg2="remote"/>
+            <equals arg1="${deploy.mode}" arg2="remote-container"/>
+        </or>
     </condition>
 
+    <!-- True if the deployment mode requires mgrctl to be locally installed -->
     <condition property="deploy.requires.mgrctl" value="true">
         <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
+    <!-- True if the deployment mode requires mgrctl to be installed on the target server -->
     <condition property="deploy.requires.remote-mgrctl" value="true">
         <equals arg1="${deploy.mode}" arg2="remote-container"/>
     </condition>
