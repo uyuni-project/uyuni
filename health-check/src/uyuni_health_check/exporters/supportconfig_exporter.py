@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 import signal
 import sys
+from typing import Dict
 import yaml
 import json
 
@@ -16,6 +17,7 @@ import socketserver
 import static_metrics
 
 def sigterm_handler(**kwargs):
+    del kwargs # unused
     print("Detected SIGTERM. Exiting.")
     sys.exit(0)
 
@@ -31,6 +33,11 @@ class SupportConfigMetricsCollector:
         self.supportconfig_path = supportconfig_path
         self.static_metrics_collection = static_metrics.create_static_metrics_collection(self.supportconfig_path)
         self.disk_layout = []
+        self.salt_keys = []
+        self.salt_jobs = []
+        self.salt_configuration = []
+        self.max_clients = -1
+        self.server_limit = -1
         self.roles = [
             {
                 'name':'master',
@@ -58,6 +65,48 @@ class SupportConfigMetricsCollector:
         self.get_static_metrics()
         self.parse_disk_layout()
         self.parse_roles()
+        self.parse_prefork_c_params()
+
+    def parse_prefork_c_params(self):
+        # Parse the MaxRequestWorkers and ServerLimit only from prefork.c section of the
+        # /etc/apache2/server-tuning.conf file contents (stored in etc.txt)
+        filename = os.path.join(self.supportconfig_path, "etc.txt")
+        if not os.path.exists(filename):
+            return
+
+        with open(filename) as f:
+            content = f.read()
+            # Parse contents of server-tuning.conf first
+            file_regex = r"(?s)/etc/apache2/server-tuning.conf(.*?)\[ Configuration File \]"
+            # Then, parse the MaxRequestWorkers property from the prefork part
+            max_req_regex = r"(?s)<IfModule prefork\.c>(.*?)MaxRequestWorkers\s+(\d+)$"
+            # Finally, parse ServerLimit prop
+            server_lim_regex = r"(?s)<IfModule prefork\.c>(.*?)ServerLimit\s+(\d+)$"
+
+            file_pattern = re.compile(file_regex, flags=re.MULTILINE)
+            match = re.search(file_pattern, content)
+            if not match:
+                return
+
+            max_req_pattern = re.compile(max_req_regex, flags=re.MULTILINE)
+            server_lim_pattern = re.compile(server_lim_regex, flags=re.MULTILINE)
+
+            max_req_match = re.search(max_req_pattern, match.group(0))
+            server_lim_match = re.search(server_lim_pattern, match.group(0))
+
+            if max_req_match:
+                try:
+                    max_clients = max_req_match.groups()[-1]
+                    self.max_clients = int(max_clients)
+                except ValueError:
+                    print(f"Error when parsing max_clients; expected int, got: {max_clients}")
+
+            if server_lim_match:
+                try:
+                    server_limit = server_lim_match.groups()[-1]
+                    self.server_limit = int(server_limit)
+                except ValueError:
+                    print(f"Error when parsing ServerLimit; expected int, got: {server_limit}")
 
     def parse_roles(self):
         mapping = {
@@ -151,6 +200,7 @@ class SupportConfigMetricsCollector:
                 "name": key_type,
                 "value": parsed[i].strip().split("\n") if parsed[i].strip() else []
             }
+            prop["length"] = len(prop["value"])
             ret.append(prop)
         return ret
     
@@ -182,36 +232,38 @@ class SupportConfigMetricsCollector:
 
     def merge_metrics(self):
         ret = {
-            "tomcat": [],
+            "config": [],
             "hw": [],
             "memory": [],
             "disk": self.disk_layout,
-            "salt_configuration": {},
-            "salt_keys": {},
-            "salt_jobs": {},
+            "salt_configuration": self.salt_configuration,
+            "salt_keys": self.salt_keys,
+            "salt_jobs": self.salt_jobs,
             "misc": self.roles,
         }
-        if hasattr(self,'tomcat_xmx_size'):
-            ret["tomcat"].append({"name": "tomcat_xmx_size", "value": self.tomcat_xmx_size})
 
-        if hasattr(self, 'max_threads_ipv4'):
-            ret["tomcat"].append({"name": "max_threads_ipv4", "value": self.max_threads_ipv4})
+        self._append_value_to_dict(ret, "config", "max_clients")
+        self._append_value_to_dict(ret, "config", "queued_salt_events")
+        self._append_value_to_dict(ret, "config", "server_limit")
+        self._append_value_to_dict(ret, "config", "java_salt_batch_size")
+        self._append_value_to_dict(ret, "config", "tomcat_xmx_size")
+        self._append_value_to_dict(ret, "config", "max_threads")
+        self._append_value_to_dict(ret, "hw", "cpu_count")
 
-        if hasattr(self, 'cpu_count'):
-            ret["hw"].append({"name": "cpu_count", "value": self.cpu_count})
-
-        if hasattr(self,'salt_configuration'):
-            ret["salt_configuration"] = self.salt_configuration
-
-        if hasattr(self,'salt_keys'):
-            ret["salt_keys"] = self.salt_keys
-
-        if hasattr(self,'salt_jobs'):
-            ret["salt_jobs"] = self.salt_jobs
-
-        ret['memory'] = self._append_memory_props()
+        ret["memory"] = self._append_memory_props()
 
         return ret
+
+    def _append_value_to_dict(self, res_dict: Dict, dict_property: str, prop: str) -> None:
+        """
+        Mutate res_dict such that any `self.prop`, if it exists, is added to res_dict[dict_property]
+        as a {"name": prop, "value": self.prop} object.
+        """
+        if not res_dict.get(dict_property):
+            res_dict[dict_property] = []
+        if hasattr(self, prop):
+            prop_val = getattr(self, prop)
+            res_dict[dict_property].append({"name": prop, "value": prop_val})
 
     def _append_memory_props(self):
         ret = []
