@@ -7,9 +7,18 @@ metrics_config = {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf",
         "pattern": r'-Xmx(\d)+([kKmMgG])',
     },
-    "max_threads_ipv4": {
+    "max_threads": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/server.xml",
         "pattern": r'<Connector[^>]*address="127\.0\.0\.1"[^>]*maxThreads="(\d+)"[^>]*\/>',
+    },
+    "queued_salt_events": {
+        "filepath": "plugin-susemanager.txt",
+        "pattern": r"(?s)select count\(\*\) from susesaltevent.*?(\d+)",
+    },
+    "java_salt_batch_size": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^java.salt_batch_size\s*=\s*(\d+)\s*$',
+        "default": 200,
     },
     "cpu_count": {
         "filepath": "hardware.txt",
@@ -55,18 +64,19 @@ class StaticMetric(ABC):
         pass
 
 class LogFileStaticMetric(StaticMetric):
-    def __init__(self, name, supportconfig_path, filepath, pattern):
+    def __init__(self, name, supportconfig_path, filepath, pattern, default = None):
         super().__init__(name, supportconfig_path, filepath)
         self.pattern = pattern
+        self.default = default
 
     def get_value(self):
         with open(os.path.join(self.supportconfig_path, self.filepath)) as f:
             content = f.read()
-            pattern = re.compile(self.pattern)
+            pattern = re.compile(self.pattern, flags=re.MULTILINE)
             match = re.search(pattern, content)
 
             if not match:
-                return -1
+                return -1 if not self.default else self.default
 
             if self.name == "tomcat_xmx_size":
                 xmx_value = match.group(1) if match else None
@@ -87,11 +97,11 @@ class LogFileStaticMetric(StaticMetric):
 
 class StaticMetricFactory:
     @staticmethod
-    def create_metric(name, supportconfig_path, filepath, pattern):
-        return LogFileStaticMetric(name, supportconfig_path, filepath, pattern)
+    def create_metric(name, supportconfig_path, filepath, pattern, default=None):
+        return LogFileStaticMetric(name, supportconfig_path, filepath, pattern, default)
 
 def create_static_metrics_collection(supportconfig_path):
     return {
-        name: StaticMetricFactory.create_metric(name, supportconfig_path, config["filepath"], config["pattern"])
+        name: StaticMetricFactory.create_metric(name, supportconfig_path, config["filepath"], config["pattern"], config.get("default"))
         for name, config in metrics_config.items()
     }
