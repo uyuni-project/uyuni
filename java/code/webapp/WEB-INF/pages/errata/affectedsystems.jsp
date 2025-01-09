@@ -29,6 +29,10 @@
 
             <div class="spacewalk-section-toolbar">
                 <div class="action-button-wrapper">
+                   <rl:csv dataset="pageList"
+                        name="systemAffectedCSVExport"
+                        exportColumns="name, status, channelLabels, entitlementLevel"
+                        header="${errata.advisoryName} - ${errata.advisoryType}" />
                     <html:submit styleClass="btn btn-default" property="dispatch">
                         <bean:message key="affectedsystems.jsp.apply"/>
                     </html:submit>
@@ -89,10 +93,6 @@
                         </rl:column>
                 </rl:list>
 
-                <rl:csv dataset="pageList"
-                        name="systemAffectedCSVExport"
-                        exportColumns="name, status, channelLabels, entitlementLevel"
-                        header="${errata.advisoryName} - ${errata.advisoryType}" />
 
                         <rhn:submitted/>
         </rl:listset>
