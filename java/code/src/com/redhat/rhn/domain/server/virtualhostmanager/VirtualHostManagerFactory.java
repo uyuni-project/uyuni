@@ -30,8 +30,8 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,9 +47,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.NoResultException;
 
 /**
  * Singleton representing Virtual Host Manager hibernate factory.
@@ -106,10 +104,19 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("label", label))
-                .uniqueResult();
+        VirtualHostManager hostManager;
+        try {
+            hostManager = HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManager
+                                      WHERE label = :label
+                                      """, VirtualHostManager.class)
+                    .setParameter("label", label, StringType.INSTANCE)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            hostManager = null;
+        }
+        return hostManager;
     }
 
     /**
@@ -130,11 +137,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+        VirtualHostManager hostManager;
+        try {
+            hostManager = HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManager
+                                      WHERE id = :id
+                                      AND  org_id = :org
+                                      """, VirtualHostManager.class)
+                    .setParameter("org", org.getId(), LongType.INSTANCE)
+                    .setParameter("id", id, LongType.INSTANCE)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            hostManager = null;
+        }
+        return hostManager;
     }
 
     /**
@@ -145,14 +162,14 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * inside the organization
      */
     public List<VirtualHostManager> lookupByIdsAndOrg(List<Long> ids, Org org) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<VirtualHostManager> criteria =
-                builder.createQuery(VirtualHostManager.class);
-        Root<VirtualHostManager> root = criteria.from(VirtualHostManager.class);
-        criteria.where(builder.and(
-                root.get("id").in(ids),
-                builder.equal(root.get("org"), org)));
-        return getSession().createQuery(criteria).getResultList();
+        return HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from suseSCCSubscription
+                                      WHERE id IN (:ids)
+                                      AND  org_id = :org
+                                      """, VirtualHostManager.class)
+                .setParameter("org", org.getId(), LongType.INSTANCE)
+                .setParameterList("ids", ids, LongType.INSTANCE)
+                .getResultList();
     }
 
     /**
@@ -163,11 +180,21 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
-        return (VirtualHostManager) getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .add(Restrictions.eq("label", label))
-                .uniqueResult();
+        VirtualHostManager hostManager;
+        try {
+            hostManager = HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManager
+                                      WHERE label = :label
+                                      AND org_id = :org
+                                      """, VirtualHostManager.class)
+                    .setParameter("label", label, StringType.INSTANCE)
+                    .setParameter("org", org.getId(), LongType.INSTANCE)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            hostManager = null;
+        }
+        return hostManager;
     }
 
     /**
@@ -177,11 +204,13 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
-        return getSession()
-                .createCriteria(VirtualHostManager.class)
-                .add(Restrictions.eq("org", org))
-                .addOrder(Order.asc("label"))
-                .list();
+        return  getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManager
+                                      WHERE  org_id = :org
+                                      ORDER BY label
+                                      """, VirtualHostManager.class)
+                .setParameter("org", org.getId(), LongType.INSTANCE)
+                .getResultList();
     }
 
     /**
@@ -190,9 +219,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
-        return getSession()
-                .createCriteria(VirtualHostManager.class)
-                .list();
+        return HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManager
+                                      """, VirtualHostManager.class)
+                    .getResultList();
     }
 
     /**
@@ -473,12 +503,18 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
             String identifier) {
-        VirtualHostManagerNodeInfo result = (VirtualHostManagerNodeInfo) getSession()
-                .createCriteria(VirtualHostManagerNodeInfo.class)
-                .add(Restrictions.eq("identifier", identifier))
-                .uniqueResult();
-
-        return Optional.ofNullable(result);
+        Optional<VirtualHostManagerNodeInfo> virtualNode;
+        try {
+            return Optional.ofNullable(getSession().createNativeQuery("""
+                                      SELECT * from suseVirtualHostManagerNodeInfo
+                                      WHERE  identifier = :identifier
+                                      """, VirtualHostManagerNodeInfo.class)
+                    .setParameter("identifier", identifier, StringType.INSTANCE)
+                    .getSingleResult());
+        }
+        catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
 }

@@ -34,7 +34,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StringType;
@@ -47,10 +46,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 
 /**
  * ConfigurationFactory.  For use when dealing with ConfigChannel, ConfigChannelType,
@@ -357,11 +352,15 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the list of global config channels
      */
     public static List<ConfigChannel> listGlobalChannels() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
-        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
-        criteria.where(root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
-        return getSession().createQuery(criteria).getResultList();
+        return  getSession().createNativeQuery("""
+                                      SELECT * from rhnConfigChannel
+                                      WHERE
+                                      confchan_type_id = :confchan_type_id_normal
+                                      OR confchan_type_id = :confchan_type_id_state
+                                      """, ConfigChannel.class)
+                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), LongType.INSTANCE)
+                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), LongType.INSTANCE)
+                .getResultList();
     }
 
     /**
@@ -385,12 +384,16 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label,
                                                             Org org,
                                                           ConfigChannelType cct) {
-        Session session = HibernateFactory.getSession();
-        return (ConfigChannel) session.createCriteria(ConfigChannel.class).
-                        add(Restrictions.eq("org", org)).
-                        add(Restrictions.eq("label", label)).
-                        add(Restrictions.eq("configChannelType", cct)).
-                        uniqueResult();
+        return  getSession().createNativeQuery("""
+                                      SELECT * from rhnConfigChannel
+                                      WHERE label = :label
+                                      AND org_id = :org_id
+                                      AND confchan_type_id = :confchan_type_id
+                                      """, ConfigChannel.class)
+                .setParameter("label", label, StringType.INSTANCE)
+                .setParameter("org_id", org.getId(), LongType.INSTANCE)
+                .setParameter("confchan_type_id", cct.getId(), LongType.INSTANCE)
+                .uniqueResult();
     }
 
     /**
@@ -402,14 +405,19 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
 
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ConfigChannel> criteria = builder.createQuery(ConfigChannel.class);
-        Root<ConfigChannel> root = criteria.from(ConfigChannel.class);
-        criteria.where(builder.and(
-                builder.equal(root.get("label"), label)),
-                builder.equal(root.get("org"), org),
-                root.get("configChannelType").in(ConfigChannelType.normal(), ConfigChannelType.state()));
-        return getSession().createQuery(criteria).uniqueResultOptional();
+        return  getSession().createNativeQuery("""
+                                      SELECT * from rhnConfigChannel
+                                      WHERE label = :label
+                                      AND org_id = :org_id
+                                      AND (
+                                      confchan_type_id = :confchan_type_id_normal
+                                      OR confchan_type_id = :confchan_type_id_state)
+                                      """, ConfigChannel.class)
+                .setParameter("label", label, StringType.INSTANCE)
+                .setParameter("org_id", org.getId(), LongType.INSTANCE)
+                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), LongType.INSTANCE)
+                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), LongType.INSTANCE)
+                .uniqueResultOptional();
     }
 
     /**

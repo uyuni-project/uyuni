@@ -41,13 +41,15 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.LongType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 /**
  * VirtualInstanceFactoryTest
@@ -296,12 +298,19 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
-        VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
-                .createCriteria(VirtualInstance.class)
-                .add(Restrictions.eq("hostSystem", host))
-                .add(Restrictions.eq("guestSystem", null))
-                .uniqueResult();
-
+        VirtualInstance fromDb;
+        try {
+            fromDb = HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from rhnVirtualInstance
+                                      WHERE host_system_id = :host
+                                      AND  virtual_system_id IS NULL
+                                      """, VirtualInstance.class)
+                .setParameter("host", host.getId(), LongType.INSTANCE)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            fromDb = null;
+        }
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
 

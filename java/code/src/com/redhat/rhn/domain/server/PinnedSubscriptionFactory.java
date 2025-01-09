@@ -25,10 +25,6 @@ import org.hibernate.type.LongType;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
 
 /**
  * A factory for creating PinnedSubscription objects.
@@ -130,16 +126,12 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
             Long subscriptionId) {
 
-        CriteriaBuilder cb = getSession().getCriteriaBuilder();
-
-        CriteriaQuery<PinnedSubscription> query = cb.createQuery(PinnedSubscription.class);
-
-        Root<PinnedSubscription> root = query.from(PinnedSubscription.class);
-
-        Predicate predicate = cb.equal(root.get("systemId"), systemId);
-        predicate = cb.and(predicate, cb.equal(root.get("subscriptionId"), subscriptionId));
-
-        query.select(root).where(predicate);
-        return getSession().createQuery(query).uniqueResult();
+        String sql = "SELECT * FROM susePinnedSubscription " +
+                "WHERE system_id = :systemId AND subscription_id = :subscriptionId";
+        return (PinnedSubscription) getSession()
+                .createNativeQuery(sql, PinnedSubscription.class)
+                .setParameter("systemId", systemId, LongType.INSTANCE)
+                .setParameter("subscriptionId", subscriptionId, LongType.INSTANCE)
+                .getSingleResult();
     }
 }
