@@ -10757,6 +10757,26 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a reboot, only if required</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+        <source>SCC Data Forwarding enabled successfully.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+        <source>SCC Data Forwarding is already enabled.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+        <source>Data is not being synchronized with SCC</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+        <source>
+          &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
+          By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
+        </source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
