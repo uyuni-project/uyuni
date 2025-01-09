@@ -22,6 +22,11 @@
 
 <rl:listset name="groupSet" legend="errata">
     <rhn:csrf />
+    <div class="spacewalk-section-toolbar">
+        <rl:csv
+            name="errataList"
+            exportColumns="advisoryName,advisorySynopsis,affectedSystemCount,updateDate" />
+    </div>
     <rhn:hidden name="sgid" value="${systemgroup.id}" />
 
     <rl:list emptykey="erratalist.jsp.noerrata">
@@ -76,9 +81,6 @@
             </rl:column>
         </c:if>
     </rl:list>
-    <rl:csv
-        name="errataList"
-        exportColumns="advisoryName,advisorySynopsis,affectedSystemCount,updateDate" />
 </rl:listset>
 
 </body>
