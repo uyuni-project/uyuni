@@ -4719,140 +4719,140 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip" xml:space="preserve">
         <source>'kernel', 'slessp1-glibc'</source>
-        <target/>
+        <target state="translated">'kernel', 'slessp1-glibc'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.toolbar" xml:space="preserve">
         <source>Advanced Search</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie vráti výsledky z kompletného súboru opráv vydaných @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
-        <target/>
+        <target state="translated">Nižšie uveďte kritériá vyhľadávania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
-        <target/>
+        <target state="translated">Hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
-        <target/>
+        <target state="translated">Čo treba hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory" xml:space="preserve">
         <source>Patch Advisory</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="simple_errata_search" xml:space="preserve">
         <source>Synopsis</source>
-        <target/>
+        <target state="translated">Súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory" xml:space="preserve">
         <source>Patch Advisory (ex: slessp1-glibc)</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu (napr.: slessp1-glibc)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_package_name" xml:space="preserve">
         <source>Package Name (ex: kernel)</source>
-        <target/>
+        <target state="translated">Názov balíka (napr.: jadro)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_cve" xml:space="preserve">
         <source>CVE (ex: CVE-2006-4535)</source>
-        <target/>
+        <target state="translated">CVE (napr.: CVE-2006-4535)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search_by_issue_dates" xml:space="preserve">
         <source>Search by Issue Dates:</source>
-        <target/>
+        <target state="translated">Vyhľadávanie podľa dátumu vydania:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.issue_date" xml:space="preserve">
         <source>Issue Dates to Search:</source>
-        <target/>
+        <target state="translated">Dátumy vydania na vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields" xml:space="preserve">
         <source>All Fields </source>
-        <target/>
+        <target state="translated">Všetky polia </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="search.jsp.package_name" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.noerrata" xml:space="preserve">
         <source>No patches.</source>
-        <target/>
+        <target state="translated">Žiadne opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip" xml:space="preserve">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
-        <target/>
+        <target state="translated">Použite 'všetky polia' na vyhľadávanie súhrnu, opisu, predmetu alebo riešenia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
-        <target/>
+        <target state="translated">Typy opráv na vyhľadávanie:.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.issueDate" xml:space="preserve">
         <source>Issue Date</source>
-        <target/>
+        <target state="translated">Dátum vydania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary" xml:space="preserve">
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
-        <target/>
+        <target state="translated"> &lt;p&gt; Nasledujúci zoznam opráv predstavuje opravy, ktoré vlastní vaša organizácia.&lt;/p&gt; &lt;p&gt; Kliknutím na upozornenie na opravu môžete upraviť podrobnosti o oprave alebo zoznam balíkov, na ktoré sa oprava vzťahuje. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
