@@ -58,6 +58,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -90,6 +91,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -101,6 +104,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -337,35 +341,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // this is the time to update SystemInfo
             MinionList minionTarget = new MinionList(minionId);
             saltApi.updateSystemInfo(minionTarget);
-            scheduleCoCoAttestation(registeredMinion);
             schedulePackageListRefresh(registeredMinion);
-        }
-    }
-
-    /**
-     * Schedule a Confidential Compute Attestation when the minion has CoCoAttestation
-     * enabled and attestOnBoot is enabled
-     *
-     * @param minion the minion
-     */
-    private void scheduleCoCoAttestation(MinionServer minion) {
-        if (minion.getOptCocoAttestationConfig()
-                .filter(ServerCoCoAttestationConfig::isEnabled)
-                .filter(ServerCoCoAttestationConfig::isAttestOnBoot)
-                .isEmpty()) {
-            // no attestation configured or wanted on startup
-            return;
-        }
-
-        try {
-            // eariest 1 minute later to finish the boot process
-            // randomize a bit to prevent an attestation storm on a mass reboot action
-            int rand = ThreadLocalRandom.current().nextInt(60, 90);
-            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
-            attestationManager.scheduleAttestationActionFromSystem(minion.getOrg(), minion, scheduleAt);
-        }
-        catch (TaskomaticApiException e) {
-            LOG.error("Unable to schedule attestation action. ", e);
         }
     }
 
