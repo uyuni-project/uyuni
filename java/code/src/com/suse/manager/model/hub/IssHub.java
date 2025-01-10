@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,6 +12,7 @@ package com.suse.manager.model.hub;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssRole;
 
 import java.util.Objects;
 
@@ -23,10 +24,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSHub")
-public class IssHub extends BaseDomainHelper {
+public class IssHub extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
@@ -34,6 +36,11 @@ public class IssHub extends BaseDomainHelper {
 
     protected IssHub() {
         // Default empty Constructor for Hibernate
+    }
+
+    @Transient
+    public IssRole getRole() {
+        return IssRole.HUB;
     }
 
     /**
@@ -61,6 +68,7 @@ public class IssHub extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Override
     public Long getId() {
         return id;
     }
@@ -70,6 +78,7 @@ public class IssHub extends BaseDomainHelper {
      * @return return the FQDN of the Hub Server
      */
     @Column(name = "fqdn", unique = true)
+    @Override
     public String getFqdn() {
         return fqdn;
     }
@@ -79,6 +88,7 @@ public class IssHub extends BaseDomainHelper {
      * @return return the root ca
      */
     @Column(name = "root_ca")
+    @Override
     public String getRootCa() {
         return rootCa;
     }
@@ -103,6 +113,7 @@ public class IssHub extends BaseDomainHelper {
     /**
      * @param fqdnIn the FQDN
      */
+    @Override
     public void setFqdn(String fqdnIn) {
         fqdn = fqdnIn;
     }
@@ -110,6 +121,7 @@ public class IssHub extends BaseDomainHelper {
     /**
      * @param rootCaIn the root ca
      */
+    @Override
     public void setRootCa(String rootCaIn) {
         rootCa = rootCaIn;
     }
