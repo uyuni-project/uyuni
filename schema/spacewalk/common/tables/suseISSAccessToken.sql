@@ -20,5 +20,5 @@ CREATE TABLE suseISSAccessToken
     expiration_date     TIMESTAMPTZ NULL
 );
 
-CREATE INDEX suse_isstoken_server_fqdn_type_idx
+CREATE UNIQUE INDEX suse_isstoken_server_fqdn_type_idx
     ON suseISSAccessToken (server_fqdn, type);
