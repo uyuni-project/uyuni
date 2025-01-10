@@ -676,6 +676,26 @@ public class SparkApplicationHelper {
     }
 
     /**
+     * Serialize a success
+     * @param response the http response
+     * @return a JSON string
+     */
+    public static String success(Response response) {
+        return json(response, ResultJson.success(), new TypeToken<>() { });
+    }
+
+    /**
+     * Serialize a success
+     * @param response the http response
+     * @param data the data
+     * @return a JSON string
+     * @param <T> the type of data
+     */
+    public static <T> String success(Response response, T data) {
+        return json(response, data, new TypeToken<>() { });
+    }
+
+    /**
      * Serialize the result and set the response content type to JSON.
      * @param response the http response
      * @param result the list of strings to serialize

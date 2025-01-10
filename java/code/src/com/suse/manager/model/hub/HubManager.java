@@ -12,10 +12,15 @@
 package com.suse.manager.model.hub;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.manager.iss.IssClientFactory;
 import com.suse.manager.iss.IssInternalClient;
+import com.suse.manager.iss.SCCCredentialsJson;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -23,7 +28,10 @@ import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.utils.CertificateUtils;
 
+import org.apache.commons.lang3.RandomStringUtils;
+
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.util.Optional;
 
@@ -31,6 +39,8 @@ import java.util.Optional;
  * Business logic to manage ISSv3 Sync
  */
 public class HubManager {
+
+    private final MirrorCredentialsManager mirrorCredentialsManager;
 
     private final HubFactory hubFactory;
 
@@ -40,17 +50,20 @@ public class HubManager {
      * Default constructor
      */
     public HubManager() {
-        this(new HubFactory(), new IssClientFactory());
+        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager());
     }
 
     /**
      * Builds an instance with the given dependencies
      * @param hubFactoryIn the hub factory
      * @param clientFactoryIn the ISS client factory
+     * @param mirrorCredentialsManagerIn the mirror credentials manager
      */
-    public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn) {
+    public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
+                      MirrorCredentialsManager mirrorCredentialsManagerIn) {
         this.hubFactory = hubFactoryIn;
         this.clientFactory = clientFactoryIn;
+        this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
     }
 
     /**
@@ -67,6 +80,35 @@ public class HubManager {
 
         hubFactory.saveToken(fqdn, token.getSerializedForm(), TokenType.ISSUED, token.getExpirationTime());
         return token.getSerializedForm();
+    }
+
+    /**
+     * Returns the ISS of the specified role, if present
+     * @param role the role of the server
+     * @param serverFqdn the FQDN
+     * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
+     */
+    public IssServer findServer(IssRole role, String serverFqdn) {
+        return switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(serverFqdn).orElse(null);
+        };
+    }
+
+    /**
+     * Save a server
+     * @param server the server to save
+     */
+    public void saveServer(IssServer server) {
+        if (server instanceof IssHub hub) {
+            hubFactory.save(hub);
+        }
+        else if (server instanceof IssPeripheral peripheral) {
+            hubFactory.save(peripheral);
+        }
+        else {
+            throw new IllegalArgumentException("Unknown server class " + server.getClass().getName());
+        }
     }
 
     /**
@@ -122,7 +164,7 @@ public class HubManager {
      *
      * @param remoteServer the peripheral server FQDN
      * @param role the ISS role, either hub or peripheral
-     * @param username the username of a {@link com.redhat.rhn.domain.role.RoleFactory#SAT_ADMIN} of the remote server
+     * @param username the username of a {@link RoleFactory#SAT_ADMIN} of the remote server
      * @param password the password of the specified user
      * @param rootCA the optional root CA of the remote server. can be null
      *
@@ -166,6 +208,45 @@ public class HubManager {
         registerWithToken(remoteServer, role, rootCA, remoteToken);
     }
 
+    /**
+     * Generate SCC credentials for the specified peripheral
+     * @param peripheralId the id of the peripheral server
+     * @return the generated credentials
+     */
+    public SCCCredentialsJson generateSCCCredentials(long peripheralId) {
+        String username = "peripheral-%06d".formatted(peripheralId);
+        String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
+
+        /*
+         * TODO Store and return the credentials. This involves creating a new credential type not yet defined.
+         *  For now, just return a SCCCredentialsJson object as temporary wrapper of username/password
+         */
+
+        return new SCCCredentialsJson(username, password);
+    }
+
+    /**
+     * Store the given SCC credentials into the credentials database
+     * @param hub the FQDN of the hub of this credentials
+     * @param username the username
+     * @param password the password
+     */
+    public void storeSCCCredentials(IssHub hub, String username, String password) {
+        // Delete any existing SCC Credentials
+        CredentialsFactory.listSCCCredentials()
+            .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
+
+        // Create the new credentials for the hub
+        SCCCredentials credentials = CredentialsFactory.createSCCCredentials(username, password);
+
+        // TODO Ensure the path is correct once the SCC Endoint is implemented
+        credentials.setUrl("https://" + hub.getFqdn());
+        CredentialsFactory.storeCredentials(credentials);
+
+        hub.setMirrorCredentials(credentials);
+        saveServer(hub);
+    }
+
     private void registerWithToken(String remoteServer, IssRole role, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException {
         storeAccessToken(remoteServer, remoteToken);
@@ -188,6 +269,20 @@ public class HubManager {
         String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
 
         internalApi.register(localRoleForRemote, localAccessToken, localRootCA);
+
+        if (remoteServer instanceof IssPeripheral) {
+            // if the remote server is a peripheral, generate the scc credentials for it
+            SCCCredentialsJson credentials = generateSCCCredentials(remoteServer.getId());
+            internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
+        }
+        else if (remoteServer instanceof IssHub hub) {
+            // If remote server is a hub, ask for the credentials
+            SCCCredentialsJson credentialsJson = internalApi.generateCredentials();
+            storeSCCCredentials(hub, credentialsJson.getUsername(), credentialsJson.getPassword());
+        }
+        else {
+            throw new IllegalStateException("Unknown IssServer class " + remoteServer.getClass());
+        }
     }
 
     private void ensureServerNotRegistered(String peripheralServer) {
