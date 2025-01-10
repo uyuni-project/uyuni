@@ -49,6 +49,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
@@ -57,6 +58,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -89,6 +91,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -100,6 +104,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -336,6 +341,30 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             // this is the time to update SystemInfo
             MinionList minionTarget = new MinionList(minionId);
             saltApi.updateSystemInfo(minionTarget);
+            schedulePackageListRefresh(registeredMinion);
+        }
+    }
+
+    /**
+     * Schedule a package list refresh when the minion supports transactional update
+     *
+     * @param minion the minion
+     */
+    private void schedulePackageListRefresh(MinionServer minion) {
+        if (!minion.doesOsSupportsTransactionalUpdate()) {
+            // no package list refresh wanted on startup
+            return;
+        }
+
+        try {
+            // eariest 1 minute later to finish the boot process
+            // randomize a bit to prevent a package list refresh storm on a mass reboot action
+            int rand = ThreadLocalRandom.current().nextInt(60, 90);
+            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
+            ActionManager.schedulePackageRefresh(Optional.empty(), minion, scheduleAt);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule package list refresh action. ", e);
         }
     }
 
