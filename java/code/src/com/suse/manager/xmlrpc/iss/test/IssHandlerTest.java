@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -24,7 +24,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.suse.manager.model.hub.HubManager;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
-import com.suse.manager.xmlrpc.iss.SyncHandler;
+import com.suse.manager.xmlrpc.iss.IssHandler;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -36,7 +36,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 @ExtendWith(JUnit5Mockery.class)
-public class SyncHandlerTest extends BaseHandlerTestCase {
+public class IssHandlerTest extends BaseHandlerTestCase {
 
     @RegisterExtension
     protected final JUnit5Mockery context = new JUnit5Mockery() {{
@@ -45,7 +45,7 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
 
     private HubManager hubManagerMock;
 
-    private SyncHandler syncHandler;
+    private IssHandler ISSHandler;
 
     @BeforeEach
     public void setup() {
@@ -53,7 +53,7 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
         context.setImposteriser((ByteBuddyClassImposteriser.INSTANCE));
 
         hubManagerMock = context.mock(HubManager.class);
-        syncHandler = new SyncHandler(hubManagerMock);
+        ISSHandler = new IssHandler(hubManagerMock);
     }
 
     @Test
@@ -65,16 +65,16 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> syncHandler.generateAccessToken(regular, "uyuni-server.dev.local")
+            () -> ISSHandler.generateAccessToken(regular, "uyuni-server.dev.local")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> syncHandler.generateAccessToken(admin, "uyuni-server.dev.local")
+            () -> ISSHandler.generateAccessToken(admin, "uyuni-server.dev.local")
         );
 
         assertDoesNotThrow(
-            () -> syncHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local")
+            () -> ISSHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local")
         );
     }
 
@@ -86,7 +86,7 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
         context.checking(expectations);
 
         assertThrows(TokenCreationException.class,
-            () -> syncHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local"));
+            () -> ISSHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local"));
     }
 
     @Test
@@ -97,16 +97,16 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> syncHandler.storeAccessToken(regular, "uyuni-server.dev.local", "dummy-token")
+            () -> ISSHandler.storeAccessToken(regular, "uyuni-server.dev.local", "dummy-token")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> syncHandler.storeAccessToken(admin, "uyuni-server.dev.local", "dummy-token")
+            () -> ISSHandler.storeAccessToken(admin, "uyuni-server.dev.local", "dummy-token")
         );
 
         assertDoesNotThrow(
-            () -> syncHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token")
+            () -> ISSHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token")
         );
     }
 
@@ -118,6 +118,6 @@ public class SyncHandlerTest extends BaseHandlerTestCase {
         context.checking(expectations);
 
         assertThrows(InvalidTokenException.class,
-            () -> syncHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token"));
+            () -> ISSHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token"));
     }
 }
