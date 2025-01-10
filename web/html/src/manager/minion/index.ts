@@ -12,4 +12,5 @@ export default {
   "minion/coco/coco-settings": () => import("./coco/coco-settings.renderer"),
   "minion/coco/coco-scans-list": () => import("./coco/coco-scans-list.renderer"),
   "minion/proxy/proxy-config": () => import("./proxy/proxy-config.renderer"),
+  "minion/audit/schedule-scap-scan": () => import("./audit/schedule-scap-scan"),
 };

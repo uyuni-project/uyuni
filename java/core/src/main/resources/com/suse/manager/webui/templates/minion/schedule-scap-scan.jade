@@ -1,0 +1,18 @@
+include ./minion-header.jade
+#schedule-scap-scan
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.profileId = "#{profileId}";
+    window.activationKeys = !{activationKeys};
+    window.customDataKeys = !{customDataKeys};
+    window.imageTypesDataFromTheServer = !{imageTypesDataFromTheServer};
+    window.minions = [{id: #{server.id}}];
+    window.entityType = "#{entityType}";
+    window.scapDataStreams = !{scapDataStreams};
+    window.tailoringFiles = !{tailoringFiles};
+    window.scapPolicies = !{scapPolicies};
+
+script(type='text/javascript').
+    spaImportReactPage('minion/audit/schedule-scap-scan')
+        .then(function(module) { module.renderer('audit/schedule-scap-scan') });
