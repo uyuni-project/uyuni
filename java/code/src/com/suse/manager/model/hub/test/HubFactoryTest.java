@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
@@ -96,7 +97,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(issPeripheral.get().getCreated(), "created should not be NULL");
         assertNull(issPeripheral.get().getRootCa(), "Root CA should be NULL");
 
-        SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("U123", "not so secret");
+        HubSCCCredentials sccCredentials = CredentialsFactory.createHubSCCCredentials("U123", "not so secret", "fqdn");
         CredentialsFactory.storeCredentials(sccCredentials);
 
         peripheral.setRootCa("----- BEGIN CA -----");
@@ -112,7 +113,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateIssPeripheralChannels() throws Exception {
-        SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("U123", "not so secret");
+        HubSCCCredentials sccCredentials = CredentialsFactory.createHubSCCCredentials("U123", "not so secret", "fqdn");
         CredentialsFactory.storeCredentials(sccCredentials);
 
         Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);

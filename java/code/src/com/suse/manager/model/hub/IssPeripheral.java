@@ -11,7 +11,7 @@
 package com.suse.manager.model.hub;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -38,7 +38,7 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
-    private SCCCredentials mirrorCredentials;
+    private HubSCCCredentials mirrorCredentials;
     private Set<IssPeripheralChannels> peripheralChannels;
 
     protected IssPeripheral() {
@@ -106,9 +106,9 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne(targetEntity = SCCCredentials.class)
+    @ManyToOne(targetEntity = HubSCCCredentials.class)
     @JoinColumn(name = "mirror_creds_id")
-    public SCCCredentials getMirrorCredentials() {
+    public HubSCCCredentials getMirrorCredentials() {
         return mirrorCredentials;
     }
 
@@ -146,7 +146,7 @@ public class IssPeripheral extends BaseDomainHelper implements IssServer {
     /**
      * @param mirrorCredentialsIn the mirror credentials
      */
-    public void setMirrorCredentials(SCCCredentials mirrorCredentialsIn) {
+    public void setMirrorCredentials(HubSCCCredentials mirrorCredentialsIn) {
         mirrorCredentials = mirrorCredentialsIn;
     }
 

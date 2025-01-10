@@ -13,6 +13,7 @@ package com.suse.manager.model.hub;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -210,19 +211,20 @@ public class HubManager {
 
     /**
      * Generate SCC credentials for the specified peripheral
-     * @param peripheralId the id of the peripheral server
-     * @return the generated credentials
+     * @param peripheral the id of the peripheral server
+     * @return the generated {@link HubSCCCredentials}
      */
-    public SCCCredentialsJson generateSCCCredentials(long peripheralId) {
-        String username = "peripheral-%06d".formatted(peripheralId);
+    public HubSCCCredentials generateSCCCredentials(IssPeripheral peripheral) {
+        String username = "peripheral-%06d".formatted(peripheral.getId());
         String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
 
-        /*
-         * TODO Store and return the credentials. This involves creating a new credential type not yet defined.
-         *  For now, just return a SCCCredentialsJson object as temporary wrapper of username/password
-         */
+        var hubSCCCredentials = CredentialsFactory.createHubSCCCredentials(username, password, peripheral.getFqdn());
+        CredentialsFactory.storeCredentials(hubSCCCredentials);
 
-        return new SCCCredentialsJson(username, password);
+        peripheral.setMirrorCredentials(hubSCCCredentials);
+        saveServer(peripheral);
+
+        return hubSCCCredentials;
     }
 
     /**
@@ -230,8 +232,9 @@ public class HubManager {
      * @param hub the FQDN of the hub of this credentials
      * @param username the username
      * @param password the password
+     * @return the stored {@link SCCCredentials}
      */
-    public void storeSCCCredentials(IssHub hub, String username, String password) {
+    public SCCCredentials storeSCCCredentials(IssHub hub, String username, String password) {
         // Delete any existing SCC Credentials
         CredentialsFactory.listSCCCredentials()
             .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
@@ -245,6 +248,8 @@ public class HubManager {
 
         hub.setMirrorCredentials(credentials);
         saveServer(hub);
+
+        return credentials;
     }
 
     private void registerWithToken(String remoteServer, IssRole role, String rootCA, String remoteToken)
@@ -270,9 +275,9 @@ public class HubManager {
 
         internalApi.register(localRoleForRemote, localAccessToken, localRootCA);
 
-        if (remoteServer instanceof IssPeripheral) {
+        if (remoteServer instanceof IssPeripheral peripheral) {
             // if the remote server is a peripheral, generate the scc credentials for it
-            SCCCredentialsJson credentials = generateSCCCredentials(remoteServer.getId());
+            HubSCCCredentials credentials = generateSCCCredentials(peripheral);
             internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
         }
         else if (remoteServer instanceof IssHub hub) {

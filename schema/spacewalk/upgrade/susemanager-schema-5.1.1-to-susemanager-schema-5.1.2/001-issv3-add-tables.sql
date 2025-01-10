@@ -85,3 +85,39 @@ CREATE TABLE IF NOT EXISTS suseISSAccessToken
 
 CREATE UNIQUE INDEX IF NOT EXISTS suse_isstoken_server_fqdn_type_idx
     ON suseISSAccessToken (server_fqdn, type);
+
+ALTER TABLE suseCredentials
+    DROP CONSTRAINT rhn_type_ck;
+
+ALTER TABLE suseCredentials
+    ADD CONSTRAINT rhn_type_ck
+    CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc'));
+
+ALTER TABLE susecredentials
+    DROP CONSTRAINT cred_type_check;
+
+ALTER TABLE susecredentials
+    ADD CONSTRAINT cred_type_check CHECK (
+        CASE type
+            WHEN 'scc' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'cloudrmt' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+                    and url is not null and url <> ''
+            WHEN 'vhm' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'registrycreds' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'reportcreds' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+            WHEN 'hub_scc' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+                    and url is not null and url <> ''
+        END
+    );
