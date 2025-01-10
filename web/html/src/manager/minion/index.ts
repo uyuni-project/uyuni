@@ -10,4 +10,5 @@ export default {
   "minion/ptf/ptf-install": () => import("./ptf/ptf-install.renderer"),
   "minion/coco/coco-settings": () => import("./coco/coco-settings.renderer"),
   "minion/coco/coco-scans-list": () => import("./coco/coco-scans-list.renderer"),
+  "minion/audit/schedule-scap-scan": () => import("./audit/schedule-scap-scan"),
 };

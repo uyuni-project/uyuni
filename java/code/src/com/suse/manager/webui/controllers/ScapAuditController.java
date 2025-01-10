@@ -3,24 +3,38 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
+import com.redhat.rhn.domain.reactor.SaltEvent;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
+import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
-import com.suse.manager.webui.utils.ScapPolicyJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyDetailJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ScapScanScheduleJson;
 import com.suse.utils.Json;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import org.hibernate.query.Query;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -31,6 +45,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -38,13 +53,10 @@ import java.time.ZoneId;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withImageAdmin;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.*;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import com.google.gson.reflect.TypeToken;
 
 public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
@@ -82,7 +94,14 @@ public class ScapAuditController {
         post("/manager/api/audit/scap/policy/create", withUser(this::createScapPolicy));
         post("/manager/api/audit/scap/policy/delete", withUser(this::deleteScapPolicy));
 
+        // Scap scans schedule
+
+        get("/manager/systems/details/schedule-scap-scan",
+                withCsrfToken(withDocsLocale(withUserAndServer(this::scheduleAuditScanView))),
+                jade);
+        post("manager/api/audit/schedule/create", withUser(ScapAuditController::scheduleAuditScan));
     }
+
 
     /**
      * Processes a GET request to get a list of all Tailoring files
@@ -409,6 +428,83 @@ public class ScapAuditController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    /**
+     * Processes a GET request to get a list of all image store objects of a specific type
+     *
+     * @param request  the request object
+     * @param response  the response object
+     * @param user the authorized user
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    private ModelAndView scheduleAuditScanView(Request request, Response response, User user, Server server) {
+        List<String> imageTypesDataFromTheServer = new ArrayList<>();
+        imageTypesDataFromTheServer.add("dockerfile");
+
+        final String SCAP_CONTENT_STANDARD_DIR = "/srv/www/htdocs/pub/scap/ssg/content";
+        File scapContentDir = new File(SCAP_CONTENT_STANDARD_DIR);
+        List<String> collect1 = Arrays.stream(scapContentDir.listFiles((dir, name) -> name.endsWith("-ds.xml")))
+                .map(s -> s.getName().toUpperCase().split("-DS.XML")[0]).collect(Collectors.toList());
+        List<String> collect2 = Arrays.stream(scapContentDir.listFiles((dir, name) -> name.endsWith("-xccdf.xml")))
+                .map(s -> s.getName()).collect(Collectors.toList());
+        /*List<File> files1 = Optional.ofNullable(scapContentDir1.listFiles())
+                .map(Arrays::asList)
+                .orElseGet(() -> {
+                    LOG.error("Unable to read formulas from folder '{}'. Check if it exists and have the " +
+                            "correct permissions (755).", scapContentDir.getAbsolutePath());
+                    return Collections.EMPTY_LIST;
+                });*/
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("activationKeys", new HashMap<>());
+        data.put("customDataKeys",new HashMap<>());
+        data.put("imageTypesDataFromTheServer", Json.GSON.toJson(imageTypesDataFromTheServer));
+
+        data.put("scapDataStreams", Json.GSON.toJson(collect2));
+        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
+        List<JsonObject> collect = tailoringFiles.stream().map(this::convertToTailoringFileJson).collect(Collectors.toList());
+        data.put("tailoringFiles", collect);
+
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
+                .map(policy -> {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("id", policy.getId());
+                    json.addProperty("policyName", policy.getPolicyName());
+                    return json;
+                })
+                .collect(Collectors.toList());
+            data.put("scapPolicies", scapPoliciesJson);
+
+        return new ModelAndView(data, "templates/minion/schedule-scap-scan.jade");
+    }
+    /**
+     * Processes a GET request to get a list of all the scap policies
+     *
+     * @param req  the request object
+     * @param res  the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String listScapPolicies(Request req, Response res, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
+                .map(policy -> {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("id", policy.getId());
+                    json.addProperty("policyName", policy.getPolicyName());
+                    json.addProperty("dataStreamName", policy.getDataStreamName());
+                    json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+                    json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
+                    json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    return json;
+                })
+                .collect(Collectors.toList());
+        //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
+        data.put("scapPolicies", scapPoliciesJson);
+        return json(res, scapPoliciesJson, new TypeToken<>() { });
     }
 
 }
