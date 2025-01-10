@@ -21,6 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static spark.Spark.post;
 
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
 
 import com.suse.manager.model.hub.HubManager;
@@ -112,8 +113,8 @@ public class SyncController {
             return badRequest(response, "Specified FQDN is not a known peripheral");
         }
 
-        SCCCredentialsJson credentialsJson = hubManager.generateSCCCredentials(peripheral.getId());
-        return success(response, credentialsJson);
+        HubSCCCredentials credentials = hubManager.generateSCCCredentials(peripheral);
+        return success(response, new SCCCredentialsJson(credentials.getUsername(), credentials.getPassword()));
     }
 
     private String storeCredentials(Request request, Response response, Token token, String fqdn) {
@@ -126,7 +127,6 @@ public class SyncController {
         }
 
         hubManager.storeSCCCredentials(hub, storeRequest.getUsername(), storeRequest.getPassword());
-
         return success(response);
     }
 }
