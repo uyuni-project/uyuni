@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018--2024 SUSE LLC
+ * Copyright (c) 2018--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.credentials.BaseCredentials;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.RHUICredentials;
 import com.redhat.rhn.domain.credentials.RegistryCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
@@ -226,6 +227,7 @@ public class AnnotationRegistry {
             EnvironmentTarget.class,
             ErrataFilter.class,
             GroupRecurringAction.class,
+            HubSCCCredentials.class,
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
