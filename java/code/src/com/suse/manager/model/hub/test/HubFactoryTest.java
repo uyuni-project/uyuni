@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -32,6 +32,8 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.TokenType;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.hibernate.query.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -162,16 +164,12 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAndLookupTokens() {
         Instant expiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(60, ChronoUnit.DAYS);
 
-        long currentTokens = HibernateFactory.getSession()
-            .createQuery("SELECT COUNT(*) FROM IssAccessToken at", Long.class)
-            .uniqueResult();
+        long currentTokens = countCurrentTokens();
 
         hubFactory.saveToken("uyuni-hub.dev.local", "dummy-hub-token", TokenType.ISSUED, expiration);
         hubFactory.saveToken("uyuni-peripheral.dev.local", "dummy-peripheral-token", TokenType.CONSUMED, expiration);
 
-        assertEquals(currentTokens + 2, HibernateFactory.getSession()
-            .createQuery("SELECT COUNT(*) FROM IssAccessToken at", Long.class)
-            .uniqueResult());
+        assertEquals(currentTokens + 2, countCurrentTokens());
 
         IssAccessToken hubAccessToken = hubFactory.lookupIssuedToken("dummy-hub-token");
         assertNotNull(hubAccessToken);
@@ -184,5 +182,84 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         assertEquals("dummy-peripheral-token", peripheralAccessToken.getToken());
         assertEquals(TokenType.CONSUMED, peripheralAccessToken.getType());
         assertEquals(Date.from(expiration), peripheralAccessToken.getExpirationDate());
+    }
+
+    @Test
+    public void canLookupTokensByFqdnAndType() {
+        Instant expiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(60, ChronoUnit.DAYS);
+
+        hubFactory.saveToken("dummy.fqdn", "dummy-issued-token", TokenType.ISSUED, expiration);
+        hubFactory.saveToken("dummy.fqdn", "dummy-consumed-token", TokenType.CONSUMED, expiration);
+
+        IssAccessToken issued = hubFactory.lookupAccessTokenByFqdnAndType("dummy.fqdn", TokenType.ISSUED);
+        assertNotNull(issued);
+        assertEquals("dummy.fqdn", issued.getServerFqdn());
+        assertEquals(TokenType.ISSUED, issued.getType());
+        assertEquals(Date.from(expiration), issued.getExpirationDate());
+
+        IssAccessToken consumed = hubFactory.lookupAccessTokenByFqdnAndType("dummy.fqdn", TokenType.CONSUMED);
+        assertNotNull(consumed);
+        assertEquals("dummy.fqdn", consumed.getServerFqdn());
+        assertEquals(TokenType.CONSUMED, consumed.getType());
+        assertEquals(Date.from(expiration), consumed.getExpirationDate());
+    }
+
+    @Test
+    public void ensureOnlyOneTokenIsStoredForFqdnAndType() {
+        Instant shortExpiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(7, ChronoUnit.DAYS);
+        Instant longExpiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(60, ChronoUnit.DAYS);
+
+        String fqdn = "dummy.random.%s.fqdn".formatted(RandomStringUtils.randomAlphabetic(8));
+        // Ensure no token exists with this fqdn
+        assertEquals(0, countCurrentTokens(fqdn));
+
+        // Should be possible to store both issued and consumed token
+        hubFactory.saveToken(fqdn, "dummy-issued-token", TokenType.ISSUED, longExpiration);
+        hubFactory.saveToken(fqdn, "dummy-consumed-token", TokenType.CONSUMED, longExpiration);
+
+        assertEquals(2, countCurrentTokens(fqdn));
+
+        // Check if the token is correct
+        IssAccessToken issued = hubFactory.lookupAccessTokenByFqdnAndType(fqdn, TokenType.ISSUED);
+        assertNotNull(issued);
+        assertEquals(fqdn, issued.getServerFqdn());
+        assertEquals("dummy-issued-token", issued.getToken());
+        assertEquals(TokenType.ISSUED, issued.getType());
+        assertEquals(Date.from(longExpiration), issued.getExpirationDate());
+
+        // Storing a new issued token should replace the existing one
+        hubFactory.saveToken(fqdn, "updated-issued-token", TokenType.ISSUED, shortExpiration);
+
+        // We should still have 2 tokens
+        assertEquals(2, HibernateFactory.getSession()
+            .createQuery("SELECT COUNT(*) FROM IssAccessToken at WHERE at.serverFqdn = :fqdn", Long.class)
+            .setParameter("fqdn", fqdn)
+            .uniqueResult());
+
+        // Check if the token is updated correctly
+        issued = hubFactory.lookupAccessTokenByFqdnAndType(fqdn, TokenType.ISSUED);
+        assertNotNull(issued);
+        assertEquals(fqdn, issued.getServerFqdn());
+        assertEquals("updated-issued-token", issued.getToken());
+        assertEquals(TokenType.ISSUED, issued.getType());
+        assertEquals(Date.from(shortExpiration), issued.getExpirationDate());
+    }
+
+    private static Long countCurrentTokens() {
+        return countCurrentTokens(null);
+    }
+
+    private static Long countCurrentTokens(String fqdn) {
+        String hql = "SELECT COUNT(*) FROM IssAccessToken at";
+        if (fqdn != null) {
+            hql += " WHERE at.serverFqdn = :fqdn";
+        }
+
+        Query<Long> query = HibernateFactory.getSession().createQuery(hql, Long.class);
+        if (fqdn != null) {
+            query.setParameter("fqdn", fqdn);
+        }
+
+        return query.uniqueResult();
     }
 }
