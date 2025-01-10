@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -11,27 +11,23 @@
 
 package com.suse.manager.iss;
 
+import static com.suse.manager.iss.IssSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.usingTokenAuthentication;
 import static spark.Spark.post;
 
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.Token;
-import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-import org.apache.http.HttpStatus;
-
 import java.util.Date;
 
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 
 public class SyncController {
 
@@ -48,15 +44,8 @@ public class SyncController {
     }
 
     // Basic ping to check if the system is up
-    private String ping(Request request, Response response, Token token) {
-        try {
-            String fqdn = token.getClaim("fqdn", String.class);
-            ResultJson<Object> result = ResultJson.successMessage("Pinged from %s".formatted(fqdn));
-            return json(GSON, response, result, new TypeToken<>() { });
-        }
-        catch (TokenParsingException ex) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST, "Invalid token provided: missing required claim");
-            return null;
-        }
+    private String ping(Request request, Response response, Token token, String fqdn) {
+        ResultJson<Object> result = ResultJson.successMessage("Pinged from %s".formatted(fqdn));
+        return json(GSON, response, result, new TypeToken<>() { });
     }
 }
