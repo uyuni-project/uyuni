@@ -1,4 +1,4 @@
-package com.suse.manager.webui.utils;
+package com.suse.manager.webui.utils.gson;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
