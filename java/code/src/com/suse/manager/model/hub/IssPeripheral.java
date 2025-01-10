@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,6 +12,7 @@ package com.suse.manager.model.hub;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssRole;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -29,10 +30,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSPeripheral")
-public class IssPeripheral extends BaseDomainHelper {
+public class IssPeripheral extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
@@ -42,6 +44,11 @@ public class IssPeripheral extends BaseDomainHelper {
     protected IssPeripheral() {
         peripheralChannels = new HashSet<>();
         // Default empty Constructor for Hibernate
+    }
+
+    @Transient
+    public IssRole getRole() {
+        return IssRole.PERIPHERAL;
     }
 
     /**
@@ -70,6 +77,7 @@ public class IssPeripheral extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Override
     public Long getId() {
         return id;
     }
@@ -79,6 +87,7 @@ public class IssPeripheral extends BaseDomainHelper {
      * @return return the FQDN of the Peripheral Server
      */
     @Column(name = "fqdn", unique = true)
+    @Override
     public String getFqdn() {
         return fqdn;
     }
@@ -88,6 +97,7 @@ public class IssPeripheral extends BaseDomainHelper {
      * @return return the root ca
      */
     @Column(name = "root_ca")
+    @Override
     public String getRootCa() {
         return rootCa;
     }
@@ -120,6 +130,7 @@ public class IssPeripheral extends BaseDomainHelper {
     /**
      * @param fqdnIn the FQDN
      */
+    @Override
     public void setFqdn(String fqdnIn) {
         fqdn = fqdnIn;
     }
@@ -127,6 +138,7 @@ public class IssPeripheral extends BaseDomainHelper {
     /**
      * @param rootCaIn the root ca
      */
+    @Override
     public void setRootCa(String rootCaIn) {
         rootCa = rootCaIn;
     }
