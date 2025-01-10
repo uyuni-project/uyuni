@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -13,32 +13,36 @@ package com.suse.manager.xmlrpc.iss;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
+import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 
 import com.suse.manager.model.hub.HubManager;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 
 /**
- * SyncHandler
+ * IssHandler
  *
  * @apidoc.namespace sync.iss
  * @apidoc.doc Contains methods to set up and manage ISS v3 sync
  */
-public class SyncHandler extends BaseHandler {
+public class IssHandler extends BaseHandler {
 
-    private static final Logger LOGGER = LogManager.getLogger(SyncHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(IssHandler.class);
 
     private final HubManager hubManager;
 
     /**
      * Default constructor
      */
-    public SyncHandler() {
+    public IssHandler() {
         this(new HubManager());
     }
 
@@ -46,7 +50,7 @@ public class SyncHandler extends BaseHandler {
      * Builds a handler with the specified dependencies
      * @param hubManagerIn the hub manager
      */
-    public SyncHandler(HubManager hubManagerIn) {
+    public IssHandler(HubManager hubManagerIn) {
         this.hubManager = hubManagerIn;
     }
 
@@ -65,12 +69,20 @@ public class SyncHandler extends BaseHandler {
     public String generateAccessToken(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
 
+        if (StringUtils.isEmpty(fqdn)) {
+            throw new InvalidParameterException("No FQDN specified");
+        }
+
         try {
             return hubManager.issueAccessToken(fqdn);
         }
         catch (TokenException ex) {
             LOGGER.error("Unable to issue a token for {}", fqdn, ex);
             throw new TokenCreationException();
+        }
+        catch (ConstraintViolationException ex) {
+            LOGGER.error("Unable to issue a token, it already exists for {}", fqdn, ex);
+            throw new TokenAlreadyExistsException();
         }
     }
 
@@ -90,12 +102,24 @@ public class SyncHandler extends BaseHandler {
     public int storeAccessToken(User loggedInUser, String fqdn, String token) {
         ensureSatAdmin(loggedInUser);
 
+        if (StringUtils.isEmpty(fqdn)) {
+            throw new InvalidParameterException("No FQDN specified");
+        }
+
+        if (StringUtils.isEmpty(token)) {
+            throw new InvalidParameterException("No token specified");
+        }
+
         try {
             hubManager.storeAccessToken(fqdn, token);
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to process the token from {}", fqdn, ex);
             throw new InvalidTokenException();
+        }
+        catch (ConstraintViolationException ex) {
+            LOGGER.error("Unable to store token, it already exists for {}", fqdn, ex);
+            throw new TokenAlreadyExistsException();
         }
 
         return 1;
