@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -95,8 +96,19 @@ public class HubFactory extends HibernateFactory {
      * @param expiration when the token is no longer valid
      */
     public void saveToken(String fqdn, String token, TokenType type, Instant expiration) {
-        var accessToken = new IssAccessToken(type, token, fqdn, expiration);
-        getSession().save(accessToken);
+        // Lookup if this association already exists
+        IssAccessToken accessToken = lookupAccessTokenByFqdnAndType(fqdn, type);
+        if (accessToken == null) {
+            accessToken = new IssAccessToken(type, token, fqdn, expiration);
+        }
+        else {
+            accessToken.setToken(token);
+            accessToken.setValid(true);
+            accessToken.setExpirationDate(Date.from(expiration));
+        }
+
+        // Store the new token
+        getSession().saveOrUpdate(accessToken);
     }
 
     /**
@@ -121,6 +133,20 @@ public class HubFactory extends HibernateFactory {
         return getSession()
             .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn", IssAccessToken.class)
             .setParameter("type", TokenType.CONSUMED)
+            .setParameter("fqdn", fqdn)
+            .uniqueResult();
+    }
+
+    /**
+     * Returns the access token of the given type for the specified FQDN
+     * @param fqdn the FQDN of the peripheral/hub
+     * @param type the type of token
+     * @return the access token associated to the entity, if present
+     */
+    public IssAccessToken lookupAccessTokenByFqdnAndType(String fqdn, TokenType type) {
+        return getSession()
+            .createQuery("FROM IssAccessToken k WHERE k.type = :type AND k.serverFqdn = :fqdn", IssAccessToken.class)
+            .setParameter("type", type)
             .setParameter("fqdn", fqdn)
             .uniqueResult();
     }

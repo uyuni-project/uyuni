@@ -22,6 +22,7 @@ import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 import com.suse.manager.model.hub.HubManager;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.manager.xmlrpc.iss.IssHandler;
@@ -82,7 +83,7 @@ public class IssHandlerTest extends BaseHandlerTestCase {
     public void throwsCorrectExceptionWhenIssuingFails() throws TokenException {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock).issueAccessToken("uyuni-server.dev.local");
-        expectations.will(throwException(new TokenException("unexpected error")));
+        expectations.will(throwException(new TokenBuildingException("unexpected error")));
         context.checking(expectations);
 
         assertThrows(TokenCreationException.class,
