@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 SUSE LLC
+ * Copyright (c) 2012--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.credentials;
@@ -90,6 +86,17 @@ public class CredentialsFactory extends HibernateFactory {
      */
     public static SCCCredentials createSCCCredentials(String username, String password) {
         return new SCCCredentials(username, password);
+    }
+
+    /**
+     * Helper method for creating new Hub SCC {@link Credentials}
+     * @param username the username
+     * @param password the password that will be BASE64 encoded
+     * @param fqdn the FQDN of the peripheral server that will use this credentials
+     * @return new credential with type SCC
+     */
+    public static HubSCCCredentials createHubSCCCredentials(String username, String password, String fqdn) {
+        return new HubSCCCredentials(username, password, fqdn);
     }
 
     /**
