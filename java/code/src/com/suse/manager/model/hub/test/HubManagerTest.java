@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -277,6 +278,38 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("password", issHub.get().getMirrorCredentials().getPassword());
     }
 
+    @Test
+    public void canGenerateSCCCredentials() {
+        String peripheralFqdn = "dummy.peripheral.fqdn";
+
+        var peripheral = (IssPeripheral) hubManager.saveNewServer(IssRole.PERIPHERAL, peripheralFqdn, null);
+
+        // Ensure no credentials exists
+        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
+            .filter(creds -> peripheralFqdn.equals(creds.getPeripheralUrl()))
+            .count());
+
+        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheral);
+        assertEquals("peripheral-%06d".formatted(peripheral.getId()), hubSCCCredentials.getUsername());
+        assertNotNull(hubSCCCredentials.getPassword());
+        assertEquals(peripheralFqdn, hubSCCCredentials.getPeripheralUrl());
+    }
+
+    @Test
+    public void canStoreSCCCredentials() {
+        String hubFqdn = "dummy.hub.fqdn";
+        var hub = (IssHub) hubManager.saveNewServer(IssRole.HUB, hubFqdn, null);
+
+        // Ensure no credentials exists
+        assertEquals(0, CredentialsFactory.listSCCCredentials().stream()
+            .filter(creds -> "https://dummy.hub.fqdn".equals(creds.getUrl()))
+            .count());
+
+        SCCCredentials sccCredentials = hubManager.storeSCCCredentials(hub, "dummy-username", "dummy-password");
+        assertEquals("dummy-username", sccCredentials.getUsername());
+        assertEquals("dummy-password", sccCredentials.getPassword());
+        assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
+    }
 
     @Test
     public void canRegisterPeripheralWithUserNameAndPassword()
