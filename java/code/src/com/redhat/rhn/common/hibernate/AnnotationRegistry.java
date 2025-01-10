@@ -74,7 +74,6 @@ import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.product.ChannelTemplate;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -163,7 +162,7 @@ public class AnnotationRegistry {
     }
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
-//            AvailableChannelsView.class,
+            // do not add class at the endi, but keep the alphabetical order
             AccessToken.class,
             AddressImpl.class,
             AnsiblePath.class,
@@ -175,7 +174,7 @@ public class AnnotationRegistry {
             ChannelArch.class,
             Channel.class,
             ChannelSyncFlag.class,
-	    ChannelTemplate.class,
+            ChannelTemplate.class,
             ClientCapability.class,
             ClientCapabilityId.class,
             ClonedChannel.class,
@@ -285,7 +284,6 @@ public class AnnotationRegistry {
             SoftwareProjectSource.class,
             SslCryptoKey.class,
             StateChange.class,
-            SUSEProductSCCRepository.class,
             Task.class,
             TemplateString.class,
             TokenChannelAppStream.class,
