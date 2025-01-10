@@ -21,17 +21,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.iss.IssRole;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
 import com.suse.manager.iss.IssClientFactory;
 import com.suse.manager.iss.IssExternalClient;
 import com.suse.manager.iss.IssInternalClient;
+import com.suse.manager.iss.SCCCredentialsJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.HubManager;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -50,6 +55,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
 
 public class HubManagerTest extends JMockBaseTestCaseWithUser {
@@ -86,7 +92,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory = new HubFactory();
         clientFactoryMock = mock(IssClientFactory.class);
 
-        hubManager = new HubManager(hubFactory, clientFactoryMock);
+        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager());
     }
 
     @AfterEach
@@ -232,6 +238,47 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void canRetrieveHubAndPeripheralServers() {
+        hubFactory.save(new IssHub("dummy.hub.fqdn", null));
+        hubFactory.save(new IssPeripheral("dummy.peripheral.fqdn", null));
+
+        IssServer result = hubManager.findServer(IssRole.PERIPHERAL, "dummy.peripheral.fqdn");
+        assertNotNull(result);
+        assertInstanceOf(IssPeripheral.class, result);
+
+        result = hubManager.findServer(IssRole.HUB, "dummy.hub.fqdn");
+        assertNotNull(result);
+        assertInstanceOf(IssHub.class, result);
+
+        result = hubManager.findServer(IssRole.HUB, "dummy.unknown.fqdn");
+        assertNull(result);
+    }
+
+    @Test
+    public void canUpdateServer() {
+        hubFactory.save(new IssHub("dummy.hub.fqdn", null));
+        hubFactory.save(new IssPeripheral("dummy.peripheral.fqdn", null));
+
+        IssHub hub = (IssHub) hubManager.findServer(IssRole.HUB, "dummy.hub.fqdn");
+        assertNull(hub.getRootCa());
+        assertNull(hub.getMirrorCredentials());
+
+        SCCCredentials sccCredentials = CredentialsFactory.createSCCCredentials("user", "password");
+        CredentialsFactory.storeCredentials(sccCredentials);
+
+        hub.setMirrorCredentials(sccCredentials);
+        hub.setRootCa("--DUMMY--");
+
+        Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
+        assertTrue(issHub.isPresent());
+        assertEquals("--DUMMY--", issHub.get().getRootCa());
+        assertNotNull(issHub.get().getMirrorCredentials());
+        assertEquals("user", issHub.get().getMirrorCredentials().getUsername());
+        assertEquals("password", issHub.get().getMirrorCredentials().getPassword());
+    }
+
+
+    @Test
     public void canRegisterPeripheralWithUserNameAndPassword()
         throws TokenBuildingException, CertificateException, IOException, TokenParsingException {
         IssExternalClient externalClient = mock(IssExternalClient.class);
@@ -264,6 +311,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 with(any(String.class)),
                 with(aNull(String.class))
             );
+
+            allowing(internalClient).storeCredentials(with(any(String.class)), with(any(String.class)));
         }});
 
         // Register the remote server as PERIPHERAL for this local server
@@ -315,6 +364,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 with(any(String.class)),
                 with(aNull(String.class))
             );
+
+            allowing(internalClient).generateCredentials();
+            will(returnValue(new SCCCredentialsJson("peripheral-000001", "securepassword")));
         }});
 
         // Register the remote server as HUB for this local server
@@ -331,5 +383,17 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         var issued = hubFactory.lookupAccessTokenByFqdnAndType(REMOTE_SERVER_FQDN, TokenType.ISSUED);
         assertNotNull(issued);
+
+        // Verify we store the credentials received from the hub
+        List<SCCCredentials> sccCredentials = CredentialsFactory.listSCCCredentials().stream()
+            .filter(credentials -> "peripheral-000001".equals(credentials.getUsername()))
+            .toList();
+
+        assertEquals(1, sccCredentials.size());
+        assertEquals("securepassword", sccCredentials.get(0).getPassword());
+        assertEquals(
+            "https://" + REMOTE_SERVER_FQDN,
+            sccCredentials.get(0).getUrl()
+        );
     }
 }

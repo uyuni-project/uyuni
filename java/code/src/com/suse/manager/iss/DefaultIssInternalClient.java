@@ -27,6 +27,8 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.Optional;
@@ -58,25 +60,51 @@ public class DefaultIssInternalClient implements IssInternalClient {
         this.accessToken = tokenIn;
     }
 
-
     @Override
     public void register(IssRole role, String token, String rootCA) throws IOException {
-        HttpPost request = createPostRequest("register");
+        invokePostMethod("register", new RegisterJson(role, token, rootCA), Void.class);
+    }
 
-        RegisterJson requestObject = new RegisterJson(role, token, rootCA);
-        String body = GSON.toJson(requestObject, new TypeToken<RegisterJson>() { }.getType());
-        request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+    @Override
+    public void storeCredentials(String username, String password) throws IOException {
+        invokePostMethod("storeCredentials", new SCCCredentialsJson(username, password), Void.class);
+    }
+
+    @Override
+    public SCCCredentialsJson generateCredentials() throws IOException {
+        SCCCredentialsJson responseObject = invokePostMethod("generateCredentials", null, SCCCredentialsJson.class);
+        if (responseObject == null) {
+            throw new IOException("Null response object received");
+        }
+
+        return responseObject;
+    }
+
+    private <Req, Res> Res invokePostMethod(String apiMethod, Req requestObject, Class<Res> responseClass)
+        throws IOException {
+        HttpPost request = new HttpPost(("https://%s/rhn/iss/sync/%s").formatted(remoteHost, apiMethod));
+        request.setHeader("Authorization", "Bearer " + accessToken);
+
+        // Add the request object, if specified
+        if (requestObject != null) {
+            String body = GSON.toJson(requestObject, new TypeToken<>() { }.getType());
+            request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+        }
 
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
+        // Ensure we get a valid response
         if (statusCode != HttpStatus.SC_OK) {
             throw new IOException("Unexpected response code %d".formatted(statusCode));
         }
-    }
 
-    private HttpPost createPostRequest(String apiMethod) {
-        HttpPost request = new HttpPost(("https://%s/rhn/iss/sync/%s").formatted(remoteHost, apiMethod));
-        request.setHeader("Authorization", "Bearer " + this.accessToken);
-        return request;
+        // Parse the response object, if specified
+        if (!Void.class.equals(responseClass)) {
+            try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
+                return GSON.fromJson(responseReader, responseClass);
+            }
+        }
+
+        return null;
     }
 }
