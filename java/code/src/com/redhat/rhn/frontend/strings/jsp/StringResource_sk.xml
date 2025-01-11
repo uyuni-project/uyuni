@@ -4908,63 +4908,63 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="details.jsp.affectedchannels" xml:space="preserve">
         <source>Affected Channels</source>
-        <target/>
+        <target state="translated">Ovplyvnené kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.fixes" xml:space="preserve">
         <source>Fixes</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.keywords" xml:space="preserve">
         <source>Keywords</source>
-        <target/>
+        <target state="translated">Kľúčové slová</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.cves" xml:space="preserve">
         <source>CVEs</source>
-        <target/>
+        <target state="translated">CVE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.references" xml:space="preserve">
         <source>References</source>
-        <target/>
+        <target state="translated">Odkazy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.none" xml:space="preserve">
         <source>&lt;span class="no-details"&gt;(none)&lt;/span&gt;</source>
-        <target/>
+        <target state="translated">&lt;span class="no-details"&gt;(žiadne)&lt;/span&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.issued" xml:space="preserve">
         <source>Issued:</source>
-        <target/>
+        <target state="translated">Vydané:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.updated" xml:space="preserve">
         <source>Updated:</source>
-        <target/>
+        <target state="translated">Aktualizované:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.bugnumber" xml:space="preserve">
         <source>Bug# {0}</source>
-        <target/>
+        <target state="translated">Chyba# {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
           <context context-type="paramnotes">Numerical id of a bug</context>
@@ -4972,77 +4972,77 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="errata.create.jsp.createerrata" xml:space="preserve">
         <source>Create Patch</source>
-        <target/>
+        <target state="translated">Vytvoriť opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions" xml:space="preserve">
         <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
-        <target/>
+        <target state="translated">Vytvorte novú opravu tu.  Požadované položky sú označené (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Treba upozorniť, že oprava bude priamo pridaná do jedného alebo viacerých kanálov vybraných nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis" xml:space="preserve">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Súhrn&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisory" xml:space="preserve">
         <source>Advisory&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Upozornenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryrelease" xml:space="preserve">
         <source>Advisory Release&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Vydanie upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisorytype" xml:space="preserve">
         <source>Advisory Type&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Typ upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity" xml:space="preserve">
         <source>Advisory Severity:</source>
-        <target/>
+        <target state="translated">Závažnosť upozornenia:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.product" xml:space="preserve">
         <source>Product&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Produkt&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.from" xml:space="preserve">
         <source>Author:</source>
-        <target/>
+        <target state="translated">Autor:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugs" xml:space="preserve">
         <source>Bugs:</source>
-        <target/>
+        <target state="translated">Chyby:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.newbug" xml:space="preserve">
         <source>New Bug</source>
-        <target/>
+        <target state="translated">Nová chyba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
