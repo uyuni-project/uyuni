@@ -5049,70 +5049,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="errata.create.jsp.id" xml:space="preserve">
         <source>ID:</source>
-        <target/>
+        <target state="translated">ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.summary" xml:space="preserve">
         <source>Summary:</source>
-        <target/>
+        <target state="translated">Súhrn:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugurl" xml:space="preserve">
         <source>Bugzilla URL:</source>
-        <target/>
+        <target state="translated">Bugzilla URL:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.topic" xml:space="preserve">
         <source>Topic&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Predmet&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.description" xml:space="preserve">
         <source>Description&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Popis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution" xml:space="preserve">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Riešenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.keywords" xml:space="preserve">
         <source>Keywords:</source>
-        <target/>
+        <target state="translated">Kľúčové slová:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.references" xml:space="preserve">
         <source>References:</source>
-        <target/>
+        <target state="translated">Referencie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.notes" xml:space="preserve">
         <source>Notes:</source>
-        <target/>
+        <target state="translated">Poznámky:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.channels" xml:space="preserve">
         <source>Channels to add:</source>
-        <target/>
+        <target state="translated">Kanály na pridanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
