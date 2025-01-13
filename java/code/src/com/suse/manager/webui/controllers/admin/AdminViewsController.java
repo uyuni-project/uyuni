@@ -66,6 +66,10 @@ public class AdminViewsController {
      * Invoked from Router. Init routes for Admin Views.
      */
     public static void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/admin/config/iss/hubs",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSHubs))), jade);
+        get("/manager/admin/config/iss/peripherals",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSPeripherals))), jade);
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/setup/payg",
@@ -89,6 +93,30 @@ public class AdminViewsController {
         Map<String, Object> data = new HashMap<>();
         data.put("isUyuni", ConfigDefaults.get().isUyuni());
         return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
+    }
+
+    /**
+     * Show monitoring tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSHubs(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "controllers/admin/templates/iss-hubs.jade");
+    }
+
+    /**
+     * Show monitoring tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSPeripherals(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "controllers/admin/templates/iss-peripherals.jade");
     }
 
     /**

@@ -1,0 +1,14 @@
+include /templates/common.jade
+
+#iss-hubs
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/iss/hubs')
+        .then(function (module) {
+            module.renderer(
+                'iss-hubs', !{hubs}
+            )
+        });
