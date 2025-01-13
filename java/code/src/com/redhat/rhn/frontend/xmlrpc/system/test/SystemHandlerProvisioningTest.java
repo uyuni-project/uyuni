@@ -70,7 +70,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -134,10 +136,12 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                         "custom", "echo test-command");
                 k.getKickstartDefaults().getKstree().setChannel(server.getBaseChannel());
                 String profileName = k.getLabel();
+                Map<String, String> advancedOptions = Map.of("kernel_options", "console=ttyS0");
                 RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
                 int result = 0;
-                result = handler.provisionSystem(admin, request, server.getId().intValue(), profileName);
+                result = handler.provisionSystem(admin, request, server.getId().intValue(), null, profileName,
+                        new Date(), advancedOptions);
 
                 // something was scheduled
                 assertNotEquals(0, result);
@@ -149,6 +153,7 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 assertNotNull(ks);
                 assertEquals(server.getId(), ks.getNewServer().getId());
                 assertEquals("echo test-command", ks.getKsdata().getCommand("custom").getArguments());
+                assertEquals("console=ttyS0", ks.getKsdata().getKernelParams());
 
                 // Action details to check correct host
                 List<Action> actions = ActionFactory.listActionsForServer(admin, server);
