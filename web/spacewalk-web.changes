@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Mon Jan 13 15:23:38 CET 2025 - rosuna@suse.com
+
+- version 5.0.16-0
+  * Fixed misleading error while waiting for SCC credentials
+    synchronisation (bsc#1227374)
+  * Add safeguard against CVE-2024-21528
+  * Update numerous page layouts
+  * Upgrade DOMPurify to fix CVE-2024-45801
+  * Ensure icon fonts are loaded correctly on buttons (bsc#1231378)
+  * Update shared Javascript dependencies
+  * Reduce Bundle size for the web UI
+  * Update web UI build tooling
+  * Update the Web UI version
+  * Introduce numeric search field in table filters
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+
+-------------------------------------------------------------------
 Tue Oct 29 14:57:46 CET 2024 - marina.latini@suse.com
 
 - version 5.0.15-0
