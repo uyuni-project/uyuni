@@ -1,4 +1,73 @@
 -------------------------------------------------------------------
+Mon Jan 13 15:17:08 CET 2025 - rosuna@suse.com
+
+- version 5.0.16-0
+  * Update UI tip pointing to new kickstarts template directory
+    (bsc#1221219)
+  * Re-wording 'Monitoring' to 'Monitor this host' on the UI
+    systems properties page (bsc#1212161)
+  * Fix bug when accessing menu Systems | System Set Manager |
+    Misc | Reboot with no system selected (bsc#1222820)
+  * Fix migration options after migrating a Minion to
+    SUSE Liberty Linux 9 (bsc#1233258)
+  * Only show versions for 'kernel-default' in CLM Live Patching
+    template (bsc#1233400)
+  * Ensure channel lists are reliably sorted by name (bsc#1233724)
+  * More robust parsing of max memory configuration (bsc#1229000)
+  * Fix All Managed packages list (bsc#1233450)
+  * Use dots instead of underscores in apidoc (bsc#1233761)
+  * Prevent class cast exceptions when getting cobbler profiles
+    (bsc#1227759)
+  * Fix parsing UpdateAvailable notifications (bsc#1228261)
+  * Fix missing FROM-clause entry for table 'pn' in managed software
+    list (bsc#1233450)
+  * Update numerous page layouts
+  * Ensure icon fonts are loaded correctly on buttons (bsc#1231378)
+  * Update login page layout
+  * Reduce Bundle size for the web UI
+  * Ignore missing or unreadable paths when parsing the configuration
+  * Remove DWR from the package dependency since it's no longer used
+  * Ensure the reporting DB uses a lowercase username (bsc#1220494)
+  * Fix NPE if child channel has no parent (bsc#1231053)
+  * Show Confidential Compute Attestation tab also for Salt SSH
+    managed clients
+  * Introduce API endpoint to get the product name
+  * Call state.apply as direct_call when specified
+  * Rename SUSEProductSCCRepository to the more meaningful name
+    ChannelTemplate
+  * Various improvements for ContentSyncManager in regard of hibernate
+    schema and performance
+  * Adapt changing software channels to first perform the changes in
+    the database and apply the channel state later too. This allows
+    better handling of offline minions (bsc#1216683)
+  * Do not iterate over all actions when only reboot actions are
+    handled
+  * Show an error notification only when we invalidate the
+    PAYG credentials (bsc#1228956)
+  * Make the list for package actions unique so it can be passed
+    to Salt (bsc#1232042)
+  * Handle new kind of auth tokens
+  * Support new official SUSE update hosts
+  * Use external hostname in title of traceback emails
+  * Support removing all channels with scheduleChangeChannels()
+  * Support finding compatible child channels when changing the
+    base channels with scheduleChangeChannels()
+  * Check consistence of base and child channels (bsc#1232713)
+  * Allow group assignment for foreign servers (bsc#1222447)
+  * saltboot: add MAC based terminal naming (jsc#SUMA-314)
+  * Add proxy option to provisionSystem API (bsc#1232125)
+  * Fix appstream list of packages in stream (bsc#1231459)
+  * Fix enabled flag for users listed via API (bsc#1233431)
+  * Chained proxy configuration create refactoring
+  * Prevent return duplicated packages on XML-RPC API endpoint
+    `listLatestUpgradablePackages` (bsc#1231430)
+  * Allow the listing of already included patches when importing
+    them into a custom channel (bsc#1228856)
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+  * Send additional data to SCC (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Mon Nov 25 10:43:38 CET 2024 - marina.latini@suse.com
 
 - version 5.0.15-0
