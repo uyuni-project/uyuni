@@ -31,15 +31,12 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
-import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,13 +143,7 @@ public class AdminViewsController {
      * @return the view to show
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
-        List<PeripheralResponse> src = HUB_FACTORY.listPeripherals().stream()
-            .map(ph -> new PeripheralResponse(ph.getId(), ph.getFqdn(), 0L, 0L, 0L))
-            .toList();
-        data.put("peripherals", GSON.toJson(src, listType));
-        return new ModelAndView(data, "controllers/admin/templates/list_peripherals.jade");
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
     }
 
     /**

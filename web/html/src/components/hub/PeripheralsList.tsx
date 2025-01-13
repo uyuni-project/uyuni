@@ -1,81 +1,65 @@
-import { hot } from "react-hot-loader/root";
-
 import * as React from "react";
-import { useState } from "react";
 
-import withPageWrapper from "components/general/with-page-wrapper";
-import { PeripheralListData } from "components/hub";
+import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
+import { LargeTextAttachment } from "components/large-text-attachment";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-type Props = {
-  peripherals: PeripheralListData[];
-};
-
-export const PeripheralsList = hot(
-  withPageWrapper((peripheralsList: Props) => {
-    const [peripherals] = useState(peripheralsList.peripherals);
-
-    const searchData = (row, criteria) => {
-      const keysToSearch = ["fqdn"];
-      if (criteria) {
-        const needle = criteria.toLocaleLowerCase();
-        return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
-      }
-      return true;
-    };
-
+export class PeripheralsList extends React.Component<{}> {
+  public render(): React.ReactNode {
     let componentContent = (
       <Table
-        data={peripherals}
-        identifier={(row) => row.fqdn}
-        selectable={false}
+        data="/rhn/manager/api/admin/hub/peripherals"
+        identifier={(row: PeripheralListData) => row.id}
         initialSortColumnKey="fqdn"
-        searchField={<SearchField filter={searchData} placeholder={t("Filter by FQDN")} />}
+        searchField={<SearchField filter={this.searchData} placeholder={t("Filter by FQDN")} />}
       >
-        <Column
-          columnKey="fqdn"
-          comparator={Utils.sortByText}
-          header={t("Peripherals FQDN")}
-          cell={(row) => (
-            <a className="js-spa" href={`/rhn/manager/admin/hub/peripherals/${row.id}`}>
-              {row.fqdn}
-            </a>
-          )}
-        />
+        <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
         <Column
           columnKey="nChannelsSync"
           comparator={Utils.sortByNumber}
           header={t("N. of Sync Channels")}
-          cell={(row: PeripheralListData) => <span>{row.nChannelsSync}</span>}
-        />
-        <Column
-          columnKey="nAllChannels"
-          comparator={Utils.sortByNumber}
-          header={t("N. of All Channels")}
-          cell={(row: PeripheralListData) => <span>{row.nAllChannels}</span>}
+          cell={(row: PeripheralListData) => row.nChannelsSync}
         />
         <Column
           columnKey="nOrgs"
           comparator={Utils.sortByNumber}
-          header={t("N. of All Organizzation")}
-          cell={(row: PeripheralListData) => <span>{row.nOrgs}</span>}
+          header={t("N. of Sync Orgs")}
+          cell={(row: PeripheralListData) => row.nSyncOrgs}
         />
         <Column
           columnKey="id"
-          header={t("Download CA")}
-          cell={(row) => (
-            <a className="js-spa" href="_blank">
-              DL by {row.id}
-            </a>
-          )}
+          header={t("Download Root CA")}
+          cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)}
+        />
+        <Column
+          columnKey="remove"
+          header={t("Deregister")}
+          cell={(row: PeripheralListData) => this.renderDeregister(row)}
         />
       </Table>
     );
 
     return componentContent;
-  })
-);
+  }
+
+  private renderDownloadRootCA(row: PeripheralListData): React.ReactNode {
+    return (
+      <LargeTextAttachment value={row.rootCA} filename={row.fqdn + "_CA.pem"} editable={false} hideMessage={true} />
+    );
+  }
+
+  private renderDeregister(row: PeripheralListData): React.ReactNode {
+    return <DeregisterServer id={row.id} fqdn={row.fqdn} role={IssRole.Peripheral} />;
+  }
+
+  private searchData(row: PeripheralListData, criteria: string | undefined): boolean {
+    if (criteria !== undefined) {
+      return row.fqdn.toLocaleLowerCase().includes(criteria.toLocaleLowerCase());
+    }
+    return true;
+  }
+}
