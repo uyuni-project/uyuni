@@ -20,33 +20,70 @@ metrics_config = {
         "pattern": r'^java.salt_batch_size\s*=\s*(\d+)\s*$',
         "default": 200,
     },
+    "taskomatic_channel_repodata_workers": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^java.taskomatic_channel_repodata_workers\s*=\s*(\d+)\s*$',
+        "default": 2,
+    },
+    "org_quartz_threadpool_threadcount": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^org.quartz.threadPool.threadCount\s*=\s*(\d+)\s*$',
+        "default": 20,
+    },
+    "org_quartz_scheduler_idlewaittime": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^org.quartz.scheduler.idleWaitTime\s*=\s*(\d+)\s*$',
+        "default": 5000,
+    },
+    "taskomatic_minion_action_executor_parallel_threads": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^taskomatic.minion_action_executor.parallel_threads\s*=\s*(\d+)\s*$',
+        "default": 1,
+    },
+    "java_message_queue_thread_pool_size": {
+        "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
+        "pattern": r'^java.message_queue_thread_pool_size\s*=\s*(\d+)\s*$',
+        "default": 5,
+    },
+    "salt_thread_pool": {
+        "filepath": "plugin-saltconfiguration.txt",
+        "pattern": r'^thread_pool\s*:\s*(\d+)\s*$',
+        "default": 100,
+    },
     "cpu_count": {
         "filepath": "hardware.txt",
         "pattern": r'CPU\(s\):\s+(\d+)',
+        "label": "hw",
     },
     "mem_total": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Mem:\s+(\d+)\s+\d+\s+\d+',
+        "label": "memory",
     },
     "mem_used": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Mem:\s+\d+\s+(\d+)\s+\d+',
+        "label": "memory",
     },
     "mem_free": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Mem:\s+\d+\s+\d+\s+(\d+)',
+        "label": "memory",
     },
     "swap_total": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Swap:\s+(\d+)\s+\d+\s+\d+',
+        "label": "memory",
     },
     "swap_used": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Swap:\s+\d+\s+(\d+)\s+\d+',
+        "label": "memory",
     },
     "swap_free": {
         "filepath": "basic-health-check.txt",
         "pattern": r'Swap:\s+\d+\s+\d+\s+(\d+)',
+        "label": "memory",
     },
 }
 

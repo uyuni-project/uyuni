@@ -1065,6 +1065,570 @@ groups:
             component: config
             issue: performance_issue
           isPaused: false
+        - uid: de9afny52qtxcc
+          title: 'Parameter might be incorrect: java.taskomatic_channel_repodata_workers'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: misc[name="num_of_channels"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name="taskomatic_channel_repodata_workers"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 50 && $B <= 2
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                The channel count might be too high for the number of available repodata workers. Increasing the  java.taskomatic_channel_repodata_workers property might speed up channel operations.
+
+                Note that you might need to increase taskomatic.java.maxmemory as well.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: fe9agiv82vrpcf
+          title: 'Parameter might be incorrect: org.quartz.threadPool.threadCount'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name="org_quartz_threadpool_threadcount"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B <= 20
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                Increasing the number of Taskomatic worker threads allows Taskomatic to serve more clients in parallel. Consider increasing the org.quartz.threadPool.threadCount property.
+
+                Afterwards, check hibernate.c3p0.max_size and thread_pool for adjustment.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ae9ah5xuadibkd
+          title: 'Parameter might be incorrect: org.quartz.scheduler.idleWaitTime'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name="org_quartz_scheduler_idlewaittime"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B >= 5000
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                Cycle time for Taskomatic. Consider decreasing org.quartz.scheduler.idleWaitTime to lower the latency of Taskomatic.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9ankkff1lvka
+          title: 'Parameter might be incorrect: taskomatic.minion_action_executor.parallel_threads'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name="taskomatic_minion_action_executor_parallel_threads"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B < 2
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                In large installations (client count in the thousands), consider increasing the taskomatic.minion_action_executor.parallel_threads parameter. This is the number of Taskomatic threads dedicated to sending commands to Salt clients as a result of actions being executed.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9cmuqik1ou8a
+          title: 'Parameter might be incorrect: shared_buffers'
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: config[name="shared_buffers_to_mem_ratio"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0.2
+                            - 0
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                shared_buffers controls the amount of memory reserved for PostgreSQL shared buffers, which contain caches of database tables and index data.
+
+                Consider increasing the value for PostgreSQL performance in large deployments.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: de9d6jzllyw3kb
+          title: 'Parameter might be incorrect: thread_pool'
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                computed_columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: config[name = "java_message_queue_thread_pool_size"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name = "org_quartz_threadpool_threadcount"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: C
+                root_selector: config[name = "salt_thread_pool"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $C < ($A + $B)
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                thread_pool is the number of worker threads serving Salt API HTTP requests.
+
+                Current value is smaller than the sum of java.message_queue_thread_pool_size and org.quartz.threadPool.threadCount. Consider increasing this value.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
         - uid: de95uybcn1ji8a
           title: Insufficient CPU count (master)
           condition: C
