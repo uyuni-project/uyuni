@@ -9,4 +9,7 @@ export default {
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
   "admin/hub/register-peripheral": () => import("./hub/register-peripheral.renderer"),
   "admin/hub/list-tokens": () => import("./hub/list-tokens.renderer"),
+  "admin/hub/hub-details": () => import("./hub/hub-details.renderer"),
+  "admin/hub/peripherals": () => import("./hub/peripherals.renderer"),
+  "admin/hub/peripherals/details/:id": () => import("./hub/details/peripheral-details.render"),
 };

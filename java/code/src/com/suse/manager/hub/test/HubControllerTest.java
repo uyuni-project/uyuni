@@ -38,7 +38,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -46,7 +45,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubController;
-import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
@@ -61,8 +59,6 @@ import com.suse.utils.Json;
 
 import com.google.gson.JsonObject;
 
-import org.jmock.Expectations;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -97,13 +93,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        context().checking(new Expectations() {{
-            allowing(taskomaticMock).scheduleProductRefresh(with(any(Date.class)), with(false));
-        }});
-
-        HubController dummyHubController = new HubController(new HubManager(), taskomaticMock);
+        HubController dummyHubController = new HubController();
         dummyHubController.initRoutes();
         //add dummy route that throws
         post("/hub/testThrowsRuntimeException", asJson(usingTokenAuthentication(this::testThrowsRuntimeException)));
@@ -120,7 +110,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 Arguments.of(HttpMethod.post, "/hub/sync/replaceTokens", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/storeCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/setHubDetails", IssRole.HUB),
-                Arguments.of(HttpMethod.post, "/hub/scheduleProductRefresh", IssRole.HUB),
                 Arguments.of(HttpMethod.get, "/hub/managerinfo", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/storeReportDbCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/removeReportDbCredentials", IssRole.HUB),
@@ -338,21 +327,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         testUtils.cleanupReportDbUser(testReportDbUserName);
         assertFalse(testUtils.existsReportDbUser(testReportDbUserName),
                 "cleanup of user not working for user " + testReportDbUserName);
-    }
-
-    @Test
-    public void checkScheduleProductRefreshEndpoint() throws Exception {
-        String apiUnderTest = "/hub/scheduleProductRefresh";
-
-        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
-                .withApiEndpoint(apiUnderTest)
-                .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.HUB)
-                .withBearerTokenInHeaders()
-                .simulateControllerApiCall();
-        JsonObject jsonObj = Json.GSON.fromJson(answer, JsonObject.class);
-
-        assertTrue(jsonObj.get("success").getAsBoolean(), apiUnderTest + " API call is failing");
     }
 
     @Test

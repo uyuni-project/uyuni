@@ -1358,6 +1358,16 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list of all custom channels (org is not null)
+     * @return the list of custom channels
+     */
+    public static List<Channel> listCustomChannels() {
+        return getSession()
+                .createQuery("FROM Channel c WHERE c.org IS NOT NULL", Channel.class)
+                .getResultList();
+    }
+
+    /**
      * List all custom channels (org is not null) with at least one repository
      *
      * @return list of vendor channels
@@ -1376,7 +1386,6 @@ public class ChannelFactory extends HibernateFactory {
      *
      * @return list of vendor content sources
      */
-    @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
         return getSession().createNativeQuery("SELECT * FROM rhnContentSource WHERE org_id IS NULL",
                 ContentSource.class).getResultList();

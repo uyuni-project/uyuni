@@ -29,7 +29,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
@@ -48,14 +47,13 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
+import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -69,8 +67,6 @@ public class HubController {
 
     private final HubManager hubManager;
 
-    private final TaskomaticApi taskomaticApi;
-
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
@@ -80,17 +76,15 @@ public class HubController {
      * Default constructor
      */
     public HubController() {
-        this(new HubManager(), new TaskomaticApi());
+        this(new HubManager());
     }
 
     /**
      * Builds an instance with the specified hub manager
      * @param hubManagerIn the hub manager
-     * @param taskomaticApiIn the taskomatic api
      */
-    public HubController(HubManager hubManagerIn, TaskomaticApi taskomaticApiIn) {
+    public HubController(HubManager hubManagerIn) {
         this.hubManager = hubManagerIn;
-        this.taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -104,8 +98,6 @@ public class HubController {
         post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(onlyFromHub(this::storeCredentials))));
         post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(onlyFromHub(this::setHubDetails))));
         get("/hub/managerinfo", asJson(usingTokenAuthentication(onlyFromHub(this::getManagerInfo))));
-        post("/hub/scheduleProductRefresh",
-                asJson(usingTokenAuthentication(onlyFromHub(this::scheduleProductRefresh))));
         post("/hub/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(onlyFromHub(this::setReportDbCredentials))));
         post("/hub/removeReportDbCredentials",
@@ -128,18 +120,6 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeRepositories))));
         post("/hub/sync/subscriptions",
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeSubscriptions))));
-    }
-
-    private String scheduleProductRefresh(Request request, Response response, IssAccessToken issAccessToken) {
-        try {
-            Date earliest = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
-            taskomaticApi.scheduleProductRefresh(earliest, false);
-        }
-        catch (TaskomaticApiException ex) {
-            LOGGER.error("Scheduling a product refresh failed. ", ex);
-            return internalServerError(response, "Scheduling product refresh failed");
-        }
-        return success(response);
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
@@ -306,20 +286,14 @@ public class HubController {
     }
 
     private String addVendorChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("vendorchannellabellist"))) {
-            return badRequest(response, "Invalid data: missing vendorchannellabellist entry");
-        }
-
-        List<String> vendorChannelLabelList = GSON.fromJson(requestList.get("vendorchannellabellist"), List.class);
-        if (vendorChannelLabelList == null || vendorChannelLabelList.isEmpty()) {
+        Type listType = new TypeToken<List<String>>() { }.getType();
+        List<String> channelsLabels = GSON.fromJson(request.body(), listType);
+        if (channelsLabels == null || channelsLabels.isEmpty()) {
             LOGGER.error("Bad Request: invalid invalid vendor channel label list");
             return badRequest(response, "Invalid data: invalid vendor channel label list");
         }
-
         List<ChannelInfoJson> createdVendorChannelInfoList =
-                hubManager.addVendorChannels(token, vendorChannelLabelList)
+                hubManager.addVendorChannels(token, channelsLabels)
                         .stream()
                         .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
                                 ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
@@ -329,22 +303,14 @@ public class HubController {
     }
 
     private String addCustomChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("customchannellist"))) {
-            return badRequest(response, "Invalid data: missing customchannellist entry");
+        Type listType = new TypeToken<List<CustomChannelInfoJson>>() { }.getType();
+        List<CustomChannelInfoJson> channels = GSON.fromJson(request.body(), listType);
+        if (channels == null || channels.isEmpty()) {
+            LOGGER.error("Bad Request: invalid invalid vendor channel label list");
+            return badRequest(response, "Invalid data: invalid vendor channel label list");
         }
-
-        List<CustomChannelInfoJson> customChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("customchannellist"), CustomChannelInfoJson[].class));
-
-        if (customChannelInfoList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid custom channels list");
-            return badRequest(response, "Invalid data: invalid custom channels list");
-        }
-
         List<ChannelInfoJson> createdCustomChannelsInfoList =
-                hubManager.addCustomChannels(token, customChannelInfoList)
+                hubManager.addCustomChannels(token, channels)
                         .stream()
                         .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
                                 ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
@@ -354,22 +320,14 @@ public class HubController {
     }
 
     private String modifyCustomChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("modifycustomchannellist"))) {
-            return badRequest(response, "Invalid data: missing modifycustomchannellist entry");
+        Type listType = new TypeToken<List<ModifyCustomChannelInfoJson>>() { }.getType();
+        List<ModifyCustomChannelInfoJson> channels = GSON.fromJson(request.body(), listType);
+        if (channels == null || channels.isEmpty()) {
+            LOGGER.error("Bad Request: invalid invalid vendor channel label list");
+            return badRequest(response, "Invalid data: invalid vendor channel label list");
         }
-
-        List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("modifycustomchannellist"), ModifyCustomChannelInfoJson[].class));
-
-        if (modifyCustomChannelInfoList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid modify custom channels list");
-            return badRequest(response, "Invalid data: invalid modify custom channels list");
-        }
-
         List<ChannelInfoJson> modifiedCustomChannelsInfoList =
-                hubManager.modifyCustomChannels(token, modifyCustomChannelInfoList)
+                hubManager.modifyCustomChannels(token, channels)
                         .stream()
                         .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
                                 ((null == ch.getOrg()) ? null : ch.getOrg().getId()),

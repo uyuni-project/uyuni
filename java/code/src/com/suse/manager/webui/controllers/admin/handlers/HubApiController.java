@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.patch;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -34,8 +35,10 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -50,11 +53,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
@@ -92,16 +97,104 @@ public class HubApiController {
         this.hubManager = hubManagerIn;
     }
 
+    private String pass(Request request, Response response, User satAdmin) {
+        throw new NotImplementedException();
+    }
+
     /**
      * initialize all the API Routes for the ISSv3 support
-     */
+     * */
     public void initRoutes() {
+        // Hub management
+        get("/manager/api/admin/hub", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
+
+        // Peripherals management
+        get("/manager/api/admin/hub/peripherals/list", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
+        get("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::deletePeripheral));
+
+        // Peripheral channels management
+        get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::syncChannelsToPeripheral));
+        delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::desyncChannelsToPeripheral));
+
+        // Token management
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
     }
+
+    private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+        return json(response, GSON.toJson(syncModel));
+    }
+
+    // Define a functional interface that allows throwing CertificateException
+    @FunctionalInterface
+    private interface ChannelsOperation {
+        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException, IOException;
+    }
+
+    // Common helper method to process the request
+    private String processChannelsOperation(
+            Request request, Response response, User satAdmin, ChannelsOperation operation
+    ) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        Type listType = new TypeToken<List<Long>>() { }.getType();
+        List<Long> channelsId = GSON.fromJson(request.body(), listType);
+        try {
+            operation.apply(satAdmin, peripheralId, channelsId);
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+        return success(response);
+    }
+
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::syncChannelsByIdForPeripheral);
+    }
+
+    private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
+    }
+
+    private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
+        List<IssV3PeripheralsResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
+                .map(IssV3PeripheralsResponse::fromIssEntity).toList();
+        TypeToken<PagedDataResultJson<IssV3PeripheralsResponse, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
+    }
+
+    private String deletePeripheral(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        try {
+            hubManager.deregister(satAdmin, peripheralId);
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+        return success(response);
+    }
+
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
         HubRegisterRequest issRequest;
