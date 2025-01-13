@@ -367,7 +367,7 @@ function re-generate_server_ssl_certificate {
             else
                 echo " No need to generate a new SSL CA Certificate" | tee -a $LOG
             fi
-            echo "rhn-ssl-tool --gen-server --no-rpm \
+            echo "rhn-ssl-tool --gen-server \
                 --dir="$SSL_BUILD_DIR" \
                 --set-country="$SSL_COUNTRY" \
                 --set-state="$SSL_STATE" \
@@ -377,7 +377,7 @@ function re-generate_server_ssl_certificate {
                 --set-email="$SSL_EMAIL" \
                 --set-hostname="${HOSTNAME}" \
             " >> $LOG
-            rhn-ssl-tool --gen-server --no-rpm \
+            rhn-ssl-tool --gen-server \
                 --dir="$SSL_BUILD_DIR" \
                 --set-country="$SSL_COUNTRY" \
                 --set-state="$SSL_STATE" \
