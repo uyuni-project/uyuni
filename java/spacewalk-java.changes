@@ -150,6 +150,8 @@ Wed Jul 31 17:12:14 CEST 2024 - marina.latini@suse.com
   * Fix package profile update on CentOS 7 when yum-utils is not
     installed (bsc#1227133)
   * Fix layout of advanced package search page
+  * Fix table filters for description, first character dropdown
+    and toggle button.
   * Add info URL for Cobbler to clean the system profile
     (bsc#1219645)
   * Fix the URL to download the autoinstallation file (bsc#1226313)
