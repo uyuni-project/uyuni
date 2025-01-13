@@ -915,6 +915,27 @@ public class HubManager {
     }
 
     /**
+     * Count the registered peripherals on "this" hub
+     * @param user the SatAdmin
+     * @return the count of registered peripherals entities
+     */
+    public Long countRegisteredPeripherals(User user) {
+        ensureSatAdmin(user);
+        return hubFactory.countPeripherals();
+    }
+
+    /**
+     * List the peripherals with pagination //TODO: and search
+     * @param user the SatAdmin
+     * @param pc the PageControl
+     * @return a List of Peripherals entities
+     */
+    public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
+        ensureSatAdmin(user);
+        return hubFactory.listPaginatedPeripherals(pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
      * add vendor channel to peripheral
      *
      * @param accessToken            the access token
@@ -974,7 +995,6 @@ public class HubManager {
                 .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
                 .toList();
     }
-
 
     /**
      * add custom channels to peripheral

@@ -40,11 +40,11 @@ export type CreateTokenRequest = {
 };
 
 export type PeripheralListData = {
-  id: string;
+  id: number;
   fqdn: string;
+  rootCA: string | null;
   nChannelsSync: number;
-  nAllChannels: number;
-  nOrgs: number;
+  nSyncOrgs: number;
 };
 
 export type HubDetailData = {

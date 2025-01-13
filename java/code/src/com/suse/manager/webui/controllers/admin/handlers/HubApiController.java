@@ -37,6 +37,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -105,7 +106,7 @@ public class HubApiController {
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
-        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
@@ -210,6 +211,16 @@ public class HubApiController {
             LOGGER.error("Unexpected error while registering remote server {}", remoteServer, ex);
             return internalServerError(response, LOC.getMessage("hub.unexpected_error"));
         }
+    }
+
+    private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
+        List<PeripheralResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
+            .map(PeripheralResponse::fromIssEntity).toList();
+        TypeToken<PagedDataResultJson<PeripheralResponse, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
     }
 
     private String listTokens(Request request, Response response, User user) {
