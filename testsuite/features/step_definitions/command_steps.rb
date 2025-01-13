@@ -1076,6 +1076,11 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
   get_target('server').run(cmd)
 end
 
+When(/^I create the bootstrap repositories including custom channels$/) do
+  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target('server').run('mgr-create-bootstrap-repo --auto --force --with-custom-channels', check_errors: false, verbose: true)
+end
+
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = get_target('proxy').run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
   log "Installed #{product} product: #{out}"
