@@ -33,10 +33,8 @@
 import gettext
 import shlex
 from datetime import datetime
-try:
-    from xmlrpc import client as xmlrpclib
-except ImportError:
-    import xmlrpclib
+from xmlrpc import client as xmlrpclib
+
 from getpass import getpass
 from operator import itemgetter
 from xml.parsers.expat import ExpatError
