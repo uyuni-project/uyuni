@@ -28,6 +28,7 @@ Add more tasks if needed.
 - [ ] Merge the PR for the translations with the option `Merge pull request`
 - [ ] Quick review changelogs with `tito-wrapper`, and request changes if needed
 - [ ] Adjust the version number in `web/conf/rhn_web.conf` (`web.version.uyuni`)
+  - [ ] When SUSE Multi-Linux Manager is still under development and it uses the same `master` branch as Uyuni, check that the sed that replaces the default tag for SUSE Multi-Linux Manager in the [push.sh](https://github.com/uyuni-project/uyuni-tools/blob/main/push.sh) script in [uyuni-tools](https://github.com/SUSE/uyuni-tools) specifies the same SUSE Multi-Linux Manager version you added in `web.version`. If the value is outdated, update it with a PR for [uyuni-tools](https://github.com/SUSE/uyuni-tools). This is not required if the code of SUSE Multi-Linux Manager has been already branched.
 - [ ] Check if the migration paths exist for both the main database and report database, if they are needed (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if schema migration directories exist last SUSE Manager versions and Uyuni (more at https://github.com/uyuni-project/uyuni/wiki/Releasing-Uyuni-versions)
 - [ ] Check if any of the packages in the  microservices folder needs to be tagged. **There's a specific procedure to follow**
