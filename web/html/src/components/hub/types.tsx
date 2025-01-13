@@ -33,3 +33,17 @@ export type CreateTokenRequest = {
   fqdn?: string;
   token?: string;
 };
+
+export type PeripheralListData = {
+  id: string;
+  fqdn: string;
+  nChannelsSync: number;
+  nAllChannels: number;
+  nOrgs: number;
+};
+
+export type HubDetailData = {
+  id: string;
+  fqdn: string;
+  rootCA: string;
+};
