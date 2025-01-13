@@ -103,6 +103,15 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * get the list of all the peripheral servers for a hub
+     *
+     * @return a list of paginated peripherals
+     */
+    public List<IssPeripheral> listPeripherals() {
+        return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class).list();
+    }
+
+    /**
      * Lookup {@link IssPeripheral} object by its FQDN
      * @param fqdnIn the fqdn
      * @return return {@link IssPeripheral} with the given FQDN or empty
