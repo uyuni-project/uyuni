@@ -201,6 +201,20 @@ Feature: Sanity checks
     And "slmicro60_ssh_minion" should communicate with the server using public interface
     And the clock from "slmicro60_ssh_minion" should be exact
 
+@slmicro61_minion
+  Scenario: The SL Micro 6.1 minion is healthy
+    Then "slmicro61_minion" should have a FQDN
+    And reverse resolution should work for "slmicro61_minion"
+    And "slmicro61_minion" should communicate with the server using public interface
+    And the clock from "slmicro61_minion" should be exact
+
+@slmicro61_ssh_minion
+  Scenario: The SL Micro 6.1 SSH minion is healthy
+    Then "slmicro61_ssh_minion" should have a FQDN
+    And reverse resolution should work for "slmicro61_ssh_minion"
+    And "slmicro61_ssh_minion" should communicate with the server using public interface
+    And the clock from "slmicro61_ssh_minion" should be exact
+
 @alma8_minion
   Scenario: The Alma 8 Salt minion is healthy
     Then "alma8_minion" should have a FQDN

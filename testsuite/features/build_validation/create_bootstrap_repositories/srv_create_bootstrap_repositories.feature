@@ -62,6 +62,10 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a SL Micro 6.0 minion
     When I create the bootstrap repository for "slmicro60_minion" on the server
 
+@slmicro61_minion
+  Scenario: Create the bootstrap repository for a SL Micro 6.1 minion
+    When I create the bootstrap repository for "slmicro61_minion" on the server
+
 @alma8_minion
   Scenario: Create the bootstrap repository for a Alma 8 Salt minion
     When I create the bootstrap repository for "alma8_minion" on the server
