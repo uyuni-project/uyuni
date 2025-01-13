@@ -100,6 +100,8 @@ Wed Jul 31 17:12:14 CEST 2024 - marina.latini@suse.com
   * Change syncAll call at start-up to be asynchronous (bsc#1224004)
   * Fix transactional update check for SL Micro (bsc#1227406)
   * Fix Appstream queries to avoid duplicates in packages lists
+  * Fix table filters for description, first character dropdown
+    and toggle button
 
 -------------------------------------------------------------------
 Wed Jul 03 14:12:00 CEST 2024 - rosuna@suse.com
