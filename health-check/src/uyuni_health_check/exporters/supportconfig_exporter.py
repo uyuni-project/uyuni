@@ -15,6 +15,7 @@ import http.server
 import socketserver
 
 import static_metrics
+from static_metrics import metrics_config
 
 def sigterm_handler(**kwargs):
     del kwargs # unused
@@ -38,6 +39,8 @@ class SupportConfigMetricsCollector:
         self.salt_configuration = []
         self.max_clients = -1
         self.server_limit = -1
+        self.num_of_channels = -1
+        self.shared_buffers_to_mem_ratio = -1
         self.roles = [
             {
                 'name':'master',
@@ -66,6 +69,43 @@ class SupportConfigMetricsCollector:
         self.parse_disk_layout()
         self.parse_roles()
         self.parse_prefork_c_params()
+        self.parse_num_of_channels()
+        if hasattr(self, "mem_total"):
+            self.parse_shared_buffers_to_mem_ratio(self.mem_total)
+
+    def parse_shared_buffers_to_mem_ratio(self, memory: int):
+        """
+        Parse the ratio of PostgreSQL's shared_buffers property to the amount of RAM.
+        """
+        filename = os.path.join(self.supportconfig_path, "spacewalk-debug/database/postgresql.conf")
+        if not os.path.exists(filename):
+            return
+        with open(filename) as f:
+            content = f.read()
+            regex = r"^shared_buffers\s*=\s*(\d+)(\w+)$"
+            pattern = re.compile(regex, flags=re.MULTILINE)
+            match = re.search(pattern, content)
+            if not match:
+                return
+            shared_buffers = match.group(1)
+            buffer_unit = match.group(2)
+
+            if not shared_buffers.isnumeric():
+                print(f"Error when parsing shared_buffers; expected int, got: {shared_buffers}")
+                return
+
+            shared_buffers = int(shared_buffers)
+            match buffer_unit.lower():
+                case "kb":
+                    ... # conversion done
+                case "mb":
+                    shared_buffers *= 1024
+                case "gb":
+                    shared_buffers *= 1024 * 1024
+                case _:
+                    print(f"Error when parsing shared buffer unit: {buffer_unit}")
+                    return
+            self.shared_buffers_to_mem_ratio = round(shared_buffers / memory, 2)
 
     def parse_prefork_c_params(self):
         # Parse the MaxRequestWorkers and ServerLimit only from prefork.c section of the
@@ -241,41 +281,45 @@ class SupportConfigMetricsCollector:
             "salt_jobs": self.salt_jobs,
             "misc": self.roles,
         }
-
+        self._append_static_properties(ret)
         self._append_value_to_dict(ret, "config", "max_clients")
-        self._append_value_to_dict(ret, "config", "queued_salt_events")
         self._append_value_to_dict(ret, "config", "server_limit")
-        self._append_value_to_dict(ret, "config", "java_salt_batch_size")
-        self._append_value_to_dict(ret, "config", "tomcat_xmx_size")
-        self._append_value_to_dict(ret, "config", "max_threads")
-        self._append_value_to_dict(ret, "hw", "cpu_count")
-
-        ret["memory"] = self._append_memory_props()
+        self._append_value_to_dict(ret, "misc", "num_of_channels")
+        self._append_value_to_dict(ret, "config", "shared_buffers_to_mem_ratio")
 
         return ret
+
+    def _append_static_properties(self, res_dict: Dict):
+        for metric_name, metric_obj in metrics_config.items():
+            self._append_value_to_dict(res_dict, metric_obj.get("label", "config"), metric_name)
+
+    def parse_num_of_channels(self) -> None:
+        """
+        Approximate the number of active channels by counting reposync log files modified within 24h
+        of the most recently modified file.
+        """
+        reposync_log_path = Path(f"{self.supportconfig_path}/spacewalk-debug/rhn-logs/rhn/reposync")
+        if not reposync_log_path.exists():
+            return
+        log_files = sorted(reposync_log_path.iterdir(), key=os.path.getmtime, reverse=True)
+        most_recent_mtime = os.path.getmtime(log_files[0])
+        one_day_seconds = 86400
+
+        log_files = [log_f for log_f in log_files if most_recent_mtime - os.path.getmtime(log_f) <= one_day_seconds]
+        self.num_of_channels = len(log_files)
 
     def _append_value_to_dict(self, res_dict: Dict, dict_property: str, prop: str) -> None:
         """
         Mutate res_dict such that any `self.prop`, if it exists, is added to res_dict[dict_property]
         as a {"name": prop, "value": self.prop} object.
+
+        This is required to parse the resulting JSON by Grafana.
         """
         if not res_dict.get(dict_property):
             res_dict[dict_property] = []
         if hasattr(self, prop):
             prop_val = getattr(self, prop)
             res_dict[dict_property].append({"name": prop, "value": prop_val})
-
-    def _append_memory_props(self):
-        ret = []
-        for prop in ["mem", "swap"]:
-            for prop_type in ["total", "used", "free"]:
-                prop_name = f"{prop}_{prop_type}"
-                if hasattr(self, prop_name):
-                    ret.append({
-                        "name": prop_name,
-                        "value": getattr(self, prop_name),
-                    })
-        return ret
 
     def write_metrics(self):
         metrics = self.merge_metrics()
