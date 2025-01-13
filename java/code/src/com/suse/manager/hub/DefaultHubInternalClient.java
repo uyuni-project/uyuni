@@ -13,7 +13,9 @@ package com.suse.manager.hub;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -34,11 +36,14 @@ import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.security.cert.Certificate;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * HTTP Client for the Hub Inter-Server-Sync internal server-to-server APIs
@@ -93,31 +98,48 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
-    public void scheduleProductRefresh() throws IOException {
-        invokePost("hub", "scheduleProductRefresh", Map.of());
-    }
-
-    @Override
     public void deregister() throws IOException {
         invokePost("hub/sync", "deregister", null);
     }
 
-    private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)
+    @Override
+    public List<OrgInfoJson> getAllPeripheralOrgs() throws IOException {
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<List<OrgInfoJson>>() { }.getType();
+        return invokeGet("hub", "listAllPeripheralOrgs", type);
+    }
+
+    @Override
+    public List<ChannelInfoJson> getAllPeripheralChannels() throws IOException {
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<List<ChannelInfoJson>>() { }.getType();
+        return invokeGet("hub", "listAllPeripheralChannels", type);
+    }
+
+    @Override
+    public List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException {
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<Set<String>>() { }.getType();
+        return invokePost("hub", "addVendorChannels", channelsLabelIn, type);
+    }
+
+    private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
             throws IOException {
-        return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseClass);
+        return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseType);
     }
 
     private <T> void invokePost(String namespace, String apiMethod, T requestObject) throws IOException {
         invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, Void.class);
     }
 
-    private <T, R> R invokePost(String namespace, String apiMethod, T requestObject, Class<R> responseClass)
-        throws IOException {
-        return invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, responseClass);
+    private <T, R> R invokePost(String namespace, String apiMethod, T requestObject, Type responseType)
+            throws IOException {
+        return invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, responseType);
     }
 
-    private <T, R> R invoke(String httpMethod, String namespace, String apiMethod, T requestObject,
-                            Class<R> responseClass) throws IOException {
+    private <T, R> R invoke(
+            String httpMethod, String namespace, String apiMethod, T requestObject, Type responseType
+    ) throws IOException {
         RequestBuilder builder = RequestBuilder.create(httpMethod)
             .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
             .setHeader("Authorization", "Bearer " + accessToken);
@@ -137,15 +159,15 @@ public class DefaultHubInternalClient implements HubInternalClient {
         }
 
         // Parse the response object, if specified
-        if (!Void.class.equals(responseClass)) {
+        if (!Void.class.equals(responseType)) {
             try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
-                return Objects.requireNonNull(GSON.fromJson(responseReader, responseClass));
+                return Objects.requireNonNull(GSON.fromJson(responseReader, responseType));
             }
             catch (Exception ex) {
                 throw new InvalidResponseException("Unable to parse the JSON response", ex);
             }
         }
-
         return null;
     }
+
 }

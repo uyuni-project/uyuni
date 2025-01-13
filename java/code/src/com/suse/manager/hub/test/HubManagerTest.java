@@ -723,8 +723,6 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             will(returnValue(mgrInfo));
 
             allowing(internalClient).storeReportDbCredentials(with(any(String.class)), with(any(String.class)));
-
-            allowing(internalClient).scheduleProductRefresh();
         }});
 
         // Register the remote server as PERIPHERAL for this local server
