@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.patch;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -96,11 +97,17 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
+        // Hub management
+        get("/manager/api/admin/hub", withProductAdmin(this::pass));
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::pass));
+        post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
+        get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -288,5 +295,9 @@ public class HubApiController {
         }
 
         return request;
+    }
+
+    private String pass(Request request, Response response, User user) {
+        return success(response, ResultJson.success(request.requestMethod() + ": " + request.uri()));
     }
 }

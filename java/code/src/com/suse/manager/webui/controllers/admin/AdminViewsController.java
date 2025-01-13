@@ -29,12 +29,15 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,6 +60,7 @@ public class AdminViewsController {
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
+    private static final HubFactory HUB_FACTORY = new HubFactory();
 
     private AdminViewsController() { }
 
@@ -66,7 +70,7 @@ public class AdminViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -77,6 +81,11 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
         get("/manager/admin/setup/proxy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
+
+        get("/manager/admin/hub/hub-details",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
+        get("/manager/admin/hub/peripherals",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
         get("/manager/admin/hub/access-tokens",
@@ -113,6 +122,36 @@ public class AdminViewsController {
     }
 
     /**
+     * Show iss hub tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("hub", HUB_FACTORY.lookupIssHub().orElse(null));
+        return new ModelAndView(data, "controllers/admin/templates/hub_details.jade");
+    }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
+        List<PeripheralResponse> src = HUB_FACTORY.listPeripherals().stream()
+            .map(ph -> new PeripheralResponse(ph.getId(), ph.getFqdn(), 0L, 0L, 0L))
+            .toList();
+        data.put("peripherals", GSON.toJson(src, listType));
+        return new ModelAndView(data, "controllers/admin/templates/list_peripherals.jade");
+    }
+
+    /**
      * show list of saved payg ssh connection data
      * @param request
      * @param response
@@ -120,12 +159,11 @@ public class AdminViewsController {
      * @return list of payg ssh connection data
      */
     public static ModelAndView listPayg(Request request, Response response, User user) {
-        HubFactory hubFactory = new HubFactory();
         Map<String, Object> data = new HashMap<>();
         List<PaygSshData> payg = PAYG_ADMIN_MANAGER.list();
         data.put("flashMessage", FlashScopeHelper.flash(request));
         data.put("contentPaygInstances", GSON.toJson(PaygResponseMappers.mapPaygPropertiesResumeFromDB(payg)));
-        data.put("isIssPeripheral", hubFactory.isISSPeripheral());
+        data.put("isIssPeripheral", HUB_FACTORY.isISSPeripheral());
         return new ModelAndView(data, "controllers/admin/templates/payg_list.jade");
     }
 
