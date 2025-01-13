@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -61,6 +62,7 @@ public class AdminViewsController {
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
+    private static final HubManager HUB_MANAGER = new HubManager();
 
     private AdminViewsController() { }
 
@@ -86,6 +88,8 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
+        get("/manager/admin/hub/peripherals/details/:id",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
         get("/manager/admin/hub/access-tokens",

@@ -44,7 +44,6 @@ public class HubFactory extends HibernateFactory {
         saveObject(issServer);
     }
 
-
     /**
      * Save a {@link IssPeripheralChannels} object
      * @param issPeripheralChannelsIn object to save
