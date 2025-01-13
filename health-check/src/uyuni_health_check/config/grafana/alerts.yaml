@@ -1629,6 +1629,143 @@ groups:
             component: config
             issue: performance_issue
           isPaused: false
+        - uid: ee9dqrz2j0dmoa
+          title: 'Parameter might be incorrect: worker_threads'
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="salt"} |~ `(?i)SaltReqTimeoutError|Message timed out` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                worker_threads configures the number of salt-master worker threads that process commands and replies from minions and the Salt API. Consider increasing this value.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9dsa45or8jka
+          title: 'Parameter might be incorrect: pub_hwm'
+          condition: C
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="salt"} |~ `(?i)Salt request timed out` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: config[name="salt_pub_hwm"].value
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 5 && $B < 10000
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: OK
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                pub_hwm sets the maximum number of outstanding messages sent by salt-master. If more than this number of messages need to be sent concurrently, communication with clients slows down, potentially resulting in timeout errors during load peaks.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
         - uid: de95uybcn1ji8a
           title: Insufficient CPU count (master)
           condition: C

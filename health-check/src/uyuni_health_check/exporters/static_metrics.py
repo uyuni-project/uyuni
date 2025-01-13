@@ -50,6 +50,11 @@ metrics_config = {
         "pattern": r'^thread_pool\s*:\s*(\d+)\s*$',
         "default": 100,
     },
+    "salt_pub_hwm": {
+        "filepath": "plugin-saltconfiguration.txt",
+        "pattern": r'^pub_hwm\s*:\s*(\d+)\s*$',
+        "default": 1000,
+    },
     "cpu_count": {
         "filepath": "hardware.txt",
         "pattern": r'CPU\(s\):\s+(\d+)',
