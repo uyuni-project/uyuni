@@ -13,6 +13,19 @@ clients:
   - url: http://uyuni_health_check_loki:3100/loki/api/v1/push
 
 scrape_configs:
+- job_name: reposync
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: reposync
+      __path__: {{ rhn_logs_path }}/reposync/*.log
+  pipeline_stages:
+  - regex:
+      expression: '^(?P<time>\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2}\s[+-]\d{2}:\d{2})'
+  - timestamp:
+      source: time
+      format: '2006/01/02 15:04:05 -07:00'
 - job_name: cobbler
   static_configs:
   - targets:
