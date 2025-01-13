@@ -68,7 +68,7 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         context().checking(new Expectations() {{
             allowing(runtime).exec(with(IsArrayContainingInAnyOrder.arrayContainingInAnyOrder(
-                    "rhn-ssl-tool", "--gen-server", "-q", "--no-rpm", "-d", tempDir.getAbsolutePath(),
+                    "rhn-ssl-tool", "--gen-server", "-q", "-d", tempDir.getAbsolutePath(),
                     "--ca-cert", "ca.crt", "--ca-key", "ca.key", "--set-hostname", "server.acme.lab",
                     "--set-cname", "srv1.acme.lab", "--set-cname", "srv2.acme.lab", "--set-country", "DE",
                     "--set-state", "Bayern", "--set-city", "Nurnberg", "--set-org", "SUSE",

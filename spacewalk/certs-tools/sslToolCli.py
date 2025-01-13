@@ -167,13 +167,6 @@ def _getOptionsTree(defs):
         help="(rarely changed) RPM name that houses the CA SSL public certificate (the base filename, not filename-version-release.noarch.rpm).",
     )
     # pylint: disable-next=invalid-name
-    _optServerRpm = make_option(
-        "--server-rpm",
-        action="store",
-        type="string",
-        help="(rarely changed) RPM name that houses the web server's SSL key set (the base filename, not filename-version-release.noarch.rpm).",
-    )
-    # pylint: disable-next=invalid-name
     _optServerTar = make_option(
         "--server-tar",
         action="store",
@@ -214,20 +207,6 @@ def _getOptionsTree(defs):
         action="store",
         type="string",
         help="(for usage with --gen-ca and --rpm-only) Use a custom CA certificate from the given file. Note this doesn't affect the output CA certificate filename (for this use --ca-cert option).",
-    )
-    # pylint: disable-next=invalid-name
-    _optFromServerKey = make_option(
-        "--from-server-key",
-        action="store",
-        type="string",
-        help="(for usage with --gen-server and --rpm-only) Use a server private SSL key from the given file. Note this doesn't affect the output server key filename (for this use --server-key option).",
-    )
-    # pylint: disable-next=invalid-name
-    _optFromServerCert = make_option(
-        "--from-server-cert",
-        action="store",
-        type="string",
-        help="(for usage with --gen-server and --rpm-only) Use server public SSL certificate from the given file. Note this doesn't affect the output server certificate filename (for this use --server-cert option).",
     )
 
     # pylint: disable-next=invalid-name
@@ -456,8 +435,7 @@ def _getOptionsTree(defs):
         + _serverConfOptions
         + _genOptions
         + [_optServerKeyOnly, _optServerCertReqOnly, _optServerCertOnly]
-        + _buildRpmOptions
-        + [_optServerRpm, _optServerTar, _optNoRpm]
+        + [_optServerTar]
     )
     # pylint: disable-next=invalid-name
     _serverKeyOnlySet = (
@@ -475,21 +453,6 @@ def _getOptionsTree(defs):
     # pylint: disable-next=invalid-name
     _serverCertOnlySet = (
         [_optGenServer] + _serverCertOptions + _genOptions + [_optServerCertOnly]
-    )
-    # pylint: disable-next=invalid-name
-    _serverRpmOnlySet = (
-        [
-            _optGenServer,
-            _optServerKey,
-            _optServerCertReq,
-            _optServerCert,
-            _optSetHostname,
-            _optSetCname,
-        ]
-        + _buildRpmOptions
-        + [_optFromServerKey, _optFromServerCert]
-        + [_optServerRpm, _optServerTar]
-        + _genOptions
     )
 
     # CA key check set possibilities
@@ -544,7 +507,6 @@ ERROR: cannot use these options in combination:
         optionsTree["--gen-server"] = _serverCertReqOnlySet
     elif "--rpm-only" in sys.argv:
         optionsTree["--gen-ca"] = _caRpmOnlySet
-        optionsTree["--gen-server"] = _serverRpmOnlySet
 
     # pylint: disable-next=invalid-name
     baseOptions = [_optGenCa, _optGenServer, _optCheckKey, _optCheckCert]
