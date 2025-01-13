@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jan 13 15:04:05 CET 2025 - rosuna@suse.com
+
+- version 5.0.6-0
+  * Stop the attestation processing gracefully when receiving a 
+    termination signal
+
+-------------------------------------------------------------------
 Thu Aug 01 17:49:53 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.5-0
