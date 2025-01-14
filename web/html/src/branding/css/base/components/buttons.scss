@@ -20,7 +20,8 @@
 .btn,
 .btn-default,
 .btn-primary,
-.btn-danger {
+.btn-danger,
+.btn-tertiary {
   // We use flex to ensure icons etc are correctly aligned in buttons
   display: inline-flex;
   align-items: center;

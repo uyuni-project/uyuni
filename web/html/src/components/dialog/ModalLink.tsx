@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { showDialog } from "./util";
-
+import { Button } from "components/buttons";
 type Props = {
   target: string;
   id?: string;
@@ -23,17 +23,16 @@ export function ModalLink(props: Props) {
   var icon = props.icon && <i className={"fa " + props.icon + margin} />;
 
   return (
-    <button
+    <Button
       id={props.id}
       title={props.title}
-      className={"btn-link " + (props.className || "")}
-      onClick={() => {
+      className={"btn-tertiary " + (props.className || "")}
+      icon={props.icon}
+      text={props.text}
+      handler={() => {
         if (props.onClick) props.onClick(props.item);
         showDialog(props.target);
       }}
-    >
-      {icon}
-      {props.text}
-    </button>
+    />
   );
 }
