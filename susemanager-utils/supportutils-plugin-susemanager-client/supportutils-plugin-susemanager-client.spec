@@ -25,8 +25,7 @@ License:        GPL-2.0-only
 Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Supplements:    packageand(spacewalk-check:supportutils)
 Supplements:    packageand(salt-minion:supportutils)
 
