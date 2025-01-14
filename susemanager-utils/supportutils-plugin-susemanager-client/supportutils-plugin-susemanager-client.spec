@@ -26,8 +26,7 @@ Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  supportutils
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Supplements:    packageand(salt-minion:supportutils)
 Supplements:    packageand(spacewalk-check:supportutils)
 
