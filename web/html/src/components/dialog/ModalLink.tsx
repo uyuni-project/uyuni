@@ -1,7 +1,8 @@
 import * as React from "react";
 
-import { showDialog } from "./util";
 import { Button } from "components/buttons";
+
+import { showDialog } from "./util";
 type Props = {
   target: string;
   id?: string;
@@ -19,9 +20,6 @@ type Props = {
  * Link to launch a modal dialog
  */
 export function ModalLink(props: Props) {
-  const margin = props.text ? "" : " no-margin";
-  var icon = props.icon && <i className={"fa " + props.icon + margin} />;
-
   return (
     <Button
       id={props.id}
