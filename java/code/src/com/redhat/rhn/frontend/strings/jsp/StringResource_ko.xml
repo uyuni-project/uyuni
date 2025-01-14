@@ -29850,21 +29850,21 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStreams</target>
       </trans-unit>
-    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이미 포함된 패치 목록:</target>
+      </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">선택된 경우 이미 채널의 일부인 패치가 표시됩니다. 이 옵션은 패치가 여러 채널의 일부이고, 그 중 하나에서 포함되었으며, 다른 채널의 패키지를 연결해야 할 때 유용합니다.</target>
+      </trans-unit>
       <trans-unit id="toolbar.create.distro" xml:space="preserve">
-          <source>Create Distribution</source>
+        <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="needs-translation">배포 만들기</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
