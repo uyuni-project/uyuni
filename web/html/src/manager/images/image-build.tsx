@@ -252,8 +252,7 @@ class BuildImage extends React.Component<Props, State> {
                     "?url_bounce=" +
                     this.getBounceUrl()
                   }
-                  className="pull-right"
-                  unstyled
+                  className="btn-tertiary pull-right"
                 />
               )}
             </div>

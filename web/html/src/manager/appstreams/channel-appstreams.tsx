@@ -1,6 +1,7 @@
+import { Button } from "components/buttons";
+
 import { AppStreamModule, Channel } from "./appstreams.type";
 import { getStreamName } from "./utils";
-import { Button } from "components/buttons";
 
 interface Props {
   channel: Channel;
