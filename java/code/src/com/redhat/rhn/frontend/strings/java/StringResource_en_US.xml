@@ -2593,7 +2593,7 @@ and try again.
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.user" xml:space="preserve">
-        <source>Delete User</source>
+        <source>Delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">User details pages</context>
         </context-group>

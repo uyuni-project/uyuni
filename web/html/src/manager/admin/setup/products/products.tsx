@@ -977,7 +977,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {channelSyncContent}
             {childProductChannelSyncContent}
             <button
-              className="btn-link showChannels"
+              className="btn-tertiary showChannels"
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
               title={t("Show product's channels")}
             >

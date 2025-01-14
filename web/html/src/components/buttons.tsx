@@ -10,7 +10,6 @@ type BaseProps = {
   text?: React.ReactNode;
   /** Text to display on the button. */
   children?: React.ReactNode;
-
   /**
    * FontAwesome icon class of the button. Can also include additional FA classes
    * (sizing, animation etc.).
@@ -25,9 +24,6 @@ type BaseProps = {
 
   /** If true, disable the button. */
   disabled?: boolean;
-
-  /** If true, add unstyled button style */
-  unstyled?: boolean;
 
   /**
    * Any additional css classes for the button, `"btn"` is prepended automatically
@@ -169,9 +165,8 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled
-      ? "btn-unstyled " + (this.props.className ?? "")
-      : "btn " + (this.props.className ?? "btn-default");
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     return (
       <button
         id={this.props.id}
@@ -181,14 +176,8 @@ export class Button extends _ButtonBase<ButtonProps> {
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
-        {this.props.unstyled ? (
-          <>{this.renderIcon()}</>
-        ) : (
-          <>
-            {this.renderIcon()}
-            {text}
-          </>
-        )}
+        {this.renderIcon()}
+        {text}
       </button>
     );
   }
@@ -214,9 +203,8 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled
-      ? "btn-unstyled " + (this.props.className ?? "")
-      : "btn " + this.props.className;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
@@ -228,7 +216,6 @@ export class LinkButton extends _ButtonBase<LinkProps> {
           };
     return (
       <a
-        role="button"
         id={this.props.id}
         title={this.props.title}
         className={cssClasses}
@@ -237,14 +224,8 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         download={this.props.download}
         {...targetProps}
       >
-        {this.props.unstyled ? (
-          <>{this.renderIcon()}</>
-        ) : (
-          <>
-            {this.renderIcon()}
-            {text}
-          </>
-        )}
+        {this.renderIcon()}
+        {text}
       </a>
     );
   }
