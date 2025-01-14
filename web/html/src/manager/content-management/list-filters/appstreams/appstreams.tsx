@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr/toastr";
 
 import Network from "utils/network";
 
 import SelectInput from "./select-input";
 import TextInput from "./text-input";
-import { Button } from "components/buttons";
 
 export default function AppStreams({ matcher }) {
   const [channels, setChannels] = useState<{ id: string; name: string }[]>([]);
@@ -36,7 +36,8 @@ export default function AppStreams({ matcher }) {
               className="btn-tertiary"
               handler={enableBrowse}
               icon={isLoading ? "fa-refresh fa-spin fa-fw" : "fa-search fa-fw"}
-              text="Browse available modules" />
+              text="Browse available modules"
+            />
           </div>
         </div>
         <TextInput />
