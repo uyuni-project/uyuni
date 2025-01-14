@@ -280,14 +280,14 @@ class FormulaSelection extends React.Component<Props, State> {
                 id="clear-btn"
                 icon="fa-eraser"
                 text="Remove all"
-                className="btn btn-default"
+                className="btn-default"
                 handler={this.removeAllFormulas}
               />
               <Button
                 id="reset-btn"
                 icon="fa-undo"
                 text="Reset Changes"
-                className="btn btn-default"
+                className="btn-default"
                 handler={this.resetChanges}
               />
               <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />

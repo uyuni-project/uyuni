@@ -8,6 +8,7 @@ import App, { HtmlScreen } from "senna";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { showErrorToastr } from "components/toastr";
+import { Button } from "components/buttons";
 
 function isLoginPage(pathName) {
   const allLoginPossiblePaths = ["/", "/rhn/manager/login"];
@@ -101,9 +102,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
           const message = (
             <>
               Request has timed out, please
-              <button className="btn-link" onClick={() => (window.location = navigation.path)}>
-                reload the page
-              </button>
+              <Button className="btn-tertiary" text="reload the page" handler={() => (window.location = navigation.path)} />
             </>
           );
           showErrorToastr(message, { autoHide: false, containerId: "global" });
