@@ -49,8 +49,9 @@ const FilterEditModalContent = ({
 type FilterEditProps = {
   id: string;
   initialFilterForm: Partial<FilterFormType>;
-  icon: string;
-  buttonText: string;
+  icon?: string;
+  buttonText?: string;
+  buttonTitle?: string;
   className?: string;
   onChange: Function;
   openFilterId?: number;
@@ -128,7 +129,7 @@ const FilterEdit = (props: FilterEditProps) => {
         id={`${props.id}-modal-link`}
         icon={props.icon}
         text={props.buttonText}
-        title={props.buttonText}
+        title={props.buttonTitle}
         target={modalNameId}
         className={props.className}
         onClick={() => {
