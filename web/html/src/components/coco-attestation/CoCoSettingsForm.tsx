@@ -152,13 +152,13 @@ class CoCoSettingsForm extends React.Component<Props, State> {
               icon="fa-floppy-o"
               action={() => this.props.saveHandler(this.state as Settings)}
               text={t("Save")}
-              className="btn btn-primary me-2"
+              className="btn-primary me-2"
             />
             <Button
               id="reset-btn"
               icon="fa-undo"
               text={t("Reset Changes")}
-              className="btn btn-default"
+              className="btn-default"
               handler={this.onResetChanges}
             />
           </div>

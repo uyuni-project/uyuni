@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { Button } from "components/buttons";
 import { showErrorToastr } from "components/toastr/toastr";
 
 import Network from "utils/network";
@@ -31,10 +32,12 @@ export default function AppStreams({ matcher }) {
       <>
         <div className="form-group">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
-            <button className="btn-link" onClick={enableBrowse}>
-              {isLoading ? <i className="fa fa-refresh fa-spin fa-fw" /> : <i className="fa fa-search fa-fw" />}
-              Browse available modules
-            </button>
+            <Button
+              className="btn-tertiary"
+              handler={enableBrowse}
+              icon={isLoading ? "fa-refresh fa-spin fa-fw" : "fa-search fa-fw"}
+              text="Browse available modules"
+            />
           </div>
         </div>
         <TextInput />

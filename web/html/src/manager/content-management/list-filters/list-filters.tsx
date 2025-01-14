@@ -197,15 +197,16 @@ const ListFilters = (props: Props) => {
         />
         <Column
           columnKey="action-buttons"
-          header={t("")}
+          header={t("Actions")}
+          width="30px"
           cell={(row) =>
             hasEditingPermissions && (
               <FilterEdit
                 id={`edit-filter-button-${row.id}`}
                 initialFilterForm={row}
-                icon="fa-edit"
-                buttonText="Edit Filter"
-                className="btn-link"
+                icon="fa-pencil"
+                buttonTitle="Edit Filter"
+                className="btn-default btn-sm"
                 onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}

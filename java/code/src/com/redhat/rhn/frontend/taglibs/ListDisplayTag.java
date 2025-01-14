@@ -460,7 +460,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         StringBuilder buf = new StringBuilder();
         if (set != null) {
             if (showSetButtons) {
-                buf.append("<span class=\"spacewalk-list-selection-btns test\">");
+                buf.append("<span class=\"spacewalk-list-selection-btns\">");
                 buf.append(addButtonTo(buf, RequestContext.DISPATCH, UPDATE_LIST_KEY,
                                                     "update_list_key_id").render());
                 buf.append(" ");

@@ -123,9 +123,9 @@ Feature: Manage users
   Scenario: Fail to deactivate organization administrator
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
-    When I follow "Deactivate User"
+    When I follow "Deactivate"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
-    When I click on "Deactivate User"
+    When I click on "Deactivate"
     Then I should see a "You cannot deactivate another organization administrator. Please remove the 'Organization Administrator' role from this user before attempting to deactivate their account." text
     When I follow "Deactivated"
     Then I should see a "No deactivated users." text
@@ -146,9 +146,9 @@ Feature: Manage users
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
     Then I should see "role_org_admin" as unchecked
-    When I follow "Deactivate User"
+    When I follow "Deactivate"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
-    When I click on "Deactivate User"
+    When I click on "Deactivate"
     Then I should see a "Active Users" text
     And I should not see a "user1" link
     When I follow "Deactivated"
@@ -176,8 +176,8 @@ Feature: Manage users
     When I follow the left menu "Users > User List > Active"
     And I follow "Deactivated"
     And I follow "user1"
-    Then I should see a "Reactivate User" link
-    When I follow "Reactivate User"
+    Then I should see a "Reactivate" link
+    When I follow "Reactivate"
     Then I should see a "This action will allow this user to access Uyuni. This user will retain all permissions, roles, and data that he or she had before being deactivated." text
     When I click on "Reactivate User"
     Then I should see a "Active Users" text
@@ -188,10 +188,10 @@ Feature: Manage users
   Scenario: Delete user
     When I follow the left menu "Users > User List > Active"
     And I follow "user1"
-    When I follow "Delete User"
+    When I follow "Delete"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
-    When I click on "Delete User"
+    When I click on "Delete"
     Then I should see a "Active Users" text
     And I should not see a "user1" link
 

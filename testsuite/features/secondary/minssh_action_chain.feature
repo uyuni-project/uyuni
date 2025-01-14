@@ -197,7 +197,7 @@ Feature: Salt SSH action chain
   Scenario: Delete the action chain for SSH minion
     When I follow the left menu "Schedule > Action Chains"
     And I follow "minssh_action_chain_to_delete"
-    And I follow "delete action chain" in the content area
+    And I follow "Delete Action Chains" in the content area
     Then I click on "Delete"
 
   Scenario: Cleanup: roll back action chain effects on SSH minion

@@ -1,10 +1,7 @@
-.btn,
-.btn-default,
-.btn-primary,
-.btn-danger {
+.btn {
   color: inherit;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 6px 14px;
   position: relative;
   border-style: solid;
   border-width: 2px;
@@ -12,14 +9,16 @@
   transition: none;
   text-decoration: none;
   box-shadow: none;
+  min-height: 37px;
 
   &:hover {
     text-decoration: none;
   }
 
   &.btn-sm {
-    padding: 6px 14px;
+    padding: 4px 10px;
     font-size: 12px;
+    min-height: 30px;
   }
 
   .input-group-btn & {
@@ -69,21 +68,25 @@
   }
 }
 
-.btn-unstyled {
+.btn-tertiary {
   background: none;
-  border: 0;
-  padding: 4px 8px;
   color: $eos-bc-pine-500;
-  font-size: 16px;
+  font-weight: bold;
+  text-decoration: underline;
+  text-underline-offset: .3rem;
 
   i {
     margin-right: 0;
+    text-decoration: none;
   }
-
+ 
   &:active,
   &:focus,
   &:hover:not(:disabled):not(.disabled) {
+    text-decoration: underline;
+    text-underline-offset: .3rem;
     color: $eos-bc-green-900;
+    border-color: transparent ;
   }
 
   &.disabled,
@@ -200,12 +203,10 @@
 }
 
 .panel-heading,
-th {
-  .btn-link,
-  a:not(.btn-unstyled) {
-    border: none;
-    padding: 0;
-    font-weight: 600 !important;
-    color: $eos-bc-gray-1000 !important;
-  }
+th > a,
+th .orderBy {
+  border: none;
+  padding: 0;
+  font-weight: 600 !important;
+  color: $eos-bc-gray-1000 !important;
 }
