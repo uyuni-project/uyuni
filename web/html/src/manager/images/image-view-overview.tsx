@@ -320,7 +320,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                           "?url_bounce=" +
                           encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                         }
-                        className="btn-unstyled pull-right"
+                        className="btn-tertiary pull-right"
                         title={t("Edit profile")}
                       />
                     )}
@@ -344,7 +344,7 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
                         "?url_bounce=" +
                         encodeURIComponent("/rhn/manager/cm/images#/overview/" + data.id)
                       }
-                      className="btn-unstyled pull-right"
+                      className="btn-tertiary pull-right"
                       title={t("Edit store")}
                     />
                   )}
