@@ -5,8 +5,6 @@ import * as React from "react";
  * @module buttons
  */
 
-type ButtonVariant = "btn-primary" | "btn-default" | "btn-tertiary" | "btn-danger";
-
 type BaseProps = {
   /** Text to display on the button. */
   text?: React.ReactNode;
@@ -26,9 +24,6 @@ type BaseProps = {
 
   /** If true, disable the button. */
   disabled?: boolean;
-
-  /** If true, add unstyled button style */
-  unstyled?: boolean;
 
   /**
    * Any additional css classes for the button, `"btn"` is prepended automatically
@@ -174,12 +169,12 @@ export class Button extends _ButtonBase<ButtonProps> {
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
-        {(
+        {
           <>
             {this.renderIcon()}
             {text}
           </>
-        )}
+        }
       </button>
     );
   }
@@ -205,18 +200,17 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled
-      ? "btn-tertiary " + (this.props.className ?? "")
-      : "btn " + this.props.className;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-          target: "_blank",
-          rel: "noopener noreferrer",
-        }
+            target: "_blank",
+            rel: "noopener noreferrer",
+          }
         : {
-          target: this.props.target,
-        };
+            target: this.props.target,
+          };
     return (
       <a
         role="button"
@@ -228,14 +222,12 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         download={this.props.download}
         {...targetProps}
       >
-        {this.props.unstyled ? (
-          <>{this.renderIcon()}</>
-        ) : (
+        {
           <>
             {this.renderIcon()}
             {text}
           </>
-        )}
+        }
       </a>
     );
   }

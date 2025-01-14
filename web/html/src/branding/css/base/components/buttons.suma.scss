@@ -202,12 +202,10 @@
 }
 
 .panel-heading,
-th {
-  .btn-link,
-  a:not(.btn-unstyled) {
-    border: none;
-    padding: 0;
-    font-weight: 600 !important;
-    color: $eos-bc-gray-1000 !important;
-  }
+th > a,
+th .orderBy {
+  border: none;
+  padding: 0;
+  font-weight: 600 !important;
+  color: $eos-bc-gray-1000 !important;
 }
