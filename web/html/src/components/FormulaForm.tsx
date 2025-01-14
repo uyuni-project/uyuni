@@ -266,14 +266,14 @@ class FormulaForm extends React.Component<Props, State> {
         <Button
           handler={() => this.setState({ sectionsExpanded: SectionState.Expanded })}
           text={t("Expand All Sections")}
-          className="btn-link"
+          className="btn-tertiary"
         />
       );
       const hideAllButton = (
         <Button
           handler={() => this.setState({ sectionsExpanded: SectionState.Collapsed })}
           text={t("Collapse All Sections")}
-          className="btn-link"
+          className="btn-tertiary"
         />
       );
       return (

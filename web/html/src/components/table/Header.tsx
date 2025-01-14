@@ -41,12 +41,12 @@ export function Header(props: HeaderProps) {
 
     return (
       <th style={thStyle} className={thClass}>
-        <button
-          className="btn-link orderBy"
+        <a
+          className="orderBy"
           onClick={() => props.onSortChange?.(props.columnKey || null, newDirection)}
         >
           {props.children}
-        </button>
+        </a>
       </th>
     );
   }

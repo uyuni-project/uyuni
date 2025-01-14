@@ -106,7 +106,7 @@
     <a href="/rhn/groups/EditGroup.do?sgid=${id}"
       title="<bean:message key='systemgroup.details.editproperties' />"
       role="button"
-      class="js-spa btn-unstyled pull-right">
+      class="js-spa btn-tertiary pull-right">
         <rhn:icon type="item-edit" />
     </a>
   </rhn:require>

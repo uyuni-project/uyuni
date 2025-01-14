@@ -3,6 +3,7 @@ import * as React from "react";
 import { cloneReactElement } from "components/utils";
 
 import styles from "./SearchPanel.module.scss";
+import { Button } from "components/buttons";
 
 type SearchPanelProps = {
   /** number representing the number of the first displayed item */
@@ -62,16 +63,12 @@ export function SearchPanel(props: SearchPanelProps) {
         {props.selectable && props.selectedCount > 0 && (
           <span>
             {t("({selectedCount} selected)", { selectedCount: props.selectedCount })}&nbsp;
-            <button className="btn-link" onClick={props.onClear}>
-              {t("Clear")}
-            </button>
+            <Button className="btn-tertiary" handler={props.onClear} text={t("Clear")} />
             &nbsp;/&nbsp;
           </span>
         )}
         {props.selectable && (
-          <button className="btn-link" onClick={props.onSelectAll}>
-            {t("Select All")}
-          </button>
+          <Button className="btn-tertiary" handler={props.onSelectAll} text={t("Select All")} />
         )}
       </div>
     </div>

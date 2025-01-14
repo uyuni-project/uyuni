@@ -341,8 +341,8 @@ class ProductsPageWrapper extends React.Component {
       const submitButtonTitle = this.state.sccSyncRunning
         ? t("The product catalog is still refreshing, please wait.")
         : this.state.selectedItems.length === 0
-        ? t("Select some product first.")
-        : undefined;
+          ? t("Select some product first.")
+          : undefined;
       const addProductButton =
         this.state.sccSyncRunning || this.state.selectedItems.length === 0 || this.state.addingProducts ? (
           <Button
@@ -1031,7 +1031,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {channelSyncContent}
             {childProductChannelSyncContent}
             <button
-              className="btn-link showChannels"
+              className="btn-tertiary showChannels"
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
               title={t("Show product's channels")}
             >

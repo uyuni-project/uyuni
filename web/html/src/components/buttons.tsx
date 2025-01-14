@@ -5,12 +5,13 @@ import * as React from "react";
  * @module buttons
  */
 
+type ButtonVariant = "btn-primary" | "btn-default" | "btn-tertiary" | "btn-danger";
+
 type BaseProps = {
   /** Text to display on the button. */
   text?: React.ReactNode;
   /** Text to display on the button. */
   children?: React.ReactNode;
-
   /**
    * FontAwesome icon class of the button. Can also include additional FA classes
    * (sizing, animation etc.).
@@ -162,9 +163,8 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
-    const cssClasses = this.props.unstyled
-      ? "btn-unstyled " + (this.props.className ?? "")
-      : "btn " + (this.props.className ?? "btn-default");
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     return (
       <button
         id={this.props.id}
@@ -174,9 +174,7 @@ export class Button extends _ButtonBase<ButtonProps> {
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
-        {this.props.unstyled ? (
-          <>{this.renderIcon()}</>
-        ) : (
+        {(
           <>
             {this.renderIcon()}
             {text}
@@ -205,17 +203,17 @@ export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
     const cssClasses = this.props.unstyled
-      ? "btn-unstyled " + (this.props.className ?? "")
+      ? "btn-tertiary " + (this.props.className ?? "")
       : "btn " + this.props.className;
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-            target: "_blank",
-            rel: "noopener noreferrer",
-          }
+          target: "_blank",
+          rel: "noopener noreferrer",
+        }
         : {
-            target: this.props.target,
-          };
+          target: this.props.target,
+        };
     return (
       <a
         role="button"
