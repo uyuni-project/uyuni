@@ -192,6 +192,10 @@ Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
+%if 0%{?is_opensuse} || 0%{?sle_version} >= 150000
+# bsc#1234304
+Requires:       libzypp >= 17.35.16
+%endif
 %if 0%{?rhel}
 Requires:       python3-dnf
 BuildRequires:  systemd-rpm-macros
