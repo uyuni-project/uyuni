@@ -41,12 +41,12 @@ Feature: Setup containerized proxy
 
    # WORKAROUND: Disable until https://bugzilla.suse.com/show_bug.cgi?id=1235692 is fixed
 #  Scenario: Upgrade mgrpxy tool
-#    Then I upgrade "proxy" with the last "mgrpxy" version
+#    Then I upgrade "proxy" with the last "mgrpxy" version using spacecmd
 #    And I reboot the "proxy" minion through the web UI
 
   # WORKAROUND: Remove once https://bugzilla.suse.com/show_bug.cgi?id=1235692 is fixed
   Scenario: Upgrade mgrpxy tool
-    Then I install packages "mgrpxy" on this "proxy"
+    When I install packages "mgrpxy" on this "proxy"
     And I reboot the "proxy" minion through the web UI
 
   Scenario: Generate containerized proxy configuration
