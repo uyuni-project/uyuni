@@ -35,7 +35,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 
 GMSGFMT = /usr/bin/msgfmt
 MSGFMT = /usr/bin/msgfmt
-MSGMERGE = /usr/bin/intltool-update -x --gettext-package=$(PACKAGE) --dist
+MSGMERGE = /usr/bin/msgmerge --previous --no-wrap
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 
@@ -164,7 +164,7 @@ update-po: Makefile POTFILES.in $(PACKAGE).pot
 	  lang=`echo $$cat | sed 's/\.gmo$$//'`; \
 	  echo "$$lang:"; \
 	  cp $$lang.po $$lang.old.po; \
-	  if $(MSGMERGE) $$lang; then \
+	  if $(MSGMERGE) -o $$lang.po $$lang.po $(PACKAGE).pot; then \
 	    rm -f $$lang.old.po ; \
 	  else \
 	    echo "msgmerge for $$cat failed!"; \
