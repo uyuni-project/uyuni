@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:38+0100\n"
-"PO-Revision-Date: 2024-10-15 09:48+0000\n"
+"PO-Revision-Date: 2025-01-15 02:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:471
 msgid "remaining"
@@ -1038,22 +1038,18 @@ msgid "System Locked"
 msgstr "システムはロック済み"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
-#, fuzzy
 msgid "less than"
 msgstr "指定したものより古い"
 
 #: ../html/src/components/table/NumericSearchField.tsx:12
-#, fuzzy
 msgid "less than or equal to"
 msgstr "指定したものよりも古いか等しい"
 
 #: ../html/src/components/table/NumericSearchField.tsx:13
-#, fuzzy
 msgid "equal to"
 msgstr "等しい"
 
 #: ../html/src/components/table/NumericSearchField.tsx:14
-#, fuzzy
 msgid "greater than or equal to"
 msgstr "指定したものよりも新しいか等しい"
 
@@ -1063,9 +1059,8 @@ msgid "greater than"
 msgstr "指定したものより新しい"
 
 #: ../html/src/components/table/NumericSearchField.tsx:16
-#, fuzzy
 msgid "not equal to"
-msgstr "未構築"
+msgstr "等しくない"
 
 #: ../html/src/components/table/NumericSearchField.tsx:47
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
@@ -5430,8 +5425,7 @@ msgstr "開発デバッグページ"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
-"これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
+msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5478,12 +5472,10 @@ msgid " Systems "
 msgstr " システム "
 
 #: ../html/src/manager/systems/all-list.tsx:52
-#, fuzzy
 msgid "Add a system"
 msgstr "システムの追加"
 
 #: ../html/src/manager/systems/all-list.tsx:53
-#, fuzzy
 msgid "Add system"
 msgstr "システムの追加"
 
