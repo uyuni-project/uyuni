@@ -32,9 +32,6 @@
 
 # Uyuni Code Owners
 
-# Workflows reviewers
-.github/workflows @uyuni-project/workflows-reviewers
-
 # Release Engineering
 rel-eng/ @uyuni-project/release-engineering
 tito.props @uyuni-project/release-engineering
@@ -47,6 +44,9 @@ java/conf/cobbler/snippets/ @uyuni-project/python
 *.py @uyuni-project/python
 # This file only holds data, no Python code
 mgr_bootstrap_data.py
+
+# Workflows reviewers
+.github/workflows @uyuni-project/workflows-reviewers
 
 # Frontend
 web/html/ @uyuni-project/frontend
