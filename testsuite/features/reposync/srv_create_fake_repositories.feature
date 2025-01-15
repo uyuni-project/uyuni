@@ -58,7 +58,7 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Fake-RPM-SUSE-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-RPM-SUSE-Channel repository information was successfully updated" text
 
   Scenario: Add the fake RPM repository to the Test child channel
@@ -69,7 +69,7 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Test-Child-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Test-Child-Channel-x86_64 repository information was successfully updated" text
 
 @rhlike_minion
@@ -81,7 +81,7 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Fake-Base-Channel-RH-like updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-Base-Channel-RH-like repository information was successfully updated" text
 
 @rhlike_minion
@@ -93,7 +93,7 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Fake-Base-Channel-AppStream updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-appstream-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-Base-Channel-AppStream repository information was successfully updated" text
 
   Scenario: Create a fake repository for i586
@@ -113,7 +113,7 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Fake-Child-Channel-i586 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-i586-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-Child-Channel-i586 repository information was successfully updated" text
 
 @sle_minion
@@ -122,7 +122,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-Child-Channel-SUSE-like"
     And I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-Child-Channel-SUSE-like repository information was successfully updated" text
 
 @deblike_minion
@@ -141,7 +141,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-Base-Channel-Debian-like"
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-Base-Channel-Debian-like repository information was successfully updated" text
 
 @pxeboot_minion
@@ -155,5 +155,5 @@ Feature: Create fake repositories for each fake child channel
     Then I should see a "Channel Fake-RPM-Terminal-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "Fake-RPM-Terminal-Channel repository information was successfully updated" text
