@@ -491,6 +491,14 @@ def test_validate_chlog_for_wrong_pkg(validator, chlog_file):
     )
 
 
+def test_validate_chlog_invalid_filename(validator, base_path):
+    chlog_file = base_path / "pkg/path/invalid.changes.my.feature"
+    chlog_file.write_text("- This is a changelog entry.\n")
+    issues = validator.validate(["pkg/path/invalid.changes.my.feature", "pkg/path/myfile.txt"])
+    assert len(issues) == 1, issues_to_str(issues, 1)
+    assert IssueType.INVALID_CHLOG_FILENAME.format("mypkg") in str(issues[0]) and "mypkg" in str(issues[0])
+
+
 def test_validate_change_in_subdir(validator, base_path):
     chlog_file = base_path / "pkg/other/otherpkg.changes.my.feature"
     chlog_file.write_text("- This is a changelog entry.\n")
