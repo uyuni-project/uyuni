@@ -878,7 +878,7 @@ public class CVEAuditManager {
                         system.getChannels(),
                         system.getErratas(),
                         Set.of(ScanDataSource.CHANNELS)
-                )).toList();
+                )).collect(Collectors.toList());
     }
 
     /**
