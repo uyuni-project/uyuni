@@ -91,7 +91,7 @@ public class PaygDimensionResult {
     }
 
     @Column(name = "dimension")
-    @Type(type = "com.suse.cloud.domain.BillingDimensionEnumType")
+    @Type(type = "yes_no")
     public BillingDimension getDimension() {
         return dimension;
     }

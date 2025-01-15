@@ -38,6 +38,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.hibernate.type.StringType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -156,7 +157,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         Session session = HibernateFactory.getSession();
         return (KickstartSessionState) session
                           .getNamedQuery("KickstartSessionState.findByLabel")
-                          .setString("label", label)
+                          .setParameter("label", label, StringType.INSTANCE)
                           .uniqueResult();
     }
 

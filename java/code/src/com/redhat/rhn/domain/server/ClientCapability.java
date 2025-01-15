@@ -19,13 +19,27 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+
 /**
  * ClientCapability
  */
+@Entity
+@Table(name = "rhnClientCapability")
 public class ClientCapability extends BaseDomainHelper {
 
+    private static final long serialVersionUID = 1L;
+
+    // Composite ID
+    @EmbeddedId
     private ClientCapabilityId id;
 
+    // Regular fields
+    @Column(name = "version", nullable = false)
     private long version;
 
     /**

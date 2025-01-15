@@ -37,6 +37,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.type.IntegerType;
+import org.hibernate.type.StringType;
 
 import java.sql.Types;
 import java.util.Arrays;
@@ -446,7 +448,7 @@ public  class UserFactory extends HibernateFactory {
     public static RhnTimeZone getTimeZone(int id) {
         Session session = HibernateFactory.getSession();
         return (RhnTimeZone) session.getNamedQuery("RhnTimeZone.loadTimeZoneById")
-                .setInteger("tid", id)
+                .setParameter("tid", id, IntegerType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -461,7 +463,7 @@ public  class UserFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (RhnTimeZone) session
                 .getNamedQuery("RhnTimeZone.loadTimeZoneByOlsonName")
-                .setString("ton", olsonName)
+                .setParameter("ton", olsonName, StringType.INSTANCE)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -682,7 +684,26 @@ public  class UserFactory extends HibernateFactory {
      * @return list of users.
      */
     public List<User> findAllOrgAdmins(Org inOrg) {
-        return listObjectsByNamedQuery("User.findAllOrgAdmins", Map.of("org_id", inOrg.getId()));
+        // The native SQL query to get all users who are org_admins in the given organization
+        String sql = """
+                SELECT u.*
+                FROM web_contact u
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM rhnUserGroupMembers ugm
+                    JOIN rhnUserGroup ug ON ugm.user_group_id = ug.id
+                    JOIN rhnUserGroupType r ON ug.role_id = r.id
+                    WHERE ug.org_id = :org_id
+                      AND r.label = 'org_admin'
+                      AND ugm.user_id = u.id
+                )
+                """;
+
+        Query<User> query = HibernateFactory.getSession().createNativeQuery(sql, User.class);
+        query.setParameter("org_id", inOrg.getId());
+
+        // Execute the query and return the result
+        return query.getResultList();
     }
 
     /**

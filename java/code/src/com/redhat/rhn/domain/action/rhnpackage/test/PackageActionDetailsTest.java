@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
@@ -32,7 +33,6 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -52,9 +52,12 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         Date now = new Date();
         String foo = "foo";
 
+
         Long testid = 100L;
-        PackageArch arch = (PackageArch) TestUtils
-            .lookupFromCacheById(testid, "PackageArch.findById");
+
+        PackageArch arch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult();
 
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr();
         PackageName pn = PackageNameTest.createTestPackageName();
@@ -162,8 +165,10 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         pad.setParameter("upgrade");
         Long testid = 100L;
-        pad.setArch((PackageArch) TestUtils
-                .lookupFromCacheById(testid, "PackageArch.findById"));
+
+        pad.setArch((HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.label = :label
+                """, PackageArch.class).setParameter("label", testid).getSingleResult()));
         pad.setPackageName(PackageNameTest.createTestPackageName());
 
         ((PackageAction) parent).addDetail(pad);
@@ -187,9 +192,9 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         pad.setParameter("upgrade");
         Long testid = 100L;
-        pad.setArch((PackageArch) TestUtils
-                .lookupFromCacheById(testid, "PackageArch.findById"));
-        pad.setPackageName(PackageNameTest.createTestPackageName());
+        pad.setArch(HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult());
         pad.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
 
         ((PackageAction) parent).addDetail(pad);

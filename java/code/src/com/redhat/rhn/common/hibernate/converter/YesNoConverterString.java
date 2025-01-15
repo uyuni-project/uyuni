@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,17 +12,10 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.errata;
+package com.redhat.rhn.common.hibernate.converter;
 
-/**
- * AdvisoryStatusEnumType
- */
-public class AdvisoryStatusEnumType extends CustomEnumType<AdvisoryStatus, String> {
-    /**
-     * Constructor
-     */
-    public AdvisoryStatusEnumType() {
-        super(AdvisoryStatus.class, String.class, AdvisoryStatus::getMetadataValue,
-            s -> AdvisoryStatus.fromMetadata(s).orElse(null));
-    }
+import org.hibernate.type.YesNoType;
+
+public class YesNoConverterString  extends YesNoType {
+
 }

@@ -27,24 +27,51 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * NetworkInterface
  */
+@Entity
+@Table(name = "rhnServerNetInterface")
 public class NetworkInterface extends BaseDomainHelper implements
 Serializable {
 
     private static final long serialVersionUID = 1L;
-    private Long interfaceId;
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "server_id") // Mapping server_id as part of the composite key
     private Server server;
+
+    @Id
+    @Column(name = "name", length = 32) // Mapping the name as part of the composite key
     private String name;
+
+    @Column(name = "id")
+    private Long interfaceId;
+
+    @Column(name = "hw_addr", length = 96)
     private String hwaddr;
+
+    @Column(name = "module", length = 128)
     private String module;
+    // Placeholder for IP addresses (IPv4 & IPv6)
+    @Transient
     private ArrayList<ServerNetAddress4> sa4 = null;
+
+    @Transient
     private ArrayList<ServerNetAddress6> sa6 = null;
     private static final String IPV6_REGEX = "^(((?=(?>.*?::)(?!.*::)))(::)?" +
             "([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\\2([0-9A-F]{1,4}(::?|$)){0,2}" +
             "|((25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)(\\.|$)){4}|[0-9A-F]{1,4}:[0-9A-F]{1,4})" +
             "(?<![^:]:|\\.)\\z";
+    @Column(name = "is_primary", length = 2)
     private String primary;
 
     /**

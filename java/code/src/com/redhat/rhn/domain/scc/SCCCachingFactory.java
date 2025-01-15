@@ -35,9 +35,6 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -53,6 +50,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
@@ -176,9 +177,10 @@ public class SCCCachingFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SCCSubscription> lookupSubscriptions() {
         log.debug("Retrieving subscriptions from cache");
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
-        return c.list();
+        String sql = "SELECT * FROM suseSCCSubscription";
+        TypedQuery<SCCSubscription> query
+                = getSession().createNativeQuery(sql, SCCSubscription.class);
+        return query.getResultList();
     }
 
     /**
@@ -190,20 +192,29 @@ public class SCCCachingFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
-        c.add(Restrictions.eq("sccId", id));
-        return (SCCSubscription) c.uniqueResult();
+
+        // Define the SQL query
+        String sql = "SELECT * FROM suseSCCSubscription WHERE scc_id = :sccId";
+
+        // Create and execute the query
+        Query query
+                = getSession().createNativeQuery(sql, SCCSubscription.class);
+        query.setParameter("sccId", id);
+        try {
+            return (SCCSubscription) query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
     /**
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
-        delete.from(SCCSubscription.class);
-        getSession().createQuery(delete).executeUpdate();
-
+        EntityManager em = getSession(); // Obtain EntityManager
+        String sql = "DELETE FROM suseSCCSubscription";
+        Query query = em.createNativeQuery(sql);
+        query.executeUpdate();
     }
 
     /**
@@ -213,9 +224,12 @@ public class SCCCachingFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCOrderItem.class);
-        return c.list();
+
+        String sql = "SELECT * FROM suseSCCOrderItem";
+
+        TypedQuery<SCCOrderItem> query
+                = getSession().createNativeQuery(sql, SCCOrderItem.class);
+        return query.getResultList();
     }
 
     /**

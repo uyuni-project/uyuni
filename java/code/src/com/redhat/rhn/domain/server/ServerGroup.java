@@ -31,21 +31,52 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * Server - Class representation of the table rhnServer.
  *
  */
-public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
+@Entity
+@Table(name = "rhnServerGroup")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE) // Use single-table inheritance
+@DiscriminatorColumn(name = "group_type", discriminatorType = DiscriminatorType.STRING)
+public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_group_seq")
+    @SequenceGenerator(name = "server_group_seq", sequenceName = "rhn_server_group_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private String name;
-    private String description;
-    private ServerGroupType groupType;
-    private Org org;
-    private Set<Pillar> pillars = new HashSet<>();
 
+    @Column(name = "name", length = 64)
+    private String name;
+
+    @Column(name = "description", length = 1024)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @Transient
+    private Set<Pillar> pillars = new HashSet<>();
     /**
      * Getter for id
      * @return Long to get
@@ -109,6 +140,10 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
     public void setOrg(Org orgIn) {
         this.org = orgIn;
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_type", insertable = false, updatable = false)
+    private ServerGroupType groupType;
 
     /**
      * @return Returns the groupType.

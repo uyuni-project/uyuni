@@ -15,41 +15,51 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * CustomDataValue
  */
-public class CustomDataValue implements Serializable {
+@Entity
+@Table(name = "rhnServerCustomDataValue")
+public class CustomDataValue extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
-    private Server server;
-    private CustomDataKey key;
-    private String value;
-    private User creator;
-    private User lastModifier;
-    private Date created;
-    private Date modified;
 
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "server_id", insertable = false, updatable = false)
+    private Server server;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "key_id", insertable = false, updatable = false)
+    private CustomDataKey key;
+
+    @Column(name = "value", length = 4000)
+    private String value;
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "created_by")
+    private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "last_modified_by")
+    private User lastModifier;
+
     /**
      * @return Returns the creator.
      */
@@ -73,18 +83,6 @@ public class CustomDataValue implements Serializable {
      */
     public void setKey(CustomDataKey keyIn) {
         this.key = keyIn;
-    }
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
     /**
      * @return Returns the lastModifier.

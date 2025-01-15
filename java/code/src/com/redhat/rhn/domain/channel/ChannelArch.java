@@ -22,12 +22,27 @@ import com.redhat.rhn.domain.server.ServerArch;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Immutable;
 
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * ChannelArch
  */
+@Entity
+@Table(name = "rhnChannelArch")
+@Immutable
 public class ChannelArch extends BaseDomainHelper {
 
     private Long id;
@@ -38,22 +53,9 @@ public class ChannelArch extends BaseDomainHelper {
     private Set<PackageArch> compatiblePackageArches;
 
     /**
-     * @return Returns the archType.
-     */
-    public ArchType getArchType() {
-        return archType;
-    }
-
-    /**
-     * @param a The archType to set.
-     */
-    public void setArchType(ArchType a) {
-        this.archType = a;
-    }
-
-    /**
      * @return Returns the id.
      */
+    @Id
     public Long getId() {
         return id;
     }
@@ -68,6 +70,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * @return Returns the label.
      */
+    @Column
     public String getLabel() {
         return label;
     }
@@ -82,6 +85,7 @@ public class ChannelArch extends BaseDomainHelper {
     /**
      * @return Returns the name.
      */
+    @Column
     public String getName() {
         return name;
     }
@@ -94,13 +98,40 @@ public class ChannelArch extends BaseDomainHelper {
     }
 
     /**
+     * @return Returns the archType.
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arch_type_id")
+    public ArchType getArchType() {
+        return archType;
+    }
+
+    /**
+     * @param a The archType to set.
+     */
+    public void setArchType(ArchType a) {
+        this.archType = a;
+    }
+
+    /**
      * Returns the set of server architectures compatible with this channel
      * architecture.
      * @return the set of server architectures compatible with this channel
      * architecture.
      */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnServerChannelArchCompat",
+            joinColumns = { @JoinColumn(name = "channel_arch_id") },
+            inverseJoinColumns = { @JoinColumn(name = "server_arch_id") })
     public Set<ServerArch> getCompatibleServerArches() {
         return compatibleServerArches;
+    }
+
+    /**
+     * @param arches The compatible server arches to set.
+     */
+    public void setCompatibleServerArches(Set<ServerArch> arches) {
+        compatibleServerArches = arches;
     }
 
     /**
@@ -109,8 +140,19 @@ public class ChannelArch extends BaseDomainHelper {
      * @return the set of package architectures compatible with this channel
      * architecture.
      */
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "rhnChannelPackageArchCompat",
+            joinColumns = { @JoinColumn(name = "channel_arch_id") },
+            inverseJoinColumns = { @JoinColumn(name = "package_arch_id") })
     public Set<PackageArch> getCompatiblePackageArches() {
         return compatiblePackageArches;
+    }
+
+    /**
+     * @param arches The compatible package arches to set.
+     */
+    public void setCompatiblePackageArches(Set<PackageArch> arches) {
+        compatiblePackageArches = arches;
     }
 
     /**
@@ -120,6 +162,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @param arch Server architecture to be verified.
      * @return true if compatible; false if null or not compatible.
      */
+    @Transient
     public boolean isCompatible(ServerArch arch) {
         Set<ServerArch> compats = getCompatibleServerArches();
         if (compats == null) {
@@ -136,6 +179,7 @@ public class ChannelArch extends BaseDomainHelper {
      * @param arch Package architecture to be verified.
      * @return true if compatible; false if null or not compatible.
      */
+    @Transient
     public boolean isCompatible(PackageArch arch) {
         Set<PackageArch> compats = getCompatiblePackageArches();
         if (compats == null) {
@@ -174,18 +218,13 @@ public class ChannelArch extends BaseDomainHelper {
                 this.getArchType()).toString();
     }
 
-    /**
-     * @param arches The compatible package arches to set.
-     */
-    public void setCompatiblePackageArches(Set<PackageArch> arches) {
-        compatiblePackageArches = arches;
-    }
 
     /**
      * Get the equivalent cobbler arch string for this ChannelArch, or null.
      * Valid values are i386,x86_64,ia64,ppc,s390
      * @return the cobbler arch
      */
+    @Transient
     public String cobblerArch() {
         // will be like ["channel", "ia32", and possibly "deb"]. The second one is what
         // we care about, map it to a cobbler arch if possible.
@@ -214,5 +253,4 @@ public class ChannelArch extends BaseDomainHelper {
         }
         return "";
     }
-
 }

@@ -20,9 +20,32 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
+import javax.persistence.SqlResultSetMapping;
+
+
 /**
  * This class represents a summary of a minion.
  */
+@SqlResultSetMapping(
+        name = "findMinionSummaries",
+        classes = {
+                @ConstructorResult(
+                        targetClass = com.redhat.rhn.domain.server.MinionSummary.class,
+                        columns = {
+                                @ColumnResult(name = "serverId", type = Long.class),
+                                @ColumnResult(name = "minionId", type = String.class),
+                                @ColumnResult(name = "digitalServerId"),
+                                @ColumnResult(name = "machineId"),
+                                @ColumnResult(name = "contactMethodLabel"),
+                                @ColumnResult(name = "os")
+                        }
+                )
+        }
+)
+
 public class MinionSummary {
 
     private final Long serverId;
@@ -31,7 +54,19 @@ public class MinionSummary {
     private final String machineId;
     private final String os;
     private final String contactMethodLabel;
-    private final boolean transactionalUpdate;
+
+    /**
+     * Default constructor.
+     *
+     */
+    public MinionSummary() {
+        this.serverId = null;
+        this.minionId = null;
+        this.digitalServerId = null;
+        this.machineId = null;
+        this.contactMethodLabel = null;
+        this.os = null;
+    }
 
     /**
      * Convenience constructor from a MinionServer instance.
@@ -40,8 +75,7 @@ public class MinionSummary {
      */
     public MinionSummary(MinionServer minion) {
         this(minion.getId(), minion.getMinionId(), minion.getDigitalServerId(),
-                minion.getMachineId(), minion.getContactMethodLabel().orElse(null), minion.getOs(),
-                minion.doesOsSupportsTransactionalUpdate());
+                minion.getMachineId(), minion.getContactMethodLabel().orElse(null), minion.getOs());
     }
 
     /**
@@ -56,38 +90,19 @@ public class MinionSummary {
      */
     public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
             String contactMethodLabelIn, String osIn) {
-        this(serverIdIn, minionIdIn, digitalServerIdIn, machineIdIn, contactMethodLabelIn, osIn,
-            ServerConstants.SLEMICRO.equals(osIn));
-    }
-
-    /**
-     * Standard constructor.
-     *
-     * @param serverIdIn the server id
-     * @param minionIdIn the minion id
-     * @param digitalServerIdIn the digital server id
-     * @param machineIdIn the machine id
-     * @param contactMethodLabelIn the contact method label
-     * @param osIn the minion os
-     * @param transactionalUpdateIn if minion supports transactional update
-
-     */
-    public MinionSummary(Long serverIdIn, String minionIdIn, String digitalServerIdIn, String machineIdIn,
-            String contactMethodLabelIn, String osIn, boolean transactionalUpdateIn) {
         this.serverId = serverIdIn;
         this.minionId = minionIdIn;
         this.digitalServerId = digitalServerIdIn;
         this.machineId = machineIdIn;
         this.contactMethodLabel = contactMethodLabelIn;
         this.os = osIn;
-        this.transactionalUpdate = transactionalUpdateIn;
     }
 
     /**
      * @return true is minion is transactional update
      */
     public boolean isTransactionalUpdate() {
-        return transactionalUpdate;
+        return ServerConstants.SLEMICRO.equals(this.os);
     }
 
 

@@ -22,14 +22,35 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * ConfigChannelType - Class representation of the table rhnConfigChannelType.
  */
+@Entity
+@Table(name = "rhnConfigChannelType")
+@Cacheable(true)  // Using read-only cache as specified in the XML mapping
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)
 public class ConfigChannelType extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Assuming ID is auto-generated or assigned
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "label", length = 64, nullable = false)
     private String label;
+
+    @Column(name = "name", length = 64, nullable = false)
     private String name;
+
+    @Column(name = "priority", nullable = false)
     private Long priority;
 
     public static final String NORMAL = "normal";

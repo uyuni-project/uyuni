@@ -28,6 +28,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
@@ -50,6 +51,8 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.type.LongType;
+import org.hibernate.type.StringType;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -227,7 +230,8 @@ public class ErrataFactory extends HibernateFactory {
                     throw new InvalidChannelException("Cloned channel expected: " +
                             chan.getLabel());
                 }
-                Channel original = chan.getOriginal();
+                Channel original = chan.asCloned().map(ClonedChannel::getOriginal)
+                        .orElseThrow(() -> new InvalidChannelException("Cloned channel expected: " + chan.getLabel()));
                 // see BZ 805714, if we are a clone of a clone the 1st clone
                 // may not have the errata we want
                 Set<Channel> associatedChannels = errata.getChannels();
@@ -396,7 +400,8 @@ public class ErrataFactory extends HibernateFactory {
         ErrataFileType retval;
         try {
             retval = (ErrataFileType) getSession().getNamedQuery("ErrataFileType.findByLabel")
-                    .setString("label", label).setCacheable(true).uniqueResult();
+                    .setParameter("label", label, StringType.INSTANCE)
+                    .setCacheable(true).uniqueResult();
         }
         catch (HibernateException e) {
             throw new HibernateRuntimeException(e.getMessage(), e);
@@ -413,9 +418,9 @@ public class ErrataFactory extends HibernateFactory {
     public static List<ErrataFile> lookupErrataFilesByErrataAndFileType(Long errataId, String fileType) {
         List<ErrataFile> retval;
         try {
-            Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType");
-            q.setLong("errata_id", errataId);
-            q.setString("file_type", fileType.toUpperCase());
+            Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType")
+            .setParameter("errata_id", errataId, LongType.INSTANCE)
+            .setParameter("file_type", fileType.toUpperCase(), StringType.INSTANCE);
             retval =  q.list();
         }
         catch (HibernateException e) {
@@ -446,7 +451,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval;
         try {
             retval = getSession().getNamedQuery("Errata.findByAdvisoryType")
-                    .setString("type", advisoryType)
+                    .setParameter("type", advisoryType, StringType.INSTANCE)
                     //Retrieve from cache if there
                     .setCacheable(true).list();
         }
@@ -466,7 +471,8 @@ public class ErrataFactory extends HibernateFactory {
         Errata retval;
         try {
             retval = (Errata) getSession().getNamedQuery("Errata.findById")
-                    .setLong("id", id).uniqueResult();
+                    .setParameter("id", id, LongType.INSTANCE)
+                    .uniqueResult();
         }
         catch (HibernateException he) {
             log.error("Error loading ActionArchTypes from DB", he);
@@ -485,7 +491,7 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
-                .setParameter("advisory", advisory)
+                .setParameter("advisory", advisory, StringType.INSTANCE)
                 .setParameter("org", org)
                 .getResultList();
     }
@@ -499,7 +505,7 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
         return (Errata) HibernateFactory.getSession()
                 .getNamedQuery("Errata.findByAdvisoryNameAndOrg")
-                .setParameter("advisory", advisory)
+                .setParameter("advisory", advisory, StringType.INSTANCE)
                 .setParameter("org", org)
                 .uniqueResult();
     }
@@ -515,7 +521,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval;
         try {
             retval = getSession().getNamedQuery("Errata.findByAdvisory")
-                    .setParameter("advisory", advisoryId)
+                    .setParameter("advisory", advisoryId, StringType.INSTANCE)
                     .setParameter("org", org)
                     .getResultList();
         }
@@ -712,8 +718,8 @@ public class ErrataFactory extends HibernateFactory {
                 getNamedQuery("Errata.lookupByChannelBetweenDates")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
-                .setParameter("start_date", startDate)
-                .setParameter("end_date", endDate)
+                .setParameter("start_date", startDate, StringType.INSTANCE)
+                .setParameter("end_date", endDate, StringType.INSTANCE)
                 .list();
     }
 
@@ -731,8 +737,9 @@ public class ErrataFactory extends HibernateFactory {
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
-                .setParameter("errata_id", errataId)
-                .setParameter("filename", filename).uniqueResultOptional();
+                .setParameter("errata_id", errataId, LongType.INSTANCE)
+                .setParameter("filename", filename, StringType.INSTANCE)
+                .uniqueResultOptional();
     }
 
     /**
@@ -954,7 +961,28 @@ public class ErrataFactory extends HibernateFactory {
      * @return List of Errata Objects
      */
     public static List<Errata> listErrata(Collection<Long> ids, Long orgId) {
-        return singleton.listObjectsByNamedQuery("Errata.listAvailableToOrgByIds", Map.of("orgId", orgId), ids, "eids");
+        return getSession().createNativeQuery("""
+                SELECT E.*, EC.original_id, CASE WHEN EC.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM rhnErrata as E
+             LEFT JOIN rhnErrataCloned EC ON E.id = EC.id
+                 WHERE E.id in (:eids)
+                   AND (E.org_id = :orgId
+                        OR EXISTS (SELECT 1
+                                     FROM WEB_CUSTOMER ORG
+                               INNER JOIN rhnTrustedOrgs TORG ON ORG.id = TORG.org_id
+                                    WHERE ORG.id = :orgId
+                                      AND E.org_id = TORG.org_trust_id)
+                        OR EXISTS (SELECT 1
+                                     FROM rhnAvailableChannels AC,
+                                          rhnChannelErrata CE
+                                    WHERE CE.errata_id = E.id
+                                      AND CE.channel_id = AC.channel_id
+                                      AND AC.org_id = :orgId))
+                """, Errata.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .setParameter("eids", ids)
+                .setParameter("orgId", orgId)
+                .list();
     }
 
     /**

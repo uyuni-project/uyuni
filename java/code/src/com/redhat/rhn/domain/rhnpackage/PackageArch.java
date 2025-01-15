@@ -21,16 +21,44 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 
 /**
  * PackageArch
  */
+@Entity
+@Table(name = "rhnPackageArch")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class PackageArch extends BaseDomainHelper implements Comparable<PackageArch> {
 
-    private ArchType archType;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Native generation strategy
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "label")
     private String label;
+
+    @Column(name = "name")
     private String name;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arch_type_id")
+    private ArchType archType;
 
     /**
      * @return Returns the archType.

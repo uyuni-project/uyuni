@@ -24,12 +24,14 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
+import com.redhat.rhn.domain.user.AddressImpl;
 import com.redhat.rhn.domain.user.EnterpriseUser;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.RhnTimeZone;
@@ -42,48 +44,115 @@ import com.suse.pam.Pam;
 import com.suse.pam.PamReturnValue;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Proxy;
 
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+
 
 /**
  * Class UserImpl that reflects the DB representation of web_contact
  * and ancillary tables.
  * DB table: web_contact
  */
+@Entity
+@Table(name = "WEB_CONTACT")
+@SequenceGenerator(name = "web_contact_seq", sequenceName = "WEB_CONTACT_ID_SEQ", allocationSize = 1)
+@Proxy(lazy = true) // Optional: To allow lazy-loading if needed
 public class UserImpl extends BaseDomainHelper implements User {
-
 
     private static final Logger LOG = LogManager.getLogger(UserImpl.class);
 
-    private EnterpriseUserImpl euser;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_contact_seq")
+    @Column(name = "id", insertable = false, updatable = false)
     private Long id;
+
+    @Column(name = "login", length = 64)
     private String login;
+
+    @Column(name = "login_uc", length = 64)
     private String loginUc;
-    private String password;
+
+    @Column(name = "password", length = 110)
+    private String password;  // Note: access = field can be added if using field-based access
+
+    @Column(name = "read_only", nullable = false)
     private boolean readOnly;
-    private Set<UserGroupMembers> groupMembers;
-    private Org org;
-    private Set<StateChange> stateChanges;
-    private Set<Address> addresses;
-    private Set<Pane> hiddenPanes;
-    private Set<ServerGroup> associatedServerGroups;
-    private Set<Server> servers;
-    // PersonalInfo sub-object object
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private PersonalInfo personalInfo;
-    // UserInfo sub-object
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserInfo userInfo;
 
-    // Keep track of whether the user used to be an org admin
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<AddressImpl> addresses = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<UserGroupMembers> groupMembers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<StateChange> stateChanges = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "RHNUSERINFOPANE",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pane_id")
+    )
+    private Set<Pane> hiddenPanes = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnUserServerGroupPerms",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_id")
+    )
+    private Set<ServerGroup> associatedServerGroups;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnUserServerPerms",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id")
+    )
+    private Set<Server> servers = new HashSet<>();
+
+    @Transient
     private Boolean wasOrgAdmin;
+
+    @Transient
+    private EnterpriseUserImpl euser;
 
     /**
      * Create a new empty user
@@ -241,7 +310,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     public Set<Role> getTemporaryRoles() {
         Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
-            if (ugm.getTemporary()) {
+            if (ugm.isTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
         }
@@ -261,7 +330,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     public Set<Role> getPermanentRoles() {
         Set<Role> userRoles = new HashSet<>();
         for (UserGroupMembers ugm : groupMembers) {
-            if (!ugm.getTemporary()) {
+            if (!ugm.isTemporary()) {
                 userRoles.add(ugm.getUserGroup().getRole());
             }
         }
@@ -320,7 +389,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         if (!roles.contains(label)) {
             UserGroup ug = org.getUserGroup(label);
             if (ug != null) {
-                UserGroupMembers ugm = new UserGroupMembers(this, ug, temporary);
+                UserGroupMembers ugm = new UserGroupMembers(this, (UserGroupImpl) ug, temporary);
                 groupMembers.add(ugm);
                 UserGroupFactory.save(ugm);
             }
@@ -350,7 +419,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             for (Iterator<UserGroupMembers> ugmIter = groupMembers.iterator();
                     ugmIter.hasNext();) {
                 UserGroupMembers ugm = ugmIter.next();
-                if (ugm.getUserGroup().equals(ug) && ugm.getTemporary() == temporary) {
+                if (ugm.getUserGroup().equals(ug) && ugm.isTemporary() == temporary) {
                     UserGroupFactory.delete(ugm);
                     ugmIter.remove();
                 }
@@ -788,14 +857,15 @@ public class UserImpl extends BaseDomainHelper implements User {
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof User otherUser)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return new EqualsBuilder().append(login, otherUser.getLogin())
-                                  .append(org, otherUser.getOrg())
-                                  .append(id, otherUser.getId())
-                                  .isEquals();
+        UserImpl user = (UserImpl) o;
+        return Objects.equals(id, user.id);
     }
 
     /**
@@ -803,9 +873,8 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(login).append(org).append(id).toHashCode();
+        return Objects.hash(id);
     }
-
     /**
      * Getter for address1
      * @return Address1
@@ -960,7 +1029,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         hiddenPanes = p;
     }
 
-    protected void setAddress(Address addIn) {
+    protected void setAddress(AddressImpl addIn) {
         addresses.clear();
         addresses.add(addIn);
     }
@@ -968,7 +1037,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     protected Address getAddress() {
         Address baddr = null;
         Address addr = null;
-        Address[] addrA = addresses.toArray(new Address[addresses.size()]);
+        Address[] addrA = addresses.toArray(new AddressImpl[addresses.size()]);
         if (!addresses.isEmpty()) {
             for (Address addressIn : addrA) {
                 if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
@@ -992,7 +1061,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                 addr.setState(baddr.getState());
                 addr.setZip(baddr.getZip());
             }
-            addresses.add(addr);
+            addresses.add((AddressImpl)addr);
         }
         return addr;
     }
@@ -1001,7 +1070,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Set the addresses.
      * @param s the set
      */
-    protected void setAddresses(Set<Address> s) {
+    protected void setAddresses(Set<AddressImpl> s) {
         addresses = s;
     }
 
@@ -1009,7 +1078,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      * Get the addresses
      * @return Set of addresses
      */
-    protected Set<Address> getAddresses() {
+    protected Set<AddressImpl> getAddresses() {
         return addresses;
     }
 
@@ -1258,7 +1327,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         @Override
         public void setAddress(Address addressIn) {
             addresses.clear();
-            addresses.add(addressIn);
+            addresses.add((AddressImpl)addressIn);
         }
 
         /**
@@ -1293,7 +1362,7 @@ public class UserImpl extends BaseDomainHelper implements User {
                     addr.setState(baddr.getState());
                     addr.setZip(baddr.getZip());
                 }
-                addresses.add(addr);
+                addresses.add((AddressImpl)addr);
             }
             return addr;
         }

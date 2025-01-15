@@ -23,7 +23,6 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
@@ -34,11 +33,9 @@ import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
+import org.hibernate.CacheMode;
 import org.hibernate.Session;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +47,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * ChannelFactory
@@ -95,8 +99,23 @@ public class ChannelFactory extends HibernateFactory {
         if (id == null || userIn == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("Channel.findByIdAndUserId",
-                Map.of("cid", id, "userId", userIn.getId()));
+        return getSession().createNativeQuery("""
+                SELECT c.*, c_1_.original_id,
+                       CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM rhnChannel c
+       LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                 WHERE c.id = :cid
+                   AND EXISTS (SELECT 1
+                                 FROM suseChannelUserRoleView scur
+                                WHERE scur.channel_id = c.id
+                                  AND scur.user_id = :userId
+                                  AND deny_reason IS NULL)
+                """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelSyncFlag.class)
+                .setParameter("cid", id)
+                .setParameter("userId", userIn.getId())
+                .getSingleResult();
     }
 
     /**
@@ -109,8 +128,29 @@ public class ChannelFactory extends HibernateFactory {
         if (label == null || userIn == null) {
             return null;
         }
-        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndUserId",
-                Map.of(LABEL, label, "userId", userIn.getId()));
+        Session session = HibernateFactory.getSession();
+
+        Query<Channel> query = session.createNativeQuery("""
+                SELECT c.*, c_1_.original_id,
+                       CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                         FROM rhnChannel c
+                        LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                                     WHERE c.label = :label AND
+                                       EXISTS (SELECT 1
+                                               FROM suseChannelUserRoleView scur
+                                               WHERE scur.channel_id = c.id AND
+                                                     scur.user_id = :userId AND
+                                                     scur.deny_reason IS NULL)
+                """, Channel.class)
+                .setCacheable(false)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelSyncFlag.class)
+                .setParameter("label", label)
+                .setParameter("userId", userIn.getId());
+        return query.uniqueResult();
+
+//        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndUserId",
+  //              Map.of(LABEL, label, "userId", userIn.getId()));
     }
 
     /**
@@ -308,6 +348,7 @@ public class ChannelFactory extends HibernateFactory {
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", c.getId());
 
+        getSession().flush();
         m.execute(inParams, new HashMap<>());
     }
 
@@ -372,8 +413,23 @@ public class ChannelFactory extends HibernateFactory {
      * @return the accessible child channels..
      */
     public static List<Channel> getAccessibleChildChannels(Channel baseChannel, User user) {
-        return singleton.listObjectsByNamedQuery("Channel.accessibleChildChannels",
-                Map.of("userId", user.getId(), "cid", baseChannel.getId()));
+        return getSession().createNativeQuery("""
+                SELECT c.*, c_1_.original_id,
+                       CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM rhnChannel c
+       LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                 WHERE parent_channel = :cid
+                   AND (SELECT deny_reason
+                          FROM suseChannelUserRoleView scur
+                         WHERE scur.channel_id = c.id
+                           AND scur.user_id = :userId
+                           AND scur.role = 'subscribe'
+                       ) IS NULL
+                """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter("userId", user.getId())
+                .setParameter("cid", baseChannel.getId())
+                .list();
     }
 
     /**
@@ -383,7 +439,16 @@ public class ChannelFactory extends HibernateFactory {
      * @return A list of Channel Objects.
      */
     public static List<Channel> getAccessibleChannelsByOrg(Long orgid) {
-        return singleton.listObjectsByNamedQuery("Org.accessibleChannels", Map.of(ORG_ID, orgid));
+        return getSession().createNativeQuery("""
+                        SELECT  c.*, c_1_.original_id, CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                          FROM  rhnChannel c
+                      LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.original_id
+                           JOIN rhnAvailableChannels cfp ON c.id = cfp.channel_id
+                          WHERE cfp.org_id = :org_id
+                      """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter(ORG_ID, orgid)
+                .list();
     }
 
     /**
@@ -392,8 +457,11 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ChannelArch> getChannelArchitectures() {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
-        return criteria.list();
+        String sql = "SELECT * FROM rhnChannelArch"; // Adjust the SQL query as
+        // needed
+        List<ChannelArch> channelArchList
+                = session.createNativeQuery(sql, ChannelArch.class).getResultList();
+        return channelArchList;
     }
 
     /**
@@ -426,9 +494,9 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelArch findArchByLabel(String label) {
         Session session = getSession();
-        Criteria criteria = session.createCriteria(ChannelArch.class);
-        criteria.add(Restrictions.eq(LABEL, label));
-        return (ChannelArch) criteria.uniqueResult();
+        String sql = "SELECT * FROM rhnChannelArch WHERE label = :label";
+        return session.createNativeQuery(sql, ChannelArch.class)
+                .setParameter(LABEL, label).uniqueResult();
     }
 
     /**
@@ -438,8 +506,20 @@ public class ChannelFactory extends HibernateFactory {
      * @return the Channel whose label matches the given label.
      */
     public static Channel lookupByLabel(Org org, String label) {
-        return singleton.lookupObjectByNamedQuery("Channel.findByLabelAndOrgId",
-                Map.of(LABEL, label, "orgId", org.getId()));
+        return getSession().createNativeQuery("""
+        SELECT c.*, c_1_.original_id, CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+              FROM rhnChannel c
+                LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+             WHERE c.label = :label
+               AND (rhn_channel.get_org_access(c.id, :orgId) = 1
+                   OR EXISTS (select id from rhnSharedChannelView scv
+                               where scv.label = :label
+                                 and scv.org_trust_id = :orgId))
+                                                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter(LABEL, label)
+                .setParameter("orgId", org.getId())
+                .getSingleResult();
     }
 
     /**
@@ -451,9 +531,18 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static Channel lookupByLabel(String label) {
         Session session = getSession();
-        Criteria c = session.createCriteria(Channel.class);
-        c.add(Restrictions.eq(LABEL, label));
-        return (Channel) c.uniqueResult();
+        String sql = """
+                SELECT c.*,
+                c_1_.original_id,
+                CASE
+                WHEN c_1_.original_id IS NULL THEN 0
+                ELSE 1
+                END AS clazz_
+                FROM rhnChannel c
+                LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                WHERE c.label = :label""";
+        return session.createNativeQuery(sql, Channel.class)
+                .setParameter("label", label).uniqueResult();
     }
 
     /**
@@ -636,8 +725,21 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channels
      */
     public static List<Channel> getKickstartableTreeChannels(Org org) {
-        return singleton.listObjectsByNamedQuery("Channel.kickstartableTreeChannels",
-                Map.of(ORG_ID, org.getId()), false);
+        return getSession().createNativeQuery("""
+                        SELECT c.*, c_1_.original_id,
+                               CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                        FROM rhnChannel c
+                            LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                            JOIN rhnAvailableChannels ach ON ach.channel_id = c.id
+                            JOIN rhnChannelArch ca ON ca.id = ach.channel_arch_id
+                        WHERE ach.org_id = :org_id
+                            AND ach.channel_depth = 1
+                        ORDER BY rhn_channel.channel_priority(ach.parent_or_self_id),
+                            UPPER(ach.channel_name)
+                        """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter(ORG_ID, org.getId())
+                .list();
     }
 
     /**
@@ -647,8 +749,26 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channels
      */
     public static List<Channel> getKickstartableChannels(Org org) {
-        return singleton.listObjectsByNamedQuery("Channel.kickstartableChannels",
-                Map.of(ORG_ID, org.getId()), false);
+        return getSession().createNativeQuery("""
+            SELECT DISTINCT c.*, c_1_.original_id,
+                CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_,
+                rhn_channel.channel_priority(ach.parent_or_self_id),
+                UPPER(ach.channel_name)
+            FROM rhnChannel c
+                LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                JOIN rhnAvailableChannels ach ON ach.channel_id = c.id
+                JOIN rhnChannelArch ca ON ca.id = ach.channel_arch_id
+                JOIN rhnKickstartableTree kt ON kt.channel_id = c.id
+                JOIN rhnKSInstallType ksit ON ksit.id = kt.install_type
+            WHERE ach.org_id = :org_id
+                AND ach.channel_depth = 1
+                AND (ksit.label LIKE 'rhel%' OR ksit.label LIKE 'fedora%')
+            ORDER BY rhn_channel.channel_priority(ach.parent_or_self_id),
+                UPPER(ach.channel_name)
+                """, Channel.class)
+                .setCacheMode(CacheMode.GET)
+                .setParameter(ORG_ID, org.getId())
+                .list();
     }
 
     /**
@@ -796,8 +916,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return ChannelSyncFlag object containing all flag settings for a specfic channel
      */
     public static ChannelSyncFlag lookupChannelReposyncFlag(Channel channel) {
-        return getSession().createQuery("from ChannelSyncFlag where channel = :channel", ChannelSyncFlag.class)
-        .setParameter("channel", channel).uniqueResult();
+        return getSession()
+                .createQuery("SELECT csf FROM ChannelSyncFlag csf WHERE channel = :channel", ChannelSyncFlag.class)
+                .setParameter("channel", channel)
+                .uniqueResult();
     }
 
     /**
@@ -971,7 +1093,41 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of channels (including children) accessible for the provided user
      */
     public static List<Channel> findAllByUserOrderByChild(User user) {
-        return singleton.listObjectsByNamedQuery("Channel.findAllByUserOrderByChild", Map.of("userId", user.getId()));
+        return getSession().createNativeQuery("""
+    with user_channel_roles as materialized(
+        select * from suseChannelUserRoleView s
+        where s.user_id = :userId
+        and s.deny_reason is null
+    )
+    SELECT channel.*, channel_1_.original_id, CASE WHEN channel_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+    FROM rhnChannel channel
+        LEFT OUTER JOIN rhnChannel parent ON channel.parent_channel = parent.id
+        LEFT OUTER JOIN rhnChannelCloned channel_1_ ON channel.id = channel_1_.id
+    WHERE EXISTS (
+        SELECT 1
+        FROM user_channel_roles scur
+        WHERE scur.channel_id = channel.id
+    )
+    AND (
+        channel.parent_channel IS NULL
+        OR (
+            channel.parent_channel IS NOT NULL
+            AND EXISTS (
+                SELECT 1
+                FROM user_channel_roles scur
+                WHERE scur.channel_id = channel.parent_channel
+            )
+        )
+    )
+    ORDER BY
+        channel.org_id NULLS FIRST,
+        COALESCE(parent.label, channel.label),
+        channel.parent_channel NULLS FIRST,
+        channel.label
+                        """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter("userId", user.getId())
+                .list();
     }
 
     /**
@@ -1041,8 +1197,23 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of custom channels
      */
     public static List<Channel> listAllBaseChannels(User user) {
-        return singleton.listObjectsByNamedQuery("Channel.findAllBaseChannels",
-                Map.of(ORG_ID, user.getOrg().getId(), "user_id", user.getId()));
+        return getSession().createNativeQuery("""
+                SELECT c.*, c_1_.original_id,
+                       CASE WHEN c_1_.original_id IS NULL THEN 0 ELSE 1 END as clazz_
+                  FROM suseChannelUserRoleView SCURV
+                  JOIN rhnChannel c ON c.id = SCURV.channel_id
+                  LEFT OUTER JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                 WHERE SCURV.org_id = :org_id
+                   AND SCURV.deny_reason IS NULL
+                   AND SCURV.user_id = :user_id
+                   AND SCURV.role = 'subscribe'
+                   AND c.parent_channel is null
+                ORDER BY c.name
+                """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter(ORG_ID, user.getOrg().getId())
+                .setParameter("user_id", user.getId())
+                .list();
     }
 
     /**
@@ -1074,8 +1245,8 @@ public class ChannelFactory extends HibernateFactory {
 
         List<Package> pkgs = HibernateFactory.getSession()
           .getNamedQuery("Channel.packageByFileName")
-          .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId())
+          .setParameter("pathlike", "%/" + fileName)
+          .setParameter("channel_id", channel.getId())
           .list();
         if (pkgs.isEmpty()) {
             return null;
@@ -1095,12 +1266,11 @@ public class ChannelFactory extends HibernateFactory {
             String fileName, int headerStart, int headerEnd) {
 
         List<Package> pkgs = HibernateFactory.getSession()
-          .getNamedQuery("Channel.packageByFileNameAndRange")
-          .setString("pathlike", "%/" + fileName)
-          .setLong("channel_id", channel.getId())
-          .setInteger("headerStart", headerStart)
-          .setInteger("headerEnd", headerEnd)
-          .list();
+                .getNamedQuery("Channel.packageByFileNameAndRange")
+                .setParameter("pathlike", "%/" + fileName)
+                .setParameter("channel_id", channel.getId())
+                .setParameter("headerStart", headerStart)
+                .setParameter("headerEnd", headerEnd).list();
         if (pkgs.isEmpty()) {
             return null;
         }
@@ -1116,10 +1286,12 @@ public class ChannelFactory extends HibernateFactory {
      * @return true of the channels contains any distros
      */
     public static boolean containsDistributions(Channel ch) {
-        Criteria criteria = getSession().createCriteria(KickstartableTree.class);
-        criteria.setProjection(Projections.rowCount());
-        criteria.add(Restrictions.eq("channel", ch));
-        return ((Number)criteria.uniqueResult()).intValue() > 0;
+        Session session = getSession();
+        String sql
+                = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
+        Number count = (Number) session.createNativeQuery(sql)
+                .setParameter("channelId", ch.getId()).getSingleResult();
+        return count.intValue() > 0;
     }
 
     /**
@@ -1232,9 +1404,11 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
-        criteria.add(Restrictions.isNull("org"));
-        return criteria.list();
+        Session session = getSession();
+        String sql = "SELECT * FROM rhnContentSource WHERE org IS NULL";
+        List<ContentSource> contentSources
+                = session.createNativeQuery(sql, ContentSource.class).getResultList();
+        return contentSources;
     }
 
     /**
@@ -1243,23 +1417,42 @@ public class ChannelFactory extends HibernateFactory {
      * @return vendor content source if it exists
      */
     public static ContentSource findVendorContentSourceByRepo(String repoUrl) {
-        Criteria criteria = getSession().createCriteria(ContentSource.class);
-        criteria.add(Restrictions.isNull("org"));
+        CriteriaBuilder cb = getSession().getCriteriaBuilder();
+        CriteriaQuery<ContentSource> cq = cb.createQuery(ContentSource.class);
+        Root<ContentSource> root = cq.from(ContentSource.class);
+
+        // Create predicates for the query
+        Predicate isOrgNull = cb.isNull(root.get("org"));
+        Predicate sourceUrlPredicate;
+
         if (repoUrl.contains("mirrorlist.centos.org") || repoUrl.contains("mirrors.rockylinux.org")) {
-            criteria.add(Restrictions.eq("sourceUrl", repoUrl));
+            sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrl);
         }
         else {
-            String [] parts = repoUrl.split("\\?");
+            String[] parts = repoUrl.split("\\?");
             String repoUrlPrefix = parts[0];
             if (parts.length > 1) {
-                criteria.add(Restrictions.like("sourceUrl", repoUrlPrefix + '?',
-                        MatchMode.START));
+                sourceUrlPredicate = cb.like(root.get("sourceUrl"), repoUrlPrefix + '%');
             }
             else {
-                criteria.add(Restrictions.eq("sourceUrl", repoUrlPrefix));
+                sourceUrlPredicate = cb.equal(root.get("sourceUrl"), repoUrlPrefix);
             }
         }
-        return (ContentSource) criteria.uniqueResult();
+
+        // Combine predicates
+        cq.where(cb.and(isOrgNull, sourceUrlPredicate));
+
+        // Create and execute the query
+        TypedQuery<ContentSource> query = getSession().createQuery(cq);
+        ContentSource contentSource;
+        try {
+            contentSource = query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            contentSource = null;
+        }
+
+        return contentSource;
     }
 
     /**
@@ -1286,10 +1479,21 @@ public class ChannelFactory extends HibernateFactory {
      * @return channel product
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
-        Criteria criteria = getSession().createCriteria(ChannelProduct.class);
-        criteria.add(Restrictions.eq("product", product));
-        criteria.add(Restrictions.eq("version", version));
-        return (ChannelProduct) criteria.uniqueResult();
+        String sql
+                = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
+        TypedQuery<ChannelProduct> query
+                = getSession().createNativeQuery(sql, ChannelProduct.class);
+        query.setParameter("product", product);
+        query.setParameter("version", version);
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Error retrieving ChannelProduct", e);
+        }
     }
 
     /**

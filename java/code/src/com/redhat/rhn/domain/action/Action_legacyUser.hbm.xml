@@ -683,25 +683,6 @@ select {ra.*}
     ]]>
     </query>
 
-    <query name="Action.findMinionSummaries">
-    <![CDATA[
-        SELECT new com.redhat.rhn.domain.server.MinionSummary(
-                    sa.server.id,
-                    s.minionId,
-                    s.digitalServerId,
-                    s.machineId,
-                    c.label,
-                    s.os
-               )
-            FROM ServerAction AS sa
-                JOIN sa.server AS s
-                JOIN s.contactMethod AS c
-            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
-                AND action_id = :id
-                AND sa.status IN (:allowedStatues)
-    ]]>
-    </query>
-    
    <sql-query name="Action.findServerIds">
         <![CDATA[
 select sa.server_id

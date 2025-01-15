@@ -18,23 +18,59 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Channel access token giving a minion access to one or more channels.
  */
+@Entity
+@Table(name = "suseChannelAccessToken")
 public class AccessToken {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_chan_access_token_id_seq")
+    @SequenceGenerator(name = "suse_chan_access_token_id_seq", sequenceName = "suse_chan_access_token_id_seq",
+            allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "token", nullable = false, length = 4000)
     private String token;
-    private Date expiration;
-    private Date start;
-    private MinionServer minion;
-    private Set<Channel> channels;
-    private boolean valid = true;
 
+    @Column(name = "expiration", nullable = false)
+    private Date expiration;
+
+    @Column(name = "created", nullable = false)
+    private Date start;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "minion_id", foreignKey = @ForeignKey(name = "suse_chan_access_token_mid_fk"))
+    private MinionServer minion;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseChannelAccessTokenChannel",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
+    private Set<Channel> channels;
+    @Column(name = "valid", nullable = false)
+    @Type(type = "yes_no")
+    private boolean valid = true;
 
     /**
      * @return the accessToken id
