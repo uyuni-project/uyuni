@@ -20,7 +20,7 @@
     <rhn:csrf />
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input class="btn btn-danger" type="submit"
+            <input class="btn btn-default" type="submit"
                 name="dispatch"  value="<bean:message key='channel.jsp.errata.confirmremove'/>">
         </div>
     </div>

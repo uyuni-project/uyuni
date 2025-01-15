@@ -80,7 +80,7 @@ Feature: Managing channels
   Scenario: Cleanup: Delete created channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 has been deleted." text

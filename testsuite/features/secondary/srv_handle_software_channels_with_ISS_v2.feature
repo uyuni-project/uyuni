@@ -42,7 +42,7 @@ Feature: Export and import software channels with new ISS implementation
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-RPM-SUSE-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
@@ -63,7 +63,7 @@ Feature: Export and import software channels with new ISS implementation
   Scenario: Cleanup: remove imported channel
     When I follow the left menu "Software > Manage > Channels"
     When I follow "Clone of Fake-RPM-SUSE-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text

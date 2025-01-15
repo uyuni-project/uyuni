@@ -20,7 +20,7 @@
         <rhn:hidden name="cid" value="${cid}"/>
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input class="btn btn-danger" type="submit" name="dispatch" value="<bean:message key='channel.jsp.errata.remove'/>" ${empty pageList ? 'disabled' : ''}/>
+                <input class="btn btn-default" type="submit" name="dispatch" value="<bean:message key='channel.jsp.errata.remove'/>" ${empty pageList ? 'disabled' : ''}/>
             </div>
         </div>
         <rhn:submitted/>

@@ -37,7 +37,7 @@ Feature: Project Lotus
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I select the "sles15sp4_ptf_repo" repo
-    And I click on "Save Repositories"
+    And I click on "Save"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Pre-requisite: Sync PTF repository
@@ -116,7 +116,7 @@ Feature: Project Lotus
   Scenario: Cleanup: Delete custom channel for PTFs
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Custom Channel for SLES15SP4 PTFs"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Channel Custom Channel for SLES15SP4 PTFs has been deleted" text

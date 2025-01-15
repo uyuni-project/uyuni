@@ -7,7 +7,7 @@
                 name="errataList"
                 exportColumns="advisoryType,advisoryName,synopsis,updateDate"/>
             <button type="submit" name="dispatch" class="btn btn-default">
-                <rhn:icon type="item-del" /> <bean:message key="erratalist.jsp.deleteerrata"/>
+                <bean:message key="erratalist.jsp.deleteerrata"/>
             </button>
         </div>
     </div>
