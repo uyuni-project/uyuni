@@ -40,27 +40,25 @@ Feature: Managing channels
     And I click on "Create Channel"
     Then I should see a "Invalid channel name, please see the format described below" text
 
-# Fails because this product is not in the SCC Fake mirror in gh
 @scc_credentials
   Scenario: Fail when trying to use reserved names for channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
-    And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+    And I enter "openSUSE-Leap-15.5-Pool for x86_64" as "Channel Name"
     And I enter "test123" as "Channel Label"
     And I enter "test123" as "Channel Summary"
     And I click on "Create Channel"
-    Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
+    Then I should see a "The channel name 'openSUSE-Leap-15.5-Pool for x86_64' is reserved, please enter a different name" text
 
-# Fails because this product is not in the SCC Fake mirror in gh
 @scc_credentials
   Scenario: Fail when trying to use reserved labels for channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
     And I enter "test123" as "Channel Name"
-    And I enter "sle-we12-pool-x86_64-sap" as "Channel Label"
+    And I enter "opensuse-leap-15.5-pool-x86_64" as "Channel Label"
     And I enter "test123" as "Channel Summary"
     And I click on "Create Channel"
-    Then I should see a "The channel label 'sle-we12-pool-x86_64-sap' is reserved, please enter a different name" text
+    Then I should see a "The channel label 'opensuse-leap-15.5-pool-x86_64' is reserved, please enter a different name" text
 
   Scenario: Create a channel that will be changed
     When I follow the left menu "Software > Manage > Channels"
@@ -71,14 +69,13 @@ Feature: Managing channels
     And I click on "Create Channel"
     Then I should see a "Channel aaaSLE-12-Cloud-Compute5-Pool for x86_64 created." text
 
-# Fails because this product is not in the SCC Fake mirror in gh
 @scc_credentials
   Scenario: Fail when trying to change the channel name to a reserved name
     When I follow the left menu "Software > Manage > Channels"
     And I follow "aaaSLE-12-Cloud-Compute5-Pool for x86_64"
-    And I enter "SLE-12-Cloud-Compute5-Pool for x86_64" as "Channel Name"
+    And I enter "openSUSE-Leap-15.5-Pool for x86_64" as "Channel Name"
     And I click on "Update Channel"
-    Then I should see a "The channel name 'SLE-12-Cloud-Compute5-Pool for x86_64' is reserved, please enter a different name" text
+    Then I should see a "The channel name 'openSUSE-Leap-15.5-Pool for x86_64' is reserved, please enter a different name" text
 
   Scenario: Cleanup: Delete created channel
     When I follow the left menu "Software > Manage > Channels"
