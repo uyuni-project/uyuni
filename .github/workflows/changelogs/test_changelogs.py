@@ -335,9 +335,18 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
 @pytest.mark.parametrize(
     "entry_text, issue_msg",
     [
-        ("- This entry has\n  trailing whitespaces \n", IssueType.TRAIL_WHITESPACE),
-        ("- This entry has an  extra whitespace\n", IssueType.MULTI_WHITESPACEi),
-        (" - This is an invalid changelog entry\n", IssueType.WRONG_INDENT),
+        (
+            "- This entry has\n  trailing whitespaces \n",
+            IssueType.TRAIL_WHITESPACE
+        ),
+        (
+            "- This entry has an  extra whitespace\n",
+            IssueType.MULTI_WHITESPACE
+        ),
+        (
+            " - This is an invalid changelog entry\n",
+            IssueType.WRONG_INDENT
+        ),
         (
             "- This is an invalid changelog entry\n This line has only 1 leading whitespace instead of 2\n",
             IssueType.WRONG_INDENT,
