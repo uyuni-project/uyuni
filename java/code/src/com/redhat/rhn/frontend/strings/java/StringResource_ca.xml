@@ -2775,7 +2775,7 @@ lt;/divgt;
       </trans-unit>
       <trans-unit id="coma_publisher" xml:space="preserve">
         <source>Coma CMS Publisher</source>
-        <target state="translated">Coma CMS Publisher</target>
+        <target state="translated">Editor Coma CMS</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
@@ -7285,7 +7285,7 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       </trans-unit>
       <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
-        <target state="translated">Miniaplicació RHN  activationPRODUCTNAME activation activació lt;a href""{0}"gt;scheduledlt;/agt;</target>
+        <target state="translated">Miniaplicació RHN activationPRODUCTNAME activation activació lt;a href""{0}"gt;scheduledlt;/agt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
