@@ -8,7 +8,7 @@
                 <c:choose>
                 <c:when test="${channelOverviewForm.map.editing != 'true'}">
                   <a 
-                    role="button" class="btn-tertiary pull-right"
+                    role="button" class="btn btn-tertiary pull-right"
                     title="<bean:message key='channelOverview.jsp.choose-edit' />"
                     href="/rhn/configuration/ChannelOverview.do?ccid=${ccid}&amp;editing=true">
                     <rhn:icon type="item-edit" />
@@ -16,7 +16,7 @@
                 </c:when>
                 <c:otherwise>
                   <a 
-                    role="button" class="btn-tertiary pull-right"
+                    role="button" class="btn btn-tertiary pull-right"
                     title="Cancel"
                     href="/rhn/configuration/ChannelOverview.do?ccid=${ccid}&amp">
                     <rhn:icon type="item-close" />

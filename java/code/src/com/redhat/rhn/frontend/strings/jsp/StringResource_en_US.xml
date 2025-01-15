@@ -4265,7 +4265,7 @@ organization. You may grant or remove the organization administrator role in the
         <source>Patches</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
-        <source>Delete Patches</source>
+        <source>Delete</source>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata" xml:space="preserve">
         <source>Clone Patches</source>
@@ -8943,7 +8943,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Repository Information</source>
       </trans-unit>
       <trans-unit id="repos.jsp.update.channel" xml:space="preserve">
-        <source>Save Repositories</source>
+        <source>Save</source>
       </trans-unit>
       <trans-unit id="repos.jsp.channel.header" xml:space="preserve">
         <source>Repository</source>
@@ -23963,7 +23963,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.software.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Edit.do</context>
         </context-group>
@@ -23987,7 +23987,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="toolbar.delete.channel" xml:space="preserve">
-        <source>Delete software channel</source>
+        <source>Delete Channel</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata//Add.do</context>
         </context-group>
@@ -24035,7 +24035,7 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="channel.jsp.errata.remove" xml:space="preserve">
-        <source>Remove Patches</source>
+        <source>Remove</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/errata/ErrataList.do</context>
         </context-group>
