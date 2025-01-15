@@ -118,7 +118,7 @@ jobs:
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
       - name: debug
         if: ${{ failure() }}
-        run: mgrpush -u admin -p admin --server=server --nosig -c fake-base-channel-suse-like /root/subscription-tools-1.0-0.noarch.rpm
+        run: sudo -i podman exec -ti bash -c "mgrpush -u admin -p admin --server=server --nosig -c fake-base-channel-suse-like /root/subscription-tools-1.0-0.noarch.rpm"
       - name: get_server_logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
