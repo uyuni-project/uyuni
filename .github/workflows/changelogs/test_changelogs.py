@@ -313,7 +313,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
         ),
         (
             "- This entry has an  extra whitespace\n",
-            IssueType.MULTI_WHITESPACEi
+            IssueType.MULTI_WHITESPACE
         ),
         (
             " - This is an invalid changelog entry\n",
