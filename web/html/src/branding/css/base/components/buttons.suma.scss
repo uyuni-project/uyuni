@@ -80,8 +80,9 @@
 
   i {
     margin-right: 0;
+    text-decoration: none;
   }
-
+ 
   &:active,
   &:focus,
   &:hover:not(:disabled):not(.disabled) {
