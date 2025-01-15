@@ -547,6 +547,21 @@ public class SUSEProductFactory extends HibernateFactory {
     }
 
     /**
+     * Return all {@link SUSEProductExtension} of the given root product which are recommended
+     * @param root the root product
+     * @return SUSEProductExtensions which are recommended for the given root product
+     */
+    public static List<SUSEProductExtension> allRecommendedExtensionsOfRoot(SUSEProduct root) {
+        return getSession().createQuery("""
+                FROM SUSEProductExtension
+               WHERE recommended = true
+                 AND rootProduct = :root
+               """, SUSEProductExtension.class)
+                .setParameter("root", root)
+                .list();
+    }
+
+    /**
      * Find all {@link SUSEProductChannel} relationships.
      * @return list of SUSE product channel relationships
      */

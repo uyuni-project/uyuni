@@ -2124,8 +2124,31 @@ public class ContentSyncManager {
         Map<Long, SUSEProduct> productsById = allSUSEProducts
                 .stream().collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
+        Map<String, SCCProductJson> sles = new HashMap<>();
+        Map<String, SCCProductJson> sap = new HashMap<>();
+        products.stream()
+                .filter(SCCProductJson::isBaseProduct)
+                .filter(p -> p.getCpe() != null &&
+                        (p.getCpe().startsWith("cpe:/o:suse:sles:15:") ||
+                                p.getCpe().startsWith("cpe:/o:suse:sles_sap:15:")))
+                .forEach(p -> {
+                    String ident = String.format("%s-%s", p.getVersion(), p.getArch());
+                    if (p.getCpe().startsWith("cpe:/o:suse:sles:15:")) {
+                        sles.put(ident, p);
+                    }
+                    else {
+                        sap.put(ident, p);
+                    }
+                });
+        Set<Tuple2<Long, Long>> sles2sap = new HashSet<>();
+        sles.forEach((k, v) -> {
+            if (sap.containsKey(k)) {
+                sles2sap.add(new Tuple2<>(v.getId(), sap.get(k).getId()));
+            }
+        });
+
         Map<Long, Set<Long>> newPaths = Stream.concat(
-                staticUpgradePaths(),
+                Stream.concat(staticUpgradePaths(), sles2sap.stream()),
                         products.stream()
                                 .flatMap(p -> p.getOnlinePredecessorIds()
                                         .stream()
