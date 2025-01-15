@@ -267,7 +267,7 @@
             <a href="/rhn/systems/details/SystemChannels.do?sid=${system.id}"
               title="<bean:message key='sdc.details.overview.subscribedchannels.edit' />"
               role="button"
-              class="js-spa btn-tertiary pull-right">
+              class="js-spa btn btn-tertiary pull-right">
                 <rhn:icon type="item-edit" />
             </a>
           </h4>
@@ -381,7 +381,7 @@
             <a href="/rhn/systems/details/Edit.do?sid=${system.id}"
               title="<bean:message key='sdc.details.overview.sysproperties.edit' />"
               role="button"
-              class="js-spa btn-tertiary pull-right">
+              class="js-spa btn btn-tertiary pull-right">
                 <rhn:icon type="item-edit" />
             </a>
           </h4>
