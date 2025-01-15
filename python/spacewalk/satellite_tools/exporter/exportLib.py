@@ -919,16 +919,16 @@ class SuseProductChannelDumper(BaseQueryDumper):
     tag_name = "suse-product-channels"
     iterator_query = """
     SELECT p.product_id AS pdid,
-           pr.channel_label as clabel,
-           pr.parent_channel_label AS pclabel
-      FROM suseProductSCCRepository pr
-      JOIN suseProducts p ON pr.product_id = p.id
+           ct.channel_label as clabel,
+           ct.parent_channel_label AS pclabel
+      FROM suseChannelTemplate ct
+      JOIN suseProducts p ON ct.product_id = p.id
      WHERE EXISTS (select 1
                      FROM suseProductChannel pc
                      JOIN rhnChannel c ON c.id = pc.channel_id
                     WHERE p.id = pc.product_id
                       AND pc.mandatory = 'Y'
-                      AND c.label = pr.channel_label)
+                      AND c.label = ct.channel_label)
     """
 
     # pylint: disable-next=super-init-not-called
@@ -1031,15 +1031,15 @@ class SuseProductRepositoryDumper(BaseQueryDumper):
     SELECT p1.product_id AS pdid,
            p2.product_id AS rootid,
            r.scc_id AS repo_id,
-           pr.channel_label,
-           pr.parent_channel_label,
-           pr.channel_name,
-           pr.mandatory,
-           pr.update_tag
-      FROM suseProductSCCRepository pr
-      JOIN suseProducts p1 ON pr.product_id = p1.id
-      JOIN suseProducts p2 ON pr.root_product_id = p2.id
-      JOIN suseSCCRepository r ON pr.repo_id = r.id
+           ct.channel_label,
+           ct.parent_channel_label,
+           ct.channel_name,
+           ct.mandatory,
+           ct.update_tag
+      FROM suseChannelTemplate ct
+      JOIN suseProducts p1 ON ct.product_id = p1.id
+      JOIN suseProducts p2 ON ct.root_product_id = p2.id
+      JOIN suseSCCRepository r ON ct.repo_id = r.id
     """
 
     # pylint: disable-next=super-init-not-called
