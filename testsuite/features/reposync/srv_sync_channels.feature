@@ -31,6 +31,7 @@ Feature: Be able to list available channels and enable them
     Then I should get "[ ] SUSE Manager Proxy 4.3 x86_64"
 
   # The SCC mirror in github validation does not contain SUSE Manager products
+  @skip_if_github_validation
   Scenario: List all products for SUSE Manager
     When I execute mgr-sync "list products --expand"
     Then I should get "[ ] SUSE Linux Enterprise Server 15 SP4 x86_64"
