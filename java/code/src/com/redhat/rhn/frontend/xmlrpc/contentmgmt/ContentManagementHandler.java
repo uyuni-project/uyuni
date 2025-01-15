@@ -587,40 +587,6 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the created {@link ContentFilter}
      *
      * @apidoc.doc Create a Content Filter
-     * #paragraph_end()
-     * #paragraph()
-     * The following filters are available (you can get the list in machine-readable format using
-     * the listFilterCriteria() endpoint):
-     * #paragraph_end()
-     * #paragraph()
-     * Package filtering:
-     * #itemlist()
-     *   #item("by name - field: name; matchers: contains or matches")
-     *   #item("by name, epoch, version, release and architecture - field: nevr or nevra; matcher: equals")
-     *  #itemlist_end()
-     * #paragraph_end()
-     * #paragraph()
-     * Errata/Patch filtering:
-     * #itemlist()
-     *   #item("by advisory name - field: advisory_name; matcher: equals or matches")
-     *   #item("by type - field: advisory_type (e.g. 'Security Advisory'); matcher: equals")
-     *   #item("by synopsis - field: synopsis; matcher: equals, contains or matches")
-     *   #item("by keyword - field: keyword; matcher: contains")
-     *   #item("by date - field: issue_date; matcher: greater or greatereq")
-     *   #item("by affected package name - field: package_name; matcher: contains_pkg_name or matches_pkg_name")
-     *   #item("by affected package with version - field: package_nevr; matcher: contains_pkg_lt_evr,
-     *   contains_pkg_le_evr, contains_pkg_eq_evr, contains_pkg_ge_evr or contains_pkg_gt_evr")
-     * #itemlist_end()
-     * #paragraph_end()
-     * #paragraph()
-     * Appstream module/stream filtering:
-     * #itemlist()
-     *   #item("by module name, stream - field: module_stream; matcher: equals; value: modulaneme:stream")
-     * #itemlist_end()
-     * Note: Only 'allow' rule is supported for appstream filters.
-     * #paragraph_end()
-     * #paragraph()
-     * Note: The 'matches' matcher works on Java regular expressions.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "name", "Filter name")
@@ -707,9 +673,7 @@ public class ContentManagementHandler extends BaseHandler {
      * @return the updated {@link ContentFilter}
      *
      * @apidoc.doc Update a Content Filter
-     * #paragraph_end()
-     * #paragraph()
-     * See also: createFilter(), listFilterCriteria()
+     *
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "filterId", "Filter ID")
      * @apidoc.param #param_desc("string", "name", "New filter name")
