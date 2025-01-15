@@ -54,13 +54,7 @@ import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
 import org.hibernate.query.Query;
 import org.hibernate.type.LongType;
 import org.hibernate.type.StandardBasicTypes;
@@ -80,12 +74,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -210,22 +200,19 @@ public class ServerFactory extends HibernateFactory {
             log.warn("Please use a FQDN in /etc/salt/minion.d/susemanager.conf");
         }
 
-        DetachedCriteria proxyIds = DetachedCriteria.forClass(ProxyInfo.class)
-                .setProjection(Projections.property("server.id"));
-
         Optional<Server> result = findByFqdn(name);
 
         if (result.isPresent()) {
             return result;
         }
-
-        result = HibernateFactory.getSession()
-                .createCriteria(Server.class)
-                .add(Subqueries.propertyIn("id", proxyIds))
-                .add(Restrictions.eq("hostname", name))
-                .list()
-                .stream()
-                .findFirst();
+        result = HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_
+                FROM rhnServer
+                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
+                AND hostname = :hostname
+                LIMIT 1;
+                """, Server.class)
+                .setParameter("hostname", name, StringType.INSTANCE).uniqueResultOptional();
 
         if (result.isPresent()) {
             return result;
@@ -235,22 +222,24 @@ public class ServerFactory extends HibernateFactory {
         if (nameIsFullyQualified) {
             String srippedHostname = name.split("\\.")[0];
 
-            return HibernateFactory.getSession()
-                    .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", proxyIds))
-                    .add(Restrictions.eq("hostname", srippedHostname))
-                    .list()
-                    .stream()
-                    .findFirst();
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_
+                FROM rhnServer
+                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
+                AND hostname = :hostname
+                LIMIT 1;
+                """, Server.class)
+                    .setParameter("hostname", srippedHostname, StringType.INSTANCE).uniqueResultOptional();
         }
         else {
-            return HibernateFactory.getSession()
-                    .createCriteria(Server.class)
-                    .add(Subqueries.propertyIn("id", proxyIds))
-                    .add(Restrictions.like("hostname", name + ".", MatchMode.START))
-                    .list()
-                    .stream()
-                    .findFirst();
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_
+                FROM rhnServer
+                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
+                AND hostname LIKE :hostname
+                LIMIT 1;
+                """, Server.class)
+                    .setParameter("hostname", name + ".%", StringType.INSTANCE).uniqueResultOptional();
         }
     }
 
@@ -363,14 +352,14 @@ public class ServerFactory extends HibernateFactory {
             // on query with a transient object
             return Optional.empty();
         }
-        CriteriaBuilder builder = HibernateFactory.getSession().getCriteriaBuilder();
-        CriteriaQuery<ServerPath> criteria = builder.createQuery(ServerPath.class);
-        Root<ServerPath> root = criteria.from(ServerPath.class);
-        Path<ServerPathId> id = root.get("id");
-        criteria.where(builder.and(
-                builder.equal(id.get("server"), server),
-                builder.equal(id.get("proxyServer"), proxyServer)));
-        return getSession().createQuery(criteria).uniqueResultOptional();
+        return getSession().createNativeQuery("""
+                                      SELECT * from rhnServerPath
+                                      WHERE server_id = :server AND
+                                      proxy_server_id = :proxyserver
+                                      """, ServerPath.class)
+                .setParameter("server", server.getId(), LongType.INSTANCE)
+                .setParameter("proxyserver", proxyServer.getId(), LongType.INSTANCE)
+                .uniqueResultOptional();
     }
 
     /**
@@ -759,9 +748,13 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static Server lookupForeignSystemByDigitalServerId(String id) {
-        Criteria criteria = getSession().createCriteria(Server.class);
-        criteria.add(Restrictions.eq("digitalServerId", id));
-        for (Server server : (List<Server>) criteria.list()) {
+        List<Server> servers = getSession().createNativeQuery("""
+                                      SELECT *, 0 as clazz_  from rhnServer
+                                      WHERE digital_server_id = :id
+                                      """, Server.class)
+                .setParameter("id", id, StringType.INSTANCE)
+                .getResultList();
+        for (Server server : servers) {
             if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
                 return server;
             }
@@ -1342,10 +1335,17 @@ public class ServerFactory extends HibernateFactory {
      * @return contact method with the given label
      */
     public static ContactMethod findContactMethodByLabel(String label) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(ContactMethod.class);
-        criteria.add(Restrictions.eq("label", label));
-        return (ContactMethod) criteria.uniqueResult();
+        try {
+            return getSession().createNativeQuery("""
+                                      SELECT * from suseServerContactMethod
+                                      WHERE label = :label
+                                      """, ContactMethod.class)
+                .setParameter("label", label, StringType.INSTANCE)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**
@@ -1354,17 +1354,16 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of all systems
      */
     public static List<Server> list(boolean fetchingVirtualGuests, boolean fetchingGroups) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<Server> criteria = builder.createQuery(Server.class);
-        Root<Server> r = criteria.from(Server.class);
+        StringBuilder sql = new StringBuilder("SELECT *, 0 as clazz_ FROM rhnServer s");
+
         if (fetchingVirtualGuests) {
-            r.fetch("virtualGuests", JoinType.LEFT);
+            sql.append(" LEFT JOIN rhnVirtualInstance vg ON s.id = vg.host_system_id");
         }
         if (fetchingGroups) {
-            r.fetch("groups", JoinType.LEFT);
+            sql.append(" LEFT JOIN rhnServerGroupMembers rsgm ON s.id = rsgm.server_id");
+            sql.append(" LEFT JOIN rhnServerGroup sg ON rsgm.server_group_id = sg.id");
         }
-        criteria.distinct(true);
-        return new ArrayList<>(getSession().createQuery(criteria).getResultList());
+        return getSession().createNativeQuery(sql.toString(), Server.class).getResultList();
 
     }
 
@@ -1501,21 +1500,12 @@ public class ServerFactory extends HibernateFactory {
      * @return the server if any
      */
     public static Optional<Server> findByMachineId(String machineId) {
-        Session session = getSession();
-        Criteria criteria = session.createCriteria(Server.class);
-        criteria.add(Restrictions.eq("machineId", machineId));
-        return Optional.ofNullable((Server) criteria.uniqueResult());
-    }
-
-    /**
-     * Find {@link Capability} by name
-     * @param name the name of the capability
-     * @return a {@link Capability} with the given name
-     */
-    public static Optional<Capability> findCapability(String name) {
-        Criteria criteria = getSession().createCriteria(Capability.class);
-        criteria.add(Restrictions.eq("name", name));
-        return Optional.ofNullable((Capability) criteria.uniqueResult());
+        return getSession().createNativeQuery("""
+                                      SELECT * from rhnServer
+                                      WHERE machine_id = :machine
+                                      """, Server.class)
+                .setParameter("machine", machineId, StringType.INSTANCE)
+                .uniqueResultOptional();
     }
 
     /**
