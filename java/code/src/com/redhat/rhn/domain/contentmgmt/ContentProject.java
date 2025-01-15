@@ -30,7 +30,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -229,7 +228,7 @@ public class ContentProject extends BaseDomainHelper {
     public List<ProjectSource> getActiveSources() {
         return sources.stream()
                 .filter(s -> !ProjectSource.State.DETACHED.equals(s.getState()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -322,7 +321,7 @@ public class ContentProject extends BaseDomainHelper {
         return getProjectFilters().stream()
                 .filter(f -> f.getState() != ContentProjectFilter.State.DETACHED)
                 .map(ContentProjectFilter::getFilter)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

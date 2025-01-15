@@ -1,9 +1,9 @@
 import * as React from "react";
 
-import { FormContext } from "components/input/Form";
-import { FormMultiInput } from "components/input/FormMultiInput";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
+import { Select } from "components/input";
+import { FormContext } from "components/input/form/Form";
+import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
+import { Text } from "components/input/text/Text";
 import { Panel } from "components/panels/Panel";
 import Validation from "components/validation";
 

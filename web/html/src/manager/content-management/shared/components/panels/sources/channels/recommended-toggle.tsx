@@ -4,7 +4,7 @@ import { BaseChannelType, ChildChannelType } from "core/channels/type/channels.t
 
 import { Toggler } from "components/toggler";
 
-import styles from "./channels-selection.module.css";
+import styles from "./channels-selection.module.scss";
 
 type Props = {
   base: BaseChannelType;

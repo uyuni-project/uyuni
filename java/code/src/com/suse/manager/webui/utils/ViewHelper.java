@@ -52,25 +52,6 @@ public enum ViewHelper {
 
     private static final RenderUtils RENDER_UTILS = GlobalInstanceHolder.RENDER_UTILS;
 
-    /**
-     * List of pages that are updated to newer Bootstrap.
-     * @see ViewHelper#isBootstrapReady
-     *
-     * NB! This must be in sync with web/html/src/core/spa/view-helper.ts
-     */
-    private static final List<String> BOOTSTRAP_READY_PAGES = List.of(
-        "/rhn/YourRhn.do",
-        "/rhn/account/UserPreferences.do",
-        "/rhn/account/UserDetails.do",
-        "/rhn/account/ChangeEmail.do",
-        "/rhn/account/AccountDeactivation.do",
-        "/rhn/account/Addresses.do",
-        "/rhn/account/EditAddress.do",
-        "/rhn/multiorg/OrgConfigDetails.do",
-        "/rhn/manager/notification-messages",
-        "rhn/channels/software/Search.do"
-    );
-
     ViewHelper() { }
 
     /**
@@ -289,17 +270,5 @@ public enum ViewHelper {
      */
     public boolean hasSshPushContactMethod(Server server) {
         return ContactMethodUtil.isSSHPushContactMethod(server.getContactMethod());
-    }
-
-    /**
-     * Checks if the requested page is updated to newer Bootstrap.
-     * @param uri the page URI
-     * @return true if the URI is in the list of updated pages
-     * @deprecated this is a temporary hook that makes partial Bootstrap migration possible. Will be removed when the
-     * migration is finished.
-     */
-    @Deprecated
-    public boolean isBootstrapReady(String uri) {
-        return BOOTSTRAP_READY_PAGES.contains(uri);
     }
 }

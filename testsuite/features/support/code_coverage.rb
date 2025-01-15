@@ -1,26 +1,23 @@
-# Copyright (c) 2016-2023 SUSE LLC.
+# Copyright (c) 2024 SUSE LLC.
 # Licensed under the terms of the MIT license.
-require 'redis'
+require_relative 'keyvalue_store'
 require 'nokogiri'
 require 'open-uri'
 
 # CodeCoverage handler to produce, parse and report Code Coverage from the Jave Server to our GitHub PRs
 class CodeCoverage
-  include(Nokogiri::XML)
-  # Initialize a connection with a Redis database
-  def initialize(redis_host, redis_port, redis_username, redis_password)
-    @database = Redis.new(host: redis_host, port: redis_port, username: redis_username, password: redis_password)
-  end
+  include Nokogiri::XML
 
-  # Close the connection with the Redis database
-  def close
-    @database.close
+  # Initialize the CodeCoverage handler
+  def initialize
+    @keyvalue_store = KeyValueStore.new(ENV.fetch('REDIS_HOST', nil), ENV.fetch('REDIS_PORT', nil), ENV.fetch('REDIS_USERNAME', nil), ENV.fetch('REDIS_PASSWORD', nil))
   end
 
   # Parse a JaCoCo XML report, extracting information that will be included in a Set on a Redis database
   #
   # @param feature_name [String] The name of the feature.
   def push_feature_coverage(feature_name)
+    $stdout.puts("Pushing coverage for #{feature_name} into Redis")
     filename = "/tmp/jacoco-#{feature_name}.xml"
     begin
       xml = File.read(filename, mode: 'r')
@@ -35,17 +32,12 @@ class CodeCoverage
 
           next unless Integer(counter_class.attr('covered').to_s).positive?
 
-          begin
-            @database.sadd("#{package_name}/#{sourcefile_name}", feature_name)
-          rescue StandardError => e
-            warn("#{e.backtrace} > #{package_name}/#{sourcefile_name} : #{feature_name}")
-          end
+          @keyvalue_store.add("#{package_name}/#{sourcefile_name}", feature_name)
         end
       end
     rescue StandardError => e
       warn(e.backtrace)
-    ensure
-      File.delete(filename)
+    ensure File.delete(filename)
     end
   end
 
@@ -62,9 +54,9 @@ class CodeCoverage
     xml_report = xml ? "--xml /srv/www/htdocs/pub/jacoco-#{feature_name}.xml" : ''
     sourcefiles = source ? '--sourcefiles /tmp/uyuni-master/java/code/src' : ''
     classfiles = '--classfiles /srv/tomcat/webapps/rhn/WEB-INF/lib/rhn.jar'
-    dump_path = "/tmp/jacoco-#{feature_name}.exec"
-    get_target('server').run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset")
-    get_target('server').run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}")
-    file_extract(get_target('server'), "/srv/www/htdocs/pub/jacoco-#{feature_name}.xml", "/tmp/jacoco-#{feature_name}.xml")
+    dump_path = "/var/cache/jacoco-#{feature_name}.exec"
+    get_target('server').run("#{cli} dump --address localhost --destfile #{dump_path} --port 6300 --reset", verbose: true)
+    get_target('server').run("#{cli} report #{dump_path} #{html_report} #{xml_report} #{sourcefiles} #{classfiles}", verbose: true)
+    get_target('server').extract("/srv/www/htdocs/pub/jacoco-#{feature_name}.xml", "/tmp/jacoco-#{feature_name}.xml")
   end
 end

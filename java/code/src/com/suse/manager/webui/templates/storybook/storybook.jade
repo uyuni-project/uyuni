@@ -1,0 +1,10 @@
+include ../common.jade
+
+#storybook
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('storybook')
+        .then(function(module) { module.renderer('storybook') });

@@ -30,6 +30,7 @@ Feature: Bootstrap a SLE Micro 5.4 Salt minion
   # This change was implemented due to intermittent errors with automatic reboots, which could occur before Salt could relay the results of applying the bootstrap salt state.
   Scenario: Reboot the SLE Micro 5.4 minion through SSH
     When I reboot the "slemicro54_minion" host through SSH, waiting until it comes back
+    Then service "venv-salt-minion" is active on "slemicro54_minion"
 
   Scenario: Check the new bootstrapped SLE Micro 5.4 minion in System Overview page
     When I wait until onboarding is completed for "slemicro54_minion"

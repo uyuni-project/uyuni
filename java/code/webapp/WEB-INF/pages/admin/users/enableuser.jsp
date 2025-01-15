@@ -19,7 +19,7 @@
                     <rhn:csrf />
                     <br/>
                     <p>
-                        <html:submit styleClass="btn btn-success">
+                        <html:submit styleClass="btn btn-default">
                             <bean:message key="enableuser.jsp.enable"/>
                         </html:submit>
                     </p>

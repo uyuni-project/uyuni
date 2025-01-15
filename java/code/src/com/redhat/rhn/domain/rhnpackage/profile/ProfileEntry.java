@@ -108,9 +108,7 @@ public class ProfileEntry implements Serializable {
     @Override
     public boolean equals(Object other) {
 
-        if (other instanceof ProfileEntry) {
-            ProfileEntry otherPack = (ProfileEntry) other;
-
+        if (other instanceof ProfileEntry otherPack) {
             EqualsBuilder builder = new EqualsBuilder();
             builder.append(this.name, otherPack.getName())
                    .append(this.evr, otherPack.getEvr());

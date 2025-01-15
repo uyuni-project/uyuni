@@ -21,6 +21,7 @@
 - features/secondary/srv_user_configuration_salt_states.feature
 - features/secondary/srv_handle_software_channels_with_ISS_v2.feature
 - features/secondary/srv_handle_config_channels_with_ISS_v2.feature
+- features/secondary/srv_salt_git_pillar.feature
 - features/secondary/buildhost_osimage_build_image.feature
 - features/secondary/allcli_reboot.feature
 - features/secondary/min_rhlike_openscap_audit.feature
@@ -32,7 +33,7 @@
 - features/secondary/minssh_bootstrap_api.feature
 - features/secondary/min_bootstrap_ssh_key.feature
 - features/secondary/min_bootstrap_script.feature
-- features/secondary/min_ssh_tunnel.feature
+- features/secondary/minssh_tunnel.feature
 - features/secondary/min_activationkey.feature
 - features/secondary/min_salt_minions_page.feature
 - features/secondary/min_salt_mgrcompat_state.feature

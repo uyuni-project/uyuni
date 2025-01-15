@@ -171,7 +171,7 @@ public class AppStreamsManager {
         );
 
         criteriaQuery.select(root).where(finalPredicate);
-        return session.createQuery(criteriaQuery).uniqueResult();
+        return session.createQuery(criteriaQuery).stream().findFirst().orElse(null);
     }
 
     /**

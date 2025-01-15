@@ -235,12 +235,13 @@ def perform_compliants_checks():
         check_pkgs = [
             "python-instance-billing-flavor-check",
             "csp-billing-adapter-service",
-            "python3-csp-billing-adapter-local",
+            "python311-csp-billing-adapter",
+            "python311-csp-billing-adapter-local",
         ]
         if cloudProvider == "AWS":
-            check_pkgs.append("python3-csp-billing-adapter-amazon")
+            check_pkgs.append("python311-csp-billing-adapter-amazon")
         elif cloudProvider == "AZURE":
-            check_pkgs.append("python3-csp-billing-adapter-microsoft")
+            check_pkgs.append("python311-csp-billing-adapter-microsoft")
 
         modified_packages = any(has_package_modifications(pkg) for pkg in check_pkgs)
 

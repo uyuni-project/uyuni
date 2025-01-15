@@ -8,7 +8,7 @@ import { hideDialog } from "components/dialog/util";
 
 import Network from "utils/network";
 
-import styles from "./guests-console.module.css";
+import styles from "./guests-console.module.scss";
 import { ConsoleClientType } from "./guests-console-types";
 import { MessagePopUp, PopupState } from "./MessagePopUp";
 import { SpiceClient } from "./spice-client";

@@ -10,8 +10,8 @@ import { DangerDialog } from "components/dialog/DangerDialog";
 import { Dialog } from "components/dialog/Dialog";
 import { Form, Select } from "components/input";
 import { ChannelLink } from "components/links";
-import { Messages, MessageType } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
@@ -147,7 +147,12 @@ class ProductsPageWrapper extends React.Component {
           noToolsChannelSubscription: metadata.noToolsChannelSubscription,
         });
 
-        if (currentObject.state.noToolsChannelSubscription && currentObject.state.issMaster) {
+        if (
+          currentObject.state.noToolsChannelSubscription &&
+          currentObject.state.issMaster &&
+          !currentObject.state.refreshNeeded &&
+          !currentObject.state.refreshRunning
+        ) {
           currentObject.setState({
             errors: MessagesUtils.warning(
               t(
@@ -343,15 +348,16 @@ class ProductsPageWrapper extends React.Component {
           <Button
             id="addProducts"
             icon={this.state.addingProducts ? "fa-plus-circle fa-spin" : "fa-plus"}
-            className="btn-default text-muted"
+            className="btn btn-primary"
             title={submitButtonTitle}
             text={t("Add products")}
+            disabled
           />
         ) : (
           <Button
             id="addProducts"
             icon="fa-plus"
-            className={"btn-success"}
+            className={"btn btn-primary"}
             text={
               t("Add products") +
               (this.state.selectedItems.length > 0 ? " (" + this.state.selectedItems.length + ")" : "")
@@ -371,10 +377,11 @@ class ProductsPageWrapper extends React.Component {
                     <Button
                       id="clearSelection"
                       icon="fa-eraser"
-                      className={"btn-default " + (this.state.selectedItems.length === 0 ? "text-muted" : "")}
+                      className={"btn-default"}
                       title={t("Clear products selection")}
                       text={t("Clear")}
                       handler={this.clearSelection}
+                      disabled={this.state.selectedItems.length === 0}
                     />
                     {addProductButton}
                   </div>
@@ -439,39 +446,11 @@ class ProductsPageWrapper extends React.Component {
       );
     }
 
-    const prevStyle = { marginLeft: "10px", verticalAlign: "middle" };
-    const activeStep = _SETUP_WIZARD_STEPS.find((step) => step.active);
-    const currentStepIndex = activeStep ? _SETUP_WIZARD_STEPS.indexOf(activeStep) : -1;
-    const footer = (
-      <div className="panel-footer">
-        <div className="btn-group">
-          {currentStepIndex > 1 ? (
-            <a className="btn btn-default" href={_SETUP_WIZARD_STEPS[currentStepIndex - 1].url}>
-              <i className="fa fa-arrow-left"></i>
-              {t("Prev")}
-            </a>
-          ) : null}
-          {currentStepIndex < _SETUP_WIZARD_STEPS.length - 1 ? (
-            <a className="btn btn-success" href={_SETUP_WIZARD_STEPS[currentStepIndex + 1].url}>
-              <i className="fa fa-arrow-right"></i>
-              {t("Next")}
-            </a>
-          ) : null}
-        </div>
-        <span style={prevStyle}>
-          {currentStepIndex + 1}&nbsp;{t("of")}&nbsp;{_SETUP_WIZARD_STEPS.length}
-        </span>
-      </div>
-    );
-
     return (
       <div className="responsive-wizard">
         {title}
         {tabs}
-        <div className="panel panel-default" id="products-content">
-          <div className="panel-body">{pageContent}</div>
-        </div>
-        {footer}
+        {pageContent}
       </div>
     );
   }
@@ -1155,7 +1134,7 @@ const ChannelsPopUp = (props) => {
       content={contentPopup}
       submitText={t("Confirm")}
       submitIcon="fa-check"
-      btnClass="btn-success"
+      btnClass="btn-primary"
       onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
     />
   ) : (

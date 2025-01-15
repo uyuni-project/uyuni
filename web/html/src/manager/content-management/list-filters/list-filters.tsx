@@ -126,6 +126,7 @@ const ListFilters = (props: Props) => {
           initialFilterForm={initialFilterForm}
           icon="fa-plus"
           buttonText="Create Filter"
+          className="btn-primary"
           openFilterId={openFilterId}
           projectLabel={projectLabel}
           onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
@@ -134,11 +135,11 @@ const ListFilters = (props: Props) => {
     </div>
   );
 
-  const unusedFilter = <Button className="btn-link" handler={onSelectUnused} text={t("Select unused")}></Button>;
+  const unusedFilter = <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>;
 
   const deleteSelected = (
     <Button
-      className={`${selectedIdentifiers.length ? "btn-danger" : "btn-disabled"}`}
+      className="btn btn-danger"
       disabled={!selectedIdentifiers.length}
       handler={deleteSelectedRows}
       text={t("Delete selected")}
@@ -204,6 +205,7 @@ const ListFilters = (props: Props) => {
                 initialFilterForm={row}
                 icon="fa-edit"
                 buttonText="Edit Filter"
+                className="btn-link"
                 onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}

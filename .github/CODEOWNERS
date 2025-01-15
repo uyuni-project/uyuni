@@ -32,6 +32,9 @@
 
 # Uyuni Code Owners
 
+# Workflows reviewers
+.github/workflows @uyuni-project/workflows-reviewers
+
 # Release Engineering
 rel-eng/ @uyuni-project/release-engineering
 tito.props @uyuni-project/release-engineering

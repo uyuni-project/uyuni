@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Vulnerable package extractor for OVALs
@@ -42,7 +41,7 @@ import java.util.stream.Collectors;
  */
 public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     private static final Pattern RELEASE_PACKAGE_REGEX = Pattern.compile(
-            "^\\s*(?<releasePackage>[-a-zA-Z_0-9]+) is\\s*==\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
+            "^\\s*(?<releasePackage>[-a-zA-Z_0-9]+) is\\s*(==|>=)\\s*(?<releasePackageVersion>[0-9.]+)\\s*$");
     private final OVALLookupHelper ovalLookupHelper;
 
     /**
@@ -74,7 +73,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                         c.getComment().endsWith("is installed") ||
                                 c.getComment().endsWith("is affected") ||
                                 c.getComment().endsWith("is not affected"))
-                .collect(Collectors.toList());
+                .toList();
 
         List<VulnerablePackage> vulnerablePackages = new ArrayList<>();
         for (CriterionType packageCriterion : filteredPackageCriterions) {
@@ -142,11 +141,9 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
     @Override
     protected boolean test(BaseCriteria criteria) {
-        if (!(criteria instanceof CriteriaType)) {
+        if (!(criteria instanceof CriteriaType criteriaType)) {
             return false;
         }
-        CriteriaType criteriaType = (CriteriaType) criteria;
-
         boolean hasTwoChildren = criteriaType.getChildren().size() == 2;
         boolean hasOperatorAND = criteriaType.getOperator() == LogicOperatorType.AND;
 
@@ -173,9 +170,31 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         if (osProduct == OsFamily.LEAP) {
             return deriveOpenSUSELeapCpe();
         }
-        else {
-            return deriveSUSEProductCpe(productTest);
+        else if (osProduct == OsFamily.LEAP_MICRO) {
+            return deriveOpenSUSELeapMicroCpe();
         }
+        else if (osProduct == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO) {
+            return deriveSUSEMicroCpe();
+        }
+        else {
+            return deriveFromProductOVALTest(productTest);
+        }
+    }
+
+    private Cpe deriveOpenSUSELeapMicroCpe() {
+        return new CpeBuilder()
+                .withVendor("opensuse")
+                .withProduct("leap-micro")
+                .withVersion(definition.getOsVersion())
+                .build();
+    }
+
+    private Cpe deriveSUSEMicroCpe() {
+        return new CpeBuilder()
+                .withVendor("suse")
+                .withProduct("sle-micro")
+                .withVersion(definition.getOsVersion())
+                .build();
     }
 
     private Cpe deriveOpenSUSELeapCpe() {
@@ -186,7 +205,10 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .build();
     }
 
-    private Cpe deriveSUSEProductCpe(TestType productTest) {
+    private Cpe deriveFromProductOVALTest(TestType productTest) {
+        // Example of the content of an OVAL product test:
+        // <rpminfo_test id="oval:org.opensuse.security:tst:2009856174" version="1" comment="sles-release is ==15.6"...
+
         String testComment = productTest.getComment();
         String productPart = null;
         String versionPart = null;
@@ -194,7 +216,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
         Matcher matcher = RELEASE_PACKAGE_REGEX.matcher(testComment);
         if (!matcher.matches()) {
-            throw new IllegalStateException("Failed to derive CPE from OVAL test");
+            throw new IllegalStateException("Failed to derive CPE from OVAL test comment: " + testComment);
         }
 
         String releasePackage = matcher.group("releasePackage");
@@ -228,8 +250,10 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     public boolean isValidDefinition(DefinitionType definitionTypeIn) {
         OsFamily osFamily = definitionTypeIn.getOsFamily();
         boolean definitionFromASupportedFamily = osFamily == OsFamily.LEAP ||
+                osFamily == OsFamily.LEAP_MICRO ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
-                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP;
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP ||
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO;
 
         return super.isValidDefinition(definitionTypeIn) && definitionFromASupportedFamily;
     }

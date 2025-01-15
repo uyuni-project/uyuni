@@ -71,7 +71,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Utility methods for creating SUSE related test data.
@@ -486,6 +485,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         channel.setOrg(null);
         channel = TestUtils.saveAndReload(channel);
         SUSEProductTestUtils.createTestSUSEProductChannel(channel, product, true);
+        channel = TestUtils.saveAndReload(channel);
         return channel;
     }
 
@@ -564,7 +564,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
                     inputStreamReader7, new TypeToken<List<SCCProductJson>>() { }.getType());
             products.addAll(addProducts);
             addRepos.addAll(ContentSyncManager.collectRepos(
-                    ContentSyncManager.flattenProducts(addProducts).collect(Collectors.toList())));
+                    ContentSyncManager.flattenProducts(addProducts).toList()));
         }
         repositories.addAll(addRepos);
 

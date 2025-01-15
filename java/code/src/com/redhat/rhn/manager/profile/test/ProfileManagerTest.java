@@ -16,6 +16,7 @@ package com.redhat.rhn.manager.profile.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -200,7 +201,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
                 user.getOrg(), null);
         assertNotNull(dr);
         assertFalse(dr.isEmpty());
-        assertTrue(dr.iterator().next() instanceof ProfileDto);
+        assertInstanceOf(ProfileDto.class, dr.iterator().next());
 
     }
 

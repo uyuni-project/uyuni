@@ -3,8 +3,8 @@ import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { DropdownButton } from "components/buttons";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import Network from "utils/network";
@@ -166,7 +166,7 @@ class VirtualHostManager extends React.Component<Props, State> {
             text={t("Create")}
             icon="fa-plus"
             title={t("Add a virtual host manager")}
-            className="btn-default"
+            className="btn-primary"
             items={this.state.availableModules.map((name) => (
               <a data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
                 {msgModuleTypes[name.toLocaleLowerCase()]}

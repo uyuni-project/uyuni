@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.kickstart.cobbler;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.user.User;
@@ -33,16 +34,15 @@ import redstone.xmlrpc.XmlRpcFault;
 
 /**
  *
- * XMLRPCHelper - class that contains wraps calls to Redstone's XMLRPC client.
- * Intentionally implements the XMLRPCInvoker interface so we can also provide
- * a mock implementation to our unit tests so they don't require an actual cobbler
+ * XMLRPCHelper - class that contains wraps calls to Redstone's XML-RPC client.
+ * Intentionally implements the XMLRPCInvoker interface, in order to also provide
+ * a mock implementation to our unit tests for them not to require an actual cobbler
  * server.
- *
  */
 public class CobblerXMLRPCHelper implements XMLRPCInvoker {
 
     private XmlRpcClient client;
-    private static Logger log = LogManager.getLogger(CobblerXMLRPCHelper.class);
+    private static final Logger LOG = LogManager.getLogger(CobblerXMLRPCHelper.class);
     /**
      * Constructor
      */
@@ -51,12 +51,12 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
             client = new XmlRpcClient(getCobblerUrl(), false);
         }
         catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException(e);
         }
     }
 
     /**
-     * Invoke an XMLRPC method.
+     * Invoke an XML-RPC method.
      * @param procedureName to invoke
      * @param args to pass to method
      * @return Object returned.
@@ -64,19 +64,19 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      */
     @Override
     public Object invokeMethod(String procedureName, List args) throws XmlRpcFault {
-        log.debug("procedure: {} Orig args: {}", procedureName, args);
+        LOG.debug("procedure: {} Orig args: {}", procedureName, args);
         Object retval;
         try {
             retval = client.invoke(procedureName, args);
         }
         catch (XmlRpcException e) {
-            throw new RuntimeException("XmlRpcException calling cobbler.", e);
+            throw new RhnRuntimeException("XmlRpcException calling cobbler.", e);
         }
         return retval;
     }
 
     /**
-     * Returns the a new cobbler connection object
+     * Returns a new cobbler connection object
      * @param user the logged in user to ge the auth token
      * @return the authenticated cobbler connection.
      */
@@ -87,7 +87,7 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
     /**
      * Returns the new cobbler object, if you can't specify a user
      * @param userName the username
-     * @return the autehnticated cobbler connection
+     * @return the authenticated cobbler connection
      */
     public static CobblerConnection getConnection(String userName) {
         String token =
@@ -111,16 +111,5 @@ public class CobblerXMLRPCHelper implements XMLRPCInvoker {
      */
     public static CobblerConnection getAutomatedConnection() {
         return getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
-    }
-
-    /**
-     * Returns the cobbler version number
-     * @return the cobbler version number
-     */
-    public static Double getCobblerVersion() {
-        CobblerConnection connection =
-            getConnection(ConfigDefaults.get().getCobblerAutomatedUser());
-
-        return connection.getVersion();
     }
 }

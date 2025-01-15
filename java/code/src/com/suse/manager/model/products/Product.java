@@ -150,10 +150,9 @@ public class Product {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof Product)) {
+        if (!(other instanceof Product otherProduct)) {
             return false;
         }
-        Product otherProduct = (Product) other;
         return new EqualsBuilder()
                 .append(getId(), otherProduct.getId())
                 .append(getLabel(), otherProduct.getLabel())

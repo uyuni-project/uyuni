@@ -3,7 +3,7 @@
 
     <p>
       <bean:message key="snippetcreate.jsp.kickstart_rules_pre" />
-      <a data-toggle="collapse" data-target="#kickstart-rules">
+      <a data-bs-toggle="collapse" data-bs-target="#kickstart-rules">
         <bean:message key="snippetcreate.jsp.kickstart_rules_details" />
       </a>
     </p>

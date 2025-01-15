@@ -1,7 +1,0 @@
-# This file describes the order of features in a Build Validation test suite run.
-
-## Create bootstrap repositories BEGIN ###
-
-- features/build_validation/create_bootstrap_repositories/srv_create_bootstrap_repositories.feature
-
-## Create bootstrap repositories END ###

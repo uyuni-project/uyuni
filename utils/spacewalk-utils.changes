@@ -1,4 +1,26 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:25:29 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Force login to spacecmd from spacewalk-hostname-rename (bsc#1229848)
+  * Remove unmaintained snapshot and export tools from package
+    `spacewalk-utils-extras`
+  * Add openSUSE Leap Micro 6.0 and 6.1 with Uyuni Client Tools
+  * Add Uyuni Client Tools for SL Micro 6.1
+  * Remove tools from spacewalk-utils-extra and move them to Uyuni
+    contrib repository
+
+-------------------------------------------------------------------
+Mon Oct 14 15:56:01 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Add repositories for Ubuntu 24.04 LTS
+  * Drop unsupported tool spacewalk-final-archive as it is broken
+    and may disclose sensitive information (bsc#1228945)
+  * Bump version to 5.1.0
+  * Move taskotop tool to spacewalk-utils package
+
+-------------------------------------------------------------------
 Mon Jun 10 17:13:13 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0

@@ -74,7 +74,7 @@
                 <%@ include file="/WEB-INF/pages/common/fragments/org-config.jspf" %>
             </div>
         </div>
-        <html:submit styleClass="btn btn-success pull-right">
+        <html:submit styleClass="btn btn-primary">
             <bean:message key="orgdetails.jsp.submit"/>
         </html:submit>
     </form>

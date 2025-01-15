@@ -94,12 +94,9 @@ public abstract class ExtGroup extends BaseDomainHelper implements Comparable<Ex
             return true;
         }
 
-        if (!(oIn instanceof ExtGroup)) {
+        if (!(oIn instanceof ExtGroup extGroup)) {
             return false;
         }
-
-        ExtGroup extGroup = (ExtGroup) oIn;
-
         return new EqualsBuilder().append(id, extGroup.id)
                 .append(label, extGroup.label).append(org, extGroup.org).isEquals();
     }

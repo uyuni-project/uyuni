@@ -48,7 +48,7 @@ export class PopUp extends React.Component<Props> {
             {!this.props.hideHeader && (
               <div className="modal-header">
                 {closableModal && (
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" className="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">
                       <i className="fa fa-close"></i>
                     </span>

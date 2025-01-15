@@ -96,6 +96,10 @@
     "name" : "MicroOS for ARM64"
   },
   {
+    "label" : "MICROOS-PPC",
+    "name" : "MicroOS for PPC"
+  },
+  {
     "label" : "MICROOS-X86",
     "name" : "MicroOS for x86_64"
   },
@@ -194,6 +198,10 @@
   {
     "label" : "SLE-WE",
     "name" : "SUSE Linux Enterprise Workstation Extension"
+  },
+  {
+    "label" : "SLES-12-SP5-LTSS-Extended-Security",
+    "name" : "SUSE Linux Enterprise Server LTSS Extended Security 12 SP5 x86_64"
   },
   {
     "label" : "SLES-ARM64",
@@ -378,6 +386,22 @@
   {
     "label" : "SLES15-SP4-LTSS-Z",
     "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 Z-Series"
+  },
+  {
+    "label" : "SLES15-SP5-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP5 ARM64"
+  },
+  {
+    "label" : "SLES15-SP5-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP5 PPC"
+  },
+  {
+    "label" : "SLES15-SP5-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64"
+  },
+  {
+    "label" : "SLES15-SP5-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP5 Z-Series"
   },
   {
     "label" : "SLESMT",

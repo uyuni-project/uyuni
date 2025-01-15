@@ -6,10 +6,10 @@ import validator from "validator";
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/LegacyDangerDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Check } from "components/input/Check";
-import { Form } from "components/input/Form";
-import { Text } from "components/input/Text";
-import { MessageType, Utils as MessagesUtils } from "components/messages";
+import { Check } from "components/input/check/Check";
+import { Form } from "components/input/form/Form";
+import { Text } from "components/input/text/Text";
+import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
 
 type CalendarEditProps = {
   messages: (messages: MessageType[]) => any;

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 
 type SuccessType = boolean | undefined;
 

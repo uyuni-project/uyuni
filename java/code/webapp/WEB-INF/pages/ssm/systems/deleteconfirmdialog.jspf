@@ -8,7 +8,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true"><i class="fa fa-close"></i></span>
                   </button>
                   <h4 class="modal-title"><bean:message key="ssm.delete.systems.header" /></h4>
@@ -34,8 +34,8 @@
             </div>
         </div>
 
-        <button class="btn btn-danger" type="button" data-toggle="modal"
-            data-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
+        <button class="btn btn-danger" type="button" data-bs-toggle="modal"
+            data-bs-target="#confirmDeleteDialog">${rhn:localize('ssm.delete.systems.confirmbutton')}</button>
     </c:when>
     <c:otherwise>
         <input type="hidden" name="saltCleanup" value="FORCE_DELETE"/>

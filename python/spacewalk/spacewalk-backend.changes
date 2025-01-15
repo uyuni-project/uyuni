@@ -1,4 +1,49 @@
 -------------------------------------------------------------------
+Thu Dec 12 16:05:39 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Update translation strings
+
+-------------------------------------------------------------------
+Thu Dec 12 09:20:01 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Support '^' in RPM version string when importing appstreams
+  * Detect and update errata when not all repository packages are
+    linked (bsc#1227644)
+  * Require 5.1 database schema
+  * Fix mgr-sign-metadata-ctl check-channels when checking for
+    signatures in repomd metadata (bsc#1233884)
+  * Set default RPM package summary if it's missing (bsc#1232530)
+
+-------------------------------------------------------------------
+Mon Oct 14 15:44:04 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Ignore 'buildorder' parsing errors when parsing entries in module
+    metadata (bsc#1230274)
+  * Provide http_headers also to Debian repository syncer
+  * Make spacewalk-data-fsck aware of orphaned RPMs (bsc#1227882)
+  * reposync: import GPG keys to RPM DB individually (bsc#1217003)
+  * Bump version to 5.1.0
+  * Add log string to the journal when services are stopped
+    because of insufficent disk space
+
+-------------------------------------------------------------------
+Thu Aug 01 09:36:37 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.9-0
+  * Support more NEVRA types when importing module metadata
+  * yum_src: use proper name variable name for
+    subprocess.TimeoutExpired
+  * Check and populate PTF attributes at the time of importing
+    packages (bsc#1225619)
+  * reposync: introduce timeout when syncing DEB channels
+    (bsc#1225960)
+  * Refresh channel newest packages after importing Appstreams
+    metadata
+
+-------------------------------------------------------------------
 Tue Jun 18 18:16:16 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0

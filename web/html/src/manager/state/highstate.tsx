@@ -6,8 +6,8 @@ import { ActionSchedule } from "components/action-schedule";
 import { LinkButton } from "components/buttons";
 import { AsyncButton } from "components/buttons";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { Toggler } from "components/toggler";
 
@@ -125,7 +125,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
         />
         <AsyncButton
           action={this.applyHighstate}
-          defaultType="btn-success"
+          defaultType="btn-default"
           text={t("Apply Highstate")}
           disabled={window.minions?.length === 0}
         />
@@ -135,7 +135,7 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
     const loc = window.location;
     const createLink = loc.pathname.replace("/highstate", "/recurring-actions") + loc.search + "#/create";
     const buttonsLeft = [
-      <LinkButton icon="fa-plus" href={createLink} className="btn-default" text={t("Create Recurring")} />,
+      <LinkButton icon="fa-plus" href={createLink} className="btn-primary" text={t("Create Recurring")} />,
     ];
     const showHighstate = [
       <InnerPanel

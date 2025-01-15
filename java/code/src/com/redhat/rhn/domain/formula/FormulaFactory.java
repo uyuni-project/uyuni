@@ -202,6 +202,9 @@ public class FormulaFactory {
         else if ("HWType".equals(saltboot.get("minion_id_naming"))) {
             kernelOptions += " DISABLE_HOSTNAME_ID=1";
         }
+        else if ("MAC".equals(saltboot.get("minion_id_naming"))) {
+            kernelOptions += " USE_MAC_MINION_ID=1";
+        }
         if (StringUtils.isNotEmpty((String) saltboot.get("default_kernel_parameters"))) {
             kernelOptions += " " + saltboot.get("default_kernel_parameters");
         }
@@ -275,7 +278,7 @@ public class FormulaFactory {
         List<String> formulas = group.getPillars().stream()
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
-                .collect(Collectors.toList());
+                .toList();
 
         return orderFormulas(formulas);
     }
@@ -289,7 +292,7 @@ public class FormulaFactory {
         List<String> formulas = orderFormulas(minion.getPillars().stream()
                 .filter(pillar -> pillar.getCategory().startsWith(PREFIX))
                 .map(pillar -> pillar.getCategory().substring(PREFIX.length()))
-                .collect(Collectors.toList()));
+                .toList());
 
         return orderFormulas(formulas);
     }
@@ -461,8 +464,8 @@ public class FormulaFactory {
      */
     public static Map<String, Object> convertIntegers(Map<String, Object> map) {
         map.forEach((key, value) -> {
-            if (value instanceof Double) {
-                if (((Double) value) % 1 == 0) {
+            if (value instanceof Double dbl) {
+                if (dbl % 1 == 0) {
                     map.put(key, ((Double) value).intValue());
                 }
             }
@@ -785,7 +788,7 @@ public class FormulaFactory {
                             proxyEnabled ? exporterConfig.getProxyModuleOrFallback() : null,
                             proxyPath,
                             tlsEnabled))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         else {
             return new ArrayList<>();

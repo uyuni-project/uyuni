@@ -70,7 +70,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Test for the content-management related methods in {@link ChannelManager}
@@ -196,7 +195,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
         List<Long> ids = ChannelManager.latestPackagesInChannel(tgtChannel).stream()
                 .map(p -> (Long) p.get("id"))
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(2, ids.size());
         assertContains(ids, pack4.getId());
         assertContains(ids, pack5.getId());
@@ -311,7 +310,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertEquals(2, needingUpdates.size());
         assertTrue(needingUpdates.stream()
                         .map(ErrataCacheDto::getPackageId)
-                        .collect(Collectors.toList())
+                        .toList()
                 .containsAll(Arrays.asList(pack1.getId(), pack2.getId())));
 
         // 2. align with a filter - 1 package should be filtered out and removed from the cache

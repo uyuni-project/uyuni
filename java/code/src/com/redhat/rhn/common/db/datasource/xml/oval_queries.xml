@@ -29,4 +29,27 @@
               AND cve.name = :cve_name;
         </query>
     </mode>
+
+    <mode name="check_oval_availability">
+        <query params="cpe">
+            SELECT 1 FROM suseOVALPlatform plat WHERE starts_with(:cpe, plat.cpe);
+        </query>
+    </mode>
+
+    <mode name="check_errata_availability">
+        <query params="server_id">
+            SELECT 1
+            FROM suseCVEServerChannel,
+                 rhnChannelErrata
+            WHERE suseCVEServerChannel.channel_id = rhnChannelErrata.channel_id
+              AND server_id = :server_id
+        </query>
+    </mode>
+
+    <write-mode name="clear_oval_metadata_by_platform">
+        <query params="cpe">
+            DELETE FROM suseOVALPlatformVulnerablePackage pvp WHERE pvp.platform_id = (SELECT id FROM suseOVALPlatform plat WHERE plat.cpe = :cpe);
+            DELETE FROM suseOVALPlatform plat where plat.cpe = :cpe;
+        </query>
+    </write-mode>
 </datasource_modes>

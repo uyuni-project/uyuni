@@ -47,7 +47,7 @@ public class UserSerializer extends ApiResponseSerializer<User> {
                 .add("id", src.getId())
                 .add("login", src.getLogin())
                 .add("login_uc", src.getLoginUc())
-                .add("enabled", src.isDisabled())
+                .add("enabled", !src.isDisabled())
                 .build();
     }
 }

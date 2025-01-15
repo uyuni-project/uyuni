@@ -186,6 +186,14 @@ def test_get_modules(importer):
             "4.el8.remi.7.2",
             "x86_64",
         ),
+        (
+            "toolbox-0:0.0.99.2^1.git660b6970e998-1.module_el8.5.0+874+6db8bee3.noarch",
+            "toolbox",
+            "0",
+            "0.0.99.2^1.git660b6970e998",
+            "1.module_el8.5.0+874+6db8bee3",
+            "noarch",
+        ),
     ],
 )
 def test_parse_rpm_name(nevra_input, name, epoch, version, release, arch):

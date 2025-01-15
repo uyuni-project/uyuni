@@ -19,4 +19,5 @@
 # Activation keys can only be created after products and channels are synced
 - features/reposync/srv_create_activationkey.feature
 - features/reposync/allcli_update_activationkeys.feature
+- features/reposync/srv_create_bootstrap_repositories.feature
 ## Channels and Product synchronization features END ###

@@ -79,14 +79,10 @@ public class PamReturnValue {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof PamReturnValue)) {
+        if (!(o instanceof PamReturnValue pamReturnValue)) {
             return false;
         }
-        final PamReturnValue pamReturnValue = (PamReturnValue) o;
-        if (id != pamReturnValue.id) {
-            return false;
-        }
-        return true;
+        return id == pamReturnValue.id;
     }
 
     /**

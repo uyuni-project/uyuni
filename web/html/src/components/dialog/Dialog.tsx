@@ -47,7 +47,7 @@ export function Dialog(props: DialogProps) {
               <button
                 type="button"
                 className="close"
-                data-dismiss="modal"
+                data-bs-dismiss="modal"
                 aria-label="Close"
                 onClick={() => props.onClose?.()}
               >

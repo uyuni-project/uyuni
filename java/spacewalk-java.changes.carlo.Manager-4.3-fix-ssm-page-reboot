@@ -1,0 +1,2 @@
+- Fixes bug when accessing menu Systems | System Set Manager |
+  Misc | Reboot with no system selected (bsc#1222820)

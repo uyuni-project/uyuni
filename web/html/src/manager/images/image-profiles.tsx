@@ -5,7 +5,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { AsyncButton, LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages } from "components/messages";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -138,17 +138,17 @@ class ImageProfiles extends React.Component<Props, State> {
             target="delete-selected-modal"
           />
         )}
+        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
         {window.isAdmin && (
           <LinkButton
             id="create"
             icon="fa-plus"
-            className="btn-default"
+            className="btn-primary"
             title={t("Create")}
             text={t("Create")}
             href="/rhn/manager/cm/imageprofiles/create"
           />
         )}
-        <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.reloadData} />
       </div>
     );
 

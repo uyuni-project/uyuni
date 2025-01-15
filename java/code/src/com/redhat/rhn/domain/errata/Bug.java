@@ -95,10 +95,9 @@ public class Bug extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Bug)) {
+        if (!(other instanceof Bug castOther)) {
             return false;
         }
-        Bug castOther = (Bug) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .isEquals();
     }

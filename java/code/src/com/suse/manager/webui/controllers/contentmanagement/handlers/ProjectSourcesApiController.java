@@ -68,7 +68,7 @@ public class ProjectSourcesApiController {
         List<String> sourceLabelsToDetach = dbContentProject.getSources().stream()
                 .flatMap(source -> stream(source.asSoftwareSource()))
                 .map(softwareSource -> softwareSource.getChannel().getLabel())
-                .collect(Collectors.toList());
+                .toList();
         sourceLabelsToDetach.forEach(sourceLabel -> CONTENT_MGR.detachSource(
                 projectLabel,
                 ProjectSource.Type.SW_CHANNEL,

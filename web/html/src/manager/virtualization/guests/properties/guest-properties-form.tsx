@@ -3,9 +3,9 @@ import * as React from "react";
 import { ActionChain } from "components/action-schedule";
 import { ActionSchedule } from "components/action-schedule";
 import { Button, SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
-import { MessageType } from "components/messages";
-import { Messages } from "components/messages";
+import { Form } from "components/input/form/Form";
+import { MessageType } from "components/messages/messages";
+import { Messages } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 
 import { localizedMoment } from "utils";
@@ -110,7 +110,7 @@ class GuestPropertiesForm extends React.Component<Props, State> {
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"
-              className="btn-success"
+              className="btn-primary"
               text={this.props.submitText}
               disabled={this.state.isInvalid}
             />

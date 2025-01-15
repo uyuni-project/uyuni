@@ -6,7 +6,7 @@ import { AsyncButton } from "components/buttons";
 import { Dialog } from "components/dialog/LegacyDialog";
 import { showDialog } from "components/dialog/util";
 import { Form, Select } from "components/input";
-import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages";
+import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";

@@ -13,7 +13,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-edit.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -41,10 +41,10 @@
                     </div>
                     <div class="modal-footer">
                         <span id="edit-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="saveCredentials();">
+                        <button type="button" class="btn btn-primary" onClick="saveCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.save" />
                         </button>
                     </div>
@@ -57,7 +57,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-delete.title" /></h4>
                     </div>
                     <div class="modal-body">
@@ -72,10 +72,10 @@
                     </div>
                     <div class="modal-footer">
                         <span id="delete-credentials-spinner"></span>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.cancel" />
                         </button>
-                        <button type="button" class="btn btn-success" onClick="deleteCredentials();">
+                        <button type="button" class="btn btn-danger" onClick="deleteCredentials();">
                             <bean:message key="mirror-credentials.jsp.bt.delete" />
                         </button>
                     </div>
@@ -88,14 +88,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true"><i class="fa fa-close"></i></button>
                         <h4 class="modal-title"><bean:message key="mirror-credentials.jsp.modal-subscriptions.title" /></h4>
                     </div>
                     <div id="modal-list-subscriptions-body" class="modal-body">
                         <!-- Content will be rendered here -->
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                             <bean:message key="mirror-credentials.jsp.bt.close" />
                         </button>
                     </div>
@@ -110,31 +110,26 @@
             <rhn:dialogmenu mindepth="0" maxdepth="1"
                         definition="/WEB-INF/nav/setup_wizard.xml"
                         renderer="com.redhat.rhn.frontend.nav.DialognavRenderer" />
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <c:choose>
-                        <c:when test='${issMaster}'>
-                            <div class="row" id="mirror-credentials">
-                                <div class="col-sm-9" id="listset-container">
-                                    <rhn:icon type="spinner"></rhn:icon>
-                                    <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
-                                </div>
-                                <div class="col-sm-3 hidden-xs" id="wizard-faq">
-                                    <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
-                                    <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
-                                    <img src="../../../img/credentials-help.png" />
-                                    <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
-                                    <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
-                                </div>
-                            </div>
-                        </c:when>
-                        <c:otherwise>
-                            <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.iss-slave"/></div>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
-                <jsp:include page="/WEB-INF/pages/common/fragments/setup/setup-tab-footer.jspf" />
-            </div>
+            <c:choose>
+                <c:when test='${issMaster}'>
+                    <div class="row" id="mirror-credentials">
+                        <div class="col-sm-9" id="listset-container">
+                            <rhn:icon type="spinner"></rhn:icon>
+                            <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
+                        </div>
+                        <div class="col-sm-3 hidden-xs" id="wizard-faq">
+                            <h4><bean:message key="mirror-credentials.jsp.info.h1" /></h4>
+                            <p><bean:message key="mirror-credentials.jsp.info.p1" /></p>
+                            <img src="../../../img/credentials-help.png" />
+                            <h4><bean:message key="mirror-credentials.jsp.info.h2" /></h4>
+                            <p><bean:message key="mirror-credentials.jsp.info.p2" /></p>
+                        </div>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div class="alert alert-warning" role="alert"><bean:message key="mirror-credentials.jsp.iss-slave"/></div>
+                </c:otherwise>
+            </c:choose>
         </div>
     </body>
 </html>

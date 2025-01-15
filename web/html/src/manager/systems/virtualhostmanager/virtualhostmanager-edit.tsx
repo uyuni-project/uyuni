@@ -1,13 +1,13 @@
 import * as React from "react";
 
 import { Button, SubmitButton } from "components/buttons";
-import { Form } from "components/input/Form";
+import { Select } from "components/input";
+import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
-import { Password } from "components/input/Password";
-import { Select } from "components/input/Select";
-import { Text } from "components/input/Text";
-import { Messages } from "components/messages";
+import { Password } from "components/input/password/Password";
+import { Text } from "components/input/text/Text";
+import { Messages } from "components/messages/messages";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
@@ -192,7 +192,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="update-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
@@ -202,7 +202,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       buttons.unshift(
         <SubmitButton
           id="create-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}

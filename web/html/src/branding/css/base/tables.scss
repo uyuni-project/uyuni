@@ -9,6 +9,10 @@
   > tbody > tr:last-child > * {
     border-bottom-width: 0;
   }
+
+  .table {
+    background-color: $white;
+  }
 }
 
 .table > thead > tr.active > th {
@@ -17,10 +21,6 @@
 
 td {
   overflow: hidden;
-  
-  .btn-group {
-    display: flex;
-  }
 }
 
 .table-framed td,

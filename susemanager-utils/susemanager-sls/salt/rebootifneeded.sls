@@ -13,6 +13,6 @@ mgr_reboot_if_needed:
     - onlyif:
       - test -e /boot/do_purge_kernels
 {%- else %}
-    - onlyif: 'zypper ps -s; [ $? -eq 102 ] || [ {{ patch_need_reboot }} -eq 0 ]'
+    - onlyif: 'zypper ps -s; [ $? -eq 102 ]'
 {%- endif %}
 {%- endif %}

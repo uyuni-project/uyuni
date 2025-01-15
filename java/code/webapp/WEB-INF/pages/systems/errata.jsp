@@ -30,7 +30,7 @@
     <c:if test="${requestScope.showApplyErrata == 'true'}">
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <html:submit styleClass="btn btn-success" property="dispatch">
+                <html:submit styleClass="btn btn-default" property="dispatch">
                     <bean:message key="errata.jsp.apply"/>
                 </html:submit>
             </div>

@@ -5,7 +5,7 @@ import _isEqual from "lodash/isEqual";
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
 import { Form, Select } from "components/input";
-import { Utils as MessagesUtils } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
 import { StatesPicker } from "components/states-picker";
@@ -204,7 +204,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
         />
         <AsyncButton
           action={this.onEdit}
-          defaultType="btn-success"
+          defaultType="btn-primary"
           text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")}
         />
       </div>,

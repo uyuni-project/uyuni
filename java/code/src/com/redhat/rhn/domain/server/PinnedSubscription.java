@@ -76,10 +76,9 @@ public class PinnedSubscription {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof PinnedSubscription)) {
+        if (!(other instanceof PinnedSubscription castOther)) {
             return false;
         }
-        PinnedSubscription castOther = (PinnedSubscription) other;
         return new EqualsBuilder().append(getSystemId(), castOther.getSystemId())
                 .append(getSubscriptionId(), castOther.getSubscriptionId())
                 .isEquals();

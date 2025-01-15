@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { AsyncButton, LinkButton } from "components/buttons";
-import { Utils as MessagesUtils } from "components/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 import { Column } from "components/table/Column";
 
 import { Utils } from "utils/functions";

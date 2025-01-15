@@ -36,7 +36,7 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-offset-2 offset-md-2 col-md-10">
-                        <html:submit styleClass="btn btn-success"><bean:message key="restart.jsp.restart"/></html:submit>
+                        <html:submit styleClass="btn btn-primary"><bean:message key="restart.jsp.restart"/></html:submit>
                     </div>
                 </div>
             <rhn:submitted/>

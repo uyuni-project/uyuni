@@ -57,6 +57,10 @@ class DBint(DBtype):
     pass
 
 
+class DBbool(DBtype):
+    pass
+
+
 class DBstring(DBtype):
     def __init__(self, limit):
         self.limit = limit

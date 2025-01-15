@@ -60,7 +60,6 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -187,10 +186,10 @@ public class VirtualPoolsController extends AbstractVirtualizationController {
             Map<String, JsonObject> poolVols = volInfos.getOrDefault(entry.getKey(), new HashMap<>());
             List<VirtualStorageVolumeInfoJson> volumes = poolVols.entrySet().stream()
                     .map(volEntry -> new VirtualStorageVolumeInfoJson(volEntry.getKey(), volEntry.getValue()))
-                    .collect(Collectors.toList());
+                    .toList();
 
             return new VirtualStoragePoolInfoJson(entry.getKey(), entry.getValue(), volumes);
-        }).collect(Collectors.toList());
+        }).toList();
 
         return json(response, pools, new TypeToken<>() { });
     }

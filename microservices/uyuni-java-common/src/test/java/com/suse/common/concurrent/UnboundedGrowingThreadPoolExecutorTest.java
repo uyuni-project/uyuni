@@ -15,12 +15,15 @@
 
 package com.suse.common.concurrent;
 
+import static org.awaitility.Awaitility.await;
+import static org.awaitility.Awaitility.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.AssertionsKt.fail;
 
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -33,12 +36,19 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Disabled("These tests are flaky and fails when executed by GitHub actions")
 class UnboundedGrowingThreadPoolExecutorTest {
 
-    public static final String THREAD_PREFIX = "unit-test";
+    private static final String THREAD_PREFIX = "unit-test";
+
+    private static final Duration KEEP_THREAD_ALIVE = Duration.ofMillis(250);
 
     private ExecutorService executorService;
+
+    @BeforeEach
+    public void setup() {
+        Awaitility.setDefaultPollDelay(0, TimeUnit.SECONDS);
+        Awaitility.setDefaultTimeout(5, TimeUnit.SECONDS);
+    }
 
     @AfterEach
     public void tearDown() {
@@ -54,12 +64,14 @@ class UnboundedGrowingThreadPoolExecutorTest {
             Thread.currentThread().interrupt();
             fail("Unexpected interruption while terminating executor", ex);
         }
+
+        Awaitility.reset();
     }
 
     @Test
     @DisplayName("Creates and start the correct number of core threads")
     void canCreateAndStartCoreThreads() {
-        executorService = new UnboundedGrowingThreadPoolExecutor(2, 10, Duration.ofSeconds(1), THREAD_PREFIX);
+        executorService = new UnboundedGrowingThreadPoolExecutor(2, 10, KEEP_THREAD_ALIVE, THREAD_PREFIX);
         // Verify core threads are created
         assertEquals(2, getUnitThreads().size());
     }
@@ -67,7 +79,7 @@ class UnboundedGrowingThreadPoolExecutorTest {
     @Test
     @DisplayName("Allows zero core threads")
     void canStartWithoutCoreThreads() {
-        executorService = new UnboundedGrowingThreadPoolExecutor(0, 10, Duration.ofSeconds(1), THREAD_PREFIX);
+        executorService = new UnboundedGrowingThreadPoolExecutor(0, 10, KEEP_THREAD_ALIVE, THREAD_PREFIX);
         // Verify no core threads are created
         assertEquals(0, getUnitThreads().size());
     }
@@ -75,7 +87,7 @@ class UnboundedGrowingThreadPoolExecutorTest {
     @Test
     @DisplayName("Can increase number of threads when tasks are added and close them when done")
     void canIncreaseNumberOfThreads() {
-        executorService = new UnboundedGrowingThreadPoolExecutor(5, 10, Duration.ofMillis(500), THREAD_PREFIX);
+        executorService = new UnboundedGrowingThreadPoolExecutor(5, 10, KEEP_THREAD_ALIVE, THREAD_PREFIX);
 
         final CountDownLatch completeTaskLatch = new CountDownLatch(1);
 
@@ -91,25 +103,22 @@ class UnboundedGrowingThreadPoolExecutorTest {
         // Threads should have increased
         assertEquals(8, getUnitThreads().size());
 
-        // Complete the tasks
+        // Complete the tasks and wait their full completion
         completeTaskLatch.countDown();
-        // Thread should still be the same number
-        assertEquals(8, getUnitThreads().size());
 
-        sleep(Duration.ofSeconds(1));
+        given().pollDelay(KEEP_THREAD_ALIVE)
+            .await("Non-core threads to expire")
+            .untilAsserted(() -> assertEquals(5, getUnitThreads().size()));
 
-        // Non-core threads should be expired
-        assertEquals(5, getUnitThreads().size());
-
-        sleep(Duration.ofSeconds(1));
-        // Non-core threads should not expire
-        assertEquals(5, getUnitThreads().size());
+        await("Core threads do not expire")
+            .during(KEEP_THREAD_ALIVE.multipliedBy(2))
+            .untilAsserted(() -> assertEquals(5, getUnitThreads().size()));
     }
 
     @Test
     @DisplayName("Does not create more threads than the specified max pool size")
     void cannotCreateMoreThreadThanGivenMaxPoolSize() {
-        executorService = new UnboundedGrowingThreadPoolExecutor(1, 5, Duration.ofMillis(500), THREAD_PREFIX);
+        executorService = new UnboundedGrowingThreadPoolExecutor(1, 5, KEEP_THREAD_ALIVE, THREAD_PREFIX);
 
         final CountDownLatch phaseOneLatch = new CountDownLatch(1);
         final CountDownLatch phaseTwoLatch = new CountDownLatch(1);
@@ -124,10 +133,12 @@ class UnboundedGrowingThreadPoolExecutorTest {
             taskList.add(task);
             executorService.submit(task);
         });
-        // Threads should increase
-        assertEquals(3, getUnitThreads().size());
-        // All tasks should be started
-        assertTrue(taskList.stream().allMatch(task -> task.getStatus() == TaskStatus.RUNNING));
+
+        assertEquals(3, getUnitThreads().size(), "Threads should increase");
+        await("All threads are running")
+            .untilAsserted(() -> {
+                assertTrue(taskList.stream().allMatch(task -> task.getStatus() == TaskStatus.RUNNING));
+            });
 
         // start 2 more tasks
         IntStream.range(0, 2).forEach(idx -> {
@@ -135,10 +146,12 @@ class UnboundedGrowingThreadPoolExecutorTest {
             taskList.add(task);
             executorService.submit(task);
         });
-        // Threads reach max pool size
-        assertEquals(5, getUnitThreads().size());
-        // All tasks should be started
-        assertTrue(taskList.stream().allMatch(task -> task.getStatus() == TaskStatus.RUNNING));
+
+        assertEquals(5, getUnitThreads().size(), "Threads should reach max pool size");
+        await("Threads reach max pool size")
+            .untilAsserted(() -> {
+                assertTrue(taskList.stream().allMatch(task -> task.getStatus() == TaskStatus.RUNNING));
+            });
 
         // start 3 more tasks
         IntStream.range(0, 3).forEach(idx -> {
@@ -146,53 +159,49 @@ class UnboundedGrowingThreadPoolExecutorTest {
             taskList.add(task);
             executorService.submit(task);
         });
-        // Threads should not exceed max pool size
-        assertEquals(5, getUnitThreads().size());
-        // 5 tasks should be started, 3 should not
-        assertEquals(5, taskList.stream().filter(task -> task.getStatus() == TaskStatus.RUNNING).count());
-        assertEquals(3, taskList.stream().filter(task -> task.getStatus() == TaskStatus.WAITING).count());
+
+        assertEquals(5, getUnitThreads().size(), "Threads should not exceed max pool size");
+        await("5 tasks should be started, 3 should be waiting")
+            .untilAsserted(() -> {
+                assertEquals(5, taskList.stream().filter(task -> task.getStatus() == TaskStatus.RUNNING).count());
+                assertEquals(3, taskList.stream().filter(task -> task.getStatus() == TaskStatus.WAITING).count());
+            });
 
         // Complete phase one and additional tasks should be picked up
         phaseOneLatch.countDown();
-        // We should still have a full pool of threads
-        assertEquals(5, getUnitThreads().size());
-        // 5 tasks should be completed, 3 should be started
-        assertEquals(5, taskList.stream().filter(task -> task.getStatus() == TaskStatus.COMPLETED).count());
-        assertEquals(3, taskList.stream().filter(task -> task.getStatus() == TaskStatus.RUNNING).count());
 
-        // Wait a bit
-        sleep(Duration.ofSeconds(1));
-        // Two unused threads should be expired
-        assertEquals(3, getUnitThreads().size());
+        // We should still have a full pool of threads
+        assertEquals(5, getUnitThreads().size(), "Pool of thread is still full");
+
+        await("5 tasks should be completed, 3 should be started")
+            .untilAsserted(() -> {
+                    assertEquals(5, taskList.stream().filter(task -> task.getStatus() == TaskStatus.COMPLETED).count());
+                    assertEquals(3, taskList.stream().filter(task -> task.getStatus() == TaskStatus.RUNNING).count());
+                });
+
+        given().pollDelay(KEEP_THREAD_ALIVE)
+            .await("2 unused threads should be expired")
+            .untilAsserted(() -> assertEquals(3, getUnitThreads().size()));
 
         // Complete the remaining tasks
         phaseTwoLatch.countDown();
+
         // We should still have 3 threads
         assertEquals(3, getUnitThreads().size());
-        // All tasks should be completed
-        assertEquals(8, taskList.stream().filter(task -> task.getStatus() == TaskStatus.COMPLETED).count());
+        await("All tasks should be completed")
+            .untilAsserted(() -> {
+                assertEquals(8, taskList.stream().filter(task -> task.getStatus() == TaskStatus.COMPLETED).count());
+            });
 
-        // Wait a bit
-        sleep(Duration.ofSeconds(1));
-        // Only one core thread should still be available
-        assertEquals(1, getUnitThreads().size());
+        given().pollDelay(KEEP_THREAD_ALIVE)
+            .await("Only one core thread should still be available")
+            .untilAsserted(() -> assertEquals(1, getUnitThreads().size()));
     }
 
     private List<Thread> getUnitThreads() {
         return Thread.getAllStackTraces().keySet().stream()
             .filter(t -> t.getName().startsWith(THREAD_PREFIX))
             .collect(Collectors.toList());
-    }
-
-    private synchronized void sleep(Duration duration) {
-        // Wait for the keep alive period to expire
-        try {
-            Thread.sleep(duration.toMillis());
-        }
-        catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            fail("Unexpected interruption", ex);
-        }
     }
 
     private enum TaskStatus {
@@ -207,13 +216,13 @@ class UnboundedGrowingThreadPoolExecutorTest {
 
         DummyTask(CountDownLatch terminateLatchIn) {
             this.terminateLatch = terminateLatchIn;
-            this.status = TaskStatus.WAITING;
+            this.setStatus(TaskStatus.WAITING);
         }
 
         @Override
         public void run() {
             try {
-                status = TaskStatus.RUNNING;
+                setStatus(TaskStatus.RUNNING);
                 terminateLatch.await();
             }
             catch (InterruptedException ex) {
@@ -221,10 +230,14 @@ class UnboundedGrowingThreadPoolExecutorTest {
                 fail("Unexpected interruption", ex);
             }
 
-            status = TaskStatus.COMPLETED;
+            setStatus(TaskStatus.COMPLETED);
         }
 
-        public TaskStatus getStatus() {
+        private synchronized void setStatus(TaskStatus taskStatus) {
+            status = taskStatus;
+        }
+
+        public synchronized TaskStatus getStatus() {
             return status;
         }
     }

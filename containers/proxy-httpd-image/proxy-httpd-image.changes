@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:33:55 CET 2024 - rosuna@suse.com
+
+- version 5.1.2
+  * Update for next release
+
+-------------------------------------------------------------------
+Mon Oct 14 17:23:21 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1
+  * Store proxy FQDN in rhn.conf for auth token use (bsc#1230255)
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
+Thu Aug 01 18:05:50 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.7
+  * Update for next release
+
+-------------------------------------------------------------------
 Mon Jun 10 17:51:11 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.6

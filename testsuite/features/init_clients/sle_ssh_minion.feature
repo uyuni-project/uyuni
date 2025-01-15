@@ -4,6 +4,9 @@
 @ssh_minion
 Feature: Bootstrap a Salt host managed via salt-ssh
 
+  Scenario: Clean up sumaform leftovers on SLES SSH minion
+    When I perform a full salt minion cleanup on "ssh_minion"
+
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
@@ -20,6 +23,15 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
     And I wait until onboarding is completed for "ssh_minion"
+
+@susemanager
+  Scenario: Use correct kernel image on the SSH minion
+    When I remove package "kernel-default-base" from this "ssh_minion"
+    And I install package "kernel-default" on this "ssh_minion"
+
+@susemanager
+  Scenario: Reboot the SSH minion to use the new kernel
+    When I reboot the "ssh_minion" host through SSH, waiting until it comes back
 
 @proxy
   Scenario: Check connection from SSH minion to proxy

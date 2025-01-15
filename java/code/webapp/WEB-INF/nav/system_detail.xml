@@ -69,7 +69,7 @@
       </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="AppStreams" acl="user_role(satellite_admin); system_has_modular_channels()" url="/rhn/manager/systems/details/appstreams" />
+    <rhn-tab name="AppStreams" acl="system_has_modular_channels()" url="/rhn/manager/systems/details/appstreams" />
 
     <rhn-tab name="PTF" acl="has_ptf_repositories(); system_supports_ptf_removal() or system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/manager/systems/details/ptf/overview</rhn-tab-url>
@@ -167,7 +167,7 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin);system_has_management_entitlement() or system_has_salt_entitlement() or system_is_bootstrap_minion_server()" url="/rhn/systems/details/groups/ListRemove.do">
+  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)" url="/rhn/systems/details/groups/ListRemove.do">
     <rhn-tab name="List / Leave" url="/rhn/systems/details/groups/ListRemove.do"/>
     <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
@@ -181,8 +181,8 @@
     <rhn-tab name="Deployment" url="/rhn/systems/details/virtualization/Deployment.do" acl="not system_is_virtual(); system_has_management_entitlement()"/>
   </rhn-tab>
 
-  <rhn-tab name="Audit" acl="system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
-    <rhn-tab name="OpenSCAP" url="/rhn/systems/details/audit/ListScap.do">
+  <rhn-tab name="Audit" url="/rhn/manager/systems/details/coco/settings">
+    <rhn-tab name="OpenSCAP" acl="system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
       <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
       <rhn-tab name="nav.system.audit.list_scans">
         <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>

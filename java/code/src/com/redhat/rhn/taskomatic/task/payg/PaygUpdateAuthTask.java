@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
@@ -42,7 +43,6 @@ import org.quartz.JobExecutionContext;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PaygUpdateAuthTask extends RhnJavaJob {
 
@@ -94,7 +94,7 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         List<PaygSshData> paygSshData;
         if (jobExecutionContext != null && jobExecutionContext.getJobDetail().getJobDataMap().containsKey(KEY_ID)) {
             int sshId = Integer.parseInt((String) jobExecutionContext.getJobDetail().getJobDataMap().get(KEY_ID));
-            paygSshData = PaygSshDataFactory.lookupById(sshId).stream().collect(Collectors.toList());
+            paygSshData = PaygSshDataFactory.lookupById(sshId).stream().toList();
         }
         else {
             paygSshData = PaygSshDataFactory.lookupPaygSshData();
@@ -172,21 +172,27 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         }
     }
 
+    private boolean hasInstanceValidCreds(PaygSshData instance) {
+        return Optional.ofNullable(instance.getCredentials())
+                .flatMap(c -> c.castAs(CloudRMTCredentials.class))
+                .map(CloudRMTCredentials::isValid)
+                .orElse(false);
+    }
+
     private void saveError(PaygSshData instance, String errorMessage) {
         // rollback any data changed by the process
         HibernateFactory.rollbackTransaction();
         // Save a special error to know that a problem happened
-        if (!instance.getStatus().equals(PaygSshData.Status.E)) {
+        if (instance.getStatus().equals(PaygSshData.Status.E) && hasInstanceValidCreds(instance)) {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new PaygAuthenticationUpdateFailed(instance.getHost(), instance.getId()));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-        }
-        else {
             // was in error state before. At least second time failed to get the data
             // invalidate existing credentials
             paygDataProcessor.invalidateCredentials(instance);
         }
+
         instance.setStatus(PaygSshData.Status.E);
         instance.setErrorMessage(errorMessage);
         PaygSshDataFactory.savePaygSshData(instance);

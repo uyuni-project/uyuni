@@ -505,8 +505,8 @@ public class SaltService implements SystemQuery, SaltApi {
     @Override
     public Optional<String> getMachineId(String minionId) {
         return getGrain(minionId, "machine_id").flatMap(grain -> {
-          if (grain instanceof String) {
-              return Optional.of((String) grain);
+          if (grain instanceof String strGrain) {
+              return Optional.of(strGrain);
           }
           else {
               LOG.warn("Minion {} returned non string: {} as minion_id", minionId, grain);
@@ -764,7 +764,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return result.entrySet().stream()
                     .filter(e -> e.getValue().result().isPresent() && Boolean.TRUE.equals(e.getValue().result().get()))
                     .map(Entry::getKey)
-                    .collect(Collectors.toList());
+                    .toList();
         }
         catch (SaltException e) {
             throw new RhnRuntimeException(e);
@@ -865,6 +865,21 @@ public class SaltService implements SystemQuery, SaltApi {
              LocalCall<Map<String, Object>> call = SaltUtil.syncAll(Optional.empty(),
                     Optional.empty());
             callSync(call, minionList);
+        }
+        catch (SaltException e) {
+            throw new RhnRuntimeException(e);
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void syncAllAsync(MinionList minionList) {
+        try {
+            LocalCall<Map<String, Object>> call = SaltUtil.syncAll(Optional.empty(),
+                    Optional.empty());
+            callAsync(call, minionList);
         }
         catch (SaltException e) {
             throw new RhnRuntimeException(e);
@@ -1038,8 +1053,8 @@ public class SaltService implements SystemQuery, SaltApi {
         }
         catch (CompletionException e) {
             Throwable cause = e.getCause();
-            if (cause instanceof SaltException) {
-                throw (SaltException) cause;
+            if (cause instanceof SaltException ex) {
+                throw ex;
             }
             else {
                 throw new SaltException(cause);

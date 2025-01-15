@@ -62,8 +62,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.TimeZone;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -186,12 +187,12 @@ public class AnsibleController {
         if (pathType.equalsIgnoreCase(AnsiblePath.Type.PLAYBOOK.getLabel())) {
             paths = AnsibleManager.listAnsiblePlaybookPaths(minionServerId, user).stream()
                     .map(AnsiblePathJson::new)
-                    .collect(Collectors.toList());
+                    .toList();
         }
         else {
             paths = AnsibleManager.listAnsibleInventoryPaths(minionServerId, user).stream()
                     .map(AnsiblePathJson::new)
-                    .collect(Collectors.toList());
+                    .toList();
         }
         return result(res, success(paths), new TypeToken<>() { });
     }
@@ -208,7 +209,7 @@ public class AnsibleController {
         long minionServerId = Long.parseLong(req.params("minionServerId"));
         List<AnsiblePathJson> paths = AnsibleManager.listAnsiblePaths(minionServerId, user).stream()
                 .map(AnsiblePathJson::new)
-                .collect(Collectors.toList());
+                .toList();
         return result(res, success(paths), new TypeToken<>() { });
     }
 
@@ -326,7 +327,8 @@ public class AnsibleController {
     }
 
     private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 

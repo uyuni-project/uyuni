@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:39:23 CET 2024 - rosuna@suse.com
+
+- version 5.1.2
+  * Add aarch64 and ppc64 grub loaders (bsc#1231762)
+  * Use FILE: type for krb5 ccache
+  * Remove pam_ldap as it is no longer shipped (bsc#1231377)
+  * Add saline-formula to the Server container image
+
+-------------------------------------------------------------------
+Mon Oct 14 17:26:43 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1
+  * Add HANA and cluster formulas to Server image (bsc#1230536)
+  * Use /etc/krb5.conf.d for all Kerberos related configurations
+    (bsc#1229077)
+  * Bump version to 5.1.0
+  * Do not install outdated package spacewalk-utils-extras on
+    Server image (bsc#1228945)
+  * Fix package name search when syncing volumes data (bsc#1229923)
+
+-------------------------------------------------------------------
+Thu Aug 01 18:40:27 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.8
+  * Update for next release
+
+-------------------------------------------------------------------
 Mon Jun 10 18:01:19 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.7

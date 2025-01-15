@@ -13,12 +13,12 @@ When(/^I (enable|disable) repositories (before|after) installing branch server$/
   repos += 'testing_overlay_devel_repo ' unless $build_validation || $is_containerized_server || product_version_full.include?('-released')
 
   # Server Applications, proxy product and modules, proxy devel
-  if os_family =~ /^sles/ && os_version =~ /^15/
+  if os_family.match?(/^sles/) && os_version.match?(/^15/)
     repos += 'proxy_module_pool_repo proxy_module_update_repo ' \
              'proxy_product_pool_repo proxy_product_update_repo ' \
              'module_server_applications_pool_repo module_server_applications_update_repo '
     repos += 'proxy_devel_releasenotes_repo proxy_devel_repo ' unless $build_validation || product_version_full.include?('-released')
-  elsif os_family =~ /^opensuse/
+  elsif os_family.match?(/^opensuse/)
     repos += 'proxy_pool_repo ' unless $is_containerized_server
   end
 
@@ -66,7 +66,7 @@ When(/^I set up the private network on the terminals$/) do
     domain, _code = node.run('grep \'^search\' /etc/resolv.conf | sed \'s/^search//\'')
     conf = "DOMAIN='#{domain.strip}'\\nDEVICE='eth1'\\nSTARTMODE='auto'\\nBOOTPROTO='dhcp'\\nDNS1='#{proxy}'"
     service =
-      if node.os_family =~ /^rocky/
+      if node.os_family.match?(/^rocky/)
         'NetworkManager'
       else
         'network'
@@ -80,8 +80,8 @@ When(/^I set up the private network on the terminals$/) do
   nodes.each do |node|
     next if node.nil?
 
-    return_code = file_inject(node, source, dest)
-    raise ScriptError, 'File injection failed' unless return_code.zero?
+    success = file_inject(node, source, dest)
+    raise ScriptError, 'File injection failed' unless success
 
     node.run('netplan apply')
   end
@@ -173,8 +173,8 @@ When(/^I restart the network on the PXE boot minion$/) do
   file = 'restart-network-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   # We have no direct access to the PXE boot minion
   # so we run the command from the proxy
@@ -199,8 +199,8 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   file = 'reboot-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
 end
@@ -221,8 +221,8 @@ When(/^I bootstrap pxeboot minion via bootstrap script on the proxy$/) do
   file = 'bootstrap-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}", verbose: true)
@@ -236,8 +236,8 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   file = 'uyuni.key'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   system_name = get_system_name('pxeboot_minion')
   get_target('server').run("salt-cp #{system_name} #{dest} #{dest}")
@@ -248,8 +248,8 @@ When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   file = 'wait-end-of-cleanup-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
   dest = "/tmp/#{file}"
-  return_code = file_inject(get_target('proxy'), source, dest)
-  raise ScriptError, 'File injection failed' unless return_code.zero?
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
 
   ipv4 = net_prefix + PRIVATE_ADDRESSES['pxeboot_minion']
   get_target('proxy').run("expect -f /tmp/#{file} #{ipv4}")
@@ -258,8 +258,8 @@ end
 When(/^I prepare the retail configuration file on server$/) do
   source = "#{File.dirname(__FILE__)}/../upload_files/massive-import-terminals.yml"
   dest = '/tmp/massive-import-terminals.yml'
-  return_code = file_inject(get_target('server'), source, dest)
-  raise ScriptError, "File #{file} couldn't be copied to server" unless return_code.zero?
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, "File #{file} couldn't be copied to server" unless success
 
   sed_values = "s/<PROXY_HOSTNAME>/#{get_target('proxy').full_hostname}/; "
   sed_values << "s/<NET_PREFIX>/#{net_prefix}/; "

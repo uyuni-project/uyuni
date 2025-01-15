@@ -1,4 +1,187 @@
 -------------------------------------------------------------------
+Mon Jan 13 10:09:34 CET 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Update obs mvn netty and jctools dependencies
+
+-------------------------------------------------------------------
+Fri Dec 13 15:02:20 CET 2024 - rosuna@suse.com
+
+- version 5.1.5-0
+  * Do not set gpgkeyurl with default values (bsc#1234251)
+
+-------------------------------------------------------------------
+Thu Dec 12 16:06:49 CET 2024 - rosuna@suse.com
+
+- version 5.1.4-0
+  * Use dots instead of underscores in apidoc (bsc#1233761)
+  * Layout improvements for the login page and error page
+
+-------------------------------------------------------------------
+Thu Dec 12 10:11:40 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Prevent class cast exceptions when getting cobbler profiles
+    (bsc#1227759)
+  * Fix parsing UpdateAvailable notifications (bsc#1228261)
+  * Ensure icon fonts are loaded correctly on buttons (bsc#1231378)
+  * Ignore missing or unreadable paths when parsing the configuration
+  * Show Confidential Compute Attestation tab also for Salt SSH managed
+    clients
+  * Introduce API endpoint to get the product name
+  * Do not iterate over all actions when only reboot actions are handled
+  * Use external hostname in title of traceback emails
+  * Allow group assignment for foreign servers (bsc#1222447)
+  * saltboot: add MAC based terminal naming (jsc#SUMA-314)
+  * Chained proxy configuration creates refactoring
+  * Allow the listing of already included patches when importing them
+    into a custom channel (bsc#1228856)
+  * Update numerous page layouts
+  * Remove concurrent dependency
+  * Remove stringtree-json dependency in favor of gson
+  * Ensure the reporting db uses a lowercase username (bsc#1220494)
+  * Fix NPE if child channel has no parent (bsc#1231053)
+  * Create a fresh SSL context with re-read CA certificates from the
+    trust store for new HTTPS connections
+  * Adapt changing software channels to first perform the changes in
+    the database and to apply the channel state later. This allows
+    better handling of offline minions (bsc#1216683)
+  * Prepare package for SUSE Multi-Linux Manager 5.1
+  * Add proxy option to provisionSystem API (bsc#1232125)
+  * Fix enabled flag for users listed via API (bsc#1233431)
+  * Adapt SUMA/Uyuni new version update checker for containers
+  * Prevent return duplicated packages on XML-RPC API endpoint
+    `listLatestUpgradablePackages` (bsc#1231430)
+  * Search input placeholder text change on the Upgrade package page
+  * Enhance buttons readability and consistency across the product
+  * Update UI tip pointing to new kickstarts template directory
+    (bsc#1221219)
+  * Re-wording 'Monitoring' to 'Monitor this host' on the UI
+    systems properties page (bsc#1212161)
+  * Only show versions for 'kernel-default' in CLM Live Patching
+    template (bsc#1233400)
+  * Fix All Managed packages list (bsc#1233450)
+  * Fix missing FROM-clause entry for table 'pn' in managed software
+    list (bsc#1233450)
+  * Update login page layout
+  * Reduce bundle size for the web UI
+  * Remove DWR from the package dependency since it's no longer used
+  * Set Signed-by for Debian repositories also for unsigned repos to
+    prevent warning messages (bsc#1234251)
+  * Support removing all channels with scheduleChangeChannels()
+  * Support finding compatible child channels when changing the
+    base channels with scheduleChangeChannels()
+  * Check consistence of base and child channels (bsc#1232713)
+  * Fix appstream list of packages in stream (bsc#1231459)
+
+-------------------------------------------------------------------
+Mon Nov 18 18:32:19 CET 2024 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Limit frontend-log message size (bsc#1231900)
+
+-------------------------------------------------------------------
+Mon Oct 14 15:47:47 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Enable the synchronization of OVAL data
+  * Enable the configuration of OVAL data sources
+  * Add support for OVAL based CVE auditing to SLE & Leap Micro
+  * Fixed stretched button issue in Audit Search and Subscription Matching
+    pages
+  * Fix date input in 'errata.setDetails' endpoint in the HTTP API
+  * Fix layout mismatch in patches management
+  * Fix column alignment on repository and system pages
+  * Integrate UI debugging stories
+  * Require correct scap packages for Ubuntu and Debian (bsc#1227746)
+  * Add detection of Ubuntu 24.04
+  * Remove session timeout from webapp, in order to use the persisting
+    one in /etc/tomcat/web.xml
+  * Allow changing base channel to SUSE Liberty Linux LTSS when the
+    system is on SUSE Liberty Linux (bsc#1228326)
+  * Implement product migration from RHEL and Clones to SUSE Liberty
+    Linux
+  * Remove system also from Proxy SSH known_hosts (bsc#1228345)
+  * Remove restrictions for Debian repositories in public cloud
+  * Fix NullPointerException when generating subscription matcher
+    input (bsc#1228638)
+  * Open bootstrap script directory URL in a new page (bsc#1225603)
+  * Delay package list refresh when Salt was updated (bsc#1217978)
+  * Add SLE-Micro 5 to the list of systems which support monitoring
+    (bsc#1227334)
+  * Add all SLE-Micro systems to the list of systems which get PTF
+    repositories
+  * Use custom select instead of errata view for better performance
+    (bsc#1225619)
+  * Fix the date format output when using the HTTP API to use ISO8601
+    format (bsc#1227543)
+  * Bump version to 5.1.0
+  * Change localhost PAYG header to match SUSE Manager product
+  * ErrataManager.truncateErrata now tries to clean orphan erratas
+    at the end (erratas with no channel)
+  * Improve score comparison in system search to fix ISE (bsc#1228412)
+
+-------------------------------------------------------------------
+Wed Jul 31 17:12:14 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.12-0
+  * Update setup wizard UI
+  * Report a server/report id mismatch when calling
+    getCoCoAttestationResultDetails
+  * Prevent the API for confidential computing to work on systems
+    without OS support
+  * Ensure getCoCoAttestationConfig works when a configuration is
+    not present
+  * Prevent error while serializing an attestation report without
+    an attested date
+  * Add missing support for field attest on boot in the
+    getCoCoAttestationConfig and setCoCoAttestationConfig API
+  * Require byte-buddy and byte-buddy-dep using maven dependencies
+  * Fix NullPointerException when context has no timezone set
+  * Enhance optional type adapter to parse legacy JSON data from DB
+  * Update last sync refresh timestamp only when at least one time
+    products were synced before
+  * Prevent error when listing history events without completion time
+    (bsc#1146701)
+  * Autoinstallation: prevent "duplicate IP address" issues cause by
+    container networks (bsc#1226461)
+  * Check the correct Salt package before product migration
+    (bsc#1224209)
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Add API calls getNotifications, makeNotificationRead,
+    makeAllNotificationsRead, deleteNotification to
+    UserNotificationHandler
+  * Configure AppStreams via Activation Keys
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+  * Fix layout of advanced package search page
+  * Fix table filters for description, first character dropdown
+    and toggle button.
+  * Add info URL for Cobbler to clean the system profile
+    (bsc#1219645)
+  * Fix the URL to download the autoinstallation file (bsc#1226313)
+  * Fix input alignment and style issues on schedule creation page
+  * Add entry to apidoc faqs about methods listed more than ones
+    (bsc#1217248)
+  * Remove unused MinionActionChainCleanup job
+  * Allow free products and SUSE Manager Proxy being managed by
+    SUSE Manager Server PAYG
+  * Fix a race condition during PAYG setup by re-detecting compliance
+    when the instance report BYOS but payg_compliance.json is
+    available
+  * Show SUSE Manager Proxy for different architectures when using
+    SUSE Manager Server PAYG
+  * Do not explicitly trigger Cobbler sync when adding a system via
+    SUMA API (bsc#1219450)
+  * Improve SQL queries and performance to check for PTF packages
+    (bsc#1225619)
+  * Fix false positive SSH key generation error (bsc#1226491)
+  * Change syncAll call at start-up to be asynchronous (bsc#1224004)
+  * Fix transactional update check for SL Micro (bsc#1227406)
+  * Fix Appstream queries to avoid duplicates in packages lists
+
+-------------------------------------------------------------------
 Wed Jul 03 14:12:00 CEST 2024 - rosuna@suse.com
 
 - version 5.0.11-0

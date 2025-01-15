@@ -22,18 +22,29 @@ import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.frontend.action.errata.ErrataDetailsSetupAction;
+import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * ErrataDetailsSetupActionTest
  */
 public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+
+        // Set the locale explicitly to check the dates in an known format
+        Context.getCurrentContext().setLocale(Locale.US);
+    }
 
     @Test
     public void testExecute() throws Exception {

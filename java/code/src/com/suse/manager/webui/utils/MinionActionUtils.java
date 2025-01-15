@@ -53,10 +53,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TimeZone;
 import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -152,14 +152,14 @@ public class MinionActionUtils {
                         return Stream.empty();
                     }
                 }
-            ).collect(Collectors.toList());
+            ).toList();
 
         List<String> minionIds = serverActions.stream().flatMap(sa ->
                 sa.getServer().asMinionServer()
                         .map(MinionServer::getMinionId)
                         .map(Stream::of)
                         .orElseGet(Stream::empty)
-        ).collect(Collectors.toList());
+        ).toList();
 
         Map<String, Result<List<SaltUtil.RunningInfo>>> running =
                 saltApi.running(new MinionList(minionIds));
@@ -204,7 +204,8 @@ public class MinionActionUtils {
      * @return the date to run the action
      */
     public static Date getScheduleDate(Optional<LocalDateTime> earliest) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(earliest.orElseGet(LocalDateTime::now).atZone(zoneId).toInstant());
     }
 

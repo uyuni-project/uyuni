@@ -1,6 +1,6 @@
 import { createIntl, createIntlCache } from "@formatjs/intl";
-import Gettext from "node-gettext";
 
+import Gettext from "core/intl/node-gettext";
 import { jsFormatPreferredLocale } from "core/user-preferences";
 
 import type { Values } from "./inferValues";
@@ -30,7 +30,7 @@ const alwaysExists = { configurable: true, enumerable: true };
 const messages = new Proxy(
   {},
   {
-    get(_, key) {
+    get(_, key: string) {
       return gt.gettext(key);
     },
     getOwnPropertyDescriptor() {

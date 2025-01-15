@@ -14,9 +14,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-18 14:54+0200\n"
-"PO-Revision-Date: 2023-03-31 13:14+0000\n"
-"Last-Translator: Georg Mayer <georgbmayer@yahoo.com>\n"
+"POT-Creation-Date: 2024-12-12 11:48+0100\n"
+"PO-Revision-Date: 2024-12-07 15:48+0000\n"
+"Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
 ">\n"
 "Language: de\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -1260,26 +1260,26 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:817
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Kanaldaten werden abgerufen / geparst"
 
 #: ../satellite_tools/satsync.py:892
 msgid "Channel data complete"
-msgstr ""
+msgstr "Kanaldaten vollständig"
 
 #: ../satellite_tools/satsync.py:911
 #, python-format
 msgid "%10s import from %s"
-msgstr ""
+msgstr "%10s importieren von %s"
 
 #: ../satellite_tools/satsync.py:913
 #, python-format
 msgid "%10s import from %s - %s"
-msgstr ""
+msgstr "%10s von %s importieren - %s"
 
 #: ../satellite_tools/satsync.py:919
 #, python-format
 msgid "%10s"
-msgstr ""
+msgstr "%10s"
 
 #: ../satellite_tools/satsync.py:927
 msgid "p"
@@ -1291,15 +1291,15 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:945
 msgid "   p = previously imported/synced channel"
-msgstr ""
+msgstr "   p = zuvor importierter/synchronisierter Kanal"
 
 #: ../satellite_tools/satsync.py:946
 msgid "   . = channel not yet imported/synced"
-msgstr ""
+msgstr "   . = Kanal noch nicht importiert/synchronisiert"
 
 #: ../satellite_tools/satsync.py:952
 msgid "   e = channel no longer supported (end-of-service)"
-msgstr ""
+msgstr "   e = Kanal wird nicht mehr unterstützt (Dienstende)"
 
 #: ../satellite_tools/satsync.py:954
 msgid "   ? = channel label invalid --- typo?"
@@ -1308,25 +1308,24 @@ msgstr ""
 #: ../satellite_tools/satsync.py:958
 #, python-format
 msgid "   %s:"
-msgstr ""
+msgstr "   %s:"
 
 #: ../satellite_tools/satsync.py:959
 #, python-format
 msgid "      %s %-40s %4s %s"
-msgstr ""
+msgstr "      %s %-40s %4s %s"
 
 #: ../satellite_tools/satsync.py:960
-#, fuzzy
 msgid "base-channels"
-msgstr "Konflikt zwischen Basis-Channels"
+msgstr "Basiskanäle"
 
 #: ../satellite_tools/satsync.py:974 ../satellite_tools/satsync.py:1962
 msgid "NONE RELEVANT"
-msgstr ""
+msgstr "NICHT RELEVANT"
 
 #: ../satellite_tools/satsync.py:999
 msgid "end-of-service"
-msgstr ""
+msgstr "Dienstende"
 
 #: ../satellite_tools/satsync.py:1000
 msgid "e"
@@ -1334,7 +1333,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1006
 msgid "   typos:"
-msgstr ""
+msgstr "   Tippfehler:"
 
 #: ../satellite_tools/satsync.py:1007
 msgid "?"
@@ -1343,7 +1342,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:1024
 #, python-format
 msgid "XXX: imported channels: %s"
-msgstr ""
+msgstr "XXX: importierte Kanäle: %s"
 
 #: ../satellite_tools/satsync.py:1025
 #, python-format
@@ -1357,6 +1356,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:1054
 msgid "ERROR: these channels either do not exist or are not available:"
 msgstr ""
+"FEHLER: diese Kanäle existieren entweder nicht oder sind nicht verfügbar:"
 
 #: ../satellite_tools/satsync.py:1061
 #, python-format
@@ -1383,7 +1383,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1346
 msgid "Downloading rpm packages"
-msgstr ""
+msgstr "rpm-Pakete werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1355
 #, python-format
@@ -1392,7 +1392,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1356 ../satellite_tools/satsync.py:1441
 msgid "NONE MISSING"
-msgstr ""
+msgstr "KEINE FEHLEN"
 
 #: ../satellite_tools/satsync.py:1366
 msgid "Processing rpm packages complete"
@@ -1400,11 +1400,11 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1396
 msgid "Downloading package metadata"
-msgstr ""
+msgstr "Paketmetadaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1430
 msgid "Downloading srpm packages"
-msgstr ""
+msgstr "srpm-Pakete werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1440
 #, python-format
@@ -1418,12 +1418,12 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1569
 msgid "Downloading source package metadata"
-msgstr ""
+msgstr "Quellpaketmetadaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1655 ../satellite_tools/satsync.py:2477
-#, fuzzy, python-format
+#, python-format
 msgid "Unable to save file %s: %s"
-msgstr "System kann nicht berechtigt werden"
+msgstr "Datei %s konnte nicht gespeichert werden: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1431,7 +1431,7 @@ msgstr "System kann nicht berechtigt werden"
 #: ../satellite_tools/satsync.py:1661
 #, python-format
 msgid "Failed to fetch file %s"
-msgstr ""
+msgstr "Datei %s konnte nicht abgerufen werden"
 
 #: ../satellite_tools/satsync.py:1666
 msgid "Downloading kickstartable trees metadata"
@@ -1448,7 +1448,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1895
 msgid "Downloading patch data"
-msgstr ""
+msgstr "Patchdaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1897
 msgid "Forcing download of all patch data for requested channels."
@@ -1460,19 +1460,19 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1924 ../satellite_tools/satsync.py:1955
 msgid "Downloading:"
-msgstr ""
+msgstr "Herunterladen:"
 
 #: ../satellite_tools/satsync.py:1930
 msgid " - complete"
-msgstr ""
+msgstr " - abgeschlossen"
 
 #: ../satellite_tools/satsync.py:1984
 msgid "Importing source package metadata"
-msgstr ""
+msgstr "Quellpaketmetadaten werden importiert"
 
 #: ../satellite_tools/satsync.py:1987
 msgid "Importing package metadata"
-msgstr ""
+msgstr "Paketmetadaten werden importiert"
 
 #: ../satellite_tools/satsync.py:1999
 msgid "Importing:  "
@@ -1828,11 +1828,11 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:3115
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - kein solches Verzeichnis"
 
 #: ../satellite_tools/satsync.py:3116
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - Einhängepunkt existiert nicht"
 
 #: ../satellite_tools/satsync.py:3117
 msgid "  27 - No such org"

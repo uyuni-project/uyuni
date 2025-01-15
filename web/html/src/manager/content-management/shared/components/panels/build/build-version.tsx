@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import styles from "./build-version.module.css";
+import styles from "./build-version.module.scss";
 
 type Props = {
   id: string;
@@ -13,7 +13,7 @@ const BuildVersion = ({ id, text, collapsed }: Props) => {
     <div>
       <dd className="collapsible-content">
         <div
-          data-toggle="collapse"
+          data-bs-toggle="collapse"
           data-target={`#historyentry_${id}`}
           className={`${styles.version_collapse_line} pointer accordion-toggle collapsed`}
         >

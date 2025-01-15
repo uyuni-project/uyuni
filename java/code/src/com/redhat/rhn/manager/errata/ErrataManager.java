@@ -307,13 +307,17 @@ public class ErrataManager extends BaseManager {
         Set<Errata> filteredErrata = tgtErrata.stream().filter(e -> !(srcErrata.contains(e) || asCloned(e)
                 .map(er -> srcErrata.contains(er.getOriginal())).orElse(false)))
                 .collect(Collectors.toUnmodifiableSet());
-
         removeErratumAndPackagesFromChannel(filteredErrata, srcErrata, tgtChannel, user);
+        List<OwnedErrata> emptyChannelErrata = filteredErrata.stream()
+            .filter(t -> t.getChannels().isEmpty())
+            .map(OwnedErrata::new)
+            .toList();
+        ErrataManager.deleteErrata(user, emptyChannelErrata);
     }
 
     private static Optional<ClonedErrata> asCloned(Errata e) {
-        if (e instanceof ClonedErrata) {
-            return Optional.of((ClonedErrata) e);
+        if (e instanceof ClonedErrata clone) {
+            return Optional.of(clone);
         }
         return Optional.empty();
     }
@@ -637,9 +641,7 @@ public class ErrataManager extends BaseManager {
      */
     public static void deleteErratum(User user, Errata errata) {
         List<OwnedErrata> eids = new ArrayList<>();
-        OwnedErrata oErrata = new OwnedErrata();
-        oErrata.setId(errata.getId());
-        oErrata.setAdvisory(errata.getAdvisory());
+        OwnedErrata oErrata = new OwnedErrata(errata);
         eids.add(oErrata);
         deleteErrata(user, eids);
     }
@@ -674,7 +676,7 @@ public class ErrataManager extends BaseManager {
 
         List<Long> notFoundIds = eids.stream()
                 .filter(id -> !foundErrataIds.contains(id))
-                .collect(Collectors.toList());
+                .toList();
 
         // If we didn't find an errata or
         // it's a non-accessible RH errata or the errata belongs to another org,
@@ -1293,7 +1295,7 @@ public class ErrataManager extends BaseManager {
                 p -> includedErrata.stream().noneMatch(included -> included.getPackages().contains(p))
             )
         ).collect(Collectors.toUnmodifiableSet());
-        List<Long> pids = packagesToRemove.stream().map(Package::getId).collect(Collectors.toList());
+        List<Long> pids = packagesToRemove.stream().map(Package::getId).toList();
         ErrataCacheManager.deleteCacheEntriesForChannelPackages(chan.getId(), pids);
 
         // remove packages
@@ -1491,7 +1493,7 @@ public class ErrataManager extends BaseManager {
     public static void bulkErrataNotification(Map<Long, List<Long>> errataToChannels, Date date) {
         List<Map<String, Object>> eidList = errataToChannels.entrySet().stream()
                 .map(entry -> Collections.singletonMap("eid", (Object)entry.getKey()))
-                .collect(Collectors.toList());
+                .toList();
         WriteMode m = ModeFactory.getWriteMode(ERRATA_QUERIES,  "clear_errata_notification");
         m.executeUpdates(eidList);
 
@@ -1505,7 +1507,7 @@ public class ErrataManager extends BaseManager {
                     params.put("datetime", newDate);
                     return params;
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         WriteMode w = ModeFactory.getWriteMode(ERRATA_QUERIES,  "insert_errata_notification");
         w.executeUpdates(notifyList);

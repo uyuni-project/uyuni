@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { LocalizedMoment, localizedMoment } from "utils/datetime";

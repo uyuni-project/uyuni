@@ -128,7 +128,7 @@ and
         </div>
         <div class="col-sm-6 text-right">
             <rhn:submitted/>
-            <html:submit styleClass="btn btn-success" property="dispatch">
+            <html:submit styleClass="btn btn-primary" property="dispatch">
                 <bean:message key="system.history.snapshot.rollback-button" />
             </html:submit>
         </div>

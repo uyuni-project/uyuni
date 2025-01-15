@@ -1,0 +1,442 @@
+[
+  {
+    "label" : "10040",
+    "name" : "SUSE Linux Enterprise Point of Service"
+  },
+  {
+    "label" : "13319",
+    "name" : "SUSE Linux Enterprise Real Time"
+  },
+  {
+    "label" : "7260",
+    "name" : "SUSE Linux Enterprise Desktop"
+  },
+  {
+    "label" : "7261",
+    "name" : "SUSE Linux Enterprise Server"
+  },
+  {
+    "label" : "AiO",
+    "name" : "SUSE Linux Enterprise Server for SAP"
+  },
+  {
+    "label" : "AiO-PPC",
+    "name" : "SUSE Linux Enterprise Server for SAP Power"
+  },
+  {
+    "label" : "CAASP_ARM64",
+    "name" : "SUSE Container as a Service Platform ARM64"
+  },
+  {
+    "label" : "CAASP_X86",
+    "name" : "SUSE Container as a Service Platform x86_64"
+  },
+  {
+    "label" : "HPC-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing (ARM64)"
+  },
+  {
+    "label" : "HPC-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing (x86)"
+  },
+  {
+    "label" : "HPC15-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 ARM64"
+  },
+  {
+    "label" : "HPC15-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 x86_64"
+  },
+  {
+    "label" : "HPC15-SP1-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP1 ARM64"
+  },
+  {
+    "label" : "HPC15-SP1-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP1 x86_64"
+  },
+  {
+    "label" : "HPC15-SP2-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP2 ARM64"
+  },
+  {
+    "label" : "HPC15-SP2-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP2 x86_64"
+  },
+  {
+    "label" : "HPC15-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP3 ARM64"
+  },
+  {
+    "label" : "HPC15-SP3-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP3 x86_64"
+  },
+  {
+    "label" : "HPC15-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP4 ARM64"
+  },
+  {
+    "label" : "HPC15-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP4 x86_64"
+  },
+  {
+    "label" : "HPC15-SP5-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP5 ARM64"
+  },
+  {
+    "label" : "HPC15-SP5-LTSS-X86",
+    "name" : "SUSE Linux Enterprise High Performance Computing LTSS 15 SP5 x86_64"
+  },
+  {
+    "label" : "HPE-HELION-OPENSTACK-X86",
+    "name" : "HPE Helion Openstack (x86)"
+  },
+  {
+    "label" : "MICROOS-ARM64",
+    "name" : "MicroOS for ARM64"
+  },
+  {
+    "label" : "MICROOS-X86",
+    "name" : "MicroOS for x86_64"
+  },
+  {
+    "label" : "MICROOS-Z",
+    "name" : "MicroOS for Z-Series"
+  },
+  {
+    "label" : "MODULE",
+    "name" : "SUSE Linux Enterprise Modules"
+  },
+  {
+    "label" : "OES2",
+    "name" : "Novell Open Enterprise Server"
+  },
+  {
+    "label" : "OPENSUSE",
+    "name" : "openSUSE Products"
+  },
+  {
+    "label" : "RES",
+    "name" : "SUSE Linux Enterprise RedHat Expanded Support"
+  },
+  {
+    "label" : "RES-7-LTSS-X86",
+    "name" : "SUSE Linux Enterprise RedHat Expanded Support LTSS"
+  },
+  {
+    "label" : "RES-HA",
+    "name" : "SUSE Linux Enterprise RedHat Expanded Support HA"
+  },
+  {
+    "label" : "SES",
+    "name" : "SUSE Enterprise Storage"
+  },
+  {
+    "label" : "SES-ARM64",
+    "name" : "SUSE Enterprise Storage ARM64"
+  },
+  {
+    "label" : "SLE-ESPOS-ARM64",
+    "name" : "SUSE Linux Enterprise Extended Service Pack Overlap Support (ARM64)"
+  },
+  {
+    "label" : "SLE-ESPOS-X86",
+    "name" : "SUSE Linux Enterprise Extended Service Pack Overlap Support (x86)"
+  },
+  {
+    "label" : "SLE-HAE-ARM64",
+    "name" : "SUSE Linux Enterprise High Availability Extension (ARM64)"
+  },
+  {
+    "label" : "SLE-HAE-GEO",
+    "name" : "GEO Clustering for SLE HA Extension"
+  },
+  {
+    "label" : "SLE-HAE-IA",
+    "name" : "SUSE Linux Enterprise High Availability Extension (Itanium)"
+  },
+  {
+    "label" : "SLE-HAE-PPC",
+    "name" : "SUSE Linux Enterprise High Availability Extension (PPC)"
+  },
+  {
+    "label" : "SLE-HAE-X86",
+    "name" : "SUSE Linux Enterprise High Availability Extension (x86)"
+  },
+  {
+    "label" : "SLE-HAE-Z",
+    "name" : "SUSE Linux Enterprise High Availability Extension (Z-Series)"
+  },
+  {
+    "label" : "SLE-LP",
+    "name" : "SUSE Linux Enterprise Live Patching"
+  },
+  {
+    "label" : "SLE-LP-PPC",
+    "name" : "SUSE Linux Enterprise Live Patching PPC"
+  },
+  {
+    "label" : "SLE-LP-Z",
+    "name" : "SUSE Linux Enterprise Live Patching (Z-Series)"
+  },
+  {
+    "label" : "SLE-M-T",
+    "name" : "SUSE Manager Tools"
+  },
+  {
+    "label" : "SLE-POS-AS-SMRBS-X86",
+    "name" : "SUSE Manager for Retail"
+  },
+  {
+    "label" : "SLE-SDK",
+    "name" : "SUSE Linux Enterprise Software Development Kit"
+  },
+  {
+    "label" : "SLE-WE",
+    "name" : "SUSE Linux Enterprise Workstation Extension"
+  },
+  {
+    "label" : "SLES-ARM64",
+    "name" : "SUSE Linux Enterprise Server (ARM64)"
+  },
+  {
+    "label" : "SLES-IA",
+    "name" : "SUSE Linux Enterprise Server (Itanium)"
+  },
+  {
+    "label" : "SLES-PPC",
+    "name" : "SUSE Linux Enterprise Server (PPC)"
+  },
+  {
+    "label" : "SLES-RPI-ARM64",
+    "name" : "SUSE Linux Enterprise Server (RPI ARM64)"
+  },
+  {
+    "label" : "SLES-X86-VMWARE",
+    "name" : "SUSE Linux Enterprise Server for VMware"
+  },
+  {
+    "label" : "SLES-Z",
+    "name" : "SUSE Linux Enterprise Server (Z-Series)"
+  },
+  {
+    "label" : "SLES12-GA-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server 12 LTSS (x86)"
+  },
+  {
+    "label" : "SLES12-GA-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server 12 LTSS (Z-Series)"
+  },
+  {
+    "label" : "SLES12-SP1-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP1 x86_64"
+  },
+  {
+    "label" : "SLES12-SP1-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP1 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP2-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP2 PPC"
+  },
+  {
+    "label" : "SLES12-SP2-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP2 x86_64"
+  },
+  {
+    "label" : "SLES12-SP2-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP2 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 ARM64"
+  },
+  {
+    "label" : "SLES12-SP3-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 PPC"
+  },
+  {
+    "label" : "SLES12-SP3-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 x86_64"
+  },
+  {
+    "label" : "SLES12-SP3-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP3 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 ARM64"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 PPC"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 x86_64"
+  },
+  {
+    "label" : "SLES12-SP4-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP4 Z-Series"
+  },
+  {
+    "label" : "SLES12-SP5-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP5 ARM64"
+  },
+  {
+    "label" : "SLES12-SP5-LTSS-CORE-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS CORE 12 SP5 x86_64"
+  },
+  {
+    "label" : "SLES12-SP5-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP5 PPC"
+  },
+  {
+    "label" : "SLES12-SP5-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP5 x86_64"
+  },
+  {
+    "label" : "SLES12-SP5-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 12 SP5 Z-Series"
+  },
+  {
+    "label" : "SLES15-GA-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA PPC"
+  },
+  {
+    "label" : "SLES15-GA-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA x86_64"
+  },
+  {
+    "label" : "SLES15-GA-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 GA Z-Series"
+  },
+  {
+    "label" : "SLES15-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 ARM64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 ARM64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 PPC"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 x86_64"
+  },
+  {
+    "label" : "SLES15-SP1-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP1 Z-Series"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 ARM64"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 PPC"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 x86_64"
+  },
+  {
+    "label" : "SLES15-SP2-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP2 Z-Series"
+  },
+  {
+    "label" : "SLES15-SP3-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP3 ARM64"
+  },
+  {
+    "label" : "SLES15-SP3-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP3 PPC"
+  },
+  {
+    "label" : "SLES15-SP3-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64"
+  },
+  {
+    "label" : "SLES15-SP3-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP3 Z-Series"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 ARM64"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 PPC"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64"
+  },
+  {
+    "label" : "SLES15-SP4-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP4 Z-Series"
+  },
+  {
+    "label" : "SLESMT",
+    "name" : "SUSE Linux Enterprise Subscription Management Tool"
+  },
+  {
+    "label" : "SLMS",
+    "name" : "SUSE Lifecycle Management Server"
+  },
+  {
+    "label" : "SMP",
+    "name" : "SUSE Manager Proxy x86_64"
+  },
+  {
+    "label" : "SMP-ARM64",
+    "name" : "SUSE Manager Proxy ARM64"
+  },
+  {
+    "label" : "SMRBS",
+    "name" : "SUSE Manager for Retail Branch Server x86_64"
+  },
+  {
+    "label" : "SMRBS-ARM64",
+    "name" : "SUSE Manager for Retail Branch Server ARM64"
+  },
+  {
+    "label" : "SMS-ARM64",
+    "name" : "SUSE Manager Server ARM64"
+  },
+  {
+    "label" : "SMS-PPC",
+    "name" : "SUSE Manager Server PPC"
+  },
+  {
+    "label" : "SMS-X86",
+    "name" : "SUSE Manager Server X86_64"
+  },
+  {
+    "label" : "SMS-Z",
+    "name" : "SUSE Manager Server System Z"
+  },
+  {
+    "label" : "STUDIOONSITE",
+    "name" : "SUSE Studio Onsite"
+  },
+  {
+    "label" : "SUSE_CLOUD",
+    "name" : "SUSE Cloud"
+  },
+  {
+    "label" : "SUSE_CLOUD_CD",
+    "name" : "SUSE Cloud CD"
+  },
+  {
+    "label" : "SUSE_RT",
+    "name" : "SUSE Realtime"
+  },
+  {
+    "label" : "WEBYAST",
+    "name" : "WebYaST for SUSE Linux Enterprise"
+  }
+]

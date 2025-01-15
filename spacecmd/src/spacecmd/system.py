@@ -2057,6 +2057,45 @@ def do_system_rename(self, args):
 ####################
 
 
+def help_system_refreshpillar(self):
+    print(_('system_refreshpillar: Refresh pillar data of system(s) '))
+    print(_('usage: system_refreshpillar [<SYSTEMS>]'))
+    print('')
+    print(self.HELP_SYSTEM_OPTS)
+
+def complete_system_refreshpillar(self, text, line, beg, end):
+    return self.tab_complete_systems(text)
+
+def do_system_refreshpillar(self, args):
+    arg_parser = get_argument_parser()
+
+    (args, _options) = parse_command_arguments(args, arg_parser)
+
+    sids = []
+    # use the systems listed in the SSM
+    if args:
+        if re.match('ssm', args[0], re.I):
+            systems = self.ssm.keys()
+        else:
+            systems = self.expand_systems(args)
+
+        for system in sorted(systems):
+            system_id = self.get_system_id(system)
+            if not system_id:
+                continue
+            sids.append(system_id)
+
+    self.client.system.refreshPillar(self.session, sids)
+
+    num = "%s" % len(sids)
+    if (num == "0"):
+        num = "all"
+    print('Refreshed Pillar data for "%s" systems' % (num))
+    return 0
+
+####################
+
+
 def help_system_listcustomvalues(self):
     print(_('system_listcustomvalues: List the custom values for a system'))
     print(_('usage: system_listcustomvalues <SYSTEMS>'))
@@ -4562,6 +4601,12 @@ def do_system_bootstrap(self, args):
         answer = prompt_user(_('Manage with Salt SSH') + ' [y/N]:')
         if answer in ['y', 'Y']:
             options.saltssh = True
+
+    if isinstance(options.port, str):
+        if not options.port.isnumeric():
+            logging.error(_N("Provided port must be numeric"))
+            return 1
+        options.port = int(options.port)
 
     if not options.hostname:
         logging.error(_N("Hostname must be provided"))

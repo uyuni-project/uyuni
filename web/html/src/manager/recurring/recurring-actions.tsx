@@ -2,8 +2,8 @@ import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages } from "components/messages";
-import { Utils as MessagesUtils } from "components/messages";
+import { Messages } from "components/messages/messages";
+import { Utils as MessagesUtils } from "components/messages/messages";
 
 import { localizedMoment } from "utils";
 import Network from "utils/network";

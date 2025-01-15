@@ -46,7 +46,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\" class=\"btn btn-default\">" +
             "<img src=\"/img/foo.gif\" alt=\"ignore me\" title=\"ignore me\" />" +
             "ignore me</a></div><h1></h1></div>";
 
@@ -81,7 +81,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\" class=\"btn btn-default\">" +
             "<img src=\"/img/foo.gif\" alt=\"ignore me\" title=\"ignore me\" />" +
             "ignore me</a></div><h1></h1></div>";
 
@@ -103,7 +103,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\" class=\"btn btn-default\">" +
             "<img src=\"/img/foo.gif\" alt=\"ignore me\" title=\"ignore me\" />" +
             "ignore me</a></div><h1></h1></div>";
 
@@ -149,7 +149,7 @@ public class ToolbarTagMiscTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\">" +
+            "<div class=\"spacewalk-toolbar\"><a href=\"misc-url\" class=\"btn btn-default\">" +
             "<img src=\"/img/foo.gif\" alt=\"ignore me\" title=\"ignore me\" />" +
             "ignore me</a></div><h1></h1></div>";
 

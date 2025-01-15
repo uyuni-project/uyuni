@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { MessageType } from "components/messages";
+import { MessageType } from "components/messages/messages";
 
 import { ActionApi } from "../ActionApi";
 

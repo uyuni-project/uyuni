@@ -28,7 +28,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <html:submit property="confirm" styleClass="btn btn-success" disabled="${empty pageList}">
+                <html:submit property="confirm" styleClass="btn btn-primary" disabled="${empty pageList}">
                     <bean:message key="channel.jsp.package.mergeconfirmbutton"/>
                 </html:submit>
             </div>

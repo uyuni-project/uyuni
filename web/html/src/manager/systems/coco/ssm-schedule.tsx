@@ -3,7 +3,7 @@ import * as React from "react";
 import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton } from "components/buttons";
 import { ActionChainLink, ActionLink } from "components/links";
-import { Messages, MessageType, Utils as MessagesUtils } from "components/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { Column } from "components/table/Column";

@@ -126,6 +126,7 @@ public class ActionFactory extends HibernateFactory {
         setupActionArchTypes();
     }
 
+
     @SuppressWarnings("unchecked")
     private void setupActionArchTypes() {
         synchronized (this) {
@@ -725,7 +726,7 @@ public class ActionFactory extends HibernateFactory {
             List<Action> results = findDependentActions.list();
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
-            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).collect(Collectors.toList());
+            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).toList();
         }
         while (!actionsAtHierarchyLevel.isEmpty());
 
@@ -766,6 +767,18 @@ public class ActionFactory extends HibernateFactory {
         params.put("date", date);
         return singleton.listObjectsByNamedQuery("ServerAction.findByServerAndActionTypeAndCreatedDate", params);
     }
+
+    /**
+     * Lookup a List of ServerAction objects for a given Server and Action Types.
+     * @param serverIn you want to limit the list of Actions to
+     * @param typesIn you want to limit the list of Actions to
+     * @return List of ServerAction objects
+     */
+    public static List<ServerAction> listServerActionsForServerAndTypes(Server serverIn, List<ActionType> typesIn) {
+        return singleton.listObjectsByNamedQuery("ServerAction.findServerActionsForServerAndTypes",
+                Map.of("server", serverIn, "typeList", typesIn));
+    }
+
     /**
      * Lookup a List of ServerAction objects in the given states for a given Server.
      * @param serverIn you want to limit the list of Actions to

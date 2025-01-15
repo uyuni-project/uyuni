@@ -26,7 +26,7 @@ module.exports = {
       // `/javascript/loggerhead.js`,
       // `/javascript/frontend-log.js`,
       `/javascript/legacy/jquery.min.js?cb=${noCache}`,
-      `/javascript/legacy/bootstrap.min.js?cb=${noCache}`,
+      `/javascript/legacy/bootstrap-webpack.js?cb=${noCache}`,
       `/javascript/spacewalk-essentials.js?cb=${noCache}`,
       `/javascript/spacewalk-checkall.js?cb=${noCache}`,
       `/javascript/legacy/jquery.timepicker.js?cb=${noCache}`,

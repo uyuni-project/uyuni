@@ -22,7 +22,7 @@
 
         <div class="spacewalk-section-toolbar">
             <div class="action-button-wrapper">
-                <input type="submit" name="confirm" class="btn btn-success"
+                <input type="submit" name="confirm" class="btn btn-primary"
                        value="<bean:message key='channel.jsp.package.addconfirmbutton'/>"/>
             </div>
         </div>

@@ -205,7 +205,7 @@ public class AddressTag extends TagSupport {
                 result.append("</address>");
 
                 result.append("<a ")
-                      .append("class=\"btn btn-primary\"")
+                      .append("class=\"btn btn-default\"")
                       .append(" href=\"")
                       .append(getActionUrl())
                       .append("/EditAddress.do?type=")

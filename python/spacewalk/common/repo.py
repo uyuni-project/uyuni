@@ -84,7 +84,13 @@ class DpkgRepo:
                 )
             return self[key]
 
-    def __init__(self, url: str, proxies: dict = None, gpg_verify: bool = True):
+    def __init__(
+        self,
+        url: str,
+        proxies: dict = None,
+        gpg_verify: bool = True,
+        timeout: typing.Optional[int] = None,
+    ):
         self._url = url
         self._flat_checked: typing.Optional[int] = None
         self._flat: bool = False
@@ -95,6 +101,7 @@ class DpkgRepo:
         self._release = DpkgRepo.EntryDict(self)
         self.proxies = proxies
         self.gpg_verify = gpg_verify
+        self.timeout = timeout
 
     def append_index_file(self, index_file: str) -> str:
         """
@@ -156,7 +163,11 @@ class DpkgRepo:
                             exc_info=True,
                         )
                 else:
-                    resp = requests.get(packages_url, proxies=self.proxies)
+                    resp = requests.get(
+                        packages_url,
+                        proxies=self.proxies,
+                        timeout=self.timeout,
+                    )
                     if resp.status_code == http.HTTPStatus.OK:
                         self._pkg_index = cnt_fname, resp.content
                         break
@@ -326,6 +337,7 @@ class DpkgRepo:
                 signature_response = requests.get(
                     self._get_parent_url(response.url, 1, "Release.gpg"),
                     proxies=self.proxies,
+                    timeout=self.timeout,
                 )
                 if signature_response.status_code != http.HTTPStatus.OK:
                     return False
@@ -487,11 +499,15 @@ class DpkgRepo:
         # pylint: disable-next=logging-format-interpolation,consider-using-f-string
         logging.debug("Fetching release file from local http: {}".format(self._url))
         resp = requests.get(
-            self._get_parent_url(self._url, 2, "InRelease"), proxies=self.proxies
+            self._get_parent_url(self._url, 2, "InRelease"),
+            proxies=self.proxies,
+            timeout=self.timeout,
         )
         if resp.status_code != http.HTTPStatus.OK:
             resp = requests.get(
-                self._get_parent_url(self._url, 2, "Release"), proxies=self.proxies
+                self._get_parent_url(self._url, 2, "Release"),
+                proxies=self.proxies,
+                timeout=self.timeout,
             )
 
         try:
@@ -539,11 +555,13 @@ class DpkgRepo:
                 resp = requests.get(
                     self._get_parent_url(self._url, 0, "InRelease"),
                     proxies=self.proxies,
+                    timeout=self.timeout,
                 )
                 if resp.status_code != http.HTTPStatus.OK:
                     resp = requests.get(
                         self._get_parent_url(self._url, 0, "Release"),
                         proxies=self.proxies,
+                        timeout=self.timeout,
                     )
 
                 if resp.status_code == http.HTTPStatus.OK:

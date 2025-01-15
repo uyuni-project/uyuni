@@ -12,7 +12,7 @@ const EditAnsiblePath = (props) => {
         </div>
         <div className="btn-group pull-right">
           <AsyncButton
-            defaultType="btn-success btn-sm"
+            defaultType="btn-default btn-sm"
             icon="fa-save"
             title={t("Save")}
             action={() => props.saveEditPath(props.editEntity)}

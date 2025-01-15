@@ -1,1 +1,0 @@
-- Added api calls getNotifications, makeNotificationRead, makeAllNotificationsRead, deleteNotification to UserNotificationHandler

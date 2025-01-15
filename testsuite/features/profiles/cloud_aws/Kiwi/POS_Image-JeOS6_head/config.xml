@@ -19,7 +19,7 @@
 
         <rpm-excludedocs>true</rpm-excludedocs>
 
-        <type boot="saltboot/suse-SLES12" bootloader="grub2" checkprebuilt="true" compressed="false" filesystem="ext3" fsmountoptions="acl" fsnocheck="true" image="pxe" kernelcmdline="quiet"/>
+        <type boot="saltboot/suse-SLES12" bootloader="grub2" checkprebuilt="true" compressed="true" filesystem="ext3" fsmountoptions="acl" fsnocheck="true" image="pxe" kernelcmdline="quiet"/>
         <type boot="isoboot/suse-SLES12" image="iso"/>
         <type boot="oemboot/suse-SLES12" filesystem="ext3" image="oem" installiso="true"/>
     </preferences>

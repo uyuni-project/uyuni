@@ -282,8 +282,9 @@ Testing Uyuni for Retail is optional. To test it, you need:
 
 * a private network
 * a PXE boot minion.
+* a DHCP and DNS server
 
-The PXE boot minion will reside in the private network only.
+The PXE boot minion and the DHCP and DNS server will reside in the private network only.
 The proxy will route between the private network and the outer world.
 
 ### Private network
@@ -325,13 +326,13 @@ the desired image you want it reformatted with:
 
 ```bash
 export PXEBOOT_MAC=52:54:00:01:02:03
-export PXEBOOT_IMAGE=sles12sp3
+export PXEBOOT_IMAGE=sles12sp5
 ```
 
 and then run the test suite.
 
 `52:54:00:` is the prefix assigned to qemu.
-Currently supported images are `sles12sp3` and `sles15sp1`.
+Currently supported images are `sles12sp5` and `sles15sp4`.
 
 Inside of the test suite, the scenarios that are tagged with
 

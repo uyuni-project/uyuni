@@ -39,11 +39,9 @@ public class SystemScheduledRequestJson extends ScheduledRequestJson {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SystemScheduledRequestJson)) {
+        if (!(o instanceof SystemScheduledRequestJson that)) {
             return false;
         }
-        SystemScheduledRequestJson that = (SystemScheduledRequestJson) o;
-
         return Objects.equals(serverIds, that.serverIds) &&
             Objects.equals(getEarliest(), that.getEarliest()) &&
             Objects.equals(getActionChain(), that.getActionChain());

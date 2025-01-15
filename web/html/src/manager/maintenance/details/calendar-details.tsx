@@ -4,9 +4,9 @@ import { useState } from "react";
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
 
 import { DeleteDialog } from "components/dialog/DeleteDialog";
-import { Check } from "components/input/Check";
-import { Form } from "components/input/Form";
-import { MessageType } from "components/messages";
+import { Check } from "components/input/check/Check";
+import { Form } from "components/input/form/Form";
+import { MessageType } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";

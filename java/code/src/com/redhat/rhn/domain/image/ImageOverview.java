@@ -592,10 +592,9 @@ public class ImageOverview {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageOverview)) {
+        if (!(other instanceof ImageOverview castOther)) {
             return false;
         }
-        ImageOverview castOther = (ImageOverview) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
                 .append(version, castOther.version)

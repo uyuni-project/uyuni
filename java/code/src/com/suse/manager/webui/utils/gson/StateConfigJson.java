@@ -89,9 +89,8 @@ public class StateConfigJson extends ConfigChannelJson {
      */
     public static Set<StateConfigJson> listOrderedStates(Set<RecurringStateConfig> configIn) {
         return configIn.stream().map(config -> {
-            if (config instanceof RecurringInternalState) {
-                return new StateConfigJson(
-                        ((RecurringInternalState) config).getInternalState(), config.getPosition().intValue());
+            if (config instanceof RecurringInternalState intState) {
+                return new StateConfigJson(intState.getInternalState(), config.getPosition().intValue());
             }
             else {
                 return new StateConfigJson(

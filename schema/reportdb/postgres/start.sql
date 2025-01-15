@@ -10,5 +10,4 @@
 -- in this software or its documentation.
 --
 
-create extension dblink;
-
+-- This file is currently intentionally left blank.

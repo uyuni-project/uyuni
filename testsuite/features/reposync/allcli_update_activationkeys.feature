@@ -149,7 +149,7 @@ Feature: Update activation keys
 
 @uyuni
 @proxy
-@skip_if_containerized_server
+@cloud
   Scenario: Update the openSUSE Leap proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
@@ -169,6 +169,7 @@ Feature: Update activation keys
 @containerized_server
 @uyuni
 @proxy
+@skip_if_cloud
   Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area

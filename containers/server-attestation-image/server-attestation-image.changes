@@ -1,4 +1,22 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:37:14 CET 2024 - rosuna@suse.com
+
+- version 5.1.2
+  * Update for next release
+
+-------------------------------------------------------------------
+Mon Oct 14 17:25:18 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
+Thu Aug 01 18:36:32 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.5
+  * Correctly handle podman stop command
+
+-------------------------------------------------------------------
 Mon Jun 10 17:57:43 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4

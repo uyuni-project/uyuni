@@ -6074,12 +6074,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">未处理的错误</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.success" xml:space="preserve">
-        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
+      <trans-unit approved="yes" id="bootstrap.config.success" xml:space="preserve">
+        <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="translated">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
+        <target state="final">已成功生成引导脚本。可在 &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt; 中访问该脚本</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -10296,8 +10296,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="system.entitle.added.monitoring_entitled" xml:space="preserve">
-        <source>&lt;strong&gt;Monitoring&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
-        <target state="final">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
+        <source>&lt;strong&gt;Monitor this Host&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Since you added the Monitoring system type we automatically assigned the Prometheus Exporters formula to the system. Please apply the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; in order to install and enable the Prometheus metrics exporters.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; Please make sure to open the &lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;required network ports&lt;/a&gt; for all installed exporters.</source>
+        <target state="needs-adaptation">已应用&lt;strong&gt;监视&lt;/strong&gt;类型。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;由于您添加了 "监视" 系统类型，因此我们已自动将 Prometheus 导出器公式指派到了系统。请应用 &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;Highstate&lt;/a&gt; 以安装并启用 Prometheus 度量导出器。&lt;br/&gt;&lt;strong&gt;注意：&lt;/strong&gt;请确保为安装的所有导出器打开&lt;a href="/docs/{1}/installation-and-upgrade/ports.html#_external_client_ports" target="_blank"&gt;所需的网络端口&lt;/a&gt;。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
@@ -11151,7 +11151,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">程序临时修复 (PTF) 软件包：{0}</target>
       </trans-unit>
       <trans-unit approved="yes" id="activation-key.java.nochannel" xml:space="preserve">
-          <source>No Base Channel selected.</source>
+        <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -11225,8 +11225,8 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <target state="final">更新所安装软件（软件包和产品）的相关信息</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.uptodate" xml:space="preserve">
-        <source>Update the system, rebooting if required</source>
-        <target state="final">更新系统，并根据需要进行重引导</target>
+        <source>Update the system</source>
+        <target state="final">更新系统</target>
       </trans-unit>
       <trans-unit approved="yes" id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
@@ -11486,6 +11486,22 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       <trans-unit approved="yes" id="system.audit.coco.configNotUpdated" xml:space="preserve">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
         <target state="final">上载机密计算配置时发生错误。请查看服务器日志了解详细信息。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.reboot" xml:space="preserve">
+        <source>Perform a reboot</source>
+        <target state="final">执行重引导</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="internal_state.rebootifneeded" xml:space="preserve">
+        <source>Perform a reboot, only if required</source>
+        <target state="final">仅在需要时执行重引导</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="task.status.oval-data-sync" xml:space="preserve">
+        <source>Sync OVAL Data</source>
+        <target state="final">同步 OVAL 数据</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+        <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+        <target state="final">生成所需的 OVAL 数据，以提高 CVE 审计查询的准确度</target>
       </trans-unit>
     </body>
   </file>

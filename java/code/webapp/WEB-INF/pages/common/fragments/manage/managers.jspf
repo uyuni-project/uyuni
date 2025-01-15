@@ -10,7 +10,7 @@
 <div class="spacewalk-section-toolbar">
     <c:if test="${is_custom}">
         <div class="action-button-wrapper">
-            <html:submit styleClass="btn btn-success" property="dispatch">
+            <html:submit styleClass="btn btn-default" property="dispatch">
                 <bean:message key="message.Update"/>
             </html:submit>
             <rhn:submitted/>

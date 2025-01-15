@@ -138,4 +138,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'system-profile-refresh-bunc
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'payg-dimension-computation-bunch', 'Compute the dimensions data required for PAYG billing', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'oval-data-sync-bunch', 'Generate OVAL data required to increase the accuracy of CVE audit queries.', null);
+
 commit;

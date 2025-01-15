@@ -88,6 +88,7 @@ footer {
   bottom: 0px;
   width: 100%;
   @include make-row;
+  margin: 0 auto;
 
   a {
     color: inherit;
@@ -96,17 +97,6 @@ footer {
 
   a:hover {
     color: inherit;
-  }
-
-  /* override spacewalk rules */
-  div:nth-child(1),
-  div:nth-child(2) {
-    float: none;
-    width: 100%;
-    margin: 0;
-    min-height: auto;
-    text-align: left !important;
-    padding: 0;
   }
 
   div.wrapper {
@@ -333,33 +323,6 @@ nav.navbar-pf {
   }
 }
 
-#scroll-top {
-  display: none;
-  position: fixed;
-  bottom: 5px;
-  right: 3px;
-  cursor: pointer;
-  z-index: 1000;
-  border-radius: 20px;
-  width: 35px;
-  height: 35px;
-  font-size: 1.5em;
-  padding: 0;
-  text-align: center;
-  background-color: rgba(77, 211, 167, 0.2);
-  color: $gray-dark;
-  border: 1px solid rgba(0, 192, 129, 0.2);
-  i {
-    margin: 0 auto;
-    height: 26px;
-  }
-}
-#scroll-top:hover {
-  background-color: rgba(0, 192, 129, 0.9);
-  color: $gray-light;
-  border: 1px solid darken($green, 10%);
-}
-
 //Nav menu in left column
 #nav {
   font-size: 1.1em;
@@ -546,6 +509,12 @@ nav.navbar-pf {
     max-height: 250px;
     overflow-y: auto;
     text-align: right;
+    font-size: 14px;
+    left: 0;
+    background: $white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     li {
       display: block;
       padding: 0 1px;
@@ -559,6 +528,8 @@ nav.navbar-pf {
     li.disabled {
       a {
         color: #aaa;
+        text-decoration: none;
+        cursor: not-allowed;
       }
     }
     li:nth-child(11) {
@@ -691,13 +662,20 @@ h1 .fa-stack {
     @extend .pull-right;
     padding: 0.5em 1em;
     a {
+      margin-right: 10px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+    a:not(.btn) {
       border-right: 1px solid $gray-light;
       padding: 0 0.5em;
     }
     a:hover {
       text-decoration: none;
     }
-    a:last-child {
+    a:not(.btn):last-child {
       border-right: 0;
     }
   }
@@ -1049,6 +1027,9 @@ a time:hover {
   .action-button-wrapper {
     float: right;
     overflow: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 
     button,
     input,
@@ -1259,10 +1240,6 @@ select.small-select {
   }
 }
 
-.panel-body .min-height-panel {
-  min-height: 20px;
-}
-
 .text-truncate {
   text-overflow: ellipsis;
 }
@@ -1324,6 +1301,8 @@ tr.changed > td {
 
 .badge {
   font-size: 12px;
+  border-radius: 10px;
+  background: $badge-bg;
 }
 
 // We can reenable these after the theme migration is complete

@@ -2,7 +2,7 @@
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
-# - features/secondary/min_ssh_tunnel.feature
+# - features/secondary/minssh_tunnel.feature
 # If the minion fails to bootstrap
 
 # TODO: This feature is not working within a proxy containerized environment
@@ -18,8 +18,8 @@ Feature: Register a Salt minion with a bootstrap script
   2) subscribe minion to a base channels
   3) install and remove a package
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
+  Scenario: Log in as org admin user
+    Given I am authorized
 
   Scenario: Delete SLES minion system profile before script bootstrap test
     Given I am on the Systems overview page of this "sle_minion"
@@ -59,7 +59,7 @@ Feature: Register a Salt minion with a bootstrap script
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
 @uyuni
   Scenario: Subscribe the script-bootstrapped SLES minion to a base channel
@@ -75,7 +75,7 @@ Feature: Register a Salt minion with a bootstrap script
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
     Then I should see a "Changing the channels has been scheduled." text
-    And I wait until event "Subscribe channels scheduled by admin" is completed
+    And I wait until event "Subscribe channels scheduled" is completed
 
   Scenario: Install a package to the script-bootstrapped SLES minion
    Given I am on the Systems overview page of this "sle_minion"
@@ -87,7 +87,7 @@ Feature: Register a Salt minion with a bootstrap script
    And I click on "Install Selected Packages"
    And I click on "Confirm"
    Then I should see a "1 package install has been scheduled for" text
-   When I wait until event "Package Install/Upgrade scheduled by admin" is completed
+   When I wait until event "Package Install/Upgrade scheduled" is completed
    Then "orion-dummy-1.1-1.1" should be installed on "sle_minion"
 
   Scenario: Run a remote command on normal SLES minion
@@ -107,5 +107,5 @@ Feature: Register a Salt minion with a bootstrap script
     Then I run spacecmd listeventhistory for "sle_minion"
 
   Scenario: Cleanup: remove package from script-bootstrapped SLES minion
-   When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
-   Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"
+    When I remove package "orion-dummy-1.1-1.1" from this "sle_minion"
+    Then "orion-dummy-1.1-1.1" should not be installed on "sle_minion"

@@ -151,10 +151,9 @@ public class ImageStore extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof ImageStore)) {
+        if (!(other instanceof ImageStore castOther)) {
             return false;
         }
-        ImageStore castOther = (ImageStore) other;
         return new EqualsBuilder().append(label, castOther.label)
                                   .append(uri, castOther.uri)
                                   .append(org, castOther.org)

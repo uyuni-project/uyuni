@@ -22,7 +22,7 @@
 
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
-            <input class="btn btn-success"
+            <input class="btn btn-default"
                     type="submit" name="dispatch"
                     value='<bean:message key="ssm.package.upgrade.select.confirm"/>'/>
         </div>

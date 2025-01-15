@@ -6,6 +6,7 @@ type Props = {
   title?: string;
 };
 
+// See https://fontawesome.com/v4/icons/
 function IconTag(props: Props) {
   const icons = {
     "action-failed": "fa fa-times-circle-o fa-1-5x text-danger",
@@ -116,6 +117,7 @@ function IconTag(props: Props) {
     "sort-down": "fa fa-arrow-circle-down",
     "sort-up": "fa fa-arrow-circle-up",
     spinner: "fa fa-spinner fa-spin",
+    "spacewalk-icon-salt": "fa spacewalk-icon-salt",
     "system-state": "fa spacewalk-icon-salt-add",
     "system-bare-metal-legend": "fa fa-1-5x spacewalk-icon-bare-metal",
     "system-bare-metal": "fa spacewalk-icon-bare-metal",
@@ -130,6 +132,7 @@ function IconTag(props: Props) {
     "system-virt-guest": "fa fa-1-5x spacewalk-icon-virtual-guest",
     "system-virt-host": "fa fa-1-5x spacewalk-icon-virtual-host",
     "system-warn": "fa fa-exclamation-triangle fa-1-5x text-warning",
+    experimental: "fa fa-flask",
   };
 
   return <i className={icons[props.type] + " " + (props.className ?? "")} title={props.title}></i>;

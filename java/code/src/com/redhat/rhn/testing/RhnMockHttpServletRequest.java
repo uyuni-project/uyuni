@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -114,6 +115,15 @@ public class RhnMockHttpServletRequest extends MockHttpServletRequest {
     @Override
     public String getHeader(String name) {
         return headers.get(name);
+    }
+
+    /**
+     * Add custom header and value
+     * @param name header
+     * @param value header value
+     */
+    public void setHeader(String name, String value) {
+        headers.put(name, value);
     }
 
     /** {@inheritDoc} */

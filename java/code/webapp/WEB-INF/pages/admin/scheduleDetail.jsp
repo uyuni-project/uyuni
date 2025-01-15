@@ -70,7 +70,7 @@
                     <label for="parent" class="col-lg-3 control-label">
                         <bean:message key="schedule.edit.jsp.frequency"/>:
                     </label>
-                    <div class="">
+                    <div class="col-lg-9">
                         <jsp:include page="/WEB-INF/pages/common/fragments/repeat-task-picker.jspf">
                             <jsp:param name="widget" value="date"/>
                         </jsp:include>
@@ -106,13 +106,13 @@
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <c:choose>
                                 <c:when test='${empty param.schid}'>
-                                    <html:submit property="create_button" styleClass="btn btn-success">
+                                    <html:submit property="create_button" styleClass="btn btn-primary">
                                         <bean:message key="schedule.edit.jsp.createschedule"/>
                                     </html:submit>
                                 </c:when>
                                 <c:otherwise>
                                     <c:if test="${active}">
-                                        <html:submit property="edit_button" styleClass="btn btn-success">
+                                        <html:submit property="edit_button" styleClass="btn btn-primary">
                                             <bean:message key="schedule.edit.jsp.updateschedule"/>
                                         </html:submit>
                                     </c:if>

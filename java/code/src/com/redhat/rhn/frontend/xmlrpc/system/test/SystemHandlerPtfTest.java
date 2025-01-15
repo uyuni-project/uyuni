@@ -16,9 +16,9 @@
 package com.redhat.rhn.frontend.xmlrpc.system.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -131,8 +131,10 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         standard = PackageTest.createTestPackage(admin.getOrg());
         standardUpdated = PackageTestUtils.newVersionOfPackage(standard, null, "2.0.0", null, admin.getOrg());
         standardUpdatedPtf = PackageTestUtils.createPtfPackage(standardUpdated, "123456", "1", admin.getOrg());
+        standardUpdatedPtf.setIsPartOfPtfPackage(true);
         ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", admin.getOrg());
         ptfMasterUpdated = PackageTestUtils.newVersionOfPackage(ptfMaster, null, "2", null, admin.getOrg());
+        ptfMasterUpdated.setIsPtfPackage(true);
         ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", admin.getOrg());
         ptfPackageUpdated = PackageTestUtils.createPtfPackage("123456", "2", admin.getOrg());
 
@@ -234,7 +236,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
         Action action = ActionFactory.lookupByUserAndId(admin, scheduledActions[0]);
         assertNotNull(action);
-        assertTrue(action instanceof PackageAction);
+        assertInstanceOf(PackageAction.class, action);
     }
 
     @Test

@@ -15,7 +15,7 @@
   -->
 
 <!-- Confidential Computing Attestation Log4j2 configuration -->
-<Configuration name="CoCoAttestation" status="warn">
+<Configuration name="CoCoAttestation" status="warn" shutdownHook="disable">
 
     <Appenders>
         <RollingFile name="LogFile" fileName="/var/log/coco-attestation.log" filePattern="/var/log/coco-attestation-%i.log">

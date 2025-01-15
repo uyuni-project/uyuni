@@ -122,10 +122,9 @@ Serializable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof NetworkInterface)) {
+        if (!(other instanceof NetworkInterface castOther)) {
             return false;
         }
-        NetworkInterface castOther = (NetworkInterface) other;
         return new EqualsBuilder().append(this.getServer(), castOther.getServer())
                 .append(this.getName(), castOther.getName())
                 .append(this.getHwaddr(), castOther.getHwaddr())
@@ -311,6 +310,20 @@ Serializable {
         // always possible that someone wrote their own bonding driver. What to
         // do then?
         return "bonding".equals(module);
+    }
+
+    /**
+     * true if the nic is a container network
+     * @return true if the nic is a container network
+     */
+    public boolean isContainerNetwork() {
+        return (
+            "bridge".equals(module) && (
+                    getName().startsWith("docker") ||
+                    getName().startsWith("cni-podman") ||
+                    getName().startsWith("podman") ||
+                    getName().startsWith("cni")
+            ) || getName().startsWith("flannel"));
     }
 
     /**

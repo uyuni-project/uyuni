@@ -53,7 +53,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.TimeZone;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -121,7 +122,8 @@ public class AppStreamsController {
     }
 
     private static Date getScheduleDate(LocalDateTime dateTime) {
-        ZoneId zoneId = Context.getCurrentContext().getTimezone().toZoneId();
+        ZoneId zoneId = Optional.ofNullable(Context.getCurrentContext().getTimezone())
+                .orElse(TimeZone.getDefault()).toZoneId();
         return Date.from(dateTime.atZone(zoneId).toInstant());
     }
 
@@ -148,7 +150,7 @@ public class AppStreamsController {
                     AppStreamsManager.listChannelAppStreams(channel.getId()),
                     server::hasAppStreamModuleEnabled
                 ))
-                .collect(Collectors.toList());
+                .toList();
         data.put("channelsAppStreams", GSON.toJson(channelsAppStreams));
         data.put("actionChains", ActionChainHelper.actionChainsJson(user));
         return new ModelAndView(data, "templates/minion/appstreams.jade");
@@ -180,7 +182,7 @@ public class AppStreamsController {
             List<PackageJson> sortedPackages = appStream.getArtifacts()
                 .stream()
                 .map(PackageJson::new)
-                .collect(Collectors.toList());
+                .toList();
             artifacts.put("packages", sortedPackages);
             return result(res, success(artifacts), new TypeToken<>() { });
         }

@@ -182,8 +182,10 @@ public class MatcherJsonIO {
                 boolean virtualHost = entitlements.contains(EntitlementManager.VIRTUALIZATION_ENTITLED) ||
                         !system.getGuests().isEmpty();
                 boolean countVCores = !virtualHost && system.getInstalledProductSet()
-                        .map(s -> s.getBaseProduct().getChannelFamily()).stream()
-                        .anyMatch(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()));
+                        .map(productSet -> productSet.getBaseProduct())
+                        .map(baseProduct -> baseProduct.getChannelFamily())
+                        .map(cf -> vCoreCountedChannelFamilies.contains(cf.getLabel()))
+                        .orElse(false); // Case when any of the mappings above return empty.
                 if (countVCores) {
                     // HACK: better would be to introduce a field in SystemJson and adapt subscription-matcher
                     // For now it is not worth the effort
@@ -203,7 +205,7 @@ public class MatcherJsonIO {
             });
 
         return Stream.concat(systems, jsonSystemForSelf(arch, includeSelf, selfMonitoringEnabled))
-            .collect(Collectors.toList());
+            .toList();
     }
 
     private static Set<Long> getVirtualGuests(Server system) {
@@ -225,7 +227,7 @@ public class MatcherJsonIO {
                         p.getChannelFamily() != null ? p.getChannelFamily().getLabel() : "",
                         p.isBase(),
                         p.getFree()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -254,7 +256,7 @@ public class MatcherJsonIO {
                                 .collect(Collectors.toSet())
                 );
             })
-            .collect(Collectors.toList());
+            .toList();
     }
 
     /**
@@ -266,7 +268,7 @@ public class MatcherJsonIO {
             .createQuery("SELECT ps FROM PinnedSubscription ps", PinnedSubscription.class)
             .stream()
             .map(p -> new MatchJson(p.getSystemId(), p.getSubscriptionId(), null, null))
-            .collect(Collectors.toList());
+            .toList();
     }
 
     /**
@@ -311,7 +313,7 @@ public class MatcherJsonIO {
                         vhm.getServers().stream()
                                 .flatMap(s -> getVirtualGuests(s).stream())
                                 .collect(Collectors.toSet())))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -375,7 +377,7 @@ public class MatcherJsonIO {
     private Stream<Long> productIdsForServer(Server server, boolean needsEntitlements, Set<String> entitlements) {
         List<SUSEProduct> products = productFactory.map(server.getInstalledProducts())
                 .filter(product -> !"SLE-M-T".equals(product.getChannelFamily().getLabel()))
-                .collect(Collectors.toList());
+                .toList();
 
         if (products.stream().noneMatch(SUSEProduct::isBase)) {
             return Stream.empty();

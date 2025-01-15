@@ -29,8 +29,10 @@ function regenerate_metadata {
     systemctl restart taskomatic
     echo "done."
     echo
-    echo "Scheduling repo metadata regeneration..."
     read_spacecmd_user_pass
+    echo "Refreshing pillar data..."
+    spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "system_refreshpillar"
+    echo "Scheduling repo metadata regeneration..."
     spacecmd -q -u $SPACECMD_USER -p $SPACECMD_PASS "softwarechannel_regenerateyumcache -f *"
     RETVAL=$?
     if [ $RETVAL -ne 0 ]; then
@@ -299,7 +301,7 @@ elif [[ $ACTION = "check-channels" ]]; then
            if [ ! -d "$REPODATA_DIR/$ch" ]; then
                 echo "ERROR. Channel $ch. Cached metadata not generated."
            else
-               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/Release.gpg" ]]; then
+               if [[ -f "$REPODATA_DIR/$ch/Release.gpg" || -f "$REPODATA_DIR/$ch/repomd.xml.asc" ]]; then
                     echo "OK. Channel $ch. Cached metadata is signed."
                else
                     echo "ERROR. Channel $ch. Cached metadata is not signed."
@@ -317,5 +319,7 @@ if [[ $ACTION = "enable" || $ACTION = "disable" ]]; then
     echo
     echo "NOTE. For the changes to become effective run:"
     echo "   mgr-sign-metadata-ctl regen-metadata"
+    echo "and schedule a highstate for all your systems to"
+    echo "apply the new repository configuration."
     echo
 fi

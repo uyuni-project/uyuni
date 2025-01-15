@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="text-right">
-                <html:submit property="button" styleClass="btn btn-success">
+                <html:submit property="button" styleClass="btn btn-default">
                     <bean:message key="channel.clone.button"/>
                 </html:submit>
             </div>

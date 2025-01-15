@@ -42,6 +42,9 @@ import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.salt.netapi.utils.Xor;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -104,15 +107,14 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         WebSession session = null;
         User user = null;
 
-        if (!params.isEmpty() && params.get(0) instanceof String &&
-                isSessionKey((String)params.get(0))) {
-            if (!myClass.getName().endsWith("AuthHandler") &&
-                !myClass.getName().endsWith("SearchHandler")) {
+        if (!params.isEmpty() && params.get(0) instanceof String p0 && isSessionKey(p0) &&
+                !myClass.getName().endsWith("AuthHandler") && !myClass.getName().endsWith("SearchHandler")) {
+
                 session = SessionManager.loadSession((String)params.get(0));
                 user = getLoggedInUser((String) params.get(0));
                 params.set(0, user);
             }
-        }
+
 
         //we've found all the methods that have the same number of parameters
         List<Method> matchedMethods = findMethods(methods, params, beanifiedMethod);
@@ -143,10 +145,9 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
 
-            if (cause instanceof FaultException) {
+            if (cause instanceof FaultException fault) {
                 // FaultExceptions are "bad request" type of exceptions
                 // Normally they should be thrown as response to the client but there's no need to log them as errors.
-                FaultException fault = (FaultException) cause;
                 log.debug("'{}' returned: [{}] {}", methodCalled, fault.getErrorCode(), fault.getMessage());
             }
             else {
@@ -205,10 +206,10 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 }).collect(Collectors.partitioningBy(x -> x.isRight()));
 
         List<Tuple2<Method, Object[]>> candidates = collect.get(true).stream()
-                .flatMap(x -> x.right().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.right().stream()).toList();
 
         List<TranslationException> exceptions = collect.get(false).stream()
-                .flatMap(x -> x.left().stream()).collect(Collectors.toList());
+                .flatMap(x -> x.left().stream()).toList();
 
         if (candidates.isEmpty()) {
            throw exceptions.get(0);
@@ -407,6 +408,37 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         if (!user.hasRole(role)) {
             throw new PermissionCheckFailureException(role);
         }
+    }
+
+    /**
+     * Parse an input element uniformly for both XMLRPC and JSON APIs.
+     * <p>
+     * Useful when parsing input parameter values inside complex structs where there's no type information available.
+     * <p>
+     * XMLRPC and JSON APIs automatically parse the values for top-level parameters according to the type information
+     * available. However, the values nested inside a complex struct must be parsed inside the specific handler method.
+     *
+     * @param argIn the input value
+     * @return the parsed {@link T} object
+     * @throws InvalidParameterException when the input cannot be parsed
+     */
+    protected static <T> T parseInputValue(Object argIn, Class<T> typeIn) throws InvalidParameterException {
+        T value;
+        try {
+            if (typeIn.isAssignableFrom(argIn.getClass())) {
+                // Assume exact type (XMLRPC)
+                value = typeIn.cast(argIn);
+            }
+            else {
+                // Interpret as string (JSON over HTTP)
+                value = new Gson().fromJson("\"" + argIn + "\"", typeIn);
+            }
+        }
+        catch (ClassCastException | JsonSyntaxException e) {
+            throw new InvalidParameterException("Wrong input format", e);
+        }
+
+        return value;
     }
 
     /**

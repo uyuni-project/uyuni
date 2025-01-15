@@ -16,6 +16,7 @@ package com.suse.manager.reactor.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
@@ -59,31 +60,45 @@ public class OptionalTypeAdapterFactory implements TypeAdapterFactory {
                     in.nextNull();
                     return Optional.empty();
                 }
-                else {
-                    JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
-                    try {
-                        A value = innerAdapter.fromJsonTree(json);
-                        return Optional.of(value);
+                JsonElement json = TypeAdapters.JSON_ELEMENT.read(in);
+                if (json.isJsonObject()) {
+                    JsonObject jsonObject = json.getAsJsonObject();
+                    if (jsonObject.size() == 0) {
+                        return Optional.empty();
                     }
-                    catch (JsonSyntaxException e) {
-                        /**
-                         * Note : This is a workaround and it only exists because salt doesn't differentiate between a
-                         * non-existent grain and a grain which exists but has value set to empty String.
-                         *
-                         * If an object is expected but instead empty string comes in then we return empty Optional.
-                         */
-                        if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString() &&
-                                json.getAsString().isEmpty()) {
-                            return Optional.empty();
-                        }
-                        throw e;
+                    else if (jsonObject.size() == 1 && jsonObject.has("value")) {
+                        JsonElement value = jsonObject.get("value");
+                        A result = innerAdapter.fromJsonTree(value);
+                        return Optional.of(result);
                     }
+                }
+                try {
+                    A value = innerAdapter.fromJsonTree(json);
+                    return Optional.of(value);
+                }
+                catch (JsonSyntaxException e) {
+                    /*
+                     * Note : This is a workaround and it only exists because salt doesn't differentiate between a
+                     * non-existent grain and a grain which exists but has value set to empty String.
+                     *
+                     * If an object is expected but instead empty string comes in then we return empty Optional.
+                     */
+                    if (json.isJsonPrimitive() && json.getAsJsonPrimitive().isString() &&
+                            json.getAsString().isEmpty()) {
+                        return Optional.empty();
+                    }
+                    throw e;
                 }
             }
 
             @Override
             public void write(JsonWriter out, Optional<A> optional) throws IOException {
-                innerAdapter.write(out, optional.orElse(null));
+                if (optional.isPresent()) {
+                    innerAdapter.write(out, optional.get());
+                }
+                else {
+                    out.nullValue();
+                }
             }
         };
     }

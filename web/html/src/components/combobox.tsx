@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Creatable from "react-select/creatable";
 
-import withTestAttributes from "./input/select-test-attributes";
+import withTestAttributes from "./input/select/select-test-attributes";
 
 type ReactSelectItem = {
   value: string | null | undefined;

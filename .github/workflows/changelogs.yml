@@ -44,12 +44,14 @@ on:
 
 jobs:
   changelog_test:
-    name: Test changelog entries
+    name: Changelog tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 1
+        # Checkout only workflow code
+        sparse-checkout: '.github/workflows'
     - id: master
       name: Get modified master changelog files
       uses: Ana06/get-changed-files@v2.3.0
@@ -65,22 +67,35 @@ jobs:
           echo "  - $file"
         done
         echo
-        echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing checklogs."
+        echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
         exit 1
-    - id: changelogs
-      name: Get modified changelog files
+    - name: Checkout the HEAD branch
+      id: checkout
       if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
-      uses: Ana06/get-changed-files@v2.3.0
+      # Check out the PR HEAD in a subdirectory to read the updated changelog files
+      uses: actions/checkout@v4
       with:
-        filter: '*.changes.*'
-    - name: Fail if no changelog entries are added
-      if: steps.changelogs.conclusion == 'success' && steps.changelogs.outputs.added_modified == ''
+        fetch-depth: 1
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: .head
+    - name: Test changelog entries
+      if: steps.checkout.outcome == 'success'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BZ_TOKEN: ${{ secrets.BUGZILLA_TOKEN }}
+        GIT_REPO: ${{ github.event.pull_request.base.repo.full_name }}
+        PR_NUM: ${{ github.event.pull_request.number }}
+        TRACKER_FILE: .github/workflows/changelogs/trackers.xml
+        # Tracker file can be retrieved from the OBS/IBS API
+        # by calling 'osc api /issue_trackers/' (with authentication)
       run: |
-        echo "No changelog entry found. Please add the required changelog entries."
-        echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing checklogs."
-        exit 1
+        pip install python-bugzilla~=3.2.0
 
-  # warns the user if they merged the PR, but the changelog test failed
+        CHANGED_FILES=$(gh api --paginate repos/$GIT_REPO/pulls/$PR_NUM/files | jq -r '.[].filename')
+        python .github/workflows/changelogs/changelogs.py ${RUNNER_DEBUG:+--verbose} \
+            --tracker-file $TRACKER_FILE --git-repo $GIT_REPO --uyuni-dir .head --pr-number $PR_NUM $CHANGED_FILES
+
+  # Warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
     name: Warn user if merged
     if: always() && github.event.action == 'closed' && github.event.pull_request.merged == true && needs.changelog_test.result == 'failure'
@@ -92,4 +107,4 @@ jobs:
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body: |
-          :warning: No changelog entry has been added. @${{ github.event.pull_request.user.login }}, please add necessary changelog entries with an additional PR.
+          :warning: Some changelog tests have failed. @${{ github.event.pull_request.user.login }}, please review and fix the changelog issues with an additional PR.

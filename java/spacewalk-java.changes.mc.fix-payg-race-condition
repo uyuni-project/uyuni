@@ -1,2 +1,0 @@
-- fix a race condition during PAYG setup by re-detecting compliance
-  when the instance report BYOS but payg_compliance.json is available

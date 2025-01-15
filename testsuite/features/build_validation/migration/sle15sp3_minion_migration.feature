@@ -7,17 +7,6 @@ Feature: Migrate a SLES 15 SP3 Salt minion to 15 SP4
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  # Having OS salt packages which are not up to date installed on the minion
-  # will not allow it to undergo a Product migration
-  Scenario: Remove OS salt leftovers from the SLE 15 SP3 minion
-    When I remove package "salt" from this "sle15sp3_minion" without error control
-
-  Scenario: Update Package List of this SLE 15 SP3 minion
-    Given I am on the Systems overview page of this "sle15sp3_minion"
-    And I follow "Software" in the content area
-    And I click on "Update Package List"
-    And I wait until event "Package List Refresh" is completed
-
   Scenario: Migrate this minion to SLE 15 SP4
     Given I am on the Systems overview page of this "sle15sp3_minion"
     When I follow "Software" in the content area
@@ -40,12 +29,6 @@ Feature: Migrate a SLES 15 SP3 Salt minion to 15 SP4
     And I follow "Details" in the content area
     Then I wait until I see "SUSE Linux Enterprise Server 15 SP4" text, refreshing the page
     And vendor change should be enabled for product migration on "sle15sp3_minion"
-
-  Scenario: Install the latest Salt on this minion
-    When I migrate the non-SUMA repositories on "sle15sp3_minion"
-    And I enable repositories before installing Salt on this "sle15sp3_minion"
-    And I install Salt packages from "sle15sp3_minion"
-    And I disable repositories after installing Salt on this "sle15sp3_minion"
 
   Scenario: Subscribe the SLES minion to a SLES 15 SP4 child channel
     Given I am on the Systems overview page of this "sle15sp3_minion"

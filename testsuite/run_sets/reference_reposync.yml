@@ -23,6 +23,7 @@
 
 # Special reference repo sync
 - features/reposync/reference_srv_sync_products_extra.feature
+- features/reposync/srv_create_bootstrap_repositories.feature
 #- features/reposync/reference_srv_check_reposync.feature
 
 ## Channels and Product synchronization features END ###

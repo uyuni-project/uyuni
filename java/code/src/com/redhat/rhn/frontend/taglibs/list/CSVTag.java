@@ -115,8 +115,8 @@ public class CSVTag extends BodyTagSupport {
             d = request.getSession(true).getAttribute(dataSetName);
         }
         if (d != null) {
-            if (d instanceof List) {
-                pageData = (List<BaseDto>) d;
+            if (d instanceof List data) {
+                pageData = (List<BaseDto>) data;
             }
             else {
                 throw new JspException("Dataset named \'" + dataSetName +
@@ -187,7 +187,7 @@ public class CSVTag extends BodyTagSupport {
     private void renderExport() throws JspException {
         IconTag i = new IconTag("item-download-csv");
         String exportLink = "<div class=\"spacewalk-csv-download\">" +
-                "<a class=\"btn btn-link\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
+                "<a class=\"btn btn-default\" data-senna-off=\"true\" href=\"" + CSV_DOWNLOAD_URI + "?" +
                 makeCSVRequestParams() + "\">" + i.render() + LocalizationService.getInstance().getMessage(
                 "listdisplay.csv") + "</a></div>";
         ListTagUtil.write(pageContext, exportLink);
@@ -229,7 +229,7 @@ public class CSVTag extends BodyTagSupport {
     }
 
     private String exportDataToSession(HttpSession session) {
-        if (pageData != null && pageData instanceof DataResult &&
+        if (pageData instanceof DataResult &&
                 ((DataResult<BaseDto>)pageData).getMode() != null &&
                 ((DataResult<BaseDto>)pageData).getMode().getQuery() != null) {
             /* We better do not export pageList, let's keep the query instead.

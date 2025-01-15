@@ -24,9 +24,11 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -h server \
     -p 8443:443 \
     -p 8080:80 \
+    -p 9090:9090 \
     -p 4505:4505 \
     -p 4506:4506 \
     -d --name=server \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
+sudo -i podman exec -d server prometheus
 

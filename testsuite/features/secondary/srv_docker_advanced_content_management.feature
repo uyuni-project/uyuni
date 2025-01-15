@@ -14,7 +14,7 @@ Feature: Advanced content management
     And I enter "docker_admin" as "label"
     And I enter the URI of the registry as "uri"
     And I click on "create-btn"
-
+  @scc_credentials
   Scenario: Create a profile as Docker admin
     When I follow the left menu "Images > Profiles"
     And I follow "Create"
@@ -43,6 +43,7 @@ Feature: Advanced content management
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
 
+  @scc_credentials
   Scenario: Cleanup: remove Docker profile
     Given I am authorized as "docker" with password "docker"
     When I follow the left menu "Images > Profiles"

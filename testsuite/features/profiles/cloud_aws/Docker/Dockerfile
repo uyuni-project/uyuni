@@ -1,4 +1,4 @@
-FROM ip-172-16-1-175.eu-central-1.compute.internal/opensuse/leap:15.5
+FROM ip-172-16-1-175.eu-central-1.compute.internal/opensuse/leap:15.4
 MAINTAINER Admin User "noemail@example.com"
 
 ARG repo

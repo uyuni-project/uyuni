@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
@@ -44,10 +45,14 @@ export function AllSystems(props: Props) {
         </a>
 
         <div className="pull-right btn-group">
-          <a id="addsystem" title="Add a system" className="btn btn-link" href="/rhn/manager/systems/bootstrap">
-            <i className="fa fa-plus"></i>
-            {t("Add System")}
-          </a>
+          <LinkButton
+            id="addsystem"
+            icon="fa-plus"
+            className="btn btn-primary"
+            title={t("Add a system")}
+            text={t("Add system")}
+            href="/rhn/manager/systems/bootstrap"
+          />
         </div>
       </h1>
       <Table
@@ -116,7 +121,7 @@ export function AllSystems(props: Props) {
                 <a href={`/rhn/systems/details/packages/ExtraPackagesList.do?sid=${item.id}`}>{item.extraPkgCount}</a>
               );
             }
-            return item.outdatedPackages;
+            return item.extraPkgCount;
           }}
         />
 
@@ -155,7 +160,7 @@ export function AllSystems(props: Props) {
       </Table>
 
       <div className="spacewalk-csv-download">
-        <a href="/rhn/manager/systems/csv/all" className="btn btn-link" data-senna-off="true">
+        <a role="button" href="/rhn/manager/systems/csv/all" className="btn btn-default" data-senna-off="true">
           <IconTag type="item-download-csv" />
           Download CSV
         </a>

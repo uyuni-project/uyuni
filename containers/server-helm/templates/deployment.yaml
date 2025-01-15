@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   name: uyuni
   namespace: "{{ .Release.Namespace }}"
-labels:
-  app: uyuni
+  labels:
+    app: uyuni
 spec:
   replicas: 1
   selector:
@@ -15,6 +15,10 @@ spec:
       labels:
         app: uyuni
     spec:
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+        - name: {{ .Values.registrySecret }}
+{{- end }}
       initContainers:
 {{- if not .Values.migration }}
       - name: init-etc-tls

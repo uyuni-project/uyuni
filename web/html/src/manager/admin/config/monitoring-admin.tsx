@@ -8,14 +8,14 @@ import { docsLocale } from "core/user-preferences";
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { IconTag as Icon } from "components/icontag";
-import { Messages, Utils as MessagesUtils } from "components/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import { HelpLink } from "components/utils/HelpLink";
 
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import styles from "./monitoring-admin.module.css";
+import styles from "./monitoring-admin.module.scss";
 import useMonitoringApi from "./use-monitoring-api";
 
 const { capitalize } = Utils;
@@ -315,7 +315,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       <React.Fragment>
         <AsyncButton
           id="enable-monitoring-btn"
-          defaultType="btn-success"
+          defaultType="btn-default"
           icon="fa-play"
           text={t("Enable")}
           className={styles.gap_right}
@@ -372,11 +372,6 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
               {t("Cobbler")}
             </a>
           </li>
-          <li>
-            <a className="js-spa" href="/rhn/admin/config/BootstrapSystems.do?">
-              {t("Bare-metal systems")}
-            </a>
-          </li>
           <li className="active js-spa">
             <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
           </li>
@@ -392,25 +387,27 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
           </div>
         }
       >
-        <div className="row" style={{ display: "flex" }}>
-          <div className="col-sm-9">
-            <div className="col-md-4 text-left">
-              <label>{t("Monitoring")}</label>
-            </div>
-            <div className="col-md-8">
-              {exportersStatus ? (
-                <ExportersList exporters={exportersStatus} messages={exportersMessages} />
-              ) : (
-                <ListPlaceholder />
-              )}
-              {restartNeeded ? (
-                <div>
-                  <Icon type="system-reboot" className="text-warning fa-1-5x" />
-                  <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
-                  {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
-                </div>
-              ) : null}
-              <ExportersMessages messages={exportersMessages} />
+        <div className="row">
+          <div className="col-md-9">
+            <div className="row">
+              <div className="col-md-4 text-left">
+                <label>{t("Monitoring")}</label>
+              </div>
+              <div className="col-md-8">
+                {exportersStatus ? (
+                  <ExportersList exporters={exportersStatus} messages={exportersMessages} />
+                ) : (
+                  <ListPlaceholder />
+                )}
+                {restartNeeded ? (
+                  <div>
+                    <Icon type="system-reboot" className="text-warning fa-1-5x" />
+                    <a href="/rhn/admin/config/Restart.do?">{t("Restarting")}</a>
+                    {t(" Tomcat and Taskomatic is needed for the configuration changes to take effect.")}
+                  </div>
+                ) : null}
+                <ExportersMessages messages={exportersMessages} />
+              </div>
             </div>
           </div>
           <HelpPanel isUyuni={props.isUyuni} />

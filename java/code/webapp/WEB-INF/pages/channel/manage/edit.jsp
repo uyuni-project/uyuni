@@ -236,7 +236,7 @@
                     </label>
                     <div class="col-lg-6">
                         <c:if test='${not empty log_url}'>
-                            <a class="btn btn-info" href='${log_url}'><c:out value='${last_sync}'/></a>
+                            <a class="btn btn-default" href='${log_url}'><c:out value='${last_sync}'/></a>
                         </c:if>
                         <c:if test='${empty log_url}'>
                             <div class="form-control">
@@ -406,19 +406,19 @@
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test="${not empty clone_type}">
-                            <html:submit property="clone_button" styleClass="btn btn-success">
+                            <html:submit property="clone_button" styleClass="btn btn-primary">
                                 <bean:message key="channel.clone.button"/>
                             </html:submit>
                         </c:when>
                         <c:otherwise>
                             <c:choose>
                                 <c:when test='${empty param.cid}'>
-                                    <html:submit property="create_button" styleClass="btn btn-success">
+                                    <html:submit property="create_button" styleClass="btn btn-primary">
                                         <bean:message key="channel.edit.jsp.createchannel"/>
                                     </html:submit>
                                 </c:when>
                                 <c:otherwise>
-                                    <html:submit property="edit_button" styleClass="btn btn-success">
+                                    <html:submit property="edit_button" styleClass="btn btn-primary">
                                         <bean:message key="channel.edit.jsp.editchannel"/>
                                     </html:submit>
                                 </c:otherwise>

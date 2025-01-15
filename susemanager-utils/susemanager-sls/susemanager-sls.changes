@@ -1,4 +1,53 @@
 -------------------------------------------------------------------
+Fri Dec 13 15:01:05 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Prevent warning message for unsigned Debian repositories
+    when using new deb822 format (bsc#1234251)
+
+-------------------------------------------------------------------
+Thu Dec 12 10:08:16 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * suma_minion: prevent issues when calling Salt runners (bsc#1228232)
+  * Prevent a crash on "reboot_info" module for Liberty 6, RHEL 6 and
+    clones (bsc#1231404)
+  * Remove Master public key on bootstrapping to prevent possible issues.
+  * Fix rebootifneeded state which misses definition of a variable
+    (bsc#1233426)
+  * Do not set "Trusted" for Debian repositories when the repo
+    should be signed
+  * Improve appstreams context selection (bsc#1231459)
+
+-------------------------------------------------------------------
+Mon Oct 14 16:01:34 CEST 2024 - rosuna@suse.com
+
+- version 5.1.1-0
+  * Implement product migration from RHEL and Clones to SUSE Liberty
+    Linux
+  * Bump version to 5.1.0
+
+-------------------------------------------------------------------
+Thu Aug 01 09:30:50 CEST 2024 - marina.latini@suse.com
+
+- version 5.0.10-0
+  * Speed-up mgrutil.remove_ssh_known_host runner (bsc#1223312)
+  * Start using DEB822 format for repository sources beginning with
+    Ubuntu 24.04
+  * Disable transactional-update.timer on SUSE Linux Enterprise
+    Micro at bootstrap
+  * sumautil: properly detect bridge interfaces (bsc#1226461)
+  * Fix typo on directories to cleanup when deleting a system
+    (bsc#1228101)
+  * Granslate GPG URL if URL has server name and client behind
+    proxy (bsc#1223988)
+  * Fix yum-utils package missing on CentOS7 minions (bsc#1227133)
+  * Remove reboot from uptodate state, introduce reboot and
+    rebootifneeded states
+  * Fix package profile update on CentOS 7 when yum-utils is not
+    installed (bsc#1227133)
+
+-------------------------------------------------------------------
 Tue Jun 18 18:11:01 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.9-0

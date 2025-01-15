@@ -43,7 +43,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\">" +
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
                 "<i class=\"fa fa-trash-o\" title=\"Delete User\">" +
                 "</i>Delete User</a></div><h1></h1></div>";
 
@@ -76,7 +76,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleMixinsMultipleAcls() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\">" +
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
                 "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
                 "</div><h1></h1></div>";
 
@@ -98,7 +98,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
     public void testCreateAclMultipleAclsSingleMixin() {
         try {
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\">" +
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
                 "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
                 "</div><h1></h1></div>";
 
@@ -143,7 +143,7 @@ public class ToolbarTagDeletionTest extends BaseTestToolbarTag {
         try {
             // setup mock objects
             String output = "<div class=\"spacewalk-toolbar-h1\">" +
-                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\">" +
+                "<div class=\"spacewalk-toolbar\"><a href=\"deletion-url\" class=\"btn btn-danger\">" +
                 "<i class=\"fa fa-trash-o\" title=\"Delete User\"></i>Delete User</a>" +
                 "</div><h1></h1></div>";
 

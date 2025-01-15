@@ -22,7 +22,15 @@
 # pylint: disable-next=unused-import
 import sys
 from .backend import Backend
-from .backendLib import DBint, DBstring, DBdateTime, Table, TableCollection, DBblob
+from .backendLib import (
+    DBint,
+    DBstring,
+    DBdateTime,
+    Table,
+    TableCollection,
+    DBblob,
+    DBbool,
+)
 from spacewalk.server import rhnSQL
 from spacewalk.server.rhnSQL.const import POSTGRESQL
 from spacewalk.common.rhnConfig import CFG
@@ -234,6 +242,8 @@ class OracleBackend(Backend):
                 "payload_format": DBstring(32),
                 "path": DBstring(1000),
                 "copyright": DBstring(128),
+                "is_ptf": DBbool(),
+                "is_part_of_ptf": DBbool(),
                 "cookie": DBstring(128),
                 "header_start": DBint(),
                 "header_end": DBint(),
@@ -744,7 +754,6 @@ class OracleBackend(Backend):
 
 
 class PostgresqlBackend(OracleBackend):
-
     """
     PostgresqlBackend specific implementation. The bulk of the OracleBackend
     is not actually Oracle specific, so we'll re-use as much as we can and just
@@ -770,5 +779,7 @@ class PostgresqlBackend(OracleBackend):
 def SQLBackend():
     if CFG.DB_BACKEND == POSTGRESQL:
         backend = PostgresqlBackend()
-    backend.init()
-    return backend
+        backend.init()
+        return backend
+    else:
+        raise ValueError("The selected DB_BACKEND is not supported")

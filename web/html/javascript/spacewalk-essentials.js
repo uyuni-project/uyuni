@@ -46,17 +46,7 @@ function listenForGlobalNotificationChanges() {
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
   jQuery(scrollTarget).on("scroll", function () {
-    if(jQuery(this).scrollTop() > 100) {
-      jQuery('#scroll-top').show();
-    } else {
-      jQuery('#scroll-top').hide();
-    }
-
     sstScrollBehavior();
-  });
-
-  jQuery(document).on('click', '#scroll-top', function() {
-    jQuery(scrollTarget).scrollTo(0,0);
   });
 }
 
@@ -99,7 +89,8 @@ function sstScrollBehaviorSetup(sst) {
 // when the page scrolls down and the toolbar is going up and hidden,
 // the toolbar takes a fixed place right below the header bar
 function handleSst() {
-  var sst = jQuery('.spacewalk-section-toolbar');
+  // Some pages may have multiple instances of this element
+  var sst = jQuery('.spacewalk-section-toolbar').first();
 
   if (jQuery('.move-to-fixed-toolbar').length > 0) {
     // if there is no 'spacewalk-section-toolbar', then create it
@@ -143,7 +134,7 @@ function handleSst() {
 }
 
 function sstStyle() {
-  var sst = jQuery('.spacewalk-section-toolbar');
+  var sst = jQuery('.spacewalk-section-toolbar').first();
   if (sst.hasClass('fixed')) {
     sst.css({
       top: jQuery('header').outerHeight() - 1,
@@ -164,7 +155,7 @@ jQuery(document).on('click', '.navbar-toggle', function() {
 });
 
 function navbarToggleMobile() {
-  if (window.outerWidth <= 768) {
+  if (window.matchMedia("(max-width: 768px)").matches) {
     jQuery('aside').addClass('in collapse');
   }
 };
@@ -224,6 +215,35 @@ function showFatalError(message, exception) {
   }
 }
 
+/**
+ * Checks if the provided string is a valid URL.
+ *
+ * @param {string} url - The URL string to validate.
+ * @returns {boolean} - `true` if the string is a valid URL, otherwise `false`.
+ */
+function isValidUrl(url) {
+  try {
+      new URL(url);
+      return true;
+  } catch (_) {
+      return false;
+  }
+}
+
+/**
+ * Escapes special HTML characters in a string.
+ * @param {string} original - The string that may contain special HTML characters.
+ * @returns {string} - A new string with special HTML characters replaced with their entities.
+ */
+function escapeHtml(original) {
+  return original
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\//g, '&#x2F;');
+}
 
 // Extension to Twitter Bootstrap.
 // Gives you a col-XX-auto class like Bootstrap

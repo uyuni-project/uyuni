@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.user.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -75,7 +76,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /** JUnit test case for the User
  *  class.
@@ -563,14 +563,14 @@ public class UserManagerTest extends RhnBaseTestCase {
     public void testLookupTimeZoneAll() {
         List<RhnTimeZone> lst = UserManager.lookupAllTimeZones();
         assertTrue(lst.size() > 30);
-        assertTrue(lst.get(5) instanceof RhnTimeZone);
-        assertTrue(lst.get(29) instanceof RhnTimeZone);
+        assertInstanceOf(RhnTimeZone.class, lst.get(5));
+        assertInstanceOf(RhnTimeZone.class, lst.get(29));
 
         // Check if all configured timezones are valid
         Set<String> validTimezones = ZoneId.getAvailableZoneIds();
         assertTrue(lst.stream().filter(timezone ->
                 !validTimezones.contains(timezone.getOlsonName()))
-                .collect(Collectors.toList())
+                .toList()
                 .isEmpty());
 
         assertEquals(UserManager.getTimeZone("GMT"), lst.get(0));

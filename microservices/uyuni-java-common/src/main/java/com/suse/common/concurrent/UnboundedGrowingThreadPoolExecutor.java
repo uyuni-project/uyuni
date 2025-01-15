@@ -43,7 +43,7 @@ public class UnboundedGrowingThreadPoolExecutor extends ThreadPoolExecutor {
      */
     public UnboundedGrowingThreadPoolExecutor(int corePoolSize, int maximumPoolSize, Duration keepAlive,
                                               String threadNamePrefix) {
-        super(corePoolSize, maximumPoolSize, keepAlive.getSeconds(), TimeUnit.SECONDS,
+        super(corePoolSize, maximumPoolSize, keepAlive.toMillis(), TimeUnit.MILLISECONDS,
             new TransferOnOfferBlockingQueue());
 
         handler = new PutBackExecutionHandler();

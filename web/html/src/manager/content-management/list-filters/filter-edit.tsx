@@ -3,10 +3,10 @@ import { useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
-import { ModalLink } from "components/dialog/ModalLink";
+import { ModalButton } from "components/dialog/ModalButton";
 import { showDialog } from "components/dialog/util";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
-import { Loading } from "components/utils/Loading";
+import { Loading } from "components/utils/loading/Loading";
 
 import useLifecycleActionsApi from "../shared/api/use-lifecycle-actions-api";
 import { FilterFormType } from "../shared/type/filter.type";
@@ -51,6 +51,7 @@ type FilterEditProps = {
   initialFilterForm: Partial<FilterFormType>;
   icon: string;
   buttonText: string;
+  className?: string;
   onChange: Function;
   openFilterId?: number;
   projectLabel?: string;
@@ -123,11 +124,13 @@ const FilterEdit = (props: FilterEditProps) => {
 
   return (
     <React.Fragment>
-      <ModalLink
+      <ModalButton
         id={`${props.id}-modal-link`}
         icon={props.icon}
         text={props.buttonText}
+        title={props.buttonText}
         target={modalNameId}
+        className={props.className}
         onClick={() => {
           setOpen(true);
           setFormData(props.initialFilterForm);

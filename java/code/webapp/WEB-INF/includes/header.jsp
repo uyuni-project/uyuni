@@ -31,7 +31,7 @@
       </li>
       <c:if test="${requestScope.legends != null}">
         <li class="legend" id="legend-box-wrapper">
-          <a href="#" class="toggle-box" data-toggle="collapse" data-target="#legend-box">
+          <a href="#" class="toggle-box" data-bs-toggle="collapse" data-bs-target="#legend-box">
             <i class="fa fa-eye" aria-hidden="true"></i>
           </a>
           <div id="legend-box" class="box-wrapper collapse">
