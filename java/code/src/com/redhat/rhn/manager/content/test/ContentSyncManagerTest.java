@@ -2568,9 +2568,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         }
         Map<String, Optional<String>> urlMap = Map.of("http://my.host.top/?os=RHEL",
                 Optional.empty(),
-                "http://my.host.top/?auth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                "http://my.host.top/?dlauth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
                         "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
-                Optional.of("auth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
+                Optional.of("dlauth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*" +
                         "~hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60"),
                 "http://my.host.top/?NoaBh00JIaJwSozVS2BK1G6x27JmfPxfKiiMZBlZ4SD1x3S_VUt7805g_G4XB0ShvcKDO4A5uhzv" +
                         "o74HNzCEAYhMxG8dIw0ZIMla3FzxXCKR5gUaW6PeLjCHG4LrgoXa3zG7KPyy8OQMSAni9F1bs2fqOjKqgQ",
