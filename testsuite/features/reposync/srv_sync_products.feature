@@ -38,7 +38,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I close the modal dialog
 
 # In gh the fake scc does not have optional channels
-@skip_if_github_validation
 @scc_credentials
   Scenario: View the optional channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -81,7 +80,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
 # Fake SCC in gh does not contain SUMA client tools
-@skip_if_github_validation
 @scc_credentials
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
     Given I am authorized for the "Admin" section
