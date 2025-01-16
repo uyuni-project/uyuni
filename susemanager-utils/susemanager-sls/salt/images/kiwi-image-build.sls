@@ -39,10 +39,26 @@ mgr_buildimage_prepare_activation_key_in_source:
           susemanager:
             activation_key: {{ activation_key }}
 
+mgr_buildimage_prepare_kpartx_kiwi_yml:
+  file.managed:
+    - name: /etc/kiwi.yml
+    - contents: |
+        mapper:
+          - part_mapper: kpartx
+
+# EIB
+#
+mgr_buildimage_eib:
+  cmd.run:
+# only run eib and extract in case eib.yaml exists
+    - name: "if [ -f {{ source_dir }}/eib/eib.yaml ]; then mkdir -p {{ source_dir }}/root/oem/ && podman run --rm --privileged -v {{ source_dir }}/eib:/eib docker.io/dgiebert/edge-image-builder:1.2.7 build --definition-file=eib.yaml && xorriso -osirrox on -indev {{ source_dir }}/eib/combustion.iso extract / {{ source_dir }}/root/oem; fi" 
+
 {%- if use_kiwi_ng %}
 # KIWI NG
 #
-{%- set kiwi = 'kiwi-ng' %}
+# need ca-cerrificates for kiwi to trust CA
+# need /dev for losetup error during create
+{%- set kiwi = 'podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates -v /dev:/dev -v /var/lib/Kiwi:/var/lib/Kiwi:Z -v /etc/kiwi.yml:/etc/kiwi.yml registry.suse.com/bci/kiwi:10.1.10 kiwi-ng' %}
 
 {%- set kiwi_options = pillar.get('kiwi_options', '') %}
 {%- set bootstrap_packages = ['findutils', 'rhn-org-trusted-ssl-cert-osimage'] %}
@@ -59,7 +75,8 @@ mgr_buildimage_prepare_activation_key_in_source:
 
 mgr_buildimage_kiwi_prepare:
   cmd.run:
-    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS"
+# need to remove rpm-md due to kiwi error during create
+    - name: "{{ kiwi }} {{ kiwi_options }} $GLOBAL_PARAMS system prepare $PARAMS && sed -i 's/rpm-dir/rpm-md/g' {{ chroot_dir }}/image/config.xml"
     - hide_output: True
     - env:
       - GLOBAL_PARAMS: "--logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }}"
@@ -67,6 +84,8 @@ mgr_buildimage_kiwi_prepare:
     - require:
       - mgrcompat: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
+      - file: mgr_buildimage_prepare_kpartx_kiwi_yml
+      - cmd: mgr_buildimage_eib
 
 mgr_buildimage_kiwi_create:
   cmd.run:
