@@ -59,7 +59,7 @@ Feature: Add the Rocky 8 distribution custom repositories
     And I follow "Repositories" in the content area
     And I select the "rocky-8-iso-appstream" repo
     And I select the "rocky-8-iso-baseos" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repositories in the custom channel for Rocky 8 DVD
