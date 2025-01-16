@@ -4,7 +4,7 @@
 .btn-danger {
   color: inherit;
   font-weight: 600;
-  padding: 8px 16px;
+  padding: 6px 14px;
   position: relative;
   border-style: solid;
   border-width: 2px;
@@ -12,13 +12,14 @@
   transition: none;
   text-decoration: none;
   box-shadow: none;
+  align-self: center;
 
   &:hover {
     text-decoration: none;
   }
 
   &.btn-sm {
-    padding: 6px 14px;
+    padding: 4px 10px;
     font-size: 12px;
   }
 
