@@ -8,9 +8,11 @@ then
 	exit 1
 fi
 
+sudo -i podman exec -ti sle_minion bash -c "echo DEBUG MGRPUSH 20 init;rpm -q mgr-push;mgrpush -h"
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 server_id=${1}
 rm -rfv /tmp/testing/server-logs/${server_id}
 mkdir -p /tmp/testing/server-logs/${server_id}
 sudo -i podman exec server bash -c "supportconfig -R /tmp/server-logs/${server_id} && chmod 644 /tmp/server-logs/${server_id}/scc_server*.txz*"
+sudo -i podman exec -ti sle_minion bash -c "echo DEBUG MGRPUSH 20 end;rpm -q mgr-push;mgrpush -h"
 
