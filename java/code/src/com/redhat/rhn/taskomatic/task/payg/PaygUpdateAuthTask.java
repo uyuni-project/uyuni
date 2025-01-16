@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.FileLocks;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
@@ -171,21 +172,27 @@ public class PaygUpdateAuthTask extends RhnJavaJob {
         }
     }
 
+    private boolean hasInstanceValidCreds(PaygSshData instance) {
+        return Optional.ofNullable(instance.getCredentials())
+                .flatMap(c -> c.castAs(CloudRMTCredentials.class))
+                .map(CloudRMTCredentials::isValid)
+                .orElse(false);
+    }
+
     private void saveError(PaygSshData instance, String errorMessage) {
         // rollback any data changed by the process
         HibernateFactory.rollbackTransaction();
         // Save a special error to know that a problem happened
-        if (!instance.getStatus().equals(PaygSshData.Status.E)) {
+        if (instance.getStatus().equals(PaygSshData.Status.E) && hasInstanceValidCreds(instance)) {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new PaygAuthenticationUpdateFailed(instance.getHost(), instance.getId()));
             UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
                     Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
-        }
-        else {
             // was in error state before. At least second time failed to get the data
             // invalidate existing credentials
             paygDataProcessor.invalidateCredentials(instance);
         }
+
         instance.setStatus(PaygSshData.Status.E);
         instance.setErrorMessage(errorMessage);
         PaygSshDataFactory.savePaygSshData(instance);

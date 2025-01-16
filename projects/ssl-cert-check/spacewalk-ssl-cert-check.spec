@@ -22,7 +22,7 @@
 %endif
 
 Name:           spacewalk-ssl-cert-check
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        Check ssl certs for impending expiration
 License:        GPL-2.0-only
@@ -30,7 +30,7 @@ License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
-Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{version}-1/projects/ssl-cert-check/%{name}-rpmlintrc
+Source1:        %{name}-rpmlintrc
 BuildArch:      noarch
 Obsoletes:      rhn-ssl-cert-check < %{version}
 Provides:       rhn-ssl-cert-check = %{version}

@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:22:59 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Add IPv6 support for salt-broker (bsc#1227827)
+  * Make salt-broker reconnect if Master IP has changed
+  * Make salt-broker less dependant on spacewalk libs
+  * Make socket opt setting more strict and verbose (bsc#1229286)
+
+-------------------------------------------------------------------
 Mon Oct 14 15:51:19 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

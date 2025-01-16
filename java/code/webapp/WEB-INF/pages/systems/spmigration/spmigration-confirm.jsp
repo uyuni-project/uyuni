@@ -75,7 +75,7 @@
       </div>
     </div>
     <hr />
-    <c:if test="${!requestScope.completed and !isRedHatMinion}">
+    <c:if test="${!requestScope.completed and hasDryRunCapability}">
       <div class="alert alert-danger">
         <rhn:icon type="system-crit" />
         <bean:message key="spmigration.jsp.confirm.note" />
@@ -88,7 +88,7 @@
         </html:submit>
       </div>
       <div class="pull-right">
-        <c:if test="${!requestScope.completed and !isRedHatMinion}">
+        <c:if test="${!requestScope.completed and hasDryRunCapability}">
           <html:submit styleClass="btn btn-default" property="dispatch">
             <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
           </html:submit>

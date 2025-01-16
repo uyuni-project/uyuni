@@ -87,14 +87,14 @@ class AbstractChannelProxy(multiprocessing.Process):
         pass
 
     _BACKEND_SOCKOPTS = (
-        (zmq.TCP_KEEPALIVE, "tcp_keepalive"),
-        (zmq.TCP_KEEPALIVE_IDLE, "tcp_keepalive_idle"),
-        (zmq.TCP_KEEPALIVE_CNT, "tcp_keepalive_cnt"),
-        (zmq.TCP_KEEPALIVE_INTVL, "tcp_keepalive_intvl"),
-        (zmq.CONNECT_TIMEOUT, "connect_timeout"),
-        (zmq.RECONNECT_IVL, "reconnect_ivl"),
-        (zmq.HEARTBEAT_IVL, "heartbeat_ivl"),
-        (zmq.HEARTBEAT_TIMEOUT, "heartbeat_timeout"),
+        ("TCP_KEEPALIVE", "tcp_keepalive"),
+        ("TCP_KEEPALIVE_IDLE", "tcp_keepalive_idle"),
+        ("TCP_KEEPALIVE_CNT", "tcp_keepalive_cnt"),
+        ("TCP_KEEPALIVE_INTVL", "tcp_keepalive_intvl"),
+        ("CONNECT_TIMEOUT", "connect_timeout"),
+        ("RECONNECT_IVL", "reconnect_ivl"),
+        ("HEARTBEAT_IVL", "heartbeat_ivl"),
+        ("HEARTBEAT_TIMEOUT", "heartbeat_timeout"),
     )
     _FRONTEND_SOCKOPTS = ()
 
@@ -127,7 +127,12 @@ class AbstractChannelProxy(multiprocessing.Process):
                 )
             )
             self.backend = context.socket(self._backend_sock_type)
-            self.set_sockopts(self.backend, self._BACKEND_SOCKOPTS, self.opts["master_ip"])
+            self.set_sockopts(
+                self.backend,
+                self._BACKEND_SOCKOPTS,
+                self.backend_type,
+                self.opts["master_ip"],
+            )
 
             self.reconnect_retries = self.opts["drop_after_retries"]
             if self.reconnect_retries != -1:
@@ -156,7 +161,12 @@ class AbstractChannelProxy(multiprocessing.Process):
             )
 
             self.frontend = context.socket(self._frontend_sock_type)
-            self.set_sockopts(self.frontend, self._FRONTEND_SOCKOPTS, self.opts["interface"])
+            self.set_sockopts(
+                self.frontend,
+                self._FRONTEND_SOCKOPTS,
+                self.frontend_type,
+                self.opts["interface"],
+            )
 
             self.frontend.bind(self._frontend_uri)
 
@@ -184,23 +194,37 @@ class AbstractChannelProxy(multiprocessing.Process):
             log.error("Exception: %s", exc)
             log.debug("Traceback: %s", traceback.format_exc())
 
-    def set_sockopts(self, socket, sockopts, addr=None):
-        for opt, opt_src in sockopts:
+    def set_sockopts(self, socket, sockopts, sock_type, addr=None):
+
+        def __set_sock_opt(opt, val, opt_name, sock_type):
+            log.debug(
+                "Setting socket opt %s to %s on %s", opt_name, val, sock_type
+            )
+            socket.setsockopt(opt, val)
+
+        for opt_name, opt_src in sockopts:
+            opt = getattr(zmq, opt_name, None)
+            if opt is None:
+                log.error("Unable to ZMQ doesn't have %s socket opt", opt_name)
+                continue
             if opt_src in self.opts:
-                socket.setsockopt(
-                    opt,
-                    self.opts[opt_src],
-                )
+                opt_val = self.opts[opt_src]
+            elif isinstance(opt_src, tuple) and len(opt_src) == 1:
+                opt_val = opt_src[0]
+            else:
+                log.error("Unable to get the value for socket opt %s", opt_name)
+                continue
+            __set_sock_opt(opt, opt_val, opt_name, sock_type)
         if (
             self.opts["ipv6"] is True
             or (addr is not None and ":" in addr)
         ) and hasattr(zmq, "IPV4ONLY"):
             # IPv6 sockets work for both IPv6 and IPv4 addresses
-            socket.setsockopt(zmq.IPV4ONLY, 0)
+            __set_sock_opt(zmq.IPV4ONLY, 0, "IPV4ONLY", sock_type)
         if (
             addr is not None and ":" in addr
         ) and hasattr(zmq, "IPV6"):
-            socket.setsockopt(zmq.IPV6, 1)
+            __set_sock_opt(zmq.IPV6, 1, "IPV6", sock_type)
 
     def backend_socket_monitor(self, monitor_socket):
         while monitor_socket.poll():
@@ -247,8 +271,8 @@ class PubChannelProxy(AbstractChannelProxy):
 
     # Prevent stopping publishing messages on XPUB socket. (bsc#1182954)
     _FRONTEND_SOCKOPTS = (
-        (zmq.XPUB_VERBOSE, (1,)),
-        (zmq.XPUB_VERBOSER, (1,)),
+        ("XPUB_VERBOSE", (1,)),
+        ("XPUB_VERBOSER", (1,)),
     )
 
     def __init__(self, opts):

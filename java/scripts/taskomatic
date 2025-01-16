@@ -2,7 +2,7 @@
 # TaskomaticDaemon start script
 . /etc/rhn/taskomatic.conf
 
-RHN_MEM=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*//"`
+RHN_MEM=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*\([0-9]\+\)[[:blank:]]*/\1/"`
 if [ "x$RHN_MEM" != "x" ]; then
     TASKO_MAX_MEMORY=$RHN_MEM
 fi

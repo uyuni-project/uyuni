@@ -104,6 +104,8 @@ import com.redhat.rhn.domain.image.ProfileCustomDataValue;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductUpgrade;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -1655,6 +1657,16 @@ public class SaltServerActionService {
         if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
             pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
         }
+        action.getDetails().getProductUpgrades().stream()
+                .map(SUSEProductUpgrade::getToProduct)
+                .filter(SUSEProduct::isBase)
+                .forEach(tgt -> {
+                    Map<String, String> baseproduct = new HashMap<>();
+                    baseproduct.put("name", tgt.getName());
+                    baseproduct.put("version", tgt.getVersion());
+                    baseproduct.put("arch", tgt.getArch().getLabel());
+                    distupgrade.put("targetbaseproduct", baseproduct);
+                });
 
         if (commitTransaction) {
             HibernateFactory.commitTransaction();

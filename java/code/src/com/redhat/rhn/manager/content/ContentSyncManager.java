@@ -116,8 +116,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -780,8 +778,6 @@ public class ContentSyncManager {
             // "fromdir" - convert into local file URL
             .map(local -> MgrSyncUtils.urlToFSPath(jrepo.getUrl(), repo.getName(), local.getPath()).toString())
             .orElse(jrepo.getUrl());
-
-
 
         Optional<String> tokenOpt = getTokenFromURL(url);
 
@@ -2128,8 +2124,31 @@ public class ContentSyncManager {
         Map<Long, SUSEProduct> productsById = allSUSEProducts
                 .stream().collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
 
+        Map<String, SCCProductJson> sles = new HashMap<>();
+        Map<String, SCCProductJson> sap = new HashMap<>();
+        products.stream()
+                .filter(SCCProductJson::isBaseProduct)
+                .filter(p -> p.getCpe() != null &&
+                        (p.getCpe().startsWith("cpe:/o:suse:sles:15:") ||
+                                p.getCpe().startsWith("cpe:/o:suse:sles_sap:15:")))
+                .forEach(p -> {
+                    String ident = String.format("%s-%s", p.getVersion(), p.getArch());
+                    if (p.getCpe().startsWith("cpe:/o:suse:sles:15:")) {
+                        sles.put(ident, p);
+                    }
+                    else {
+                        sap.put(ident, p);
+                    }
+                });
+        Set<Tuple2<Long, Long>> sles2sap = new HashSet<>();
+        sles.forEach((k, v) -> {
+            if (sap.containsKey(k)) {
+                sles2sap.add(new Tuple2<>(v.getId(), sap.get(k).getId()));
+            }
+        });
+
         Map<Long, Set<Long>> newPaths = Stream.concat(
-                staticUpgradePaths(),
+                Stream.concat(staticUpgradePaths(), sles2sap.stream()),
                         products.stream()
                                 .flatMap(p -> p.getOnlinePredecessorIds()
                                         .stream()
@@ -2162,12 +2181,17 @@ public class ContentSyncManager {
         )).toList();
     }
 
-    private Optional<String> getTokenFromURL(String url) {
+    protected Optional<String> getTokenFromURL(String url) {
         Optional<String> token = Optional.empty();
-        Pattern p = Pattern.compile("/?\\?([^?&=]+)$");
-        Matcher m = p.matcher(url);
-        if (m.find()) {
-            token = Optional.of(m.group(1));
+        try {
+            URI uri = new URI(url);
+            token = Arrays.stream(Optional.ofNullable(uri.getQuery()).orElse("").split("&"))
+                    .filter(p -> !p.isEmpty())
+                    .filter(MgrSyncUtils::isAuthToken)
+                    .findFirst();
+        }
+        catch (URISyntaxException e) {
+            LOG.warn("Unable to parse URL: {}", url);
         }
         return token;
     }

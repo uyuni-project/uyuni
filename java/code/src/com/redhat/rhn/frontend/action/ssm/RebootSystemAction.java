@@ -91,13 +91,15 @@ public class RebootSystemAction
         List<SystemOverview> systems = SystemManager.inSet(context.getCurrentUser(),
                 RhnSetDecl.SYSTEMS.getLabel());
 
-        List<Long> sids = ServerFactory.findSystemsPendingRebootActions(systems);
-        if (!sids.isEmpty()) {
-            getStrutsDelegate().saveMessage("ssm.misc.reboot.message.scheduled", context.getRequest());
-        }
+        if (!systems.isEmpty()) {
+            List<Long> sids = ServerFactory.findSystemsPendingRebootActions(systems);
+            if (!sids.isEmpty()) {
+                getStrutsDelegate().saveMessage("ssm.misc.reboot.message.scheduled", context.getRequest());
+            }
 
-        for (SystemOverview systemOverview : systems) {
-            systemOverview.setSelectable(1);
+            for (SystemOverview systemOverview : systems) {
+                systemOverview.setSelectable(1);
+            }
         }
 
         return systems;

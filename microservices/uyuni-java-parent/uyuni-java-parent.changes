@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 11 16:40:19 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Added Awaitility to support asynchronous testing
+
+-------------------------------------------------------------------
 Tue Oct 15 11:58:43 CEST 2024 - marina.latini@suse.com
 
 - version 5.1.2-0

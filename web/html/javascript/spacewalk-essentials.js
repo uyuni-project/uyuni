@@ -46,17 +46,7 @@ function listenForGlobalNotificationChanges() {
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
   jQuery(scrollTarget).on("scroll", function () {
-    if(jQuery(this).scrollTop() > 100) {
-      jQuery('#scroll-top').show();
-    } else {
-      jQuery('#scroll-top').hide();
-    }
-
     sstScrollBehavior();
-  });
-
-  jQuery(document).on('click', '#scroll-top', function() {
-    jQuery(scrollTarget).scrollTo(0,0);
   });
 }
 

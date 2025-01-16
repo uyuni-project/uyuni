@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Dec 11 16:42:10 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Ensure the files stream is correctly closed
+
+-------------------------------------------------------------------
 Tue Oct 15 12:13:45 CEST 2024 - marina.latini@suse.com
 
 - version 5.1.2-0

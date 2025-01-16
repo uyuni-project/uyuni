@@ -1,1 +1,0 @@
-- Remove master public key on bootstrapping to prevent possible issues.

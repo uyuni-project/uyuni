@@ -1,4 +1,4 @@
-# Copyright 2017-2023 SUSE LLC.
+# Copyright 2017-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions of all steps concerning
@@ -8,28 +8,33 @@ require 'open-uri'
 require 'uri'
 require 'openssl'
 
-When(/^I retrieve any static resource$/) do
-  resource = %w[/img/action-add.gif /css/susemanager-light.css /fonts/DroidSans.ttf /javascript/actionchain.js].sample
-  @url = Capybara.app_host + resource
-  URI.open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |f|
-    @headers = f.meta
+When(/^I retrieve a "(.*)" static resource$/) do |resource_type|
+  static_resources = {
+    'img' => 'action-add.gif',
+    'css' => 'susemanager-sp-migration.css',
+    'fonts' => 'DroidSans.ttf',
+    'javascript' => 'actionchain.js'
+  }
+  @url = "#{Capybara.app_host}/#{resource_type}/#{static_resources[resource_type]}"
+  URI.open(@url, ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |file|
+    @headers = file.meta
   end
 end
 
-Then(/^the response header "(.*?)" should be "(.*?)"$/) do |arg1, arg2|
-  assert_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' not present in '#{@url}'")
-  assert_equal(arg2, @headers[arg1.downcase], "Header '#{arg1}' in '#{@url}' is not '#{arg2}'")
+Then(/^the response header "(.*?)" should be "(.*?)"$/) do |name, value|
+  assert_includes(@headers.keys, name.downcase, "Header '#{name}' not present in '#{@url}'")
+  assert_equal(value, @headers[name.downcase], "Header '#{name}' in '#{@url}' is not '#{value}'")
 end
 
-Then(/^the response header "(.*?)" should not be "(.*?)"$/) do |arg1, arg2|
-  refute_equal(arg2, @headers[arg1.downcase], "Header '#{arg1}' in '#{@url}' is '#{arg2}'")
+Then(/^the response header "(.*?)" should not be "(.*?)"$/) do |name, value|
+  refute_equal(value, @headers[name.downcase], "Header '#{name}' in '#{@url}' is '#{value}'")
 end
 
-Then(/^the response header "(.*?)" should contain "(.*?)"$/) do |arg1, arg2|
-  assert_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' not present in '#{@url}'")
-  assert_includes(@headers[arg1.downcase], arg2, "Header '#{arg1}' in '#{@url}' does not contain '#{arg2}'")
+Then(/^the response header "(.*?)" should contain "(.*?)"$/) do |name, value|
+  assert_includes(@headers.keys, name.downcase, "Header '#{name}' not present in '#{@url}'")
+  assert_includes(@headers[name.downcase], value, "Header '#{name}' in '#{@url}' does not contain '#{value}'")
 end
 
-Then(/^the response header "(.*?)" should not be present$/) do |arg1|
-  refute_includes(@headers.keys, arg1.downcase, "Header '#{arg1}' present in '#{@url}'")
+Then(/^the response header "(.*?)" should not be present$/) do |name|
+  refute_includes(@headers.keys, name.downcase, "Header '#{name}' present in '#{@url}'")
 end

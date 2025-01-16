@@ -41,13 +41,19 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
           </div>
           <p className={styles.productInfo}>
-            {t("<link>Learn more</link> about {product}.", {
+            {t("<link>Learn more</link> about {productName}.", {
               link: (str) => (
-                <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
+                <a
+                  key={str}
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.productLink}
+                >
                   {str}
                 </a>
               ),
-              product: product.key,
+              productName: product.key,
             })}
           </p>
         </div>
@@ -109,11 +115,17 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             />
           </form>
 
-          <div className={styles.loginFooter}>
-            <a href="/rhn/help/Copyright.do">Copyright Notice</a>
+          <div className={styles.loginFooter} role="contentinfo">
+            <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
             <span>
-              {`${props.productName} release `}
-              <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+              {t("{productName} release {versionNumber}", {
+                productName: props.productName,
+                versionNumber: (
+                  <a key="version" href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>
+                    {props.webVersion}
+                  </a>
+                ),
+              })}
             </span>
             {props.customFooter && <span>{props.customFooter}</span>}
           </div>

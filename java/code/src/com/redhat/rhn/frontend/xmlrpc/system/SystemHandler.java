@@ -9072,7 +9072,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc refresh all the pillar data of a list of systems.
      * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
      * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, List<Integer> sids) {
@@ -9091,7 +9091,7 @@ public class SystemHandler extends BaseHandler {
      * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "subset", "subset of the pillar to refresh.")
-     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
      * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> sids) {
@@ -9099,9 +9099,16 @@ public class SystemHandler extends BaseHandler {
         MinionPillarManager.PillarSubset subsetValue = subset != null ?
                 MinionPillarManager.PillarSubset.valueOf(subset.toUpperCase()) :
                 null;
-        for (Integer sysId : sids) {
-            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
-                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+        List<Long> sysids;
+        if (sids == null || sids.isEmpty()) {
+            sysids = MinionServerFactory.lookupVisibleToUser(loggedInUser).map(MinionServer::getId).toList();
+        }
+        else {
+            sysids = sids.stream().map(Integer::longValue).toList();
+        }
+        for (Long sysId : sysids) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId)) {
+                Server system = SystemManager.lookupByIdAndUser(sysId, loggedInUser);
                 system.asMinionServer().ifPresentOrElse(
                     minionServer -> {
                         if (subsetValue != null) {
@@ -9113,13 +9120,13 @@ public class SystemHandler extends BaseHandler {
                     },
                     () -> {
                         log.warn("system {} is not a salt minion, hence pillar will not be updated", sysId);
-                        skipped.add(sysId);
+                        skipped.add(sysId.intValue());
                     }
                 );
             }
             else {
                 log.warn("system {} is not available to user, hence pillar will not be refreshed", sysId);
-                skipped.add(sysId);
+                skipped.add(sysId.intValue());
             }
         }
         return skipped;

@@ -17,6 +17,7 @@ DEFAULT_LINE_LENGTH = 67
 DEFAULT_GIT_REPO = "uyuni-project/uyuni"
 DEFAULT_BUGZILLA_URI = "bugzilla.suse.com"
 
+
 class RegexRules:
     """Contains the regex rules for all the changelog checks
 
@@ -49,8 +50,8 @@ class RegexRules:
                 try:
                     # Every <issue-tracker> element should
                     # contain 'name' and 'regex' as children
-                    name = tracker.find('name').text
-                    regex = tracker.find('regex').text
+                    name = tracker.find("name").text
+                    regex = tracker.find("regex").text
                 except AttributeError:
                     raise Exception(f"Error parsing '{tracker_filename}': not a tracker XML file")
                 trackers[name] = regex
@@ -58,6 +59,7 @@ class RegexRules:
             logging.info(f"Found {len(trackers.keys())} tracker definition(s)")
 
         self.trackers = trackers
+
 
 class IssueType:
     """Contains the issue messages as static strings"""
@@ -81,6 +83,8 @@ class IssueType:
     BUG_NOT_AUTHORIZED = "Not authorized to access bug #{} in Bugzilla"
     INVALID_BUG = "Some error occurred when accessing bug #{} in Bugzilla: {}"
     INVALID_PRODUCT = "Bug #{} does not belong to SUSE Manager"
+    DUPLICATE_ENTRY = "Duplicate changelog entry"
+
 
 @dataclass
 class Entry:
@@ -98,6 +102,7 @@ class Entry:
     line: int
     end_line: int = None
     trackers: dict = field(default_factory=dict)
+
 
 @dataclass
 class Issue:
@@ -162,6 +167,7 @@ class Issue:
                     out += "-" + str(self.end_line)
         return out
 
+
 class ChangelogValidator:
     """Class that handles the changelog validation
 
@@ -197,10 +203,18 @@ class ChangelogValidator:
         `osc api /issue-trackers`
     """
 
-    def __init__(self, uyuni_root: str, git_repo: str, pr_number: int, max_line_length: int,
-                 regex_rules: RegexRules):
+    def __init__(
+        self,
+        uyuni_root: str,
+        git_repo: str,
+        pr_number: int,
+        max_line_length: int,
+        regex_rules: RegexRules,
+    ):
         if pr_number and not os.getenv("GH_TOKEN"):
-            raise Exception("GitHub API key not set. Please set it in 'GH_TOKEN' environment variable.")
+            raise Exception(
+                "GitHub API key not set. Please set it in 'GH_TOKEN' environment variable."
+            )
 
         self.uyuni_root = uyuni_root
         self.git_repo = git_repo
@@ -231,8 +245,9 @@ class ChangelogValidator:
         try:
             assert bzapi.logged_in, f"Cannot log into the Bugzilla API at '{uri}'"
         except xmlrpc.client.Fault as f:
-            raise Exception(f"Cannot log in to the Bugzilla API at '{uri}': {f.faultString}")
-
+            raise Exception(
+                f"Cannot log in to the Bugzilla API at '{uri}': {f.faultString}"
+            )
 
         return bzapi
 
@@ -249,7 +264,7 @@ class ChangelogValidator:
         pkg_chlogs = []
         for f in files:
             # Check if the file exists in a subdirectory of the base path of the package
-            if (f.startswith(pkg_path)):
+            if f.startswith(pkg_path):
                 if os.path.basename(f).startswith(pkg_name + ".changes."):
                     # Ignore if the change is a removal
                     if os.path.isfile(os.path.join(self.uyuni_root, f)):
@@ -263,7 +278,7 @@ class ChangelogValidator:
             if len(pkg_chlogs):
                 logging.debug(f"Found {len(pkg_chlogs)} changelog(s) in package {pkg_name}:\n  " + "\n  ".join(pkg_chlogs))
 
-        return { "files": pkg_files, "changes": pkg_chlogs }
+        return {"files": pkg_files, "changes": pkg_chlogs}
 
     def get_pkg_index(self, files: list[str]) -> dict[str, list[str]]:
         """Index the list of modified files
@@ -289,16 +304,22 @@ class ChangelogValidator:
             pkg_names = os.listdir(packages_dir)
             logging.debug(f"Found {len(pkg_names)} package(s) in 'rel-eng/packages'")
         except FileNotFoundError:
-            raise Exception(f"Not an Uyuni repository. Consider using '--uyuni-dir' option.")
+            raise Exception(
+                "Not an Uyuni repository. Consider using '--uyuni-dir' option."
+            )
 
         for pkg_name in pkg_names:
-            if pkg_name.startswith('.'):
+            if pkg_name.startswith("."):
                 # Skip hidden files in rel-eng/packages
                 continue
             # Extract the package path from the file:
             # Each file contains the package version and the
             # package path, separated by a space character
-            pkg_path = linecache.getline(os.path.join(packages_dir, pkg_name), 1).rstrip().split(maxsplit=1)[1]
+            pkg_path = (
+                linecache.getline(os.path.join(packages_dir, pkg_name), 1)
+                .rstrip()
+                .split(maxsplit=1)[1]
+            )
             logging.debug(f"Indexing package {pkg_name} in path {pkg_path}")
 
             # Get the list of modified files and changelog files for the package
@@ -353,7 +374,7 @@ class ChangelogValidator:
         logging.debug(f"Retrieved title and commit messages for PR#{pr_number}:\n{title_and_commits}")
         return self.extract_trackers(title_and_commits)
 
-    def validate_chlog_entry(self, entry: Entry) -> list[Issue]:
+    def validate_chlog_entry(self, entry: Entry, entries_in_file: list[Entry]) -> list[Issue]:
         """Validate a single changelog entry"""
 
         issues = []
@@ -370,6 +391,10 @@ class ChangelogValidator:
                 issues.append(Issue(IssueType.WRONG_SPACING, entry.file, entry.line, entry.end_line))
                 break
 
+        # Test duplication
+        if any(e.entry == entry.entry for e in entries_in_file):
+            issues.append(Issue(IssueType.DUPLICATE_ENTRY, entry.file, entry.line, entry.end_line))
+
         return issues
 
     def get_entry_obj(self, buffer: list[str], file: str, line_no: int) -> Entry:
@@ -379,9 +404,15 @@ class ChangelogValidator:
         """
 
         # Strip the '- ' characters in the beginning of the first line
-        msg = ''.join(buffer)[2:]
+        msg = "".join(buffer)[2:]
         trackers = self.extract_trackers(msg)
-        return Entry(msg, file, line_no - len(buffer), line_no - 1 if len(buffer) > 1 else None, trackers)
+        return Entry(
+            msg,
+            file,
+            line_no - len(buffer),
+            line_no - 1 if len(buffer) > 1 else None,
+            trackers,
+        )
 
     def validate_chlog_file(self, file: str) -> tuple[list[Issue], list[Entry]]:
         """Validate a single changelog file"""
@@ -411,7 +442,7 @@ class ChangelogValidator:
                 if entry_buf:
                     # Wrap up the previous entry
                     entry = self.get_entry_obj(entry_buf, file, line_no)
-                    issues.extend(self.validate_chlog_entry(entry))
+                    issues.extend(self.validate_chlog_entry(entry, entries))
                     entries.append(entry)
                     entry_buf = [stripped_line]
                 else:
@@ -434,7 +465,13 @@ class ChangelogValidator:
                     issues.append(Issue(IssueType.WRONG_START, file, line_no))
 
             if len(stripped_line) > self.max_line_length:
-                issues.append(Issue(IssueType.LINE_TOO_LONG.format(self.max_line_length), file, line_no))
+                issues.append(
+                    Issue(
+                        IssueType.LINE_TOO_LONG.format(self.max_line_length),
+                        file,
+                        line_no,
+                    )
+                )
             if re.search(self.regex.MULTIW, stripped_line):
                 issues.append(Issue(IssueType.MULTI_WHITESPACE, file, line_no))
             if re.search(self.regex.TRAILINGW, stripped_line):
@@ -444,7 +481,7 @@ class ChangelogValidator:
         if entry_buf:
             # Validate and append the last entry
             entry = self.get_entry_obj(entry_buf, file, line_no + 1)
-            issues.extend(self.validate_chlog_entry(entry))
+            issues.extend(self.validate_chlog_entry(entry, entries))
             entries.append(entry)
 
         return (issues, entries)
@@ -454,30 +491,57 @@ class ChangelogValidator:
 
         issues = []
         # 'bnc' is the name of the tracker as defined in the trackers file
-        if 'bnc' in entry.trackers:
-            for tracker, bug_id in entry.trackers['bnc']:
+        if "bnc" in entry.trackers:
+            for tracker, bug_id in entry.trackers["bnc"]:
                 try:
                     bug = self.bzapi.getbug(bug_id)
                     logging.debug(f"Bug #{bug_id} belongs to product '{bug.product}'")
 
                     if not bug.product.startswith("SUSE Manager"):
-                        issues.append(Issue(IssueType.INVALID_PRODUCT.format(bug_id), entry.file, entry.line, \
-                                            entry.end_line, severe=False))
+                        issues.append(
+                            Issue(
+                                IssueType.INVALID_PRODUCT.format(bug_id),
+                                entry.file,
+                                entry.line,
+                                entry.end_line,
+                                severe=False,
+                            )
+                        )
                 except xmlrpc.client.Fault as f:
                     if f.faultCode == 101:
                         # Bug not found
-                        issues.append(Issue(IssueType.BUG_NOT_FOUND.format(bug_id), entry.file, entry.line, \
-                                            entry.end_line, severe=True))
+                        issues.append(
+                            Issue(
+                                IssueType.BUG_NOT_FOUND.format(bug_id),
+                                entry.file,
+                                entry.line,
+                                entry.end_line,
+                                severe=True,
+                            )
+                        )
                     elif f.faultCode == 102:
                         # Not authorized
-                        issues.append(Issue(IssueType.BUG_NOT_AUTHORIZED.format(bug_id), entry.file, entry.line, \
-                                            entry.end_line, severe=False))
+                        issues.append(
+                            Issue(
+                                IssueType.BUG_NOT_AUTHORIZED.format(bug_id),
+                                entry.file,
+                                entry.line,
+                                entry.end_line,
+                                severe=False,
+                            )
+                        )
                     else:
                         # Any other fault
-                        issues.append(Issue(IssueType.INVALID_BUG.format(bug_id, f.faultString), entry.file, entry.line, \
-                                            entry.end_line, severe=False))
+                        issues.append(
+                            Issue(
+                                IssueType.INVALID_BUG.format(bug_id, f.faultString),
+                                entry.file,
+                                entry.line,
+                                entry.end_line,
+                                severe=False,
+                            )
+                        )
         return issues
-
 
     def validate_trackers(self, entries: list[Entry]) -> list[Issue]:
         """Validate the trackers mentioned in a list of entries
@@ -502,10 +566,20 @@ class ChangelogValidator:
         for entry in entries:
             # Check for mistyped trackers
             # Count actual trackers in the entry
-            num_trackers = functools.reduce(lambda x, y: x + len(y), entry.trackers.values(), 0)
+            num_trackers = functools.reduce(
+                lambda x, y: x + len(y), entry.trackers.values(), 0
+            )
             # Find all tracker-like words
             if len(re.findall(self.regex.TRACKER_LIKE, entry.entry)) > num_trackers:
-                issues.append(Issue(IssueType.MISTYPED_TRACKER, entry.file, entry.line, entry.end_line, severe=False))
+                issues.append(
+                    Issue(
+                        IssueType.MISTYPED_TRACKER,
+                        entry.file,
+                        entry.line,
+                        entry.end_line,
+                        severe=False,
+                    )
+                )
 
             for kind, trackers in entry.trackers.items():
                 # Collect all trackers in all entries of the changelog
@@ -517,8 +591,14 @@ class ChangelogValidator:
                     for t in trackers:
                         if kind not in pr_trackers or t not in pr_trackers[kind]:
                             # Tracker not mentioned in the PR
-                            issues.append(Issue(IssueType.WRONG_TRACKER.format(t[0]), entry.file, entry.line, \
-                                                entry.end_line))
+                            issues.append(
+                                Issue(
+                                    IssueType.WRONG_TRACKER.format(t[0]),
+                                    entry.file,
+                                    entry.line,
+                                    entry.end_line,
+                                )
+                            )
 
             # Check Bugzilla trackers via the API
             if self.bzapi:
@@ -562,43 +642,70 @@ class ChangelogValidator:
 
         return issues
 
+
 def parse_args():
-    parser = argparse.ArgumentParser(description="Validate changelog entries for Uyuni PRs",
-                                     epilog="Uyuni project: <https://github.com/uyuni-project/uyuni>")
+    parser = argparse.ArgumentParser(
+        description="Validate changelog entries for Uyuni PRs",
+        epilog="Uyuni project: <https://github.com/uyuni-project/uyuni>",
+    )
 
-    parser.add_argument("-v", "--verbose",
-                        action="store_true",
-                        help="enable verbose output")
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="enable verbose output"
+    )
 
-    parser.add_argument("-l", "--line-length",
-                        type=int,
-                        default=DEFAULT_LINE_LENGTH,
-                        help="maximum line length allowed in changelog files (default: 67)")
+    parser.add_argument(
+        "-l",
+        "--line-length",
+        type=int,
+        default=DEFAULT_LINE_LENGTH,
+        help="maximum line length allowed in changelog files (default: 67)",
+    )
 
-    parser.add_argument("-t", "--tracker-file",
-                        help="tracker definitions XML document retrieved from the OBS/IBS API. Bypass tracker validation if not provided.")
+    parser.add_argument(
+        "-t",
+        "--tracker-file",
+        help="tracker definitions XML document retrieved from the OBS/IBS API. Bypass tracker validation if not provided.",
+    )
 
-    parser.add_argument("-d", "--uyuni-dir",
-                        default=".",
-                        help="path to the local git repository root (default: current directory)")
+    parser.add_argument(
+        "-d",
+        "--uyuni-dir",
+        default=".",
+        help="path to the local git repository root (default: current directory)",
+    )
 
-    parser.add_argument("-p", "--pr-number",
-                        type=int,
-                        help="the ID of the pull request to be validated. Bypass PR validation if not provided.")
+    parser.add_argument(
+        "-p",
+        "--pr-number",
+        type=int,
+        help="the ID of the pull request to be validated. Bypass PR validation if not provided.",
+    )
 
-    parser.add_argument("-r", "--git-repo",
-                        default=DEFAULT_GIT_REPO,
-                        help=f"the Uyuni repository to validate the PR against (default: '{DEFAULT_GIT_REPO}')")
+    parser.add_argument(
+        "-r",
+        "--git-repo",
+        default=DEFAULT_GIT_REPO,
+        help=f"the Uyuni repository to validate the PR against (default: '{DEFAULT_GIT_REPO}')",
+    )
 
-    parser.add_argument("-b", "--bugzilla-uri",
-                        default=DEFAULT_BUGZILLA_URI,
-                        help=f"the URI to the Bugzilla host to verify bug trackers (default: '{DEFAULT_BUGZILLA_URI}')")
+    parser.add_argument(
+        "-b",
+        "--bugzilla-uri",
+        default=DEFAULT_BUGZILLA_URI,
+        help=f"the URI to the Bugzilla host to verify bug trackers (default: '{DEFAULT_BUGZILLA_URI}')",
+    )
 
-    parser.add_argument("files",
-                        metavar="FILE",
-                        nargs="*",
-                        help="the list of modified files in the pull request")
+    parser.add_argument(
+        "files",
+        metavar="FILE",
+        nargs="*",
+        help="the list of modified files in the pull request",
+    )
     return parser.parse_args()
+
 
 def init_logging(verbose):
     if verbose:
@@ -607,6 +714,7 @@ def init_logging(verbose):
         log_level = logging.INFO
 
     logging.basicConfig(level=log_level, format="%(levelname)s: %(message)s")
+
 
 def main():
     args = parse_args()
@@ -619,7 +727,9 @@ def main():
     try:
         logging.debug("Initializing the validator")
         regexRules = RegexRules(args.tracker_file)
-        validator = ChangelogValidator(args.uyuni_dir, args.git_repo, args.pr_number, args.line_length, regexRules)
+        validator = ChangelogValidator(
+            args.uyuni_dir, args.git_repo, args.pr_number, args.line_length, regexRules
+        )
 
         logging.debug(f"Validating {len(args.files)} file(s)")
         issues = validator.validate(args.files)
@@ -647,5 +757,6 @@ def main():
 
     return 0
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     sys.exit(main())

@@ -1,4 +1,25 @@
 -------------------------------------------------------------------
+Fri Dec 13 15:01:05 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Prevent warning message for unsigned Debian repositories
+    when using new deb822 format (bsc#1234251)
+
+-------------------------------------------------------------------
+Thu Dec 12 10:08:16 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * suma_minion: prevent issues when calling Salt runners (bsc#1228232)
+  * Prevent a crash on "reboot_info" module for Liberty 6, RHEL 6 and
+    clones (bsc#1231404)
+  * Remove Master public key on bootstrapping to prevent possible issues.
+  * Fix rebootifneeded state which misses definition of a variable
+    (bsc#1233426)
+  * Do not set "Trusted" for Debian repositories when the repo
+    should be signed
+  * Improve appstreams context selection (bsc#1231459)
+
+-------------------------------------------------------------------
 Mon Oct 14 16:01:34 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

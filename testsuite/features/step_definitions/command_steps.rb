@@ -1076,6 +1076,11 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
   get_target('server').run(cmd)
 end
 
+When(/^I create the bootstrap repositories including custom channels$/) do
+  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target('server').run('mgr-create-bootstrap-repo --auto --force --with-custom-channels', check_errors: false, verbose: true)
+end
+
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
   out, = get_target('proxy').run("zypper ref && zypper --non-interactive install --auto-agree-with-licenses --force-resolution -t product #{product}")
   log "Installed #{product} product: #{out}"
@@ -1768,4 +1773,16 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
+end
+
+Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+  system_name = get_system_name(host)
+  last_event_before_upgrade = get_last_event(host)
+  last_event = last_event_before_upgrade
+  trigger_upgrade(system_name, package)
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
+    last_event = get_last_event(host)
+    break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+  end
+  wait_action_complete(last_event['id'])
 end

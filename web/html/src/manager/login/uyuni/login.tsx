@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
 import { Messages } from "components/messages/messages";
@@ -8,7 +10,8 @@ import { Messages } from "components/messages/messages";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import LoginFooter from "./login-footer";
+import logo from "./footer-logo.svg";
+import styles from "./login.module.scss";
 
 const UyuniThemeLogin = (props: ThemeProps) => {
   const loginInput = useInputValue("");
@@ -21,33 +24,32 @@ const UyuniThemeLogin = (props: ThemeProps) => {
   return (
     <React.Fragment>
       <header className="navbar-pf navbar" role="presentation" />
-      <div className={`spacewalk-main-column-layout`}>
-        <section id="spacewalk-content">
-          <div className="wrap">
-            <Messages
-              items={getGlobalMessages(
-                props.validationErrors,
-                props.schemaUpgradeRequired,
-                props.diskspaceSeverity,
-                props.sccForwardWarning
-              )}
-            />
-            <div className="col-sm-6">
-              <h1>{product.bodyTitle}</h1>
-              <p className="gray-text margins-updown">
-                {t("Discover a new way of managing your servers, packages, patches and more via one interface.")}
-              </p>
-              <p className="gray-text">
-                {t("Learn more about")} {product.key}:
-                <a href={product.url} className="btn-dark" target="_blank" rel="noopener noreferrer">
-                  {" "}
-                  View website
+      <div className="spacewalk-main-column-layout">
+        <section className={styles.contentArea}>
+          <Messages
+            items={getGlobalMessages(
+              props.validationErrors,
+              props.schemaUpgradeRequired,
+              props.diskspaceSeverity,
+              props.sccForwardWarning
+            )}
+          />
+          <div className={styles.content}>
+            <div className={`${styles.half} ${styles.left}`}>
+              <h1 className={styles.h1}>{product.bodyTitle}</h1>
+              <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
+              <p>
+                {t("Learn more about {productName}:", {
+                  productName: product.key,
+                })}
+                <a href={product.url} className={styles.learnMore} target="_blank" rel="noopener noreferrer">
+                  {t("View website")}
                 </a>
               </p>
             </div>
-            <div className="col-sm-5 col-sm-offset-1 offset-sm-1">
+            <div className={`${styles.half} ${styles.right}`}>
               <Messages items={getFormMessages(success, messages)} />
-              <h2 className="gray-text">{t("Sign In")}</h2>
+              <h2 className={styles.h2}>{t("Sign In")}</h2>
               <form
                 onSubmit={async (event) => {
                   event.preventDefault();
@@ -66,46 +68,65 @@ const UyuniThemeLogin = (props: ThemeProps) => {
                   setIsLoading(false);
                 }}
                 name="loginForm"
+                className={styles.form}
               >
-                <div className="margins-updown">
-                  <input
-                    id="username-field"
-                    name="username"
-                    className="form-control"
-                    type="text"
-                    placeholder={t("Login")}
-                    maxLength={parseInt(props.loginLength, 10)}
-                    autoFocus={true}
-                    required
-                    {...loginInput}
-                  />
-                  <input
-                    id="password-field"
-                    name="password"
-                    className="form-control"
-                    type="password"
-                    autoComplete="password"
-                    placeholder={t("Password")}
-                    maxLength={parseInt(props.passwordLength, 10)}
-                    required
-                    {...passwordInput}
-                  />
-                  <SubmitButton
-                    id="login-btn"
-                    className="btn-block btn-primary"
-                    text={t("Sign In")}
-                    disabled={isLoading}
-                  />
-                </div>
+                <input
+                  id="username-field"
+                  name="username"
+                  className="form-control"
+                  type="text"
+                  placeholder={t("Login")}
+                  maxLength={parseInt(props.loginLength, 10)}
+                  autoFocus={true}
+                  required
+                  {...loginInput}
+                />
+                <input
+                  id="password-field"
+                  name="password"
+                  className="form-control"
+                  type="password"
+                  autoComplete="password"
+                  placeholder={t("Password")}
+                  maxLength={parseInt(props.passwordLength, 10)}
+                  required
+                  {...passwordInput}
+                />
+                <SubmitButton
+                  id="login-btn"
+                  className={`btn-block btn-primary ${styles.submit}`}
+                  text={t("Sign In")}
+                  disabled={isLoading}
+                />
               </form>
-              <hr />
-              <p className="gray-text small-text">{props.legalNote}</p>
+              {props.legalNote ? (
+                <>
+                  <p className="gray-text small-text">{props.legalNote}</p>
+                </>
+              ) : null}
             </div>
           </div>
         </section>
+        {/* We don't use a <footer> tag here to avoid colliding with legacy global styles */}
+        <div className={styles.footer} role="contentinfo">
+          <div className={styles.content}>
+            <div>
+              <a href="/rhn/help/about.do">{t("About")}</a>
+            </div>
+            <div>
+              <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
+            </div>
+            <div>
+              {`${props.productName} release `}
+              <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+            </div>
+            {props.customFooter ? <div>{props.customFooter}</div> : null}
+            <a href="https://www.suse.com/" target="_blank" rel="noopener noreferrer" className={styles.logoLink}>
+              <img src={logo} alt="SUSE" width="120" height="40" />
+            </a>
+          </div>
+        </div>
       </div>
-
-      <LoginFooter productName={props.productName} customFooter={props.customFooter} webVersion={props.webVersion} />
     </React.Fragment>
   );
 };

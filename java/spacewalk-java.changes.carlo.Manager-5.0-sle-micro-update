@@ -1,0 +1,2 @@
+- Fixes: updated packages list when a SLE micro
+  gets updated (bsc#1227118)
