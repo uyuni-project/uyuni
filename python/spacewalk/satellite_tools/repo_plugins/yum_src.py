@@ -671,6 +671,13 @@ class ContentSource:
                 self.timeout = int(CFG.REPOSYNC_TIMEOUT)
             except ValueError:
                 self.timeout = 300
+            try:
+                # extended reposync nevra filter enable
+                # this will filter packages based on full nevra
+                # instead of package name only.
+                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
+            except (AttributeError, ValueError):
+                self.nevra_filter = False
 
     def _load_proxy_settings(self, url):
         # read the proxy configuration in /etc/rhn/rhn.conf
@@ -1216,11 +1223,11 @@ password={passwd}
                 filters.append(("-", [p]))
 
         if filters:
-            pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._filter_packages(pkglist, filters, nevra_filter=self.nevra_filter)
             pkglist = self._get_solvable_dependencies(pkglist)
 
             # Do not pull in dependencies if there're explicitly excluded
-            pkglist = self._filter_packages(pkglist, filters, True)
+            pkglist = self._filter_packages(pkglist, filters, True, self.nevra_filter)
             self.num_excluded = self.num_packages - len(pkglist)
 
         return pkglist
@@ -1233,7 +1240,7 @@ password={passwd}
             return str(text)
 
     @staticmethod
-    def _filter_packages(packages, filters, exclude_only=False):
+    def _filter_packages(packages, filters, exclude_only=False, nevra_filter=False):
         """implement include / exclude logic
         filters are: [ ('+', includelist1), ('-', excludelist1),
                        ('+', includelist2), ... ]
@@ -1261,7 +1268,11 @@ password={passwd}
                     continue
                 # include
                 for excluded_pkg in excluded:
-                    if reobj.match(excluded_pkg.name):
+                    if nevra_filter:
+                        pkg_name = str(excluded_pkg)
+                    else:
+                        pkg_name = excluded_pkg.name
+                    if reobj.match(pkg_name):
                         allmatched_include.insert(0, excluded_pkg)
                         selected.insert(0, excluded_pkg)
                 for pkg in allmatched_include:
@@ -1270,10 +1281,13 @@ password={passwd}
             elif sense == "-":
                 # exclude
                 for selected_pkg in selected:
-                    if reobj.match(selected_pkg.name):
+                    if nevra_filter:
+                        pkg_name = str(selected_pkg)
+                    else:
+                        pkg_name = selected_pkg.name
+                    if reobj.match(pkg_name):
                         allmatched_exclude.insert(0, selected_pkg)
                         excluded.insert(0, selected_pkg)
-
                 for pkg in allmatched_exclude:
                     if pkg in selected:
                         selected.remove(pkg)
