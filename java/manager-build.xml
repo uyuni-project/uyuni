@@ -155,6 +155,36 @@
         </sequential>
     </macrodef>
 
+    <macrodef name="apidoc">
+        <attribute name="doclet-class"/>
+        <attribute name="template-dir"/>
+        <attribute name="output-dir" default="${report.dir}/apidocs/@{template-dir}"/>
+        <sequential>
+            <path id="javadocpath">
+                <pathelement location="build/classes"/>
+                <path refid="libjars"/>
+            </path>
+
+            <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak"/>
+
+            <mkdir dir="@{output-dir}/handlers/"/>
+            <javadoc doclet="com.redhat.rhn.internal.doclet.@{doclet-class}" docletpathref="javadocpath"
+                    classpathref="libjars" sourcepath="code/src"
+                    additionalparam="-debug -d @{output-dir} -templates buildconf/apidoc/@{template-dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+                <fileset dir="code">
+                    <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
+                    <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
+                    <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
+                    <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
+                    <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
+                </fileset>
+                <excludepackage name="**/*"/>
+            </javadoc>
+
+            <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
+        </sequential>
+    </macrodef>
+
     <!-- Tasks -->
     <target name="clean" description="Cleans up all generated files">
         <delete dir="${build.dir}" quiet="true">
@@ -534,76 +564,34 @@
         </report>
     </target>
 
-    <target name="apidoc-singlepage" description="Generate the api for jsps">
-        <property name="doclet.class" value="SinglePageDoclet"/>
-        <property name="template.dir" value="singlepage"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-singlepage" depends="compile" description="Generate the api for jsps">
+        <apidoc doclet-class="SinglePageDoclet" template-dir="singlepage"/>
     </target>
 
-    <target name="apidoc-jsp" description="Generate the api for jsps">
-        <property name="doclet.class" value="JSPDoclet"/>
-        <property name="template.dir" value="jsp"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-jsp" depends="compile" description="Generate the api for jsps">
+        <apidoc doclet-class="JSPDoclet" template-dir="jsp"/>
     </target>
 
-    <target name="apidoc-html" description="Generate the api for jsps">
-        <property name="doclet.class" value="HtmlDoclet"/>
-        <property name="template.dir" value="html"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-html" depends="compile" description="Generate the api for jsps">
+        <apidoc doclet-class="HtmlDoclet" template-dir="html"/>
     </target>
 
-    <target name="apidoc-docbook" description="Generate docbook xml from the API">
-        <property name="doclet.class" value="DocBookDoclet"/>
-        <property name="template.dir" value="docbook"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-docbook" depends="compile" description="Generate docbook xml from the API">
+        <apidoc doclet-class="DocBookDoclet" template-dir="docbook"/>
     </target>
 
-    <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
-        <property name="doclet.class" value="AsciidocDoclet"/>
-        <property name="template.dir" value="asciidoc"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
-        <delete dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+    <target name="apidoc-asciidoc" depends="compile" description="Generate asciidoc from the API">
+        <apidoc doclet-class="AsciidocDoclet" template-dir="asciidoc"/>
+        <delete dir="${report.dir}/apidocs/asciidoc/handlers/"/>
     </target>
 
-    <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
+    <target name="apidoc-validate" depends="apidoc-docbook" description="Validate the API documentation">
         <exec executable="/usr/bin/xmllint" failonerror="true">
             <arg value="--xinclude"/>
             <arg value="--postvalid"/>
             <arg value="${report.dir}/apidocs/docbook/book.xml"/>
         </exec>
         <echo message="${line.separator}The generated API documentation is valid."/>
-    </target>
-
-    <target name="apidoc" description="Generate the api documentation" depends="compile">
-        <path id="javadocpath">
-            <pathelement location="build/classes"/>
-            <path refid="libjars"/>
-        </path>
-
-        <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak"/>
-
-        <mkdir dir="${report.dir}/apidocs"/>
-        <mkdir dir="${report.dir}/apidocs/${template.dir}/"/>
-        <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
-        <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath"
-                 classpathref="libjars" sourcepath="code/src"
-                 additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
-            <fileset dir="code">
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
-            </fileset>
-            <excludepackage name="**/*"/>
-        </javadoc>
-
-        <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
     </target>
 
     <target name="make-eclipse-project" description="Configures this checkout as an eclipse project.">
