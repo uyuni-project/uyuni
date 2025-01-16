@@ -867,8 +867,7 @@ public class CVEAuditManager {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
-                .toList();
+        Stream<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier);
 
         return listSystemsByPatchStatus(results, patchStatuses)
                 .stream()
@@ -877,8 +876,8 @@ public class CVEAuditManager {
                         system.getSystemName(),
                         system.getPatchStatus(),
                         system.getChannels(),
-                        system.getErratas()
-                )).toList();
+                        system.getErratas(),
+                )).collect(Collectors.toList());
     }
 
     /**
@@ -897,8 +896,7 @@ public class CVEAuditManager {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<CVEPatchStatus> results = listImagesByPatchStatus(user, cveIdentifier)
-                .toList();
+        Stream<CVEPatchStatus> results = listImagesByPatchStatus(user, cveIdentifier);
 
         return listSystemsByPatchStatus(results, patchStatuses)
                 .stream()
@@ -932,14 +930,14 @@ public class CVEAuditManager {
      * @param patchStatuses the patch statuses
      * @return list of system records with patch status
      */
-    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
+    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(Stream<CVEPatchStatus> results,
             EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 
         // Group the results by system
         Map<Long, List<CVEPatchStatus>> resultsBySystem =
-                results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
+                results.collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
 
         // Loop for each system, calculating the patch status individually
         for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {
