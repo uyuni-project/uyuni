@@ -71,8 +71,6 @@ package-lock.json
 rel-eng/custom/__pycache__
 
 # Intellij IDEA
-.idea/
-*.iml
 java/out
 out/
 java/buildconf/checkstyle.cache.src

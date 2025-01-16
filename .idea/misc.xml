@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <type id="javaeeApplication" />
+  </component>
+  <component name="IvyIDEA.ProjectSettings">
+    <option name="artifactTypeSettings">
+      <ArtifactTypeSettings>
+        <option name="classesTypes" value="jar, mar, sar, war, ear, ejb, bundle, test-jar" />
+        <option name="javadocTypes" value="javadoc, doc, docs, apidoc, apidocs, documentation, documents" />
+        <option name="sourcesTypes" value="source, src, sources, srcs" />
+      </ArtifactTypeSettings>
+    </option>
+    <option name="ivySettingsFile" value="$PROJECT_DIR$/java/buildconf/ivy/ivyconf.xml" />
+    <option name="libraryNameIncludesConfiguration" value="true" />
+    <option name="libraryNameIncludesModule" value="true" />
+    <option name="propertiesSettings">
+      <PropertiesSettings>
+        <option name="propertyFiles">
+          <list>
+            <option value="$PROJECT_DIR$/java/buildconf/ivy/ivy-suse.xml" />
+          </list>
+        </option>
+      </PropertiesSettings>
+    </option>
+    <option name="validateIvyFiles" value="true" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK" />
+</project>
