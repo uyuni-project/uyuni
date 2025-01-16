@@ -564,23 +564,23 @@
         </report>
     </target>
 
-    <target name="apidoc-singlepage" depends="compile" description="Generate the api for jsps">
+    <target name="apidoc-singlepage" depends="compile" description="Generate API documentation as a single JSP">
         <apidoc doclet-class="SinglePageDoclet" template-dir="singlepage"/>
     </target>
 
-    <target name="apidoc-jsp" depends="compile" description="Generate the api for jsps">
+    <target name="apidoc-jsp" depends="compile" description="Generate API documentation as JSPs">
         <apidoc doclet-class="JSPDoclet" template-dir="jsp"/>
     </target>
 
-    <target name="apidoc-html" depends="compile" description="Generate the api for jsps">
+    <target name="apidoc-html" depends="compile" description="Generate API documentation as HTML">
         <apidoc doclet-class="HtmlDoclet" template-dir="html"/>
     </target>
 
-    <target name="apidoc-docbook" depends="compile" description="Generate docbook xml from the API">
+    <target name="apidoc-docbook" depends="compile" description="Generate API documentation as DocBook XML">
         <apidoc doclet-class="DocBookDoclet" template-dir="docbook"/>
     </target>
 
-    <target name="apidoc-asciidoc" depends="compile" description="Generate asciidoc from the API">
+    <target name="apidoc-asciidoc" depends="compile" description="Generate API documentation as asciidoc">
         <apidoc doclet-class="AsciidocDoclet" template-dir="asciidoc"/>
         <delete dir="${report.dir}/apidocs/asciidoc/handlers/"/>
     </target>
