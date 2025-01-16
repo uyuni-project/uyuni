@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jan 16 14:45:56 CET 2025 - rosuna@suse.com
+
+- version 5.0.18-0
+  * Fix internal server error in 'listSystemsByPatchStatus' API
+    endpoint (bsc#1235908)
+
+-------------------------------------------------------------------
 Wed Jan 15 09:22:43 CET 2025 - rosuna@suse.com
 
 - version 5.0.17-0
