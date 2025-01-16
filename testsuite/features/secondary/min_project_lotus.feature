@@ -37,7 +37,7 @@ Feature: Project Lotus
     And I follow "Custom Channel for SLES15SP4 PTFs"
     And I follow "Repositories" in the content area
     And I select the "sles15sp4_ptf_repo" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Pre-requisite: Sync PTF repository

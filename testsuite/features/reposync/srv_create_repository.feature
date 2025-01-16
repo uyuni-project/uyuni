@@ -46,7 +46,7 @@ Feature: Add a repository to a channel
     Then I should see a "Channel Test-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "Test-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the x86_64 channel
@@ -76,7 +76,7 @@ Feature: Add a repository to a channel
     Then I should see a "Channel Fake-i586-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-i586-repo" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "Fake-i586-Channel repository information was successfully updated" text
 
   Scenario: Synchronize the repository in the i586 channel
@@ -104,7 +104,7 @@ Feature: Add a repository to a channel
     And I follow "Fake-Deb-AMD64-Channel"
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "Fake-Deb-AMD64-Channel repository information was successfully updated" text
 
 @deblike_minion
@@ -126,7 +126,7 @@ Feature: Add a repository to a channel
     Then I should see a "Channel Fake-RH-Like-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "Fake-RH-Like-Channel repository information was successfully updated" text
 
 @rhlike_minion

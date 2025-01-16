@@ -27,7 +27,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I follow "Custom Channel for monitoring_server"
     And I follow "Repositories" in the content area
     And I select the MU repositories for "sle15sp4_minion" from the list
-    And I click on "Save"
+    And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
   Scenario: Synchronize the repositories in the custom channel for monitoring_server

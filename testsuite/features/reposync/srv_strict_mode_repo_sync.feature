@@ -33,7 +33,7 @@ Scenario: Testing strict mode
     And I follow "Test-Strict-Channel"
     And I follow "Repositories" in the "content area"
     And I check "fake-rpm-repo" in the list
-    And I click on "Save"
+    And I click on "Save Repositories"
     And I follow "Sync" in the "content area"
     And I click on "Sync Now"	
     And I wait at most 60 seconds until I do not see "Repository sync is running." text, refreshing the page
@@ -41,7 +41,7 @@ Scenario: Testing strict mode
     And I follow "Add / Remove"
     And I uncheck "fake-rpm-repo" in the list
     And I check "fake-rpm-repo-modified" in the list
-    And I click on "Save"
+    And I click on "Save Repositories"
     And I follow "Sync" in the "content area"
     And I check "no-strict"
     And I click on "Sync Now"	
