@@ -1044,6 +1044,21 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Find Server by a set of possible FQDNs
+     * @param fqdns the set of FQDNs
+     * @return return the first Server found if any
+     */
+    public static Optional<Server> findByAnyFqdn(Set<String> fqdns) {
+        for (String fqdn : fqdns) {
+            Optional<Server> server = findByFqdn(fqdn);
+            if (server.isPresent()) {
+                return server;
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Lookup a Server by their FQDN
      * @param name of the FQDN to search for
      * @return the Server found
