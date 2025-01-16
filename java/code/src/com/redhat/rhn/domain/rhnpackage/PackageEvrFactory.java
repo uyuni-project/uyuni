@@ -95,7 +95,7 @@ public class PackageEvrFactory {
      */
     public static PackageEvr lookupPackageEvrById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (PackageEvr) session.getNamedQuery("PackageEvr.findById").setLong(
+        return (PackageEvr) session.getNamedQuery("PackageEvr.findById").setParameter(
                 "id", id).uniqueResult();
     }
 
@@ -111,10 +111,10 @@ public class PackageEvrFactory {
             String epoch, String version, String release, PackageType type) {
         Session session = HibernateFactory.getSession();
         return (Optional<PackageEvr>) session.getNamedQuery("PackageEvr.lookupByEvr")
-                .setString("e_in", epoch)
-                .setString("v_in", version)
-                .setString("r_in", release)
-                .setString("t_in", type.getDbString())
+                .setParameter("e_in", epoch)
+                .setParameter("v_in", version)
+                .setParameter("r_in", release)
+                .setParameter("t_in", type.getDbString())
                 .uniqueResultOptional();
     }
 

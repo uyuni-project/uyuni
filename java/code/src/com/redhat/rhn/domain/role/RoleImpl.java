@@ -20,16 +20,35 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
 /**
  * Class Role that reflects the DB representation of RHNUSERGROUP
  * DB table: RHNUSERGROUP
  */
-public class RoleImpl extends BaseDomainHelper implements Role {
+@Entity
+@Table(name = "RHNUSERGROUPTYPE")
+public class RoleImpl extends BaseDomainHelper implements Role, Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_usergroup_type_seq")
+    @SequenceGenerator(name = "rhn_usergroup_type_seq", sequenceName = "rhn_usergroup_type_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private String name;
-    private String label;
 
+    @Column(name = "name", length = 64)
+    private String name;
+
+    @Column(name = "label", length = 64)
+    private String label;
 
     /**
      * Protected constructor

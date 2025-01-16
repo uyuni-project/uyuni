@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.domain.user;
 
+import com.redhat.rhn.domain.user.legacy.UserImpl;
+
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -21,15 +23,46 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+
+
 /**
  * StateChange
  */
+@Entity
+@Table(name = "rhnWebContactChangeLog")
 public class StateChange implements Comparable<StateChange> {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_wcon_disabled_seq")
+    @SequenceGenerator(name = "rhn_wcon_disabled_seq", sequenceName = "RHN_WCON_DISABLED_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private Date date = new Date();
-    private User user;
-    private User changedBy;
+
+    @Column(name = "date_completed", insertable = false, updatable = false)
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "web_contact_id", nullable = false)
+    private UserImpl user;
+
+    @ManyToOne
+    @JoinColumn(name = "web_contact_from_id", nullable = false)
+    private UserImpl changedBy;
+
+    @ManyToOne
+    @JoinColumn(name = "change_state_id", nullable = false)
     private State state;
 
 
@@ -58,7 +91,7 @@ public class StateChange implements Comparable<StateChange> {
      * @param d The changedBy to set.
      */
     public void setChangedBy(User d) {
-        this.changedBy = d;
+        this.changedBy = (UserImpl) d;
     }
 
     /**
@@ -100,7 +133,7 @@ public class StateChange implements Comparable<StateChange> {
      * @param u The user to set.
      */
     public void setUser(User u) {
-        this.user = u;
+        this.user = (UserImpl) u;
     }
 
     /**

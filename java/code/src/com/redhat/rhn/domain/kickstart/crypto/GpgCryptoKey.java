@@ -15,9 +15,14 @@
 package com.redhat.rhn.domain.kickstart.crypto;
 
 
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+
 /**
  * GpgCryptoKey
  */
+@Entity
+@DiscriminatorValue("GPG") // Make sure the discriminator value matches the value used in the inheritance strategy
 public class GpgCryptoKey extends CryptoKey {
     /**
     *

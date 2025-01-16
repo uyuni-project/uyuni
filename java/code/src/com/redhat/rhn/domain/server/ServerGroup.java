@@ -22,30 +22,65 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.SaltConfigSubscriptionService;
 import com.redhat.rhn.manager.configuration.SaltConfigurable;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
 
 /**
  * Server - Class representation of the table rhnServer.
  *
  */
-public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
+@Entity
+@Table(name = "rhnServerGroup")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "group_type", discriminatorType = DiscriminatorType.STRING)
+public class ServerGroup extends BaseDomainHelper implements SaltConfigurable {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_group_seq")
+    @SequenceGenerator(name = "server_group_seq", sequenceName = "rhn_server_group_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private String name;
-    private String description;
-    private ServerGroupType groupType;
-    private Org org;
-    private Set<Pillar> pillars = new HashSet<>();
 
+    @Column(name = "name", length = 64)
+    private String name;
+
+    @Column(name = "description", length = 1024)
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_type", insertable = false, updatable = false)
+    private ServerGroupType groupType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @Transient
+    private Set<Pillar> pillars = new HashSet<>();
     /**
      * Getter for id
      * @return Long to get
@@ -214,29 +249,23 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(getId())
-                                    .append(getName())
-                                    .append(getDescription())
-                                    .append(getOrg())
-                                    .append(getGroupType())
-                                    .toHashCode();
+        return Objects.hash(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof ServerGroup castOther)) {
+    public boolean equals(Object o) {
+        // Compare the IDs of ServerGroup to check equality
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        return new EqualsBuilder().append(getId(), castOther.getId())
-                                  .append(getName(), castOther.getName())
-                                  .append(getDescription(), castOther.getDescription())
-                                  .append(getOrg(), castOther.getOrg())
-                                  .append(getGroupType(), castOther.getGroupType())
-                                  .isEquals();
-
+        ServerGroup that = (ServerGroup) o;
+        return Objects.equals(id, that.id);
     }
 
     /**

@@ -26,7 +26,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.metadata.ClassMetadata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,8 +35,9 @@ import java.util.Optional;
 import java.util.Properties;
 import java.util.Set;
 
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
+import jakarta.persistence.metamodel.Metamodel;
 
+import io.prometheus.client.hibernate.HibernateStatisticsCollector;
 
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
@@ -110,16 +110,12 @@ abstract class AbstractConnectionManager implements ConnectionManager {
      * {@inheritDoc}
      */
     @Override
-    public ClassMetadata getMetadata(Object target) {
+    public Metamodel getMetadata(Object target) {
         if (target == null) {
             return null;
         }
 
-        if (target instanceof Class) {
-            return sessionFactory.getClassMetadata((Class<?>) target);
-        }
-
-        return sessionFactory.getClassMetadata(target.getClass());
+        return sessionFactory.getMetamodel();
     }
 
     /**
@@ -206,7 +202,7 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
             sessionFactory = config.buildSessionFactory();
         }
-        catch (HibernateException e) {
+        catch (Exception e) {
             LOG.error("FATAL ERROR creating HibernateFactory", e);
         }
     }

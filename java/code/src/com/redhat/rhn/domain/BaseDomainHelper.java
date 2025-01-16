@@ -20,10 +20,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 /**
  * Class UserImpl that reflects the DB representation of web_contact
@@ -31,7 +32,7 @@ import javax.persistence.MappedSuperclass;
  * DB table: web_contact
  */
 @MappedSuperclass
-public abstract class BaseDomainHelper {
+public abstract class BaseDomainHelper implements Serializable {
     private Date created = new Date();
     private Date modified;
 
@@ -46,7 +47,7 @@ public abstract class BaseDomainHelper {
      * Gets the current value of created
      * @return Date the current value
      */
-    @Column(name = "created", nullable = false, updatable = false)
+    @Column(name = "created", nullable = false)
     @CreationTimestamp
     public Date getCreated() {
         return this.created;

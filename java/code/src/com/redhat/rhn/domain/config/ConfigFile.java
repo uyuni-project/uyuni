@@ -21,15 +21,39 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 /**
  * ConfigFile - Class representation of the table rhnConfigFile.
  */
+@Entity
+@Table(name = "rhnConfigFile")
 public class ConfigFile extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Assuming the ID is auto-generated or assigned
+    @Column(name = "id")
     private Long id;
+    @ManyToOne
+    @JoinColumn(name = "config_channel_id", nullable = false)
     private ConfigChannel configChannel;
+
+    @ManyToOne
+    @JoinColumn(name = "config_file_name_id", nullable = false)
     private ConfigFileName configFileName;
+
+    @ManyToOne
+    @JoinColumn(name = "state_id", nullable = false)
     private ConfigFileState configFileState;
+    @ManyToOne
+    @JoinColumn(name = "latest_config_revision_id")
     private ConfigRevision latestConfigRevision;
     private static Logger log = LogManager.getLogger(ConfigFile.class);
 

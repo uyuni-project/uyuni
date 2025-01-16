@@ -22,19 +22,56 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.util.Date;
 import java.util.Set;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+
 /**
  * Channel access token giving a minion access to one or more channels.
  */
+@Entity
+@Table(name = "suseChannelAccessToken")
 public class AccessToken {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_chan_access_token_id_seq")
+    @SequenceGenerator(name = "suse_chan_access_token_id_seq", sequenceName = "suse_chan_access_token_id_seq",
+            allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+    @Column(name = "token", nullable = false, length = 4000)
     private String token;
-    private Date expiration;
-    private Date start;
-    private MinionServer minion;
-    private Set<Channel> channels;
-    private boolean valid = true;
 
+    @Column(name = "expiration", nullable = false)
+    private Date expiration;
+
+    @Column(name = "created", nullable = false)
+    private Date start;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "minion_id", foreignKey = @ForeignKey(name = "suse_chan_access_token_mid_fk"))
+    private MinionServer minion;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseChannelAccessTokenChannel",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
+    private Set<Channel> channels;
+    @Column(name = "valid", nullable = false)
+    @Convert(converter = org.hibernate.type.YesNoConverter.class)
+    private boolean valid = true;
 
     /**
      * @return the accessToken id

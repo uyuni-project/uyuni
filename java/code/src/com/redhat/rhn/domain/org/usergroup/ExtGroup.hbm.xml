@@ -56,11 +56,11 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
 
     <query name="OrgUserExtGroup.lookupByIdAndOrg">
-        <![CDATA[FROM com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup WHERE id = :gid AND org_id = :org_id]]>
+      <![CDATA[FROM com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup WHERE id = :gid AND org.id = :org_id]]>
     </query>
-
+    
     <query name="OrgUserExtGroup.lookupByLabelAndOrg">
-        <![CDATA[FROM com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup WHERE label = :label AND org_id = :org_id]]>
-    </query>
-
+      <![CDATA[FROM com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup WHERE label = :label AND org.id = :org_id]]>
+    </query>   
+    
 </hibernate-mapping>

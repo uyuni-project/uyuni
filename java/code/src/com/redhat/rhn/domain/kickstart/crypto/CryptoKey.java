@@ -14,23 +14,53 @@
  */
 package com.redhat.rhn.domain.kickstart.crypto;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
+
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * CryptoKey - Class representation of the table rhnCryptoKey.
  */
-public class CryptoKey implements Identifiable {
+@Entity
+@Table(name = "rhnCryptoKey")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class CryptoKey extends  BaseDomainHelper implements Identifiable, Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "cryptoKeySeq")
+    @SequenceGenerator(name = "cryptoKeySeq", sequenceName = "RHN_CRYPTOKEY_ID_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "description", nullable = false, length = 1024)
     private String description;
+
+    @Column(name = "key")
     private byte[] key;
 
-    private CryptoKeyType cryptoKeyType;
+    @ManyToOne
+    @JoinColumn(name = "org_id")
     private Org org;
 
+    @ManyToOne
+    @JoinColumn(name = "crypto_key_type_id",  referencedColumnName = "id")
+    private CryptoKeyType cryptoKeyType;
 
     /**
      * Getter for id
@@ -138,5 +168,4 @@ public class CryptoKey implements Identifiable {
         }
         return "";
     }
-
 }

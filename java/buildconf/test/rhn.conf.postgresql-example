@@ -21,11 +21,11 @@ hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 hibernate.connection.driver_class = org.postgresql.Driver
 hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
-# hibernate.show_sql = true
+hibernate.show_sql = true
 hibernate.use_outer_join = true
 hibernate.jdbc.batch_size = 0
-hibernate.cache.region.factory_class = org.hibernate.cache.ehcache.EhCacheRegionFactory
-hibernate.cache.use_query_cache = true
+hibernate.cache.use_query_cache=false
+hibernate.cache.use_second_level_cache=false
 hibernate.bytecode.use_reflection_optimizer = false
 hibernate.id.new_generator_mappings = false
 
@@ -34,11 +34,11 @@ reporting.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 reporting.hibernate.connection.driver_class = org.postgresql.Driver
 reporting.hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
-# reporting.hibernate.show_sql = true
+reporting.hibernate.show_sql = true
 reporting.hibernate.use_outer_join = true
 reporting.hibernate.jdbc.batch_size = 0
-reporting.hibernate.cache.region.factory_class = org.hibernate.cache.ehcache.EhCacheRegionFactory
-reporting.hibernate.cache.use_query_cache = true
+reporting.hibernate.cache.use_query_cache=false
+reporting.hibernate.cache.use_second_level_cache=false
 reporting.hibernate.bytecode.use_reflection_optimizer = false
 reporting.hibernate.id.new_generator_mappings = false
 
@@ -165,3 +165,5 @@ server.susemanager.scc_backup_srv_usr = 52156f60-8aa2-4165-8645-367efdc2a510
 
 # Disable remote commands from UI
 java.disable_remote_commands_from_ui = false
+
+reporting.hibernate.transform_hbm_xml.enabled=true

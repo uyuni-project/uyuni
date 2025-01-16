@@ -16,13 +16,35 @@ package com.redhat.rhn.domain.common;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
 /**
  * ProvisionState
  */
-public class ProvisionState extends BaseDomainHelper {
+@Entity
+@Table(name = "rhnProvisionState")
+public class ProvisionState extends BaseDomainHelper implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_provstate_id_seq")
+    @SequenceGenerator(name = "rhn_provstate_id_seq", sequenceName = "RHN_PROVSTATE_ID_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "label")
     private String label;
+
+    @Column(name = "description")
     private String description;
 
     /**

@@ -633,11 +633,6 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
-
-        EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(),
-                                                                        type);
-
-        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         return TestUtils.saveAndReload(newS);
     }
 
@@ -707,8 +702,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         }
 
         Long id = newS.getId();
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(newS);
+        TestUtils.saveAndReload(newS);
         newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
         assertNotNull(newS.getEntitledGroupTypes());
         assertNotNull(newS.getManagedGroups());

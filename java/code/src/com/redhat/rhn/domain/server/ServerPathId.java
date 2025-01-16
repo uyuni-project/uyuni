@@ -20,15 +20,24 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+
 /**
  * Composite id for {@link ServerPath}.
  */
+@Embeddable
 public class ServerPathId implements Serializable {
 
-    /** The server. */
+    private static final long serialVersionUID = 1L;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
     private Server server;
 
-    /** The proxy server. */
+    @ManyToOne
+    @JoinColumn(name = "proxy_server_id")
     private Server proxyServer;
 
     /**

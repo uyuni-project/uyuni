@@ -102,6 +102,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import jakarta.persistence.NoResultException;
+
 /**
  * ChannelSoftwareHandler
  * @apidoc.namespace channel.software
@@ -1588,13 +1590,17 @@ public class ChannelSoftwareHandler extends BaseHandler {
     private Channel lookupChannelByLabel(Org org, String label)
         throws NoSuchChannelException {
 
-        Channel channel = ChannelManager.lookupByLabel(
-                org, label);
-        if (channel == null) {
+        try {
+            Channel channel = ChannelManager.lookupByLabel(
+                    org, label);
+            if (channel == null) {
+                throw new NoSuchChannelException(label);
+            }
+            return channel;
+        }
+        catch (NoResultException e) {
             throw new NoSuchChannelException(label);
         }
-
-        return channel;
     }
 
     private Channel lookupChannelById(User user, Long id)

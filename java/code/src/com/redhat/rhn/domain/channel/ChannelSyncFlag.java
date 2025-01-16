@@ -16,24 +16,18 @@ package com.redhat.rhn.domain.channel;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rhnChannelSyncFlag")
 public class ChannelSyncFlag implements Serializable {
 
-    @Id
-    @Column(name = "channel_id", nullable = false)
-    private Long id;
-
-    @OneToOne(mappedBy = "channelSyncFlag")
-    @MapsId
+    @Id @OneToOne
     @JoinColumn(name = "channel_id")
     private Channel channel;
 
@@ -53,14 +47,6 @@ public class ChannelSyncFlag implements Serializable {
     private boolean quitOnError;
 
     // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long idnr) {
-        this.id = idnr;
-    }
 
     public boolean isNoStrict() {
         return noStrict;

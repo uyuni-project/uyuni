@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.server;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -24,18 +25,47 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 /**
  * CustomDataValue
  */
+@Entity
+@Table(name = "rhnServerCustomDataValue")
 public class CustomDataValue implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "server_id", insertable = false, updatable = false)
     private Server server;
+
+    @Id
+    @ManyToOne
+    @JoinColumn(name = "key_id", insertable = false, updatable = false)
     private CustomDataKey key;
+
+    @Column(name = "value", length = 4000)
     private String value;
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "created_by")
     private User creator;
+
+    @ManyToOne(targetEntity = UserImpl.class)
+    @JoinColumn(name = "last_modified_by")
     private User lastModifier;
+
+    @Column(name = "created", insertable = false, updatable = false)
     private Date created;
+
+    @Column(name = "modified", insertable = false, updatable = false)
     private Date modified;
 
     /**
