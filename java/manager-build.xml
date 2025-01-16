@@ -594,6 +594,11 @@
         <echo message="${line.separator}The generated API documentation is valid."/>
     </target>
 
+    <target name="deploy-apidoc" depends="apidoc-jsp" description="Deploy API documentation to an existing server instance">
+        <echo message="Copying apidoc files to server..."/>
+        <deploy-directory source="${report.dir}/apidocs/jsp" destination="${deploy.dir}/apidoc"/>
+    </target>
+
     <target name="make-eclipse-project" description="Configures this checkout as an eclipse project.">
         <copy file="${rhn-home}/conf/eclipse/.project-template" tofile="${rhn-home}/.project" overwrite="false"/>
         <copy toDir="${rhn-home}" overwrite="false">
