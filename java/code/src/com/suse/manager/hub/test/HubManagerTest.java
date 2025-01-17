@@ -27,9 +27,15 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -45,6 +51,11 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
@@ -110,7 +121,20 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory = new HubFactory();
         clientFactoryMock = mock(IssClientFactory.class);
 
-        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager());
+        SaltApi saltApi = new TestSaltApi();
+        VirtManager virtManager = new TestVirtManager() {
+            @Override
+            public void updateLibvirtEngine(MinionServer minionIn) {
+            }
+        };
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+        );
+
+        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), sysEntMgr);
     }
 
     @AfterEach

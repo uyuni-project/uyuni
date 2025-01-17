@@ -15,6 +15,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.webui.utils.gson.ManagerInfoJson;
 
 import java.io.IOException;
 
@@ -46,4 +47,19 @@ public interface IssInternalClient {
      * @throws IOException when the communication fails
      */
     SCCCredentialsJson generateCredentials() throws IOException;
+
+    /**
+     * Query Manager information from the peripheral server
+     * @return return {@link ManagerInfoJson} from peripheral server
+     * @throws IOException when communication fails
+     */
+    ManagerInfoJson getManagerInfo() throws IOException;
+
+    /**
+     * Store Report DB credentials on the remote peripheral server
+     * @param username the username
+     * @param password the password
+     * @throws IOException when communication fails
+     */
+    void storeReportDbCredentials(String username, String password) throws IOException;
 }
