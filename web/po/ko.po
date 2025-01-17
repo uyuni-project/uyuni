@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-12-06 14:38+0100\n"
-"PO-Revision-Date: 2025-01-16 06:50+0000\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -1028,22 +1028,18 @@ msgid "System Locked"
 msgstr "시스템 잠김"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
-#, fuzzy
 msgid "less than"
 msgstr "다음보다 작음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:12
-#, fuzzy
 msgid "less than or equal to"
 msgstr "다음보다 작거나 같음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:13
-#, fuzzy
 msgid "equal to"
 msgstr "같음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:14
-#, fuzzy
 msgid "greater than or equal to"
 msgstr "다음보다 크거나 같음"
 
@@ -1053,9 +1049,8 @@ msgid "greater than"
 msgstr "다음보다 큼"
 
 #: ../html/src/components/table/NumericSearchField.tsx:16
-#, fuzzy
 msgid "not equal to"
-msgstr "빌드되지 않음"
+msgstr "같지 않음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:47
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
@@ -5415,12 +5410,10 @@ msgid " Systems "
 msgstr " 시스템 "
 
 #: ../html/src/manager/systems/all-list.tsx:52
-#, fuzzy
 msgid "Add a system"
 msgstr "시스템 추가"
 
 #: ../html/src/manager/systems/all-list.tsx:53
-#, fuzzy
 msgid "Add system"
 msgstr "시스템 추가"
 
