@@ -26,3 +26,4 @@ done
 echo "Setting SCC mirror to /mirror"
 sudo -i podman exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
 sudo -i podman exec server bash -c "rctomcat restart"
+sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-in-one-dev/mirror/ /mirror/"
