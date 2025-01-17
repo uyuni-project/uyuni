@@ -21,7 +21,8 @@ import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
-import com.suse.manager.model.hub.HubManager;
+import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
