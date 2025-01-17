@@ -1568,7 +1568,6 @@ public class SaltUtils {
             if (server.getOsFamily().equals(OS_FAMILY_SUSE)) {
                 server.setRelease(grains.getValueAsString("osrelease"));
             }
-            SystemManager.updateMgrServerInfo(server, grains);
         }
 
         ServerFactory.save(server);
