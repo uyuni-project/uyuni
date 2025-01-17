@@ -8,11 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-20 14:42+0200\n"
+"POT-Creation-Date: 2025-01-17 15:01+0100\n"
 "PO-Revision-Date: 2023-05-26 18:14+0000\n"
 "Last-Translator: Marina Latini <marina.latini@suse.com>\n"
-"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/"
-"spacecmd-4-3/it/>\n"
+"Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacecmd-4-3/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,8 +60,7 @@ msgid "usage: activationkey_addentitlements KEY <ENTITLEMENT ...>"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:255
-msgid ""
-"activationkey_removeentitlements: Remove entitlements from an activation key"
+msgid "activationkey_removeentitlements: Remove entitlements from an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:257
@@ -78,9 +76,7 @@ msgid "usage: activationkey_addchildchannels KEY <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:350
-msgid ""
-"activationkey_removechildchannels: Remove child channels from an activation "
-"key"
+msgid "activationkey_removechildchannels: Remove child channels from an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:352
@@ -88,9 +84,7 @@ msgid "usage: activationkey_removechildchannels KEY <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:390
-msgid ""
-"activationkey_listchildchannels: List the child channels for an activation "
-"key"
+msgid "activationkey_listchildchannels: List the child channels for an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:392
@@ -98,8 +92,7 @@ msgid "usage: activationkey_listchildchannels KEY"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:421
-msgid ""
-"activationkey_listbasechannel: List the base channels for an activation key"
+msgid "activationkey_listbasechannel: List the base channels for an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:423
@@ -115,8 +108,7 @@ msgid "usage: activationkey_listgroups KEY"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:484
-msgid ""
-"activationkey_listentitlements: List the entitlements for an activation key"
+msgid "activationkey_listentitlements: List the entitlements for an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:486
@@ -132,9 +124,7 @@ msgid "usage: activationkey_listpackages KEY"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:549
-msgid ""
-"activationkey_listconfigchannels: List the configuration channels for an "
-"activation key"
+msgid "activationkey_listconfigchannels: List the configuration channels for an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:551
@@ -142,8 +132,7 @@ msgid "usage: activationkey_listconfigchannels KEY"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:584
-msgid ""
-"activationkey_addconfigchannels: Add config channels to an activation key"
+msgid "activationkey_addconfigchannels: Add config channels to an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:586
@@ -156,9 +145,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:641
-msgid ""
-"activationkey_removeconfigchannels: Remove config channels from an "
-"activation key"
+msgid "activationkey_removeconfigchannels: Remove config channels from an activation key"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:643
@@ -166,9 +153,7 @@ msgid "usage: activationkey_removeconfigchannels KEY <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:684
-msgid ""
-"activationkey_setconfigchannelorder: Set the ranked order of configuration "
-"channels"
+msgid "activationkey_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:686
@@ -338,8 +323,7 @@ msgid "usage: activationkey_enableconfigdeployment KEY"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1041
-msgid ""
-"activationkey_disableconfigdeployment: Disable config channel deployment"
+msgid "activationkey_disableconfigdeployment: Disable config channel deployment"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1043
@@ -355,9 +339,7 @@ msgid "usage: activationkey_setbasechannel KEY CHANNEL"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1121
-msgid ""
-"activationkey_setusagelimit: Set the usage limit of an activation key, can "
-"be a number or \"unlimited\""
+msgid "activationkey_setusagelimit: Set the usage limit of an activation key, can be a number or \"unlimited\""
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1123
@@ -374,8 +356,7 @@ msgid "Couldn't convert argument %s to an integer"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1178
-msgid ""
-"activationkey_setuniversaldefault: Set this key as the universal default"
+msgid "activationkey_setuniversaldefault: Set this key as the universal default"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1180
@@ -392,8 +373,7 @@ msgid ""
 "\n"
 "options:\n"
 "    -f outfile.json : specify an output filename, defaults to <KEY>.json\n"
-"                      if exporting a single key, akeys.json for multiple "
-"keys,\n"
+"                      if exporting a single key, akeys.json for multiple keys,\n"
 "                      or akey_all.json if no KEY specified (export ALL)\n"
 "\n"
 "Note : KEY list is optional, default is to export ALL keys "
@@ -473,11 +453,9 @@ msgid ""
 "                 activationkey_clone foo_key1 foo_key2 -x \"s/foo/bar\"\n"
 "\n"
 "options:\n"
-"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for "
-"multiple\n"
+"  -c CLONE_NAME  : Name of the resulting key, treated as a prefix for multiple\n"
 "                   keys\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone description, base-channel label, child-channel\n"
 "                   labels, config-channel names "
 msgstr ""
@@ -587,9 +565,7 @@ msgid "usage: activationkey_setdescription KEY DESCRIPTION"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1807
-msgid ""
-"activationkey_setcontactmethod: Set the contact method to use for systems "
-"registered with this key."
+msgid "activationkey_setcontactmethod: Set the contact method to use for systems registered with this key."
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4241
@@ -610,8 +586,7 @@ msgid ""
 "usage: api [options] API_STRING)\n"
 "\n"
 "options:\n"
-"  -A, --args  Arguments for the API other than session id in comma "
-"separated\n"
+"  -A, --args  Arguments for the API other than session id in comma separated\n"
 "              strings or JSON expression\n"
 "  -F, --format   Output format\n"
 "  -o, --output   Output file\n"
@@ -1025,14 +1000,12 @@ msgid "Contents not displayed (base64 encoded)"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:749
-msgid ""
-"configchannel_addfile/configchannel_updatefile: Create a configuration file"
+msgid "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:750
 msgid ""
-"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f "
-"LOCAL_FILE_PATH [OPTIONS])\n"
+"usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
 "options:\n"
 "  -c CHANNEL\n"
@@ -1050,10 +1023,8 @@ msgid ""
 "  -y automatically proceed with file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
 
@@ -1149,8 +1120,7 @@ msgstr ""
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to <CHANNEL>."
-"json\n"
+"    -f outfile.json : specify an output filename, defaults to <CHANNEL>.json\n"
 "                      if exporting a single channel, ccs.json for multiple\n"
 "                      channels, or cc_all.json if no CHANNEL specified\n"
 "                      e.g (export ALL)\n"
@@ -1193,9 +1163,7 @@ msgid "Exporting ALL config channels to %s"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1242
-msgid ""
-"Error, no valid config channel passed, check name is  correct with spacecmd "
-"configchannel_list"
+msgid "Error, no valid config channel passed, check name is  correct with spacecmd configchannel_list"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1257
@@ -1280,8 +1248,7 @@ msgid ""
 "  -c CLONE_LABEL : name/label of the resulting cc (note does not update\n"
 "                   description, see -x option), treated as a prefix if\n"
 "                   multiple keys are passed\n"
-"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in "
-"the\n"
+"  -x \"s/foo/bar\" : Optional regex replacement, replaces foo with bar in the\n"
 "                   clone name, label and description\n"
 "  Note : If no -c or -x option is specified, interactive is assumed"
 msgstr ""
@@ -1360,8 +1327,7 @@ msgid "files only in target "
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1655
-msgid ""
-"files that are in both channels will be overwritten in the target channel"
+msgid "files that are in both channels will be overwritten in the target channel"
 msgstr ""
 
 #: ../src/spacecmd/configchannel.py:1657
@@ -1531,8 +1497,7 @@ msgid ""
 "  -n NAME\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 
 #: ../src/spacecmd/distribution.py:67
@@ -1642,8 +1607,7 @@ msgid ""
 "options:\n"
 "  -p path to tree\n"
 "  -b base channel to associate with\n"
-"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|"
-"generic_rpm|...]"
+"  -t install type [fedora18|rhel_6/7/8|sles12generic|sles15generic|suse|generic_rpm|...]"
 msgstr ""
 
 #: ../src/spacecmd/errata.py:49
@@ -2140,9 +2104,7 @@ msgid "Members"
 msgstr ""
 
 #: ../src/spacecmd/group.py:539
-msgid ""
-"group_listconfigchannels: List configuration channels assigned to a system "
-"group"
+msgid "group_listconfigchannels: List configuration channels assigned to a system group"
 msgstr ""
 
 #: ../src/spacecmd/group.py:540
@@ -2282,8 +2244,7 @@ msgid "A filename is required"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:307
-msgid ""
-"kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
+msgid "kickstart_import_raw: Import a raw Kickstart or autoyast profile from a file"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:308
@@ -2406,9 +2367,7 @@ msgid "usage: kickstart_rename OLDNAME NEWNAME"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:605
-msgid ""
-"kickstart_listcryptokeys: List the crypto keys associated with a Kickstart "
-"profile"
+msgid "kickstart_listcryptokeys: List the crypto keys associated with a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:607
@@ -2436,9 +2395,7 @@ msgid "usage: kickstart_removecryptokeys PROFILE <KEY ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:718
-msgid ""
-"kickstart_listactivationkeys: List the activation keys associated with a "
-"Kickstart profile"
+msgid "kickstart_listactivationkeys: List the activation keys associated with a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:720
@@ -2454,9 +2411,7 @@ msgid "usage: kickstart_addactivationkeys PROFILE <KEY ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:787
-msgid ""
-"kickstart_removeactivationkeys: Remove activation keys from a Kickstart "
-"profile"
+msgid "kickstart_removeactivationkeys: Remove activation keys from a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:789
@@ -2468,9 +2423,7 @@ msgid "Remove these keys [y/N]:"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:830
-msgid ""
-"kickstart_enableconfigmanagement: Enable configuration management on a "
-"Kickstart profile"
+msgid "kickstart_enableconfigmanagement: Enable configuration management on a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:832
@@ -2478,9 +2431,7 @@ msgid "usage: kickstart_enableconfigmanagement PROFILE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:865
-msgid ""
-"kickstart_disableconfigmanagement: Disable configuration management on a "
-"Kickstart profile"
+msgid "kickstart_disableconfigmanagement: Disable configuration management on a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:867
@@ -2488,8 +2439,7 @@ msgid "usage: kickstart_disableconfigmanagement PROFILE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:900
-msgid ""
-"kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
+msgid "kickstart_enableremotecommands: Enable remote commands on a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:902
@@ -2497,9 +2447,7 @@ msgid "usage: kickstart_enableremotecommands PROFILE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:935
-msgid ""
-"kickstart_disableremotecommands: Disable remote commands on a Kickstart "
-"profile"
+msgid "kickstart_disableremotecommands: Disable remote commands on a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:937
@@ -2523,8 +2471,7 @@ msgid "usage: kickstart_setselinux PROFILE MODE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1049
-msgid ""
-"kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
+msgid "kickstart_setpartitions: Set the partitioning scheme for a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1051
@@ -2609,8 +2556,7 @@ msgid "usage: kickstart_listoptions PROFILE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1496
-msgid ""
-"kickstart_listcustomoptions: List the custom options of a Kickstart profile"
+msgid "kickstart_listcustomoptions: List the custom options of a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1498
@@ -2634,8 +2580,7 @@ msgid "usage: kickstart_addchildchannels PROFILE <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1648
-msgid ""
-"kickstart_removechildchannels: Remove child channels from a Kickstart profile"
+msgid "kickstart_removechildchannels: Remove child channels from a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1650
@@ -2643,8 +2588,7 @@ msgid "usage: kickstart_removechildchannels PROFILE <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1695
-msgid ""
-"kickstart_listchildchannels: List the child channels of a Kickstart profile"
+msgid "kickstart_listchildchannels: List the child channels of a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1697
@@ -2652,8 +2596,7 @@ msgid "usage: kickstart_listchildchannels PROFILE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1734
-msgid ""
-"kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
+msgid "kickstart_addfilepreservations: Add file preservations to a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1736
@@ -2661,9 +2604,7 @@ msgid "usage: kickstart_addfilepreservations PROFILE <FILELIST ...>"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1773
-msgid ""
-"kickstart_removefilepreservations: Remove file preservations from a "
-"Kickstart profile"
+msgid "kickstart_removefilepreservations: Remove file preservations from a Kickstart profile"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:1775
@@ -2839,10 +2780,8 @@ msgstr ""
 msgid ""
 "usage: kickstart_export <KSPROFILE>... [options])\n"
 "options:\n"
-"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>."
-"json\n"
-"                      if exporting a single kickstart, profiles.json for "
-"multiple\n"
+"    -f outfile.json : specify an output filename, defaults to <KSPROFILE>.json\n"
+"                      if exporting a single kickstart, profiles.json for multiple\n"
 "                      kickstarts, or ks_all.json if no KSPROFILE specified\n"
 "                      e.g (export ALL)\n"
 "\n"
@@ -2855,9 +2794,7 @@ msgid "Exporting ALL kickstart profiles to %s"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2360
-msgid ""
-"Error, no valid kickstart profile passed, check name is  correct with "
-"spacecmd kickstart_list"
+msgid "Error, no valid kickstart profile passed, check name is  correct with spacecmd kickstart_list"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2380
@@ -2936,9 +2873,7 @@ msgstr ""
 #. export/import some settings, so we post a warning that some manual
 #. fixup may be required
 #: ../src/spacecmd/kickstart.py:2551
-msgid ""
-"Due to API ommissions, there are some settings which cannot be imported, "
-"please check and fixup manually if necessary"
+msgid "Due to API ommissions, there are some settings which cannot be imported, please check and fixup manually if necessary"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2553
@@ -3063,14 +2998,11 @@ msgid "kickstart_setsoftwaredetails: Sets kickstart profile software details."
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2807
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2808
-msgid ""
-"usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE "
-"KICKSTART_PACKAGES_INFO VALUE"
+msgid "usage: kickstart_setsoftwaredetails PROFILE KICKSTART_PACKAGES_INFO VALUE KICKSTART_PACKAGES_INFO VALUE"
 msgstr ""
 
 #: ../src/spacecmd/kickstart.py:2844
@@ -3728,8 +3660,7 @@ msgid "Advanced Search:"
 msgstr ""
 
 #: ../src/spacecmd/package.py:131
-msgid ""
-"Available Fields: name, epoch, version, release, arch, description, summary"
+msgid "Available Fields: name, epoch, version, release, arch, description, summary"
 msgstr ""
 
 #: ../src/spacecmd/package.py:132
@@ -3813,93 +3744,66 @@ msgid "Dependency: %s Type: %s Modifier: %s"
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:32
-msgid ""
-"proxy_container_config: create a proxy system and return its configuration "
-"file"
+msgid "proxy_container_config: create a proxy system and return its configuration file"
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:33
 #, python-format
 msgid ""
-"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL ROOT_CA CRT KEY\n"
+"usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
 "parameters:\n"
-"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be "
-"different from any registered clients.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be different from any registered clients.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
-"  CA          path to the root CA used to sign the proxy certificate in PEM "
-"format\n"
+"  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
 "  CRT         path to the proxy certificate in PEM format\n"
 "  KEY         path to the proxy certificate private key in PEM format\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
 "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
 "            certicate in PEM format. May be provided multiple times.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme."
-"org root_ca.crt proxy.crt proxy.key\n"
+"  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:89
-msgid ""
-"proxy_container_config_generate_cert: create a proxy system and return its "
-"configuration file"
+msgid "proxy_container_config_generate_cert: create a proxy system and return its configuration file"
 msgstr ""
 
 #: ../src/spacecmd/proxy.py:90
 #, python-format
 msgid ""
-"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE "
-"EMAIL\n"
+"usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
 "parameters:\n"
-"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be "
-"different from any registered clients.\n"
-"  SERVER_FQDN the fully qualified domain name of the server to connect to "
-"proxy to.\n"
-"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good "
-"value.\n"
+"  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy. It should be different from any registered clients.\n"
+"  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+"  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
 "  EMAIL       the email of the proxy administrator\n"
 "\n"
 "options:\n"
-"  -o, --output Path where to create the generated configuration. Default: "
-"'config.tar.gz'\n"
+"  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
 "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-"  --ca-crt path to the certificate of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-"  --ca-key path to the private key of the CA to use to generate a new proxy "
-"certificate.\n"
+"  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
 "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-"  --ca-pass path to a file containing the password of the CA private key, "
-"will be prompted if not passed.\n"
-"  --ssl-cname alternate name of the proxy to set in the certificate. Can be "
-"provided multiple times\n"
-"  --ssl-country country code to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-state state name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-city the city name to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
-"  --ssl-org the organization name to set in the certificate. If omitted, "
-"default values from mgr-ssl-tool will be used.\n"
-"  --ssl-org-unit the organization unit name to set in the certificate. If "
-"omitted, default values from mgr-ssl-tool will be used.\n"
-"  --ssl-email the email to set in the certificate. If omitted, default "
-"values from mgr-ssl-tool will be used.\n"
+"  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
+"  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
+"  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+"  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
 "\n"
 "examples:\n"
-"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass "
-"password-file\n"
+"  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgstr ""
 
 #: ../src/spacecmd/repo.py:48
@@ -4218,9 +4122,7 @@ msgid "System ID   Last Checkin"
 msgstr ""
 
 #: ../src/spacecmd/scap.py:44
-msgid ""
-"scap_listxccdfscans: Return a list of finished OpenSCAP scans for given "
-"systems"
+msgid "scap_listxccdfscans: Return a list of finished OpenSCAP scans for given systems"
 msgstr ""
 
 #: ../src/spacecmd/scap.py:45
@@ -4245,9 +4147,7 @@ msgid "XID: %d Profile: %s Path: (%s) Completed: %s"
 msgstr ""
 
 #: ../src/spacecmd/scap.py:98
-msgid ""
-"scap_getxccdfscanruleresults: Return a full list of RuleResults for given "
-"OpenSCAP XCCDF scan"
+msgid "scap_getxccdfscanruleresults: Return a full list of RuleResults for given OpenSCAP XCCDF scan"
 msgstr ""
 
 #: ../src/spacecmd/scap.py:99
@@ -4553,8 +4453,7 @@ msgid "usage: schedule_list [BEGINDATE] [ENDDATE]"
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:459
-msgid ""
-"schedule_deletearchived: Delete all archived actions older than given date."
+msgid "schedule_deletearchived: Delete all archived actions older than given date."
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:460
@@ -4581,9 +4480,7 @@ msgid "No archived actions found."
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:518
-msgid ""
-"schedule_archivecompleted: Archive all completed actions older than given "
-"date."
+msgid "schedule_archivecompleted: Archive all completed actions older than given date."
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:519
@@ -4754,9 +4651,7 @@ msgid "softwarechannel_listchildchannels : List all child channels"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:181
-msgid ""
-"softwarechannel_listchildchannels CHANNEL : List children for aspecific base "
-"channel"
+msgid "softwarechannel_listchildchannels CHANNEL : List children for aspecific base channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:183
@@ -4798,9 +4693,7 @@ msgid "usage: softwarechannel_listallpackages CHANNEL"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:323
-msgid ""
-"softwarechannel_listlatestpackages: List the newest version of all packages "
-"in a channel"
+msgid "softwarechannel_listlatestpackages: List the newest version of all packages in a channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:324
@@ -4999,8 +4892,7 @@ msgid "                            software channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:599
-msgid ""
-"usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
+msgid "usage: softwarechannel_listerrata <CHANNEL ...> [from=yyyymmdd [to=yyyymmdd]]"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:657
@@ -5274,16 +5166,14 @@ msgid "Only [yes/no] values are acceptable for --disable-gpg-check"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1130
-msgid ""
-"softwarechannel_clonetree: Clone a software channel and its child channels"
+msgid "softwarechannel_clonetree: Clone a software channel and its child channels"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1131
 msgid ""
 "usage: softwarechannel_clonetree [options])\n"
 "             e.g    softwarechannel_clonetree foobasechannel -p \"my_\"\n"
-"                    softwarechannel_clonetree foobasechannel -x \"s/foo/"
-"bar\"\n"
+"                    softwarechannel_clonetree foobasechannel -x \"s/foo/bar\"\n"
 "                    softwarechannel_clonetree foobasechannel -x \"s/^/my_\"\n"
 "\n"
 "options:\n"
@@ -5340,9 +5230,7 @@ msgid "Add these packages [y/N]:"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1384
-msgid ""
-"softwarechannel_mergepackages: Merge packages from one software channel into "
-"another"
+msgid "softwarechannel_mergepackages: Merge packages from one software channel into another"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1385
@@ -5390,15 +5278,11 @@ msgid "No packages to remove"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1575
-msgid ""
-"softwarechannel_adderratabydate: Add errata from one channel into another "
-"channel based on a date range"
+msgid "softwarechannel_adderratabydate: Add errata from one channel into another channel based on a date range"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1577
-msgid ""
-"usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE "
-"ENDDATE"
+msgid "usage: softwarechannel_adderratabydate [options] SOURCE DEST BEGINDATE ENDDATE"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1578
@@ -5436,9 +5320,7 @@ msgid "Publishing errata %s to %s"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1652
-msgid ""
-"softwarechannel_listerratabydate: list errata from channelbased on a date "
-"range"
+msgid "softwarechannel_listerratabydate: list errata from channelbased on a date range"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1654
@@ -5450,8 +5332,7 @@ msgid "No errata found between the given dates"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1711
-msgid ""
-"softwarechannel_adderrata: Add patches from one channel into another channel"
+msgid "softwarechannel_adderrata: Add patches from one channel into another channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1713
@@ -5489,14 +5370,11 @@ msgid "Using the old errata.clone function"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1836
-msgid ""
-"If you have base channels for multiple OS versions, check no unexpected "
-"packages have been added"
+msgid "If you have base channels for multiple OS versions, check no unexpected packages have been added"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1849
-msgid ""
-"softwarechannel_getorgaccess: Get the org-access for the software channel"
+msgid "softwarechannel_getorgaccess: Get the org-access for the software channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1850
@@ -5504,8 +5382,7 @@ msgid "usage: softwarechannel_getorgaccess [CHANNEL ...]"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1888
-msgid ""
-"softwarechannel_setorgaccess: Set the org-access for the software channel"
+msgid "softwarechannel_setorgaccess: Set the org-access for the software channel"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1889
@@ -5513,8 +5390,7 @@ msgid ""
 "usage : softwarechannel_setorgaccess <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1929
@@ -5543,9 +5419,7 @@ msgid "Disabling %s access for channel : %s "
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1963
-msgid ""
-"softwarechannel_getorgaccesstree: Get the org-access for a software base "
-"channel and its children"
+msgid "softwarechannel_getorgaccesstree: Get the org-access for a software base channel and its children"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1964
@@ -5553,9 +5427,7 @@ msgid "usage: softwarechannel_getorgaccesstree [CHANNEL]"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1997
-msgid ""
-"softwarechannel_setorgaccesstree: set the org-access for a software base "
-"channel and its children"
+msgid "softwarechannel_setorgaccesstree: set the org-access for a software base channel and its children"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:1998
@@ -5563,8 +5435,7 @@ msgid ""
 "usage: softwarechannel_setorgaccesstree <CHANNEL> [options])\n"
 "-d,--disable : disable org access (private, no org sharing)\n"
 "-e,--enable : enable org access (public access to all trusted orgs)\n"
-"-p,--protected ORG : protected org access for ORG only (multiple instances "
-"of -p ORG are allowed)"
+"-p,--protected ORG : protected org access for ORG only (multiple instances of -p ORG are allowed)"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2037
@@ -5631,8 +5502,7 @@ msgstr ""
 #: ../src/spacecmd/softwarechannel.py:2240
 msgid ""
 "usage: softwarechannel_sync SOURCE_CHANNEL TARGET_CHANNEL [options])\n"
-"    -q,--quiet : quiet mode (omits the output of common packages in both "
-"channels)"
+"    -q,--quiet : quiet mode (omits the output of common packages in both channels)"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2282
@@ -5756,20 +5626,15 @@ msgid "merge errata of one software channel into another"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2492
-msgid ""
-"usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL "
-"[FROM_DATE] [TO_DATE]"
+msgid "usage:   softwarechannel_errata_merge SOURCE_CHANNEL TARGET_CHANNEL [FROM_DATE] [TO_DATE]"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2493
-msgid ""
-"example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel "
-"2018-01-01"
+msgid "example: softwarechannel_errata_merge OldSoftChannel NewSoftChannel 2018-01-01"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2494
-msgid ""
-"note:    Providing only FROM_DATE will merge all errata since that date."
+msgid "note:    Providing only FROM_DATE will merge all errata since that date."
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2495
@@ -5857,15 +5722,11 @@ msgid "usage: softwarechannel_setsyncschedule <CHANNEL> <SCHEDULE>"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2658
-msgid ""
-"The schedule is specified in Quartz CronTrigger format without enclosing "
-"quotes."
+msgid "The schedule is specified in Quartz CronTrigger format without enclosing quotes."
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2659
-msgid ""
-"For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 "
-"1 * * ?"
+msgid "For example, to set a schedule of every day at 1am, <SCHEDULE> would be 0 0 1 * * ?"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2660
@@ -5885,9 +5746,7 @@ msgid "usage: softwarechannel_removesyncschedule <CHANNEL>"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2723
-msgid ""
-"softwarechannel_listsyncschedule: List sync schedules for all software "
-"channels"
+msgid "softwarechannel_listsyncschedule: List sync schedules for all software channels"
 msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:2725
@@ -6550,10 +6409,8 @@ msgid ""
 "  -f local path to file contents\n"
 "\n"
 "  Note re binary/base64: Some text files, notably those containing trailing\n"
-"  newlines, those containing ASCII escape characters (or other charaters "
-"not\n"
-"  allowed in XML) need to be sent as binary (-b).  Some effort is made to "
-"auto-\n"
+"  newlines, those containing ASCII escape characters (or other charaters not\n"
+"  allowed in XML) need to be sent as binary (-b).  Some effort is made to auto-\n"
 "  detect files which require this, but you may need to explicitly specify.\n"
 msgstr ""
 
@@ -6600,8 +6457,7 @@ msgid "usage: system_removeconfigchannels <SYSTEMS> <CHANNEL ...>"
 msgstr ""
 
 #: ../src/spacecmd/system.py:1707
-msgid ""
-"system_setconfigchannelorder: Set the ranked order of configuration channels"
+msgid "system_setconfigchannelorder: Set the ranked order of configuration channels"
 msgstr ""
 
 #: ../src/spacecmd/system.py:1708
@@ -6645,8 +6501,7 @@ msgid ""
 "          -c TYPE - Possible values:\n"
 "             *  'FAIL_ON_CLEANUP_ERR' - fail in case of cleanup error,\n"
 "             *  'NO_CLEANUP' - do not cleanup, just delete,\n"
-"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway "
-"in case of error\n"
+"             *  'FORCE_DELETE' - Try cleanup first but delete server anyway in case of error\n"
 "    "
 msgstr ""
 
@@ -6818,8 +6673,7 @@ msgid "New Base Channel: %s"
 msgstr ""
 
 #: ../src/spacecmd/system.py:2569
-msgid ""
-"system_schedulechangechannels: Schedule changing a system's software channels"
+msgid "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr ""
 
 #: ../src/spacecmd/system.py:2570
@@ -6969,9 +6823,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/system.py:3092 ../src/spacecmd/system.py:3115
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_listeventhistory instead.\n"
+msgid "This method is deprecated and will be removed in a future API version. Please use system_listeventhistory instead.\n"
 msgstr ""
 
 #: ../src/spacecmd/system.py:3095
@@ -7001,12 +6853,9 @@ msgid ""
 "usage: system_listeventhistory <SYSTEMS> [options]\n"
 "\n"
 "options:\n"
-"  -s START_TIME list only the events happened after the specified time. "
-"[Default: returns all events]\n"
-"  -o OFFSET skip the first events. Ignored if -l is not specified as well. "
-"[Default: 0]\n"
-"  -l LIMIT limit the results to the specified number of events. [Default: no "
-"limit]"
+"  -s START_TIME list only the events happened after the specified time. [Default: returns all events]\n"
+"  -o OFFSET skip the first events. Ignored if -l is not specified as well. [Default: 0]\n"
+"  -l LIMIT limit the results to the specified number of events. [Default: no limit]"
 msgstr ""
 
 #: ../src/spacecmd/system.py:3210
@@ -7207,8 +7056,7 @@ msgid "Created package profile '%s'"
 msgstr ""
 
 #: ../src/spacecmd/system.py:3651
-msgid ""
-"system_comparepackageprofile: Compare a system against a package profile"
+msgid "system_comparepackageprofile: Compare a system against a package profile"
 msgstr ""
 
 #: ../src/spacecmd/system.py:3652
@@ -7321,8 +7169,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/system.py:4062
-msgid ""
-"system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
+msgid "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4063
@@ -7334,9 +7181,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/system.py:4125
-msgid ""
-"system_schedulepackagerefresh: Schedule a software package refresh for a "
-"system"
+msgid "system_schedulepackagerefresh: Schedule a software package refresh for a system"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4126
@@ -7348,9 +7193,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/system.py:4187
-msgid ""
-"system_show_packageversion: Shows version of installed package on given "
-"system(s)"
+msgid "system_show_packageversion: Shows version of installed package on given system(s)"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4188
@@ -7370,9 +7213,7 @@ msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4291
-msgid ""
-"system_scheduleapplyconfigchannels: Schedule applying the assigned config "
-"channels to the System (Minion only)"
+msgid "system_scheduleapplyconfigchannels: Schedule applying the assigned config channels to the System (Minion only)"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4293
@@ -7388,9 +7229,7 @@ msgid "Schedule applying config channels to these systems [y/N]:"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4361
-msgid ""
-"system_listmigrationtargets: List possible migration targets for given "
-"systems."
+msgid "system_listmigrationtargets: List possible migration targets for given systems."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4362
@@ -7422,9 +7261,7 @@ msgid "    Friendly names: "
 msgstr ""
 
 #: ../src/spacecmd/system.py:4408 ../src/spacecmd/system.py:4424
-msgid ""
-"This method is deprecated and will be removed in a future API version. "
-"Please use system_scheduleproductmigration instead."
+msgid "This method is deprecated and will be removed in a future API version. Please use system_scheduleproductmigration instead."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4410 ../src/spacecmd/system.py:4426
@@ -7432,45 +7269,35 @@ msgid "This method is deprecated and will be removed in a future API version"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4411
-msgid ""
-"system_schedulespmigration: Schedule a Service Pack migration for systems."
+msgid "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4412
 msgid ""
-"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4433
-msgid ""
-"system_scheduleproductmigration: Schedule a Product migration for systems."
+msgid "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4434
 msgid ""
-"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
-"<MIGRATION_TARGET> [options] \n"
+"usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> <MIGRATION_TARGET> [options] \n"
 "    For MIGRATION_TARGET parameter see system_listmigrationtargets. \n"
-"    The MIGRATION_TARGET parameter must be passed in the following format: "
-"[3143,3146,3147,3145,3144,3148,3062]. \n"
+"    The MIGRATION_TARGET parameter must be passed in the following format: [3143,3146,3147,3145,3144,3148,3062]. \n"
 "    Options: \n"
 "        -s START_TIME \n"
 "        -d pass this flag, if you want to do a dry run \n"
-"        --allow-vendor-change pass this flag if you want to allow vendor "
-"change \n"
-"        -r pass this flag if you want to remove remove products which have "
-"no successors \n"
-"        -c CHILD_CHANNELS (comma-separated child channels labels (with no "
-"spaces))"
+"        --allow-vendor-change pass this flag if you want to allow vendor change \n"
+"        -r pass this flag if you want to remove remove products which have no successors \n"
+"        -c CHILD_CHANNELS (comma-separated child channels labels (with no spaces))"
 msgstr ""
 
 #: ../src/spacecmd/system.py:4488
@@ -7494,9 +7321,7 @@ msgid "Scheduled action ID: "
 msgstr ""
 
 #: ../src/spacecmd/system.py:4509
-msgid ""
-"system_bootstrap: Bootstrap a system for management via either Salt or Salt "
-"SSH."
+msgid "system_bootstrap: Bootstrap a system for management via either Salt or Salt SSH."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4510
@@ -7579,9 +7404,7 @@ msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
 #: ../src/spacecmd/system.py:4606
-msgid ""
-"Initial phase successfully finished. Check event history for actions still "
-"running"
+msgid "Initial phase successfully finished. Check event history for actions still running"
 msgstr ""
 
 #: ../src/spacecmd/user.py:50
