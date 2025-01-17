@@ -73,10 +73,11 @@
 .btn-tertiary {
   background: none;
   border: 0;
-  padding: 4px 8px;
+  padding: 6px 8px;
   color: $eos-bc-pine-500;
   font-weight: bold;
   text-decoration: underline;
+  text-underline-offset: .2rem;
   align-self: center;
 
   i {
@@ -87,6 +88,8 @@
   &:active,
   &:focus,
   &:hover:not(:disabled):not(.disabled) {
+    text-decoration: underline;
+    text-underline-offset: .2rem;
     color: $eos-bc-green-900;
   }
 
