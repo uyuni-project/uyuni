@@ -9,10 +9,12 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.iss;
+package com.suse.manager.hub;
 
 import com.redhat.rhn.domain.credentials.SCCCredentials;
-import com.redhat.rhn.domain.iss.IssRole;
+
+import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.SCCCredentialsJson;
 
 import java.io.IOException;
 

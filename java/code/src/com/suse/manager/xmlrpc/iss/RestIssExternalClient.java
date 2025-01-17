@@ -13,7 +13,7 @@ package com.suse.manager.xmlrpc.iss;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
-import com.suse.manager.iss.IssExternalClient;
+import com.suse.manager.hub.IssExternalClient;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 import com.google.gson.Gson;

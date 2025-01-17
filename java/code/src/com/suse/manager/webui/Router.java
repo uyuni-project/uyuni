@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2024 SUSE LLC
+ * Copyright (c) 2015--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -28,7 +28,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.iss.SyncController;
+import com.suse.manager.hub.SyncController;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
