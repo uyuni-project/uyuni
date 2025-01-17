@@ -425,7 +425,9 @@ class ContentSource:
                 filters.append(('-', [p]))
 
         if filters:
-            pkglist = self._filter_packages(pkglist, filters, nevra_filter=self.nevra_filter)
+            pkglist = self._filter_packages(
+                pkglist, filters, nevra_filter=self.nevra_filter
+            )
             self.num_excluded = self.num_packages - len(pkglist)
 
         to_return = []
