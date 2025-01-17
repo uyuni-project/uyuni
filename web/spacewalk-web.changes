@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Mon Dec 16 13:37:50 CET 2024 - rosuna@suse.com
+
+- version 5.1.5-0
+  * Update the WebUI version
+
+-------------------------------------------------------------------
+Thu Dec 12 16:07:40 CET 2024 - rosuna@suse.com
+
+- version 5.1.4-0
+  * Layout improvements for the login page and error page
+
+-------------------------------------------------------------------
 Thu Dec 12 10:19:09 CET 2024 - rosuna@suse.com
 
 - version 5.1.3-0

@@ -696,10 +696,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[
           SELECT DISTINCT {r.*}
             FROM rhnChannel c
-            JOIN suseProductSCCRepository pr ON c.label = pr.channel_label
-            JOIN suseSCCRepository r ON pr.repo_id = r.id
+            JOIN suseChannelTemplate ct ON c.label = ct.channel_label
+            JOIN suseSCCRepository r ON ct.repo_id = r.id
            WHERE c.org_id IS NULL
-            AND c.id = :cid
+             AND c.id = :cid
         ]]>
         <return alias="r" class="com.redhat.rhn.domain.scc.SCCRepository" />
     </sql-query>

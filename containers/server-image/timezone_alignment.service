@@ -3,6 +3,7 @@ Description=Timezone alignment
 After=postgresql.service
 
 [Service]
+PassEnvironment=TZ
 ExecStart=timezone_alignment.sh
 Type=oneshot
 

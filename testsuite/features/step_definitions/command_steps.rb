@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024 SUSE LLC.
+# Copyright (c) 2014-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -732,28 +732,28 @@ end
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
@@ -1074,6 +1074,11 @@ When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without
   log 'Creating the bootstrap repository on the server:'
   log "  #{cmd}"
   get_target('server').run(cmd)
+end
+
+When(/^I create the bootstrap repositories including custom channels$/) do
+  get_target('server').wait_while_process_running('mgr-create-bootstrap-repo')
+  get_target('server').run('mgr-create-bootstrap-repo --auto --force --with-custom-channels', check_errors: false, verbose: true)
 end
 
 When(/^I install "([^"]*)" product on the proxy$/) do |product|
@@ -1768,4 +1773,16 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   count, _ret = get_target(host).run("grep -o -i \'#{word}\' #{path} | wc -l")
   occurences = count.to_i
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
+end
+
+Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+  system_name = get_system_name(host)
+  last_event_before_upgrade = get_last_event(host)
+  last_event = last_event_before_upgrade
+  trigger_upgrade(system_name, package)
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
+    last_event = get_last_event(host)
+    break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+  end
+  wait_action_complete(last_event['id'])
 end

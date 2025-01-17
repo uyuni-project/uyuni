@@ -651,6 +651,30 @@ DATA = {
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/6/bootstrap/",
     },
+    "SLE-15-SP7-aarch64": {
+        "PDID": [2797, 1709],
+        "BETAPDID": [1925],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
+    },
+    "SLE-15-SP7-ppc64le": {
+        "PDID": [2798, 1710],
+        "BETAPDID": [1926],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
+    },
+    "SLE-15-SP7-s390x": {
+        "PDID": [2799, 1711],
+        "BETAPDID": [1927],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
+    },
+    "SLE-15-SP7-x86_64": {
+        "PDID": [2800, 1712],
+        "BETAPDID": [1928],
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
+    },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384, 2379],
