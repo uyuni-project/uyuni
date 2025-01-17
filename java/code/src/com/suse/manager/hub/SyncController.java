@@ -9,12 +9,12 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.iss;
+package com.suse.manager.hub;
 
-import static com.suse.manager.iss.IssSparkHelper.allowingOnlyHub;
-import static com.suse.manager.iss.IssSparkHelper.allowingOnlyPeripheral;
-import static com.suse.manager.iss.IssSparkHelper.allowingOnlyUnregistered;
-import static com.suse.manager.iss.IssSparkHelper.usingTokenAuthentication;
+import static com.suse.manager.hub.IssSparkHelper.allowingOnlyHub;
+import static com.suse.manager.hub.IssSparkHelper.allowingOnlyPeripheral;
+import static com.suse.manager.hub.IssSparkHelper.allowingOnlyUnregistered;
+import static com.suse.manager.hub.IssSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
@@ -22,11 +22,12 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
-import com.redhat.rhn.domain.iss.IssRole;
 
-import com.suse.manager.model.hub.HubManager;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.RegisterJson;
+import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenParsingException;
