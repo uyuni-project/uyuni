@@ -59,6 +59,10 @@ const _MESSAGE_TYPE = {
     id: "PaygNotCompliantWarning",
     text: t("PAYG instance is not compliant"),
   },
+  SCCOptOutWarning: {
+    id: "SCCOptOutWarning",
+    text: t("SCC Data Sync Disabled"),
+  },
 };
 
 function reloadData(dataUrlSlice: string) {

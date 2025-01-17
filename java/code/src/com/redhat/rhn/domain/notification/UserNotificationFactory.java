@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.SmtpMail;
 import com.redhat.rhn.domain.notification.types.NotificationData;
+import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
@@ -235,6 +236,22 @@ public class UserNotificationFactory extends HibernateFactory {
         criteria.where(builder.equal(root.get("userId"), userIn.getId()));
 
         return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Fetch the most recent {@link NotificationMessage} of a given type.
+     *
+     * @param messageType the type of the notification message
+     * @return the latest NotificationMessage of the specified type, or null if none found
+     */
+    public static NotificationMessage getLastNotificationMessageByType(NotificationType messageType) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<NotificationMessage> criteria = builder.createQuery(NotificationMessage.class);
+        Root<NotificationMessage> root = criteria.from(NotificationMessage.class);
+        criteria.where(builder.equal(root.get("type"), messageType));
+        criteria.orderBy(builder.desc(root.get("created")));
+        List<NotificationMessage> result = getSession().createQuery(criteria).setMaxResults(1).getResultList();
+        return result.isEmpty() ? null : result.get(0);
     }
 
     /**
