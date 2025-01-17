@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2022 SUSE LLC
+# Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -52,6 +52,8 @@ Feature: Action chains on Salt minions
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I enter "andromeda" as the filtered synopsis
+    And I click on the filter button
     And I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I check radio button "schedule-by-action-chain"
