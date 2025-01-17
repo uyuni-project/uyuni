@@ -9,7 +9,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.iss;
+package com.suse.manager.hub;
 
 import java.io.IOException;
 
