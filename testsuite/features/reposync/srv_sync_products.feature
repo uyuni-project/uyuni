@@ -37,8 +37,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see a "Mandatory Channels" text
     When I close the modal dialog
 
-# In gh the fake scc does not have optional channels
-@skip_if_github_validation
 @scc_credentials
   Scenario: View the optional channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -80,8 +78,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
-# Fake SCC in gh does not contain SUMA client tools
-@skip_if_github_validation
 @scc_credentials
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
     Given I am authorized for the "Admin" section
@@ -93,8 +89,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" if present
     Then I should see that the "SUSE Manager Client Tools for SLE 15 x86_64" product is "recommended"
 
-# in github validation, the retail feature is not tested
-@skip_if_github_validation
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
