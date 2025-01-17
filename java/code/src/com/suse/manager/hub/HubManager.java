@@ -9,19 +9,22 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.model.hub;
+package com.suse.manager.hub;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
-import com.redhat.rhn.domain.iss.IssRole;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
-import com.suse.manager.iss.IssClientFactory;
-import com.suse.manager.iss.IssInternalClient;
-import com.suse.manager.iss.SCCCredentialsJson;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssHub;
+import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.IssServer;
+import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;

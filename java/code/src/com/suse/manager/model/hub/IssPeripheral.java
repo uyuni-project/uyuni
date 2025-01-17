@@ -12,7 +12,6 @@ package com.suse.manager.model.hub;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
-import com.redhat.rhn.domain.iss.IssRole;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

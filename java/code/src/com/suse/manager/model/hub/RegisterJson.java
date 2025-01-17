@@ -9,9 +9,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.manager.iss;
-
-import com.redhat.rhn.domain.iss.IssRole;
+package com.suse.manager.model.hub;
 
 import java.util.Objects;
 
