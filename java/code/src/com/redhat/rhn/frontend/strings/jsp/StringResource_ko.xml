@@ -3503,12 +3503,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target>다음은 이전 버전 패키지로서 업그레이드되어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
+      <trans-unit id="upgradable.jsp.latest" xml:space="preserve" approved="yes">
         <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target state="needs-adaptation">최신 패키지</target>
+        <target state="final">패키지 이름</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -11349,9 +11349,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve" approved="yes">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-adaptation"> 기존의 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/rhn/kickstarts에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다. 이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
+        <target state="final"> 기존의 자동 설치 프로파일을 다시 사용하려면 브라우저에서가 아닌 /var/lib/cobbler/templates에서 템플릿을 복사하기-붙여넣기하는 것이 좋습니다.  이는 템플릿 변수가 그대로 유지되어 자동 설치한 후 등록 프로세스가 제대로 작동하게 합니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -28990,7 +28990,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation">모니터링</target>
+        <target state="final">이 호스트 모니터링</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29850,20 +29850,20 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStreams</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve" approved="yes">
         <source>List Already Included Patches:</source>
-        <target state="needs-translation">이미 포함된 패치 목록:</target>
+        <target state="final">이미 포함된 패치 목록:</target>
       </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve" approved="yes">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-        <target state="needs-translation">선택된 경우 이미 채널의 일부인 패치가 표시됩니다. 이 옵션은 패치가 여러 채널의 일부이고, 그 중 하나에서 포함되었으며, 다른 채널의 패키지를 연결해야 할 때 유용합니다.</target>
+        <target state="final">선택된 경우 이미 채널의 일부인 패치가 표시됩니다. 이 옵션은 패치가 여러 채널의 일부이고, 그중 하나에서 포함되었으며, 다른 채널에서 해당 패키지를 연결해야 할 때 유용합니다.</target>
       </trans-unit>
-      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+      <trans-unit id="toolbar.create.distro" xml:space="preserve" approved="yes">
         <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
-        <target state="needs-translation">배포 만들기</target>
+        <target state="final">배포 만들기</target>
       </trans-unit>
     </body>
   </file>
