@@ -27,8 +27,12 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MgrServerInfo;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -100,6 +104,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     private String originalFqdn;
 
+    private String originalReportDb;
+
+    private String originalProductVersion;
+
     static class MockTaskomaticApi extends TaskomaticApi {
         private boolean invokeCalled;
         private String invokeName;
@@ -165,10 +173,15 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         // Setting a fake hostname for the token validation
         originalFqdn = ConfigDefaults.get().getHostname();
         originalServerSecret = Config.get().getString("server.secret_key");
+        originalReportDb =  Config.get().getString(ConfigDefaults.REPORT_DB_NAME);
+        originalProductVersion = Config.get().getString(ConfigDefaults.PRODUCT_VERSION_MGR);
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, LOCAL_SERVER_FQDN);
         Config.get().setString("server.secret_key", // my-super-secret-key-for-testing
             "6D792D73757065722D7365637265742D6B65792D666F722D74657374696E670D0A");
+
+        Config.get().setString(ConfigDefaults.REPORT_DB_NAME, "reportdb");
+        Config.get().setString(ConfigDefaults.PRODUCT_VERSION_MGR, "5.1.0");
 
         hubFactory = new HubFactory();
         clientFactoryMock = mock(IssClientFactory.class);
@@ -193,6 +206,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
         Config.get().setString("server.secret_key", originalServerSecret);
+        Config.get().setString(ConfigDefaults.REPORT_DB_NAME, originalReportDb);
+        Config.get().setString(ConfigDefaults.PRODUCT_VERSION_MGR, originalProductVersion);
     }
 
     /**
@@ -525,6 +540,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             wifQ.XldOvQJypIkb4E1am0JlBxsHYrx_7J77s1\
             vTrvoNlEU""";
 
+        ManagerInfoJson mgrInfo = new ManagerInfoJson("5.1.0", true, "reportdb", REMOTE_SERVER_FQDN, 5432);
+
         context().checking(new Expectations() {{
             allowing(clientFactoryMock).newExternalClient(REMOTE_SERVER_FQDN, "admin", "admin", null);
             will(returnValue(externalClient));
@@ -544,6 +561,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             );
 
             allowing(internalClient).storeCredentials(with(any(String.class)), with(any(String.class)));
+
+            allowing(internalClient).getManagerInfo();
+            will(returnValue(mgrInfo));
+
+            allowing(internalClient).storeReportDbCredentials(with(any(String.class)), with(any(String.class)));
         }});
 
         // Register the remote server as PERIPHERAL for this local server
@@ -560,6 +582,18 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         var issued = hubFactory.lookupAccessTokenByFqdnAndType(REMOTE_SERVER_FQDN, TokenType.ISSUED);
         assertNotNull(issued);
+
+        Optional<Server> optServer = ServerFactory.findByFqdn(REMOTE_SERVER_FQDN);
+        if (optServer.isPresent()) {
+            Server srv = optServer.get();
+            MgrServerInfo mgrServerInfo = srv.getMgrServerInfo();
+            assertEquals(mgrInfo.getReportDbName(), mgrServerInfo.getReportDbName());
+            assertEquals(mgrInfo.getVersion(), mgrServerInfo.getVersion().getVersion());
+            assertTrue(srv.hasEntitlement(EntitlementManager.FOREIGN));
+        }
+        else {
+            fail("Server not found");
+        }
     }
 
     @Test
@@ -578,6 +612,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             6ImxvY2FsLXNlcnZlci51bml0LXRlc3QubG9jYW\
             wifQ.XldOvQJypIkb4E1am0JlBxsHYrx_7J77s1\
             vTrvoNlEU""";
+
+        // REMOTE_SERVER_FQN is the Hub, but we send reportDB info from the PERIPHERAL which is LOCAL_SERVER_FQDN
+        ManagerInfoJson mgrInfo = new ManagerInfoJson("5.1.0", true, "reportdb", LOCAL_SERVER_FQDN, 5432);
 
         context().checking(new Expectations() {{
             allowing(clientFactoryMock).newExternalClient(REMOTE_SERVER_FQDN, "admin", "admin", null);
@@ -599,6 +636,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
             allowing(internalClient).generateCredentials();
             will(returnValue(new SCCCredentialsJson("peripheral-000001", "securepassword")));
+
+            allowing(internalClient).setManagerInfo(mgrInfo);
         }});
 
         // Register the remote server as HUB for this local server
