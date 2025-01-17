@@ -7,11 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-12 11:48+0100\n"
+"POT-Creation-Date: 2025-01-17 14:51+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
-"Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
-"id/>\n"
+"Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,8 +71,7 @@ msgid ""
 "                   Please contact your Org administrator for more help."
 msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
-"                   Silakan hubungi administrator Organisasi Anda untuk "
-"bantuan lebih lanjut."
+"                   Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
 #: ../server/handlers/sat/auth.py:46
 #, fuzzy
@@ -88,8 +86,7 @@ msgstr "Server \"%s\" tidak diaktifkan untuk ISS."
 #: ../server/handlers/xmlrpc/proxy.py:70
 #, fuzzy, python-format
 msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
-"Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+msgstr "Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:92
 #, fuzzy
@@ -120,11 +117,8 @@ msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
 
 #: ../server/importlib/userAuth.py:159
 #, fuzzy, python-format
-msgid ""
-"You are not allowed to manage channel %s, or that channel does not exist"
-msgstr ""
-"Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak "
-"ada"
+msgid "You are not allowed to manage channel %s, or that channel does not exist"
+msgstr "Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak ada"
 
 #: ../server/importlib/userAuth.py:229
 #, fuzzy, python-format
@@ -134,17 +128,12 @@ msgid ""
 "               Please contact your Org administrator for more help."
 msgstr ""
 "Akun %s telah dinonaktifkan pada server ini.\n"
-"               Silakan hubungi administrator Organisasi Anda untuk bantuan "
-"lebih lanjut."
+"               Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
 #: ../server/rhnChannel.py:2216
 #, fuzzy, python-format
-msgid ""
-"Your account does not have access to any channels matching "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
-msgstr ""
-"Akun Anda tidak memiliki akses ke saluran apa pun yang cocok "
-"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgstr "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
 #, fuzzy, python-format
@@ -184,8 +173,7 @@ msgid ""
 "  %(entitlement_url)s\n"
 msgstr ""
 "Sistem ini telah berhasil didaftarkan, namun belum\n"
-"  layanan.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
-"di:\n"
+"  layanan.  Untuk memberikan hak sistem ini ke layanan, login ke situs web di:\n"
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
@@ -194,14 +182,12 @@ msgstr ""
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site "
-"at:\n"
+"  were available.  To entitle this system to service, login to the web site at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
 "Sistem ini telah berhasil didaftarkan, tetapi tidak ada hak layanan\n"
-"  tersedia.  Untuk memberikan hak sistem ini ke layanan, login ke situs web "
-"di:\n"
+"  tersedia.  Untuk memberikan hak sistem ini ke layanan, login ke situs web di:\n"
 "\n"
 "%(entitlement_url)s (Dalam Bahasa Inggris)"
 
@@ -254,12 +240,8 @@ msgstr "Jumlah penggunaan maksimum dari %s tercapai"
 
 #: ../server/rhnServer/server_token.py:869
 #, fuzzy
-msgid ""
-"Stacking of re-registration tokens with different base entitlements is not "
-"supported"
-msgstr ""
-"Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak "
-"didukung"
+msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgstr "Penumpukan token pendaftaran ulang dengan hak dasar yang berbeda tidak didukung"
 
 #: ../server/rhnServer/server_token.py:946
 #, fuzzy, python-format
@@ -455,19 +437,15 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "Fungsionalitas server anonim tidak lagi tersedia.\n"
 "\n"
-"Silakan mendaftar ulang sistem ini dengan menjalankan mgr_register sebagai "
-"root.\n"
-"     Silakan kunjungi https://%(hostname)s/rhn/systems/SystemEntitlements."
-"do\n"
+"Silakan mendaftar ulang sistem ini dengan menjalankan mgr_register sebagai root.\n"
+"     Silakan kunjungi https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     atau login di https://%(hostname)s, dan dari tab \"Ikhtisar\",\n"
-"     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem "
-"ini."
+"     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem ini."
 
 #: ../common/rhnException.py:85
 #, fuzzy
@@ -486,16 +464,13 @@ msgid ""
 "     This system does not have a valid entitlement for SUSE Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this "
-"system.\n"
+"     select \"Subscription Management\" to enable the service for this system.\n"
 "     "
 msgstr ""
 "Sistem ini tidak memiliki hak yang valid untuk Manajer SUSE.\n"
-"     Silakan kunjungi https://%(hostname)s/rhn/systems/SystemEntitlements."
-"do\n"
+"     Silakan kunjungi https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     atau login di https://%(hostname)s, dan dari tab \"Ikhtisar\",\n"
-"     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem "
-"ini."
+"     pilih \"Manajemen Langganan\" untuk mengaktifkan layanan untuk sistem ini."
 
 #: ../common/rhnException.py:95
 #, fuzzy
@@ -525,8 +500,7 @@ msgstr "Tindakan tidak sah"
 #: ../common/rhnException.py:101
 #, fuzzy
 msgid "You are not allowed to perform administrative tasks on this system."
-msgstr ""
-"Anda tidak diizinkan untuk melakukan tugas administratif pada sistem ini."
+msgstr "Anda tidak diizinkan untuk melakukan tugas administratif pada sistem ini."
 
 #: ../common/rhnException.py:104
 #, fuzzy
@@ -555,10 +529,8 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for "
-"your\n"
-"     account if the maximum number of users allowed to subscribe to server "
-"needs\n"
+"     user account. Please check with the organization administrator for your\n"
+"     account if the maximum number of users allowed to subscribe to server needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
@@ -566,8 +538,7 @@ msgstr ""
 "\n"
 "Pengaturan saat ini untuk akun Anda tidak memungkinkan Anda menambahkan\n"
 "     akun pengguna. Silakan hubungi administrator organisasi untuk\n"
-"     akun jika jumlah maksimum pengguna yang diizinkan untuk berlangganan "
-"kebutuhan server\n"
+"     akun jika jumlah maksimum pengguna yang diizinkan untuk berlangganan kebutuhan server\n"
 "     untuk diubah."
 
 #: ../common/rhnException.py:119
@@ -577,10 +548,8 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for "
-"your\n"
-"     account for modifying the maximum number of system profiles that can "
-"be\n"
+"     system profile. Please check with the organization administrator for your\n"
+"     account for modifying the maximum number of system profiles that can be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
@@ -613,16 +582,12 @@ msgstr "Header RPM tidak valid"
 #, fuzzy
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to "
-"register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using "
-"the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
-"Sistem ini sudah terdaftar sebagai Salt Minion. Jika Anda ingin "
-"mendaftarkannya sebagai klien tradisional\n"
-"    silakan hapus terlebih dahulu melalui UI web atau API dan kemudian "
-"daftarkan menggunakan alat tradisional."
+"Sistem ini sudah terdaftar sebagai Salt Minion. Jika Anda ingin mendaftarkannya sebagai klien tradisional\n"
+"    silakan hapus terlebih dahulu melalui UI web atau API dan kemudian daftarkan menggunakan alat tradisional."
 
 #. For the uploading tools
 #: ../common/rhnException.py:144
@@ -720,9 +685,7 @@ msgstr "Manajer SUSE atau saluran Proxy tidak dapat di subscribe."
 #: ../common/rhnException.py:185
 #, fuzzy
 msgid "There was an error while trying to join the system to its groups"
-msgstr ""
-"Ada kesalahan saat mencoba untuk bergabung dengan sistem untuk kelompok-"
-"kelompok"
+msgstr "Ada kesalahan saat mencoba untuk bergabung dengan sistem untuk kelompok-kelompok"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:187
@@ -838,12 +801,9 @@ msgstr ""
 #, fuzzy
 msgid ""
 "\n"
-"     This SUSE Manager server is not allowed to use Inter Server Sync on "
-"this server\n"
+"     This SUSE Manager server is not allowed to use Inter Server Sync on this server\n"
 "     "
-msgstr ""
-"Server Manajer SUSE ini tidak diizinkan untuk menggunakan Inter Server Sync "
-"di server ini"
+msgstr "Server Manajer SUSE ini tidak diizinkan untuk menggunakan Inter Server Sync di server ini"
 
 #: ../common/rhnException.py:231
 #, fuzzy
@@ -1034,8 +994,7 @@ msgstr ""
 "Telah terjadi galat saat memproses permintaan Anda. Jika masalah ini\n"
 "     tetap ada, silakan masukkan laporan bug di scc.suse.com.\n"
 "     Jika Anda memilih untuk mengirimkan laporan bug, pastikan untuk\n"
-"     rincian dari apa yang Anda coba lakukan ketika kesalahan ini terjadi "
-"dan\n"
+"     rincian dari apa yang Anda coba lakukan ketika kesalahan ini terjadi dan\n"
 "     rincian tentang cara mereproduksi masalah ini."
 
 #: ../common/rhnException.py:368
@@ -1098,10 +1057,8 @@ msgid ""
 msgstr ""
 "ERROR: ada masalah saat mengakses data channel dari\n"
 "       Repositori. Apakah Anda memigrasikan semua data dari ISO saluran\n"
-"       melakukan direktori ini? Jika demikian, silakan periksa kembali "
-"saluran ISOs, pastikan\n"
-"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan "
-"mengisi kembali\n"
+"       melakukan direktori ini? Jika demikian, silakan periksa kembali saluran ISOs, pastikan\n"
+"       bahwa Anda memiliki mereka semua, dan kemudian berulang-ulang dan mengisi kembali\n"
 "       repositori sementara (%s)."
 
 #: ../satellite_tools/messages.py:45
@@ -1119,14 +1076,12 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your "
-"configuration,\n"
+"       Depending on the specific error details, please review your configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
 "GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-"       Tergantung pada rincian kesalahan tertentu, silakan tinjau "
-"konfigurasi Anda,\n"
+"       Tergantung pada rincian kesalahan tertentu, silakan tinjau konfigurasi Anda,\n"
 "       konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
 "       Pesan galat: %s"
 
@@ -1135,18 +1090,14 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) "
-"synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
 msgstr ""
-"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan "
-"sebagai\n"
-"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) "
-"disinkronkan\n"
-"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang "
-"hilang untuk ini\n"
+"GALAT: saluran anak tidak dapat disinkronkan tanpa induknya disinkronkan sebagai\n"
+"       Baik. Orang tua harus (a) sebelumnya disinkronkan atau (b) disinkronkan\n"
+"       bersama-sama dengan saluran anak yang diinginkan. Orang tua yang hilang untuk ini\n"
 "       Transaksi:\n"
 "       %s"
 
@@ -1158,8 +1109,7 @@ msgid ""
 "Please contact your SUSE Manager contact\n"
 "%s"
 msgstr ""
-"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran "
-"ini.\n"
+"ERROR: Anda tidak berhak menyinkronkan saluran dalam serangkaian saluran ini.\n"
 "Silakan hubungi kontak SUSE Manager Anda\n"
 "%s"
 
@@ -1336,12 +1286,8 @@ msgstr "detik"
 
 #: ../satellite_tools/satsync.py:422
 #, fuzzy
-msgid ""
-"ERROR: The dump is missing package data, use --no-rpms to skip this step or "
-"fix the content to include package data."
-msgstr ""
-"GALAT: Dump hilang paket data, gunakan --no-rpms untuk melewati langkah ini "
-"atau memperbaiki konten untuk menyertakan paket data."
+msgid "ERROR: The dump is missing package data, use --no-rpms to skip this step or fix the content to include package data."
+msgstr "GALAT: Dump hilang paket data, gunakan --no-rpms untuk melewati langkah ini atau memperbaiki konten untuk menyertakan paket data."
 
 #: ../satellite_tools/satsync.py:477
 #, fuzzy
@@ -1371,17 +1317,11 @@ msgstr "- Sinkronisasi langsung"
 #: ../satellite_tools/satsync.py:627
 #, fuzzy, python-brace-format
 msgid ""
-"ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
-"supported.\n"
-"Please use the cdn-sync command instead unless you are attempting to sync "
-"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
-"content on disk via Channel Dump ISOs."
+"ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\n"
+"Please use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
 msgstr ""
-"KESALAHAN: Sinkronisasi konten langsung dengan RHN Classic Hosted tidak lagi "
-"didukung.\n"
-"Silakan gunakan perintah cdn-sync sebagai gantinya kecuali Jika Anda mencoba "
-"untuk menyinkronkan dari Satelit lain melalui Inter-Satelite-Sync (ISS), "
-"atau dari konten lokal pada disk melalui Channel Dump ISOs."
+"KESALAHAN: Sinkronisasi konten langsung dengan RHN Classic Hosted tidak lagi didukung.\n"
+"Silakan gunakan perintah cdn-sync sebagai gantinya kecuali Jika Anda mencoba untuk menyinkronkan dari Satelit lain melalui Inter-Satelite-Sync (ISS), atau dari konten lokal pada disk melalui Channel Dump ISOs."
 
 #: ../satellite_tools/satsync.py:640
 #, fuzzy, python-format
@@ -1430,11 +1370,8 @@ msgstr "GALAT: pengecualian (selama parse) terjadi:"
 
 #: ../satellite_tools/satsync.py:719
 #, fuzzy, python-format
-msgid ""
-"   Encountered some errors with %s data (see logs (%s) for more information)"
-msgstr ""
-"Mengalami beberapa kesalahan dengan data %s (lihat log (%s) untuk informasi "
-"lebih lanjut)"
+msgid "   Encountered some errors with %s data (see logs (%s) for more information)"
+msgstr "Mengalami beberapa kesalahan dengan data %s (lihat log (%s) untuk informasi lebih lanjut)"
 
 #: ../satellite_tools/satsync.py:728
 #, fuzzy, python-format
@@ -1711,12 +1648,8 @@ msgstr "Mengimpor..."
 
 #: ../satellite_tools/satsync.py:2088
 #, fuzzy
-msgid ""
-"Package Not Found in Cache, Clear the Cache "
-"to                                  Regenerate it."
-msgstr ""
-"Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu.Paket "
-"tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
+msgid "Package Not Found in Cache, Clear the Cache to                                  Regenerate it."
+msgstr "Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu.Paket tidak ditemukan di Cache, Kosongkan Cache untuk meregenerasi itu."
 
 #: ../satellite_tools/satsync.py:2096
 #, fuzzy
@@ -1751,12 +1684,8 @@ msgstr "Baris perintah: %s"
 
 #: ../satellite_tools/satsync.py:2670
 #, fuzzy, python-format
-msgid ""
-"DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
-"mgr-inter-sync\" for more information."
-msgstr ""
-"DEBUG HANYA: max. batch-size untuk XML/database-import processing (1..%s).\" "
-"manusia satelit-sync\" untuk informasi lebih lanjut."
+msgid "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man mgr-inter-sync\" for more information."
+msgstr "DEBUG HANYA: max. batch-size untuk XML/database-import processing (1..%s).\" manusia satelit-sync\" untuk informasi lebih lanjut."
 
 #: ../satellite_tools/satsync.py:2678
 #, fuzzy
@@ -1770,12 +1699,8 @@ msgstr "data proses untuk saluran ini saja"
 
 #: ../satellite_tools/satsync.py:2690
 #, fuzzy
-msgid ""
-"disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
-"for more information."
-msgstr ""
-"dump disk akan dianggap sebagai ekspor penuh; lihat \"man satellite-sync\" "
-"untuk informasi lebih lanjut."
+msgid "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" for more information."
+msgstr "dump disk akan dianggap sebagai ekspor penuh; lihat \"man satellite-sync\" untuk informasi lebih lanjut."
 
 #: ../satellite_tools/satsync.py:2697
 #, fuzzy
@@ -1784,11 +1709,8 @@ msgstr "saluran kustom yang ada juga akan disinkronkan (kecuali -c digunakan)"
 
 #: ../satellite_tools/satsync.py:2703
 #, fuzzy, python-format
-msgid ""
-"override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
-msgstr ""
-"menimpa tingkat debug yang ditetapkan dalam /etc/rhn/rhn.conf (yang saat ini "
-"disedingkan di %s)."
+msgid "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
+msgstr "menimpa tingkat debug yang ditetapkan dalam /etc/rhn/rhn.conf (yang saat ini disedingkan di %s)."
 
 #: ../satellite_tools/satsync.py:2710
 #, fuzzy, python-format
@@ -1883,8 +1805,7 @@ msgstr "server alternatif yang digunakan untuk menghubungkan (nama host)"
 #: ../satellite_tools/satsync.py:2801
 #, fuzzy
 msgid "synchronize to this step (man mgr-inter-sync for more info)"
-msgstr ""
-"sinkronisasi ke langkah ini (man satellite-sync untuk info lebih lanjut)"
+msgstr "sinkronisasi ke langkah ini (man satellite-sync untuk info lebih lanjut)"
 
 #: ../satellite_tools/satsync.py:2807
 #, fuzzy
@@ -1908,20 +1829,13 @@ msgstr "tidak menghapus rpm saat mengimpor dari dump lokal"
 
 #: ../satellite_tools/satsync.py:2829
 #, fuzzy
-msgid ""
-"the fully qualified domain name of the master Satellite. Valid with --mount-"
-"point only. Required if you want to import org data and channel permissions."
-msgstr ""
-"nama domain yang memenuhi syarat dari satelit master. Hanya valid dengan --"
-"mount-point. Diperlukan jika Anda ingin mengimpor data organisasi dan izin "
-"saluran."
+msgid "the fully qualified domain name of the master Satellite. Valid with --mount-point only. Required if you want to import org data and channel permissions."
+msgstr "nama domain yang memenuhi syarat dari satelit master. Hanya valid dengan --mount-point. Diperlukan jika Anda ingin mengimpor data organisasi dan izin saluran."
 
 #: ../satellite_tools/satsync.py:2843
 #, fuzzy, python-format
 msgid "ERROR: these arguments make no sense in this context (try --help): %s"
-msgstr ""
-"GALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): "
-"%sGALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
+msgstr "GALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %sGALAT: argumen ini tidak masuk akal dalam konteks ini (coba --help): %s"
 
 #. An SQL error is fatal... crash and burn
 #: ../satellite_tools/satsync.py:2856
@@ -1976,28 +1890,18 @@ msgstr "GALAT: Tidak dapat mencari Id Organisasi %s"
 
 #: ../satellite_tools/satsync.py:2951
 #, fuzzy
-msgid ""
-"WARNING: --list-channels option overrides any --step option. --step ignored."
-msgstr ""
-"PERINGATAN: Opsi --list-channels menimpa opsi --step apa pun. --langkah "
-"diabaikan."
+msgid "WARNING: --list-channels option overrides any --step option. --step ignored."
+msgstr "PERINGATAN: Opsi --list-channels menimpa opsi --step apa pun. --langkah diabaikan."
 
 #: ../satellite_tools/satsync.py:2972
 #, fuzzy, python-format
-msgid ""
-"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
-msgstr ""
-"GALAT: '%s' bukan langkah yang valid. Lihat 'man satellite-sync' untuk "
-"detail lebih lanjut."
+msgid "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
+msgstr "GALAT: '%s' bukan langkah yang valid. Lihat 'man satellite-sync' untuk detail lebih lanjut."
 
 #: ../satellite_tools/satsync.py:3009
 #, fuzzy
-msgid ""
-"ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
-"then mgr-inter-sync -c chn0 -c chn1..."
-msgstr ""
-"GALAT: Tidak ada saluran yang saat ini diimpor; coba mgr-inter-sync --list-"
-"channels; kemudian mgr-inter-sync -c chn0 -c chn1..."
+msgid "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; then mgr-inter-sync -c chn0 -c chn1..."
+msgstr "GALAT: Tidak ada saluran yang saat ini diimpor; coba mgr-inter-sync --list-channels; kemudian mgr-inter-sync -c chn0 -c chn1..."
 
 #: ../satellite_tools/satsync.py:3064 ../satellite_tools/satsync.py:3071
 #, fuzzy
@@ -2106,12 +2010,8 @@ msgstr "16 - server.mount_point tidak ditetapkan dalam file konfigurasi"
 
 #: ../satellite_tools/satsync.py:3107
 #, fuzzy
-msgid ""
-"  17 - SQL error during retrieving the channels already imported in the SUSE "
-"Manager database"
-msgstr ""
-"17 - GALAT SQL selama mengambil saluran yang sudah diimpor dalam database "
-"SUSE Manager"
+msgid "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"
+msgstr "17 - GALAT SQL selama mengambil saluran yang sudah diimpor dalam database SUSE Manager"
 
 #: ../satellite_tools/satsync.py:3109
 #, fuzzy
@@ -2205,12 +2105,8 @@ msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
 #~ msgstr "Versi rilis sistem tidak valid yang diminta"
 
 #, fuzzy
-#~ msgid ""
-#~ "Unable to find a valid network interface, both ipaddr and ip6addr not "
-#~ "found."
-#~ msgstr ""
-#~ "Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr "
-#~ "tidak ditemukan."
+#~ msgid "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+#~ msgstr "Tidak dapat menemukan antarmuka jaringan yang valid, ipaddr dan ip6addr tidak ditemukan."
 
 #, fuzzy
 #~ msgid "Privacy Statement"
@@ -2283,12 +2179,9 @@ msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
 #, fuzzy
 #~ msgid ""
 #~ "\n"
-#~ "If you have a registration number, please register with it first at "
-#~ "http://www.redhat.com/apps/activate/ and then try again.\n"
+#~ "If you have a registration number, please register with it first at http://www.redhat.com/apps/activate/ and then try again.\n"
 #~ "\n"
-#~ msgstr ""
-#~ "Jika Anda memiliki nomor registrasi, silakan mendaftar dengan terlebih "
-#~ "dahulu di http://www.redhat.com/apps/activate/ dan kemudian coba lagi."
+#~ msgstr "Jika Anda memiliki nomor registrasi, silakan mendaftar dengan terlebih dahulu di http://www.redhat.com/apps/activate/ dan kemudian coba lagi."
 
 #, fuzzy
 #~ msgid ""
@@ -2305,8 +2198,7 @@ msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
 #~ "Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
 #~ "Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
 #~ "karena tidak berlangganan saluran. Jika Anda belum\n"
-#~ "mengaktifkan produk Anda untuk layanan, silakan kunjungi website kami "
-#~ "di:\n"
+#~ "mengaktifkan produk Anda untuk layanan, silakan kunjungi website kami di:\n"
 #~ "\n"
 #~ "http://www.redhat.com/apps/activate/\n"
 #~ "\n"
@@ -2316,21 +2208,15 @@ msgstr "GALAT: versi dump tidak diketahui, coba salah satu dari %s"
 #~ msgid ""
 #~ "\n"
 #~ "ERROR: There was a problem communicating with the ISS Master.\n"
-#~ "       If the master satellite is older than v5.3, it does not have ISS "
-#~ "capability.\n"
-#~ "       Otherwise, depending on the specific error details, please review "
-#~ "your\n"
-#~ "       configuration, basic network connectivity, and/or name resolution, "
-#~ "and try again.\n"
+#~ "       If the master satellite is older than v5.3, it does not have ISS capability.\n"
+#~ "       Otherwise, depending on the specific error details, please review your\n"
+#~ "       configuration, basic network connectivity, and/or name resolution, and try again.\n"
 #~ "       Error message: %s\n"
 #~ msgstr ""
 #~ "GALAT: Ada masalah berkomunikasi dengan ISS Master.\n"
-#~ "       Jika satelit master lebih tua dari v5.3, itu tidak memiliki "
-#~ "kemampuan ISS.\n"
-#~ "       Jika tidak, tergantung pada rincian kesalahan tertentu, harap "
-#~ "tinjau\n"
-#~ "       konfigurasi, konektivitas jaringan dasar, dan/atau resolusi nama, "
-#~ "dan coba lagi.\n"
+#~ "       Jika satelit master lebih tua dari v5.3, itu tidak memiliki kemampuan ISS.\n"
+#~ "       Jika tidak, tergantung pada rincian kesalahan tertentu, harap tinjau\n"
+#~ "       konfigurasi, konektivitas jaringan dasar, dan/atau resolusi nama, dan coba lagi.\n"
 #~ "       Pesan galat: %s"
 
 #, fuzzy
