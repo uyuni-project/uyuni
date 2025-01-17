@@ -158,7 +158,6 @@ public class RegistrationUtils {
                     true,
                     emptyList()));
         }
-        SystemManager.setReportDbUser(minion, false);
 
         // get hardware and network async
         // Hardware refresh depends on channels being assigned so as a temporary
