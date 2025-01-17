@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024 SUSE LLC.
+# Copyright (c) 2014-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -734,28 +734,28 @@ end
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1]
+  output = output.split(/\n+/)[-1].delete("\r")
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
