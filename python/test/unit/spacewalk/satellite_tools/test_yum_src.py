@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# pylint: disable=missing-module-docstring
+# pylint: disable=missing-module-docstring,missing-class-docstring
 # -*- coding: utf-8 -*-
 #
 # Copyright (c) 2011 SUSE LLC
@@ -114,20 +114,21 @@ class YumSrcTest(unittest.TestCase):
     def test_list_packages_filters(self):
         cs = self._make_dummy_cs()
 
-        class ChecksumMock():
+        class ChecksumMock:
             def typestr(self):
                 pass
 
             def hex(self):
                 pass
 
-        class SolvableMock():
+        class SolvableMock:
             def __init__(self, name, evr, nevra, arch):
                 self.name = name
                 self.evr = evr
                 self.nevra = nevra
                 self.arch = arch
 
+            # pylint: disable-next=unused-argument
             def lookup_checksum(self, x):
                 return ChecksumMock()
 
@@ -140,31 +141,73 @@ class YumSrcTest(unittest.TestCase):
             def __str__(self):
                 return self.nevra
 
-        cs._get_solvable_packages = MagicMock(side_effect = lambda:
-            [
-                SolvableMock("pkg1", "1.2.3-xx.0.foobar", "pkg1-1.2.3-xx.0.foobar.x86_64", "x86_64"),
-                SolvableMock("pkg1", "1.2.4-xx.0.foobar", "pkg1-1.2.4-xx.0.foobar.x86_64", "x86_64"),
+        # pylint: disable-next=protected-access
+        cs._get_solvable_packages = MagicMock(
+            side_effect=lambda: [
+                SolvableMock(
+                    "pkg1",
+                    "1.2.3-xx.0.foobar",
+                    "pkg1-1.2.3-xx.0.foobar.x86_64",
+                    "x86_64",
+                ),
+                SolvableMock(
+                    "pkg1",
+                    "1.2.4-xx.0.foobar",
+                    "pkg1-1.2.4-xx.0.foobar.x86_64",
+                    "x86_64",
+                ),
                 SolvableMock("pkg2", "3.2.1-1", "pkg2-3.2.1-1.x86_64", "x86_64"),
                 SolvableMock("pkg2", "3.2.2-1", "pkg2-3.2.2-1.x86_64", "x86_64"),
             ]
         )
-        cs._get_solvable_dependencies = MagicMock(side_effect = lambda x: x)
+        # pylint: disable-next=protected-access
+        cs._get_solvable_dependencies = MagicMock(side_effect=lambda x: x)
 
         self.assertEqual(len(cs.list_packages(filters=None, latest=False)), 4)
 
         cs.nevra_filter = False
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg*"])], latest=False)), 4)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1*"])], latest=False)), 2)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1-1.2*"])], latest=False)), 0)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1"])], latest=False)), 2)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1-1.2.3-xx.0.foobar.x86_64"])], latest=False)), 0)
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg*"])], latest=False)), 4
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1*"])], latest=False)), 2
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1-1.2*"])], latest=False)), 0
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1"])], latest=False)), 2
+        )
+        self.assertEqual(
+            len(
+                cs.list_packages(
+                    filters=[("+", ["pkg1-1.2.3-xx.0.foobar.x86_64"])], latest=False
+                )
+            ),
+            0,
+        )
 
         cs.nevra_filter = True
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg*"])], latest=False)), 4)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1*"])], latest=False)), 2)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1-1.2*"])], latest=False)), 2)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1"])], latest=False)), 0)
-        self.assertEqual(len(cs.list_packages(filters=[("+", ["pkg1-1.2.3-xx.0.foobar.x86_64"])], latest=False)), 1)
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg*"])], latest=False)), 4
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1*"])], latest=False)), 2
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1-1.2*"])], latest=False)), 2
+        )
+        self.assertEqual(
+            len(cs.list_packages(filters=[("+", ["pkg1"])], latest=False)), 0
+        )
+        self.assertEqual(
+            len(
+                cs.list_packages(
+                    filters=[("+", ["pkg1-1.2.3-xx.0.foobar.x86_64"])], latest=False
+                )
+            ),
+            1,
+        )
 
     @unittest.skip
     def test_list_packages_with_pack(self):

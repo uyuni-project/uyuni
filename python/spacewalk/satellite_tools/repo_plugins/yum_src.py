@@ -1223,7 +1223,9 @@ password={passwd}
                 filters.append(("-", [p]))
 
         if filters:
-            pkglist = self._filter_packages(pkglist, filters, nevra_filter=self.nevra_filter)
+            pkglist = self._filter_packages(
+                pkglist, filters, nevra_filter=self.nevra_filter
+            )
             pkglist = self._get_solvable_dependencies(pkglist)
 
             # Do not pull in dependencies if there're explicitly excluded
