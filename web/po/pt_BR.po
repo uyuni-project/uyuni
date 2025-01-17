@@ -17,11 +17,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:38+0100\n"
+"POT-Creation-Date: 2025-01-17 14:51+0100\n"
 "PO-Revision-Date: 2021-03-07 04:47+0000\n"
 "Last-Translator: Rodrigo Macedo <rmsolucoeseminformatic4@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/"
-"web/pt_BR/>\n"
+"Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/web/pt_BR/>\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,17 +28,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
 "X-Generator: Weblate 3.6.1\n"
 
-#: ../html/javascript/spacewalk-essentials.js:471
+#: ../html/javascript/spacewalk-essentials.js:461
 msgid "remaining"
 msgstr "restante"
 
-#: ../html/javascript/spacewalk-essentials.js:491
-msgid ""
-"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
-"Edge"
-msgstr ""
-"O navegador Internet Explorer não é compatível. Tente usar Firefox, Chrome "
-"ou Edge"
+#: ../html/javascript/spacewalk-essentials.js:481
+msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
+msgstr "O navegador Internet Explorer não é compatível. Tente usar Firefox, Chrome ou Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
@@ -50,9 +45,7 @@ msgstr "Cadeia de novas ações"
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
-msgid ""
-"Unable to schedule action. Please check the server logs for detailed "
-"information."
+msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr ""
 
 #: ../html/src/components/CoCoScansList.tsx:122
@@ -94,8 +87,7 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
-"Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
+msgstr "Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
 
 #: ../html/src/components/FormulaForm.tsx:168
 #, fuzzy
@@ -108,12 +100,8 @@ msgid "Invalid format of fields: {fields}"
 msgstr "Formato inválido de campos: {0}"
 
 #: ../html/src/components/FormulaForm.tsx:213
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"Nesta página você pode configurar o Salt Formulas para instalar e configurar "
-"o software automaticamente."
+msgid "On this page you can configure Salt Formulas to automatically install and configure software."
+msgstr "Nesta página você pode configurar o Salt Formulas para instalar e configurar o software automaticamente."
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
@@ -136,14 +124,8 @@ msgid "new action chain"
 msgstr "Cadeia de novas ações"
 
 #: ../html/src/components/action-schedule.tsx:198
-msgid ""
-"There are multiple maintenance schedules for selected systems. Make sure "
-"that systems in the set use at most 1 maintenance schedule if you want to "
-"schedule by date or maintenance window."
-msgstr ""
-"Existem vários programas de manutenção para sistemas selecionados. "
-"Certifique-se de que os sistemas do conjunto usem no máximo 1 programação de "
-"manutenção se desejar programar por data ou janela de manutenção."
+msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
+msgstr "Existem vários programas de manutenção para sistemas selecionados. Certifique-se de que os sistemas do conjunto usem no máximo 1 programação de manutenção se desejar programar por data ou janela de manutenção."
 
 #: ../html/src/components/action-schedule.tsx:205
 msgid "No upcoming maintenance windows"
@@ -383,11 +365,8 @@ msgstr "Tem certeza de que deseja {0} {1} "
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 #, fuzzy
-msgid ""
-"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
-"selected)"
-msgstr ""
-"Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
+msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
+msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
 #: ../html/src/components/dialog/DangerDialog.tsx:62
@@ -462,14 +441,8 @@ msgid " No group"
 msgstr " Sem grupo"
 
 #: ../html/src/components/formula-selection.tsx:272
-msgid ""
-"On this page you can select Salt Formulas for this group/system, which can "
-"then be configured on group and system level. This allows you to "
-"automatically install and configure software."
-msgstr ""
-"Nesta página, você pode selecionar Fórmulas de Sal para este grupo / "
-"sistema, que podem ser configuradas no nível do grupo e do sistema. Isso "
-"permite que você instale e configure o software automaticamente."
+msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
+msgstr "Nesta página, você pode selecionar Fórmulas de Sal para este grupo / sistema, que podem ser configuradas no nível do grupo e do sistema. Isso permite que você instale e configure o software automaticamente."
 
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
@@ -479,9 +452,7 @@ msgstr "Fórmulas"
 
 #: ../html/src/components/formulas/EditGroup.tsx:358
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
-"Este campo é usado como um identificador de 'chave' nos dados do pilar "
-"resultante."
+msgstr "Este campo é usado como um identificador de 'chave' nos dados do pilar resultante."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
@@ -563,7 +534,7 @@ msgid "Last Name"
 msgstr "Primeiro Nome"
 
 #: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
-#: ../html/src/manager/login/uyuni/login.tsx:76
+#: ../html/src/manager/login/uyuni/login.tsx:78
 msgid "Login"
 msgstr "Acesso"
 
@@ -594,8 +565,8 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:88
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -678,7 +649,7 @@ msgstr ""
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1130
+#: ../html/src/manager/admin/setup/products/products.tsx:1135
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -794,12 +765,8 @@ msgid "Monthly:"
 msgstr "Mensal:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:468
-msgid ""
-"Days are limited to 28 to have a recurring schedule available for all the "
-"months"
-msgstr ""
-"Os dias são limitados a 28 para ter uma programação recorrente disponível "
-"para todos os meses"
+msgid "Days are limited to 28 to have a recurring schedule available for all the months"
+msgstr "Os dias são limitados a 28 para ter uma programação recorrente disponível para todos os meses"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
 msgid "Custom Quartz format:"
@@ -877,8 +844,7 @@ msgid "Reboot state will be put last."
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:132
-msgid ""
-"'Reboot system' and 'Reboot system if needed' states cannot be used together."
+msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:155
@@ -891,8 +857,7 @@ msgstr "Ocorreu um erro ao salvar."
 
 #: ../html/src/components/states-picker.tsx:308
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
-"Nenhum estado atribuído. Use a pesquisa para localizar e atribuir estados."
+msgstr "Nenhum estado atribuído. Use a pesquisa para localizar e atribuir estados."
 
 #: ../html/src/components/states-picker.tsx:367
 #: ../html/src/manager/images/image-view.tsx:817
@@ -1001,8 +966,7 @@ msgid "Assign"
 msgstr "Assinar"
 
 #: ../html/src/components/states-picker.tsx:513
-msgid ""
-"Select the systems to schedule for immediate state execution and confirm."
+msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr ""
 
 #: ../html/src/components/states-picker.tsx:523
@@ -1117,7 +1081,7 @@ msgid "({selectedCount} selected)"
 msgstr ""
 
 #: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:382
 msgid "Clear"
 msgstr ""
 
@@ -1236,9 +1200,7 @@ msgid "Enabling monitoring failed. See the server logs for details."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
-msgid ""
-"Failed to enable all monitoring services. Some services are still disabled. "
-"See the server logs for details."
+msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
@@ -1246,9 +1208,7 @@ msgid "Disabling monitoring failed. See the server logs for details."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
-msgid ""
-"Failed to disable all monitoring services. Some services are still enabled. "
-"See the server logs for details."
+msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
@@ -1260,25 +1220,19 @@ msgid "Monitoring disabled successfully."
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
-msgid ""
-"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:42
-msgid ""
-"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:46
-msgid ""
-"The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
-msgid ""
-"The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
@@ -1402,9 +1356,7 @@ msgid "Restarting"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:406
-msgid ""
-" Tomcat and Taskomatic is needed for the configuration changes to take "
-"effect."
+msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr ""
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
@@ -1447,7 +1399,7 @@ msgid "Bastion SSH connection data"
 msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:307
+#: ../html/src/manager/admin/setup/products/products.tsx:312
 msgid "Setup Wizard"
 msgstr ""
 
@@ -1484,9 +1436,7 @@ msgstr ""
 #: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
 #: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
 #: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
+msgid "Request interrupted or invalid response received from the server. Please try again."
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
@@ -1518,8 +1468,7 @@ msgid "Editing ssh connection data.."
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
-msgid ""
-"When editing the SSH connection all needed credentials must be re-provided."
+msgid "When editing the SSH connection all needed credentials must be re-provided."
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
@@ -1592,83 +1541,73 @@ msgstr ""
 msgid "Operation not successful: Empty reply from the server"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:154
-msgid ""
-"No SUSE Manager Server Subscription available. Products requiring Client "
-"Tools Channel will not be shown."
+#: ../html/src/manager/admin/setup/products/products.tsx:159
+msgid "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:201
+#: ../html/src/manager/admin/setup/products/products.tsx:206
 msgid "The product catalog refresh is running..."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:227
+#: ../html/src/manager/admin/setup/products/products.tsx:232
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:272
+#: ../html/src/manager/admin/setup/products/products.tsx:277
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:332
-msgid ""
-"A refresh of the product data is currently running in the background. Please "
-"try again later."
+#: ../html/src/manager/admin/setup/products/products.tsx:337
+msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:337
+#: ../html/src/manager/admin/setup/products/products.tsx:342
 msgid "The product catalog is still refreshing, please wait."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:339
+#: ../html/src/manager/admin/setup/products/products.tsx:344
 msgid "Select some product first."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:348
-#: ../html/src/manager/admin/setup/products/products.tsx:357
+#: ../html/src/manager/admin/setup/products/products.tsx:353
+#: ../html/src/manager/admin/setup/products/products.tsx:362
 msgid "Add products"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:376
+#: ../html/src/manager/admin/setup/products/products.tsx:381
 msgid "Clear products selection"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:420
+#: ../html/src/manager/admin/setup/products/products.tsx:425
 msgid "Why aren't all products displayed in the list?"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:423
-msgid ""
-"The products displayed on this list are directly linked to your Organization "
-"credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-
 #: ../html/src/manager/admin/setup/products/products.tsx:428
-msgid ""
-"If you believe there are products missing, make sure you have added the "
-"correct Organization credentials in the previous wizard step."
+msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:438
-msgid ""
-"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-"Products can only be managed on the ISS master."
+#: ../html/src/manager/admin/setup/products/products.tsx:433
+msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:536
+#: ../html/src/manager/admin/setup/products/products.tsx:443
+msgid "This server is configured as an Inter-Server Synchronisation (ISS) slave. Products can only be managed on the ISS master."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/products/products.tsx:541
 msgid "Filter by architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:554
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:630
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Product Description"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:636
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:1022
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1676,44 +1615,44 @@ msgstr ""
 msgid "Architecture"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:638
+#: ../html/src/manager/admin/setup/products/products.tsx:643
 msgid "Arch"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:645
+#: ../html/src/manager/admin/setup/products/products.tsx:650
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:652
+#: ../html/src/manager/admin/setup/products/products.tsx:657
 msgid "Recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:823
+#: ../html/src/manager/admin/setup/products/products.tsx:828
 msgid " channels sync failed"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:831
+#: ../html/src/manager/admin/setup/products/products.tsx:836
 msgid " channels sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:839
+#: ../html/src/manager/admin/setup/products/products.tsx:844
 msgid " channels synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:864
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:865
+#: ../html/src/manager/admin/setup/products/products.tsx:870
 msgid "Select this product"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:877
+#: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "This product is mirrored."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:906
+#: ../html/src/manager/admin/setup/products/products.tsx:911
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
@@ -1721,55 +1660,55 @@ msgstr ""
 msgid "recommended"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "SCC product catalog refresh in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:970
 msgid "Scheduling channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:973
 msgid "Channels product resync scheduled"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:976
 msgid "Schedule channels product resync"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1031
+#: ../html/src/manager/admin/setup/products/products.tsx:1036
 msgid "Show product's channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1103
+#: ../html/src/manager/admin/setup/products/products.tsx:1108
 msgid "Product Channels - "
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1108
+#: ../html/src/manager/admin/setup/products/products.tsx:1113
 msgid "Select the optional channels you wish to add and confirm."
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1112
+#: ../html/src/manager/admin/setup/products/products.tsx:1117
 msgid "Mandatory Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1114
+#: ../html/src/manager/admin/setup/products/products.tsx:1119
 msgid "Optional Channels"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1150
+#: ../html/src/manager/admin/setup/products/products.tsx:1155
 msgid "not synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1153
+#: ../html/src/manager/admin/setup/products/products.tsx:1158
 msgid "sync in progress"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1156
+#: ../html/src/manager/admin/setup/products/products.tsx:1161
 msgid "synced"
 msgstr ""
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1159
+#: ../html/src/manager/admin/setup/products/products.tsx:1164
 msgid "sync failed"
 msgstr ""
 
@@ -1810,9 +1749,7 @@ msgid "Runtime Status"
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:185
-msgid ""
-"The server is running or has finished executing the following tasks during "
-"the latest 5 minutes."
+msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
 msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:188
@@ -1888,8 +1825,7 @@ msgstr ""
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
 #, fuzzy
-msgid ""
-"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "Cadeia de novas ações"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
@@ -1899,9 +1835,7 @@ msgid "AppStreams"
 msgstr ""
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
-msgid ""
-"Please review the changes below before scheduling an action to apply the "
-"changes on the system."
+msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgstr ""
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
@@ -1952,9 +1886,7 @@ msgid "Not affected"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
-msgid ""
-"The client is not affected because none of the known CVE vulnerable packages "
-"are installed."
+msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
@@ -1970,9 +1902,7 @@ msgid "Affected, patch is unavailable"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
-msgid ""
-"The client is affected by a vulnerability for which a patch has not yet been "
-"released."
+msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
@@ -1980,9 +1910,7 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid ""
-"The client is affected by a vulnerability for which a patch has been "
-"released,"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
@@ -1994,9 +1922,7 @@ msgid "Unknown, CVE metadata not available"
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-msgid ""
-"It is not possible to scan the client server for CVE vulnerabilities without "
-"channels or OVAL metadata."
+msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
 msgstr ""
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
@@ -2098,9 +2024,7 @@ msgid "Match data status"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-msgid ""
-"Could not start a matching run. Please contact your SUSE Manager "
-"administrator to make sure the task scheduler is running."
+msgid "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
@@ -2112,19 +2036,15 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-msgid ""
-"Matching data is currently being recomputed, it was started {timeFromNow}."
+msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-msgid ""
-"Latest successful match data was computed {timeFromNow}, you can trigger a "
-"new run by clicking the button below."
+msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
-msgid ""
-"Match data is computed via a task schedule, nightly by default (you can "
+msgid "Match data is computed via a task schedule, nightly by default (you can "
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
@@ -2144,8 +2064,7 @@ msgid "Unsupported part number detected"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
-msgid ""
-"Physical system is reported as virtual guest, please check hardware data"
+msgid "Physical system is reported as virtual guest, please check hardware data"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
@@ -2157,15 +2076,11 @@ msgid "System has an unknown number of sockets, assuming 16"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
-msgid ""
-"Two subscriptions with the same part number are in a bundle - merged into a "
-"single one"
+msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-msgid ""
-"Two subscriptions with the same part number (and other properties) have been "
-"merged together - start/end dates might be indicative"
+msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
@@ -2177,9 +2092,7 @@ msgid "Subscription IDs"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
-msgid ""
-"Subscription with unsupported part number and no associated product has been "
-"ignored."
+msgid "Subscription with unsupported part number and no associated product has been ignored."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
@@ -2207,27 +2120,19 @@ msgid "Pins"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:95
-msgid ""
-"You can pin a subscription to a system to suggest a certain association to "
-"the matching algorithm. "
+msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
-msgid ""
-"Next time a matching is attempted, the algorithm will try to produce a "
-"result that applies the subscription to the system you specified. "
+msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:101
-msgid ""
-"Note that the algorithm might determine that a certain pin cannot be "
-"respected, "
+msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:103
-msgid ""
-"depending on a subscription's availablility and applicability rules, in that "
-"case it will be shown as not satisfied. "
+msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
@@ -2317,9 +2222,7 @@ msgid "Save Pin"
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:400
-msgid ""
-"No subscriptions have been found to match this system, considering all "
-"products installed, either directly or in virtual guests."
+msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
 msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
@@ -2480,9 +2383,7 @@ msgid "Filter deleted successfully"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
-msgid ""
-"Bear in mind that all the associated projects need to be rebuilt after a "
-"filter update"
+msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
@@ -2494,9 +2395,7 @@ msgid "Prefix"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
+msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
@@ -2613,8 +2512,7 @@ msgid "Rule"
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:85
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
+msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
@@ -2901,9 +2799,7 @@ msgid "Building project"
 msgstr "Remover projeto"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
+msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
@@ -2961,9 +2857,7 @@ msgid "Environment {name} deleted successfully"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
-msgid ""
-"This environment cannot be deleted since it is being used in an "
-"<link>autoinstallation distribution</link>."
+msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
@@ -3035,8 +2929,7 @@ msgid "filter out"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
-msgid ""
-"select from the full source even if you have excluded them before with deny"
+msgid "select from the full source even if you have excluded them before with deny"
 msgstr ""
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:54
@@ -3195,40 +3088,28 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid ""
-"If you typed this address into your browser, double-check the spelling and "
-"capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid ""
-"If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr ""
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr ""
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this group"
+msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the <link>Highstate</link> for the changes to take effect."
+msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
 msgstr ""
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
@@ -3241,11 +3122,8 @@ msgstr ""
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
 #, fuzzy
-msgid ""
-"Formula saved. Apply the <link>Highstate</link> for the changes to take "
-"effect."
-msgstr ""
-"Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
+msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
+msgstr "Fórmula salva. A aplicação do estado-alto não é necessária para esta fórmula."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3282,9 +3160,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:41
 #: ../html/src/manager/images/image-import.tsx:20
-msgid ""
-"There was an error while scheduling a task. Please make sure that the task "
-"scheduler is running."
+msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
 msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:205
@@ -3452,9 +3328,7 @@ msgid "Create Image Profile"
 msgstr ""
 
 #: ../html/src/manager/images/image-profile-edit.tsx:531
-msgid ""
-"Label is required and must be a unique string and it cannot include any "
-"colons (:)."
+msgid "Label is required and must be a unique string and it cannot include any colons (:)."
 msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:26
@@ -3504,18 +3378,15 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:244
 #, fuzzy
-msgid ""
-"Are you sure you want to delete selected profiles? ({count} profiles "
-"selected)"
-msgstr ""
-"Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
+msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
+msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr ""
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -3575,10 +3446,8 @@ msgstr ""
 
 #: ../html/src/manager/images/image-stores.tsx:237
 #, fuzzy
-msgid ""
-"Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr ""
-"Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
+msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
+msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:792
@@ -3929,47 +3798,31 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:741
 #, fuzzy
-msgid ""
-"Are you sure you want to delete selected images? ({count} images selected)"
-msgstr ""
-"Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
+msgid "Are you sure you want to delete selected images? ({count} images selected)"
+msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/manager/login/messages.tsx:14
-msgid ""
-"A schema upgrade is required. Please upgrade your schema at your earliest "
-"convenience to receive latest bug fixes and avoid potential problems."
+msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:23
-msgid ""
-"Unable to validate the disk space availability. Please contact your system "
-"admistrator if this problem persists."
+msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:28
-msgid ""
-"Some important directories are missing. Please contact your system "
-"administrator to review the configuration."
+msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:33
-msgid ""
-"The available disk space on the server is running low. Please contact your "
-"system administrator to add more disk space."
+msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:38
-msgid ""
-"The available disk space on the server is critically low. Please contact "
-"your system administrator to add more disk space."
+msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:53
-msgid ""
-"SUSE Manager PAYG instances must forward registration data to SCC when "
-"credentials are provided. Data will be sent independently of the "
-"configuration setting. To hide this warning please set 'forward_registration "
-"= 1' in rhn.conf."
+msgid "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
 msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:63
@@ -3977,21 +3830,28 @@ msgid "Signing in ..."
 msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:38
-msgid ""
-"Discover a new way of managing your servers, packages, patches and more via "
-"one interface."
+#: ../html/src/manager/login/uyuni/login.tsx:40
+msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
 msgstr ""
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-msgid "<link>Learn more</link> about {product}."
+msgid "<link>Learn more</link> about {productName}."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:81
-#: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:50
-#: ../html/src/manager/login/uyuni/login.tsx:96
+#: ../html/src/manager/login/susemanager/login.tsx:87
+#: ../html/src/manager/login/susemanager/login.tsx:113
+#: ../html/src/manager/login/uyuni/login.tsx:52
+#: ../html/src/manager/login/uyuni/login.tsx:98
 msgid "Sign In"
+msgstr ""
+
+#: ../html/src/manager/login/susemanager/login.tsx:119
+#: ../html/src/manager/login/uyuni/login.tsx:117
+msgid "Copyright Notice"
+msgstr ""
+
+#: ../html/src/manager/login/susemanager/login.tsx:121
+msgid "{productName} release {versionNumber}"
 msgstr ""
 
 #: ../html/src/manager/login/use-login-api.ts:14
@@ -4010,8 +3870,16 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:41
-msgid "Learn more about"
+#: ../html/src/manager/login/uyuni/login.tsx:42
+msgid "Learn more about {productName}:"
+msgstr ""
+
+#: ../html/src/manager/login/uyuni/login.tsx:46
+msgid "View website"
+msgstr ""
+
+#: ../html/src/manager/login/uyuni/login.tsx:114
+msgid "About"
 msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
@@ -4064,8 +3932,7 @@ msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:48
-msgid ""
-"This will remove the current schedule from all the systems assigned to it."
+msgid "This will remove the current schedule from all the systems assigned to it."
 msgstr ""
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
@@ -4253,9 +4120,7 @@ msgid "Calendar successfully refreshed"
 msgstr ""
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
-msgid ""
-"Any pending maintenance-only actions for these systems will be cancelled "
-"unless they are inside the new maintenance windows."
+msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
 msgstr ""
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
@@ -4298,9 +4163,7 @@ msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr ""
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
-msgid ""
-"Assigning a schedule will replace any prior assignments in all of the "
-"systems in the set."
+msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
@@ -4345,9 +4208,7 @@ msgid "An error occurred while loading data. Please check server logs."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
-msgid ""
-"Ansible Control Node Configuration: add paths for Playbook discovery and "
-"Inventory files introspection."
+msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
 msgstr ""
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:166
@@ -4519,9 +4380,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are available for installation "
-"on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
@@ -4541,9 +4400,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are currently installed on this "
-"system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
 msgstr ""
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
@@ -4712,9 +4569,7 @@ msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this organization"
+msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:80
@@ -4757,8 +4612,7 @@ msgid "The container based proxy configuration has been generated correctly."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
-msgid ""
-"Generation of the proxy configuration in progress: waiting for a response..."
+msgid "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -4771,10 +4625,7 @@ msgid "Container Based Proxy Configuration"
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-msgid ""
-"You can generate a set of configuration files and certificates in order to "
-"register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .tar.gz archive to download."
+msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
 msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:199
@@ -5054,9 +4905,7 @@ msgid "The following recurring actions have been created."
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:125
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
+msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:170
@@ -5089,9 +4938,7 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-msgid ""
-"The below times are displayed in the server time zone {timeZone}. The "
-"scheduled time will be the server time."
+msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
 msgstr ""
 
 #. Value options for filtering by Action Type in recurring actions list
@@ -5197,11 +5044,7 @@ msgid "Matching ssh-push minions..."
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
-msgid ""
-"The formula catalog page enables viewing of currently installed <link>Salt "
-"Formulas</link>. Apply these formulas to individual systems or server "
-"groups. Formulas allow automatic installation and configuration of software "
-"and may be installed via RPM packages."
+msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
 msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
@@ -5341,9 +5184,7 @@ msgid "Development debugging page"
 msgstr ""
 
 #: ../html/src/manager/storybook/storybook.tsx:49
-msgid ""
-"This is a hidden page used by developers, if you found it by accident, good "
-"job!"
+msgid "This is a hidden page used by developers, if you found it by accident, good job!"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
@@ -5374,9 +5215,7 @@ msgid "Child Channels:"
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
+msgid "Any system registered using this activation key will be subscribed to the selected child channels."
 msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
@@ -5440,17 +5279,11 @@ msgid "Close"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
-msgid ""
-"Request interrupted or invalid response received from the server. Please "
-"check if your minion was bootstrapped correctly."
+msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
-msgid ""
-"Bootstrap process initiated. Your system should be visible at the following "
-"location shortly: <link>systems</link>. If any issues arise, you'll receive "
-"an error notification. In case you're working with a transactional system, "
-"please perform a system reboot to complete the registration process."
+msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
@@ -5479,9 +5312,7 @@ msgid "e.g., ••••••••••••"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
-msgid ""
-"The file will be stored in a temporary file on the server and will be "
-"deleted after the bootstrapping procedure"
+msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
@@ -5493,10 +5324,7 @@ msgid "Bootstrap Minions"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
-msgid ""
-"You can add systems to be managed by providing SSH credentials only. "
-"{productName} will prepare the system remotely and will perform the "
-"registration."
+msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
@@ -5504,11 +5332,7 @@ msgid "e.g., host.domain.com"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
-"{productName}'s SSH key is deployed during the bootstrap procedure."
+msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
@@ -5534,9 +5358,7 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
-msgid ""
-"The hostname of the proxy is not fully qualified. This may cause problems "
-"when accessing the channels."
+msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
@@ -5548,8 +5370,7 @@ msgid "Manage system completely via SSH (will not install an agent)"
 msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
-msgid ""
-"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr ""
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
@@ -5806,18 +5627,11 @@ msgid "System Default Base Channel"
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
-msgid ""
-"As a Channel Administrator, you may change the base channels your systems "
-"are subscribed to. Valid channels are either channels created by your "
-"organization, or the default SUSE base channel for your operating system "
-"version and processor type. Systems will be unsubscribed from all channels, "
-"and subscribed to their new base channels. "
+msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
-msgid ""
-"This operation can have a dramatic effect on the packages and patches "
-"available to the systems, and should be used with caution."
+msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
@@ -5880,15 +5694,11 @@ msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:553
-msgid ""
-"To subscribe selected systems to a channel, check Subscribed for that "
-"channel."
+msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:554
-msgid ""
-"To unsubscribe selected systems from a channel, check Unsubscribed for that "
-"channel."
+msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
 msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:564
@@ -5942,17 +5752,11 @@ msgid "Changing the channels has been "
 msgstr ""
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
-msgid ""
-"You can change the base software channel your system is subscribed to. The "
-"system will be unsubscribed from all software channels, and subscribed to "
-"the new base software channel."
+msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
 msgstr ""
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
-msgid ""
-"This system is subscribed to the checked channels beneath, if any. Disabled "
-"checkboxes indicate channels that can't be manually subscribed or "
-"unsubscribed from."
+msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
 msgstr ""
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
@@ -6087,9 +5891,7 @@ msgid "Please install libvirt python module."
 msgstr ""
 
 #: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
+msgid "Neither KVM nor Xen is running. Ensure they are installed and the kernel modules are loaded."
 msgstr ""
 
 #: ../html/src/manager/virtualization/ListTab.tsx:161
@@ -6247,8 +6049,7 @@ msgid "Hosted Virtual Systems"
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
+msgid "This is a list of virtual guests which are configured to run on this host."
 msgstr ""
 
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
@@ -6367,14 +6168,11 @@ msgid "Virtual Networks"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
+msgid "This is a list of virtual networks which are configured to run on this host."
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
+msgid "The Salt version on this system does not support virtual network creating and editing"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
@@ -6685,9 +6483,7 @@ msgid "Untagged"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
+msgid "Use an existing and configured bridge device. No iptables rule, IP address or DHCP/DNS service are added"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
@@ -6699,9 +6495,7 @@ msgid "Virtual network using the host IP routing stack, without NAT"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
+msgid "Virtual network using the host IP routing stack, without firewall rules and NAT"
 msgstr ""
 
 #: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
@@ -6766,9 +6560,7 @@ msgid "Virtual Storage Pools and Volumes"
 msgstr ""
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
+msgid "This is the list of storage pools defined on this host containing virtual guests disks."
 msgstr ""
 
 #: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
@@ -6899,8 +6691,7 @@ msgid "SELinux label"
 msgstr ""
 
 #: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
+msgid "Could not get storage pool capabilities from the server. Please try again."
 msgstr ""
 
 #: ../html/src/utils/network.ts:97
@@ -6908,8 +6699,7 @@ msgid "Session expired, please reload the page."
 msgstr ""
 
 #: ../html/src/utils/network.ts:99
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
+msgid "Authorization error, please reload the page or try to logout/login again."
 msgstr ""
 
 #: ../html/src/utils/network.ts:101
@@ -6949,12 +6739,8 @@ msgstr ""
 #~ msgid "Add"
 #~ msgstr "Adicionar"
 
-#~ msgid ""
-#~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
-#~ "used on each system!"
-#~ msgstr ""
-#~ "Várias fórmulas de grupo detectadas. Apenas uma fórmula para \"{0}\" pode "
-#~ "ser usada em cada sistema!"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
+#~ msgstr "Várias fórmulas de grupo detectadas. Apenas uma fórmula para \"{0}\" pode ser usada em cada sistema!"
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "ex. \"0 15 2 ? * 7\""
