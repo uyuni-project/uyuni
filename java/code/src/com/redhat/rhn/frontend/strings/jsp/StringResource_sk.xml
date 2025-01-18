@@ -5261,28 +5261,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="packagesearch.jsp.relevant" xml:space="preserve">
         <source>Only channels relevant to your systems</source>
-        <target/>
+        <target state="translated">Len kanály týkajúce sa vašich systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificchannel" xml:space="preserve">
         <source>Specific channel you have access to</source>
-        <target/>
+        <target state="translated">Špecifický kanál, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificarch" xml:space="preserve">
         <source>Packages of a specific architecture in any channel you have access to</source>
-        <target/>
+        <target state="translated">Balíky so špecifickou architektúrou v ktoromkoľvek kanáli, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchwherelegend" xml:space="preserve">
         <source>* means one or more channel architectures are not synchronized.</source>
-        <target/>
+        <target state="translated">* znamená, že jedna alebo viacero architektúr kanálov nie je synchronizovaných.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
@@ -5290,42 +5290,42 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM Overview -->
       <trans-unit id="ssm.overview.header" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target state="translated">Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary" xml:space="preserve">
         <source>Manage multiple systems simultaneously with system set manager.</source>
-        <target/>
+        <target state="translated">Spravujte viacero systémov súčasne pomocou správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary2" xml:space="preserve">
         <source>The navigation tabs above will assist you in executing the following actions.</source>
-        <target/>
+        <target state="translated">Vyššie uvedené navigačné karty vám pomôžu pri vykonávaní nasledujúcich činností.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems.list" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;Vypísať zoznam systémov&lt;/a&gt;, s ktorými ste si vybrali pracovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
