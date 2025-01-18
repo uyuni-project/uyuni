@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-17 14:51+0100\n"
-"PO-Revision-Date: 2024-10-05 15:48+0000\n"
+"PO-Revision-Date: 2025-01-18 12:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -26,7 +26,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:461
 msgid "remaining"
@@ -3970,7 +3970,7 @@ msgstr ""
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "Über"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
