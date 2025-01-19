@@ -1775,7 +1775,7 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
 
-Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version using spacecmd$/) do |host, package|
   system_name = get_system_name(host)
   last_event_before_upgrade = get_last_event(host)
   last_event = last_event_before_upgrade
