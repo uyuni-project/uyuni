@@ -263,7 +263,7 @@ end
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
 def suse_host?(name)
   os_family = get_target(name).os_family
-  %w[sles opensuse sle-micro suse-microos].include? os_family
+  %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
