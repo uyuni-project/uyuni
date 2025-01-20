@@ -262,7 +262,8 @@ end
 # @param name [String] The name of the host.
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
 def suse_host?(name)
-  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+  os_family = get_target(name).os_family
+  %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
@@ -299,7 +300,8 @@ end
 # @param name [String] the host name to check
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
-  (name.include? 'rhlike') || (name.include? 'alma') || (name.include? 'centos') || (name.include? 'liberty') || (name.include? 'oracle') || (name.include? 'rocky')
+  os_family = get_target(name).os_family
+  %w[rocky centos redhat alma oracle liberty].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.
@@ -307,7 +309,8 @@ end
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the host name is Debian-based, false otherwise.
 def deb_host?(name)
-  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+  os_family = get_target(name).os_family
+  %w[debian ubuntu].include? os_family
 end
 
 # Checks if a repository exists.
@@ -328,7 +331,10 @@ def generate_repository_name(repo_url)
   repo_name.sub!(%r{http://download.suse.de/ibs/SUSE:/Maintenance:/}, '')
   repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/Maintenance:/}, '')
   repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/}, '')
+  repo_name.sub!(%r{http://download.opensuse.org/repositories/systemsmanagement:/}, '')
   repo_name.sub!(%r{http://.*compute.internal/SUSE:/}, '')
+  repo_name.sub!(%r{http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/}, '')
+  repo_name.sub!(%r{http://downloadcontent.opensuse.org/repositories/systemsmanagement:/}, '')
   repo_name.sub!(%r{http://.*compute.internal/SUSE:/Maintenance:/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')

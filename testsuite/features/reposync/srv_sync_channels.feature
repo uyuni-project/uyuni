@@ -1,11 +1,11 @@
-# Copyright (c) 2015-2023 SUSE LLC
+# Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
-Feature: Be able to list available channels and enable them
+Feature: List available channels and enable them
   In order to use software channels
   As root user
-  I want to be able to list available channels and enable them
+  I want to list available channels and enable them
 
 @susemanager
   Scenario: List available channels

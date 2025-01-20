@@ -27,11 +27,11 @@ import com.redhat.rhn.domain.channel.test.ChannelFamilyTest;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductChannel;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
@@ -149,7 +149,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     }
 
     /**
-     * Create SUSEProductSCCRepository for the product
+     * Create ChannelTemplate for the product
      * @param baseProduct Base product
      * @param baseChannel base channe
      * @param product product
@@ -162,7 +162,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         SCCRepository repository = SUSEProductTestUtils.createSCCRepository();
         SUSEProductTestUtils.createSCCRepositoryTokenAuth(sccc, repository);
 
-        SUSEProductSCCRepository ltssSP1ProdRepo = new SUSEProductSCCRepository();
+        ChannelTemplate ltssSP1ProdRepo = new ChannelTemplate();
         ltssSP1ProdRepo.setRepository(repository);
         ltssSP1ProdRepo.setRootProduct(baseProduct);
         ltssSP1ProdRepo.setProduct(product);
@@ -609,9 +609,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
     public static void addChannelsForProduct(SUSEProduct product) {
         ContentSyncManager csm = new ContentSyncManager();
-        product.getRepositories()
+        product.getChannelTemplates()
         .stream()
-        .filter(SUSEProductSCCRepository::isMandatory)
+        .filter(ChannelTemplate::isMandatory)
         .forEach(pr -> {
             try {
                 if (pr.getParentChannelLabel() != null &&
@@ -637,7 +637,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
     public static void addChannelsForProductAndParent(SUSEProduct product, SUSEProduct root,
             boolean mandatory, List<Long> optionalChannelIds) {
         ContentSyncManager csm = new ContentSyncManager();
-        product.getRepositories()
+        product.getChannelTemplates()
         .stream()
         .filter(pr -> pr.getRootProduct().equals(root))
         .filter(pr -> (mandatory && pr.isMandatory()) || optionalChannelIds.contains(pr.getRepository().getSccId()))

@@ -25,8 +25,7 @@ License:        GPL-2.0-only
 Group:          Documentation/SuSE
 Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Requires:       susemanager
 Requires:       perl(XML::Simple)
 Supplements:    packageand(spacewalk-common:supportutils)

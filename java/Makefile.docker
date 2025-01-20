@@ -22,8 +22,8 @@ dockerrun_pg ::
 	$(EXECUTOR) run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 podmanpull ::
-	sudo podman pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	podman pull $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
 
 podmanrun ::
 	cp buildconf/test/rhn.conf.postgresql-example buildconf/test/rhn.conf
-	sudo podman run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse
+	podman run $(DOCKER_COMMON_OPTS) $(DOCKER_PG_PORTS) $(DOCKER_VOLUMES) $(DOCKER_ENV) $(DOCKER_REGISTRY)/$(DOCKER_CONTAINER_BASE)-pgsql-4eclipse

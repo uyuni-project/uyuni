@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 14:38+0100\n"
-"PO-Revision-Date: 2024-10-17 02:48+0000\n"
+"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -26,13 +26,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:471
+#: ../html/javascript/spacewalk-essentials.js:461
 msgid "remaining"
 msgstr "남음"
 
-#: ../html/javascript/spacewalk-essentials.js:491
+#: ../html/javascript/spacewalk-essentials.js:481
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -542,7 +542,7 @@ msgid "Last Name"
 msgstr "성"
 
 #: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
-#: ../html/src/manager/login/uyuni/login.tsx:76
+#: ../html/src/manager/login/uyuni/login.tsx:78
 msgid "Login"
 msgstr "로그인"
 
@@ -573,8 +573,8 @@ msgstr "이름"
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:93
-#: ../html/src/manager/login/uyuni/login.tsx:88
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
@@ -655,7 +655,7 @@ msgstr "작업을 수행할 수 없습니다."
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1130
+#: ../html/src/manager/admin/setup/products/products.tsx:1135
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -1028,22 +1028,18 @@ msgid "System Locked"
 msgstr "시스템 잠김"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
-#, fuzzy
 msgid "less than"
 msgstr "다음보다 작음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:12
-#, fuzzy
 msgid "less than or equal to"
 msgstr "다음보다 작거나 같음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:13
-#, fuzzy
 msgid "equal to"
 msgstr "같음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:14
-#, fuzzy
 msgid "greater than or equal to"
 msgstr "다음보다 크거나 같음"
 
@@ -1053,9 +1049,8 @@ msgid "greater than"
 msgstr "다음보다 큼"
 
 #: ../html/src/components/table/NumericSearchField.tsx:16
-#, fuzzy
 msgid "not equal to"
-msgstr "빌드되지 않음"
+msgstr "같지 않음"
 
 #: ../html/src/components/table/NumericSearchField.tsx:47
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:132
@@ -1081,7 +1076,7 @@ msgid "({selectedCount} selected)"
 msgstr "({selectedCount} 선택됨)"
 
 #: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:377
+#: ../html/src/manager/admin/setup/products/products.tsx:382
 msgid "Clear"
 msgstr "지우기"
 
@@ -1425,7 +1420,7 @@ msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:307
+#: ../html/src/manager/admin/setup/products/products.tsx:312
 msgid "Setup Wizard"
 msgstr "설치 마법사"
 
@@ -1567,7 +1562,7 @@ msgstr "완료됨"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "작업 실패: 서버에서 빈 회신"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:154
+#: ../html/src/manager/admin/setup/products/products.tsx:159
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1575,19 +1570,19 @@ msgstr ""
 "사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요"
 "한 제품이 표시되지 않습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:201
+#: ../html/src/manager/admin/setup/products/products.tsx:206
 msgid "The product catalog refresh is running..."
 msgstr "제품 카탈로그 새로 고침이 실행 중입니다..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:227
+#: ../html/src/manager/admin/setup/products/products.tsx:232
 msgid "The following product installations failed. Please check log files."
 msgstr "다음 제품 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:272
+#: ../html/src/manager/admin/setup/products/products.tsx:277
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:332
+#: ../html/src/manager/admin/setup/products/products.tsx:337
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1595,28 +1590,28 @@ msgstr ""
 "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하"
 "십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:337
+#: ../html/src/manager/admin/setup/products/products.tsx:342
 msgid "The product catalog is still refreshing, please wait."
 msgstr "제품 카탈로그를 아직 새로 고치는 중입니다. 기다려 주십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:339
+#: ../html/src/manager/admin/setup/products/products.tsx:344
 msgid "Select some product first."
 msgstr "우선 일부 제품을 선택하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:348
-#: ../html/src/manager/admin/setup/products/products.tsx:357
+#: ../html/src/manager/admin/setup/products/products.tsx:353
+#: ../html/src/manager/admin/setup/products/products.tsx:362
 msgid "Add products"
 msgstr "제품 추가"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:376
+#: ../html/src/manager/admin/setup/products/products.tsx:381
 msgid "Clear products selection"
 msgstr "제품 선택 지우기"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:420
+#: ../html/src/manager/admin/setup/products/products.tsx:425
 msgid "Why aren't all products displayed in the list?"
 msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:423
+#: ../html/src/manager/admin/setup/products/products.tsx:428
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1624,7 +1619,7 @@ msgstr ""
 "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩"
 "니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:428
+#: ../html/src/manager/admin/setup/products/products.tsx:433
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1632,7 +1627,7 @@ msgstr ""
 "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인"
 "하십시오."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:438
+#: ../html/src/manager/admin/setup/products/products.tsx:443
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1640,20 +1635,20 @@ msgstr ""
 "이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마"
 "스터에서만 제품을 관리할 수 있습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:536
+#: ../html/src/manager/admin/setup/products/products.tsx:541
 msgid "Filter by architecture"
 msgstr "아키텍처를 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:554
+#: ../html/src/manager/admin/setup/products/products.tsx:559
 msgid "Filter by product Description"
 msgstr "제품 설명을 기준으로 필터링"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:630
+#: ../html/src/manager/admin/setup/products/products.tsx:635
 msgid "Product Description"
 msgstr "제품 설명"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:636
-#: ../html/src/manager/admin/setup/products/products.tsx:1017
+#: ../html/src/manager/admin/setup/products/products.tsx:641
+#: ../html/src/manager/admin/setup/products/products.tsx:1022
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
@@ -1661,44 +1656,44 @@ msgstr "제품 설명"
 msgid "Architecture"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:638
+#: ../html/src/manager/admin/setup/products/products.tsx:643
 msgid "Arch"
 msgstr "아키텍처"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:645
+#: ../html/src/manager/admin/setup/products/products.tsx:650
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:652
+#: ../html/src/manager/admin/setup/products/products.tsx:657
 msgid "Recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:823
+#: ../html/src/manager/admin/setup/products/products.tsx:828
 msgid " channels sync failed"
 msgstr " 채널을 동기화하지 못함"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:831
+#: ../html/src/manager/admin/setup/products/products.tsx:836
 msgid " channels sync in progress"
 msgstr " 채널 동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:839
+#: ../html/src/manager/admin/setup/products/products.tsx:844
 msgid " channels synced"
 msgstr " 채널 동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:864
+#: ../html/src/manager/admin/setup/products/products.tsx:869
 msgid "To enable this product, the parent product should be selected first"
 msgstr "이 제품을 활성화하려면 상위 제품을 우선 선택해야 합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:865
+#: ../html/src/manager/admin/setup/products/products.tsx:870
 msgid "Select this product"
 msgstr "이 제품 선택"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:877
+#: ../html/src/manager/admin/setup/products/products.tsx:882
 msgid "This product is mirrored."
 msgstr "이 제품은 미러링되었습니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:906
+#: ../html/src/manager/admin/setup/products/products.tsx:911
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
@@ -1706,55 +1701,55 @@ msgstr "이 제품은 미러링되었습니다."
 msgid "recommended"
 msgstr "권장"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:962
+#: ../html/src/manager/admin/setup/products/products.tsx:967
 msgid "SCC product catalog refresh in progress"
 msgstr "SCC 제품 카탈로그 새로 고침 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:965
+#: ../html/src/manager/admin/setup/products/products.tsx:970
 msgid "Scheduling channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:968
+#: ../html/src/manager/admin/setup/products/products.tsx:973
 msgid "Channels product resync scheduled"
 msgstr "채널 제품 재동기화 예약됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:971
+#: ../html/src/manager/admin/setup/products/products.tsx:976
 msgid "Schedule channels product resync"
 msgstr "채널 제품 재동기화 예약"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1031
+#: ../html/src/manager/admin/setup/products/products.tsx:1036
 msgid "Show product's channels"
 msgstr "제품 채널 표시"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1103
+#: ../html/src/manager/admin/setup/products/products.tsx:1108
 msgid "Product Channels - "
 msgstr "제품 채널 - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1108
+#: ../html/src/manager/admin/setup/products/products.tsx:1113
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "추가하고 확인하려는 선택 채널을 선택합니다."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1112
+#: ../html/src/manager/admin/setup/products/products.tsx:1117
 msgid "Mandatory Channels"
 msgstr "필수 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1114
+#: ../html/src/manager/admin/setup/products/products.tsx:1119
 msgid "Optional Channels"
 msgstr "선택 사항 채널"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1150
+#: ../html/src/manager/admin/setup/products/products.tsx:1155
 msgid "not synced"
 msgstr "동기화되지 않음"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1153
+#: ../html/src/manager/admin/setup/products/products.tsx:1158
 msgid "sync in progress"
 msgstr "동기화 진행 중"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1156
+#: ../html/src/manager/admin/setup/products/products.tsx:1161
 msgid "synced"
 msgstr "동기화됨"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1159
+#: ../html/src/manager/admin/setup/products/products.tsx:1164
 msgid "sync failed"
 msgstr "동기화 실패"
 
@@ -3531,7 +3526,7 @@ msgid "Use credentials"
 msgstr "자격 증명 사용"
 
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:82
+#: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
@@ -4002,7 +3997,7 @@ msgid "Signing in ..."
 msgstr "로그인 중..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
-#: ../html/src/manager/login/uyuni/login.tsx:38
+#: ../html/src/manager/login/uyuni/login.tsx:40
 msgid ""
 "Discover a new way of managing your servers, packages, patches and more via "
 "one interface."
@@ -4011,15 +4006,26 @@ msgstr ""
 "보십시오."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-msgid "<link>Learn more</link> about {product}."
+#, fuzzy
+#| msgid "<link>Learn more</link> about {product}."
+msgid "<link>Learn more</link> about {productName}."
 msgstr "{product}에 대해 <link>자세히 알아보기</link>."
 
-#: ../html/src/manager/login/susemanager/login.tsx:81
-#: ../html/src/manager/login/susemanager/login.tsx:107
-#: ../html/src/manager/login/uyuni/login.tsx:50
-#: ../html/src/manager/login/uyuni/login.tsx:96
+#: ../html/src/manager/login/susemanager/login.tsx:87
+#: ../html/src/manager/login/susemanager/login.tsx:113
+#: ../html/src/manager/login/uyuni/login.tsx:52
+#: ../html/src/manager/login/uyuni/login.tsx:98
 msgid "Sign In"
 msgstr "로그인"
+
+#: ../html/src/manager/login/susemanager/login.tsx:119
+#: ../html/src/manager/login/uyuni/login.tsx:117
+msgid "Copyright Notice"
+msgstr ""
+
+#: ../html/src/manager/login/susemanager/login.tsx:121
+msgid "{productName} release {versionNumber}"
+msgstr ""
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -4039,9 +4045,19 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
-#: ../html/src/manager/login/uyuni/login.tsx:41
-msgid "Learn more about"
-msgstr "자세히 알아보기"
+#: ../html/src/manager/login/uyuni/login.tsx:42
+#, fuzzy
+#| msgid "<link>Learn more</link> about {product}."
+msgid "Learn more about {productName}:"
+msgstr "{product}에 대해 <link>자세히 알아보기</link>."
+
+#: ../html/src/manager/login/uyuni/login.tsx:46
+msgid "View website"
+msgstr ""
+
+#: ../html/src/manager/login/uyuni/login.tsx:114
+msgid "About"
+msgstr ""
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -5416,12 +5432,10 @@ msgid " Systems "
 msgstr " 시스템 "
 
 #: ../html/src/manager/systems/all-list.tsx:52
-#, fuzzy
 msgid "Add a system"
 msgstr "시스템 추가"
 
 #: ../html/src/manager/systems/all-list.tsx:53
-#, fuzzy
 msgid "Add system"
 msgstr "시스템 추가"
 
@@ -6963,6 +6977,9 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Learn more about"
+#~ msgstr "자세히 알아보기"
 
 #~ msgid "Bare-metal systems"
 #~ msgstr "베어 메탈 시스템"

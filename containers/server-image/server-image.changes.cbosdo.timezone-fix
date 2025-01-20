@@ -1,0 +1,1 @@
+- Fix timezone alignment on container restart (bsc#1235692)

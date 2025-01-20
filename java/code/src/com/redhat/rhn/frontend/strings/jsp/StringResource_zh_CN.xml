@@ -3503,12 +3503,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">此系统上的下列软件包已过时，可以升级。</target>
       </trans-unit>
-      <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
+      <trans-unit approved="yes" id="upgradable.jsp.latest" xml:space="preserve">
         <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target state="needs-adaptation">最新的软件包</target>
+        <target state="final">软件包名称</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -11350,9 +11350,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
+      <trans-unit approved="yes" id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
         <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target state="needs-adaptation"> 如果您要重复使用现有的自动安装配置文件，我们建议您复制并粘贴 /var/lib/rhn/kickstarts 中的模板，而不是浏览器中的模板。这可以确保自动安装后模板变量会保留下来，并且注册过程可正常进行。</target>
+        <target state="final"> 如果您要重复使用现有的自动安装配置文件，我们建议您复制并粘贴 /var/lib/cobbler/templates 中的模板，而不是浏览器中的模板。这可以确保自动安装后模板变量会保留下来，并且注册过程可正常进行。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -29001,7 +29001,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="monitoring_entitled" xml:space="preserve">
         <source>Monitor this Host</source>
-        <target state="needs-adaptation">受监视主机</target>
+        <target state="final">监控此主机</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29865,21 +29865,21 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
-    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
+        <target state="final">列出已包含的补丁：</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="toolbar.create.distro" xml:space="preserve">
-          <source>Create Distribution</source>
+        <target state="final">如果选择此选项，将会显示通道已包含的补丁。如果某个补丁是多个通道的一部分，且已包含在其中一个通道中，而您必须从另一个通道来关联该补丁的软件包，此选项会很有用。</target>
+      </trans-unit>
+      <trans-unit approved="yes" id="toolbar.create.distro" xml:space="preserve">
+        <source>Create Distribution</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="final">创建发行套件</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
