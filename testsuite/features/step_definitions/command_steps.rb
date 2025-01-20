@@ -732,28 +732,28 @@ end
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
