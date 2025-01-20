@@ -16,7 +16,6 @@ import static org.jmock.AbstractExpectations.throwException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.redhat.rhn.domain.iss.IssRole;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
