@@ -99,7 +99,7 @@ class RemoteNode
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
-    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -it '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
+    cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec -i '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
   end
 
