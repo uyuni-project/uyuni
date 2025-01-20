@@ -2,12 +2,13 @@
 #
 # SPDX-License-Identifier: Apache-2.0
 
+from collections import defaultdict, namedtuple
 import os
 from pathlib import Path
 import re
 import signal
 import sys
-from typing import Dict
+from typing import Dict, Tuple
 import yaml
 import json
 
@@ -41,6 +42,9 @@ class SupportConfigMetricsCollector:
         self.server_limit = -1
         self.num_of_channels = -1
         self.shared_buffers_to_mem_ratio = -1
+        self.major_version = -1
+        self.fs_mount_insufficient = -1
+        self.fs_mount_out_of_space = -1
         self.roles = [
             {
                 'name':'master',
@@ -66,12 +70,14 @@ class SupportConfigMetricsCollector:
             self.salt_configuration = self.read_salt_configuration()
 
         self.get_static_metrics()
+
         self.parse_disk_layout()
         self.parse_roles()
         self.parse_prefork_c_params()
         self.parse_num_of_channels()
         if hasattr(self, "mem_total"):
             self.parse_shared_buffers_to_mem_ratio(self.mem_total)
+        self.check_space_on_fs()
 
     def parse_shared_buffers_to_mem_ratio(self, memory: int):
         """
@@ -166,6 +172,134 @@ class SupportConfigMetricsCollector:
         lines = command_block.strip().split("\n")
         command = lines[0][2:]
         return command, lines[1:]
+
+    def _check_vol_params(self, mount: str, min_size_gb: int, fs: Dict) -> Dict:
+        """
+        Given a mount path, e.g. "/a/b/c", recursively search for
+        subpaths of the path until we find the mount in the disk layout.
+
+        For example, if "/a/b/c" is not present in disk layout, we search for
+        "/a/b", "/a", and finally "/".
+
+        Can return multiple duplicate returns, e.g. when checking for two non-existent mounts
+        /foo/bar and /foo/baz, both of which have common path /, then the result will
+        contain two "/" entries. However, /foo/bar might have different min_size req., so
+        the result for the two entries might be different, e.g. '/foo/bar' reduces to '/', which
+        fulfills the min requirement for '/foo/bar' but not for '/foo/baz'.
+
+        See self.parse_disk_layout for more information about disk layout parsing.
+        Return a dict with 'too_small' and 'out_of_space' props, where 1 = True and 0 = False.
+        This is necessary for Grafana alerts, which cannot work with True/False.
+        """
+        res = {
+            'mount': mount,
+            'too_small': -1,
+            'out_of_space': -1
+        }
+
+        if mount not in fs:
+            if mount == '/':
+                return {}
+            mount = os.path.dirname(mount)
+            return self._check_vol_params(mount, min_size_gb, fs)
+        disk = fs[mount]
+        used = int(disk["use %"][:-1])
+
+        res["out_of_space"] = 1 if used > 90 else 0
+
+        # size format: 2T, or 560G
+        size = disk["size"]
+        if size[-1:].isnumeric():
+            size, unit = size, 'n/a'
+        else:
+            size, unit = float(size[:-1]), size[-1:]
+
+        match unit.lower():
+            case 'k': size /= (1024 * 1024)
+            case 'm': size /= 1024
+            case 'g': ... # already in GB
+            case 't': size *= 1024
+            case 'n/a': ... #no unit
+            case _: print(f"Error when parsing shared buffer unit: {unit}")
+
+        res["too_small"] = 1 if min_size_gb > size else 0
+        return res
+
+    def _parse_path_data(self, mounts: Dict) -> Tuple:
+        """
+        Reduce _check_vol_params output dictionary to "is there any mount that is
+        too small" and "is there any mount that is running out of space".
+        """
+        too_small, out_of_space = 0,0
+        for mount_data_list in mounts.values():
+            for mount in mount_data_list:
+                too_small = max(mount["too_small"], too_small)
+                out_of_space = max(mount["out_of_space"], out_of_space)
+        return too_small, out_of_space
+
+    def _gen_mounts_for_checking(self) -> Dict:
+        """
+        Generate a list of mounts and their minimum requirements per SLM version and role.
+        """
+        res = {
+            4: {
+                "master": [],
+                "proxy": [],
+            },
+            5: {
+                "master": [],
+                "proxy": [],
+            }
+        }
+        path_conf = namedtuple('PathConf', ['mount', 'min_size_gb', 'alternate_mount'], defaults=(None, None, None))
+
+        # MLM 4.x, master
+        res[4]["master"].append(path_conf('/', 40))
+        res[4]["master"].append(path_conf('/var/lib/pgsql', 50, '/pgsql_storage'))
+        res[4]["master"].append(path_conf('/var/spacewalk', 100, '/manager_storage'))
+        res[4]["master"].append(path_conf('/var/cache', 10))
+        # MLM 4.x, proxy
+        res[4]["proxy"].append(path_conf('/srv', 100))
+        res[4]["proxy"].append(path_conf('/var/cache', 100))
+        # MLM 5.x, master
+        res[5]["master"].append(path_conf('/', 20))
+        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-pgsql', 50, '/pgsql_storage'))
+        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-pgsql', 100, '/manager_storage'))
+        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-cache', 10))
+        # MLM 5.x, proxy
+        res[5]["proxy"].append(path_conf('/', 40,))
+        res[5]["proxy"].append(path_conf('/var/lib/containers/storage/volumes/srv-www', 100))
+        res[5]["proxy"].append(path_conf('/var/lib/containers/storage/volumes/var-cache', 100))
+        return res
+
+    def check_space_on_fs(self):
+        """
+        Check whether a SLM system (master or proxy) contains any mount path that is too small,
+        or that is running out of space.
+        """
+        mounts = defaultdict(list)
+        fs = {disk["mounted on"]: disk for disk in self.disk_layout}
+
+        role = [role for role in self.roles if role["value"] == 1]
+        if not role:
+            print("Cannot determine filesystem requirements; cannot determine server role (master, minion, proxy?)")
+            return
+        role = role.pop()["name"]
+
+        paths = self._gen_mounts_for_checking().get(self.major_version, {}).get(role, {})
+        if not paths:
+            print("Cannot determine filesystem requirements")
+            return
+
+        for path in paths:
+            mount = path.alternate_mount if path.alternate_mount and (path.alternate_mount in fs) else path.mount
+            fs_obj = self._check_vol_params(mount, path.min_size_gb, fs)
+            if not fs_obj:
+                print(f"Could not find {mount}")
+                continue
+            mounts[fs_obj["mount"]].append(fs_obj)
+
+        self.fs_mount_insufficient, self.fs_mount_out_of_space = self._parse_path_data(mounts)
 
     def parse_disk_layout(self):
         diskinfo_path = os.path.join(self.supportconfig_path, "spacewalk-debug/diskinfo")
@@ -286,6 +420,8 @@ class SupportConfigMetricsCollector:
         self._append_value_to_dict(ret, "config", "server_limit")
         self._append_value_to_dict(ret, "misc", "num_of_channels")
         self._append_value_to_dict(ret, "config", "shared_buffers_to_mem_ratio")
+        self._append_value_to_dict(ret, "memory", "fs_mount_insufficient")
+        self._append_value_to_dict(ret, "memory", "fs_mount_out_of_space")
 
         return ret
 

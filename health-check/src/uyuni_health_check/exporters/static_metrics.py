@@ -2,6 +2,8 @@ import os
 import re
 from abc import ABC, abstractmethod
 
+# SupportConfigMetricsCollector automatically exposes all of the following metrics
+# as instance variables and merges them in the metrics.json 
 metrics_config = {
     "tomcat_xmx_size": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf",
@@ -90,6 +92,10 @@ metrics_config = {
         "pattern": r'Swap:\s+\d+\s+\d+\s+(\d+)',
         "label": "memory",
     },
+    "major_version": {
+        "filepath": "basic-environment.txt",
+        "pattern": r'^SUSE Manager release (\d)'
+    }
 }
 
 class StaticMetric(ABC):
