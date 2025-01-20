@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2024 SUSE LLC
+# Copyright (c) 2010-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'

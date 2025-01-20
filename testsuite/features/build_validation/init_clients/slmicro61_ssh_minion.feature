@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Beware: After altering the system e.g. package installation/removal, the system
