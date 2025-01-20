@@ -1347,8 +1347,6 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * @param fetchingVirtualGuests eagerly load virtual guests
-     * @param fetchingGroups eagerly load server groups
      * @return a list of all systems
      */
     public static List<Server> list() {
