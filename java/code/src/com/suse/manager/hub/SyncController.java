@@ -23,13 +23,11 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 
-import com.suse.manager.model.hub.IssHub;
-import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
-import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
@@ -82,52 +80,53 @@ public class SyncController {
     }
 
     // Basic ping to check if the system is up
-    private String ping(Request request, Response response, Token token, String fqdn) {
-        return message(response, "Pinged from %s".formatted(fqdn));
+    private String ping(Request request, Response response, IssAccessToken token) {
+        return message(response, "Pinged from %s".formatted(token.getServerFqdn()));
     }
 
-    private String register(Request request, Response response, Token token, String fqdn) {
+    private String register(Request request, Response response, IssAccessToken token) {
         RegisterJson registerRequest = GSON.fromJson(request.body(), RegisterJson.class);
 
         String tokenToStore = registerRequest.getToken();
         if (StringUtils.isEmpty(tokenToStore)) {
-            LOGGER.error("No token received in the request for server {}", fqdn);
+            LOGGER.error("No token received in the request for server {}", token.getServerFqdn());
             return badRequest(response, "Required token is missing");
         }
 
         try {
-            hubManager.storeAccessToken(fqdn, tokenToStore);
-            hubManager.saveNewServer(registerRequest.getRole(), fqdn, registerRequest.getRootCA());
+            hubManager.storeAccessToken(token, tokenToStore);
+            hubManager.saveNewServer(token, registerRequest.getRole(), registerRequest.getRootCA());
 
             return success(response);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the received token for server {}", fqdn);
+            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn());
             return badRequest(response, "The specified token is not parseable");
         }
     }
 
-    private String generateCredentials(Request request, Response response, Token token, String fqdn) {
-        IssPeripheral peripheral = (IssPeripheral) hubManager.findServer(IssRole.PERIPHERAL, fqdn);
-        if (peripheral == null) {
-            // This should never happen, fqdn guaranteed be a hub after calling allowingOnlyHub() on route init.
+    private String generateCredentials(Request request, Response response, IssAccessToken token) {
+        try {
+            HubSCCCredentials credentials = hubManager.generateSCCCredentials(token);
+            return success(response, new SCCCredentialsJson(credentials.getUsername(), credentials.getPassword()));
+        }
+        catch (IllegalArgumentException ex) {
+            // This should never happen, fqdn guaranteed be a peripheral after calling allowingOnlyPeripheral() when
+            // initializing the route.
             return badRequest(response, "Specified FQDN is not a known peripheral");
         }
-
-        HubSCCCredentials credentials = hubManager.generateSCCCredentials(peripheral);
-        return success(response, new SCCCredentialsJson(credentials.getUsername(), credentials.getPassword()));
     }
 
-    private String storeCredentials(Request request, Response response, Token token, String fqdn) {
+    private String storeCredentials(Request request, Response response, IssAccessToken token) {
         SCCCredentialsJson storeRequest = GSON.fromJson(request.body(), SCCCredentialsJson.class);
 
-        IssHub hub = (IssHub) hubManager.findServer(IssRole.HUB, fqdn);
-        if (hub == null) {
+        try {
+            hubManager.storeSCCCredentials(token, storeRequest.getUsername(), storeRequest.getPassword());
+            return success(response);
+        }
+        catch (IllegalArgumentException ex) {
             // This should never happen, fqdn guaranteed be a hub after calling allowingOnlyHub() on route init.
             return badRequest(response, "Specified FQDN is not a known hub");
         }
-
-        hubManager.storeSCCCredentials(hub, storeRequest.getUsername(), storeRequest.getPassword());
-        return success(response);
     }
 }

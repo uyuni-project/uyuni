@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -10,6 +10,10 @@
  */
 
 package com.suse.manager.model.hub;
+
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenParser;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import org.hibernate.annotations.Type;
 
@@ -156,6 +160,21 @@ public class IssAccessToken {
         }
 
         return new Date().after(expirationDate);
+    }
+
+    /**
+     * Retrieve the parsed token associated with this entity
+     * @return the parsed token
+     * @throws TokenParsingException if parsing the serialized value fails
+     */
+    @Transient
+    public Token getParsedToken() throws TokenParsingException {
+        return new TokenParser()
+            .usingServerSecret()
+            .verifyingNotBefore()
+            .verifyingExpiration()
+            .parse(token);
+
     }
 
     @Override
