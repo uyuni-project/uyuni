@@ -5484,7 +5484,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.address_note" xml:space="preserve">
         <source>The hostname or IP address of the power management server.</source>
-        <target/>
+        <target state="translated">Názov hostiteľa alebo IP adresa servera správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5495,7 +5495,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.username_note" xml:space="preserve">
         <source>The username used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Používateľské meno používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5506,7 +5506,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.password_note" xml:space="preserve">
         <source>The password used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Heslo používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5517,7 +5517,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.identifier_note" xml:space="preserve">
         <source>The identifier used to specify this system on the power management server. Optional because not all power managment types will need this field. This field can also be used to pass additional options to the "fence agent". For example, if you are using an IPMI server that requires the Lanplus protocol (and this system's identifier was "System") then you can set a System Identifier of "-P System" to instruct fence_ipmilan to use the Lanplus protocol for this system. See the fence agent's documentation for additional options.</source>
-        <target/>
+        <target state="translated">Identifikátor používaný na určenie tohto systému na serveri správy napájania. Nepovinné, pretože nie všetky typy správy napájania budú toto pole potrebovať. Toto pole sa môže použiť aj na odovzdanie ďalších možností pre "fence agent". Ak napríklad používate server IPMI, ktorý vyžaduje protokol Lanplus (a identifikátor tohto systému bol "System"), potom môžete nastaviť identifikátor systému "-P System", aby ste inštruovali fence_ipmilan používať protokol Lanplus pre tento systém. Ďalšie možnosti nájdete v dokumentácii k fence agent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5528,7 +5528,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.security_warning" xml:space="preserve">
         <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See cobbler documentation for more information and mitigation strategies.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;BEZPEČNOSTNÉ VAROVANIE:&lt;/strong&gt; Informácie uložené na tejto stránke sú dostupné komukoľvek na sieti. Ďalšie informácie a stratégie obmedzenia nájdete v dokumentácii pre cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5539,35 +5539,35 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.misc" xml:space="preserve">
         <source>Misc</source>
-        <target/>
+        <target state="translated">Rôzne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardvérové profily&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;profily balíkov&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;systémové predvoľby&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.customvalues" xml:space="preserve">
         <source>Set and remove &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;custom values&lt;/a&gt; for selected systems</source>
-        <target/>
+        <target state="translated">Nastaviť a odstrániť &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;vlastné hodnoty&lt;/a&gt; pre vybrané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
