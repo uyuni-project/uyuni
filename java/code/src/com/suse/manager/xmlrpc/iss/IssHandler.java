@@ -82,7 +82,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            return hubManager.issueAccessToken(fqdn);
+            return hubManager.issueAccessToken(loggedInUser, fqdn);
         }
         catch (TokenException ex) {
             LOGGER.error("Unable to issue a token for {}", fqdn, ex);
@@ -119,7 +119,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            hubManager.storeAccessToken(fqdn, token);
+            hubManager.storeAccessToken(loggedInUser, fqdn, token);
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to process the token from {}", fqdn, ex);
@@ -193,7 +193,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            hubManager.register(fqdn, remoteRole, username, password, rootCA);
+            hubManager.register(loggedInUser, fqdn, remoteRole, username, password, rootCA);
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
@@ -267,7 +267,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            hubManager.register(fqdn, remoteRole, token, rootCA);
+            hubManager.register(loggedInUser, fqdn, remoteRole, token, rootCA);
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
