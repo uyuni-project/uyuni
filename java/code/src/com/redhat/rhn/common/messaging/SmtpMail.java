@@ -24,6 +24,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
@@ -142,6 +143,7 @@ public class SmtpMail implements Mail {
     public void send() {
 
         try {
+            message.setSentDate(new Date());
             Address[] addrs = message.getRecipients(RecipientType.TO);
             if (addrs == null || addrs.length == 0) {
                 log.warn("Aborting mail message {}: No recipients", message.getSubject());
