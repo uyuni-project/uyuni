@@ -22,7 +22,6 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.Token;
-import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.reflect.TypeToken;
@@ -62,21 +61,26 @@ public final class IssSparkHelper {
             }
 
             String serializedToken = authorization.substring(7);
-            Token token = parseToken(serializedToken);
             IssAccessToken issuedToken = HUB_FACTORY.lookupIssuedToken(serializedToken);
 
-            if (issuedToken == null || token == null || issuedToken.isExpired() || !issuedToken.isValid()) {
+            if (issuedToken == null || issuedToken.isExpired() || !issuedToken.isValid()) {
                 response.status(HttpServletResponse.SC_UNAUTHORIZED);
                 return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
             }
 
             try {
+                Token token = issuedToken.getParsedToken();
                 String fqdn = token.getClaim("fqdn", String.class);
-                return route.handle(request, response, token, fqdn);
+                if (fqdn == null || !fqdn.equals(issuedToken.getServerFqdn())) {
+                    response.status(HttpServletResponse.SC_UNAUTHORIZED);
+                    return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
+                }
+
+                return route.handle(request, response, issuedToken);
             }
             catch (TokenParsingException ex) {
-                response.status(HttpServletResponse.SC_BAD_REQUEST);
-                return json(response, ResultJson.error("Invalid token provided: missing claim"), new TypeToken<>() { });
+                response.status(HttpServletResponse.SC_UNAUTHORIZED);
+                return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
             }
             finally {
                 var authenticationService = AuthenticationServiceFactory.getInstance().getAuthenticationService();
@@ -113,7 +117,8 @@ public final class IssSparkHelper {
     }
 
     private static RouteWithIssToken allowingOnly(List<IssRole> allowedRoles, RouteWithIssToken route) {
-        return (request, response, token, fqdn) -> {
+        return (request, response, issAccessToken) -> {
+            String fqdn = issAccessToken.getServerFqdn();
             Optional<IssHub> issHub = HUB_FACTORY.lookupIssHubByFqdn(fqdn);
             Optional<IssPeripheral> issPeripheral = HUB_FACTORY.lookupIssPeripheralByFqdn(fqdn);
 
@@ -124,7 +129,7 @@ public final class IssSparkHelper {
 
             }
 
-            return route.handle(request, response, token, fqdn);
+            return route.handle(request, response, issAccessToken);
         };
     }
 
@@ -145,19 +150,5 @@ public final class IssSparkHelper {
         }
 
         return false;
-    }
-
-    private static Token parseToken(String serializedToken) {
-        try {
-            return new TokenParser()
-                .usingServerSecret()
-                .verifyingNotBefore()
-                .verifyingExpiration()
-                .parse(serializedToken);
-        }
-        catch (TokenParsingException ex) {
-            LOGGER.debug("Unable to parse token {}. Request will be rejected.", serializedToken, ex);
-            return null;
-        }
     }
 }
