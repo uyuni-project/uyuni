@@ -71419,5 +71419,161 @@
         "installer_updates": false,
         "name": "SLE-Product-SLES_SAP-16.0-Source",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Product-SLES_SAP/16.0/ppc64le/product_source/
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0 for sle-16-x86_64",
+        "distro_target": "sle-16-x86_64",
+        "enabled": true,
+        "id": 7620,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/x86_64/product/
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Debug for sle-16-x86_64",
+        "distro_target": "sle-16-x86_64",
+        "enabled": false,
+        "id": 7621,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Debug",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/x86_64/product_debug/
+    },
+    {
+        "arch": [
+            "x86_64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Source for sle-16-x86_64",
+        "distro_target": "sle-16-x86_64",
+        "enabled": true,
+        "id": 7622,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Source",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/x86_64/product_source/
+    },
+    {
+        "arch": [
+            "aarch64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0 for sle-16-aarch64",
+        "distro_target": "sle-16-aarch64",
+        "enabled": true,
+        "id": 7623,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/aarch64/product/
+    },
+    {
+        "arch": [
+            "aarch64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Debug for sle-16-aarch64",
+        "distro_target": "sle-16-aarch64",
+        "enabled": false,
+        "id": 7624,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Debug",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/aarch64/product_debug/
+    },
+    {
+        "arch": [
+            "aarch64"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Source for sle-16-aarch64",
+        "distro_target": "sle-16-aarch64",
+        "enabled": true,
+        "id": 7625,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Source",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/aarch64/product_source/
+    },
+    {
+        "arch": [
+            "ppc64le"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0 for sle-16-ppc64le",
+        "distro_target": "sle-16-ppc64le",
+        "enabled": true,
+        "id": 7626,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/ppc64le/product/
+    },
+    {
+        "arch": [
+            "ppc64le"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Debug for sle-16-ppc64le",
+        "distro_target": "sle-16-ppc64le",
+        "enabled": false,
+        "id": 7627,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Debug",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/ppc64le/product_debug/
+    },
+    {
+        "arch": [
+            "ppc64le"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Source for sle-16-ppc64le",
+        "distro_target": "sle-16-ppc64le",
+        "enabled": true,
+        "id": 7628,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Source",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/ppc64le/product_source/
+    },
+    {
+        "arch": [
+            "s390x"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0 for sle-16-s390x",
+        "distro_target": "sle-16-s390x",
+        "enabled": true,
+        "id": 7629,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/s390x/product/
+    },
+    {
+        "arch": [
+            "s390x"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Debug for sle-16-s390x",
+        "distro_target": "sle-16-s390x",
+        "enabled": false,
+        "id": 7630,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Debug",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/s390x/product_debug/
+    },
+    {
+        "arch": [
+            "s390x"
+        ],
+        "autorefresh": true,
+        "description": "SLE-Product-HA-16.0-Source for sle-16-s390x",
+        "distro_target": "sle-16-s390x",
+        "enabled": false,
+        "id": 7631,
+        "installer_updates": false,
+        "name": "SLE-Product-HA-16.0-Source",
+        "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HA/16.0/s390x/product_source/
     }
 ]
