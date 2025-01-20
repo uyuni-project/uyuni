@@ -10,7 +10,7 @@
  */
 package com.suse.manager.hub;
 
-import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.model.hub.IssAccessToken;
 
 import spark.Request;
 import spark.Response;
@@ -26,9 +26,8 @@ public interface RouteWithIssToken {
      *
      * @param request the request object
      * @param response the response object
-     * @param token the token with this request
-     * @param serverFqdn the FQDN of the remote server
+     * @param token the access token granting access and identifying the caller
      * @return the content to be set in the response
      */
-    Object handle(Request request, Response response, Token token, String serverFqdn);
+    Object handle(Request request, Response response, IssAccessToken token);
 }
