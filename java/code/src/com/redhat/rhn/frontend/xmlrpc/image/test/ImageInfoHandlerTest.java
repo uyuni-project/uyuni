@@ -67,9 +67,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -114,11 +112,10 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         saltServiceMock = context.mock(SaltService.class);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
-        VirtManager virtManager = new VirtManagerSalt(saltServiceMock);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltServiceMock, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltServiceMock, monitoringManager, serverGroupManager)
         );
         handler = new ImageInfoHandler(saltServiceMock);
         context.checking(new Expectations() {{

@@ -44,9 +44,6 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
@@ -567,26 +564,6 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
             dcd.setDaemonConfigModified(new Date());
             dcd.setParentAction(newA);
             ((DaemonConfigAction) newA).setDaemonConfigDetails(dcd);
-        }
-        else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_DELETE) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_DESTROY) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_REBOOT) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_RESUME) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_START) ||
-                 type.equals(ActionFactory.TYPE_VIRTUALIZATION_SUSPEND)) {
-            BaseVirtualizationGuestAction va = (BaseVirtualizationGuestAction)newA;
-            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
-        }
-        else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY)) {
-           VirtualizationSetMemoryGuestAction va = (VirtualizationSetMemoryGuestAction)newA;
-            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
-           va.setMemory(1234);
-        }
-        else if (type.equals(ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS)) {
-            VirtualizationSetVcpusGuestAction va = (VirtualizationSetVcpusGuestAction)newA;
-            va.setUuid(RandomStringUtils.randomAlphanumeric(8));
-            va.setVcpu(12);
         }
 
         newA.setName("RHN-JAVA Test Action");

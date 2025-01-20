@@ -52,10 +52,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
@@ -324,12 +322,11 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, groupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+                new SystemUnentitler(monitoringManager, groupManager),
+                new SystemEntitler(saltApi, monitoringManager, groupManager)
         );
 
         context.checking(new Expectations() {{

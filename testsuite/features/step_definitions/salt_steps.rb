@@ -557,10 +557,6 @@ Then(/^I run spacecmd listeventhistory for "([^"]*)"$/) do |host|
   get_target('server').run("spacecmd -u admin -p admin system_listeventhistory #{system_name}")
 end
 
-When(/^I enter KVM Server password$/) do
-  step %(I enter "#{ENV.fetch('VIRTHOST_KVM_PASSWORD', nil)}" as "password")
-end
-
 When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node = get_target(host)
 

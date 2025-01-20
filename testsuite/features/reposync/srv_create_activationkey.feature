@@ -15,7 +15,6 @@
 # - features/secondary/min_move_from_and_to_proxy.feature
 # - features/secondary/min_salt_mgrcompat_state.feature
 # - features/secondary/min_salt_minions_page.feature
-# - features/secondary/minkvm_guests.feature
 # - features/secondary/proxy_cobbler_pxeboot.feature
 # - features/secondary/proxy_retail_pxeboot.feature
 # - features/secondary/srv_docker_advanced_content_management.feature

@@ -15,7 +15,6 @@ unless $build_validation
   warn 'Debian-like minion IP address or domain name variable empty' if ENV['DEBLIKE_MINION'].nil?
   warn 'SSH minion IP address or domain name variable empty' if ENV['SSH_MINION'].nil?
   warn 'PXE boot MAC address variable empty' if ENV['PXEBOOT_MAC'].nil?
-  warn 'KVM server minion IP address or domain name variable empty' if ENV['VIRTHOST_KVM_URL'].nil?
 end
 
 # Dictionaries to obtain host or node from the RemoteNode objects
