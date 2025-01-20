@@ -1349,21 +1349,14 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
-     * @param fetchingVirtualGuests eagerly load virtual guests
-     * @param fetchingGroups eagerly load server groups
      * @return a list of all systems
      */
-    public static List<Server> list(boolean fetchingVirtualGuests, boolean fetchingGroups) {
-        StringBuilder sql = new StringBuilder("SELECT *, 0 as clazz_ FROM rhnServer s");
+    public static List<Server> list() {
+        String sql = """
+        SELECT *, 0 as clazz_ FROM rhnServer s
+        """;
 
-        if (fetchingVirtualGuests) {
-            sql.append(" LEFT JOIN rhnVirtualInstance vg ON s.id = vg.host_system_id");
-        }
-        if (fetchingGroups) {
-            sql.append(" LEFT JOIN rhnServerGroupMembers rsgm ON s.id = rsgm.server_id");
-            sql.append(" LEFT JOIN rhnServerGroup sg ON rsgm.server_group_id = sg.id");
-        }
-        return getSession().createNativeQuery(sql.toString(), Server.class).getResultList();
+        return getSession().createNativeQuery(sql, Server.class).getResultList();
 
     }
 

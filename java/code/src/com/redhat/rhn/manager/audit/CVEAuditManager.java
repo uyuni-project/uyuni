@@ -446,7 +446,7 @@ public class CVEAuditManager {
         targetProductCache.clear();
 
         // Get a list of *all* servers
-        List<Server> servers = ServerFactory.list(false, false);
+        List<Server> servers = ServerFactory.list();
         if (log.isDebugEnabled()) {
             log.debug("Number of servers found: {}", servers.size());
         }
