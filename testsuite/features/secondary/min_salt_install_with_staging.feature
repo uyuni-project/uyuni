@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -60,9 +60,11 @@ Feature: Install a package on the SLES minion with staging enabled
     And I wait for "orion-dummy-1.1-1.1" to be installed on "sle_minion"
 
   Scenario: Install patch in the future and check for staging
-    And I follow "Software" in the content area
+    When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    When I check "virgo-dummy-3456" in the list
+    And I enter "virgo" as the filtered synopsis
+    And I click on the filter button
+    And I check "virgo-dummy-3456" in the list
     And I click on "Apply Patches"
     And I pick 3 minutes from now as schedule time
     And I click on "Confirm"
