@@ -18,14 +18,20 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.IssClientFactory;
@@ -53,17 +59,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     private static final String LOCAL_SERVER_FQDN = "local-server.unit-test.local";
 
     private static final String REMOTE_SERVER_FQDN = "remote-server.unit-test.local";
+
+    private User satAdmin;
 
     private HubFactory hubFactory;
 
@@ -79,6 +92,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Override
     public void setUp() throws Exception {
         super.setUp();
+
+        satAdmin = UserTestUtils.createUser("satUser", user.getOrg().getId());
+        satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
+        UserFactory.save(satAdmin);
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
@@ -105,10 +122,83 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         Config.get().setString("server.secret_key", originalServerSecret);
     }
 
+    /**
+     * This test ensure the implementation does not have any public method that are not requiring either a user
+     * or a token to enforce authorization.
+     */
+    @Test
+    public void implementationDoesNotHaveAnyPublicUnprotectedMethods() {
+        List<Method> publicClassMethods = Arrays.stream(hubManager.getClass().getMethods())
+            // Exclude methods declared by Object
+            .filter(method -> !Object.class.equals(method.getDeclaringClass()))
+            // Exclude non-public methods
+            .filter(method -> Modifier.isPublic(method.getModifiers()))
+            .toList();
+
+        // First parameter of the method must be either a User or an IssAccessToken
+        List<Class<?>> allowedFirstParameters = List.of(User.class, IssAccessToken.class);
+
+        // Extract all methods that don't have a valid first parameter
+        List<String> unprotectedMethods = publicClassMethods.stream()
+            .filter(method -> !allowedFirstParameters.contains(method.getParameterTypes()[0]))
+            .map(Method::toGenericString)
+            .toList();
+
+        assertTrue(unprotectedMethods.isEmpty(),
+            "These methods seem to not enforce authorization, as the first parameter is not any of %s:%n\t%s"
+                .formatted(allowedFirstParameters, String.join("\n\t", unprotectedMethods))
+        );
+
+        for (Method method : publicClassMethods) {
+            // Generate default values for all parameters except the first one. Since the method should fail due to
+            // validation the other parameters should be irrelevant
+            List<Object> params = Arrays.stream(method.getParameterTypes())
+                .skip(1)
+                .map(paramType -> getDefaultValue(paramType))
+                .collect(Collectors.toList());
+
+            Class<?> firstParameterClass = method.getParameterTypes()[0];
+            String expectedMessage = "You do not have permissions to perform this action. ";
+
+            IssAccessToken expiredToken = new IssAccessToken(
+                TokenType.ISSUED,
+                "dummy",
+                "my.remote.server",
+                Instant.now().minus(30, ChronoUnit.DAYS)
+            );
+
+            if (User.class.equals(firstParameterClass)) {
+                params.add(0, user);
+                expectedMessage += "You need to have at least a SUSE Manager Administrator role to perform this action";
+            }
+            else if (IssAccessToken.class.equals(firstParameterClass)) {
+                params.add(0, expiredToken);
+                expectedMessage += "Invalid token provided";
+            }
+            else {
+                fail("Unable to identify a value for the first parameter type " + firstParameterClass);
+                // appeasing the compiler: this line will never be executed.
+                return;
+            }
+
+            // Try to invoke the method. It should fail with a permission exception. Since we are using reflection
+            // it will be wrapped into an InvocationTargetException
+            InvocationTargetException wrapperException = assertThrows(InvocationTargetException.class,
+                () -> method.invoke(hubManager, params.toArray()));
+
+            // Verify the actual exception is correct
+            assertInstanceOf(PermissionException.class, wrapperException.getCause(),
+                "Method " + method.toGenericString() + " is throwing an unexpected Exception");
+            assertEquals(expectedMessage, wrapperException.getCause().getMessage(),
+                "Method " + method.toGenericString() + " is throwing an unexpected exception message");
+
+        }
+    }
+
     @Test
     public void canIssueANewToken() throws Exception {
         Instant expectedExpiration = Instant.now().truncatedTo(ChronoUnit.SECONDS).plus(525_600L, ChronoUnit.MINUTES);
-        String token = hubManager.issueAccessToken(REMOTE_SERVER_FQDN);
+        String token = hubManager.issueAccessToken(satAdmin, REMOTE_SERVER_FQDN);
 
         // Ensure we get a token
         assertNotNull(token);
@@ -153,7 +243,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             wifQ.6M9MOQvsiFr4EeyeAo36_2jUbV1Ju9ceCD\
             kI-mykFms""";
 
-        hubManager.storeAccessToken(REMOTE_SERVER_FQDN, token);
+        hubManager.storeAccessToken(satAdmin, REMOTE_SERVER_FQDN, token);
 
         // Ensure the token is correctly stored in the database
         IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(REMOTE_SERVER_FQDN);
@@ -185,7 +275,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         var exception = assertThrows(
             TokenParsingException.class,
-            () -> hubManager.storeAccessToken(REMOTE_SERVER_FQDN, token)
+            () -> hubManager.storeAccessToken(satAdmin, REMOTE_SERVER_FQDN, token)
         );
 
         assertEquals(
@@ -216,7 +306,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         TokenParsingException exception = assertThrows(
             TokenParsingException.class,
-            () -> hubManager.storeAccessToken("external-server.dev.local", token)
+            () -> hubManager.storeAccessToken(satAdmin, "external-server.dev.local", token)
         );
 
         InvalidJwtException cause = assertInstanceOf(InvalidJwtException.class, exception.getCause());
@@ -226,13 +316,13 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canSaveHubAndPeripheralServers() {
-        hubManager.saveNewServer(IssRole.HUB, "dummy.hub.fqdn", "dummy-certificate-data");
+        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data");
 
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
         assertTrue(issHub.isPresent());
         assertEquals("dummy-certificate-data", issHub.get().getRootCa());
 
-        hubManager.saveNewServer(IssRole.PERIPHERAL, "dummy.peripheral.fqdn", null);
+        hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null);
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn("dummy.peripheral.fqdn");
         assertTrue(issPeripheral.isPresent());
         assertNull(issPeripheral.get().getRootCa());
@@ -243,15 +333,15 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory.save(new IssHub("dummy.hub.fqdn", null));
         hubFactory.save(new IssPeripheral("dummy.peripheral.fqdn", null));
 
-        IssServer result = hubManager.findServer(IssRole.PERIPHERAL, "dummy.peripheral.fqdn");
+        IssServer result = hubManager.findServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL);
         assertNotNull(result);
         assertInstanceOf(IssPeripheral.class, result);
 
-        result = hubManager.findServer(IssRole.HUB, "dummy.hub.fqdn");
+        result = hubManager.findServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB);
         assertNotNull(result);
         assertInstanceOf(IssHub.class, result);
 
-        result = hubManager.findServer(IssRole.HUB, "dummy.unknown.fqdn");
+        result = hubManager.findServer(getValidToken("dummy.unknown.fqdn"), IssRole.HUB);
         assertNull(result);
     }
 
@@ -260,7 +350,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory.save(new IssHub("dummy.hub.fqdn", null));
         hubFactory.save(new IssPeripheral("dummy.peripheral.fqdn", null));
 
-        IssHub hub = (IssHub) hubManager.findServer(IssRole.HUB, "dummy.hub.fqdn");
+        IssHub hub = (IssHub) hubManager.findServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB);
         assertNull(hub.getRootCa());
         assertNull(hub.getMirrorCredentials());
 
@@ -282,14 +372,15 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     public void canGenerateSCCCredentials() {
         String peripheralFqdn = "dummy.peripheral.fqdn";
 
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(IssRole.PERIPHERAL, peripheralFqdn, null);
+        IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
+        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
             .filter(creds -> peripheralFqdn.equals(creds.getPeripheralUrl()))
             .count());
 
-        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheral);
+        HubSCCCredentials hubSCCCredentials = hubManager.generateSCCCredentials(peripheralToken);
         assertEquals("peripheral-%06d".formatted(peripheral.getId()), hubSCCCredentials.getUsername());
         assertNotNull(hubSCCCredentials.getPassword());
         assertEquals(peripheralFqdn, hubSCCCredentials.getPeripheralUrl());
@@ -297,15 +388,15 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canStoreSCCCredentials() {
-        String hubFqdn = "dummy.hub.fqdn";
-        var hub = (IssHub) hubManager.saveNewServer(IssRole.HUB, hubFqdn, null);
+        IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
+        var hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listSCCCredentials().stream()
             .filter(creds -> "https://dummy.hub.fqdn".equals(creds.getUrl()))
             .count());
 
-        SCCCredentials sccCredentials = hubManager.storeSCCCredentials(hub, "dummy-username", "dummy-password");
+        SCCCredentials sccCredentials = hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
         assertEquals("dummy-username", sccCredentials.getUsername());
         assertEquals("dummy-password", sccCredentials.getPassword());
         assertEquals("https://dummy.hub.fqdn", sccCredentials.getUrl());
@@ -349,7 +440,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         // Register the remote server as PERIPHERAL for this local server
-        hubManager.register(REMOTE_SERVER_FQDN, IssRole.PERIPHERAL, "admin", "admin", null);
+        hubManager.register(satAdmin, REMOTE_SERVER_FQDN, IssRole.PERIPHERAL, "admin", "admin", null);
 
         // Verify the remote server is saved as peripheral
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(REMOTE_SERVER_FQDN);
@@ -403,7 +494,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         // Register the remote server as HUB for this local server
-        hubManager.register(REMOTE_SERVER_FQDN, IssRole.HUB, "admin", "admin", null);
+        hubManager.register(satAdmin, REMOTE_SERVER_FQDN, IssRole.HUB, "admin", "admin", null);
 
         // Verify the remote server is saved as hub
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn(REMOTE_SERVER_FQDN);
@@ -428,5 +519,38 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             "https://" + REMOTE_SERVER_FQDN,
             sccCredentials.get(0).getUrl()
         );
+    }
+
+    private static IssAccessToken getValidToken(String fdqn) {
+        return new IssAccessToken(TokenType.ISSUED, "dummy-token", fdqn);
+    }
+
+    private static <T> Object getDefaultValue(Class<T> clazz) {
+        if (int.class.equals(clazz)) {
+            return 0;
+        }
+        else if (boolean.class.equals(clazz)) {
+            return false;
+        }
+        else if (double.class.equals(clazz)) {
+            return 0.0;
+        }
+        else if (float.class.equals(clazz)) {
+            return 0.0f;
+        }
+        else if (long.class.equals(clazz)) {
+            return 0L;
+        }
+        else if (short.class.equals(clazz)) {
+            return (short) 0;
+        }
+        else if (byte.class.equals(clazz)) {
+            return (byte) 0;
+        }
+        else if (char.class.equals(clazz)) {
+            return '\u0000';
+        }
+
+        return null;
     }
 }
