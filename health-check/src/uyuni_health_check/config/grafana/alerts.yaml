@@ -1766,6 +1766,135 @@ groups:
             component: salt
             issue: performance_issue
           isPaused: false
+        - uid: be9hmkdpeksn4d
+          title: 'Insufficient memory: check minimal file mount size requirements'
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="fs_mount_insufficient"]
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: |-
+                One or multiple of the memory partitions might not meet minimal requirements.
+
+                Consult the Hardware Requirements section of the Installation and Upgrade guide for more information.
+          labels:
+            component: config
+            issue: min_spec
+          isPaused: false
+        - uid: fe9hmsfdz5udce
+          title: Filesystem partition(s) running out of space
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="fs_mount_out_of_space"]
+                source: url
+                type: json
+                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            summary: The utilization of one or multiple of memory partitions is above 90%.
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
         - uid: de95uybcn1ji8a
           title: Insufficient CPU count (master)
           condition: C
