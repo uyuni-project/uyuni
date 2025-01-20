@@ -16,36 +16,10 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 import { showSuccessToastr } from "components/toastr/toastr";
-import { HelpLink } from "components/utils";
 
 import { Utils } from "utils/functions";
 
-const _SETUP_WIZARD_STEPS = [
-  {
-    id: "wizard-step-proxy",
-    label: "HTTP Proxy",
-    url: "/rhn/admin/setup/ProxySettings.do",
-    active: false,
-  },
-  {
-    id: "wizard-step-credentials",
-    label: "Organization Credentials",
-    url: "/rhn/admin/setup/MirrorCredentials.do",
-    active: false,
-  },
-  {
-    id: "wizard-step-suse-products",
-    label: "Products",
-    url: "/rhn/manager/admin/setup/products",
-    active: false,
-  },
-  {
-    id: "wizard-step-suse-payg",
-    label: "PAYG Connections",
-    url: "/rhn/manager/admin/setup/payg",
-    active: true,
-  },
-];
+import { SetupHeader } from "../setup/setup-header";
 
 type PaygOverviewType = {
   id: String;
@@ -75,32 +49,6 @@ const ListPayg = (props: Props) => {
     }
     return true;
   };
-
-  const title = (
-    <div className="spacewalk-toolbar-h1">
-      <h1>
-        <i className="fa fa-cogs"></i>
-        &nbsp;
-        {t("Setup Wizard")}
-        &nbsp;
-        <HelpLink url="reference/admin/setup-wizard.html" />
-      </h1>
-    </div>
-  );
-
-  const tabs = (
-    <div className="spacewalk-content-nav">
-      <ul className="nav nav-tabs">
-        {_SETUP_WIZARD_STEPS.map((step) => (
-          <li key={step.id} className={step.active ? "active" : ""}>
-            <a className="js-spa" href={step.url}>
-              {t(step.label)}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
 
   let pageContent = (
     <Table
@@ -148,8 +96,7 @@ const ListPayg = (props: Props) => {
   };
   return (
     <div className="responsive-wizard">
-      {title}
-      {tabs}
+      <SetupHeader />
       <SectionToolbar>
         <div className="action-button-wrapper">
           <div className="btn-group">

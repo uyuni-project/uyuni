@@ -43,6 +43,8 @@ type Props = {
 
   /** Accessible title of the form */
   title?: string;
+
+  autoComplete?: string;
 };
 
 type FormContextType = {
@@ -177,7 +179,13 @@ export class Form extends React.Component<Props> {
           validateForm: this.validateForm,
         }}
       >
-        <form ref={this.props.formRef} onSubmit={this.submit} className={this.props.className} title={this.props.title}>
+        <form
+          ref={this.props.formRef}
+          onSubmit={this.submit}
+          className={this.props.className}
+          title={this.props.title}
+          autoComplete={this.props.autoComplete}
+        >
           <div className={`${this.props.formDirection || ""} ${this.props.divClass ? ` ${this.props.divClass}` : ""}`}>
             {this.props.children}
           </div>

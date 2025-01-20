@@ -70,6 +70,8 @@ export type InputBaseProps<ValueType = string> = {
    *  Takes a name and a value parameter.
    */
   onChange?: (name: string | undefined, value: ValueType) => void;
+
+  autoComplete?: string;
 };
 
 type State = {
@@ -265,7 +267,7 @@ export class InputBase<ValueType = string> extends React.Component<InputBaseProp
   pushHint(hints: React.ReactNode[], hint: React.ReactNode) {
     if (hint) {
       if (hints.length > 0) {
-        hints.push(<br />);
+        hints.push(<br key={hints.length} />);
       }
       hints.push(hint);
     }
