@@ -30,8 +30,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -169,7 +168,7 @@ public class SUSEProductFactory extends HibernateFactory {
                                       SELECT * from suseProducts
                                       WHERE id NOT IN (:ids)
                                       """, SUSEProduct.class)
-                    .setParameterList("ids", ids, LongType.INSTANCE)
+                    .setParameterList("ids", ids, StandardBasicTypes.LONG)
                     .getResultList();
 
             for (SUSEProduct product : productIds) {
@@ -463,13 +462,13 @@ public class SUSEProductFactory extends HibernateFactory {
 
         // Execute the query
         Query query = getSession().createNativeQuery(sqlQuery.toString(), SUSEProduct.class)
-                .setParameter("name", name.toLowerCase(), StringType.INSTANCE)
-                .setParameter("arch", archTypeId, LongType.INSTANCE);
+                .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
+                .setParameter("arch", archTypeId, StandardBasicTypes.LONG);
         if (version != null) {
-            query.setParameter("version", version.toLowerCase(), StringType.INSTANCE);
+            query.setParameter("version", version.toLowerCase(), StandardBasicTypes.STRING);
         }
         if (release != null) {
-            query.setParameter("release", release.toLowerCase(), StringType.INSTANCE);
+            query.setParameter("release", release.toLowerCase(), StandardBasicTypes.STRING);
         }
 
 
@@ -499,7 +498,7 @@ public class SUSEProductFactory extends HibernateFactory {
                                       SELECT * from suseProducts
                                       WHERE product_id = :product
                                       """, SUSEProduct.class)
-                    .setParameter("product", productId, LongType.INSTANCE)
+                    .setParameter("product", productId, StandardBasicTypes.LONG)
                     .getSingleResult();
         }
         catch (NoResultException e) {
@@ -572,9 +571,9 @@ public class SUSEProductFactory extends HibernateFactory {
                                       AND ext_pdid = :extid
                                       AND root_pdid = :rootid
                                       """, SUSEProductExtension.class)
-                    .setParameter("baseid", base.getId(), LongType.INSTANCE)
-                    .setParameter("extid", ext.getId(), LongType.INSTANCE)
-                    .setParameter("rootid", root.getId(), LongType.INSTANCE)
+                    .setParameter("baseid", base.getId(), StandardBasicTypes.LONG)
+                    .setParameter("extid", ext.getId(), StandardBasicTypes.LONG)
+                    .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
                     .getSingleResult());
         }
         catch (NoResultException e) {
@@ -620,8 +619,8 @@ public class SUSEProductFactory extends HibernateFactory {
                                       WHERE base_pdid = :baseid
                                       AND root_pdid = :rootid
                                       """, SUSEProductExtension.class)
-                    .setParameter("baseid", product.getId(), LongType.INSTANCE)
-                    .setParameter("rootid", root.getId(), LongType.INSTANCE)
+                    .setParameter("baseid", product.getId(), StandardBasicTypes.LONG)
+                    .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
                     .getResultList();
     }
 
@@ -736,10 +735,10 @@ public class SUSEProductFactory extends HibernateFactory {
 
         // Execute the query
         Query query = getSession().createNativeQuery(sqlQuery.toString(), InstalledProduct.class)
-                .setParameter("name", name.toLowerCase(), StringType.INSTANCE)
-                .setParameter("version", version.toLowerCase(), StringType.INSTANCE)
-                .setParameter("release", release.toLowerCase(), StringType.INSTANCE)
-                .setParameter("arch", archTypeId, LongType.INSTANCE);
+                .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
+                .setParameter("version", version.toLowerCase(), StandardBasicTypes.STRING)
+                .setParameter("release", release.toLowerCase(), StandardBasicTypes.STRING)
+                .setParameter("arch", archTypeId, StandardBasicTypes.LONG);
 
         List<InstalledProduct> result = query.getResultList();
 

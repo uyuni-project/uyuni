@@ -29,8 +29,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -63,7 +62,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       s.server_id IN
                                       (SELECT id FROM rhnServer WHERE org_id = :org)
                                       """, MinionServer.class)
-                    .setParameter("org", orgId, LongType.INSTANCE)
+                    .setParameter("org", orgId, StandardBasicTypes.LONG)
                     .getResultList();
     }
 
@@ -100,7 +99,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       s.server_id IN
                                       (SELECT id FROM rhnServer WHERE machine_id = :machineId)
                                       """, MinionServer.class)
-                    .setParameter("machineId", machineId, StringType.INSTANCE)
+                    .setParameter("machineId", machineId, StandardBasicTypes.STRING)
                     .uniqueResult());
         }
         catch (NoResultException e) {
@@ -123,7 +122,7 @@ public class MinionServerFactory extends HibernateFactory {
                             FROM suseminioninfo s
                             JOIN rhnserver r ON s.server_id = r.id where s.minion_id = :minion
                             """, MinionServer.class)
-                    .setParameter("minion", minionId, StringType.INSTANCE).getSingleResult());
+                    .setParameter("minion", minionId, StandardBasicTypes.STRING).getSingleResult());
         }
         catch (NoResultException e) {
             minion = Optional.empty();
@@ -159,7 +158,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       JOIN rhnserver r ON s.server_id = r.id
                                       WHERE s.org_id = :org
                                       """, MinionServer.class)
-                .setParameter("org", orgId, LongType.INSTANCE)
+                .setParameter("org", orgId, StandardBasicTypes.LONG)
                 .getResultList().stream().map(MinionServer::getMinionId).collect(Collectors.toList());
     }
 
@@ -201,7 +200,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       JOIN rhnserver r ON s.server_id = r.id
                                       WHERE s.minion_id IN (:minions)
                                       """, MinionServer.class)
-                    .setParameterList("minions", minionIds, StringType.INSTANCE)
+                    .setParameterList("minions", minionIds, StandardBasicTypes.STRING)
                     .getResultList();
         }
     }
@@ -215,7 +214,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       SELECT * from suseServerContactMethod
                                       WHERE label IN (:labels)
                                       """, ContactMethod.class)
-                .setParameterList("labels", List.of("ssh-push", "ssh-push-tunnel"), StringType.INSTANCE)
+                .setParameterList("labels", List.of("ssh-push", "ssh-push-tunnel"), StandardBasicTypes.STRING)
                 .getResultList().stream().map(ContactMethod::getId).collect(Collectors.toList());
         return getSession().createNativeQuery("""
                                      SELECT DISTINCT s.*, r.*
@@ -224,7 +223,7 @@ public class MinionServerFactory extends HibernateFactory {
                                      WHERE server_id IN
                                      (SELECT id FROM rhnServer WHERE contact_method_id IN (:contacts))
                                       """, MinionServer.class)
-                .setParameterList("contacts", contacts, LongType.INSTANCE)
+                .setParameterList("contacts", contacts, StandardBasicTypes.LONG)
                 .getResultList();
     }
 
@@ -318,7 +317,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       SELECT * from rhnServerNetInterface
                                       WHERE hw_addr IN (:hwaddr)
                                       """, NetworkInterface.class)
-                .setParameterList("hwaddr", hwAddrs, StringType.INSTANCE)
+                .setParameterList("hwaddr", hwAddrs, StandardBasicTypes.STRING)
                 .getResultList().stream().map(x -> x.getServer().getId()).collect(Collectors.toList());
 
         if (serverIds.isEmpty()) {
@@ -331,7 +330,7 @@ public class MinionServerFactory extends HibernateFactory {
                                      JOIN rhnserver r ON s.server_id = r.id
                                      WHERE s.server_id IN (:ids)
                                      """, MinionServer.class)
-                .setParameterList("ids", serverIds, LongType.INSTANCE)
+                .setParameterList("ids", serverIds, StandardBasicTypes.LONG)
                 .getResultList();
 
         return servers.stream()
@@ -354,7 +353,7 @@ public class MinionServerFactory extends HibernateFactory {
                                       s.server_id IN
                                       (SELECT id FROM rhnServer WHERE hostname = :hostname)
                                       """, MinionServer.class)
-                .setParameter("hostname", hostname, StringType.INSTANCE)
+                .setParameter("hostname", hostname, StandardBasicTypes.STRING)
                 .getResultList();
 
         return servers.stream()

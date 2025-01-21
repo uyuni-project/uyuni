@@ -19,8 +19,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
 import java.util.HashMap;
@@ -98,7 +97,7 @@ public class PackageEvrFactory {
     public static PackageEvr lookupPackageEvrById(Long id) {
         Session session = HibernateFactory.getSession();
         return (PackageEvr) session.getNamedQuery("PackageEvr.findById")
-                .setParameter("id", id, LongType.INSTANCE)
+                .setParameter("id", id, StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
@@ -114,10 +113,10 @@ public class PackageEvrFactory {
             String epoch, String version, String release, PackageType type) {
         Session session = HibernateFactory.getSession();
         return (Optional<PackageEvr>) session.getNamedQuery("PackageEvr.lookupByEvr")
-                .setParameter("e_in", epoch, StringType.INSTANCE)
-                .setParameter("v_in", version, StringType.INSTANCE)
-                .setParameter("r_in", release, StringType.INSTANCE)
-                .setParameter("t_in", type.getDbString(), StringType.INSTANCE)
+                .setParameter("e_in", epoch, StandardBasicTypes.STRING)
+                .setParameter("v_in", version, StandardBasicTypes.STRING)
+                .setParameter("r_in", release, StandardBasicTypes.STRING)
+                .setParameter("t_in", type.getDbString(), StandardBasicTypes.STRING)
                 .uniqueResultOptional();
     }
 
