@@ -5574,49 +5574,49 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.misc.delete" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Delete&lt;/a&gt; systems from @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Vymazať&lt;/a&gt; systémy z @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.reboot" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reboot&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reštartovať&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Preniesť&lt;/a&gt; systémy do inej organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.lock" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Zamknúť/odomknúť&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Auditovať&lt;/a&gt; systémy s OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.scheduled" xml:space="preserve">
         <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv &lt;a href="/rhn/schedule/PendingActions.do"&gt;naplánované&lt;/a&gt; na {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.queued" xml:space="preserve">
         <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv boli pridané do reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5624,14 +5624,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM System List -->
       <trans-unit id="ssm.list.systems.header" xml:space="preserve">
         <source>Selected Systems List</source>
-        <target/>
+        <target state="translated">Zoznam vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.list.systems.summary" xml:space="preserve">
         <source>&lt;p&gt;Below are your selected systems. All actions taken within this interface will apply only to the these systems.&lt;/p&gt;</source>
-        <target/>
+        <target state="translated">&lt;p&gt;Nižšie sú uvedené vaše vybrané systémy. Všetky akcie uskutočnené v rámci tohto rozhrania sa vzťahujú len na tieto systémy.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
@@ -5639,7 +5639,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Preniesť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
