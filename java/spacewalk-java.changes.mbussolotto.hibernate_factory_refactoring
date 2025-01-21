@@ -1,1 +1,2 @@
-- Use setParameter in Hibernate queries
+- specify parameters type on queries
+- remove Hibernate Query Language
