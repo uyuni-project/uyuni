@@ -14,7 +14,8 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.user.external;
 
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
 import com.redhat.rhn.domain.org.usergroup.UserExtGroup;
@@ -72,18 +73,16 @@ public class UserExternalHandler extends BaseHandler {
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
-        if (SatConfigFactory.getSatConfigBooleanValue(
-                SatConfigFactory.EXT_AUTH_KEEP_ROLES) &&
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        if (factory.getBooleanConfiguration(
+                RhnConfiguration.KEYS.extauth_keep_temproles).getValue() &&
                 !BooleanUtils.toBoolean(keepRoles)) {
             // if the option was turned off, delete temporary roles
             // across the whole satellite
             UserGroupFactory.deleteTemporaryRoles();
         }
         // store the value
-        SatConfigFactory.setSatConfigBooleanValue(SatConfigFactory.EXT_AUTH_KEEP_ROLES,
-                keepRoles);
-
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_keep_temproles, keepRoles);
         return 1;
     }
 
@@ -106,10 +105,9 @@ public class UserExternalHandler extends BaseHandler {
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        return SatConfigFactory
-                .getSatConfigBooleanValue(SatConfigFactory.EXT_AUTH_KEEP_ROLES);
+        return factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_keep_temproles).getValue();
     }
 
     /**
@@ -131,11 +129,9 @@ public class UserExternalHandler extends BaseHandler {
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // store the value
-        SatConfigFactory.setSatConfigBooleanValue(SatConfigFactory.EXT_AUTH_USE_ORGUNIT,
-                useOrgUnit);
-
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_use_orgunit, useOrgUnit);
         return 1;
     }
 
@@ -156,10 +152,9 @@ public class UserExternalHandler extends BaseHandler {
     public boolean getUseOrgUnit(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        return SatConfigFactory
-                .getSatConfigBooleanValue(SatConfigFactory.EXT_AUTH_USE_ORGUNIT);
+        return factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_use_orgunit).getValue();
     }
 
     /**
@@ -180,16 +175,14 @@ public class UserExternalHandler extends BaseHandler {
             throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         if (orgId != 0) {
             verifyOrgExists(orgId);
-            SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID,
-                    orgId.toString());
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_default_orgid, String.valueOf(orgId));
         }
         else {
-            SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, "");
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_default_orgid, "");
         }
-
         return 1;
     }
 
@@ -208,10 +201,9 @@ public class UserExternalHandler extends BaseHandler {
     public int getDefaultOrg(User loggedInUser) throws PermissionCheckFailureException {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
-
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // get the value
-        String org = SatConfigFactory.getSatConfigValue(
-                SatConfigFactory.EXT_AUTH_DEFAULT_ORGID);
+        String org = factory.getStringConfiguration(RhnConfiguration.KEYS.extauth_default_orgid).getValue();
         if (org == null || StringUtils.isEmpty(org)) {
             return 0;
         }

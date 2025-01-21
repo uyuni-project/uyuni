@@ -16,7 +16,8 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import java.util.Date;
@@ -74,8 +75,9 @@ public class SystemTimeMessageTag extends TagSupport {
         //expected check in is two hours after last check in, regardless of threshold
         long checkInAgo = now.getTime() - lastCheckIn.getTime();
         Long days = (((checkInAgo / 1000) / 60) / 60) / 24;
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         boolean awol = days.intValue() >
-                SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L);
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
 
         retval.append("<table border=\"0\" cellspacing=\"0\" cellpadding=\"6\">");
 

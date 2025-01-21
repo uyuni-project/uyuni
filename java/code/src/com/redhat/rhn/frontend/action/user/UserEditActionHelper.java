@@ -16,7 +16,8 @@ package com.redhat.rhn.frontend.action.user;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.UserDefaults;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnAction;
@@ -28,7 +29,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 
-import java.util.regex.Pattern;
+import java.util.List;
 
 /**
  * UserEditSubmitAction, edit action submit handler for user detail page
@@ -74,8 +75,11 @@ public abstract class UserEditActionHelper extends RhnAction {
 
         //Make sure password is not empty
         if (!pw.isEmpty()) {
-            validatePassword(errors, pw);
-
+            List<PasswordPolicyCheckFail> failures = PasswordValidationUtils.validatePasswordFromConfiguration(pw);
+            failures.forEach(failure -> errors.add(
+                    ActionMessages.GLOBAL_MESSAGE,
+                    new ActionMessage(failure.getLocalizedMessageId(), failure.getConfigurationParameter())
+            ));
             //Set the password only if there are no errors at all
             if (errors.isEmpty()) {
                 targetUser.setPassword(pw);
@@ -95,24 +99,6 @@ public abstract class UserEditActionHelper extends RhnAction {
         }
 
         return errors;
-    }
-
-    protected void validatePassword(ActionErrors errors, String pw) {
-        // Validate the password
-        if (pw.length() < UserDefaults.get().getMinPasswordLength()) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("error.minpassword",
-                            UserDefaults.get().getMinPasswordLength()));
-        }
-        if (Pattern.compile("[\\t\\n]").matcher(pw).find()) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("error.invalidpasswordcharacters"));
-        }
-        if (pw.length() > UserDefaults.get().getMaxPasswordLength()) {
-            errors.add(ActionMessages.GLOBAL_MESSAGE,
-                    new ActionMessage("error.maxpassword",
-                                    UserDefaults.get().getMaxPasswordLength()));
-        }
     }
 
     /**

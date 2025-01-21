@@ -19,6 +19,8 @@ import com.redhat.rhn.common.db.ResetPasswordFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.common.validator.ParsedConstraint;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.common.ResetPassword;
@@ -40,7 +42,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -82,13 +84,12 @@ public class CreateUserCommand {
     public ValidatorError[] validate() {
         errors = new ArrayList<>(); //clear validation errors
 
-        if (passwordErrors != null) {
+        if (passwordErrors != null && !user.getUsePamAuthentication()) {
             errors.addAll(passwordErrors); //add any password validation errors
         }
         validateEmail();
         validateLogin();
         validatePrefix();
-
         return errors.toArray(new ValidatorError[0]);
     }
 
@@ -265,28 +266,6 @@ public class CreateUserCommand {
         }
     }
 
-    /**
-     * Private helper method to validate the password. This happens when the setPassword
-     * method of this class is called. Puts errors into the passwordErrors list.
-     * @param passwordIn The password to check.
-     */
-    private void validatePassword(String passwordIn) {
-        if (passwordIn == null || passwordIn.length() <
-                                UserDefaults.get().getMinPasswordLength()) {
-            passwordErrors.add(new ValidatorError("error.minpassword",
-                                    UserDefaults.get().getMinPasswordLength()));
-        }
-
-        // Newlines and tab characters can slip through the API much easier than the UI:
-        if (Pattern.compile("[\\t\\n]").matcher(passwordIn).find()) {
-            passwordErrors.add(new ValidatorError("error.invalidpasswordcharacters"));
-        }
-
-        else if (passwordIn.length() > UserDefaults.get().getMaxPasswordLength()) {
-            passwordErrors.add(new ValidatorError("error.maxpassword",
-                    UserDefaults.get().getMaxPasswordLength()));
-        }
-    }
 
     /***** User accessors *****/
 
@@ -324,11 +303,17 @@ public class CreateUserCommand {
      * @param validate if password requirements should be validated
      */
     public void setPassword(String passwordIn, boolean validate) {
-        passwordErrors = new ArrayList<>(); //init password errors list
-        if (validate) {
-            validatePassword(passwordIn);
+        if (!validate) {
+            user.setPassword(passwordIn);
         }
-        user.setPassword(passwordIn);
+        else {
+            passwordErrors = PasswordValidationUtils.validatePasswordFromConfiguration(passwordIn).stream()
+                    .map(PasswordPolicyCheckFail::toValidatorError)
+                    .collect(Collectors.toList());
+            if (passwordErrors.isEmpty()) {
+                user.setPassword(passwordIn);
+            }
+        }
     }
 
     /**
