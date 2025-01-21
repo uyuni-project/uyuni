@@ -15,6 +15,13 @@
     <rl:listset name="packageSet">
     <rhn:csrf />
     <rhn:submitted />
+    <div class="spacewalk-section-toolbar">
+      <div class="action-button-wrapper">
+        <rl:csv dataset="pageList"
+          name="packageList"
+          exportColumns="id, nvrea, provider" />
+      </div>
+    </div>
 
     <rhn:hidden name="cid" value="${cid}" />
 
@@ -57,14 +64,7 @@
                           >
                           <c:out value="${current.provider}" />
                 </rl:column>
-
-
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                        name="packageList"
-                        exportColumns="id, nvrea, provider" />
-
     </rl:listset>
 
 </body>

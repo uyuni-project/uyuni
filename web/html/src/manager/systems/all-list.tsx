@@ -33,7 +33,7 @@ export function AllSystems(props: Props) {
 
   return (
     <>
-      <h1>
+      <h1 className="mb-5">
         <IconTag type="header-system" />
         {t(" Systems ")}
         <a
@@ -55,6 +55,20 @@ export function AllSystems(props: Props) {
           />
         </div>
       </h1>
+      <div className="spacewalk-section-toolbar">
+        <div className="action-button-wrapper">
+          <a
+            role="button"
+            title="Download CSV"
+            href="/rhn/manager/systems/csv/all"
+            className="btn btn-default"
+            data-senna-off="true"
+          >
+            <IconTag type="item-download-csv" />
+            Download CSV
+          </a>
+        </div>
+      </div>
       <Table
         data="/rhn/manager/api/systems/list/all"
         identifier={(item) => item.id}
@@ -158,13 +172,6 @@ export function AllSystems(props: Props) {
           cell={(item) => item.entitlementLevel}
         />
       </Table>
-
-      <div className="spacewalk-csv-download">
-        <a role="button" href="/rhn/manager/systems/csv/all" className="btn btn-default" data-senna-off="true">
-          <IconTag type="item-download-csv" />
-          Download CSV
-        </a>
-      </div>
     </>
   );
 }

@@ -1031,7 +1031,7 @@ class CheckListItem extends React.Component<CheckListItemProps> {
             {channelSyncContent}
             {childProductChannelSyncContent}
             <button
-              className="btn-link showChannels"
+              className="btn-tertiary showChannels"
               onClick={() => this.props.bypassProps.showChannelsfor(currentItem)}
               title={t("Show product's channels")}
             >
@@ -1133,7 +1133,6 @@ const ChannelsPopUp = (props) => {
       onClose={() => props.onClose()}
       content={contentPopup}
       submitText={t("Confirm")}
-      submitIcon="fa-check"
       btnClass="btn-primary"
       onConfirm={showConfirm() ? () => addOptionalChannels() : undefined}
     />

@@ -39,8 +39,10 @@
                             </form>
                         </div>
                         <div class="panel-footer">
-                            <div class="text-right">
-                                <button id="http-proxy-save" class="btn btn-primary">Save and Verify</button>
+                            <div class="form-group">
+                                <div class="col-md-offset-4 offset-md-4 col-md-8">
+                                    <button id="http-proxy-save" class="btn btn-primary">Save and Verify</button>
+                                </div>
                             </div>
                             <div class="text-left">
                                 <a id="http-proxy-verify" href="#"><i class="fa fa-check-square text-success"></i></a>

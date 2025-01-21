@@ -38,7 +38,6 @@ export function MigrateDialog(props: Props) {
       isOpen={!_isNil(props.vm)}
       id={props.id}
       title={t(`Migrate Guest ${vmName}`)}
-      submitIcon="fa-share-square-o"
       submitText={t("Migrate")}
       onConfirm={valid ? onSubmit : undefined}
       onClose={() => {

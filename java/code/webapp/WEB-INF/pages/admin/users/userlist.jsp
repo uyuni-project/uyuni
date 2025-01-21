@@ -21,6 +21,9 @@
 <rl:listset name="userListSet">
     <rhn:csrf />
     <rhn:submitted />
+        <rl:csv dataset="pageList"
+        name="userList"
+        exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn,status"/>
         <rl:list
          width="100%"
          name="userList"
@@ -51,9 +54,7 @@
         </rl:column>
 
         </rl:list>
-        <rl:csv dataset="pageList"
-                name="userList"
-                exportColumns="userLogin,userLastName,userFirstName,roleNames,lastLoggedIn,status"/>
+        
 </rl:listset>
 
 </body>
