@@ -68,7 +68,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -637,7 +637,7 @@ public class PackageManager extends BaseManager {
         try {
             session = HibernateFactory.getSession();
             return (PackageName)session.getNamedQuery("PackageName.findByName")
-                                       .setParameter("name", name, StringType.INSTANCE)
+                                       .setParameter("name", name, StandardBasicTypes.STRING)
                                        .uniqueResult();
         }
         catch (HibernateException e) {

@@ -35,9 +35,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.IntegerType;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -436,7 +434,7 @@ public class ChannelFactory extends HibernateFactory {
         Session session = getSession();
         String sql = "SELECT * FROM rhnChannelArch WHERE label = :label";
         return session.createNativeQuery(sql, ChannelArch.class)
-                .setParameter(LABEL, label, StringType.INSTANCE)
+                .setParameter(LABEL, label, StandardBasicTypes.STRING)
                 .uniqueResult();
     }
 
@@ -471,7 +469,7 @@ public class ChannelFactory extends HibernateFactory {
                 LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
                 WHERE c.label = :label""";
         return session.createNativeQuery(sql, Channel.class)
-                .setParameter(LABEL, label, StringType.INSTANCE)
+                .setParameter(LABEL, label, StandardBasicTypes.STRING)
                 .uniqueResult();
     }
 
@@ -818,7 +816,7 @@ public class ChannelFactory extends HibernateFactory {
         return getSession()
                 .createNativeQuery(
                         "SELECT * FROM rhnChannelSyncFlag WHERE channel_id = :channel", ChannelSyncFlag.class)
-                .setParameter("channel", channel.getId(), LongType.INSTANCE)
+                .setParameter("channel", channel.getId(), StandardBasicTypes.LONG)
                 .getSingleResult();
     }
 
@@ -1096,8 +1094,8 @@ public class ChannelFactory extends HibernateFactory {
 
         List<Package> pkgs = HibernateFactory.getSession()
           .getNamedQuery("Channel.packageByFileName")
-          .setParameter("pathlike", "%/" + fileName, StringType.INSTANCE)
-          .setParameter("channel_id", channel.getId(), LongType.INSTANCE)
+          .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
+          .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
           .list();
         if (pkgs.isEmpty()) {
             return null;
@@ -1118,10 +1116,10 @@ public class ChannelFactory extends HibernateFactory {
 
         List<Package> pkgs = HibernateFactory.getSession()
                 .getNamedQuery("Channel.packageByFileNameAndRange")
-                .setParameter("pathlike", "%/" + fileName, StringType.INSTANCE)
-                .setParameter("channel_id", channel.getId(), LongType.INSTANCE)
-                .setParameter("headerStart", headerStart, IntegerType.INSTANCE)
-                .setParameter("headerEnd", headerEnd, IntegerType.INSTANCE).list();
+                .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
+                .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
+                .setParameter("headerStart", headerStart, StandardBasicTypes.INTEGER)
+                .setParameter("headerEnd", headerEnd, StandardBasicTypes.INTEGER).list();
         if (pkgs.isEmpty()) {
             return null;
         }
@@ -1141,7 +1139,7 @@ public class ChannelFactory extends HibernateFactory {
         String sql
                 = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
         Number count = (Number) session.createNativeQuery(sql)
-                .setParameter("channelId", ch.getId(), LongType.INSTANCE).getSingleResult();
+                .setParameter("channelId", ch.getId(), StandardBasicTypes.LONG).getSingleResult();
         return count.intValue() > 0;
     }
 
@@ -1334,8 +1332,8 @@ public class ChannelFactory extends HibernateFactory {
         String sql
                 = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
        Query<ChannelProduct> query = session.createNativeQuery(sql, ChannelProduct.class);
-        query.setParameter("product", product, StringType.INSTANCE);
-        query.setParameter("version", version, StringType.INSTANCE);
+        query.setParameter("product", product, StandardBasicTypes.STRING);
+        query.setParameter("version", version, StandardBasicTypes.STRING);
         try {
             return query.getSingleResult();
         }

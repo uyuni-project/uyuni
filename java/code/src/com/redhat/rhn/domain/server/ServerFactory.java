@@ -56,9 +56,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
 import org.hibernate.type.StandardBasicTypes;
-import org.hibernate.type.StringType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -210,7 +208,7 @@ public class ServerFactory extends HibernateFactory {
                 AND hostname = :hostname
                 LIMIT 1;
                 """, Server.class)
-                .setParameter("hostname", name, StringType.INSTANCE).uniqueResultOptional();
+                .setParameter("hostname", name, StandardBasicTypes.STRING).uniqueResultOptional();
 
         if (result.isPresent()) {
             return result;
@@ -227,7 +225,7 @@ public class ServerFactory extends HibernateFactory {
                 AND hostname = :hostname
                 LIMIT 1;
                 """, Server.class)
-                    .setParameter("hostname", srippedHostname, StringType.INSTANCE).uniqueResultOptional();
+                    .setParameter("hostname", srippedHostname, StandardBasicTypes.STRING).uniqueResultOptional();
         }
         else {
             return HibernateFactory.getSession().createNativeQuery("""
@@ -237,7 +235,7 @@ public class ServerFactory extends HibernateFactory {
                 AND hostname LIKE :hostname
                 LIMIT 1;
                 """, Server.class)
-                    .setParameter("hostname", name + ".%", StringType.INSTANCE).uniqueResultOptional();
+                    .setParameter("hostname", name + ".%", StandardBasicTypes.STRING).uniqueResultOptional();
         }
     }
 
@@ -355,8 +353,8 @@ public class ServerFactory extends HibernateFactory {
                                       WHERE server_id = :server AND
                                       proxy_server_id = :proxyserver
                                       """, ServerPath.class)
-                .setParameter("server", server.getId(), LongType.INSTANCE)
-                .setParameter("proxyserver", proxyServer.getId(), LongType.INSTANCE)
+                .setParameter("server", server.getId(), StandardBasicTypes.LONG)
+                .setParameter("proxyserver", proxyServer.getId(), StandardBasicTypes.LONG)
                 .uniqueResultOptional();
     }
 
@@ -750,7 +748,7 @@ public class ServerFactory extends HibernateFactory {
                                       SELECT *, 0 as clazz_  from rhnServer
                                       WHERE digital_server_id = :id
                                       """, Server.class)
-                .setParameter("id", id, StringType.INSTANCE)
+                .setParameter("id", id, StandardBasicTypes.STRING)
                 .getResultList();
         for (Server server : servers) {
             if (server.hasEntitlement(EntitlementManager.getByName("foreign_entitled"))) {
@@ -787,7 +785,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
         return (ServerGroupType) HibernateFactory.getSession().getNamedQuery("ServerGroupType.findByLabel")
-                .setParameter("label", label, StringType.INSTANCE)
+                .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
 
@@ -891,7 +889,7 @@ public class ServerFactory extends HibernateFactory {
     public static ServerArch lookupServerArchByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ServerArch) session.getNamedQuery("ServerArch.findByLabel")
-                .setParameter("label", label, StringType.INSTANCE)
+                .setParameter("label", label, StandardBasicTypes.STRING)
                 .setCacheable(true)
                 .uniqueResult();
     }
@@ -917,7 +915,7 @@ public class ServerFactory extends HibernateFactory {
     public static CPUArch lookupCPUArchByName(String name) {
         Session session = HibernateFactory.getSession();
         return (CPUArch) session.getNamedQuery("CPUArch.findByName")
-                .setParameter("name", name, StringType.INSTANCE)
+                .setParameter("name", name, StandardBasicTypes.STRING)
                 .setCacheable(true).uniqueResult();
     }
 
@@ -1292,7 +1290,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyName(String tagName) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupByTagName")
-                .setParameter("tag_name", tagName, StringType.INSTANCE)
+                .setParameter("tag_name", tagName, StandardBasicTypes.STRING)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
@@ -1304,7 +1302,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static SnapshotTag lookupSnapshotTagbyId(Long tagId) {
         return (SnapshotTag) HibernateFactory.getSession().getNamedQuery("SnapshotTag.lookupById")
-                .setParameter("id", tagId, LongType.INSTANCE)
+                .setParameter("id", tagId, StandardBasicTypes.LONG)
                 // Do not use setCacheable(true), as tag deletion will
                 // usually end up making this query's output out of date
                 .uniqueResult();
@@ -1338,7 +1336,7 @@ public class ServerFactory extends HibernateFactory {
                                       SELECT * from suseServerContactMethod
                                       WHERE label = :label
                                       """, ContactMethod.class)
-                .setParameter("label", label, StringType.INSTANCE)
+                .setParameter("label", label, StandardBasicTypes.STRING)
                 .getSingleResult();
         }
         catch (NoResultException e) {
@@ -1491,7 +1489,7 @@ public class ServerFactory extends HibernateFactory {
                                       SELECT * from rhnServer
                                       WHERE machine_id = :machine
                                       """, Server.class)
-                .setParameter("machine", machineId, StringType.INSTANCE)
+                .setParameter("machine", machineId, StandardBasicTypes.STRING)
                 .uniqueResultOptional();
     }
 

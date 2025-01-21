@@ -35,8 +35,7 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

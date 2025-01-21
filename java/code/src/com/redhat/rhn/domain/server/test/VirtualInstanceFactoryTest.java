@@ -41,7 +41,7 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -305,7 +305,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                                       WHERE host_system_id = :host
                                       AND  virtual_system_id IS NULL
                                       """, VirtualInstance.class)
-                .setParameter("host", host.getId(), LongType.INSTANCE)
+                .setParameter("host", host.getId(), StandardBasicTypes.LONG)
                 .getSingleResult();
         }
         catch (NoResultException e) {

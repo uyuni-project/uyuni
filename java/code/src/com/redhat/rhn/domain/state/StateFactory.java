@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -101,7 +101,7 @@ public class StateFactory extends HibernateFactory {
                         ORDER BY org_id, state_revision_id desc limit 1;
                 """;
         Query<OrgStateRevision> query = getSession().createNativeQuery(sql, OrgStateRevision.class);
-        query.setParameter("org", org.getId(), LongType.INSTANCE);
+        query.setParameter("org", org.getId(), StandardBasicTypes.LONG);
         try {
             return Optional.ofNullable(query.getSingleResult());
         }
@@ -124,7 +124,7 @@ public class StateFactory extends HibernateFactory {
                         ORDER BY group_id, state_revision_id desc limit 1;
                 """;
         Query<ServerGroupStateRevision> query = getSession().createNativeQuery(sql, ServerGroupStateRevision.class);
-        query.setParameter("group", group.getId(), LongType.INSTANCE);
+        query.setParameter("group", group.getId(), StandardBasicTypes.LONG);
         try {
             return Optional.ofNullable(query.getSingleResult());
         }
@@ -146,7 +146,7 @@ public class StateFactory extends HibernateFactory {
                         ORDER BY server_id, state_revision_id desc limit 1;
                 """;
         Query<ServerStateRevision> query = getSession().createNativeQuery(sql, ServerStateRevision.class);
-        query.setParameter("server", server.getId(), LongType.INSTANCE);
+        query.setParameter("server", server.getId(), StandardBasicTypes.LONG);
         try {
             return Optional.ofNullable(query.getSingleResult());
         }

@@ -19,7 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 
 import javax.persistence.NoResultException;
 
@@ -47,8 +47,8 @@ public class ExceptionMessage {
 
         Query<ExceptionMessage> query = HibernateFactory.getSession()
                 .createNativeQuery(sql, ExceptionMessage.class);
-        query.setParameter("id", exceptionId, LongType.INSTANCE);
-        query.setParameter("negId", -1 * exceptionId, LongType.INSTANCE);
+        query.setParameter("id", exceptionId, StandardBasicTypes.LONG);
+        query.setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG);
         try {
             return query.getSingleResult();
         }

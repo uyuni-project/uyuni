@@ -30,8 +30,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -110,7 +109,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       SELECT * from suseVirtualHostManager
                                       WHERE label = :label
                                       """, VirtualHostManager.class)
-                    .setParameter("label", label, StringType.INSTANCE)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
                     .getSingleResult();
         }
         catch (NoResultException e) {
@@ -144,8 +143,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       WHERE id = :id
                                       AND  org_id = :org
                                       """, VirtualHostManager.class)
-                    .setParameter("org", org.getId(), LongType.INSTANCE)
-                    .setParameter("id", id, LongType.INSTANCE)
+                    .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+                    .setParameter("id", id, StandardBasicTypes.LONG)
                     .getSingleResult();
         }
         catch (NoResultException e) {
@@ -167,8 +166,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       WHERE id IN (:ids)
                                       AND  org_id = :org
                                       """, VirtualHostManager.class)
-                .setParameter("org", org.getId(), LongType.INSTANCE)
-                .setParameterList("ids", ids, LongType.INSTANCE)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+                .setParameterList("ids", ids, StandardBasicTypes.LONG)
                 .getResultList();
     }
 
@@ -187,8 +186,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       WHERE label = :label
                                       AND org_id = :org
                                       """, VirtualHostManager.class)
-                    .setParameter("label", label, StringType.INSTANCE)
-                    .setParameter("org", org.getId(), LongType.INSTANCE)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
+                    .setParameter("org", org.getId(), StandardBasicTypes.LONG)
                     .getSingleResult();
         }
         catch (NoResultException e) {
@@ -209,7 +208,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       WHERE  org_id = :org
                                       ORDER BY label
                                       """, VirtualHostManager.class)
-                .setParameter("org", org.getId(), LongType.INSTANCE)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
                 .getResultList();
     }
 
@@ -219,9 +218,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<VirtualHostManager> listVirtualHostManagers() {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManager
-                                      """, VirtualHostManager.class)
+        return HibernateFactory.getSession().createNativeQuery("SELECT * from suseVirtualHostManager",
+                        VirtualHostManager.class)
                     .getResultList();
     }
 
@@ -509,7 +507,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
                                       SELECT * from suseVirtualHostManagerNodeInfo
                                       WHERE  identifier = :identifier
                                       """, VirtualHostManagerNodeInfo.class)
-                    .setParameter("identifier", identifier, StringType.INSTANCE)
+                    .setParameter("identifier", identifier, StandardBasicTypes.STRING)
                     .getSingleResult());
         }
         catch (NoResultException e) {

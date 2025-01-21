@@ -22,8 +22,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -93,8 +92,8 @@ public class CommonFactory extends HibernateFactory {
                                       SELECT * from rhnFileList
                                       WHERE id = :id
                                       and org_id = :org_id """, FileList.class)
-                                      .setParameter("id", idIn, LongType.INSTANCE)
-                                      .setParameter("org_id", org.getId(), LongType.INSTANCE)
+                                      .setParameter("id", idIn, StandardBasicTypes.LONG)
+                                      .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
                                       .uniqueResult();
     }
 
@@ -109,8 +108,8 @@ public class CommonFactory extends HibernateFactory {
         //look for Kickstart data by label
         session = HibernateFactory.getSession();
         return (FileList) session.getNamedQuery("FileList.findByLabelAndOrg")
-                .setParameter("label", labelIn, StringType.INSTANCE)
-                .setParameter("org_id", org.getId(), LongType.INSTANCE)
+                .setParameter("label", labelIn, StandardBasicTypes.STRING)
+                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
@@ -157,7 +156,7 @@ public class CommonFactory extends HibernateFactory {
     public static TinyUrl lookupTinyUrl(String tokenIn) {
         Session session = HibernateFactory.getSession();
         return (TinyUrl) session.getNamedQuery("TinyUrl.findByToken")
-                .setParameter("token", tokenIn, StringType.INSTANCE)
+                .setParameter("token", tokenIn, StandardBasicTypes.STRING)
                 .uniqueResult();
     }
 }
