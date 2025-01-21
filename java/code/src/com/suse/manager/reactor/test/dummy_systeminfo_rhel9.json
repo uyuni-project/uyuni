@@ -69,96 +69,43 @@
       "__sls__": "util.systeminfo",
       "changes": {
         "ret": {
-          "biosversion": "rel-1.7.5-0-ge51488c-20150524_160643-cloud127",
           "kernel": "Linux",
-          "domain": "vagrant.local",
-          "biosreleasedate": "04/01/2014",
-          "zmqversion": "4.0.4",
-          "kernelrelease": "3.12.48-52.27-default",
+          "domain": "",
+          "zmqversion": "4.0.8",
+          "kernelrelease": "4.1.27-27-default",
           "pythonpath": [
             "/usr/bin",
-            "/usr/lib/python27.zip",
-            "/usr/lib64/python2.7",
-            "/usr/lib64/python2.7/plat-linux2",
-            "/usr/lib64/python2.7/lib-tk",
-            "/usr/lib64/python2.7/lib-old",
-            "/usr/lib64/python2.7/lib-dynload",
-            "/usr/lib64/python2.7/site-packages",
-            "/usr/local/lib64/python2.7/site-packages",
-            "/usr/local/lib/python2.7/site-packages",
-            "/usr/lib/python2.7/site-packages"
+            "/usr/lib64/python39.zip",
+            "/usr/lib64/python3.9",
+            "/usr/lib64/python3.9/lib-dynload",
+            "/usr/lib64/python3.9/site-packages",
+            "/usr/lib/python3.9/site-packages"
           ],
-          "ip_interfaces": {
-            "lo": [
-              "127.0.0.1",
-              "::1"
-            ],
-            "eth1": [
-              "172.16.37.5",
-              "fe80::5054:ff:feb0:1da2"
-            ],
-            "eth0": [
-              "192.168.121.35",
-              "fe80::5054:ff:fe4f:7102"
-            ]
-          },
-          "shell": "/bin/bash",
-          "mem_total": 489,
+          "ip_interfaces": {},
+          "shell": "/bin/sh",
+          "mem_total": 7684,
           "saltversioninfo": [
-            2015,
-            8,
-            2,
-            0
+            3004,
+            1
           ],
-          "SSDs": [],
-          "server": "suma3pg.vagrant.local",
-          "id": "clisles12-suma3pg.vagrant.local",
-          "osrelease": "7.2",
+          "host": "sll9host",
+          "SSDs": [
+            "sda",
+            "dm-0"
+          ],
+          "id": "sll9host",
+          "osrelease": "9",
           "ps": "ps -efH",
-          "server_id": 1617825398,
-          "uuid": "75299898-533c-ff48-8b5c-be026df56f74",
-          "ip6_interfaces": {
-            "lo": [
-              "::1"
-            ],
-            "eth1": [
-              "fe80::5054:ff:feb0:1da2"
-            ],
-            "eth0": [
-              "fe80::5054:ff:fe4f:7102"
-            ]
-          },
-          "num_cpus": 1,
-          "hwaddr_interfaces": {
-            "lo": "00:00:00:00:00:00",
-            "eth1": "52:54:00:b0:1d:a2",
-            "eth0": "52:54:00:4f:71:02"
-          },
-          "init": "systemd",
-          "ip4_interfaces": {
-            "lo": [
-              "127.0.0.1"
-            ],
-            "eth1": [
-              "172.16.37.5"
-            ],
-            "eth0": [
-              "192.168.121.35"
-            ]
-          },
-          "osfullname": "Red Hat Enterprise Linux Server",
-          "master": "suma3pg",
-          "ipv4": [
-            "127.0.0.1",
-            "172.16.37.5",
-            "192.168.121.35"
-          ],
-          "ipv6": [
-            "::1",
-            "fe80::5054:ff:fe4f:7102",
-            "fe80::5054:ff:feb0:1da2"
-          ],
-          "role": "client",
+          "server_id": 823542642,
+          "ip6_interfaces": {},
+          "num_cpus": 4,
+          "hwaddr_interfaces": {},
+          "osfullname": "Red Hat Enterprise Linux",
+          "ip4_interfaces": {},
+          "init": "unknown",
+          "master": "suma.server.local",
+          "lsb_distrib_id": "Red Hat Enterprise Linux",
+          "ipv6": [],
           "cpusockets": 1,
           "cpu_flags": [
             "fpu",
@@ -179,26 +126,45 @@
             "pat",
             "pse36",
             "clflush",
+            "dts",
+            "acpi",
             "mmx",
             "fxsr",
             "sse",
             "sse2",
             "ss",
+            "ht",
+            "tm",
+            "pbe",
             "syscall",
             "nx",
             "pdpe1gb",
             "rdtscp",
             "lm",
             "constant_tsc",
+            "arch_perfmon",
+            "pebs",
+            "bts",
             "rep_good",
             "nopl",
+            "xtopology",
+            "nonstop_tsc",
+            "aperfmperf",
             "eagerfpu",
             "pni",
             "pclmulqdq",
+            "dtes64",
+            "monitor",
+            "ds_cpl",
             "vmx",
+            "smx",
+            "est",
+            "tm2",
             "ssse3",
             "fma",
             "cx16",
+            "xtpr",
+            "pdcm",
             "pcid",
             "sse4_1",
             "sse4_2",
@@ -211,66 +177,81 @@
             "avx",
             "f16c",
             "rdrand",
-            "hypervisor",
             "lahf_lm",
             "abm",
-            "xsaveopt",
+            "3dnowprefetch",
+            "ida",
+            "arat",
+            "epb",
+            "pln",
+            "pts",
+            "dtherm",
+            "intel_pt",
+            "tpr_shadow",
             "vnmi",
+            "flexpriority",
             "ept",
+            "vpid",
             "fsgsbase",
+            "tsc_adjust",
             "bmi1",
+            "hle",
             "avx2",
             "smep",
             "bmi2",
             "erms",
-            "invpcid"
+            "invpcid",
+            "rtm",
+            "rdseed",
+            "adx",
+            "smap",
+            "xsaveopt"
           ],
-          "localhost": "clisles12-suma3pg",
-          "lsb_distrib_id": "Red Hat Enterprise Linux Server",
+          "ipv4": [],
+          "localhost": "sll9host",
+          "virtual_subtype": "Docker",
           "fqdn_ip4": [
-            "127.0.0.1"
+            "172.17.0.2"
           ],
-          "fqdn_ip6": [],
-          "nodename": "clisles12-suma3pg",
-          "saltversion": "2015.8.2",
-          "lsb_distrib_release": "12",
+          "fqdn_ip6": [
+            "fe80::42:acff:fe11:2"
+          ],
+          "nodename": "sll9host",
+          "saltversion": "3004.1",
+          "lsb_distrib_release": "9",
           "systemd": {
-            "version": "210",
-            "features": "+PAM +LIBWRAP +AUDIT +SELINUX -IMA +SYSVINIT +LIBCRYPTSETUP +GCRYPT +ACL +XZ +SECCOMP +APPARMOR"
+            "version": "219",
+            "features": "+PAM +AUDIT +SELINUX +IMA -APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ -LZ4 -SECCOMP +BLKID +ELFUTILS +KMOD +IDN"
           },
-          "saltpath": "/usr/lib/python2.7/site-packages/salt",
-          "host": "clisles12-suma3pg",
+          "saltpath": "/usr/bin/salt",
+          "osmajorrelease": "9",
           "os_family": "RedHat",
-          "oscodename": "Red Hat Enterprise Linux Server 7.2",
-          "gpus": [],
+          "oscodename": "Red Hat Enterprise Linux release 9.0 (Plow)",
           "pythonversion": [
-            2,
-            7,
+            3,
             9,
-            "final",
-            0
+            10
           ],
-          "manufacturer": "QEMU",
+          "total_num_cpus": 4,
           "num_gpus": 0,
-          "virtual": "kvm",
-          "cpu_model": "Intel Xeon E312xx (Sandy Bridge)",
-          "fqdn": "clisles12-suma3pg.vagrant.local",
-          "pythonexecutable": "/usr/bin/python",
-          "productname": "Standard PC (i440FX + PIIX, 1996)",
+          "virtual": "physical",
+          "cpu_model": "Intel(R) Core(TM) i7-5600U CPU @ 2.60GHz",
+          "fqdn": "sll9host",
+          "pythonexecutable": "/bin/python",
           "osarch": "x86_64",
           "cpuarch": "x86_64",
-          "lsb_distrib_codename": "Red Hat Enterprise Linux Server 7.2",
+          "lsb_distrib_codename": "Red Hat Enterprise Linux release 9.0 (Plow)",
           "osrelease_info": [
-            7,
-            2
+            7
           ],
           "locale_info": {
-            "detectedencoding": "UTF-8",
-            "defaultlanguage": "en_US",
-            "defaultencoding": "UTF-8"
+            "detectedencoding": "ANSI_X3.4-1968",
+            "defaultlanguage": null,
+            "defaultencoding": null
           },
-          "path": "/sbin:/usr/sbin:/usr/local/sbin:/root/bin:/usr/local/bin:/usr/bin:/bin:/usr/games:/usr/lib/mit/bin:/usr/lib/mit/sbin",
-          "machine_id": "44da3fc9b97b6552cc668bcd56498fe5",
+          "gpus": [],
+          "path": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "machine_id": "73fdc9b544754e8896989f6219b62af8",
           "os": "RedHat"
         }
       },
