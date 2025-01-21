@@ -265,6 +265,19 @@ public class DownloadController {
     }
 
     /**
+     * Predicate telling if a file is a key or a signature file,
+     * also filters Debian files InRelease and Release.gpg in order to avoid extra log messages
+     *
+     * @param filename name of the file
+     */
+    private boolean isKeyOrSignatureFile(String filename) {
+        return filename.endsWith(".asc") ||
+                filename.endsWith(".key") ||
+                filename.equals("InRelease") ||
+                filename.equals("Release.gpg");
+    }
+
+    /**
      * Download metadata taking the channel and filename from the request path.
      *
      * @param request the request object
@@ -279,7 +292,7 @@ public class DownloadController {
 
         File file = Path.of(mountPoint, prefix, channelLabel, filename).toAbsolutePath().toFile();
 
-        if (!file.exists() && (filename.endsWith(".asc") || filename.endsWith(".key"))) {
+        if (!file.exists() && isKeyOrSignatureFile(filename)) {
             halt(HttpStatus.SC_NOT_FOUND,
                     String.format("Key or signature file not provided: %s", filename));
         }
