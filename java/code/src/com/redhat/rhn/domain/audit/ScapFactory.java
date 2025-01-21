@@ -20,8 +20,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 import java.util.Map;
@@ -78,8 +77,8 @@ public class ScapFactory extends HibernateFactory {
     public static void clearTestResult(long serverId, long actionId) {
         List<XccdfTestResult> results = getSession()
                 .getNamedQuery("XccdfTestResult.findByActionId")
-                .setParameter("serverId", serverId, LongType.INSTANCE)
-                .setParameter("actionId", actionId, LongType.INSTANCE)
+                .setParameter("serverId", serverId, StandardBasicTypes.LONG)
+                .setParameter("actionId", actionId, StandardBasicTypes.LONG)
                 .list();
         results.forEach(ScapFactory::delete);
     }
@@ -121,7 +120,8 @@ public class ScapFactory extends HibernateFactory {
         String sql = "SELECT * FROM rhnXccdfRuleResultType WHERE label = :label";
         XccdfRuleResultType result =
                 getSession().createNativeQuery(sql, XccdfRuleResultType.class)
-                        .setParameter("label", label, StringType.INSTANCE).getResultStream().findFirst().orElse(null);
+                        .setParameter("label", label, StandardBasicTypes.STRING)
+                        .getResultStream().findFirst().orElse(null);
         return Optional.ofNullable(result);
     }
 

@@ -50,8 +50,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -398,7 +397,7 @@ public class ErrataFactory extends HibernateFactory {
         ErrataFileType retval;
         try {
             retval = (ErrataFileType) getSession().getNamedQuery("ErrataFileType.findByLabel")
-                    .setParameter("label", label, StringType.INSTANCE)
+                    .setParameter("label", label, StandardBasicTypes.STRING)
                     .setCacheable(true).uniqueResult();
         }
         catch (HibernateException e) {
@@ -417,8 +416,8 @@ public class ErrataFactory extends HibernateFactory {
         List<ErrataFile> retval;
         try {
             Query<ErrataFile> q = getSession().getNamedQuery("ErrataFile.listByErrataAndFileType")
-            .setParameter("errata_id", errataId, LongType.INSTANCE)
-            .setParameter("file_type", fileType.toUpperCase(), StringType.INSTANCE);
+            .setParameter("errata_id", errataId, StandardBasicTypes.LONG)
+            .setParameter("file_type", fileType.toUpperCase(), StandardBasicTypes.STRING);
             retval =  q.list();
         }
         catch (HibernateException e) {
@@ -449,7 +448,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval;
         try {
             retval = getSession().getNamedQuery("Errata.findByAdvisoryType")
-                    .setParameter("type", advisoryType, StringType.INSTANCE)
+                    .setParameter("type", advisoryType, StandardBasicTypes.STRING)
                     //Retrieve from cache if there
                     .setCacheable(true).list();
         }
@@ -469,7 +468,7 @@ public class ErrataFactory extends HibernateFactory {
         Errata retval;
         try {
             retval = (Errata) getSession().getNamedQuery("Errata.findById")
-                    .setParameter("id", id, LongType.INSTANCE)
+                    .setParameter("id", id, StandardBasicTypes.LONG)
                     .uniqueResult();
         }
         catch (HibernateException he) {
@@ -489,7 +488,7 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Errata> lookupVendorAndUserErrataByAdvisoryAndOrg(String advisory, Org org) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("Errata.findVendorAnUserErrataByAdvisoryNameAndOrg")
-                .setParameter("advisory", advisory, StringType.INSTANCE)
+                .setParameter("advisory", advisory, StandardBasicTypes.STRING)
                 .setParameter("org", org)
                 .getResultList();
     }
@@ -503,7 +502,7 @@ public class ErrataFactory extends HibernateFactory {
     public static Errata lookupByAdvisoryAndOrg(String advisory, Org org) {
         return (Errata) HibernateFactory.getSession()
                 .getNamedQuery("Errata.findByAdvisoryNameAndOrg")
-                .setParameter("advisory", advisory, StringType.INSTANCE)
+                .setParameter("advisory", advisory, StandardBasicTypes.STRING)
                 .setParameter("org", org)
                 .uniqueResult();
     }
@@ -519,7 +518,7 @@ public class ErrataFactory extends HibernateFactory {
         List<Errata> retval;
         try {
             retval = getSession().getNamedQuery("Errata.findByAdvisory")
-                    .setParameter("advisory", advisoryId, StringType.INSTANCE)
+                    .setParameter("advisory", advisoryId, StandardBasicTypes.STRING)
                     .setParameter("org", org)
                     .getResultList();
         }
@@ -716,8 +715,8 @@ public class ErrataFactory extends HibernateFactory {
                 getNamedQuery("Errata.lookupByChannelBetweenDates")
                 .setParameter("org", org)
                 .setParameter("channel", channel)
-                .setParameter("start_date", startDate, StringType.INSTANCE)
-                .setParameter("end_date", endDate, StringType.INSTANCE)
+                .setParameter("start_date", startDate, StandardBasicTypes.STRING)
+                .setParameter("end_date", endDate, StandardBasicTypes.STRING)
                 .list();
     }
 
@@ -735,8 +734,8 @@ public class ErrataFactory extends HibernateFactory {
     public static Optional<ErrataFile> lookupErrataFile(Long errataId, String filename) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery("ErrataFile.lookupByErrataAndPackage")
-                .setParameter("errata_id", errataId, LongType.INSTANCE)
-                .setParameter("filename", filename, StringType.INSTANCE)
+                .setParameter("errata_id", errataId, StandardBasicTypes.LONG)
+                .setParameter("filename", filename, StandardBasicTypes.STRING)
                 .uniqueResultOptional();
     }
 

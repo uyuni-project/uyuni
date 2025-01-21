@@ -20,7 +20,7 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 
@@ -101,7 +101,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public void cleanStalePins() {
         getSession()
             .getNamedQuery("PinnedSubscription.cleanStalePins")
-            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, LongType.INSTANCE)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, StandardBasicTypes.LONG)
             .executeUpdate();
     }
 
@@ -130,8 +130,8 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
                 "WHERE system_id = :systemId AND subscription_id = :subscriptionId";
         return (PinnedSubscription) getSession()
                 .createNativeQuery(sql, PinnedSubscription.class)
-                .setParameter("systemId", systemId, LongType.INSTANCE)
-                .setParameter("subscriptionId", subscriptionId, LongType.INSTANCE)
+                .setParameter("systemId", systemId, StandardBasicTypes.LONG)
+                .setParameter("subscriptionId", subscriptionId, StandardBasicTypes.LONG)
                 .getSingleResult();
     }
 }

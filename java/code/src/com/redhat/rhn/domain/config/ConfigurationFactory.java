@@ -35,8 +35,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -358,8 +357,8 @@ public class ConfigurationFactory extends HibernateFactory {
                                       confchan_type_id = :confchan_type_id_normal
                                       OR confchan_type_id = :confchan_type_id_state
                                       """, ConfigChannel.class)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), LongType.INSTANCE)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), LongType.INSTANCE)
+                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
+                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
                 .getResultList();
     }
 
@@ -390,9 +389,9 @@ public class ConfigurationFactory extends HibernateFactory {
                                       AND org_id = :org_id
                                       AND confchan_type_id = :confchan_type_id
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StringType.INSTANCE)
-                .setParameter("org_id", org.getId(), LongType.INSTANCE)
-                .setParameter("confchan_type_id", cct.getId(), LongType.INSTANCE)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
+                .setParameter("confchan_type_id", cct.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
@@ -413,10 +412,10 @@ public class ConfigurationFactory extends HibernateFactory {
                                       confchan_type_id = :confchan_type_id_normal
                                       OR confchan_type_id = :confchan_type_id_state)
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StringType.INSTANCE)
-                .setParameter("org_id", org.getId(), LongType.INSTANCE)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), LongType.INSTANCE)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), LongType.INSTANCE)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
+                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
+                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
                 .uniqueResultOptional();
     }
 
@@ -441,9 +440,9 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Query<ConfigFile> query =
             session.getNamedQuery("ConfigFile.findByChannelAndName")
-                    .setParameter("channel_id", channel, LongType.INSTANCE)
-                    .setParameter("name_id", name, LongType.INSTANCE)
-                    .setParameter("state_id", ConfigFileState.normal().getId(), LongType.INSTANCE);
+                    .setParameter("channel_id", channel, StandardBasicTypes.LONG)
+                    .setParameter("name_id", name, StandardBasicTypes.LONG)
+                    .setParameter("state_id", ConfigFileState.normal().getId(), StandardBasicTypes.LONG);
         try {
             return query.uniqueResult();
         }
@@ -473,7 +472,7 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigRevision lookupConfigRevisionByRevId(ConfigFile cf, Long revId) {
         Session session = HibernateFactory.getSession();
         Query<ConfigRevision> q = session.getNamedQuery("ConfigRevision.findByRevisionAndConfigFile");
-        q.setParameter("rev", revId, LongType.INSTANCE);
+        q.setParameter("rev", revId, StandardBasicTypes.LONG);
         q.setParameter("cf", cf);
         return q.uniqueResult();
     }
@@ -524,7 +523,7 @@ public class ConfigurationFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return (ConfigChannelType)
             session.getNamedQuery("ConfigChannelType.findByLabel")
-                                        .setParameter("label", label, StringType.INSTANCE)
+                                        .setParameter("label", label, StandardBasicTypes.STRING)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
                                         .uniqueResult();
@@ -541,7 +540,7 @@ public class ConfigurationFactory extends HibernateFactory {
     static ConfigFileState lookupConfigFileStateByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ConfigFileState)session.getNamedQuery("ConfigFileState.findByLabel")
-                                       .setParameter("label", label, StringType.INSTANCE)
+                                       .setParameter("label", label, StandardBasicTypes.STRING)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
@@ -555,7 +554,7 @@ public class ConfigurationFactory extends HibernateFactory {
     static ConfigFileType lookupConfigFileTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ConfigFileType)session.getNamedQuery("ConfigFileType.findByLabel")
-                                       .setParameter("label", label, StringType.INSTANCE)
+                                       .setParameter("label", label, StandardBasicTypes.STRING)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();

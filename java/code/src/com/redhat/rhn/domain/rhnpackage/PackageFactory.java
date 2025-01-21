@@ -33,8 +33,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -302,7 +301,7 @@ public class PackageFactory extends HibernateFactory {
      */
      public static PackageName lookupPackageName(Long id) {
          return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findById")
-                 .setParameter("id", id, LongType.INSTANCE)
+                 .setParameter("id", id, StandardBasicTypes.LONG)
                  .uniqueResult();
     }
 
@@ -316,7 +315,7 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageName lookupPackageName(String pn) {
         return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findByName")
-                .setParameter("name", pn, StringType.INSTANCE)
+                .setParameter("name", pn, StandardBasicTypes.STRING)
                 .uniqueResult();
     }
 
@@ -349,9 +348,9 @@ public class PackageFactory extends HibernateFactory {
         List<Package> packages = HibernateFactory.getSession().getNamedQuery(
                 "Package.lookupByNevra")
                 .setParameter("org", org)
-                .setParameter("name", name, StringType.INSTANCE)
-                .setParameter("version", version, StringType.INSTANCE)
-                .setParameter("release", release, StringType.INSTANCE)
+                .setParameter("name", name, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .setParameter("release", release, StandardBasicTypes.STRING)
                 .setParameter("arch", arch)
                 .list();
 
@@ -374,9 +373,9 @@ public class PackageFactory extends HibernateFactory {
 
         return HibernateFactory.getSession().createNamedQuery("Package.lookupByNevraIds", Package.class)
                                             .setParameter("org", org)
-                                            .setParameter("nameId", nameId, LongType.INSTANCE)
-                                            .setParameter("evrId", evrId, LongType.INSTANCE)
-                                            .setParameter("archId", archId, LongType.INSTANCE)
+                                            .setParameter("nameId", nameId, StandardBasicTypes.LONG)
+                                            .setParameter("evrId", evrId, StandardBasicTypes.LONG)
+                                            .setParameter("archId", archId, StandardBasicTypes.LONG)
                                             .list();
 
     }
@@ -397,12 +396,12 @@ public class PackageFactory extends HibernateFactory {
         @SuppressWarnings("unchecked")
         List<Package> packages = HibernateFactory.getSession()
                 .getNamedQuery("Package.lookupByChannelLabelNevraCs")
-                .setParameter("channel", channel, StringType.INSTANCE)
-                .setParameter("name", name, StringType.INSTANCE)
-                .setParameter("version", version, StringType.INSTANCE)
-                .setParameter("release", release, StringType.INSTANCE)
-                .setParameter("arch", arch, StringType.INSTANCE)
-                .setParameter("checksum", checksum.orElse(null), StringType.INSTANCE)
+                .setParameter("channel", channel, StandardBasicTypes.STRING)
+                .setParameter("name", name, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .setParameter("release", release, StandardBasicTypes.STRING)
+                .setParameter("arch", arch, StandardBasicTypes.STRING)
+                .setParameter("checksum", checksum.orElse(null), StandardBasicTypes.STRING)
                 .list();
 
         if (packages.isEmpty()) {

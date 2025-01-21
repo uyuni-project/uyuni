@@ -19,8 +19,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 /**
  * RoleFactory
@@ -58,7 +57,7 @@ public class RoleFactory extends HibernateFactory {
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return (Role) session.getNamedQuery("Role.findById")
-                                       .setParameter("id", id, LongType.INSTANCE)
+                                       .setParameter("id", id, StandardBasicTypes.LONG)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();
@@ -72,7 +71,7 @@ public class RoleFactory extends HibernateFactory {
     public static Role lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
         return (Role) session.getNamedQuery("Role.findByLabel")
-                                       .setParameter("label", name, StringType.INSTANCE)
+                                       .setParameter("label", name, StandardBasicTypes.STRING)
                                        //Retrieve from cache if there
                                        .setCacheable(true)
                                        .uniqueResult();

@@ -35,8 +35,7 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
-import org.hibernate.type.StringType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -189,7 +188,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCSubscription
                                       WHERE scc_id = :scc
                                       """, SCCSubscription.class)
-                    .setParameter("scc", id , LongType.INSTANCE)
+                    .setParameter("scc", id , StandardBasicTypes.LONG)
                     .getSingleResult();
         }
         catch (NoResultException e) {
@@ -229,7 +228,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCOrderItem
                                       WHERE credentials_id = :credentials
                                       """, SCCOrderItem.class)
-                        .setParameter("credentials", credentials, LongType.INSTANCE)
+                        .setParameter("credentials", credentials, StandardBasicTypes.LONG)
                         .getResultList();
             })
             .orElse(Collections.emptyList());
@@ -245,7 +244,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCOrderItem
                                       WHERE scc_id = :scc
                                       """, SCCOrderItem.class)
-                .setParameter("scc", sccId, LongType.INSTANCE)
+                .setParameter("scc", sccId, StandardBasicTypes.LONG)
                 .uniqueResultOptional();
     }
 
@@ -357,7 +356,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCSubscription
                                       WHERE credentials_id = :credentials
                                       """, SCCSubscription.class)
-                    .setParameter("credentials", c.getId(), LongType.INSTANCE)
+                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
                     .getResultList().stream().map(SCCSubscription::getSccId).collect(Collectors.toList());
         }
     }
@@ -384,7 +383,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCRepository
                                       WHERE scc_id = :scc
                                       """, SCCRepository.class)
-                    .setParameter("scc", sccId, LongType.INSTANCE)
+                    .setParameter("scc", sccId, StandardBasicTypes.LONG)
                     .uniqueResultOptional();
         }
         catch (NoSuchElementException e) {
@@ -404,7 +403,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCRepository
                                       WHERE name = :name
                                       """, SCCRepository.class)
-                .setParameter("name", name, StringType.INSTANCE)
+                .setParameter("name", name, StandardBasicTypes.STRING)
                 .uniqueResultOptional();
         }
         catch (NoSuchElementException e) {
@@ -434,7 +433,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCRepositoryAuth
                                       WHERE credentials_id = :credentials
                                       """, SCCRepositoryAuth.class)
-                    .setParameter("credentials", c.getId(), LongType.INSTANCE)
+                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
                     .getResultList();
         }
         else {
@@ -651,7 +650,7 @@ public class SCCCachingFactory extends HibernateFactory {
                                       SELECT * from suseSCCRegCache
                                       WHERE server_id = :server
                                       """, SCCRegCacheItem.class)
-                .setParameter("server", srv.getId(), LongType.INSTANCE)
+                .setParameter("server", srv.getId(), StandardBasicTypes.LONG)
                 .uniqueResultOptional();
     }
 
