@@ -111,11 +111,9 @@ const UyuniThemeLogin = (props: ThemeProps) => {
         <div className={styles.footer} role="contentinfo">
           <div className={styles.content}>
             <div>
-              <a href="/rhn/help/about.do">{t("About")}</a>
+              <a href="/rhn/apidoc/index.jsp">API Documentation</a>
             </div>
-            <div>
-              <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
-            </div>
+
             <div>
               {t("{productName} release {versionNumber}", {
                 productName,

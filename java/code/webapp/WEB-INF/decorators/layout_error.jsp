@@ -109,9 +109,6 @@
 
         <footer>
           <div class="wrapper">
-            <div class="footer-copyright">
-              <bean:message key="footer.jsp.copyright" />
-            </div>
             <div class="footer-release">
               <bean:message key="footer.jsp.release" arg0="/docs/${docsLocale}/release-notes/release-notes-server.html" arg1="${rhn:getProductVersion()}" />
             </div>
