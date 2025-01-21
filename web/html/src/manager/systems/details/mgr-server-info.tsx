@@ -30,6 +30,7 @@ const messageMap = {
   invalid_systemid: t("Not a system id"),
   unknown_system: t("Unknown System"),
   system_not_mgr_server: t("System is not a peripheral server"),
+  set_reportdb_creds_failed: t("Setting new credentials for the report database failed"),
 };
 
 class MgrServer extends React.Component<Props, State> {

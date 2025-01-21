@@ -27,9 +27,19 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.MgrServerInfo;
+import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -45,6 +55,12 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.virtualization.test.TestVirtManager;
+import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.iface.VirtManager;
+import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.utils.gson.ManagerInfoJson;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
@@ -110,7 +126,20 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory = new HubFactory();
         clientFactoryMock = mock(IssClientFactory.class);
 
-        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager());
+        SaltApi saltApi = new TestSaltApi();
+        VirtManager virtManager = new TestVirtManager() {
+            @Override
+            public void updateLibvirtEngine(MinionServer minionIn) {
+            }
+        };
+        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
+        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
+        SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
+                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+        );
+
+        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), sysEntMgr);
     }
 
     @AfterEach
@@ -418,6 +447,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             wifQ.XldOvQJypIkb4E1am0JlBxsHYrx_7J77s1\
             vTrvoNlEU""";
 
+        ManagerInfoJson mgrInfo = new ManagerInfoJson("5.1.0", true, "reportdb", REMOTE_SERVER_FQDN, 5432);
+
         context().checking(new Expectations() {{
             allowing(clientFactoryMock).newExternalClient(REMOTE_SERVER_FQDN, "admin", "admin", null);
             will(returnValue(externalClient));
@@ -437,6 +468,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             );
 
             allowing(internalClient).storeCredentials(with(any(String.class)), with(any(String.class)));
+
+            allowing(internalClient).getManagerInfo();
+            will(returnValue(mgrInfo));
+
+            allowing(internalClient).storeReportDbCredentials(with(any(String.class)), with(any(String.class)));
         }});
 
         // Register the remote server as PERIPHERAL for this local server
@@ -453,6 +489,18 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         var issued = hubFactory.lookupAccessTokenByFqdnAndType(REMOTE_SERVER_FQDN, TokenType.ISSUED);
         assertNotNull(issued);
+
+        Optional<Server> optServer = ServerFactory.findByFqdn(REMOTE_SERVER_FQDN);
+        if (optServer.isPresent()) {
+            Server srv = optServer.get();
+            MgrServerInfo mgrServerInfo = srv.getMgrServerInfo();
+            assertEquals(mgrInfo.getReportDbName(), mgrServerInfo.getReportDbName());
+            assertEquals(mgrInfo.getVersion(), mgrServerInfo.getVersion().getVersion());
+            assertTrue(srv.hasEntitlement(EntitlementManager.FOREIGN));
+        }
+        else {
+            fail("Server not found");
+        }
     }
 
     @Test

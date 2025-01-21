@@ -60,6 +60,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
@@ -83,6 +84,8 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -395,7 +398,14 @@ public class SystemsController {
                  }
                  return badRequest(response, "system_not_mgr_server");
              }
-             SystemManager.setReportDbUser(minion.get(), true);
+             try {
+                 HubManager hubManager = new HubManager();
+                 hubManager.setReportDbUser(user, minion.get(), true);
+             }
+             catch (CertificateException | IOException e) {
+                 LOG.error(e.getMessage(), e);
+                 return badRequest(response, "set_reportdb_creds_failed");
+             }
          }
          else {
              if (LOG.isErrorEnabled()) {

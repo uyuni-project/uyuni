@@ -19,14 +19,22 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
+import static spark.Spark.get;
 import static spark.Spark.post;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.ConnectionManager;
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
+import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.utils.gson.ManagerInfoJson;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
@@ -37,6 +45,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.Map;
 
 import spark.Request;
 import spark.Response;
@@ -51,6 +60,8 @@ public class SyncController {
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
         .create();
+
+    private static final Logger LOG = LogManager.getLogger(SyncController.class);
 
     /**
      * Default constructor
@@ -75,7 +86,48 @@ public class SyncController {
         post("/iss/sync/register", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::register))));
         post("/iss/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
         post("/iss/sync/generateCredentials",
-            asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
+        get("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::getManagerInfo))));
+        post("/iss/sync/storeReportDbCredentials",
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::setReportDbCredentials))));
+    }
+
+    private String setReportDbCredentials(Request request, Response response, IssAccessToken token) {
+        Map<String, String> creds = GSON.fromJson(request.body(), Map.class);
+        String dbname = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
+
+        if (!dbname.isBlank() && creds.containsKey("username") && creds.containsKey("password")) {
+            ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
+            ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
+            ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
+            if (dbHelper.hasDBUser(localRh.getSession(), creds.get("username"))) {
+                dbHelper.changeDBPassword(localRh.getSession(), creds.get("username"), creds.get("password"));
+            }
+            else {
+                dbHelper.createDBUser(localRh.getSession(), dbname,
+                        creds.get("username"), creds.get("password"));
+            }
+            localRcm.commitTransaction();
+            return success(response);
+        }
+        else {
+            LOG.error("Bad Request: Invalid Data");
+            badRequest(response, "Invalid data");
+        }
+        return null;
+    }
+
+    private String getManagerInfo(Request request, Response response, IssAccessToken token) {
+        String reportDbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
+        String reportDbHost = Config.get().getString(ConfigDefaults.REPORT_DB_HOST, "");
+        int reportDbPort = Config.get().getInt(ConfigDefaults.REPORT_DB_PORT, 5432);
+        String version = ConfigDefaults.get().getProductVersion().split("\\s")[0];
+
+        ManagerInfoJson managerInfo = new ManagerInfoJson(
+                version,
+                StringUtils.isNoneBlank(reportDbName, reportDbHost),
+                reportDbName, reportDbHost, reportDbPort);
+        return success(response, managerInfo);
     }
 
     // Basic ping to check if the system is up
