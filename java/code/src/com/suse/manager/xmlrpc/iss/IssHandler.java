@@ -66,7 +66,6 @@ public class IssHandler extends BaseHandler {
      * Generate a new access token for ISS for accessing this system
      * @param loggedInUser the user logged in. It must have the sat admin role.
      * @param fqdn the FQDN of the peripheral/hub that will be using this access token
-     *
      * @return the serialized form of the token
      *
      * @apidoc.doc Generate a new access token for ISS for accessing this system
@@ -141,6 +140,7 @@ public class IssHandler extends BaseHandler {
      * @param username the name of the user, needed to access the remote server. It must have the sat admin role.
      * @param password the password of the user, needed to access the remote server.
      * @return 1 on success, exception otherwise
+     *
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
@@ -164,6 +164,7 @@ public class IssHandler extends BaseHandler {
      * @param password the password of the user, needed to access the remote server.
      * @param rootCA the root CA certificate, in case it's needed to establish a secure connection
      * @return 1 on success, exception otherwise
+     *
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
@@ -172,7 +173,7 @@ public class IssHandler extends BaseHandler {
      * It must have the sat admin role")
      * @apidoc.param #param_desc("string", "password", "the password of the user, needed to access the remote
      * server")
-     * @apidoc.param #param_desc("string", "rootCA", the root CA certificate, in case it's needed to establish a secure
+     * @apidoc.param #param_desc("string", "rootCA", "the root CA certificate, in case it's needed to establish a secure
      * connection")
      * @apidoc.returntype #return_int_success()
      */
@@ -222,6 +223,7 @@ public class IssHandler extends BaseHandler {
      * @param role the ISS role of the remote server. Can be either HUB or PERIPHERAL
      * @param token the token used to authenticate on the remote server.
      * @return 1 on success, exception otherwise
+     *
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
@@ -241,12 +243,13 @@ public class IssHandler extends BaseHandler {
      * @param token the token used to authenticate on the remote server.
      * @param rootCA the root CA certificate, in case it's needed to establish a secure connection
      * @return 1 on success, exception otherwise
+     *
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
      * @apidoc.param #param_desc("string", "role", "the ISS role of the remote server. Either HUB or PERIPHERAL")
      * @apidoc.param #param_desc("string", "token", "the token used to authenticate on the remote server.")
-     * @apidoc.param #param_desc("string", "rootCA", the root CA certificate, in case it's needed to establish a secure
+     * @apidoc.param #param_desc("string", "rootCA", "the root CA certificate, in case it's needed to establish a secure
      * connection")
      * @apidoc.returntype #return_int_success()
      */
