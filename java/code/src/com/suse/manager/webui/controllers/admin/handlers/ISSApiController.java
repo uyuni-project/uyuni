@@ -45,16 +45,16 @@ public class ISSApiController {
      */
     private ISSApiController() { }
 
-    /** Init routes for Config - Monitoring Api.*/
+    /** Init routes for Config - ISS Api.*/
     public static void initRoutes() {
-        get("/manager/api/admin/iss/hubs", withOrgAdmin(ISSApiController::pass));
-        get("/manager/api/admin/iss/peripherals",
+        get("/manager/api/admin/iss/hub", withOrgAdmin(ISSApiController::pass));
+        get("/manager/api/admin/iss/peripheral",
                 withOrgAdmin(ISSApiController::pass));
-        post("/manager/api/admin/iss/hubs", withOrgAdmin(ISSApiController::pass));
-        post("/manager/api/admin/iss/peripherals",
+        post("/manager/api/admin/iss/hub", withOrgAdmin(ISSApiController::pass));
+        post("/manager/api/admin/iss/peripheral",
                 withOrgAdmin(ISSApiController::pass));
-        patch("/manager/api/admin/iss/hubs/:id", withOrgAdmin(ISSApiController::pass));
-        patch("/manager/api/admin/iss/peripherals/:id",
+        patch("/manager/api/admin/iss/hub/:id", withOrgAdmin(ISSApiController::pass));
+        patch("/manager/api/admin/iss/peripheral/:id",
                 withOrgAdmin(ISSApiController::pass));
     }
 

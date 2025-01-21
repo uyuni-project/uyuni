@@ -66,10 +66,14 @@ public class AdminViewsController {
      * Invoked from Router. Init routes for Admin Views.
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/admin/config/iss/hubs",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSHubs))), jade);
-        get("/manager/admin/config/iss/peripherals",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSPeripherals))), jade);
+        get("/manager/admin/iss/hub",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSHub))), jade);
+        get("/manager/admin/iss/peripheral",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSPeripheral))), jade);
+        get("/manager/admin/iss/hub/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSHub))), jade);
+        get("/manager/admin/iss/peripheral/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSPeripheral))), jade);
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/setup/payg",
@@ -96,27 +100,27 @@ public class AdminViewsController {
     }
 
     /**
-     * Show monitoring tab.
+     * Show iss hub tab.
      * @param request http request
      * @param response http response
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSHubs(Request request, Response response, User user) {
+    public static ModelAndView showISSHub(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/admin/templates/iss-hubs.jade");
+        return new ModelAndView(data, "controllers/admin/templates/iss-hub.jade");
     }
 
     /**
-     * Show monitoring tab.
+     * Show iss peripheral tab.
      * @param request http request
      * @param response http response
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSPeripherals(Request request, Response response, User user) {
+    public static ModelAndView showISSPeripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/admin/templates/iss-peripherals.jade");
+        return new ModelAndView(data, "controllers/admin/templates/iss-peripheral.jade");
     }
 
     /**
