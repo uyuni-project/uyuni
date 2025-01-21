@@ -24,7 +24,6 @@ import static spark.Spark.post;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 
 import com.suse.manager.model.hub.IssAccessToken;
-import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
