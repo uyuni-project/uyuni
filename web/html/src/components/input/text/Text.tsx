@@ -43,6 +43,7 @@ export const Text = (props: Props) => {
             placeholder={placeholder}
             maxLength={maxLength}
             title={props.title}
+            autoComplete={props.autoComplete}
           />
         );
       }}

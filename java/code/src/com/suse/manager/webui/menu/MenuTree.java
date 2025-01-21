@@ -406,7 +406,7 @@ public class MenuTree {
             .addChild(new MenuItem("Setup Wizard")
                     .withVisibility(adminRoles.get("satellite"))
                     .addChild(new MenuItem("HTTP Proxy")
-                            .withPrimaryUrl("/rhn/admin/setup/ProxySettings.do"))
+                            .withPrimaryUrl("/rhn/manager/admin/setup/proxy"))
                     .addChild(new MenuItem("Mirror Credentials")
                             .withPrimaryUrl("/rhn/admin/setup/MirrorCredentials.do"))
                     .addChild(new MenuItem("Products")
