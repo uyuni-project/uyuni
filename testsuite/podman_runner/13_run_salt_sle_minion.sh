@@ -12,4 +12,5 @@ sudo -i podman exec -d sle_minion node_exporter
 sudo -i podman exec -d sle_minion prometheus-apache_exporter
 sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" sle_minion prometheus-postgres_exporter
 sudo -i podman exec -d sle_minion bash -c "exporter_exporter -config.file /etc/exporter_exporter.yaml -config.dirs /etc/exporter_exporter.d"
+sudo -i podman exec -ti sle_minion bash -c "echo DEBUG MGRPUSH;rpm -q mgr-push;mgrpush -h"
 

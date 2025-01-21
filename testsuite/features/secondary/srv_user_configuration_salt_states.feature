@@ -1,7 +1,6 @@
 # Copyright (c) 2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_visualization
 @scope_salt
 Feature: Create organizations, users, groups, and activation keys using Salt states

@@ -9,7 +9,7 @@ on:
         required: true
         type: string
 env:
-  UYUNI_PROJECT: uyuni-project
+  UYUNI_PROJECT: jordimassaguerpla
   UYUNI_VERSION: master
   NO_AUTH_REGISTRY: no_auth_registry
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
@@ -116,6 +116,9 @@ jobs:
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: run_secondary_tests
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
+      - name: debug
+        if: ${{ failure() }}
+        run: sudo -i podman exec -ti sle_minion bash -c "mgrpush -u admin -p admin --server=server --nosig -c fake-base-channel-suse-like /root/subscription-tools-1.0-0.noarch.rpm"
       - name: get_server_logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}

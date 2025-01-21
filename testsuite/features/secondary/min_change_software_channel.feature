@@ -5,7 +5,6 @@
 # - features/secondary/allcli_software_channels.feature
 # If "SLE15-SP4-Installer-Updates for x86_64" fails to be unchecked
 
-@skip_if_github_validation
 @scc_credentials
 @scope_changing_software_channels
 @sle_minion

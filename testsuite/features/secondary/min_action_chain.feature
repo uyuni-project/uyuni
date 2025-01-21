@@ -6,9 +6,6 @@
 # - features/secondary/allcli_action_chain.feature
 # If the action chain fails to be completed and run.
 #
-# skip on container. Running actions chains fail on container.
-# This needs to be fixed
-
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions
@@ -120,7 +117,6 @@ Feature: Action chains on Salt minions
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
-
   Scenario: Add a configuration file deployment to the action chain on Salt minion
     When I follow the left menu "Configuration > Channels"
     And I follow "Action Chain Channel"
@@ -157,7 +153,6 @@ Feature: Action chains on Salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Schedule"
     Then I should see a "Action has been successfully added to the Action Chain" text
-
   Scenario: Verify the action chain list on Salt minion
     When I follow "Schedule"
     And I follow "Action Chains"

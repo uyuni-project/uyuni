@@ -307,8 +307,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'ssh_minion' => 'openSUSE Leap 15.5 (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
     'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
-    'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'pxeboot_minion' => 'openSUSE Leap 15.5 (x86_64)',
+    'buildhost' => 'openSUSE Leap 15.5 (x86_64)',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
@@ -1137,7 +1137,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
         sle15-sp4-installer-updates-x86_64
-        sles15-sp4-devel-uyuni-client-x86_64
       ],
     'sles15-sp5' => # CHECKED
       %w[
@@ -1584,7 +1583,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles12-sp5-uyuni-client-devel-x86_64' => 120,
   'sles15-sp2-devel-uyuni-client-x86_64' => 60,
   'sles15-sp3-devel-uyuni-client-x86_64' => 60,
-  'sles15-sp4-devel-uyuni-client-x86_64' => 60,
   'sles15-sp5-devel-uyuni-client-x86_64' => 60,
   'sles15-sp6-devel-uyuni-client-x86_64' => 60,
   'sll-9-updates-x86_64' => 720,
@@ -1654,4 +1652,27 @@ EMPTY_CHANNELS = %w[
   fake-base-channel-suse-like
   fake-base-channel-i586
   test-base-channel-x86_64
+  sle-product-sles15-sp4-pool-x86_64
+  sle-product-sles15-sp4-updates-x86_64
+  sle-module-basesystem15-sp4-pool-x86_64
+  sle-module-basesystem15-sp4-updates-x86_64
+  sle-module-desktop-applications15-sp4-pool-x86_64
+  sle-module-desktop-applications15-sp4-updates-x86_64
+  sle-product-sles15-sp4-ltss-updates-x86_64
+  sle-module-devtools15-sp4-pool-x86_64
+  sle-module-devtools15-sp4-updates-x86_64
+  sle-module-containers15-sp4-pool-x86_64
+  sle-module-containers15-sp4-updates-x86_64
+  sle-module-server-applications15-sp4-pool-x86_64
+  sle-module-server-applications15-sp4-updates-x86_64
+  sle15-sp4-installer-updates-x86_64
+  opensuse_leap15_5-x86_64
+  opensuse_leap15_5-x86_64-non-oss
+  opensuse_leap15_5-x86_64-non-oss-updates
+  opensuse_leap15_5-x86_64-updates
+  opensuse_leap15_5-x86_64-backports-updates
+  opensuse_leap15_5-x86_64-sle-updates
+  opensuse_leap15_5-uyuni-client-devel-x86_64
+  opensuse_leap15_5-uyuni-client-x86_64
+  uyuni-proxy-devel-leap-x86_64
 ].freeze
