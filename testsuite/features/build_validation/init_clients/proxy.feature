@@ -46,7 +46,7 @@ Feature: Setup containerized proxy
 
   # WORKAROUND: Remove once https://bugzilla.suse.com/show_bug.cgi?id=1235692 is fixed
   Scenario: Upgrade mgrpxy tool
-    When I install packages "mgrpxy" on this "proxy"
+    When I install package "mgrpxy" on this "proxy"
     And I reboot the "proxy" minion through the web UI
 
   Scenario: Generate containerized proxy configuration
