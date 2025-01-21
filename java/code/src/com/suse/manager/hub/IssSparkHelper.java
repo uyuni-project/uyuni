@@ -63,7 +63,14 @@ public final class IssSparkHelper {
             String serializedToken = authorization.substring(7);
             IssAccessToken issuedToken = HUB_FACTORY.lookupIssuedToken(serializedToken);
 
-            if (issuedToken == null || issuedToken.isExpired() || !issuedToken.isValid()) {
+            if (issuedToken == null) {
+                LOGGER.error("Invalid token provided");
+                response.status(HttpServletResponse.SC_UNAUTHORIZED);
+                return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
+            }
+            else if (issuedToken.isExpired() || !issuedToken.isValid()) {
+                LOGGER.error("Invalid token provided for {} - expired {} valid {}",
+                        issuedToken.getServerFqdn(), issuedToken.isExpired(), issuedToken.isValid());
                 response.status(HttpServletResponse.SC_UNAUTHORIZED);
                 return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
             }
@@ -71,7 +78,14 @@ public final class IssSparkHelper {
             try {
                 Token token = issuedToken.getParsedToken();
                 String fqdn = token.getClaim("fqdn", String.class);
-                if (fqdn == null || !fqdn.equals(issuedToken.getServerFqdn())) {
+                if (fqdn == null) {
+                    LOGGER.error("Invalid token provided for {} - no FQDN", issuedToken.getServerFqdn());
+                    response.status(HttpServletResponse.SC_UNAUTHORIZED);
+                    return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
+                }
+                else if (!fqdn.equals(issuedToken.getServerFqdn())) {
+                    LOGGER.error("Invalid token provided for {} - token issued for {}",
+                            issuedToken.getServerFqdn(), fqdn);
                     response.status(HttpServletResponse.SC_UNAUTHORIZED);
                     return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
                 }
@@ -79,6 +93,7 @@ public final class IssSparkHelper {
                 return route.handle(request, response, issuedToken);
             }
             catch (TokenParsingException ex) {
+                LOGGER.error("Invalid token provided - parsing error");
                 response.status(HttpServletResponse.SC_UNAUTHORIZED);
                 return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
             }
@@ -124,6 +139,9 @@ public final class IssSparkHelper {
 
             if (isRouteForbidden(allowedRoles, issHub.isPresent(), issPeripheral.isPresent())) {
                 response.status(HttpServletResponse.SC_FORBIDDEN);
+                LOGGER.error("Token does not allow access to this resource for {}.", fqdn);
+                LOGGER.error("    Allowed {} - isHub {} - isPeripheral {}", allowedRoles, issHub.isPresent(),
+                        issPeripheral.isPresent());
                 return json(response, ResultJson.error("Token does not allow access to this resource"),
                     new TypeToken<>() { });
 
