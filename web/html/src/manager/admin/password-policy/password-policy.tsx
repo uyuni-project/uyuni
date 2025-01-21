@@ -133,41 +133,44 @@ const PasswordPolicy = (prop: PasswordPolicyProps) => {
                 defaultValue={prop.defaults.maxCharacterOccurrence.toLocaleString()}
               />
             </div>
-            <div className="col-md-4 text-center">
-              <div className="btn-group">
-                <AsyncButton
-                  id="saveButton"
-                  className="btn-primary btn-large"
-                  title={t("Save Password Policy")}
-                  text={t("Save")}
-                  icon="fa-save"
-                  action={() =>
-                    updatePolicy(prop.policy)
-                      .then(() => {
-                        showSuccessToastr(t("Password Policy Changed"));
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error, { autoHide: false });
-                      })
-                  }
-                />
-                <AsyncButton
-                  id="resetButton"
-                  className="btn-primary btn-large"
-                  title={t("Reset")}
-                  text={t("Reset")}
-                  icon="fa-refresh"
-                  action={() =>
-                    defaultPolicy()
-                      .then((policy) => {
-                        prop.policy = policy;
-                        showSuccessToastr(t("Password Policy reset to defaults"));
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error, { autoHide: false });
-                      })
-                  }
-                />
+            <div className="row">
+              <div className="col-md-4 text-left"></div>
+              <div className="col-md-4 text-left">
+                <div className="btn-group">
+                  <AsyncButton
+                    id="saveButton"
+                    className="btn-primary btn-large"
+                    title={t("Save Password Policy")}
+                    text={t("Save")}
+                    icon="fa-save"
+                    action={() =>
+                      updatePolicy(prop.policy)
+                        .then(() => {
+                          showSuccessToastr(t("Password Policy Changed"));
+                        })
+                        .catch((error) => {
+                          showErrorToastr(error, { autoHide: false });
+                        })
+                    }
+                  />
+                  <AsyncButton
+                    id="resetButton"
+                    className="btn-secondary btn-large"
+                    title={t("Reset")}
+                    text={t("Reset")}
+                    icon="fa-refresh"
+                    action={() =>
+                      defaultPolicy()
+                        .then((policy) => {
+                          prop.policy = policy;
+                          showSuccessToastr(t("Password Policy reset to defaults"));
+                        })
+                        .catch((error) => {
+                          showErrorToastr(error, { autoHide: false });
+                        })
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>
