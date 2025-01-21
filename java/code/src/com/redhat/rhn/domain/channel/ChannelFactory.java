@@ -462,13 +462,13 @@ public class ChannelFactory extends HibernateFactory {
         Session session = getSession();
         String sql = """
                 SELECT c.*,
-                c_1_.original_id,
+                cl.original_id,
                 CASE
-                WHEN c_1_.original_id IS NULL THEN 0
+                WHEN cl.original_id IS NULL THEN 0
                 ELSE 1
                 END AS clazz_
                 FROM rhnChannel c
-                LEFT JOIN rhnChannelCloned c_1_ ON c.id = c_1_.id
+                LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
                 WHERE c.label = :label""";
         return session.createNativeQuery(sql, Channel.class)
                 .setParameter(LABEL, label, StringType.INSTANCE)
