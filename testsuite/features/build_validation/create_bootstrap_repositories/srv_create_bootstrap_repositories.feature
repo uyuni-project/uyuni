@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Create bootstrap repositories
@@ -61,6 +61,10 @@ Feature: Create bootstrap repositories
 @slmicro60_minion
   Scenario: Create the bootstrap repository for a SL Micro 6.0 minion
     When I create the bootstrap repository for "slmicro60_minion" on the server
+
+@slmicro61_minion
+  Scenario: Create the bootstrap repository for a SL Micro 6.1 minion
+    When I create the bootstrap repository for "slmicro61_minion" on the server
 
 @alma8_minion
   Scenario: Create the bootstrap repository for a Alma 8 Salt minion
