@@ -38,6 +38,13 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,8 +56,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-==== BASE ====
-==== BASE ====
 /**
  * ChannelFactory
  */
