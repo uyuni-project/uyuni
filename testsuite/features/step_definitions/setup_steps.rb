@@ -525,10 +525,10 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
-    next if repository_exist?(unique_repo_name)
-
-    content_type = deb_host?(host) ? 'deb' : 'yum'
-    $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)
+    unless repository_exist?(unique_repo_name)
+      content_type = deb_host?(host) ? 'deb' : 'yum'
+      $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)
+    end
     $api_test.channel.software.associate_repo(channel_label, unique_repo_name)
   end
 end
