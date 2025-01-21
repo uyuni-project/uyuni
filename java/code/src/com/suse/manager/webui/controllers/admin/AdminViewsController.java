@@ -152,18 +152,6 @@ public class AdminViewsController {
         Map<String, Object> data = new HashMap<>();
         ProxySettingsDto proxySettings = ProxySettingsManager.getProxySettings();
         data.put("proxySettings", GSON.toJson(proxySettings));
-
-        /**
-         * TODO: Would also love to data.put() whether the proxy is verified similar to
-         * `SetupWizardSessionCache.getProxyStatus(...)`, but the request types are incompatible.
-         */
-
-        /**
-         * TODO: We don't pass the current password to the frontend, but it would be nice
-         * to have a field that indicates whether a password is set, e.g. `hasPassword` or similar,
-         * both here and in `ProxySettingsRenderer.saveProxySettings()`
-         */
-
         return new ModelAndView(data, "controllers/admin/templates/proxy.jade");
     }
 }
