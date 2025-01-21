@@ -37,7 +37,7 @@ from uyuni.common.fileutils import (
 )
 
 # pylint: disable-next=unused-import
-from .sslToolLib import getMachineName, daysTil18Jan2038, incSerial, fixSerial
+from .sslToolLib import getMachineName, daysTil18Jan2038, fixSerial
 from rhn.stringutils import sstr
 
 # defaults where we can see them (NOTE: directory is figured at write time)
@@ -113,7 +113,6 @@ _defs = {
     "--server-key": "server.key",
     "--server-cert-req": "server.csr",
     "--server-cert": "server.crt",
-    "--jabberd-ssl-cert": "server.pem",
     "--set-country": "US",
     "--set-common-name": "",  # these two will never appear
     "--set-hostname": HOSTNAME,  # at the same time on the CLI
@@ -839,33 +838,6 @@ serial                  = $dir/serial
 ## generated RPM "configuration" dumping ground:
 ##
 
-POST_UNINSTALL_SCRIPT = """\
-if [ \$1 = 0 ]; then
-    # The following steps are copied from mod_ssl's postinstall scriptlet
-    # Make sure the permissions are okay
-    umask 077
-
-    if [ ! -f /etc/httpd/conf/ssl.key/server.key ] ; then
-        /usr/bin/openssl genrsa -rand /proc/apm:/proc/cpuinfo:/proc/dma:/proc/filesystems:/proc/interrupts:/proc/ioports:/proc/pci:/proc/rtc:/proc/uptime 1024 > /etc/httpd/conf/ssl.key/server.key 2> /dev/null
-    fi
-
-    if [ ! -f /etc/httpd/conf/ssl.crt/server.crt ] ; then
-        cat << EOF | /usr/bin/openssl req -new -key /etc/httpd/conf/ssl.key/server.key -x509 -days 365 -out /etc/httpd/conf/ssl.crt/server.crt 2>/dev/null
---
-SomeState
-SomeCity
-SomeOrganization
-SomeOrganizationalUnit
-localhost.localdomain
-root@localhost.localdomain
-EOF
-    fi
-    /sbin/service httpd graceful || /sbin/service httpd try-restart
-    exit 0
-fi
-"""
-
-SERVER_RPM_SUMMARY = "Organizational server (httpd) SSL key-pair/key-set."
 CA_CERT_RPM_SUMMARY = "Organizational public SSL CA certificate " "(client-side)."
 
 
