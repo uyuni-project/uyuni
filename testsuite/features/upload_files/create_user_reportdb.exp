@@ -1,6 +1,11 @@
 set user [lindex $argv 0]
+set mgrctl [lindex $argv 1]
 
-spawn /usr/bin/uyuni-setup-reportdb-user
+if { $mgrctl } {
+    spawn mgrctl exec -ti -- /usr/bin/uyuni-setup-reportdb-user
+} else {
+    spawn /usr/bin/uyuni-setup-reportdb-user
+}
 match_max 100000
 expect -exact "Report DB Name is: reportdb\r
 \[a\]dd/\[m\]odify/\[d\]elete user (case insensitive). Default is  \[m\]: "
