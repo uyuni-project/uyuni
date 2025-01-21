@@ -9,7 +9,6 @@ WriteMakefile(
     ABSTRACT_FROM       => 'lib/Spacewalk/Setup.pm',
     PL_FILES            => {},
     EXE_FILES           => ['bin/spacewalk-setup',
-                            'bin/spacewalk-make-mount-points',
                             'bin/spacewalk-setup-cobbler',
                             'bin/spacewalk-setup-httpd'],
     PREREQ_PM => {

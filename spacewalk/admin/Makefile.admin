@@ -30,7 +30,6 @@ CONF_DEST   = $(PREFIX)/$(CONFDIR)
 SYSTEMD_DEST = $(PREFIX)/$(SYSTEMDDIR)
 
 SCRIPTS = rhn-config-satellite.pl \
-               rhn-config-schema.pl \
                rhn-deploy-ca-cert.pl \
                rhn-install-ssl-cert.pl \
                salt-secrets-config.py

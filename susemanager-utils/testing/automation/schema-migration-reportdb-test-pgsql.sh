@@ -1,5 +1,6 @@
 #! /bin/sh
 SCRIPT=$(basename ${0})
+EXECUTOR="${EXECUTOR:=docker}"
 
 if [ -z ${PRODUCT+x} ];then
     VPRODUCT="VERSION.Uyuni"
@@ -31,7 +32,7 @@ GITARRO_JSON="${GITROOT}/.gitarro_pr.json"
 GITARRO_JSON_CONTAINER="/manager/.gitarro_pr.json"
 
 # we need a special (old) baseimage to migrate to current schema
-docker pull $REGISTRY/$PGSQL_CONTAINER
+$EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER
 
 # Check if we run for PR or not
 if [ -f ${GITARRO_JSON} ]; then
@@ -48,4 +49,4 @@ MIGRATION_TEST="/manager/susemanager-utils/testing/docker/scripts/schema_migrati
 IDEMPOTENCY_TEST="/manager/susemanager-utils/testing/docker/scripts/reportdb_schema_idempotency_test_pgsql.py ${IDEMPOTENCY_PARAMS}"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
-docker run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${DOCUMENTATION_CMD} && ${MIGRATION_TEST} && ${IDEMPOTENCY_TEST}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+$EXECUTOR run --privileged --rm=true -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${DOCUMENTATION_CMD} && ${MIGRATION_TEST} && ${IDEMPOTENCY_TEST}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"

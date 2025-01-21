@@ -14,17 +14,17 @@ echo $PERLLIB
 ./build-reportdb-schema.sh
 
 export SYSTEMD_NO_WRAP=1
-sysctl -w kernel.shmmax=18446744073709551615
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 touch /etc/rhn/rhn.conf
 
-spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive || {
+spacewalk-setup --clear-db --db-only --answer-file=clear-db-answers-pgsql.txt || {
   cat /var/log/rhn/populate_db.log
   exit 1
 }
+spacewalk-sql /usr/share/susemanager/db/postgres/main.sql
 
 # Create symlinks because uyuni-setup-reportdb uses absolute paths
 ln -s /manager/schema/spacewalk/spacewalk-sql /usr/bin/spacewalk-sql

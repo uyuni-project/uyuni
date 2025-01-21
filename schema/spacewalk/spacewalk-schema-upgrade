@@ -106,10 +106,7 @@ elsif($server_version > $MAX_PG_DB_VERSION) {
     exit 1;
 }
 
-my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/schema-override 2> /dev/null`;
-if ($?) { # the directory does not exists or is not owned by any rpm
-        $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/main.sql`;
-}
+my $my_schema_version_out = `rpm -qf --qf '%{name} %{version} %{release}\n' $SCHEMA_DIR/main.sql`;
 my ($my_schema_name, $my_schema_version, $my_schema_release) = ($my_schema_version_out =~ /^(\S+)\s(\S+)\s(\S+)$/);
 if (not defined $my_schema_release) {
         die "Failed to retrieve our schema package name and version.\n";

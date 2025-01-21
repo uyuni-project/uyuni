@@ -110,7 +110,6 @@ Requires:       rsync
 Requires:       spacewalk-schema
 Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
-Requires:       spacewalk-db-virtual
 Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
