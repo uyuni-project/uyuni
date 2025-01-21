@@ -27,6 +27,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -50,7 +51,7 @@ public class NoteTest extends RhnBaseTestCase {
 
         Session session = HibernateFactory.getSession();
         note2 = (Note) session.getNamedQuery("Note.findById")
-                                  .setLong("id", note1.getId())
+                                  .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
                                   .uniqueResult();
         assertEquals(note1, note2);
 

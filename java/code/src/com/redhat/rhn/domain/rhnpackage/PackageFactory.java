@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.user.UserManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
 import java.util.ArrayList;
@@ -300,7 +301,8 @@ public class PackageFactory extends HibernateFactory {
      */
      public static PackageName lookupPackageName(Long id) {
          return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findById")
-                 .setLong("id", id).uniqueResult();
+                 .setParameter("id", id, StandardBasicTypes.LONG)
+                 .uniqueResult();
     }
 
     /**
@@ -313,7 +315,8 @@ public class PackageFactory extends HibernateFactory {
      */
     public static PackageName lookupPackageName(String pn) {
         return (PackageName) HibernateFactory.getSession().getNamedQuery("PackageName.findByName")
-                .setString("name", pn).uniqueResult();
+                .setParameter("name", pn, StandardBasicTypes.STRING)
+                .uniqueResult();
     }
 
     /**
@@ -325,7 +328,8 @@ public class PackageFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<Package> lookupOrphanPackages(Org org) {
         return HibernateFactory.getSession().getNamedQuery("Package.listOrphans")
-                .setParameter("org", org).list();
+                .setParameter("org", org)
+                .list();
     }
 
     /**
@@ -342,9 +346,13 @@ public class PackageFactory extends HibernateFactory {
             String release, String epoch, PackageArch arch) {
 
         List<Package> packages = HibernateFactory.getSession().getNamedQuery(
-                "Package.lookupByNevra").setParameter("org", org).setString("name", name)
-                .setString("version", version).setString("release", release).setParameter(
-                        "arch", arch).list();
+                "Package.lookupByNevra")
+                .setParameter("org", org)
+                .setParameter("name", name, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .setParameter("release", release, StandardBasicTypes.STRING)
+                .setParameter("arch", arch)
+                .list();
 
         if (epoch == null || packages.size() < 2) {
             return packages;
@@ -365,9 +373,9 @@ public class PackageFactory extends HibernateFactory {
 
         return HibernateFactory.getSession().createNamedQuery("Package.lookupByNevraIds", Package.class)
                                             .setParameter("org", org)
-                                            .setParameter("nameId", nameId)
-                                            .setParameter("evrId", evrId)
-                                            .setParameter("archId", archId)
+                                            .setParameter("nameId", nameId, StandardBasicTypes.LONG)
+                                            .setParameter("evrId", evrId, StandardBasicTypes.LONG)
+                                            .setParameter("archId", archId, StandardBasicTypes.LONG)
                                             .list();
 
     }
@@ -388,12 +396,12 @@ public class PackageFactory extends HibernateFactory {
         @SuppressWarnings("unchecked")
         List<Package> packages = HibernateFactory.getSession()
                 .getNamedQuery("Package.lookupByChannelLabelNevraCs")
-                .setString("channel", channel)
-                .setString("name", name)
-                .setString("version", version)
-                .setString("release", release)
-                .setString("arch", arch)
-                .setString("checksum", checksum.orElse(null))
+                .setParameter("channel", channel, StandardBasicTypes.STRING)
+                .setParameter("name", name, StandardBasicTypes.STRING)
+                .setParameter("version", version, StandardBasicTypes.STRING)
+                .setParameter("release", release, StandardBasicTypes.STRING)
+                .setParameter("arch", arch, StandardBasicTypes.STRING)
+                .setParameter("checksum", checksum.orElse(null), StandardBasicTypes.STRING)
                 .list();
 
         if (packages.isEmpty()) {

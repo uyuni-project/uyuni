@@ -14,7 +14,6 @@
  */
 package com.redhat.rhn.taskomatic;
 
-
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
@@ -24,11 +23,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
+import org.hibernate.query.Query;
 import org.quartz.SchedulerException;
 
 import java.util.Date;
@@ -36,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
 
 /**
  * TaskoFactory
@@ -430,28 +426,42 @@ public class TaskoFactory extends HibernateFactory {
      * @return the latest run or null if none exists
      */
     public static TaskoRun getLatestRun(String bunchName) {
-        DetachedCriteria bunchIds = DetachedCriteria.forClass(TaskoBunch.class)
-                .add(Restrictions.eq("name", bunchName))
-                .setProjection(Projections.id());
+        String sql =
+                """
+                        SELECT tr.id, tr.created, tr.end_time, tr.modified, tr.org_id, tr.schedule_id, tr.start_time,
+                        tr.status, tr.template_id
+                        FROM rhnTaskoRun tr
+                        WHERE tr.template_id IN (
+                          SELECT tt.id
+                          FROM rhnTaskoTemplate tt
+                          WHERE tt.bunch_id = (
+                            SELECT tb.id
+                            FROM rhnTaskoBunch tb
+                            WHERE tb.name = :bunchName
+                          )
+                        )
+                        AND tr.status IN (:status1, :status2, :status3)
+                        ORDER BY tr.start_time DESC, tr.id DESC
+                        LIMIT 1
+                        """;
 
-        DetachedCriteria templateIds = DetachedCriteria.forClass(TaskoTemplate.class)
-                .add(Subqueries.propertyIn("bunch", bunchIds))
-                .setProjection(Projections.id());
+        // Create the native query
+        Query<TaskoRun> query = getSession().createNativeQuery(sql, TaskoRun.class);
 
-        return (TaskoRun) getSession()
-            .createCriteria(TaskoRun.class)
-            .add(Subqueries.propertyIn("template.id", templateIds))
-            .add(Restrictions.in("status",
-                    new Object[] {
-                            TaskoRun.STATUS_RUNNING,
-                            TaskoRun.STATUS_FINISHED,
-                            TaskoRun.STATUS_INTERRUPTED
-            }))
-            .addOrder(Order.desc("startTime"))
-            .addOrder(Order.desc("id"))
-            .setFirstResult(0)
-            .setMaxResults(1)
-            .uniqueResult();
+        // Set the parameters for bunchName and status
+        query.setParameter("bunchName", bunchName);
+        query.setParameter("status1", TaskoRun.STATUS_RUNNING);
+        query.setParameter("status2", TaskoRun.STATUS_FINISHED);
+        query.setParameter("status3", TaskoRun.STATUS_INTERRUPTED);
+
+        // Execute the query and return the result (or null if no result is found)
+        try {
+            return (TaskoRun) query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            // Handle the case where no result is found
+            return null;
+        }
     }
 
     /**

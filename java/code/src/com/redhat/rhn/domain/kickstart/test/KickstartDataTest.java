@@ -74,7 +74,7 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -333,7 +333,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         Session session = HibernateFactory.getSession();
         return (KickstartData) session.getNamedQuery("KickstartData.findByIdAndOrg")
                           .setParameter("id", id)
-                          .setParameter("org_id", orgIn.getId(), LongType.INSTANCE)
+                          .setParameter("org_id", orgIn.getId(), StandardBasicTypes.LONG)
                           .uniqueResult();
     }
 

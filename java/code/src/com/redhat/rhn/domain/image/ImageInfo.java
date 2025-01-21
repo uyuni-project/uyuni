@@ -88,7 +88,7 @@ public class ImageInfo extends BaseDomainHelper {
      * @return the id
      */
     @Id
-    @Column(name = "id")
+    @Column(name = "id", insertable = false, updatable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imginfo_seq")
     @SequenceGenerator(name = "imginfo_seq", sequenceName = "suse_imginfo_imgid_seq",
                        allocationSize = 1)
