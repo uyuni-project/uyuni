@@ -167,12 +167,14 @@
     <filter-name>AuthFilterSpark</filter-name>
     <url-pattern>/manager/*</url-pattern>
     <url-pattern>/saltboot/*</url-pattern>
+    <url-pattern>/iss/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
     <filter-name>SparkFilter</filter-name>
     <url-pattern>/manager/*</url-pattern>
     <url-pattern>/saltboot/*</url-pattern>
+    <url-pattern>/iss/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>

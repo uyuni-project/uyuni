@@ -23,7 +23,7 @@ CREATE TABLE suseCredentials
                             ON DELETE CASCADE,
     type                VARCHAR(128) DEFAULT ('scc') NOT NULL
                              CONSTRAINT rhn_type_ck
-                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui')),
+                             CHECK (type IN ('scc', 'vhm', 'registrycreds', 'cloudrmt', 'reportcreds', 'rhui', 'hub_scc')),
     url                 VARCHAR(256),
     username            VARCHAR(64),
     password            VARCHAR(4096),
@@ -56,6 +56,10 @@ ALTER TABLE susecredentials
             WHEN 'reportcreds' THEN
                 username is not null and username <> ''
                     and password is not null and password <> ''
+            WHEN 'hub_scc' THEN
+                username is not null and username <> ''
+                    and password is not null and password <> ''
+                    and url is not null and url <> ''
         END
     );
 

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -21,11 +22,11 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.webui.utils.LoginHelper;
 
-import org.apache.commons.collections.set.UnmodifiableSet;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -40,17 +41,17 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     public static final long MAX_URL_LENGTH = 2048;
 
-    private static final Set UNPROTECTED_URIS;
-    private static final Set POST_UNPROTECTED_URIS;
-    private static final Set LOGIN_URIS;
+    private static final Set<String> UNPROTECTED_URIS;
+    private static final Set<String> POST_UNPROTECTED_URIS;
+    private static final Set<String> LOGIN_URIS;
 
     static {
         // Login routes
-        TreeSet set = new TreeSet<>();
+        TreeSet<String> set = new TreeSet<>();
         set.add("/rhn/newlogin/");
         set.add("/rhn/manager/login");
 
-        LOGIN_URIS = UnmodifiableSet.decorate(set);
+        LOGIN_URIS = Collections.unmodifiableSet(set);
 
         // Unauthenticated routes
         set = new TreeSet<>(set);
@@ -69,11 +70,12 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/ResetLink");
         set.add("/rhn/ResetPasswordSubmit");
         set.add("/rhn/saltboot");
+        set.add("/rhn/iss");
 
         // HTTP API public endpoints
         set.addAll(HttpApiRegistry.getUnautenticatedRoutes());
 
-        UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
+        UNPROTECTED_URIS = Collections.unmodifiableSet(set);
 
         // CSRF whitelist
         set = new TreeSet<>(set);
@@ -83,7 +85,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/manager/api/");
         set.add("/rhn/manager/upload/image");
 
-        POST_UNPROTECTED_URIS = UnmodifiableSet.decorate(set);
+        POST_UNPROTECTED_URIS = Collections.unmodifiableSet(set);
     }
 
     private PxtSessionDelegate pxtDelegate;
@@ -92,17 +94,17 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     }
 
     @Override
-    protected Set getLoginURIs() {
+    protected Set<String> getLoginURIs() {
         return LOGIN_URIS;
     }
 
     @Override
-    protected Set getUnprotectedURIs() {
+    protected Set<String> getUnprotectedURIs() {
         return UNPROTECTED_URIS;
     }
 
     @Override
-    protected Set getPostUnprotectedURIs() {
+    protected Set<String> getPostUnprotectedURIs() {
         return POST_UNPROTECTED_URIS;
     }
 
@@ -125,9 +127,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         return requestURIdoesLogin(request) || requestPostCsfrWhitelist(request);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean validate(HttpServletRequest request, HttpServletResponse response) {
         if (requestURIRequiresAuthentication(request)) {
@@ -140,9 +139,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void refresh(HttpServletRequest request, HttpServletResponse response) {
         // If URL requires auth and we are authenticated refresh the session.
@@ -159,9 +155,6 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
                pxtDelegate.getWebUserId(request) == null);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void redirectToLogin(HttpServletRequest request, HttpServletResponse response)
         throws ServletException {
@@ -198,19 +191,12 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void redirectTo(HttpServletRequest request, HttpServletResponse response,
-                           String path) {
+    public void redirectTo(HttpServletRequest request, HttpServletResponse response, String path) {
             response.setHeader("Location", path);
-            response.setStatus(response.SC_SEE_OTHER);
+            response.setStatus(HttpServletResponse.SC_SEE_OTHER);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidate(HttpServletRequest request, HttpServletResponse response) {
         pxtDelegate.invalidatePxtSession(request, response);

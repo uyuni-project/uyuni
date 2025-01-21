@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,7 +46,7 @@ import java.util.Date;
  * @see com.redhat.rhn.domain.server.VirtualInstanceType
  *
  */
-public abstract class Label {
+public abstract class Label implements Labeled {
 
     private Long id;
     private String name;
@@ -84,6 +85,7 @@ public abstract class Label {
      *
      * @return The label text of this label
      */
+    @Override
     public String getLabel() {
         return label;
     }

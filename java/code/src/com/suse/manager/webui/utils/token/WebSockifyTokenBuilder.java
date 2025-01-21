@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,18 +12,18 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.suse.manager.webui.utils;
+package com.suse.manager.webui.utils.token;
 
 import org.jose4j.jwt.JwtClaims;
 
 /**
  * Utility functions to generate WebSockify tokens.
  */
-public class WebSockifyTokenBuilder extends TokenBuilder {
+public class WebSockifyTokenBuilder extends AbstractTokenBuilder<WebSockifyTokenBuilder> {
 
-    private String host;
+    private final String host;
 
-    private int port;
+    private final int port;
 
     /**
      * Construct a token builder
@@ -33,11 +33,11 @@ public class WebSockifyTokenBuilder extends TokenBuilder {
     public WebSockifyTokenBuilder(String hostIn, int portIn) {
         this.host = hostIn;
         this.port = portIn;
-        setExpirationTimeMinutesInTheFuture(5);
+        expiringAfterMinutes(5);
     }
 
     @Override
-    public JwtClaims getClaims() {
+    protected JwtClaims getClaims() {
         JwtClaims claims = super.getClaims();
         claims.setClaim("host", this.host);
         claims.setClaim("port", this.port);
