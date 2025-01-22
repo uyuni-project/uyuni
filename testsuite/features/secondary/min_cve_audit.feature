@@ -91,7 +91,6 @@ Feature: CVE Audit on SLE Salt Minions
     And I follow "Patches" in the content area
     And I enter "milkyway" as the filtered synopsis
     And I click on the filter button
-    And I wait until I see "milkyway-dummy-2345" text, refreshing the page
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"
