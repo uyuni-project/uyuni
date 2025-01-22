@@ -11,7 +11,13 @@
 
 package com.suse.utils;
 
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
+
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.quartz.JobExecutionException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -23,6 +29,8 @@ import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.Optional;
 
 public final class CertificateUtils {
@@ -30,6 +38,8 @@ public final class CertificateUtils {
     public static final Path CERTS_PATH = Path.of("/etc/pki/trust/anchors/");
 
     private static final Path LOCAL_TRUSTED_ROOT = CERTS_PATH.resolve("LOCAL-RHN-ORG-TRUSTED-SSL-CERT");
+
+    private static final Logger LOG = LogManager.getLogger(CertificateUtils.class);
 
     private CertificateUtils() {
         // Prevent instantiation
@@ -89,5 +99,113 @@ public final class CertificateUtils {
 
         CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
         return Optional.of(certificateFactory.generateCertificate(inputStream));
+    }
+
+    /**
+     * Saves multiple root ca certificates, then updates trusted directory
+     *
+     * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
+     * @throws JobExecutionException if there was an error
+     */
+    public static void saveAndUpdateCertificates(Map<String, String> filenameToRootCaCertMap) {
+        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do
+        }
+
+        saveCertificates(filenameToRootCaCertMap);
+        updateCertificates();
+    }
+
+    private static void saveCertificates(Map<String, String> filenameToRootCaCertMap) {
+        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do
+        }
+
+        for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
+            String fileName = pair.getKey();
+            String rootCaCertContent = pair.getValue();
+
+            if (fileName.isEmpty()) {
+                LOG.warn("Skipping illegal empty certificate file name");
+                continue;
+            }
+
+            try {
+                if (rootCaCertContent.isEmpty()) {
+                    Files.delete(getCertificateSafePath(fileName));
+                    LOG.info("CA certificate file: {} successfully removed", fileName);
+                }
+                else {
+                    Files.writeString(getCertificateSafePath(fileName), rootCaCertContent, StandardCharsets.UTF_8);
+                    LOG.info("CA certificate file: {} successfully written", fileName);
+                }
+            }
+            catch (IOException e) {
+                LOG.error("Error when {} CA certificate file [{}] {}",
+                        rootCaCertContent.isEmpty() ? "removing" : "writing", fileName, e);
+            }
+            catch (IllegalArgumentException e) {
+                LOG.error("Illegal certificate file name [{}] {}", fileName, e);
+            }
+        }
+    }
+
+    private static void updateCertificates() {
+        try {
+            //system command to check if a service to update the ca certificates is present
+            executeExtCmd(new String[]{"systemctl", "is-active", "--quiet", "ca-certificates.path"});
+        }
+        catch (Exception e) {
+            LOG.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
+            executeExtCmd(new String[]{"/usr/share/rhn/certs/update-ca-cert-trust.sh"});
+        }
+    }
+
+    /**
+     * gets a safe path to a certificate, given its filename
+     *
+     * @param fileName the certificate filename
+     * @return the path in which the certificate should reside
+     * @throws IllegalArgumentException when the certificate filename is not valid or there is an attack attempt
+     */
+    public static Path getCertificateSafePath(String fileName) throws IllegalArgumentException {
+        if (null == fileName || fileName.isEmpty()) {
+            throw new IllegalArgumentException("File name cannot be null or empty");
+        }
+
+        if (!fileName.matches("[a-zA-Z0-9:._-]+")) {
+            throw new IllegalArgumentException("File name contains invalid characters");
+        }
+
+        Path filePath = CERTS_PATH.resolve(fileName).normalize();
+        if (!filePath.startsWith(CERTS_PATH)) {
+            //Prevent unauthorized access through path traversal (CWE-22)
+            throw new IllegalArgumentException("Attempted path traversal attack detected");
+        }
+        if (Files.isSymbolicLink(filePath)) {
+            throw new IllegalArgumentException("Refusing to delete/create symbolic link: " + filePath);
+        }
+
+        return filePath;
+    }
+
+    private static void executeExtCmd(String[] args) {
+        SystemCommandThreadedExecutor ce = new SystemCommandThreadedExecutor(LOG, true);
+        int exitCode = ce.execute(args);
+
+        if (exitCode != 0) {
+            String msg = ce.getLastCommandErrorMessage();
+            if (msg.isBlank()) {
+                msg = ce.getLastCommandOutput();
+            }
+            if (msg.length() > 2300) {
+                msg = "... " + msg.substring(msg.length() - 2300);
+            }
+            throw new RhnRuntimeException("Command '%s' exited with error code %d%s".formatted(
+                    Arrays.toString(args),
+                    exitCode,
+                    msg.isBlank() ? "" : ": " + msg)
+            );
+        }
     }
 }

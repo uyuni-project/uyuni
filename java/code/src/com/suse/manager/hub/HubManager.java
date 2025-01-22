@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
@@ -53,11 +55,15 @@ public class HubManager {
 
     private final IssClientFactory clientFactory;
 
+    private TaskomaticApi taskomaticApi;
+
+    private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
+
     /**
      * Default constructor
      */
     public HubManager() {
-        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager());
+        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi());
     }
 
     /**
@@ -65,12 +71,14 @@ public class HubManager {
      * @param hubFactoryIn the hub factory
      * @param clientFactoryIn the ISS client factory
      * @param mirrorCredentialsManagerIn the mirror credentials manager
+     * @param taskomaticApiIn the TaskomaticApi object
      */
     public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
-                      MirrorCredentialsManager mirrorCredentialsManagerIn) {
+                      MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn) {
         this.hubFactory = hubFactoryIn;
         this.clientFactory = clientFactoryIn;
         this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
+        this.taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -135,7 +143,8 @@ public class HubManager {
      * @param rootCA the root certificate, if needed
      * @return the persisted remote server
      */
-    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA) {
+    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA)
+            throws TaskomaticApiException {
         ensureValidToken(accessToken);
 
         return createServer(role, accessToken.getServerFqdn(), rootCA);
@@ -157,7 +166,8 @@ public class HubManager {
      * @throws IOException when connecting to the server fails
      */
     public void register(User user, String remoteServer, IssRole role, String username, String password, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException {
+        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            TaskomaticApiException {
         ensureSatAdmin(user);
 
         // Verify this server is not already registered as hub or peripheral
@@ -187,7 +197,8 @@ public class HubManager {
      * @throws IOException when connecting to the peripheral server fails
      */
     public void register(User user, String remoteServer, IssRole role, String remoteToken, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException {
+        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            TaskomaticApiException {
         ensureSatAdmin(user);
 
         // Verify this server is not already registered as hub or peripheral
@@ -227,7 +238,8 @@ public class HubManager {
     }
 
     private void registerWithToken(String remoteServer, IssRole role, String rootCA, String remoteToken)
-        throws TokenParsingException, CertificateException, TokenBuildingException, IOException {
+        throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
+            TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
         IssServer registeredServer = createServer(role, remoteServer, rootCA);
@@ -335,7 +347,12 @@ public class HubManager {
         hubFactory.saveToken(fqdn, token, TokenType.CONSUMED, parsedToken.getExpirationTime());
     }
 
-    private IssServer createServer(IssRole role, String serverFqdn, String rootCA) {
+    private static String computeRootCaFileName(IssRole role, String serverFqdn) {
+        return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
+    }
+
+    private IssServer createServer(IssRole role, String serverFqdn, String rootCA) throws TaskomaticApiException {
+        taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
