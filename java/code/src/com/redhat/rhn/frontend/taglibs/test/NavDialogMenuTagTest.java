@@ -132,6 +132,7 @@ public class NavDialogMenuTagTest extends RhnBaseTestCase {
     private String getReturnValue() {
         return "<div class=\"spacewalk-content-nav\"><ul class=\"nav nav-tabs\">" +
                "<li class=\"active\"><a href=\"/\" class=\"js-spa\">Sign In</a></li>\n" +
+               "<li><a href=\"/rhn/apidoc/index.jsp\" class=\"js-spa\">Help</a></li>\n" +
                "</ul>\n" +
                "</div>\n";
     }
