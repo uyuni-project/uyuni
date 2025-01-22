@@ -1,6 +1,7 @@
 # Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_cloud
 Feature: Create custom channels with development repositories
   In Order to use product packages in development to the clients
   As an authorized user

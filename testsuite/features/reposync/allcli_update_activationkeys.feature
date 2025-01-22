@@ -249,6 +249,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
+@skip_if_cloud
 @sle_minion
   Scenario: Update SLE key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
@@ -258,6 +259,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
+@skip_if_cloud
 @deblike_minion
   Scenario: Update Debian-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
@@ -267,6 +269,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been modified" text
 
+@skip_if_cloud
 @rhlike_minion
   Scenario: Update RedHat-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
