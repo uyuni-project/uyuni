@@ -25,7 +25,6 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerInfo;
@@ -40,11 +39,9 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
@@ -319,16 +316,11 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
 
         SaltApi saltApi = new TestSaltApi();
-        VirtManager virtManager = new TestVirtManager() {
-            @Override
-            public void updateLibvirtEngine(MinionServer minionIn) {
-            }
-        };
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
@@ -408,16 +400,11 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
 
         SaltApi saltApi = new TestSaltApi();
-        VirtManager virtManager = new TestVirtManager() {
-            @Override
-            public void updateLibvirtEngine(MinionServer minionIn) {
-            }
-        };
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
@@ -506,16 +493,11 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
 
         SaltApi saltApi = new TestSaltApi();
-        VirtManager virtManager = new TestVirtManager() {
-            @Override
-            public void updateLibvirtEngine(MinionServer minionIn) {
-            }
-        };
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);

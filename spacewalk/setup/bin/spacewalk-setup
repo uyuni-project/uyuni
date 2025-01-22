@@ -44,15 +44,11 @@ $|++;
 use constant DEFAULT_CA_CERT_NAME =>
   'RHN-ORG-TRUSTED-SSL-CERT';
 
-use constant COBBLER_COMMAND => 'spacewalk-setup-cobbler';
-
 my %opts = Spacewalk::Setup::parse_options();
 
 my %answers = ();
 $answers{'db-backend'} = 'postgresql'; # the only supported currently
 my @skip = ();
-push @skip, Spacewalk::Setup::EMBEDDED_DB_ANSWERS
-    if not Spacewalk::Setup::is_embedded_db(\%opts);
 Spacewalk::Setup::load_answer_file(\%opts, \%answers, \@skip);
 my $product_name = $answers{'product_name'} || 'Spacewalk';
 
@@ -69,25 +65,7 @@ if (not defined $opts{"clear-db"} and defined $answers{"clear-db"} and
     $opts{'clear-db'} = 1;
 }
 
-$opts{"skip-db-install"} = 1 if $opts{"clear-db"};
-
-# Skip the logfile init, normally just used when called from install.pl,
-# which already did this.
-if (not $opts{"skip-logfile-init"}) {
-    Spacewalk::Setup::init_log_files($product_name, @ARGV);
-}
-
-if (Spacewalk::Setup::have_selinux()) {
-    print Spacewalk::Setup::loc("* Setting up SELinux..\n");
-    Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-selinux-enable', ''], 42,
-               'Could not enable selinux policy.');
-}
-
-if ($opts{"run-cobbler"}) {
-    print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
-    setup_cobbler(\%opts, \%answers);
-    exit 0;
-}
+Spacewalk::Setup::init_log_files($product_name, @ARGV);
 
 my %rhnOptions = ();
 if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
@@ -105,9 +83,6 @@ if ($opts{'db-only'}) {
     exit;
 }
 
-remove_old_jvm(\%opts, \%answers);
-remove_tomcat_cache(\%opts);
-
 setup_services();
 
 setup_admin_email(\%opts, \%answers, \%rhnOptions);
@@ -115,14 +90,14 @@ setup_admin_email(\%opts, \%answers, \%rhnOptions);
 if(not $opts{"skip-initial-configuration"}) {
     print Spacewalk::Setup::loc("* Performing initial configuration.\n");
     my $config_opts = populate_initial_configs(\%opts, \%answers);
-    mkdir_mount_points($config_opts->{'mount_point'},
-            $config_opts->{'mount_point'} . '/packages',
-            $config_opts->{'mount_point'} . '/systems',
-            $config_opts->{'kickstart_mount_point'});
+    my $www_uid = (getpwnam('wwwrun') // "");
+    chown $www_uid, -1, $config_opts->{'mount_point'} . '/packages';
+    chmod 0775, $config_opts->{'mount_point'};
     chmod 0775, $config_opts->{'mount_point'} . '/systems';
+    chmod 0775, $config_opts->{'kickstart_mount_point'};
     # Check for both potential Apache groups (SUSE/RHEL)
     my $www_gid = getgrnam(`grep -hsoP "(?<=Group ).*" /etc/httpd/conf/*.conf /etc/apache2/*.conf | tr -d '\n'`);
-    chown -1, $www_gid, $config_opts->{'mount_point'} . '/systems';
+    chown $www_uid, $www_gid, $config_opts->{'mount_point'} . '/systems';
 }
 
 
@@ -132,16 +107,12 @@ setup_mod_ssl(\%opts, \%answers);
 print Spacewalk::Setup::loc("* Creating SSL certificates.\n");
 setup_ssl_certs(\%opts, \%answers);
 
-if(not $opts{"skip-reportdb-setup"}) {
-    Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
-    print Spacewalk::Setup::loc("* Report DB Configured. \n");
-}
+Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
+print Spacewalk::Setup::loc("* Report DB Configured. \n");
 
 
-if(not $opts{"skip-db-population"}) {
-    print Spacewalk::Setup::loc("* Update configuration in database.\n");
-    final_db_config(\%opts, \%answers);
-}
+print Spacewalk::Setup::loc("* Update configuration in database.\n");
+final_db_config(\%opts, \%answers);
 
 print Spacewalk::Setup::loc("* Setting up Cobbler..\n");
 setup_cobbler(\%opts, \%answers);
@@ -149,86 +120,9 @@ setup_cobbler(\%opts, \%answers);
 print Spacewalk::Setup::loc("* Deploying configuration files.\n");
 populate_final_configs(\%opts, \%answers);
 
-if ($opts{'upgrade'}) {
-  Spacewalk::Setup::postgresql_start() if (Spacewalk::Setup::is_embedded_db(\%opts));
-
-  print Spacewalk::Setup::loc("This portion of the $product_name upgrade process has successfully completed.\n");
-  if ($product_name =~ /Satellite/) {
-    print Spacewalk::Setup::loc("Please refer to appropriate upgrade document in /etc/sysconfig/rhn/satellite-upgrade\n");
-    print Spacewalk::Setup::loc("for any remaining steps in the process.\n");
-  }
-} else {
-  if (!$opts{'skip-services-restart'}){
-      print Spacewalk::Setup::loc("* Restarting services.\n");
-      Spacewalk::Setup::system_or_exit(['/usr/sbin/spacewalk-service', 'restart'], 40,
-                   'Could not restart spacewalk services.');
-      wait_for_tomcat() or exit 56;
-  }
-  print Spacewalk::Setup::loc("Installation complete.\n");
-}
+print Spacewalk::Setup::loc("Installation complete.\n");
 
 exit 0;
-
-
-sub remove_old_jvm {
-        my $opts = shift;
-        my $answers = shift;
-
-        return unless (($opts{"upgrade"}) and ($product_name =~ /Satellite/));
-
-        my $jvm_list = Spacewalk::Setup::SHARED_DIR . "/old-jvm-list";
-
-        local *F;
-        open F, $jvm_list or die "Error opening [$jvm_list]: $!\n";
-        my @jvms = <F>;
-        close F;
-        chomp @jvms;
-
-        my $remove;
-
-        foreach my $jvm (@jvms) {
-                system("rpm -q $jvm >& /dev/null");
-                $remove .= " $jvm" unless $? >> 8;
-        }
-
-        if ($remove) {
-                print Spacewalk::Setup::loc("Setup found following old java packages:\n");
-                foreach my $p (split (" ", $remove)) {
-                        print Spacewalk::Setup::loc("\t$p\n");
-                }
-        } else {
-                return;
-        }
-
-        Spacewalk::Setup::ask(
-                -noninteractive => $opts{"non-interactive"},
-                -question => "Should setup remove these packages",
-                -test => sub { my $text = shift; return $text =~ /^[YyNn]/ },
-                -answer => \$answers->{"remove-old-jvm"},
-                -default => 'Y',
-        );
-        unless ( $answers->{"remove-old-jvm"} =~ /^[Yy]/ ) {
-                print Spacewalk::Setup::loc("** Skipping removal of old java packages.\n");
-                return;
-        }
-
-        my $result = `rpm -e $remove 2>&1`;
-        if ($? >> 8) {
-                print Spacewalk::Setup::loc("** Error occurred while removing the packages:\n");
-                print Spacewalk::Setup::loc($result);
-        }
-}
-
-sub remove_tomcat_cache {
-        my $opts = shift;
-
-        return unless ($opts->{'upgrade'});
-
-        my @dirs = glob "/var/cache/tomcat?/work";
-        if (scalar @dirs > 0) {
-                system("rm -rf /var/cache/tomcat?/work/* > /dev/null 2>&1");
-        }
-}
 
 sub setup_cobbler {
   my $opts = shift;
@@ -237,8 +131,8 @@ sub setup_cobbler {
   my %options = ();
   Spacewalk::Setup::read_config('/usr/share/rhn/config-defaults/rhn.conf',\%options);
 
-  Spacewalk::Setup::system_or_exit([COBBLER_COMMAND, '--apache2-config-directory', $options{'httpd_config_dir'}, '-f', $answers->{'hostname'}], 1,
-               'Could not setup cobbler');
+  system("spacewalk-setup-cobbler --apache2-config-directory $options{'httpd_config_dir'} -f $answers->{'hostname'}") == 0
+        or die 'Could not setup cobbler';
 
   my $skip_rhnconf = 0;
   open(FILE, "<" . Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION);
@@ -261,32 +155,7 @@ sub setup_cobbler {
     system("cobbler sync");
   }
 
-  Spacewalk::Setup::ask(
-    -noninteractive => $opts{"non-interactive"},
-    -question => "Cobbler requires tftp and xinetd services be turned on for PXE provisioning functionality. Enable these services",
-    -test => sub { my $text = shift; return $text =~ /^[YyNn]/ },
-    -answer => \$answers->{"enable-tftp"},
-    -default => 'Y',
-  );
-
-  if ($opts{'enable-tftp'}) {
-    $answers{'enable-tftp'} = $opts{'enable-tftp'};
-  }
-
-  if (($answers{'enable-tftp'} and $answers{'enable-tftp'} =~ /^[Yy]/) || $opts{"non-interactive"}) {
-      if (-e '/usr/lib/systemd/system/tftp.socket') {
-        system("systemctl --quiet enable tftp.socket 2>&1");
-        system("systemctl start tftp.socket 2>&1");
-      } else {
-        if (-e '/usr/lib/systemd/system/atftpd.socket') {
-          system("systemctl --quiet enable atftpd.socket 2>&1");
-          system("systemctl start atftpd.socket 2>&1");
-        } else {
-          system("systemctl --quiet enable atftpd.service 2>&1");
-          system("systemctl start atftpd.service 2>&1");
-        }
-      }
-  }
+  system("systemctl enable tftp.socket")
 }
 
 sub setup_admin_email {
@@ -298,7 +167,6 @@ sub setup_admin_email {
     $answers->{'admin-email'} = $rhnoptions->{'traceback_mail'};
   } else {
     Spacewalk::Setup::ask(
-        -noninteractive => $opts{"non-interactive"},
         -question => "Admin Email Address",
         -test => sub { my $text = shift;
                        valid_multiple_email($text) && length($text) <= 128 },
@@ -362,19 +230,16 @@ sub setup_cc {
   $opts{disconnected} = 1;
   $answers{'setup-scc'} = 'Y';
   Spacewalk::Setup::ask(
-      -noninteractive => $opts{"non-interactive"},
       -question => "SCC Organization Credential Username",
       -test => sub { my $text = shift;
                      return $text =~ /\S+/ && length($text) <= 128 },
       -answer => \$answers{'scc-user'});
 
   Spacewalk::Setup::ask(
-      -noninteractive => $opts{"non-interactive"},
       -question => "SCC Organization Credential Password",
       -test => sub { my $text = shift;
                      return $text =~ /\S+/ && length($text) <= 128 },
-      -answer => \$answers{'scc-pass'},
-      -password => 1);
+      -answer => \$answers{'scc-pass'});
 }
 
 
@@ -457,7 +322,6 @@ sub setup_mod_ssl {
     return;
   }
   Spacewalk::Setup::ask(
-    -noninteractive => $opts{"non-interactive"},
     -question => "Should setup configure apache's default ssl server for you (saves original ssl.conf)",
     -test => sub { my $text = shift; return $text =~ /^[YyNn]/ },
     -answer => \$answers->{"ssl-config-sslvhost"},
@@ -478,13 +342,12 @@ sub setup_ssl_certs {
   my $opts = shift;
   my $answers = shift;
 
-  if ($opts{"skip-ssl-cert-generation"} || $opts{"upgrade"}) {
+  if ($opts{"skip-ssl-cert-generation"}) {
     print Spacewalk::Setup::loc("** Skipping SSL certificate generation.\n");
     return;
   }
 
   Spacewalk::Setup::ask(
-    -noninteractive => $opts{"non-interactive"},
     -question => "Do you want to import exising certificates?",
     -test => sub { my $text = shift; return $text =~ /^[YyNn]/ },
     -answer => \$answers->{"ssl-use-existing-certs"},
@@ -503,30 +366,24 @@ sub setup_ssl_certs {
           do {
             ($password_1, $password_2) = (undef, undef); # clear previous passwords
             Spacewalk::Setup::ask(
-              -noninteractive => $opts{"non-interactive"},
               -question => "CA certificate password",
               -test => \&valid_ssl_cert_password,
               -answer => \$password_1,
-              -password => 1,
             );
 
             Spacewalk::Setup::ask(
-              -noninteractive => $opts{"non-interactive"},
               -question => "Re-enter CA certificate password",
               -test => \&valid_ssl_cert_password,
               -answer => \$password_2,
-              -password => 1,
             );
           } until (passwords_match($password_1, $password_2));
         } else {
           do {
 	    $password_1 = undef;
             Spacewalk::Setup::ask(
-              -noninteractive => $opts{"non-interactive"},
               -question => "CA certificate password",
               -test => \&valid_ssl_cert_password,
               -answer => \$password_1,
-              -password => 1,
             );
           } until (check_ca_key($password_1)==0);
         }
@@ -534,7 +391,6 @@ sub setup_ssl_certs {
       };
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Cname alias of the machine (comma separated)",
           -test => sub { my $text = shift;
                          return length($text) <= 128 },
@@ -542,7 +398,6 @@ sub setup_ssl_certs {
          );
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Organization",
           -test => sub { my $text = shift;
                          return $text =~ /\S/ && length($text) <= 128 },
@@ -550,7 +405,6 @@ sub setup_ssl_certs {
          );
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Organization Unit",
           -test => sub { my $text = shift;
                          return $text =~ /\S/ && length($text) <= 128 },
@@ -561,7 +415,6 @@ sub setup_ssl_certs {
       $answers->{"ssl-set-common-name"} ||= $answers->{hostname};
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => 'Email Address',
           -test => sub { my $text = shift;
                          valid_multiple_email($text) && length($text) <= 128 },
@@ -570,7 +423,6 @@ sub setup_ssl_certs {
          );
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => 'City',
           -test => sub { my $text = shift;
                          $text =~ /\S+/ && length($text) < 128 },
@@ -578,7 +430,6 @@ sub setup_ssl_certs {
          );
 
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => 'State',
           -test => sub { my $text = shift;
                          length($text) > 0 && length($text) < 128 },
@@ -591,7 +442,6 @@ sub setup_ssl_certs {
              or not (exists $by_code->{$answers->{'ssl-set-country'}}
                      or exists $by_name->{$answers->{'ssl-set-country'}})) {
         Spacewalk::Setup::ask(
-            -noninteractive => $opts{"non-interactive"},
             -question => 'Country code (Examples: "US", "JP", "IN", or type "?" to see a list)',
             -test => sub { my $text = shift;
                            exists $by_code->{$text} or exists $by_name->{$text} or $text eq '?' },
@@ -612,21 +462,18 @@ sub setup_ssl_certs {
       $answers->{'ssl-server-cert-expiration'} ||= default_cert_expiration();
   } else {
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Path to CA Certificate",
           -test => sub { my $text = shift;
                          length($text) > 0 && -r $text && -s $text },
           -answer => \$answers->{"ssl-ca-cert"},
          );
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Path to Server Certificate",
           -test => sub { my $text = shift;
                          length($text) > 0 && -r $text && -s $text },
           -answer => \$answers->{"ssl-server-cert"},
          );
       Spacewalk::Setup::ask(
-          -noninteractive => $opts{"non-interactive"},
           -question => "Path to Server Key",
           -test => sub { my $text = shift;
                          length($text) > 0 && -r $text && -s $text },
@@ -787,16 +634,15 @@ sub populate_initial_configs {
     Spacewalk::Setup::set_hibernate_conf($answers);
 
     # Set the document root depending on OS.
-    my $DOC_ROOT = $Spacewalk::Setup::DEFAULT_DOC_ROOT;
-    $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT if(is_suse_like());
+    my $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT;
 
     my %config_opts =
     (
      mount_point => $answers->{'mount-point'} || '/var/spacewalk',
      kickstart_mount_point => $answers->{'kickstart-mount-point'} || $answers->{'mount-point'} || '/var/spacewalk',
-     serverDOTsatelliteDOThttp_proxy => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy'} : $answers->{'rhn-http-proxy'}) || '',
-     serverDOTsatelliteDOThttp_proxy_username => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-username'} : $answers->{'rhn-http-proxy-username'}) || '',
-     serverDOTsatelliteDOThttp_proxy_password => ($opts->{'rhn-http-proxy'} ? $opts->{'rhn-http-proxy-password'} :$answers->{'rhn-http-proxy-password'}) || '',
+     serverDOTsatelliteDOThttp_proxy => $answers->{'rhn-http-proxy'} || '',
+     serverDOTsatelliteDOThttp_proxy_username => $answers->{'rhn-http-proxy-username'} || '',
+     serverDOTsatelliteDOThttp_proxy_password => $answers->{'rhn-http-proxy-password'} || '',
      javaDOThostname => $answers->{hostname},
      encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
@@ -887,13 +733,6 @@ sub populate_initial_configs {
     return \%config_opts;
 }
 
-# given a list of directories (by default, /var/satellite)
-# check if they exist and if they do not exist, create them
-# with apache as owner
-sub mkdir_mount_points {
-  system('/usr/bin/spacewalk-make-mount-points', @_);
-}
-
 sub populate_final_configs {
   my $options = shift;
   my $answers = shift;
@@ -902,7 +741,7 @@ sub populate_final_configs {
                 -dest => '/etc/rhn');
   if($answers->{"no-ssl"} && $answers->{"no-ssl"} =~ /^[Yy]/) {
       open(my $FILE, '>>', '/etc/rhn/rhn.conf');
-      print $FILE "server.no_ssl = 1";
+      print $FILE "server.no_ssl = 1\n";
       close $FILE;
   }
 
@@ -978,22 +817,6 @@ sub setup_services {
   Spacewalk::Setup::system_or_exit(["/usr/sbin/spacewalk-service", "--level", "35", "enable"], 11, 'Could not turn spacewalk services on.');
 
   return 1;
-}
-
-sub is_suse_like {
-  my $filename = '/etc/os-release';
-  if(! -e $filename) {
-    return;
-  }
-  open my $fh, "<", $filename or die "Could not open '$filename': $!\n";
-  while( my $line = <$fh> ) {
-    if ($line =~ m/ID_LIKE=".*suse.*"/) {
-      close $fh;
-      return 1;
-    }
-  }
-  close $fh;
-  return;
 }
 
 sub check_ca_key{

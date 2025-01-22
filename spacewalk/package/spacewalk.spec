@@ -95,39 +95,6 @@ Provides:       weakremover(spacewalk-setup-jabberd)
 Spacewalk is a systems management application that will
 inventory, provision, update and control your Linux machines.
 
-%package postgresql
-Summary:        Spacewalk Systems Management Application with PostgreSQL database backend
-# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
-Group:          Applications/Internet
-Requires:       spacewalk-common = %{version}-%{release}
-Conflicts:      spacewalk-oracle
-Provides:       spacewalk-db-virtual = %{version}-%{release}
-
-Requires:       spacewalk-backend-sql-postgresql
-Requires:       spacewalk-java-postgresql
-Requires:       perl(DBD::Pg)
-%if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Requires:       postgresql-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
-Conflicts:      postgresql-implementation > %{postgresql_version_max}
-%else # not a supported SUSE version or alternative OS.
-Requires:       postgresql14
-Requires:       postgresql14-contrib
-# we do not support postgresql versions > 14.x yet
-# Hardcoded v15 conflict due to PostgreSQL bug 17507 (instead of >= 15)
-Conflicts:      postgresql15
-Conflicts:      postgresql15-contrib
-%endif # if sle_Version
-
-%description postgresql
-Spacewalk is a systems management application that will
-inventory, provision, update and control your Linux machines.
-Version for PostgreSQL database backend.
-
 %prep
 %setup -q
 
@@ -135,15 +102,7 @@ Version for PostgreSQL database backend.
 #nothing to do here
 
 %install
-RDBMS="postgresql"
 install -d %{buildroot}%{_sysconfdir}
-install -d %{buildroot}%{_datadir}/spacewalk/setup/defaults.d
-for i in ${RDBMS} ; do
-    cat <<EOF >%{buildroot}%{_datadir}/spacewalk/setup/defaults.d/$i-backend.conf
-# database backend to be used by spacewalk
-db-backend = $i
-EOF
-done
 install -d %{buildroot}%{_bindir}
 %if 0%{?rhel}
 ln -s %{_prefix}/pgsql-14/bin/initdb %{buildroot}%{_bindir}/initdb
@@ -152,16 +111,5 @@ ln -s %{_prefix}/pgsql-14/bin/initdb %{buildroot}%{_bindir}/initdb
 %files common
 %{!?_licensedir:%global license %doc}
 %license LICENSE
-%if 0%{?suse_version}
-%dir %{_datadir}/spacewalk
-%dir %{_datadir}/spacewalk/setup
-%dir %{_datadir}/spacewalk/setup/defaults.d
-%endif
-
-%files postgresql
-%{_datadir}/spacewalk/setup/defaults.d/postgresql-backend.conf
-%if 0%{?rhel}
-%{_bindir}/initdb
-%endif
 
 %changelog

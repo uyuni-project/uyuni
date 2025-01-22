@@ -1675,7 +1675,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise SystemCallError, 'Error getting server certificate serial!' unless result_code.zero?
 
-  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
+  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host]
   targets.each do |target|
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial
