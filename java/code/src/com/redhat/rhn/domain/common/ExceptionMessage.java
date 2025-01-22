@@ -55,9 +55,6 @@ public class ExceptionMessage {
         catch (NoResultException e) {
             return null;
         }
-        catch (Exception e) {
-            throw new RuntimeException("Error retrieving ExceptionMessage", e);
-        }
     }
 
     /**

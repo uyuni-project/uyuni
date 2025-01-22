@@ -456,7 +456,7 @@ public class TaskoFactory extends HibernateFactory {
 
         // Execute the query and return the result (or null if no result is found)
         try {
-            return (TaskoRun) query.getSingleResult();
+            return query.getSingleResult();
         }
         catch (NoResultException e) {
             // Handle the case where no result is found

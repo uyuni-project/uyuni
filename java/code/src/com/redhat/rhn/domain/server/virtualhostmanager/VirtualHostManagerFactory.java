@@ -501,18 +501,11 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      */
     public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
             String identifier) {
-        Optional<VirtualHostManagerNodeInfo> virtualNode;
-        try {
-            return Optional.ofNullable(getSession().createNativeQuery("""
+            return getSession().createNativeQuery("""
                                       SELECT * from suseVirtualHostManagerNodeInfo
                                       WHERE  identifier = :identifier
                                       """, VirtualHostManagerNodeInfo.class)
                     .setParameter("identifier", identifier, StandardBasicTypes.STRING)
-                    .getSingleResult());
-        }
-        catch (NoResultException e) {
-            return Optional.empty();
-        }
+                    .uniqueResultOptional();
     }
-
 }

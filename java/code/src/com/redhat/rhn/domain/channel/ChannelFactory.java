@@ -395,11 +395,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channel architectures
      */
     public static List<ChannelArch> getChannelArchitectures() {
-        Session session = getSession();
-        String sql = "SELECT * FROM rhnChannelArch";
-        List<ChannelArch> channelArchList
-                = session.createNativeQuery(sql, ChannelArch.class).getResultList();
-        return channelArchList;
+        return getSession().createNativeQuery("SELECT * FROM rhnChannelArch", ChannelArch.class).getResultList();
     }
 
     /**
@@ -1253,11 +1249,8 @@ public class ChannelFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
-        Session session = getSession();
-        String sql = "SELECT * FROM rhnContentSource WHERE org_id IS NULL";
-        List<ContentSource> contentSources
-                = session.createNativeQuery(sql, ContentSource.class).getResultList();
-        return contentSources;
+        return getSession().createNativeQuery("SELECT * FROM rhnContentSource WHERE org_id IS NULL",
+                ContentSource.class).getResultList();
     }
 
     /**
@@ -1331,7 +1324,7 @@ public class ChannelFactory extends HibernateFactory {
         Session session = getSession();
         String sql
                 = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
-       Query<ChannelProduct> query = session.createNativeQuery(sql, ChannelProduct.class);
+        Query<ChannelProduct> query = session.createNativeQuery(sql, ChannelProduct.class);
         query.setParameter("product", product, StandardBasicTypes.STRING);
         query.setParameter("version", version, StandardBasicTypes.STRING);
         try {
@@ -1339,9 +1332,6 @@ public class ChannelFactory extends HibernateFactory {
         }
         catch (NoResultException e) {
             return null;
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error retrieving ChannelProduct", e);
         }
     }
 
