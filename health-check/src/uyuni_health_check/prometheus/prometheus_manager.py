@@ -1,14 +1,10 @@
-from uyuni_health_check.config import ConfigLoader
+from uyuni_health_check import config
 from uyuni_health_check.containers.manager import (
     console,
-    build_image,
-    image_exists,
     container_is_running,
     podman,
 )
-from uyuni_health_check.utils import run_command, HealthException, console
-
-conf = ConfigLoader()
+from uyuni_health_check.utils import console
 
 
 def prepare_prometheus(verbose=False):
@@ -17,9 +13,6 @@ def prepare_prometheus(verbose=False):
             "Skipped as the uyuni-health-check-prometheus container is already running"
         )
     else:
-        # Copy the prometheus config
-
-        prometheus_cfg = conf.get_prometheus_config_dir()
         podman_command = [
             "run",
             "-d",
@@ -29,7 +22,7 @@ def prepare_prometheus(verbose=False):
             "-p",
             "9090:9090",
             "-v",
-            f"{prometheus_cfg}:/etc/prometheus/",
+            f"{config.get_prometheus_config_dir()}:/etc/prometheus/",
             "--name",
             "uyuni-health-check-prometheus",
             "docker.io/prom/prometheus",
