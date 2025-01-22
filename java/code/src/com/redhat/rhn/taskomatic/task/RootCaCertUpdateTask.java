@@ -14,13 +14,17 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Taskomatic task that checks if new certificates have been added or updated
- * * and stores them accordingly in the trusted certificate path
+ * and saves them accordingly in the trusted certificate path.
+ * After saving the certificates, the system configuration is refreshed.
  */
 public class RootCaCertUpdateTask extends RhnJavaJob {
 
-    private static final String ROOT_CA_KEY = "root_ca";
+    private static final String MAP_KEY = "filename_to_root_ca_cert_map";
 
     @Override
     public String getConfigNamespace() {
@@ -33,23 +37,27 @@ public class RootCaCertUpdateTask extends RhnJavaJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-        final String rootCa = getRootCa(jobDataMap);
+        Map<String, String> filenameToRootCaCertMap = getFilenameToRootCaCertMap(jobDataMap);
 
-        //TODO: do something
-        log.info("Root Ca is: {}", rootCa);
+        for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
+            String fileName = pair.getKey();
+            String rootCaCertContent = pair.getValue();
 
+            log.info("Filename: {} Content: {}", fileName, rootCaCertContent);
+        }
     }
 
-    private String getRootCa(final JobDataMap jobDataMap) {
-        String rootCa = "";
-        if (jobDataMap.containsKey(ROOT_CA_KEY)) {
+    private Map<String, String> getFilenameToRootCaCertMap(final JobDataMap jobDataMap) {
+        Map<String, String> filenameToRootCaCertMap = new HashMap<>();
+
+        if (jobDataMap.containsKey(MAP_KEY)) {
             try {
-                rootCa = jobDataMap.getString(ROOT_CA_KEY);
+                filenameToRootCaCertMap = (Map<String, String>) jobDataMap.get(MAP_KEY);
             }
             catch (ClassCastException e) {
-                rootCa = "";
+                //filenameToRootCaCertMap is already empty
             }
         }
-        return rootCa;
+        return filenameToRootCaCertMap;
     }
 }
