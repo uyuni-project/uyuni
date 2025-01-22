@@ -790,4 +790,17 @@ public class TaskomaticApi {
     public boolean isJmxEnabled() throws TaskomaticApiException {
         return (Boolean)invoke("tasko.isJmxEnabled");
     }
+
+    /**
+     * Schedule a single root ca certificate update
+     *
+     * @param rootCa the root ca certificate content
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertUpdate(String rootCa)
+            throws TaskomaticApiException {
+        Map<String, Object> paramList = new HashMap<>();
+        paramList.put("root_ca", rootCa);
+        invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
+    }
 }
