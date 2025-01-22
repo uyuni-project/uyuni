@@ -835,15 +835,25 @@ public class TaskomaticApi {
     }
 
     /**
-     * Schedule multiple root ca certificates update
+     * Schedule multiple root ca certificates update.
+     * Filters out null certificates or the ones that have no content
      *
      * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleSingleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
             throws TaskomaticApiException {
-        Map<String, Object> paramList = new HashMap<>();
-        paramList.put("filename_to_root_ca_cert_map", filenameToRootCaCertMap);
-        invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
+
+        //filters out meaningless certificates
+        Map<String, String> realFilenameToRootCaCertMap = filenameToRootCaCertMap.entrySet()
+                .stream()
+                .filter(e -> StringUtils.isNotEmpty(e.getValue()))
+                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
+
+        if (!realFilenameToRootCaCertMap.isEmpty()) {
+            Map<String, Object> paramList = new HashMap<>();
+            paramList.put("filename_to_root_ca_cert_map", realFilenameToRootCaCertMap);
+            invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
+        }
     }
 }
