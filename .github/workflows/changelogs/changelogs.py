@@ -73,6 +73,7 @@ class IssueType:
     MISSING_CHLOG = "Changelog not added"
     WRONG_CHLOG = "Changelog added without changes"
     EMPTY_CHLOG = "No changelog entries found"
+    INVALID_CHLOG_FILENAME = "Changelog filename must be in format: '{}.changes.<author>.<feature>'"
     MISSING_NEWLINE = "Missing newline at the end"
     WRONG_CAP = "Wrong capitalization"
     WRONG_SPACING = "Wrong spacing"
@@ -265,7 +266,7 @@ class ChangelogValidator:
         for f in files:
             # Check if the file exists in a subdirectory of the base path of the package
             if f.startswith(pkg_path):
-                if os.path.basename(f).startswith(pkg_name + ".changes."):
+                if ".changes." in os.path.basename(f):
                     # Ignore if the change is a removal
                     if os.path.isfile(os.path.join(self.uyuni_root, f)):
                         pkg_chlogs.append(f)
@@ -629,6 +630,9 @@ class ChangelogValidator:
             if not files["changes"]:
                 # Files are modified but no changelog file added
                 issues.append(Issue(IssueType.MISSING_CHLOG, package=pkg))
+            for chlog_file in files["changes"]:
+                if not os.path.basename(chlog_file).startswith(f"{pkg}.changes."):
+                    issues.append(Issue(IssueType.INVALID_CHLOG_FILENAME.format(pkg), package=pkg))
 
             # Validate each changelog file and gather all the issues
             for file in files["changes"]:
