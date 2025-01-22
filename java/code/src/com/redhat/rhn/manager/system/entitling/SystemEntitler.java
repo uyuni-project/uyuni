@@ -19,21 +19,16 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.entitlement.Entitlement;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
-import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
-import com.redhat.rhn.manager.system.VirtualInstanceManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,20 +45,17 @@ public class SystemEntitler {
     private static final Logger LOG = LogManager.getLogger(SystemEntitler.class);
 
     private SaltApi saltApi;
-    private VirtManager virtManager;
     private MonitoringManager monitoringManager;
     private ServerGroupManager serverGroupManager;
 
     /**
      * @param saltApiIn instance for gathering data from a system.
-     * @param virtManagerIn instance for managing virtual machines.
      * @param monitoringManagerIn instance for handling monitoring configuration.
      * @param serverGroupManagerIn
      */
-    public SystemEntitler(SaltApi saltApiIn, VirtManager virtManagerIn,
+    public SystemEntitler(SaltApi saltApiIn,
             MonitoringManager monitoringManagerIn, ServerGroupManager serverGroupManagerIn) {
         this.saltApi = saltApiIn;
-        this.virtManager = virtManagerIn;
         this.monitoringManager = monitoringManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
     }
@@ -96,7 +88,6 @@ public class SystemEntitler {
             return result;
         }
 
-        boolean wasVirtEntitled = server.hasEntitlement(EntitlementManager.VIRTUALIZATION);
         if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
             if (server.isVirtualGuest()) {
                 result.addError(new ValidatorError("system.entitle.guestcantvirt"));
@@ -112,13 +103,6 @@ public class SystemEntitler {
 
         server.asMinionServer().ifPresent(minion -> {
             serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
-
-            if (wasVirtEntitled && !EntitlementManager.VIRTUALIZATION.equals(ent) ||
-                    !wasVirtEntitled && EntitlementManager.VIRTUALIZATION.equals(ent)) {
-                this.updateLibvirtEngine(minion);
-                MinionPillarManager.INSTANCE.generatePillar(minion, false,
-                    MinionPillarManager.PillarSubset.VIRTUALIZATION);
-            }
 
             if (EntitlementManager.MONITORING.equals(ent)) {
                 try {
@@ -191,11 +175,5 @@ public class SystemEntitler {
                     " entitlement is not compatible.", ent.getLabel(), server.getId());
         }
         return serverGroup;
-    }
-
-    private void updateLibvirtEngine(MinionServer minion) {
-        VirtualInstanceManager.updateHostVirtualInstance(minion,
-                VirtualInstanceFactory.getInstance().getFullyVirtType());
-        virtManager.updateLibvirtEngine(minion);
     }
 }
