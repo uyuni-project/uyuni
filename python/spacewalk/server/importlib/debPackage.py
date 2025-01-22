@@ -29,7 +29,15 @@ from spacewalk.server.importlib.backendLib import gmtime, localtime
 class debBinaryPackage(headerSource.rpmBinaryPackage):
     # pylint: disable-next=dangerous-default-value
     def __init__(
-        self, header, size, checksum_type, checksum, path=None, org_id=None, channels=[]
+        self,
+        header,
+        size,
+        checksum_type,
+        checksum,
+        path=None,
+        org_id=None,
+        channels=[],
+        remote_path=None,
     ):
         headerSource.rpmBinaryPackage.__init__(self)
 
@@ -70,6 +78,7 @@ class debBinaryPackage(headerSource.rpmBinaryPackage):
         self["checksum_type"] = checksum_type
         self["checksum"] = checksum
         self["path"] = path
+        self["remote_path"] = remote_path
         self["org_id"] = org_id
         self["header_start"] = None
         self["header_end"] = None
