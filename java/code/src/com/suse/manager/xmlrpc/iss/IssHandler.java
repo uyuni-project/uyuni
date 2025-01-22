@@ -18,6 +18,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.IssRole;
@@ -212,6 +213,10 @@ public class IssHandler extends BaseHandler {
             LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
             throw new TokenExchangeFailedException(ex);
         }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
+            throw new TokenExchangeFailedException(ex);
+        }
 
         return 1;
     }
@@ -286,6 +291,10 @@ public class IssHandler extends BaseHandler {
         }
         catch (IOException ex) {
             LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
+            throw new TokenExchangeFailedException(ex);
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
             throw new TokenExchangeFailedException(ex);
         }
 
