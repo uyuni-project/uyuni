@@ -31,7 +31,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -215,7 +214,7 @@ public class ServerGroupManager implements Serializable {
                                                                 user.getOrg());
         SaltStateGeneratorService.INSTANCE.createServerGroup(sg);
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-            sg.getAssociatedAdminsFor(user).add((UserImpl) user);
+            sg.getAssociatedAdminsFor(user).add(user);
             ServerGroupFactory.save(sg);
             UserFactory.save(user);
         }

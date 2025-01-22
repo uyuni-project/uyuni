@@ -88,7 +88,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
             query.setParameter("org", org.getId());
         }
         else {
-            query.setParameter("org",   -1);
+            query.setParameter("org", -1);
         }
 
         try {
@@ -96,9 +96,6 @@ public class ChannelFamilyFactory extends HibernateFactory {
         }
         catch (NoResultException e) {
             return null;
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error retrieving ChannelFamily", e);
         }
     }
 
@@ -241,18 +238,9 @@ public class ChannelFamilyFactory extends HibernateFactory {
             query.setParameter("org", org.getId());
         }
         else {
-            query.setParameter("org",   -1);
+            query.setParameter("org", -1);
         }
-
-        try {
-            return query.getResultList();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
-        catch (Exception e) {
-            throw new RuntimeException("Error retrieving ChannelFamily", e);
-        }
+        return query.getResultList();
     }
 
     /**

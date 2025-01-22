@@ -216,15 +216,13 @@ import javax.persistence.NoResultException;
      */
     public static List<SCCOrderItem> listOrderItemsByCredentials(ContentSyncSource source) {
         return source.getCredentials()
-            .map(credentials -> {
-                return  getSession().createNativeQuery("""
-                                      SELECT * from suseSCCOrderItem
-                                      WHERE credentials_id = :credentials
-                                      """, SCCOrderItem.class)
-                        .setParameter("credentials", credentials, StandardBasicTypes.LONG)
-                        .getResultList();
-            })
-            .orElse(Collections.emptyList());
+                .map(credentials -> getSession().createNativeQuery("""
+                                    SELECT * from suseSCCOrderItem
+                                    WHERE credentials_id = :credentials
+                                    """, SCCOrderItem.class)
+                            .setParameter("credentials", credentials, StandardBasicTypes.LONG)
+                            .getResultList())
+                .orElse(Collections.emptyList());
     }
 
     /**

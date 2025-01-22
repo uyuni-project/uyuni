@@ -426,24 +426,12 @@ public class TaskoFactory extends HibernateFactory {
      * @return the latest run or null if none exists
      */
     public static TaskoRun getLatestRun(String bunchName) {
-        String sql =
-                """
-                        SELECT tr.id, tr.created, tr.end_time, tr.modified, tr.org_id, tr.schedule_id, tr.start_time,
-                        tr.status, tr.template_id
-                        FROM rhnTaskoRun tr
-                        WHERE tr.template_id IN (
-                          SELECT tt.id
-                          FROM rhnTaskoTemplate tt
-                          WHERE tt.bunch_id = (
-                            SELECT tb.id
-                            FROM rhnTaskoBunch tb
-                            WHERE tb.name = :bunchName
-                          )
-                        )
-                        AND tr.status IN (:status1, :status2, :status3)
-                        ORDER BY tr.start_time DESC, tr.id DESC
-                        LIMIT 1
-                        """;
+        String sql = """
+            SELECT tr.* FROM rhnTaskoRun tr WHERE tr.template_id IN
+            (SELECT tt.id FROM rhnTaskoTemplate tt WHERE tt.bunch_id =
+            (SELECT tb.id FROM rhnTaskoBunch tb WHERE tb.name = :bunchName))
+            AND tr.status IN (:status1, :status2, :status3) ORDER BY tr.start_time DESC, tr.id DESC LIMIT 1
+            """;
 
         // Create the native query
         Query<TaskoRun> query = getSession().createNativeQuery(sql, TaskoRun.class);
@@ -456,7 +444,7 @@ public class TaskoFactory extends HibernateFactory {
 
         // Execute the query and return the result (or null if no result is found)
         try {
-            return (TaskoRun) query.getSingleResult();
+            return query.getSingleResult();
         }
         catch (NoResultException e) {
             // Handle the case where no result is found

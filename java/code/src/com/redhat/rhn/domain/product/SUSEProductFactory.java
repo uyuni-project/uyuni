@@ -461,7 +461,7 @@ public class SUSEProductFactory extends HibernateFactory {
         sqlQuery.append(" ORDER BY name ASC, version ASC, release ASC, arch_type_id ASC");
 
         // Execute the query
-        Query query = getSession().createNativeQuery(sqlQuery.toString(), SUSEProduct.class)
+        Query<SUSEProduct> query = getSession().createNativeQuery(sqlQuery.toString(), SUSEProduct.class)
                 .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
                 .setParameter("arch", archTypeId, StandardBasicTypes.LONG);
         if (version != null) {
@@ -586,10 +586,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of product extension
      */
     public static List<SUSEProductExtension> findAllSUSEProductExtensions() {
-        Session session = getSession();
         return getSession().createNativeQuery("SELECT * from suseProductExtension", SUSEProductExtension.class)
                 .getResultList();
-
     }
 
     /**
@@ -734,7 +732,7 @@ public class SUSEProductFactory extends HibernateFactory {
         sqlQuery.append(" ORDER BY name ASC, version ASC, release ASC, arch_type_id ASC");
 
         // Execute the query
-        Query query = getSession().createNativeQuery(sqlQuery.toString(), InstalledProduct.class)
+        Query<InstalledProduct> query = getSession().createNativeQuery(sqlQuery.toString(), InstalledProduct.class)
                 .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
                 .setParameter("version", version.toLowerCase(), StandardBasicTypes.STRING)
                 .setParameter("release", release.toLowerCase(), StandardBasicTypes.STRING)

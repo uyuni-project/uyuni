@@ -112,7 +112,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     public PinnedSubscription lookupById(Long id) {
         String sql = "SELECT * FROM susePinnedSubscription WHERE id = :id";
-        return (PinnedSubscription) getSession()
+        return getSession()
                 .createNativeQuery(sql, PinnedSubscription.class).setParameter("id", id)
                 .getSingleResult();
     }
@@ -128,7 +128,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
 
         String sql = "SELECT * FROM susePinnedSubscription " +
                 "WHERE system_id = :systemId AND subscription_id = :subscriptionId";
-        return (PinnedSubscription) getSession()
+        return getSession()
                 .createNativeQuery(sql, PinnedSubscription.class)
                 .setParameter("systemId", systemId, StandardBasicTypes.LONG)
                 .setParameter("subscriptionId", subscriptionId, StandardBasicTypes.LONG)
