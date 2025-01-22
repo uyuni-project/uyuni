@@ -30,6 +30,8 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -67,6 +69,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -87,6 +90,66 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     private String originalServerSecret;
 
     private String originalFqdn;
+
+    static class MockTaskomaticApi extends TaskomaticApi {
+        private boolean invokeCalled;
+        private String invokeName;
+        private String invokeBunch;
+        private String invokeRootCaFilename;
+        private String invokeRootCaContent;
+
+        MockTaskomaticApi() {
+            resetTaskomaticCall();
+        }
+
+        public void resetTaskomaticCall() {
+            invokeCalled = false;
+            invokeName = "";
+            invokeBunch = "";
+            invokeRootCaFilename = "";
+            invokeRootCaContent = "";
+        }
+
+        public void testTaskoRootCaCertUpdateCall(String expectedRootCaFilename,
+                                                  String expectedRootCaContent) {
+            assertTrue(invokeCalled);
+            assertEquals("tasko.scheduleSingleSatBunchRun", invokeName);
+            assertEquals("root-ca-cert-update-bunch", invokeBunch);
+            assertEquals(expectedRootCaFilename, invokeRootCaFilename);
+            assertEquals(expectedRootCaContent, invokeRootCaContent);
+            resetTaskomaticCall();
+        }
+
+        public void testTaskoNoRootCaCertUpdateCall() {
+            assertFalse(invokeCalled);
+            assertEquals("", invokeName);
+            assertEquals("", invokeBunch);
+            assertEquals("", invokeRootCaFilename);
+            assertEquals("", invokeRootCaContent);
+            resetTaskomaticCall();
+        }
+
+        @Override
+        protected Object invoke(String name, Object... args) throws TaskomaticApiException {
+            invokeCalled = true;
+            invokeName = name;
+            invokeBunch = (String) args[0];
+            Map<String, Object> paramList = (Map<String, Object>) args[1];
+            Map<String, String> fileToCaCertMap = (Map<String, String>) paramList.get("filename_to_root_ca_cert_map");
+            Optional<Map.Entry<String, String>> firstKeyVal = fileToCaCertMap.entrySet().stream().findFirst();
+            if (firstKeyVal.isPresent()) {
+                invokeRootCaFilename = firstKeyVal.get().getKey();
+                invokeRootCaContent = firstKeyVal.get().getValue();
+            }
+            else {
+                invokeRootCaFilename = "";
+                invokeRootCaContent = "";
+            }
+            return null;
+        }
+    }
+
+    private MockTaskomaticApi mockTaskomaticApi;
 
     @BeforeEach
     @Override
@@ -110,7 +173,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hubFactory = new HubFactory();
         clientFactoryMock = mock(IssClientFactory.class);
 
-        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager());
+        mockTaskomaticApi = new MockTaskomaticApi();
+        hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi);
     }
 
     @AfterEach
@@ -315,7 +379,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canSaveHubAndPeripheralServers() {
+    public void canSaveHubAndPeripheralServers() throws TaskomaticApiException {
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data");
 
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
@@ -369,7 +433,37 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canGenerateSCCCredentials() {
+    public void canSaveRootCa() throws TaskomaticApiException {
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data");
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("hub_dummy.hub.fqdn_root_ca.pem",
+                "dummy-hub-certificate-data");
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "");
+        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null);
+        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
+                "dummy-periph-certificate-data");
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("peripheral_dummy.periph.fqdn_root_ca.pem",
+                "dummy-periph-certificate-data");
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "");
+        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null);
+        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+    }
+
+    @Test
+    public void canGenerateSCCCredentials() throws TaskomaticApiException {
         String peripheralFqdn = "dummy.peripheral.fqdn";
 
         IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
@@ -387,7 +481,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canStoreSCCCredentials() {
+    public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
         var hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null);
 
@@ -404,7 +498,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canRegisterPeripheralWithUserNameAndPassword()
-        throws TokenBuildingException, CertificateException, IOException, TokenParsingException {
+            throws TokenBuildingException, CertificateException, IOException, TokenParsingException,
+            TaskomaticApiException {
         IssExternalClient externalClient = mock(IssExternalClient.class);
         IssInternalClient internalClient = mock(IssInternalClient.class);
 
@@ -457,7 +552,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canRegisterHubWithUserNameAndPassword()
-        throws TokenBuildingException, CertificateException, IOException, TokenParsingException {
+            throws TokenBuildingException, CertificateException, IOException, TokenParsingException,
+            TaskomaticApiException {
         IssExternalClient externalClient = mock(IssExternalClient.class);
         IssInternalClient internalClient = mock(IssInternalClient.class);
 

@@ -10,10 +10,14 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
+import com.suse.utils.CertificateUtils;
+
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,22 +35,6 @@ public class RootCaCertUpdateTask extends RhnJavaJob {
         return "root-ca-cert-update";
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
-        Map<String, String> filenameToRootCaCertMap = getFilenameToRootCaCertMap(jobDataMap);
-
-        for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
-            String fileName = pair.getKey();
-            String rootCaCertContent = pair.getValue();
-
-            log.info("Filename: {} Content: {}", fileName, rootCaCertContent);
-        }
-    }
-
     private Map<String, String> getFilenameToRootCaCertMap(final JobDataMap jobDataMap) {
         Map<String, String> filenameToRootCaCertMap = new HashMap<>();
 
@@ -59,5 +47,50 @@ public class RootCaCertUpdateTask extends RhnJavaJob {
             }
         }
         return filenameToRootCaCertMap;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void execute(JobExecutionContext context) throws JobExecutionException {
+        final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
+        Map<String, String> filenameToRootCaCertMap = getFilenameToRootCaCertMap(jobDataMap);
+
+        for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
+            String fileName = pair.getKey();
+            String rootCaCertContent = pair.getValue();
+
+            try {
+                saveCertificate(fileName, rootCaCertContent);
+                log.info("CA certificate file: {} successfully written", fileName);
+            }
+            catch (IOException e) {
+                log.error("error when writing CA certificate file {}: {}", fileName, e);
+            }
+        }
+
+        if (!filenameToRootCaCertMap.isEmpty()) {
+            updateCaCertificates();
+        }
+    }
+
+    private void saveCertificate(String fileName, String rootCaCertContent) throws IOException {
+        String fullFileName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
+        try (FileWriter fw = new FileWriter(fullFileName, false)) {
+            fw.write(rootCaCertContent);
+        }
+    }
+
+    private void updateCaCertificates() throws JobExecutionException {
+        try {
+            String[] cmd = {"systemctl", "is-active", "--quiet", "ca-certificates.path"};
+            executeExtCmd(cmd);
+        }
+        catch (Exception e) {
+            log.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
+            String[] cmd = {"/usr/share/rhn/certs/update-ca-cert-trust.sh"};
+            executeExtCmd(cmd);
+        }
     }
 }
