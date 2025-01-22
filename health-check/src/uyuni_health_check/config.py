@@ -9,7 +9,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 CONFIG_DIR = os.path.join(BASE_DIR, "config")
 TEMPLATES_DIR = os.path.join(CONFIG_DIR, "templates")
 CONTAINERS_DIR = os.path.join(BASE_DIR, "containers")
-CONFIG_TOML_PATH = os.environ.get("HEALTH_CHECK_TOML", "config.toml")
+CONFIG_TOML_PATH = os.environ.get("HEALTH_CHECK_TOML", os.path.join(BASE_DIR, "config.toml"))
 
 def get_json_template_filepath(json_relative_path: str) -> str:
     return os.path.join(TEMPLATES_DIR, json_relative_path)
@@ -65,8 +65,7 @@ class ConfigLoader:
         self.parsed_config: dict[str, Any] = {}
         self.load_config()
 
-    def load_config(self, file_path=CONFIG_TOML_PATH):
-        conf_file = os.path.join(BASE_DIR, file_path)
+    def load_config(self, conf_file=CONFIG_TOML_PATH):
         if not os.path.exists(conf_file):
             raise ValueError(f"Config file does not exist: {conf_file}")
 
