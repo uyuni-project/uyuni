@@ -141,4 +141,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'payg-dimension-computation-
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'oval-data-sync-bunch', 'Generate OVAL data required to increase the accuracy of CVE audit queries.', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'root-ca-cert-update-bunch', 'Updates root ca certificates', null);
+
 commit;
