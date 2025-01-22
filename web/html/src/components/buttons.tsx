@@ -169,12 +169,8 @@ export class Button extends _ButtonBase<ButtonProps> {
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
-        {
-          <>
-            {this.renderIcon()}
-            {text}
-          </>
-        }
+        {this.renderIcon()}
+        {text}
       </button>
     );
   }
@@ -202,15 +198,14 @@ export class LinkButton extends _ButtonBase<LinkProps> {
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-            target: "_blank",
-            rel: "noopener noreferrer",
-          }
+          target: "_blank",
+          rel: "noopener noreferrer",
+        }
         : {
-            target: this.props.target,
-          };
+          target: this.props.target,
+        };
     return (
       <a
-        role="button"
         id={this.props.id}
         title={this.props.title}
         className={cssClasses}
@@ -218,12 +213,8 @@ export class LinkButton extends _ButtonBase<LinkProps> {
         onClick={this.props.handler}
         {...targetProps}
       >
-        {
-          <>
-            {this.renderIcon()}
-            {text}
-          </>
-        }
+        {this.renderIcon()}
+        {text}
       </a>
     );
   }
