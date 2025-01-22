@@ -11,7 +11,14 @@
 
 package com.suse.manager.model.hub;
 
-public enum IssRole {
+import com.redhat.rhn.domain.Labeled;
+
+public enum IssRole implements Labeled {
     HUB,
-    PERIPHERAL
+    PERIPHERAL;
+
+    @Override
+    public String getLabel() {
+        return name().toLowerCase();
+    }
 }

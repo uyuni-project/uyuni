@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic;
 
 import static java.util.Collections.singletonList;
+import static java.util.Collections.singletonMap;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -76,7 +77,7 @@ public class TaskomaticApi {
 
     private XmlRpcClient getClient() throws TaskomaticApiException {
         try {
-           return  new XmlRpcClient(
+            return new XmlRpcClient(
                     ConfigDefaults.get().getTaskoServerUrl(), false);
         }
         catch (MalformedURLException e) {
@@ -84,7 +85,7 @@ public class TaskomaticApi {
         }
     }
 
-    protected Object invoke(String name, Object...args) throws TaskomaticApiException {
+    protected Object invoke(String name, Object... args) throws TaskomaticApiException {
         try {
             return getClient().invoke(name, args);
         }
@@ -95,6 +96,7 @@ public class TaskomaticApi {
 
     /**
      * Returns whether taskomatic is running
+     *
      * @return True if taskomatic is running
      */
     public boolean isRunning() {
@@ -109,7 +111,8 @@ public class TaskomaticApi {
 
     /**
      * Schedule a single ssh minion action.
-     * @param actionIn the action
+     *
+     * @param actionIn  the action
      * @param sshMinion the Salt ssh minion
      * @throws TaskomaticApiException if there was an error
      */
@@ -120,8 +123,9 @@ public class TaskomaticApi {
 
     /**
      * Schedule a single ssh minion action.
-     * @param actionIn the action
-     * @param sshMinion the Salt ssh minion
+     *
+     * @param actionIn                the action
+     * @param sshMinion               the Salt ssh minion
      * @param forcePackageListRefresh force package list refresh when set to true
      * @throws TaskomaticApiException if there was an error
      */
@@ -142,12 +146,13 @@ public class TaskomaticApi {
 
     /**
      * Schedule a single reposync
+     *
      * @param chan the channel
      * @param user the user
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleSingleRepoSync(Channel chan, User user)
-                                    throws TaskomaticApiException {
+            throws TaskomaticApiException {
         Map<String, Object> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
         invoke("tasko.scheduleSingleBunchRun", user.getOrg().getId(),
@@ -158,6 +163,7 @@ public class TaskomaticApi {
      * Schedule a single reposync for a given list of channels. This is scheduled from
      * within another taskomatic job, so we don't have a user here. We pass in the
      * satellite org to create the job label internally.
+     *
      * @param channels list of channels
      * @throws TaskomaticApiException if there was an error
      */
@@ -175,13 +181,14 @@ public class TaskomaticApi {
 
     /**
      * Schedule a single reposync
-     * @param chan the channel
-     * @param user the user
+     *
+     * @param chan   the channel
+     * @param user   the user
      * @param params parameters
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleSingleRepoSync(Channel chan, User user, Map<String, String> params)
-                                    throws TaskomaticApiException {
+            throws TaskomaticApiException {
 
         Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("channel_id", chan.getId().toString());
@@ -197,6 +204,7 @@ public class TaskomaticApi {
 
     /**
      * Schedule a recurring reposync
+     *
      * @param chan the channel
      * @param user the user
      * @param cron the cron format
@@ -204,7 +212,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleRepoSync(Channel chan, User user, String cron)
-                                        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
         Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
@@ -219,15 +227,16 @@ public class TaskomaticApi {
 
     /**
      * Schedule a recurring reposync
-     * @param chan the channel
-     * @param user the user
-     * @param cron the cron format
+     *
+     * @param chan   the channel
+     * @param user   the user
+     * @param cron   the cron format
      * @param params parameters
      * @return the Date?
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleRepoSync(Channel chan, User user, String cron,
-            Map<String, String> params) throws TaskomaticApiException {
+                                 Map<String, String> params) throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
 
         Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
@@ -244,21 +253,23 @@ public class TaskomaticApi {
 
     /**
      * Creates a new single satellite schedule
-     * @param user shall be sat admin
+     *
+     * @param user      shall be sat admin
      * @param bunchName bunch name
-     * @param params parameters for the bunch
+     * @param params    parameters for the bunch
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleSingleSatBunch(User user, String bunchName,
-            Map<String, String> params) throws TaskomaticApiException {
+                                       Map<String, String> params) throws TaskomaticApiException {
         ensureSatAdminRole(user);
         return (Date) invoke("tasko.scheduleSingleSatBunchRun", bunchName, params);
     }
 
-        /**
+    /**
      * Creates a new single gatherer schedule
-     * @param user shall be org admin
+     *
+     * @param user   shall be org admin
      * @param params parameters for the bunch
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
@@ -270,18 +281,20 @@ public class TaskomaticApi {
 
     /**
      * Validates user has sat admin role
+     *
      * @param user shall be sat admin
      * @throws PermissionException if there was an error
      */
     private void ensureSatAdminRole(User user) {
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
             ValidatorException.raiseException("satadmin.jsp.error.notsatadmin",
-                                user.getLogin());
+                    user.getLogin());
         }
     }
 
     /**
      * Validates user has org admin role
+     *
      * @param user shall be org admin
      * @throws PermissionException if there was an error
      */
@@ -293,6 +306,7 @@ public class TaskomaticApi {
 
     /**
      * Validates user has channel admin role
+     *
      * @param user shall be channel admin
      * @throws PermissionException if there was an error
      */
@@ -304,15 +318,16 @@ public class TaskomaticApi {
 
     /**
      * Creates a new schedule, unschedules, if en existing is defined
-     * @param user shall be sat admin
-     * @param jobLabel name of the schedule
+     *
+     * @param user      shall be sat admin
+     * @param jobLabel  name of the schedule
      * @param bunchName bunch name
-     * @param cron cron expression
+     * @param cron      cron expression
      * @return date of the first schedule
      * @throws TaskomaticApiException if there was an error
      */
     public Date scheduleSatBunch(User user, String jobLabel, String bunchName, String cron)
-    throws TaskomaticApiException {
+            throws TaskomaticApiException {
         ensureSatAdminRole(user);
         return doScheduleSatBunch(user, jobLabel, bunchName, cron);
     }
@@ -321,8 +336,8 @@ public class TaskomaticApi {
      * Schedule a recurring action
      *
      * @param action the {@link RecurringAction}
-     * @param user the scheduler user
-     * @throws PermissionException when given user does not have permissions for scheduling given action
+     * @param user   the scheduler user
+     * @throws PermissionException    when given user does not have permissions for scheduling given action
      * @throws TaskomaticApiException on Taskomatic error
      */
     public void scheduleRecurringAction(RecurringAction action, User user) throws TaskomaticApiException {
@@ -341,15 +356,15 @@ public class TaskomaticApi {
         if (task != null) {
             doUnscheduleSatTask(jobLabel);
         }
-        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel , cron, new HashMap<>());
+        return (Date) invoke("tasko.scheduleSatBunch", bunchName, jobLabel, cron, new HashMap<>());
     }
 
     /**
      * Unschedule a recurring action
      *
      * @param action the {@link RecurringAction}
-     * @param user the unscheduler user
-     * @throws PermissionException when given user does not have permissions for unscheduling given action
+     * @param user   the unscheduler user
+     * @throws PermissionException    when given user does not have permissions for unscheduling given action
      * @throws TaskomaticApiException on Taskomatic error
      */
     public void unscheduleRecurringAction(RecurringAction action, User user) throws TaskomaticApiException {
@@ -375,6 +390,7 @@ public class TaskomaticApi {
 
     /**
      * Unchedule a reposync task
+     *
      * @param chan the channel
      * @param user the user
      * @throws TaskomaticApiException if there was an error
@@ -388,25 +404,27 @@ public class TaskomaticApi {
     }
 
     private void unscheduleRepoTask(String jobLabel, User user)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         ensureChannelAdminRole(user);
         invoke("tasko.unscheduleBunch", user.getOrg().getId(), jobLabel);
     }
 
     /**
      * unschedule satellite task
+     *
      * @param jobLabel schedule name
-     * @param user shall be satellite admin
+     * @param user     shall be satellite admin
      * @throws TaskomaticApiException if there was an error
      */
     public void unscheduleSatTask(String jobLabel, User user)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         ensureSatAdminRole(user);
         invoke("tasko.unscheduleSatBunches", singletonList(jobLabel));
     }
 
     /**
      * Return list of active schedules
+     *
      * @param user shall be sat admin
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
@@ -418,7 +436,8 @@ public class TaskomaticApi {
 
     /**
      * Return list of bunch runs
-     * @param user shall be sat admin
+     *
+     * @param user      shall be sat admin
      * @param bunchName name of the bunch
      * @return list of schedules
      * @throws TaskomaticApiException if there was an error
@@ -430,56 +449,58 @@ public class TaskomaticApi {
 
     @SuppressWarnings("unchecked")
     private Map<String, Object> findScheduleByBunchAndLabel(String bunchName, String jobLabel, User user)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSchedulesByBunch",
                 user.getOrg().getId(), bunchName);
         for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return schedule;
             }
-         }
+        }
         return null;
     }
 
     private Map<String, Object> findSatScheduleByBunchAndLabel(String bunchName, String jobLabel,
-            User user) throws TaskomaticApiException {
+                                                               User user) throws TaskomaticApiException {
         List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedulesByBunch",
                 bunchName);
         for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return schedule;
             }
-         }
+        }
         return null;
     }
 
     /**
      * Check whether there's an active schedule of given job label
+     *
      * @param jobLabel job label
-     * @param user the user
+     * @param user     the user
      * @return true, if schedule exists
      * @throws TaskomaticApiException if there was an error
      */
     public boolean satScheduleActive(String jobLabel, User user)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         List<Map<String, Object>> schedules = (List<Map<String, Object>>) invoke("tasko.listActiveSatSchedules");
         for (Map<String, Object> schedule : schedules) {
             if (schedule.get("job_label").equals(jobLabel)) {
                 return Boolean.TRUE;
             }
-         }
+        }
         return Boolean.FALSE;
     }
 
     /**
      * Get the cron format for a single channel
+     *
      * @param chan the channel
      * @param user the user
      * @return the Cron format
      * @throws TaskomaticApiException if there was an error
      */
     public String getRepoSyncSchedule(Channel chan, User user)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         String jobLabel = createRepoSyncScheduleName(chan, user);
         Map<String, Object> task = findScheduleByBunchAndLabel("repo-sync-bunch", jobLabel, user);
         if (task == null) {
@@ -490,6 +511,7 @@ public class TaskomaticApi {
 
     /**
      * Return list of available bunches
+     *
      * @param user shall be sat admin
      * @return list of bunches
      * @throws TaskomaticApiException if there was an error
@@ -501,43 +523,47 @@ public class TaskomaticApi {
 
     /**
      * looks up schedule according to id
-     * @param user shall be sat admin
+     *
+     * @param user       shall be sat admin
      * @param scheduleId schedule id
      * @return schedule
      * @throws TaskomaticApiException if there was an error
      */
     public Map<String, Object> lookupScheduleById(User user, Long scheduleId)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         return (Map<String, Object>) invoke("tasko.lookupScheduleById", scheduleId);
     }
 
     /**
      * looks up schedule according to label
-     * @param user shall be sat admin
-     * @param bunchName bunch name
+     *
+     * @param user          shall be sat admin
+     * @param bunchName     bunch name
      * @param scheduleLabel schedule label
      * @return schedule
      * @throws TaskomaticApiException if there was an error
      */
     public Map<String, Object> lookupScheduleByBunchAndLabel(User user, String bunchName,
-            String scheduleLabel) throws TaskomaticApiException {
+                                                             String scheduleLabel) throws TaskomaticApiException {
         return findSatScheduleByBunchAndLabel(bunchName, scheduleLabel, user);
     }
 
     /**
      * looks up bunch according to name
-     * @param user shall be sat admin
+     *
+     * @param user      shall be sat admin
      * @param bunchName bunch name
      * @return bunch
      * @throws TaskomaticApiException if there was an error
      */
     public Map<String, Object> lookupBunchByName(User user, String bunchName)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         return (Map<String, Object>) invoke("tasko.lookupBunchByName", bunchName);
     }
 
     /**
      * List all reposync schedules within an organization
+     *
      * @param org organization
      * @return list of schedules
      */
@@ -554,6 +580,7 @@ public class TaskomaticApi {
 
     /**
      * unschedule all outdated repo-sync schedules within an org
+     *
      * @param orgIn organization
      * @return number of removed schedules
      * @throws TaskomaticApiException if there was an error
@@ -578,9 +605,9 @@ public class TaskomaticApi {
     /**
      * Schedule an Action execution for Salt minions.
      *
-     * @param action the action to be executed
+     * @param action                  the action to be executed
      * @param forcePackageListRefresh is a package list is requested
-     * @param checkIfMinionInvolved check if action involves minions
+     * @param checkIfMinionInvolved   check if action involves minions
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleActionExecution(Action action, boolean forcePackageListRefresh, boolean checkIfMinionInvolved)
@@ -599,10 +626,11 @@ public class TaskomaticApi {
         }
         scheduleMinionActionExecutions(singletonList(action), forcePackageListRefresh);
     }
+
     /**
      * Schedule Actions execution for Salt minions.
      *
-     * @param actions the list of actions to be executed
+     * @param actions                 the list of actions to be executed
      * @param forcePackageListRefresh is a package list is requested
      * @throws TaskomaticApiException if there was an error
      */
@@ -610,7 +638,7 @@ public class TaskomaticApi {
             throws TaskomaticApiException {
         List<Map<String, String>> paramsList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
-        for (Action action: actions) {
+        for (Action action : actions) {
             Map<String, String> params = new HashMap<>();
             String id = Long.toString(action.getId());
             params.put("action_id", id);
@@ -631,7 +659,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleActionChainExecution(ActionChain actionchain)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         if (!ActionChainFactory.isActionChainTargettingMinions(actionchain)) {
             return;
         }
@@ -649,13 +677,13 @@ public class TaskomaticApi {
     /**
      * Schedule a staging job for Salt minions.
      *
-     * @param actionId ID of the action to be executed
-     * @param minionId ID of the minion involved
+     * @param actionId        ID of the action to be executed
+     * @param minionId        ID of the minion involved
      * @param stagingDateTime scheduling time of staging
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleStagingJob(Long actionId, Long minionId, Date stagingDateTime)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         Map<String, String> params = new HashMap<>();
         params.put("action_id", Long.toString(actionId));
         params.put("staging_job", "true");
@@ -668,6 +696,7 @@ public class TaskomaticApi {
 
     /**
      * Schedule a staging job for Salt minions.
+     *
      * @param actionData Map containing mapping between action and minions data
      * @throws TaskomaticApiException if there was an error
      */
@@ -694,14 +723,14 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public void scheduleActionExecution(Action action)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
         scheduleActionExecution(action, false);
     }
 
     /**
      * Schedule an Action execution for Salt minions.
      *
-     * @param action the action to be executed
+     * @param action                  the action to be executed
      * @param forcePackageListRefresh is a package list is requested
      * @throws TaskomaticApiException if there was an error
      */
@@ -713,7 +742,7 @@ public class TaskomaticApi {
     /**
      * Schedule a channel subscription action.
      *
-     * @param user the user that schedules the action
+     * @param user   the user that schedules the action
      * @param action the action to schedule
      * @throws TaskomaticApiException if there was an error
      */
@@ -734,7 +763,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public void deleteScheduledActions(Map<Action, Set<Server>> actionMap)
-        throws TaskomaticApiException {
+            throws TaskomaticApiException {
 
         List<Action> actionsToBeUnscheduled = actionMap.entrySet().stream()
                 // select Actions that have no minions besides those in the specified set
@@ -772,6 +801,7 @@ public class TaskomaticApi {
 
     /**
      * Schedule a single reposync
+     *
      * @param sshdata the payg ssh connection data
      * @throws TaskomaticApiException if there was an error
      */
@@ -784,10 +814,48 @@ public class TaskomaticApi {
 
     /**
      * Check if the Taskomatic java process has JMX enabled.
+     *
      * @return true is JMX enabled
      * @throws TaskomaticApiException if there was an error
      */
     public boolean isJmxEnabled() throws TaskomaticApiException {
-        return (Boolean)invoke("tasko.isJmxEnabled");
+        return (Boolean) invoke("tasko.isJmxEnabled");
+    }
+
+    /**
+     * Schedule one root ca certificate update
+     *
+     * @param fileName          filename of the ca certificate
+     * @param rootCaCertContent root ca certificate actual content
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertUpdate(String fileName, String rootCaCertContent)
+            throws TaskomaticApiException {
+        scheduleSingleRootCaCertUpdate(singletonMap(fileName, rootCaCertContent));
+    }
+
+    /**
+     * Schedule multiple root ca certificates update.
+     *
+     * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
+            throws TaskomaticApiException {
+
+        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do: avoid invoke call, to spare a potential exception
+        }
+
+        //sanitise map keys and values: XmlRpc actual call does not like null strings
+        //(exception: Cannot invoke "Object.toString()" because "key" is null)
+        Map<String, String> sanitisedFilenameToRootCaCertMap = filenameToRootCaCertMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(p -> Objects.toString(p.getKey(), ""),
+                        p -> Objects.toString(p.getValue(), "")));
+
+        Map<String, Object> paramList = new HashMap<>();
+        paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
+        invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
     }
 }
