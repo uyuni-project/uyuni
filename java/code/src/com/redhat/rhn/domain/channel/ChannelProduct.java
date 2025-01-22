@@ -14,19 +14,18 @@
  */
 package com.redhat.rhn.domain.channel;
 
-import java.util.Date;
+import com.redhat.rhn.domain.BaseDomainHelper;
 
 /**
  * ChannelProduct - Class representation of the table rhnChannelProduct.
  */
-public class ChannelProduct {
+public class ChannelProduct extends BaseDomainHelper {
 
     private Long id;
     private String product;
     private String version;
     private String betaMarker;
-    private Date created;
-    private Date modified;
+
     /**
      * Getter for id
      * @return Long to get
@@ -112,37 +111,4 @@ public class ChannelProduct {
             this.setBetaMarker("N");
         }
     }
-
-    /**
-     * Getter for created
-     * @return Date to get
-    */
-    public Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Setter for created
-     * @param createdIn to set
-    */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * Getter for modified
-     * @return Date to get
-    */
-    public Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Setter for modified
-     * @param modifiedIn to set
-    */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
 }

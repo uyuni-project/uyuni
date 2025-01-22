@@ -16,13 +16,12 @@ package com.redhat.rhn.domain.channel;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "rhnChannelSyncFlag")
@@ -32,9 +31,8 @@ public class ChannelSyncFlag implements Serializable {
     @Column(name = "channel_id", nullable = false)
     private Long id;
 
-    @OneToOne(mappedBy = "channelSyncFlag")
-    @MapsId
-    @JoinColumn(name = "channel_id")
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private Channel channel;
 
     @Column(name = "no_strict", nullable = false)

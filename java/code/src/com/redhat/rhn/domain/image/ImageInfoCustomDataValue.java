@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.image;
 
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
@@ -22,25 +23,23 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * CustomDataValue
  */
 @Entity
 @Table(name = "suseImageCustomDataValue")
-public class ImageInfoCustomDataValue {
+public class ImageInfoCustomDataValue extends BaseDomainHelper {
 
     private Long id;
     private ImageInfo imageInfo;
@@ -48,8 +47,6 @@ public class ImageInfoCustomDataValue {
     private String value;
     private User creator;
     private User lastModifier;
-    private Date created;
-    private Date modified;
 
     /**
      * Instantiates a new image info custom data value.
@@ -121,20 +118,6 @@ public class ImageInfoCustomDataValue {
     public User getLastModifier() {
         return lastModifier;
     }
-    /**
-     * @return Returns the created.
-     */
-    @Column(insertable = false, updatable = false)
-    public Date getCreated() {
-        return created;
-    }
-    /**
-     * @return Returns the modified.
-     */
-    @Column(insertable = false, updatable = false)
-    public Date getModified() {
-        return modified;
-    }
 
     /**
      * @param idIn the id to set
@@ -171,18 +154,6 @@ public class ImageInfoCustomDataValue {
      */
     public void setLastModifier(User lastModifierIn) {
         this.lastModifier = lastModifierIn;
-    }
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**

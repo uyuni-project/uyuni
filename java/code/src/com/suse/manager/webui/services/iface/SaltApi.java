@@ -43,6 +43,7 @@ import com.suse.salt.netapi.results.SSHResult;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -54,7 +55,7 @@ import java.util.concurrent.CompletionStage;
 /**
  * Interface for interacting with salt.
  */
-public interface SaltApi {
+public interface SaltApi extends Serializable {
 
     /**
      * Sync the channels of a list of minions

@@ -12,7 +12,6 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.frontend.xmlrpc.contentmgmt;
 
 import static com.redhat.rhn.common.util.StringUtil.nullIfEmpty;
@@ -20,6 +19,7 @@ import static java.util.Optional.empty;
 import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
@@ -58,12 +58,19 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 /**
  * Content Management XMLRPC handler
  *
  * @apidoc.namespace contentmanagement
- * @apidoc.doc Provides methods to access and modify Content Lifecycle Management related entities
- * (Projects, Environments, Filters, Sources).
+ * @apidoc.doc Provides methods to access and modify Content Lifecycle
+ * Management related entities (Projects, Environments, Filters, Sources).
  */
 public class ContentManagementHandler extends BaseHandler {
 
@@ -78,7 +85,8 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Initialize a handler specifying a content manager instance. Mainly used for testing.
+     * Initialize a handler specifying a content manager instance. Mainly used
+     * for testing.
      *
      * @param contentManagerIn the content manager instance
      */
@@ -94,9 +102,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc List Content Projects visible to user
      * @apidoc.param #session_key()
-     * @apidoc.returntype
-     * #return_array_begin()
-     * $ContentProjectSerializer
+     * @apidoc.returntype #return_array_begin() $ContentProjectSerializer
      * #array_end()
      */
     @ReadOnly
@@ -109,12 +115,14 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Content Project label
-     * @throws EntityNotExistsFaultException when the Content Project does not exist
+     * @throws EntityNotExistsFaultException when the Content Project does not
+     * exist
      * @return the Content Project with given label
      *
      * @apidoc.doc Look up Content Project with given label
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
      * @apidoc.returntype $ContentProjectSerializer
      */
     @ReadOnly
@@ -136,15 +144,19 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc Create Content Project
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
      * @apidoc.param #param_desc("string", "name", "Content Project name")
-     * @apidoc.param #param_desc("string", "description", "Content Project description")
+     * @apidoc.param #param_desc("string", "description", "Content Project
+     * description")
      * @apidoc.returntype $ContentProjectSerializer
      */
-    public ContentProject createProject(User loggedInUser, String projectLabel, String name, String description) {
+    public ContentProject createProject(User loggedInUser, String projectLabel, String name,
+            String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.createProject(projectLabel, name, description, loggedInUser);
+            return contentManager.createProject(projectLabel, name, description,
+                    loggedInUser);
         }
         catch (EntityExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -166,21 +178,20 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc Update Content Project with given label
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param
-     *  #struct_begin("props")
-     *      #prop_desc("string", "name", "Content Project name")
-     *      #prop_desc("string", "description", "Content Project description")
-     *  #struct_end()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #struct_begin("props") #prop_desc("string", "name",
+     * "Content Project name") #prop_desc("string", "description", "Content
+     * Project description") #struct_end()
      * @apidoc.returntype $ContentProjectSerializer
      */
-    public ContentProject updateProject(User loggedInUser, String projectLabel, Map<String, Object> props) {
+    public ContentProject updateProject(User loggedInUser, String projectLabel,
+            Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
         try {
             return contentManager.updateProject(projectLabel,
                     ofNullable((String) props.get("name")),
-                    ofNullable((String) props.get("description")),
-                    loggedInUser);
+                    ofNullable((String) props.get("description")), loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -200,7 +211,8 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc Remove Content Project
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
      * @apidoc.returntype #return_int_success()
      */
     public int removeProject(User loggedInUser, String projectLabel) {
@@ -221,16 +233,17 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsFaultException when Project does not exist
      * @return the List of Content Environments with respect to their ordering
      *
-     * @apidoc.doc List Environments in a Content Project with the respect to their ordering
+     * @apidoc.doc List Environments in a Content Project with the respect to
+     * their ordering
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.returntype
-     * #return_array_begin()
-     * $ContentEnvironmentSerializer
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.returntype #return_array_begin() $ContentEnvironmentSerializer
      * #array_end()
      */
     @ReadOnly
-    public List<ContentEnvironment> listProjectEnvironments(User loggedInUser, String projectLabel) {
+    public List<ContentEnvironment> listProjectEnvironments(User loggedInUser,
+            String projectLabel) {
         try {
             return ContentManager.listProjectEnvironments(projectLabel, loggedInUser);
         }
@@ -240,7 +253,8 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Look up Content Environment based on Content Project and Content Environment label
+     * Look up Content Environment based on Content Project and Content
+     * Environment label
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Content Project label
@@ -248,14 +262,18 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityNotExistsException when Project does not exist
      * @return found Content Environment or null if no such environment exists
      *
-     * @apidoc.doc Look up Content Environment based on Content Project and Content Environment label
+     * @apidoc.doc Look up Content Environment based on Content Project and
+     * Content Environment label
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment
+     * label")
      * @apidoc.returntype $ContentEnvironmentSerializer
      */
     @ReadOnly
-    public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel, String envLabel) {
+    public ContentEnvironment lookupEnvironment(User loggedInUser, String projectLabel,
+            String envLabel) {
         try {
             return ContentManager.lookupEnvironment(envLabel, projectLabel, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException(envLabel));
@@ -266,7 +284,8 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Create a Content Environment and appends it behind given Content Environment
+     * Create a Content Environment and appends it behind given Content
+     * Environment
      *
      * @param loggedInUser the logged in user
      * @param projectLabel the Content Project label
@@ -274,26 +293,35 @@ public class ContentManagementHandler extends BaseHandler {
      * @param envLabel the Content Environment Label
      * @param name the Content Environment name
      * @param description the Content Environment description
-     * @throws EntityNotExistsFaultException when Project or predecessor Environment does not exist
-     * @throws EntityExistsFaultException when Environment with given parameters already exists
+     * @throws EntityNotExistsFaultException when Project or predecessor
+     * Environment does not exist
+     * @throws EntityExistsFaultException when Environment with given parameters
+     * already exists
      * @throws ValidationException if validation violation occurs
      * @return the created Content Environment
      *
-     * @apidoc.doc Create a Content Environment and appends it behind given Content Environment
+     * @apidoc.doc Create a Content Environment and appends it behind given
+     * Content Environment
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "predecessorLabel", "Predecessor Environment label")
-     * @apidoc.param #param_desc("string", "envLabel", "new Content Environment label")
-     * @apidoc.param #param_desc("string", "name", "new Content Environment name")
-     * @apidoc.param #param_desc("string", "description", "new Content Environment description")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "predecessorLabel", "Predecessor
+     * Environment label")
+     * @apidoc.param #param_desc("string", "envLabel", "new Content Environment
+     * label")
+     * @apidoc.param #param_desc("string", "name", "new Content Environment
+     * name")
+     * @apidoc.param #param_desc("string", "description", "new Content
+     * Environment description")
      * @apidoc.returntype $ContentEnvironmentSerializer
      */
-    public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel, String predecessorLabel,
-            String envLabel, String name, String description) {
+    public ContentEnvironment createEnvironment(User loggedInUser, String projectLabel,
+            String predecessorLabel, String envLabel, String name, String description) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.createEnvironment(projectLabel, ofNullable(nullIfEmpty(predecessorLabel)), envLabel,
-                    name, description, true, loggedInUser);
+            return contentManager.createEnvironment(projectLabel,
+                    ofNullable(nullIfEmpty(predecessorLabel)), envLabel, name, description,
+                    true, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -319,24 +347,22 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc Update Content Environment with given label
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
-     * @apidoc.param
-     *  #struct_begin("props")
-     *      #prop_desc("string", "name", "Content Environment name")
-     *      #prop_desc("string", "description", "Content Environment description")
-     *  #struct_end()
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment
+     * label")
+     * @apidoc.param #struct_begin("props") #prop_desc("string", "name",
+     * "Content Environment name") #prop_desc("string", "description", "Content
+     * Environment description") #struct_end()
      * @apidoc.returntype $ContentEnvironmentSerializer
      */
-    public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel, String envLabel,
-            Map<String, Object> props) {
+    public ContentEnvironment updateEnvironment(User loggedInUser, String projectLabel,
+            String envLabel, Map<String, Object> props) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.updateEnvironment(envLabel,
-                    projectLabel,
+            return contentManager.updateEnvironment(envLabel, projectLabel,
                     ofNullable((String) props.get("name")),
-                    ofNullable((String) props.get("description")),
-                    loggedInUser);
+                    ofNullable((String) props.get("description")), loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -357,8 +383,10 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc Remove a Content Environment
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "envLabel", "Content Environment label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "envLabel", "Content Environment
+     * label")
      * @apidoc.returntype #return_int_success()
      */
     public int removeEnvironment(User loggedInUser, String projectLabel, String envLabel) {
@@ -381,10 +409,9 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc List Content Project Sources
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.returntype
-     * #return_array_begin()
-     * $ContentProjectSourceSerializer
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.returntype #return_array_begin() $ContentProjectSourceSerializer
      * #array_end()
      */
     @ReadOnly
@@ -401,22 +428,27 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
-     * @throws EntityNotExistsFaultException if the Project or Project Source is not found
+     * @throws EntityNotExistsFaultException if the Project or Project Source is
+     * not found
      * @return list of Project Sources
      *
      * @apidoc.doc Look up Content Project Source
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type,
+     * e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source
+     * label")
      * @apidoc.returntype $ContentProjectSourceSerializer
      */
     @ReadOnly
-    public ProjectSource lookupSource(User loggedInUser, String projectLabel, String sourceType,
-            String sourceLabel) {
+    public ProjectSource lookupSource(User loggedInUser, String projectLabel,
+            String sourceType, String sourceLabel) {
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return ContentManager.lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser)
+            return ContentManager
+                    .lookupProjectSource(projectLabel, type, sourceLabel, loggedInUser)
                     .orElseThrow(() -> new EntityNotExistsFaultException(sourceLabel));
         }
         catch (EntityNotExistsException e) {
@@ -433,20 +465,26 @@ public class ContentManagementHandler extends BaseHandler {
      * @param sourceLabel the Source label (e.g. software channel label)
      * @param sourcePosition the Source position
      * @throws EntityExistsFaultException when Source already exists
-     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
+     * @throws EntityNotExistsFaultException when used entities don't exist or
+     * are not accessible
      * @return the created Source
      *
      * @apidoc.doc Attach a Source to a Project
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
-     * @apidoc.param #param_desc("int", "sourcePosition", "Project Source position")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type,
+     * e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source
+     * label")
+     * @apidoc.param #param_desc("int", "sourcePosition", "Project Source
+     * position")
      * @apidoc.returntype $ContentProjectSourceSerializer
      */
-    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
-            int sourcePosition) {
-        return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel, of(sourcePosition));
+    public ProjectSource attachSource(User loggedInUser, String projectLabel,
+            String sourceType, String sourceLabel, int sourcePosition) {
+        return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel,
+                of(sourcePosition));
     }
 
     /**
@@ -457,27 +495,33 @@ public class ContentManagementHandler extends BaseHandler {
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
      * @throws EntityExistsFaultException when Source already exists
-     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
+     * @throws EntityNotExistsFaultException when used entities don't exist or
+     * are not accessible
      * @return the created Source
      *
      * @apidoc.doc Attach a Source to a Project
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type,
+     * e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source
+     * label")
      * @apidoc.returntype $ContentProjectSourceSerializer
      */
-    public ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+    public ProjectSource attachSource(User loggedInUser, String projectLabel,
+            String sourceType, String sourceLabel) {
         return attachSource(loggedInUser, projectLabel, sourceType, sourceLabel, empty());
     }
 
     // helper method
-    private ProjectSource attachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel,
-            Optional<Integer> sourcePosition) {
+    private ProjectSource attachSource(User loggedInUser, String projectLabel,
+            String sourceType, String sourceLabel, Optional<Integer> sourcePosition) {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
-            return contentManager.attachSource(projectLabel, type, sourceLabel, sourcePosition, loggedInUser);
+            return contentManager.attachSource(projectLabel, type, sourceLabel,
+                    sourcePosition, loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e);
@@ -494,17 +538,22 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param sourceType the Source type (e.g. "software")
      * @param sourceLabel the Source label (e.g. software channel label)
-     * @throws EntityNotExistsFaultException when used entities don't exist or are not accessible
+     * @throws EntityNotExistsFaultException when used entities don't exist or
+     * are not accessible
      * @return 1 on success
      *
      * @apidoc.doc Detach a Source from a Project
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "projectLabel", "Content Project label")
-     * @apidoc.param #param_desc("string", "sourceType", "Project Source type, e.g. 'software'")
-     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source label")
+     * @apidoc.param #param_desc("string", "projectLabel", "Content Project
+     * label")
+     * @apidoc.param #param_desc("string", "sourceType", "Project Source type,
+     * e.g. 'software'")
+     * @apidoc.param #param_desc("string", "sourceLabel", "Project Source
+     * label")
      * @apidoc.returntype #return_int_success()
      */
-    public int detachSource(User loggedInUser, String projectLabel, String sourceType, String sourceLabel) {
+    public int detachSource(User loggedInUser, String projectLabel, String sourceType,
+            String sourceLabel) {
         ensureOrgAdmin(loggedInUser);
         Type type = Type.lookupByLabel(sourceType);
         try {
@@ -524,9 +573,7 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc List all Content Filters visible to given user
      * @apidoc.param #session_key()
-     * @apidoc.returntype
-     * #return_array_begin()
-     * $ContentFilterSerializer
+     * @apidoc.returntype #return_array_begin() $ContentFilterSerializer
      * #array_end()
      */
     @ReadOnly
@@ -561,14 +608,9 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.doc List of available filter criteria
      * @apidoc.param #session_key()
-     * @apidoc.returntype
-     * #return_array_begin()
-     * #struct_begin("Filter Criteria")
-     * #prop("string", "type")
-     * #prop("string", "matcher")
-     * #prop("string", "field")
-     * #struct_end()
-     * #array_end()
+     * @apidoc.returntype #return_array_begin() #struct_begin("Filter Criteria")
+     * #prop("string", "type") #prop("string", "matcher") #prop("string",
+     * "field") #struct_end() #array_end()
      */
     @ReadOnly
     public List<Map<String, String>> listFilterCriteria(User loggedInUser) {
@@ -590,31 +632,51 @@ public class ContentManagementHandler extends BaseHandler {
      *
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "name", "Filter name")
-     * @apidoc.param #param_desc("string", "rule", "Filter rule ('deny' or 'allow')")
-     * @apidoc.param #param_desc("string", "entityType", "Filter entityType ('package' or 'erratum')")
-     * @apidoc.param
-     *  #struct_begin("criteria")
-     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
-     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
-     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
-     *  #struct_end()
+     * @apidoc.param #param_desc("string", "rule", "Filter rule ('deny' or
+     * 'allow')")
+     * @apidoc.param #param_desc("string", "entityType", "Filter entityType
+     * ('package' or 'erratum')")
+     * @apidoc.param #struct_begin("criteria") #prop_desc("string", "matcher",
+     * "The matcher type of the filter (e.g. 'contains')") #prop_desc("string",
+     * "field", "The entity field to match (e.g. 'name'") #prop_desc("string",
+     * "value", "The field value to match (e.g. 'kernel')") #struct_end()
      * @apidoc.returntype $ContentFilterSerializer
      */
-    public ContentFilter createFilter(User loggedInUser, String name, String rule, String entityType,
-                                      Map<String, Object> criteria) {
+    public ContentFilter createFilter(User loggedInUser, String name, String rule,
+            String entityType, Map<String, Object> criteria) {
         ensureOrgAdmin(loggedInUser);
         ContentManager.lookupFilterByNameAndOrg(name, loggedInUser).ifPresent(cp -> {
             throw new EntityExistsFaultException(cp);
         });
 
         ContentFilter.Rule ruleObj = ContentFilter.Rule.lookupByLabel(rule);
-        ContentFilter.EntityType entityTypeObj = ContentFilter.EntityType.lookupByLabel(entityType);
-        FilterCriteria criteriaObj = createCriteria(criteria).orElseThrow(
-                () -> new InvalidArgsException("criteria must be specified")
-        );
+        ContentFilter.EntityType entityTypeObj =
+                ContentFilter.EntityType.lookupByLabel(entityType);
+
+        CriteriaBuilder cb = HibernateFactory.getSession().getCriteriaBuilder();
+
+        CriteriaQuery<FilterCriteria> cq = cb.createQuery(FilterCriteria.class);
+        Root<FilterCriteria> root = cq.from(FilterCriteria.class);
+
+        Predicate[] predicates = criteria.entrySet().stream()
+                .map(entry -> cb.equal(root.get(entry.getKey()), entry.getValue()))
+                .toArray(Predicate[]::new);
+
+        cq.where(predicates);
+
+        FilterCriteria criteriaObj;
+        try {
+            TypedQuery<FilterCriteria> query =
+                    HibernateFactory.getSession().createQuery(cq);
+            criteriaObj = query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            throw new InvalidArgsException("Criteria must be specified");
+        }
 
         try {
-            return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj, loggedInUser);
+            return contentManager.createFilter(name, ruleObj, entityTypeObj, criteriaObj,
+                    loggedInUser);
         }
         catch (IllegalArgumentException e) {
             throw new InvalidArgsException(e.getMessage());
@@ -622,7 +684,8 @@ public class ContentManagementHandler extends BaseHandler {
     }
 
     /**
-     * Create new {@link ContentFilter}s for all AppStream modules with default streams
+     * Create new {@link ContentFilter}s for all AppStream modules with default
+     * streams
      *
      * @param loggedInUser the logged in user
      * @param prefix the filter name prefix
@@ -631,27 +694,33 @@ public class ContentManagementHandler extends BaseHandler {
      * @throws EntityExistsFaultException when Filter already exist
      * @return List of created and successfully attached Filter
      *
-     * @apidoc.doc Create Filters for AppStream Modular Channel and attach them to CLM Project
+     * @apidoc.doc Create Filters for AppStream Modular Channel and attach them
+     * to CLM Project
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "prefix", "Filter name prefix")
-     * @apidoc.param #param_desc("string", "channelLabel", "Modular Channel label")
+     * @apidoc.param #param_desc("string", "channelLabel", "Modular Channel
+     * label")
      * @apidoc.param #param_desc("string", "projectLabel", "Project label")
-     * @apidoc.returntype #return_array_begin() $ContentFilterSerializer #array_end()
+     * @apidoc.returntype #return_array_begin() $ContentFilterSerializer
+     * #array_end()
      */
     public List<ContentFilter> createAppStreamFilters(User loggedInUser, String prefix,
-            String channelLabel, String projectLabel) throws ModulemdApiException {
+            String channelLabel, String projectLabel)
+        throws ModulemdApiException {
         ensureOrgAdmin(loggedInUser);
 
         try {
-            Channel channel = ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
+            Channel channel =
+                    ChannelManager.lookupByLabelAndUser(channelLabel, loggedInUser);
 
-            List<ContentFilter> createdFilters = filterTemplateManager.createAppStreamFilters(
-                    prefix, channel, loggedInUser);
+            List<ContentFilter> createdFilters = filterTemplateManager
+                    .createAppStreamFilters(prefix, channel, loggedInUser);
 
             List<ContentFilter> attachedFilters = new ArrayList<>();
 
             for (ContentFilter createdFilter : createdFilters) {
-                attachedFilters.add(contentManager.attachFilter(projectLabel, createdFilter.getId(), loggedInUser));
+                attachedFilters.add(contentManager.attachFilter(projectLabel,
+                        createdFilter.getId(), loggedInUser));
             }
 
             return attachedFilters;
@@ -680,34 +749,44 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("int", "filterId", "Filter ID")
      * @apidoc.param #param_desc("string", "name", "New filter name")
-     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or 'allow')")
-     * @apidoc.param
-     *  #struct_begin("criteria")
-     *      #prop_desc("string", "matcher", "The matcher type of the filter (e.g. 'contains')")
-     *      #prop_desc("string", "field", "The entity field to match (e.g. 'name'")
-     *      #prop_desc("string", "value", "The field value to match (e.g. 'kernel')")
-     *  #struct_end()
+     * @apidoc.param #param_desc("string", "rule", "New filter rule ('deny' or
+     * 'allow')")
+     * @apidoc.param #struct_begin("criteria") #prop_desc("string", "matcher",
+     * "The matcher type of the filter (e.g. 'contains')") #prop_desc("string",
+     * "field", "The entity field to match (e.g. 'name'") #prop_desc("string",
+     * "value", "The field value to match (e.g. 'kernel')") #struct_end()
      * @apidoc.returntype $ContentFilterSerializer
      */
-    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name, String rule,
-            Map<String, Object> criteria) {
+    public ContentFilter updateFilter(User loggedInUser, Integer filterId, String name,
+            String rule, Map<String, Object> criteria) {
         ensureOrgAdmin(loggedInUser);
 
-        Optional<ContentFilter.Rule> ruleObj;
-        if (rule.isEmpty()) {
-            ruleObj = empty();
+        Optional<ContentFilter.Rule> ruleObj =
+                rule == null || rule.isEmpty() ? Optional.empty() :
+                        Optional.of(ContentFilter.Rule.lookupByLabel(rule));
+
+        CriteriaBuilder cb = HibernateFactory.getSession().getCriteriaBuilder();
+        CriteriaQuery<FilterCriteria> cq = cb.createQuery(FilterCriteria.class);
+        Root<FilterCriteria> root = cq.from(FilterCriteria.class);
+
+        Predicate[] predicates = criteria.entrySet().stream()
+                .map(entry -> cb.equal(root.get(entry.getKey()), entry.getValue()))
+                .toArray(Predicate[]::new);
+
+        cq.where(predicates);
+
+        TypedQuery<FilterCriteria> query = HibernateFactory.getSession().createQuery(cq);
+        FilterCriteria filterCriteria;
+        try {
+            filterCriteria = query.getSingleResult();
         }
-        else {
-            ruleObj = Optional.of(ContentFilter.Rule.lookupByLabel(rule));
+        catch (NoResultException e) {
+            filterCriteria = null;
         }
-        Optional<FilterCriteria> criteriaObj = createCriteria(criteria);
 
         try {
-            return contentManager.updateFilter(
-                    filterId.longValue(),
-                    ofNullable(name),
-                    ruleObj,
-                    criteriaObj,
+            return contentManager.updateFilter(filterId.longValue(),
+                    Optional.ofNullable(name), ruleObj, Optional.ofNullable(filterCriteria),
                     loggedInUser);
         }
         catch (EntityNotExistsException e) {
@@ -766,13 +845,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.doc List all Filters associated with a Project
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "projectLabel", "Project label")
-     * @apidoc.returntype
-     * #return_array_begin()
-     * $ContentProjectFilterSerializer
+     * @apidoc.returntype #return_array_begin() $ContentProjectFilterSerializer
      * #array_end()
      */
     @ReadOnly
-    public List<ContentProjectFilter> listProjectFilters(User loggedInUser, String projectLabel) {
+    public List<ContentProjectFilter> listProjectFilters(User loggedInUser,
+            String projectLabel) {
         try {
             return lookupProject(loggedInUser, projectLabel).getProjectFilters();
         }
@@ -796,10 +874,12 @@ public class ContentManagementHandler extends BaseHandler {
      * @apidoc.param #param_desc("int", "filterId", "filter ID to attach")
      * @apidoc.returntype $ContentFilterSerializer
      */
-    public ContentFilter attachFilter(User loggedInUser, String projectLabel, Integer filterId) {
+    public ContentFilter attachFilter(User loggedInUser, String projectLabel,
+            Integer filterId) {
         ensureOrgAdmin(loggedInUser);
         try {
-            return contentManager.attachFilter(projectLabel, filterId.longValue(), loggedInUser);
+            return contentManager.attachFilter(projectLabel, filterId.longValue(),
+                    loggedInUser);
         }
         catch (EntityNotExistsException e) {
             throw new EntityExistsFaultException(e);
@@ -839,7 +919,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param loggedInUser the user
      * @param projectLabel the Project label
      * @throws EntityNotExistsFaultException when Project does not exist
-     * @throws ContentManagementFaultException on Content Management-related error
+     * @throws ContentManagementFaultException on Content Management-related
+     * error
      * @return 1 if successful
      *
      * @apidoc.doc Build a Project
@@ -870,13 +951,15 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param message the log message to be assigned to the build
      * @throws EntityNotExistsFaultException when Project does not exist
-     * @throws ContentManagementFaultException on Content Management-related error
+     * @throws ContentManagementFaultException on Content Management-related
+     * error
      * @return 1 if successful
      *
      * @apidoc.doc Build a Project
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "projectLabel", "Project label")
-     * @apidoc.param #param_desc("string", "message", "log message to be assigned to the build")
+     * @apidoc.param #param_desc("string", "message", "log message to be
+     * assigned to the build")
      * @apidoc.returntype #return_int_success()
      */
     public int buildProject(User loggedInUser, String projectLabel, String message) {
@@ -902,7 +985,8 @@ public class ContentManagementHandler extends BaseHandler {
      * @param projectLabel the Project label
      * @param envLabel the Environment label
      * @throws EntityNotExistsFaultException when Project does not exist
-     * @throws ContentManagementFaultException on Content Management-related error
+     * @throws ContentManagementFaultException on Content Management-related
+     * error
      * @return 1 if successful
      *
      * @apidoc.doc Promote an Environment in a Project
@@ -933,15 +1017,17 @@ public class ContentManagementHandler extends BaseHandler {
     /**
      * Validates a content project for build/promote
      *
-     * The validation fails only in case of an error. Info and warning messages are ignored since the build/promote
-     * operation can still be performed.
+     * The validation fails only in case of an error. Info and warning messages
+     * are ignored since the build/promote operation can still be performed.
      *
      * @param project the {@link ContentProject} instance
-     * @throws ContentValidationFaultException when validation fails with messages
+     * @throws ContentValidationFaultException when validation fails with
+     * messages
      */
-    private void validateContentProject(ContentProject project) throws ContentValidationFaultException {
-        ContentProjectValidator projectValidator = new ContentProjectValidator(project,
-                contentManager.getModulemdApi());
+    private void validateContentProject(ContentProject project)
+        throws ContentValidationFaultException {
+        ContentProjectValidator projectValidator =
+                new ContentProjectValidator(project, contentManager.getModulemdApi());
 
         // Join all error messages in a new line
         String validationError = projectValidator.validate().stream()

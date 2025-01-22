@@ -27,11 +27,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.LockMode;
+import org.hibernate.LockOptions;
 import org.hibernate.MappingException;
 import org.hibernate.Session;
-import org.hibernate.engine.spi.SessionImplementor;
-import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.query.Query;
 
 import java.io.ByteArrayOutputStream;
@@ -52,11 +50,10 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
-
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
  * storing Objects from the DB using Hibernate.
@@ -280,8 +277,7 @@ public abstract class HibernateFactory {
      * save() is to be called directly.
      */
     protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = HibernateFactory.getSession();
+        Session session = getSession();
         if (saveOrUpdate) {
             session.saveOrUpdate(toSave);
         }
@@ -460,7 +456,7 @@ public abstract class HibernateFactory {
         try {
             session = HibernateFactory.getSession();
 
-            retval = session.get(clazz, id, LockMode.UPGRADE);
+            retval = session.get(clazz, id, LockOptions.UPGRADE);
         }
         catch (MappingException me) {
             getLogger().error("Mapping not found for {}", clazz.getName(), me);
@@ -481,21 +477,8 @@ public abstract class HibernateFactory {
      * @param <T> the entity type
      */
     public static <T> T reload(T obj) throws HibernateException {
-        // assertNotNull(obj);
-        ClassMetadata cmd = connectionManager.getMetadata(obj);
-        Serializable id = cmd.getIdentifier(obj, (SessionImplementor) getSession());
-        Session session = getSession();
-        session.flush();
-        session.evict(obj);
-        /*
-         * In hibernate 3, the following doesn't work:
-         * session.load(obj.getClass(), id);
-         * load returns the proxy class instead of the persisted class, ie,
-         * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
-         * session.get is set to not return the proxy class, so that is what we'll use.
-         */
-        // assertNotSame(obj, result);
-        return (T) session.get(obj.getClass(), id);
+        // TODO
+        return null;
     }
 
     /**
@@ -572,8 +555,12 @@ public abstract class HibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
 
+        Session session = getSession();
+        if (session == null) {
+            return null;
+        }
+        return session.getLobHelper().createBlob(data);
     }
 
     /**

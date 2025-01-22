@@ -49,7 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 

@@ -23,7 +23,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             and s.action in (:actions_to_delete)
             and not exists
             (select 1 from KickstartSessionState ss
-                where ss.id = s.state and ss.label in ('failed', 'complete'))
+                where ss.id = s.state.id and ss.label in ('failed', 'complete'))
     ]]></query>
 
 </hibernate-mapping>

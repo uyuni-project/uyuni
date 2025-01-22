@@ -14,17 +14,16 @@
  */
 package com.redhat.rhn.domain.org;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
-
 /**
  * CustomDataKey
  */
-public class CustomDataKey {
+public class CustomDataKey extends BaseDomainHelper {
 
     private Long id;
     private Org org;
@@ -32,21 +31,7 @@ public class CustomDataKey {
     private String description;
     private User creator;
     private User lastModifier;
-    private Date created;
-    private Date modified;
 
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
     /**
      * @return Returns the creator.
      */
@@ -107,18 +92,7 @@ public class CustomDataKey {
     public void setLastModifier(User lastModifierIn) {
         this.lastModifier = lastModifierIn;
     }
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
+
     /**
      * @return Returns the org.
      */

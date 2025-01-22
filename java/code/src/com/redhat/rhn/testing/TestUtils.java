@@ -42,6 +42,7 @@ import org.apache.struts.action.ActionMessages;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -267,7 +268,7 @@ public class TestUtils {
     public static Object lookupFromCacheById(Long id, String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                        .setLong("id", id)
+                        .setParameter("id", id, StandardBasicTypes.LONG)
                         //Retrieve from cache if there
                         .setCacheable(true)
                         .uniqueResult();
@@ -284,7 +285,7 @@ public class TestUtils {
                                                 String queryname) {
         Session session = HibernateFactory.getSession();
         return session.getNamedQuery(queryname)
-                      .setString("label", label)
+                      .setParameter("label", label, StandardBasicTypes.STRING)
                       //Retrieve from cache if there
                       .setCacheable(true)
                       .uniqueResult();
@@ -367,7 +368,7 @@ public class TestUtils {
      */
     public static void saveAndFlush(Object obj) throws HibernateException {
         Session session = HibernateFactory.getSession();
-        session.save(obj);
+        session.saveOrUpdate(obj);
         session.flush();
     }
 
@@ -533,6 +534,19 @@ public class TestUtils {
      */
     public static <T> T saveAndReload(T o) {
         TestUtils.saveAndFlush(o);
+        return reload(o);
+    }
+
+    /**
+     * Merge an object from DB
+     * @param o to merge
+     * @param <T> type of object to merge
+     * @return Object fresh from DB
+     */
+    public static <T> T merge(T o) {
+        Session session = HibernateFactory.getSession();
+        session.merge(o);
+        session.flush();
         return reload(o);
     }
 

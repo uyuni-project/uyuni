@@ -14,22 +14,20 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import java.util.Date;
 
 /**
  *
  * ProductName
  */
-public class ProductName {
+public class ProductName extends BaseDomainHelper {
     private Long id;
     private String label;
     private String name;
-    private Date created;
-    private Date modified;
 
     /**
      * @return the id
@@ -74,33 +72,6 @@ public class ProductName {
         this.name = nameIn;
     }
 
-    /**
-     * @return the created
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param date the created to set
-     */
-    public void setCreated(Date date) {
-        this.created = date;
-    }
-
-    /**
-     * @return the modified
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param date the modified to set
-     */
-    public void setModified(Date date) {
-        this.modified = date;
-    }
     /**
      *
      * {@inheritDoc}

@@ -372,7 +372,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
     </class>
     <query name="Action.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
+        <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org = :orgId]]>
     </query>
 
     <sql-query name="Action.getServerActionCountByStatus">
@@ -411,7 +411,7 @@ select {ra.*}
     <query name="Action.findByServerAndOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a
             left join fetch a.serverActions as sa
-            where org_id = :orgId and
+            where org = :orgId and
             sa.server = :server]]>
     </query>
 
@@ -447,7 +447,7 @@ select {ra.*}
     SELECT sa.server.id
         FROM ServerAction sa
         JOIN sa.server s
-        WHERE type(s) = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
+        WHERE type(s) = com.redhat.rhn.domain.server.MinionServer AND sa.id = :id
     ]]>
     </query>
     
@@ -457,7 +457,7 @@ select {ra.*}
             FROM ServerAction AS sa
                 JOIN sa.server AS s
             WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
-                AND action_id = :id
+                AND sa.id = :id
     ]]>
     </query>
 
@@ -475,7 +475,7 @@ select {ra.*}
                 JOIN sa.server AS s
                 JOIN s.contactMethod AS c
             WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
-                AND action_id = :id
+                AND sa.id = :id
                 AND sa.status IN (:allowedStatues)
     ]]>
     </query>

@@ -35,7 +35,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </class>
         <query name="ServerAction.findPendingActionsForServer">
            <![CDATA[from com.redhat.rhn.domain.action.server.ServerAction as sa where sa.server.id = :serverId and sa.parentAction.actionType.label = :label
-                        and status in ( 0, 1 )]]>
+                        and status.id in ( 0, 1 )]]>
         </query>
 
         <query name="ServerAction.findByServer">

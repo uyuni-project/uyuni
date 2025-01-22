@@ -78,10 +78,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.loginUc = :loginUc]]>
     </query>
    <query name="User.findByLoginAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.loginUc = :loginUc and org_id = :orgId]]>
+        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.loginUc = :loginUc and org = :orgId]]>
     </query>
     <query name="User.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.id = :uid and org_id = :orgId]]>
+        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.id = :uid and org = :orgId]]>
     </query>
     <query name="User.findByIds">
         <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u where u.id in (:userIds)]]>
@@ -92,7 +92,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </query>
 
     <query name="User.findAllUsersByOrg">
-        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u WHERE org_id = :org_id]]>
+        <![CDATA[from com.redhat.rhn.domain.user.legacy.UserImpl as u WHERE org = :org_id]]>
     </query>
 
     <query name="User.getAllUsers">

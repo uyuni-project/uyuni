@@ -175,7 +175,7 @@ public class MatcherJsonIO {
                 .flatMap(cf -> Stream.of("", "-ALPHA", "-BETA").map(s -> cf + s))
                 .collect(Collectors.toSet());
 
-        Stream<SystemJson> systems = ServerFactory.list(true, true).stream()
+        Stream<SystemJson> systems = ServerFactory.list().stream()
             .map(system -> {
                 Long cpus = system.getCpu() == null ? null : system.getCpu().getNrsocket();
                 Set<String> entitlements = system.getEntitlementLabels();
@@ -191,6 +191,7 @@ public class MatcherJsonIO {
                     // For now it is not worth the effort
                     cpus = system.getCpu() == null ? null : system.getCpu().getNrCPU();
                 }
+
                 Set<Long> productIds = productIdsForServer(system, needsEntitlements, entitlements)
                     .collect(Collectors.toSet());
                 return new SystemJson(

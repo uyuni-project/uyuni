@@ -154,7 +154,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
-import org.hibernate.type.IntegerType;
+import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -285,7 +285,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return (Integer) session.createSQLQuery("Select count(*) as cnt " +
                                                          "  from rhnSnapshot " +
                                                          " where server_id = " + sid)
-                                         .addScalar("cnt", IntegerType.INSTANCE)
+                                         .addScalar("cnt", StandardBasicTypes.INTEGER)
                                          .uniqueResult();
     }
 

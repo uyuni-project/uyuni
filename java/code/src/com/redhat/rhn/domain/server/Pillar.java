@@ -18,29 +18,27 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import com.vladmihalcea.hibernate.type.json.JsonType;
-
 import org.hibernate.annotations.Type;
-import org.hibernate.annotations.TypeDef;
-import org.hibernate.annotations.TypeDefs;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 
 /**
  * Pillar - Class representation of the table suseSaltPillars entries
@@ -48,12 +46,9 @@ import javax.persistence.criteria.Root;
  * https://github.com/uyuni-project/uyuni-rfc/pull/51
  */
 
-@TypeDefs({
-        @TypeDef(name = "json", typeClass = JsonType.class)
-})
 @Entity
 @Table(name = "suseSaltPillar")
-public class Pillar implements Identifiable {
+public class Pillar implements Identifiable, Serializable {
 
     @Id
     @GeneratedValue(generator = "pillar_seq")
@@ -76,7 +71,7 @@ public class Pillar implements Identifiable {
     @Column(name = "category")
     private String category;
 
-    @Type(type = "json")
+    @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> pillar = new TreeMap<>();
 
