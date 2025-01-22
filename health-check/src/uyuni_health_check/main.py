@@ -1,7 +1,6 @@
 import click
 from rich.markdown import Markdown
 
-import uyuni_health_check.config
 from uyuni_health_check.grafana.grafana_manager import prepare_grafana
 from uyuni_health_check.utils import console, HealthException, run_command
 from uyuni_health_check.loki.loki_manager import (
