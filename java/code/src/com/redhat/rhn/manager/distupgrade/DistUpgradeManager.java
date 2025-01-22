@@ -810,15 +810,14 @@ public class DistUpgradeManager extends BaseManager {
             List<SUSEProduct> missingAddonSuccessors = installedProducts.orElse(new SUSEProductSet()).getAddonProducts()
                     .stream()
                     .filter(addon -> DistUpgradeManager.findMatch(addon, t.getAddonProducts()) == null)
-                    .toList();
-
+                    .collect(toList());
             if (missingAddonSuccessors.isEmpty()) {
                 logger.debug("Found valid migration target: {}", t);
                 migrationTargets.add(t);
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
-                        .toList();
+                        .collect(toList());
                 if (logger.isWarnEnabled()) {
                     String missingsString = String.join(", ", missing);
                     logger.warn("No migration target found for '{}'. Skipping", missingsString);
