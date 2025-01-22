@@ -17,6 +17,7 @@ dependencies = [
     "requests",
     "Jinja2",
     "PyYAML",
+    "tomli",
 ]
 maintainers = [
     {name = "Pablo Suárez Hernández", email = "psuarezhernandez@suse.com"},

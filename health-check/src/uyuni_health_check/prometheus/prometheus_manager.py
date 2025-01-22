@@ -1,4 +1,4 @@
-from uyuni_health_check.config_loader import ConfigLoader
+from uyuni_health_check.config import ConfigLoader
 from uyuni_health_check.containers.manager import (
     console,
     build_image,

@@ -1,11 +1,10 @@
-import subprocess
 import io
 import os
 import requests
 import zipfile
 import re
 import time
-import json
+from uyuni_health_check import config
 from uyuni_health_check.utils import HealthException, console
 from uyuni_health_check.containers.manager import (
     build_image,
@@ -21,7 +20,7 @@ PROMTAIL_TARGETS = 6
 LOKI_WAIT_TIMEOUT = 120
 
 
-def download_component_build_image(image, config, verbose=False):
+def download_component_build_image(image, verbose=False):
     console.log(f"Downloading and building {image} image...")
     if image_exists(image):
         console.log(f"[yellow]Skipped as the {image} image is already present")
@@ -29,7 +28,6 @@ def download_component_build_image(image, config, verbose=False):
 
     # Fetch the logcli binary from the latest release
     url = f"https://github.com/grafana/loki/releases/download/v3.3.0/{image}-linux-amd64.zip"
-    #    url = f"https://github.com/grafana/loki/releases/download/v2.8.6/{image}-linux-amd64.zip"
     dest_dir = config.load_dockerfile_dir(image)
     response = requests.get(url)
     zip = zipfile.ZipFile(io.BytesIO(response.content))
@@ -38,7 +36,7 @@ def download_component_build_image(image, config, verbose=False):
     console.log(f"[green]The {image} image was built successfully")
 
 
-def run_loki(supportconfig_path=None, config=None, verbose=False):
+def run_loki(supportconfig_path=None, verbose=False):
     """
     Run promtail and loki to aggregate the logs
     """
@@ -46,7 +44,7 @@ def run_loki(supportconfig_path=None, config=None, verbose=False):
         console.log("[yellow]Skipped as the loki container is already running")
     else:
         promtail_template = config.load_jinja_template("promtail/promtail.yaml.j2")
-        render_promtail_cfg(supportconfig_path, promtail_template, config)
+        render_promtail_cfg(supportconfig_path, promtail_template)
         loki_config_file_path = config.get_config_file_path("loki")
         promtail_config_file_path = config.get_config_file_path("promtail")
         podman(
@@ -69,7 +67,7 @@ def run_loki(supportconfig_path=None, config=None, verbose=False):
 
         # Run promtail only now since it pushes data to loki
         console.log("[bold]Building promtail image")
-        download_component_build_image("promtail", config=config, verbose=verbose)
+        download_component_build_image("promtail", verbose=verbose)
         podman_args = [
             "run",
             "--replace",
@@ -93,7 +91,7 @@ def run_loki(supportconfig_path=None, config=None, verbose=False):
         )
 
 
-def render_promtail_cfg(supportconfig_path=None, promtail_template=None, config=None):
+def render_promtail_cfg(supportconfig_path=None, promtail_template=None):
     """
     Render promtail configuration file
 
@@ -161,7 +159,7 @@ def wait_promtail_init():
         time.sleep(10)
     console.log("Promtail finished processing logs!")
 
-def wait_loki_init(config=None, verbose=False):
+def wait_loki_init(verbose=False):
     """
     Try to figure out when loki is ready to answer our requests.
     There are two things to wait for:
@@ -169,7 +167,6 @@ def wait_loki_init(config=None, verbose=False):
       - promtail to have read the logs and the loki ingester having handled them
     """
     metrics = None
-    timeouted = False
     request_message_bytes_sum = 0
     loki_ingester_chunk_entries_count = 0
     start_time = time.time()
@@ -194,8 +191,6 @@ def wait_loki_init(config=None, verbose=False):
         )
         or loki_ingester_chunk_entries_count == 0
         or not ready
-        and not timeouted
-        #or not all_labels_available(config=config)
     ):
         if verbose:
             console.log("Waiting for promtail metrics to be collected")
@@ -284,15 +279,5 @@ def wait_loki_init(config=None, verbose=False):
         console.print(request_message_bytes_sum)
         console.log("[bold]Loki and promtail are now ready to receive requests")
 
-
-def all_labels_available(config=None):
-
-    response = requests.get("http://localhost:3100/loki/api/v1/label/job/values")
-    r =json.loads(response.content.decode())
-    jobs = config.global_config['loki']['jobs']
-    for job in jobs.split(','):
-        if job not in r["data"]:
-            return False
-    return True
         
     

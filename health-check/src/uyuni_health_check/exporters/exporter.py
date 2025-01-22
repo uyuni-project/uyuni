@@ -1,6 +1,5 @@
-import os
-from jinja2 import Environment, FileSystemLoader
-from uyuni_health_check.utils import HealthException, console
+from uyuni_health_check import config
+from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
     image_exists,
     build_image,
@@ -9,7 +8,7 @@ from uyuni_health_check.containers.manager import (
 )
 
 
-def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
+def prepare_exporter(verbose=False, supportconfig_path=None):
     """
     Build the prometheus exporter image and deploy it on the server
 
@@ -18,11 +17,9 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
     exporter_name = "supportconfig-exporter"
     exporter_dir = config.load_dockerfile_dir("exporter")
     create_supportconfig_exporter_cfg(
-        config=config, supportconfig_path=supportconfig_path
+        supportconfig_path=supportconfig_path
     )
     exporter_config = config.get_config_file_path("exporter")
-    # config = get_supportconfig_exporter_cfg(supportconfig_path=supportconfig_path)
-
     exporter_sources = config.get_sources_dir("exporters")
 
     console.log(f"[bold]Building {exporter_name} image")
@@ -30,7 +27,6 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
         console.log(f"[yellow]Skipped as the {exporter_name} image is already present")
     else:
         build_image(f"{exporter_name}", exporter_dir, verbose=verbose)
-        # build_image(f"{exporter_name}", os.path.dirname(__file__), build_args=[f"config={config}"],verbose=verbose)
         console.log(f"[green]The {exporter_name} image was built successfully")
 
     # Run the container
@@ -72,8 +68,7 @@ def prepare_exporter(config=None, verbose=False, supportconfig_path=None):
     )
 
 
-def create_supportconfig_exporter_cfg(config=None, supportconfig_path=None):
+def create_supportconfig_exporter_cfg(supportconfig_path=None):
     exporter_template = config.load_jinja_template("exporter/exporter.yaml.j2")
     opts = {"supportconfig_path": supportconfig_path}
-    #exporter_config_file_path = config.get_config_file_path("exporter")
     config.write_config("exporter", "config.yaml", exporter_template.render(**opts))

@@ -1,19 +1,13 @@
-import uyuni_health_check.config_loader
 import click
 from rich.markdown import Markdown
 
+import uyuni_health_check.config
 from uyuni_health_check.grafana.grafana_manager import prepare_grafana
-from uyuni_health_check.prometheus.prometheus_manager import prepare_prometheus
-
 from uyuni_health_check.utils import console, HealthException, run_command
 from uyuni_health_check.loki.loki_manager import (
     run_loki,
     wait_promtail_init,
-    wait_loki_init,
-    download_component_build_image,
 )
-from uyuni_health_check.loki.logs_gatherer import show_full_error_logs, show_error_logs_stats
-from uyuni_health_check.config_loader import ConfigLoader
 from uyuni_health_check.exporters import exporter
 import uyuni_health_check.containers.manager
 import uyuni_health_check.metrics
@@ -34,12 +28,9 @@ import uyuni_health_check.metrics
 )
 @click.pass_context
 def cli(ctx, supportconfig_path, verbose):
-    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
-    # by means other than the `if` block below)
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
     ctx.obj["supportconfig_path"] = supportconfig_path
-    ctx.obj["config"] = ConfigLoader()
 
     try:
         console.log("[bold]Checking connection with podman:")
@@ -51,11 +42,6 @@ def cli(ctx, supportconfig_path, verbose):
 
 
 @cli.command()
-@click.option(
-    "--logs",
-    is_flag=True,
-    help="Show the error logs",
-)
 @click.option(
     "--since",
     default=7,
@@ -71,14 +57,13 @@ def cli(ctx, supportconfig_path, verbose):
     help="Stop looking for logs at this absolute time",
 )
 @click.pass_context
-def run(ctx: click.Context, logs: bool, from_datetime: str, to_datetime: str, since: int):
+def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     """
     Start execution of Uyuni Health Check
 
     Build the necessary containers, deploy them, get the metrics and display them
 
     """
-    config: uyuni_health_check.config_loader.ConfigLoader = ctx.obj["config"]
     verbose: bool = ctx.obj["verbose"]
     supportconfig_path: str | None = ctx.obj["supportconfig_path"]
 
@@ -94,26 +79,20 @@ def run(ctx: click.Context, logs: bool, from_datetime: str, to_datetime: str, si
             )
             uyuni_health_check.containers.manager.create_podman_network(verbose=verbose)
 
-            console.log("[bold]Building logcli image")
-            download_component_build_image("logcli", config=config, verbose=verbose)
-
             console.log("[bold]Deploying promtail and Loki")
             run_loki(
-                supportconfig_path=supportconfig_path, config=config, verbose=verbose
+                supportconfig_path=supportconfig_path, verbose=verbose
             )
             wait_promtail_init()
-            #wait_loki_init(config=config)
+            #wait_loki_init()
 
             console.log("[bold]Building exporter")
             exporter.prepare_exporter(
-                config=config, supportconfig_path=supportconfig_path
+                supportconfig_path=supportconfig_path
             )
 
-            # console.log("[bold]Preparing Prometheus")
-            # prepare_prometheus(verbose=verbose)
-
             console.log("[bold]Preparing Grafana")
-            prepare_grafana(from_datetime, to_datetime, verbose=verbose, config=config)
+            prepare_grafana(from_datetime, to_datetime, verbose=verbose)
 
         console.print(Markdown("# Execution Finished"))
 
@@ -123,14 +102,14 @@ def run(ctx: click.Context, logs: bool, from_datetime: str, to_datetime: str, si
 
 @cli.command()
 @click.pass_context
-def clean(ctx):
+def clean(ctx: click.Context):
     verbose = ctx.obj["verbose"]
     uyuni_health_check.containers.manager.clean_containers(verbose=verbose)
-    console.print(Markdown("# Execution Finished")) # TODO: Fix
+    console.print(Markdown("# Execution Finished"))
 
 
 def main():
-    print(Markdown("# Uyuni Health Check")) # TODO: Fix
+    console.print(Markdown("# Uyuni Health Check"))
     cli()
 
 
