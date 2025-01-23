@@ -75,7 +75,7 @@ export default () => {
           <Button title="Delete" className="btn-default" icon="fa-trash"></Button>
           <Button className="btn-primary" icon="fa-plus">Primary</Button>
           <Button className="btn-tertiary" icon="fa-plus">Tertiary</Button>
-          <Button className="btn-tertiary" icon="fa-plus"></Button>
+          <Button className="btn-tertiary" >Tertiary</Button>
         </StoryRow>
 
       </StripedStorySection>
@@ -171,10 +171,9 @@ export default () => {
           </BootstrapPanel>
         </div>
       </div>
-      <div className="row">
+      <div className="row mt-5">
         <div className="col-md-6">
-          <p>When grouping buttons aligned to the left, place the primary button at the far left, followed by the button for the next most important action.</p>
-          <p><strong>Example:</strong> Form</p>
+          <h5>Tertiary buttons Examples:</h5>
           <BootstrapPanel title="Forms" footer={listButtons}>
             <Text
               name="firstname"
@@ -183,14 +182,14 @@ export default () => {
               divClass="col-md-6"
             />
             <div className="form-group ">
-              <label className="control-label col-md-3 text-right">Name</label>
+              <label className="control-label col-md-3 text-right">Name:</label>
               <div className="col-md-6">
                 <input
                   className="form-control"
                   name="firstname"
                 />
               </div>
-              <div className="col-md-3">
+              <div className="col-md-3 ps-0">
                 <Button className="btn-tertiary" title="Delete" icon="fa-trash"></Button>
               </div>
 
