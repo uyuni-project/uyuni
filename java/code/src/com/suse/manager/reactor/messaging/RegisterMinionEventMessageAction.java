@@ -902,7 +902,12 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
     private Optional<MinionServer> migrateFromContainerProxy(String minionId, Optional<String> fqdn) {
         if (fqdn.isPresent()) {
-            Optional<Server> proxyServer = ServerFactory.findByFqdn(fqdn.get());
+            Optional<Server> proxyServer = ServerFactory.listByFqdn(fqdn.get())
+                    .stream()
+                    .filter(Server::isProxy)
+                    .filter(Server::isForeign)
+                    .findFirst();
+
             if (proxyServer.isPresent()) {
                 Server s = proxyServer.get();
                 if (s.asMinionServer().isEmpty()) {
