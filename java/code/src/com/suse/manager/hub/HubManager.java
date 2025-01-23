@@ -55,7 +55,7 @@ public class HubManager {
 
     private final IssClientFactory clientFactory;
 
-    private TaskomaticApi taskomaticApi = new TaskomaticApi();
+    private TaskomaticApi taskomaticApi;
 
     private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
 
@@ -63,7 +63,7 @@ public class HubManager {
      * Default constructor
      */
     public HubManager() {
-        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager());
+        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi());
     }
 
     /**
@@ -71,26 +71,13 @@ public class HubManager {
      * @param hubFactoryIn the hub factory
      * @param clientFactoryIn the ISS client factory
      * @param mirrorCredentialsManagerIn the mirror credentials manager
-     */
-    public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
-                      MirrorCredentialsManager mirrorCredentialsManagerIn) {
-        this.hubFactory = hubFactoryIn;
-        this.clientFactory = clientFactoryIn;
-        this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
-    }
-
-    /**
-     * Builds an instance with the given dependencies
-     * used to inject TaskomaticApi object for testing purposes
-     *
-     * @param hubFactoryIn               the hub factory
-     * @param clientFactoryIn            the ISS client factory
-     * @param mirrorCredentialsManagerIn the mirror credentials manager
-     * @param taskomaticApiIn            the TaskomaticApi object
+     * @param taskomaticApiIn the TaskomaticApi object
      */
     public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
                       MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn) {
-        this(hubFactoryIn, clientFactoryIn, mirrorCredentialsManagerIn);
+        this.hubFactory = hubFactoryIn;
+        this.clientFactory = clientFactoryIn;
+        this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
         this.taskomaticApi = taskomaticApiIn;
     }
 
@@ -369,17 +356,16 @@ public class HubManager {
     }
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA) throws TaskomaticApiException {
+        taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
                 hubFactory.save(hub);
-                taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
                 yield hub;
             }
             case PERIPHERAL -> {
                 IssPeripheral peripheral = new IssPeripheral(serverFqdn, rootCA);
                 hubFactory.save(peripheral);
-                taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
                 yield peripheral;
             }
         };

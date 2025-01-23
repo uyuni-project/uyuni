@@ -17,9 +17,8 @@ package com.redhat.rhn.taskomatic.task.payg;
 
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
+import com.redhat.rhn.taskomatic.task.RootCaCertUpdateTask;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -64,14 +63,8 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
             filenameToRootCaCertMap.put(caFileName, host.getSslCert());
         }
 
-        TaskomaticApi taskomaticApi = new TaskomaticApi();
-        try {
-            taskomaticApi.scheduleSingleRootCaCertUpdate(filenameToRootCaCertMap);
-        }
-        catch (TaskomaticApiException e) {
-            log.error(e.getMessage(), e);
-            throw new JobExecutionException(e);
-        }
+        RootCaCertUpdateTask a = new RootCaCertUpdateTask();
+        a.saveAndUpdateCaCertificates(filenameToRootCaCertMap);
     }
 
     private void updateHost(List<CloudRmtHost> hostToUpdate) {

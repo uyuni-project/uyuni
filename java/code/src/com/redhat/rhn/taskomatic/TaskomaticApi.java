@@ -836,7 +836,6 @@ public class TaskomaticApi {
 
     /**
      * Schedule multiple root ca certificates update.
-     * Filters out null certificates or the ones that have no content
      *
      * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
      * @throws TaskomaticApiException if there was an error
@@ -844,16 +843,19 @@ public class TaskomaticApi {
     public void scheduleSingleRootCaCertUpdate(Map<String, String> filenameToRootCaCertMap)
             throws TaskomaticApiException {
 
-        //filters out meaningless certificates
-        Map<String, String> realFilenameToRootCaCertMap = filenameToRootCaCertMap.entrySet()
-                .stream()
-                .filter(e -> StringUtils.isNotEmpty(e.getValue()))
-                .collect(Collectors.toMap(p -> p.getKey(), p -> p.getValue()));
-
-        if (!realFilenameToRootCaCertMap.isEmpty()) {
-            Map<String, Object> paramList = new HashMap<>();
-            paramList.put("filename_to_root_ca_cert_map", realFilenameToRootCaCertMap);
-            invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
+        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do: avoid invoke call, to spare a potential exception
         }
+
+        //sanitise map keys and values: XmlRpc actual call does not like null strings
+        //(exception: Cannot invoke "Object.toString()" because "key" is null)
+        Map<String, String> sanitisedFilenameToRootCaCertMap = filenameToRootCaCertMap.entrySet()
+                .stream()
+                .collect(Collectors.toMap(p -> Objects.toString(p.getKey(), ""),
+                        p -> Objects.toString(p.getValue(), "")));
+
+        Map<String, Object> paramList = new HashMap<>();
+        paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
+        invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
     }
 }

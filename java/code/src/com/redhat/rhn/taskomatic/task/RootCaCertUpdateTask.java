@@ -18,6 +18,8 @@ import org.quartz.JobExecutionException;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,27 +59,61 @@ public class RootCaCertUpdateTask extends RhnJavaJob {
         final JobDataMap jobDataMap = context.getJobDetail().getJobDataMap();
         Map<String, String> filenameToRootCaCertMap = getFilenameToRootCaCertMap(jobDataMap);
 
+        saveAndUpdateCaCertificates(filenameToRootCaCertMap);
+    }
+
+    /**
+     * Saves multiple root ca certificates, then updates trusted directory
+     * This is a public entry point for any other taskomatic task
+     * that needs to deal with ca certificates in the local filesystem
+     *
+     * @param filenameToRootCaCertMap maps filename to root ca certificate actual content
+     * @throws JobExecutionException if there was an error
+     */
+    public void saveAndUpdateCaCertificates(Map<String, String> filenameToRootCaCertMap) throws JobExecutionException {
+        if ((null == filenameToRootCaCertMap) || filenameToRootCaCertMap.isEmpty()) {
+            return; // nothing to do
+        }
+
         for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
             String fileName = pair.getKey();
             String rootCaCertContent = pair.getValue();
 
-            try {
-                saveCertificate(fileName, rootCaCertContent);
-                log.info("CA certificate file: {} successfully written", fileName);
+            if (fileName.isEmpty()) {
+                continue;
             }
-            catch (IOException e) {
-                log.error("error when writing CA certificate file {}: {}", fileName, e);
+
+            if (rootCaCertContent.isEmpty()) {
+                try {
+                    removeCertificate(fileName);
+                    log.info("CA certificate file: {} successfully removed", fileName);
+                }
+                catch (IOException e) {
+                    log.error("error when removing CA certificate file {}: {}", fileName, e);
+                }
+            }
+            else {
+                try {
+                    saveCertificate(fileName, rootCaCertContent);
+                    log.info("CA certificate file: {} successfully written", fileName);
+                }
+                catch (IOException e) {
+                    log.error("error when writing CA certificate file {}: {}", fileName, e);
+                }
             }
         }
 
-        if (!filenameToRootCaCertMap.isEmpty()) {
-            updateCaCertificates();
-        }
+        updateCaCertificates();
+    }
+
+    private void removeCertificate(String fileName) throws IOException {
+        String fullPathName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
+        Files.delete(Path.of(fullPathName));
     }
 
     private void saveCertificate(String fileName, String rootCaCertContent) throws IOException {
-        String fullFileName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
-        try (FileWriter fw = new FileWriter(fullFileName, false)) {
+        String fullPathName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
+        try (FileWriter fw = new FileWriter(fullPathName, false)) {
             fw.write(rootCaCertContent);
         }
     }

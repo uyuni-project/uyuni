@@ -106,8 +106,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             invokeCalled = false;
             invokeName = "";
             invokeBunch = "";
-            invokeRootCaFilename = "";
-            invokeRootCaContent = "";
+            invokeRootCaFilename = null;
+            invokeRootCaContent = null;
         }
 
         public void testTaskoRootCaCertUpdateCall(String expectedRootCaFilename,
@@ -142,8 +142,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 invokeRootCaContent = firstKeyVal.get().getValue();
             }
             else {
-                invokeRootCaFilename = "";
-                invokeRootCaContent = "";
+                invokeRootCaFilename = null;
+                invokeRootCaContent = null;
             }
             return null;
         }
@@ -441,11 +441,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "");
-        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("hub_dummy2.hub.fqdn_root_ca.pem", "");
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null);
-        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("hub_dummy3.hub.fqdn_root_ca.pem", "");
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
@@ -455,11 +455,13 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "");
-        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("peripheral_dummy2.periph.fqdn_root_ca.pem",
+                "");
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null);
-        mockTaskomaticApi.testTaskoNoRootCaCertUpdateCall();
+        mockTaskomaticApi.testTaskoRootCaCertUpdateCall("peripheral_dummy3.periph.fqdn_root_ca.pem",
+                "");
     }
 
     @Test
