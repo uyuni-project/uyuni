@@ -18,15 +18,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-17 14:51+0100\n"
-"PO-Revision-Date: 2020-09-01 09:07+0000\n"
-"Last-Translator: Adolfo Jayme Barrientos <fitoschido@gmail.com>\n"
+"PO-Revision-Date: 2025-01-23 14:54+0000\n"
+"Last-Translator: \"Marina J. Donis\" <marinajdonis@gmail.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/web/es/>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:461
 msgid "remaining"
@@ -43,9 +43,8 @@ msgstr ""
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:65
-#, fuzzy
 msgid "The action has been <link>scheduled</link>."
-msgstr "La acción se ha "
+msgstr "La acción se ha <link>programado</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
@@ -53,6 +52,8 @@ msgid ""
 "Unable to schedule action. Please check the server logs for detailed "
 "information."
 msgstr ""
+"No se puede programar la acción. Por favor revise los registros del servidor "
+"para obtener información detallada."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 #, fuzzy
@@ -70,14 +71,14 @@ msgstr "Confirmar eliminación"
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:447
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
-msgstr ""
+msgstr "Programación"
 
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
 #: ../html/src/components/package/PackageListActionScheduler.tsx:189
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:218
 msgid "Back to list"
-msgstr ""
+msgstr "Volver a la lista"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
@@ -99,36 +100,36 @@ msgstr ""
 "fórmula."
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Rellene los campos obligatorios: {0}"
+msgstr "Rellene los campos obligatorios: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:171
 msgid "Invalid format of fields: {fields}"
-msgstr ""
+msgstr "Formato inválido para los campos: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
 msgid ""
 "On this page you can configure Salt Formulas to automatically install and "
 "configure software."
 msgstr ""
+"En esta página puede configurar Fórmulas Salt para instalar y configurar "
+"software automáticamente."
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
-msgstr ""
+msgstr "Expandir todas las secciones"
 
 #: ../html/src/components/FormulaForm.tsx:275
 msgid "Collapse All Sections"
-msgstr ""
+msgstr "Colapsar todas las secciones"
 
 #: ../html/src/components/FormulaForm.tsx:340
-#, fuzzy
 msgid "Unnamed"
-msgstr "Nombre de usuario"
+msgstr "Sin nombre"
 
 #: ../html/src/components/FormulaForm.tsx:349
 msgid "Search by formula's group name"
-msgstr ""
+msgstr "Buscar por nombre de grupo de la fórmula"
 
 #: ../html/src/components/action-schedule.tsx:50
 msgid "new action chain"
