@@ -40,11 +40,8 @@ import shlex
 import sys
 import time
 import argparse
+from xmlrpc import client as xmlrpclib
 
-try:
-    from xmlrpc import client as xmlrpclib
-except ImportError:
-    import xmlrpclib
 from collections import deque
 from datetime import datetime, timedelta
 from difflib import unified_diff
@@ -53,10 +50,7 @@ from textwrap import wrap
 from subprocess import Popen, PIPE
 from dateutil.parser import isoparse
 
-try:
-    import json
-except ImportError:
-    import simplejson as json  # python < 2.6
+import json
 
 import rpm
 

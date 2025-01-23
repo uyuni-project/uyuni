@@ -52,7 +52,7 @@ except AttributeError:
 class UnknownCallException(Exception):
 
     def __init__(self):
-        Exception.__init__(self)
+        super().__init__(self)
 
 
 class SpacewalkShell(Cmd):
