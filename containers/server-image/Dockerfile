@@ -26,6 +26,11 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     ${EXTRAPACKAGES} \
     ${PRODUCT_PATTERN_PREFIX}_server \
     ${PRODUCT_PATTERN_PREFIX}_retail \
+    spacewalk-backend-sql-postgresql \
+    spacewalk-java-postgresql \
+    postgresql16-contrib \
+    postgresql16-server \
+    postgresql16 \
     billing-data-service \
     grub2-x86_64-efi \
     grub2-arm64-efi \
@@ -73,8 +78,6 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     sssd-ipa \
     sssd-krb5 \
     sssd-tools
-
-RUN sed -i 's/sysctl kernel.shmmax/#sysctl kernel.shmmax/g' /usr/bin/uyuni-setup-reportdb
 
 RUN mkdir -p /etc/postgres_exporter \
              /etc/prometheus-jmx_exporter/tomcat \

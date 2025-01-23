@@ -49,7 +49,6 @@ echo $PATH
 echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
-sysctl -w kernel.shmmax=18446744073709551615
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
 su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 
@@ -66,8 +65,9 @@ if [ -d /etc/sysconfig/rhn/postgres -a ! -e /usr/share/susemanager/db/postgres ]
 fi
 
 # this command will fail with certificate error. This is ok, so ignore the error
-spacewalk-setup --skip-initial-configuration --skip-system-version-test --skip-selinux-test --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt --external-postgresql --non-interactive ||:
+spacewalk-setup --skip-initial-configuration --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt ||:
 
+spacewalk-sql /usr/share/susemanager/db/postgres/main.sql
 
 # this copy the latest schema from the git into the system
 ./build-schema.sh

@@ -15,7 +15,6 @@
 - features/init_clients/sle_ssh_minion.feature
 - features/init_clients/min_rhlike_salt.feature
 - features/init_clients/min_deblike_salt.feature
-- features/init_clients/min_virthost.feature
 - features/init_clients/buildhost_bootstrap.feature
 
 ## Post run Core - Initialize clients END ##

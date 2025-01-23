@@ -23,37 +23,14 @@ if [ ! -n "$PRODUCT_NAME" ]; then
     PRODUCT_NAME="SUSE Manager"
 fi
 
-DISTRIBUTION_ID="$(source /etc/os-release && echo ${ID})"
-case ${DISTRIBUTION_ID} in
-    sles|suse-manager-server)
-        JVM='/usr/lib64/jvm/jre-17-openjdk/bin/java'
-        if [ ! -f $JVM ]; then
-            JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java'
-        fi;;
-    opensuse|opensuse-leap)
-        JVM='/usr/lib64/jvm/jre-17-openjdk/bin/java'
-        if [ ! -f $JVM ]; then
-            JVM='/usr/lib64/jvm/jre-11-openjdk/bin/java'
-        fi;;
-    *)                        echo 'Unknown distribution!'
-                              exit $EXIT_VALIDATION_ERROR;;
-esac
-
 if [ ! $UID -eq 0 ]; then
     echo "You need to be superuser (root) to run this script!"
     exit $EXIT_VALIDATION_ERROR
 fi
 
-# ensure correct java version is being used (bsc#1049575)
-echo "Asserting correct java version..."
-update-alternatives --set java ${JVM}
-if [ ! $? -eq 0 ]; then
-    echo "Failed to set ${JVM} as default java version!"
-    exit $EXIT_VALIDATION_ERROR
-fi
-
 if [[ -n "$TZ" ]]; then
-    timedatectl set-timezone $TZ
+    rm -f /etc/localtime
+    ln -s /usr/share/zoneinfo/$TZ /etc/localtime
 fi
 
 TMPDIR="/var/spacewalk/tmp"
@@ -62,7 +39,6 @@ SETUP_ENV="/root/setup_env.sh"
 MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
 
 LOCAL_DB=1
-DB_BACKEND="postgresql"
 
 function help() {
     echo "
@@ -83,15 +59,13 @@ ask_input() {
 
 setup_mail () {
     postconf -e myhostname=$HOSTNAME
-    # bsc#979664 - SUSE Manager requires a working mail system
-    systemctl --quiet enable postfix 2>&1
-    systemctl restart postfix
+    # No need to enable postfix: it already is
 }
 
 exists_db() {
     PGNAME=$1
     if [ $EXTERNALDB = 0 ]; then
-        EXISTS=$(runuser - postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
+        EXISTS=$(runuser postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
     else
         EXISTS=$(echo "select datname from pg_database where datname='$PGNAME';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
     fi
@@ -104,7 +78,7 @@ exists_db() {
 
 exists_user() {
     if [ $EXTERNALDB = 0 ] ; then
-        EXISTS=$($RUNUSER - postgres -c 'psql -t -c "select usename from pg_user where usename='"'$MANAGER_USER'"';"')
+        EXISTS=$(runuser postgres -c 'psql -t -c "select usename from pg_user where usename='"'$MANAGER_USER'"';"')
     else
         EXISTS=$(echo "select usename from pg_user where usename='$MANAGER_USER';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
     fi
@@ -115,54 +89,68 @@ exists_user() {
     fi
 }
 
+db_schema_exists() {
+    # Assumption, if web_customer table exists then schema exists:
+    if [ $EXTERNALDB = 0 ] ; then
+        EXISTS=$(runuser postgres -c 'psql -t -c "SELECT tablename from pg_tables where schemaname='"'public'"' and tablename='"'web_customer'"';"')
+    else
+        QUERY="SELECT tablename from pg_tables where schemaname='public' and tablename='web_customer';"
+        EXISTS=$(echo "$QUERY" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
+    fi
+    if [ "x$EXISTS" == "x web_customer" ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+db_clear() {
+    cat >/tmp/clear_schema.sql <<EOF
+drop schema if exists rpm cascade;
+drop schema if exists rhn_exception cascade;
+drop schema if exists rhn_config cascade;
+drop schema if exists rhn_server cascade;
+drop schema if exists rhn_entitlements cascade;
+drop schema if exists rhn_bel cascade;
+drop schema if exists rhn_cache cascade;
+drop schema if exists rhn_channel cascade;
+drop schema if exists rhn_config_channel cascade;
+drop schema if exists rhn_org cascade;
+drop schema if exists rhn_user cascade;
+drop schema if exists logging cascade ;'    
+EOF
+
+    if [[ -n $EXTERNALDB_PROVIDER && "${EXTERNALDB_PROVIDER,,}" == "aws" ]] ; then
+        echo "drop schema if exists public cascade; create schema public authorization postgres;" >>/tmp/clear_schema.sql
+    fi
+
+    if [ $EXTERNALDB = 0 ] ; then
+        PGPASSWORD=$MANAGER_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
+            runuser postgres -c "psql -U $MANAGER_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -v ON_STOP_ERROR=ON -q -b </tmp/clear_schema.sql"
+    else
+        PGPASSWORD=$EXTERNALDB_ADMIN_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
+            exec psql -U $EXTERNALDB_ADMIN_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -h $MANAGER_DB_HOST -v ON_STOP_ERROR=ON -q -b </tmp/clear_schema.sql
+    fi
+}
+
 setup_db_postgres() {
     if [ $EXTERNALDB = 0 ]; then
-        POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
+        POSTGRESQLSERVICE=postgresql
         DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
-        systemctl --quiet enable ${POSTGRESQLSERVICE} 2>&1
-        if [[ "echo $(source /etc/os-release && echo ${ID_LIKE})" != *"suse"* ]]; then
-            # Create the PostgreSQL data folder, should it not exist.
-            if [ ! -f $DATADIR/PG_VERSION ]; then
-                rm -Rf ${DATADIR}
-                POSTGRES_LANG=en_US.UTF-8
-
-                # Define LC_CTYPE in postgres user profile. (Used during any DB creation)
-                PGHOME=$(getent passwd postgres | awk -F: '{print $6}')
-                . $PGHOME/.i18n 2>/dev/null
-                if [ -z $LC_CTYPE ]; then
-                    grep "^LC_CTYPE" $PGHOME/.i18n > /dev/null 2>&1
-                    if [ $? = 0 ]; then
-                        sed -i -e "s/^LC_CTYPE.*$/LC_CTYPE=${POSTGRES_LANG}/" $PGHOME/.i18n
-                    else
-                        echo -e "LC_CTYPE=${POSTGRES_LANG}\nexport LC_CTYPE" >> $PGHOME/.i18n
-                    fi
-                fi
-
-                echo "Initializing PostgreSQL $VERSION at location ${DATADIR}"
-                # Redundant locale flag for clarity
-                runuser -l postgres -c "/usr/bin/initdb --locale=${POSTGRES_LANG} --auth=ident $DATADIR" &> initlog || {
-                    echo "Initialisation failed. See $PWD/initlog ."
-                    exit $EXIT_ERROR
-                }
-            fi
-        else
-            # Define POSTGRES_LANG in system wide config. (Used during any DB creation)
-            . /etc/sysconfig/postgresql
-            if [ -z $POSTGRES_LANG ]; then
-                grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
-                if [ $? = 0 ]; then
-                    sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
-                else
-                    echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
-                fi
+        systemctl enable postgresql.service
+        # Define POSTGRES_LANG in system wide config. (Used during any DB creation)
+        . /etc/sysconfig/postgresql
+        if [ -z $POSTGRES_LANG ]; then
+            grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
+            if [ $? = 0 ]; then
+                sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
+            else
+                echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
             fi
         fi
-        systemctl start ${POSTGRESQLSERVICE}
+        su postgres -c "/usr/share/postgresql/postgresql-script start"
         if ! exists_db $MANAGER_DB_NAME; then
-            # required for postgresql <= 13 before creating the user
-            echo "password_encryption = 'scram-sha-256'" >> ${DATADIR}/postgresql.conf
-            systemctl restart ${POSTGRESQLSERVICE}
-            su - postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
+            su postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
 
             INT_NET=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}')
             echo "local $MANAGER_DB_NAME postgres peer
@@ -175,7 +163,7 @@ setup_db_postgres() {
             mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf
             chmod 600 ${DATADIR}/pg_hba.conf
             chown postgres:postgres ${DATADIR}/pg_hba.conf
-            systemctl restart ${POSTGRESQLSERVICE}
+            su postgres -c "/usr/share/postgresql/postgresql-script reload"
         else
             echo "Database exists. Preparing for resetup. All data will be removed."
         fi
@@ -192,6 +180,20 @@ setup_db_postgres() {
                 echo "CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
             fi
         fi
+    fi
+
+    if db_schema_exists; then
+        echo "Clearing the database"
+        db_clear
+    fi
+
+    echo "Populating the database"
+    if [ $EXTERNALDB = 0 ] ; then
+        PGPASSWORD=$MANAGER_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
+            runuser postgres -c "psql -U $MANAGER_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -v ON_STOP_ERROR=ON -q -b </usr/share/susemanager/db/postgres/main.sql"
+    else
+        PGPASSWORD=$EXTERNALDB_ADMIN_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
+            exec psql -U $EXTERNALDB_ADMIN_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -h $MANAGER_DB_HOST -v ON_STOP_ERROR=ON -q -b </usr/share/susemanager/db/postgres/main.sql
     fi
 }
 
@@ -222,7 +224,7 @@ ssl-set-email = $CERT_EMAIL
 ssl-config-sslvhost = Y
 ssl-ca-cert-expiration = 10
 ssl-server-cert-expiration = 10
-db-backend=$DB_BACKEND
+db-backend=postgresql
 db-user=$MANAGER_USER
 db-password=$MANAGER_PASS
 db-name=$MANAGER_DB_NAME
@@ -272,9 +274,7 @@ scc-pass = $SCC_PASS
         fi
     fi
 
-    PARAM_DB="--external-postgresql"
-
-    /usr/bin/spacewalk-setup --non-interactive --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers $PARAM_DB
+    /usr/bin/spacewalk-setup --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers
     SWRET=$?
     if [ "x" = "x$MANAGER_MAIL_FROM" ]; then
         MANAGER_MAIL_FROM="$PRODUCT_NAME ($HOSTNAME) <root@$HOSTNAME>"
@@ -311,7 +311,6 @@ do_setup() {
         ask_input CERT_EMAIL
         ask_input CERT_PASS
         ask_input LOCAL_DB
-        ask_input DB_BACKEND
         ask_input MANAGER_DB_NAME
         ask_input MANAGER_DB_HOST
         ask_input MANAGER_DB_PORT
@@ -333,14 +332,8 @@ do_setup() {
         ask_input REPORT_DB_CA_CERT
         ask_input UYUNI_FQDN
     fi;
-    if [ -z "$SYS_DB_PASS" ]; then
-        SYS_DB_PASS=`dd if=/dev/urandom bs=16 count=4 2> /dev/null | md5sum | cut -b 1-8`
-    fi
     if [ -z "$MANAGER_DB_NAME" ]; then
         MANAGER_DB_NAME="susemanager"
-    fi
-    if [ -z "$DB_BACKEND" ]; then
-        DB_BACKEND="postgresql"
     fi
     if [ -z "$REPORT_DB_NAME" ]; then
         REPORT_DB_NAME="reportdb"
@@ -359,7 +352,7 @@ do_setup() {
     fi
 
     case $MANAGER_DB_HOST in
-        "localhost"|$(hostname -s)|$(hostname -f)|"")
+        "localhost"|"")
             EXTERNALDB=0 ;;
         *)
             EXTERNALDB=1 ;;
@@ -375,9 +368,7 @@ do_setup() {
     check_re_install
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_mail
-    if [ "$DB_BACKEND" = "postgresql" ]; then
-        setup_db_postgres
-    fi
+    setup_db_postgres
 
     setup_spacewalk
 
@@ -438,15 +429,8 @@ done
 do_setup
 
 if [ "$EXTERNALDB" = "0" ]; then
-    /usr/sbin/spacewalk-service stop
     /usr/bin/smdba system-check autotuning --max_connections=400
-
-    # Find PostgreSQL service name.
-    POSTGRESQLSERVICE=$(systemctl list-unit-files | grep -m 1 postgresql | cut -f1 -d. | tr -d '\n')
-    systemctl restart $POSTGRESQLSERVICE
 fi
-/usr/sbin/spacewalk-service start
 systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
-systemctl start spacewalk-diskcheck.timer
 
 # vim: set expandtab:

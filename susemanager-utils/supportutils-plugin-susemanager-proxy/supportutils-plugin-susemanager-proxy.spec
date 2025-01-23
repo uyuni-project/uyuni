@@ -27,7 +27,6 @@ Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 Requires:       spacewalk-proxy-common
 Requires:       supportutils
-Supplements:    packageand(spacewalk-proxy-installer:supportutils)
 BuildArch:      noarch
 
 %description

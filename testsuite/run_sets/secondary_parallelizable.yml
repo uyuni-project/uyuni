@@ -82,6 +82,4 @@
 - features/secondary/min_check_patches_install.feature
 - features/secondary/min_project_lotus.feature
 
-- features/secondary/minkvm_guests.feature
-
 ## Parallelizable Secondary features END ##

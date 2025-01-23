@@ -153,7 +153,7 @@ function showResponseErrorToastr(responseOrError: Error | JQueryXHR | JsonResult
   if (hasMessages(responseOrError)) {
     responseOrError.messages.flatMap((msg) => showErrorToastr(msg));
   } else {
-    responseErrorMessage(responseOrError).map((msg) => showErrorToastr(msg.text));
+    responseErrorMessage(responseOrError).forEach((msg) => showErrorToastr(msg.text));
   }
 }
 

@@ -732,28 +732,28 @@ end
 Then(/^service "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^service "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
 Then(/^socket "([^"]*)" is enabled on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-enabled '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not enabled" if output != 'enabled'
 end
 
 Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
-  output = output.split(/\n+/)[-1].delete("\r")
+  output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
@@ -1675,7 +1675,7 @@ When(/^I check all certificates after renaming the server hostname$/) do
 
   raise SystemCallError, 'Error getting server certificate serial!' unless result_code.zero?
 
-  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host kvm_server]
+  targets = %w[proxy sle_minion ssh_minion rhlike_minion deblike_minion build_host]
   targets.each do |target|
     os_family = get_target(target).os_family
     # get all defined minions from the environment variables and check their certificate serial

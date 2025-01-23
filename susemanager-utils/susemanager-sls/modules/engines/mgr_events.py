@@ -133,16 +133,6 @@ class Responder:
                     fnmatch.fnmatch(tag, "salt/minion/*/start"),
                     fnmatch.fnmatch(tag, "salt/job/*/ret/*"),
                     fnmatch.fnmatch(tag, "salt/beacon/*"),
-                    fnmatch.fnmatch(
-                        tag, "salt/engines/libvirt_events/*/domain/lifecycle"
-                    ),
-                    fnmatch.fnmatch(
-                        tag, "salt/engines/libvirt_events/*/pool/lifecycle"
-                    ),
-                    fnmatch.fnmatch(
-                        tag, "salt/engines/libvirt_events/*/network/lifecycle"
-                    ),
-                    fnmatch.fnmatch(tag, "salt/engines/libvirt_events/*/pool/refresh"),
                     fnmatch.fnmatch(tag, "salt/batch/*/start"),
                     fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
                     fnmatch.fnmatch(tag, "suse/manager/image_synced"),

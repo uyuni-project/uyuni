@@ -24,7 +24,6 @@ import com.redhat.rhn.manager.BaseManager;
 
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.utils.salt.custom.VmInfo;
-import com.suse.manager.webui.websocket.VirtNotifications;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -192,7 +191,6 @@ public class VirtualInstanceManager extends BaseManager {
         else {
             VirtualInstanceFactory.getInstance().deleteVirtualInstanceOnly(virtualInstance);
         }
-        VirtNotifications.spreadRefresh("guest");
     }
 
     /**
@@ -264,8 +262,6 @@ public class VirtualInstanceManager extends BaseManager {
 
             VirtualInstanceFactory.getInstance()
                     .saveVirtualInstance(virtualInstance);
-
-            VirtNotifications.spreadRefresh("guest");
         }
         else {
             log.warn("Preventing creation of a duplicated VirtualInstance for 'uuid': {}", vmGuid);
@@ -343,8 +339,6 @@ public class VirtualInstanceManager extends BaseManager {
         virtualInstance.setNumberOfCPUs(vCpus);
         virtualInstance.setTotalMemory(memory);
         VirtualInstanceFactory.getInstance().saveVirtualInstance(virtualInstance);
-
-        VirtNotifications.spreadRefresh("guest");
     }
 
     /**
