@@ -9,19 +9,14 @@
 #: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"POT-Creation-Date: 2025-01-23 15:55+0100\n"
 "PO-Revision-Date: 2025-01-16 03:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
-"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
-"zh_CN/>\n"
+"Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,9 +29,7 @@ msgid "remaining"
 msgstr "剩余"
 
 #: ../html/javascript/spacewalk-essentials.js:481
-msgid ""
-"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
-"Edge"
+msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome 或 Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
@@ -47,9 +40,7 @@ msgstr "操作已<link>安排</link>。"
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
-msgid ""
-"Unable to schedule action. Please check the server logs for detailed "
-"information."
+msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "无法安排操作执行时间。请查看服务器日志了解详细信息。"
 
 #: ../html/src/components/CoCoScansList.tsx:122
@@ -63,9 +54,6 @@ msgstr "确认认证执行"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
 msgstr "日程安排"
 
@@ -101,9 +89,7 @@ msgid "Invalid format of fields: {fields}"
 msgstr "字段格式无效：{fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
+msgid "On this page you can configure Salt Formulas to automatically install and configure software."
 msgstr "在此页上，可以配置 Salt 公式以自动安装和配置软件。"
 
 #: ../html/src/components/FormulaForm.tsx:268
@@ -127,13 +113,8 @@ msgid "new action chain"
 msgstr "新操作链"
 
 #: ../html/src/components/action-schedule.tsx:198
-msgid ""
-"There are multiple maintenance schedules for selected systems. Make sure "
-"that systems in the set use at most 1 maintenance schedule if you want to "
-"schedule by date or maintenance window."
-msgstr ""
-"选定的系统有多个维护日程安排。如果您想要按日期或维护时段安排日程，请确保集内"
-"的系统最多使用 1 个维护日程安排。"
+msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
+msgstr "选定的系统有多个维护日程安排。如果您想要按日期或维护时段安排日程，请确保集内的系统最多使用 1 个维护日程安排。"
 
 #: ../html/src/components/action-schedule.tsx:205
 msgid "No upcoming maintenance windows"
@@ -180,7 +161,6 @@ msgstr "认证 #{identifier} 于 {date} {time} 执行"
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "系统"
 
@@ -191,7 +171,7 @@ msgid "Environment Type"
 msgstr "环境类型"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "创建日期"
 
@@ -226,8 +206,6 @@ msgstr "认证时间"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:200
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "操作"
 
@@ -258,7 +236,7 @@ msgid "Last modified on"
 msgstr "上次修改日期"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 msgid "Action"
 msgstr "操作"
 
@@ -329,8 +307,6 @@ msgstr "选择日程安排"
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "不适用"
 
@@ -364,9 +340,7 @@ msgid "Are you sure you want to {action} {name}"
 msgstr "您确定要{action} {name} 吗"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-msgid ""
-"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
-"selected)"
+msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
 msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {name}）"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
@@ -386,8 +360,6 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
 msgstr "取消"
 
@@ -419,11 +391,6 @@ msgstr "取消"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "删除"
 
@@ -440,13 +407,8 @@ msgid " No group"
 msgstr " 无组"
 
 #: ../html/src/components/formula-selection.tsx:272
-msgid ""
-"On this page you can select Salt Formulas for this group/system, which can "
-"then be configured on group and system level. This allows you to "
-"automatically install and configure software."
-msgstr ""
-"在此页上，可为此组/系统选择 Salt 公式，然后可在组和系统级别配置 Salt 公式。这"
-"样您就可以自动安装和配置软件。"
+msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
+msgstr "在此页上，可为此组/系统选择 Salt 公式，然后可在组和系统级别配置 Salt 公式。这样您就可以自动安装和配置软件。"
 
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
@@ -460,7 +422,6 @@ msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "重设置"
 
@@ -508,8 +469,6 @@ msgstr "必填"
 #: ../html/src/components/input/range/Range.stories.tsx:24
 #: ../html/src/components/input/select/simple.stories.tsx:32
 #: ../html/src/components/input/text/Text.stories.tsx:38
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "提交"
 
@@ -554,13 +513,6 @@ msgstr "登录"
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "名称"
 
@@ -572,7 +524,6 @@ msgstr "名称"
 #: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "口令"
 
@@ -764,9 +715,7 @@ msgid "Monthly:"
 msgstr "每月："
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:468
-msgid ""
-"Days are limited to 28 to have a recurring schedule available for all the "
-"months"
+msgid "Days are limited to 28 to have a recurring schedule available for all the months"
 msgstr "天数限制为 28，使所有月份都可使用重复性日程安排"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
@@ -821,8 +770,6 @@ msgstr "配置通道：{name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "编辑"
 
@@ -843,8 +790,7 @@ msgid "Reboot state will be put last."
 msgstr "重引导状态将置于最后。"
 
 #: ../html/src/components/states-picker.tsx:132
-msgid ""
-"'Reboot system' and 'Reboot system if needed' states cannot be used together."
+msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
 msgstr "“重引导系统”和“根据需要重引导系统”状态不能一起使用。"
 
 #: ../html/src/components/states-picker.tsx:155
@@ -960,8 +906,7 @@ msgid "Assign"
 msgstr "指派"
 
 #: ../html/src/components/states-picker.tsx:513
-msgid ""
-"Select the systems to schedule for immediate state execution and confirm."
+msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "选择要安排为立即执行状态的系统并确认。"
 
 #: ../html/src/components/states-picker.tsx:523
@@ -1118,10 +1063,6 @@ msgstr "帮助"
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "正在装载..."
 
@@ -1187,9 +1128,7 @@ msgid "Enabling monitoring failed. See the server logs for details."
 msgstr "启用监视失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
-msgid ""
-"Failed to enable all monitoring services. Some services are still disabled. "
-"See the server logs for details."
+msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
 msgstr "无法启用所有监视服务。某些服务仍已禁用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
@@ -1197,9 +1136,7 @@ msgid "Disabling monitoring failed. See the server logs for details."
 msgstr "禁用监视失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
-msgid ""
-"Failed to disable all monitoring services. Some services are still enabled. "
-"See the server logs for details."
+msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
 msgstr "无法禁用所有监视服务。某些服务仍已已启用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
@@ -1211,25 +1148,19 @@ msgid "Monitoring disabled successfully."
 msgstr "已成功禁用监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
-msgid ""
-"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr "Tomcat Prometheus 导出器已启动，但 JMX 配置已禁用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:42
-msgid ""
-"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr "Tomcat Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:46
-msgid ""
-"The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
 msgstr "Taskomatic Prometheus 导出器已启动，但 JMX 配置已禁用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
-msgid ""
-"The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
 msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
@@ -1318,10 +1249,6 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "设置 SUSE Manager 服务器监视。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:219
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
 msgid "General"
 msgstr "常规"
 
@@ -1334,7 +1261,6 @@ msgid "Organizations"
 msgstr "组织"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "重启动"
 
@@ -1353,9 +1279,7 @@ msgid "Restarting"
 msgstr "重启动"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:406
-msgid ""
-" Tomcat and Taskomatic is needed for the configuration changes to take "
-"effect."
+msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr " 需有 Tomcat 和 Taskomatic 才能使配置更改生效。"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
@@ -1379,9 +1303,6 @@ msgstr "添加 PAYG SSH 数据"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
 msgid "Create"
 msgstr "创建"
 
@@ -1430,14 +1351,7 @@ msgstr "添加 PAYG 连接"
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
+msgid "Request interrupted or invalid response received from the server. Please try again."
 msgstr "请求已中断，或者从服务器收到了无效响应。请重试。"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
@@ -1467,8 +1381,7 @@ msgid "Editing ssh connection data.."
 msgstr "正在编辑 SSH 连接数据..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
-msgid ""
-"When editing the SSH connection all needed credentials must be re-provided."
+msgid "When editing the SSH connection all needed credentials must be re-provided."
 msgstr "编辑 SSH 连接时，必须重新提供所有需要的身份凭证。"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
@@ -1520,8 +1433,7 @@ msgstr "从 SUSE Customer Center 刷新产品目录"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:435
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Refresh"
 msgstr "刷新"
 
@@ -1539,11 +1451,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "操作不成功：服务器返回了空答复"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:159
-msgid ""
-"No SUSE Manager Server Subscription available. Products requiring Client "
-"Tools Channel will not be shown."
-msgstr ""
-"没有可用的 SUSE Manager Server 订阅。需要客户端工具通道的产品将不显示。"
+msgid "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+msgstr "没有可用的 SUSE Manager Server 订阅。需要客户端工具通道的产品将不显示。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:206
 msgid "The product catalog refresh is running..."
@@ -1558,9 +1467,7 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:337
-msgid ""
-"A refresh of the product data is currently running in the background. Please "
-"try again later."
+msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "当前正在后台运行产品数据刷新。请稍后重试。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:342
@@ -1585,26 +1492,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "列表中为何不显示所有产品？"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:428
-msgid ""
-"The products displayed on this list are directly linked to your Organization "
-"credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
+msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
+msgstr "此列表中显示的产品直接链接到您的组织身份凭证（镜像身份凭证）和 SUSE 订阅。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:433
-msgid ""
-"If you believe there are products missing, make sure you have added the "
-"correct Organization credentials in the previous wizard step."
-msgstr ""
-"如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
+msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
+msgstr "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:443
-msgid ""
-"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-"Products can only be managed on the ISS master."
-msgstr ""
-"此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
-"品。"
+msgid "This server is configured as an Inter-Server Synchronisation (ISS) slave. Products can only be managed on the ISS master."
+msgstr "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产品。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:541
 msgid "Filter by architecture"
@@ -1623,7 +1520,6 @@ msgstr "产品说明"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "体系结构"
 
@@ -1761,9 +1657,7 @@ msgid "Runtime Status"
 msgstr "运行时状态"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:185
-msgid ""
-"The server is running or has finished executing the following tasks during "
-"the latest 5 minutes."
+msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
 msgstr "在过去 5 分钟服务器正在运行或已完成执行以下任务。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:188
@@ -1778,7 +1672,6 @@ msgstr " 秒刷新"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "按名称过滤"
 
@@ -1813,13 +1706,13 @@ msgstr "目前没有任何任务在服务器上运行。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr "会话已失效，请重新装载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:557
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "服务器错误，请查看日志文件。"
@@ -1837,8 +1730,7 @@ msgid "AppStream {stream} has {count} packages:"
 msgstr "AppStream {stream} 包含 {count} 个软件包："
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
-msgid ""
-"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "<link>已安排</link>更新 AppStream 模块选择。"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
@@ -1848,9 +1740,7 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
-msgid ""
-"Please review the changes below before scheduling an action to apply the "
-"changes on the system."
+msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgstr "请先查看下面的更改，然后再安排执行某个操作以在系统上应用这些更改。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
@@ -1901,9 +1791,7 @@ msgid "Not affected"
 msgstr "不受影响"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
-msgid ""
-"The client is not affected because none of the known CVE vulnerable packages "
-"are installed."
+msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
 msgstr "该客户端不受影响，因为它未安装任何有已知 CVE 漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
@@ -1919,9 +1807,7 @@ msgid "Affected, patch is unavailable"
 msgstr "受影响，未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
-msgid ""
-"The client is affected by a vulnerability for which a patch has not yet been "
-"released."
+msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgstr "该客户端受到某个漏洞的影响，尚未针对该漏洞发布补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
@@ -1929,9 +1815,7 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid ""
-"The client is affected by a vulnerability for which a patch has been "
-"released,"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr "该客户端受到某个漏洞的影响，已针对该漏洞发布补丁，"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
@@ -1943,11 +1827,8 @@ msgid "Unknown, CVE metadata not available"
 msgstr "未知，无法获取 CVE 元数据"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-msgid ""
-"It is not possible to scan the client server for CVE vulnerabilities without "
-"channels or OVAL metadata."
-msgstr ""
-"如果没有通道或 OVAL 元数据，将无法扫描客户端或服务器是否存在 CVE 漏洞。"
+msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
+msgstr "如果没有通道或 OVAL 元数据，将无法扫描客户端或服务器是否存在 CVE 漏洞。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
@@ -2048,12 +1929,8 @@ msgid "Match data status"
 msgstr "匹配数据状态"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-msgid ""
-"Could not start a matching run. Please contact your SUSE Manager "
-"administrator to make sure the task scheduler is running."
-msgstr ""
-"无法启动匹配运行。请联系您的 SUSE Manager 管理员以确保任务日程安排程序正在运"
-"行。"
+msgid "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
+msgstr "无法启动匹配运行。请联系您的 SUSE Manager 管理员以确保任务日程安排程序正在运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -2064,21 +1941,15 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "您也可以单击以下按钮立即触发首次运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-msgid ""
-"Matching data is currently being recomputed, it was started {timeFromNow}."
+msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
 msgstr "当前正在重新计算匹配数据，开始时间为 {timeFromNow}。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-msgid ""
-"Latest successful match data was computed {timeFromNow}, you can trigger a "
-"new run by clicking the button below."
-msgstr ""
-"在 {timeFromNow} 已计算出最新成功的匹配数据，您可以单击下面的按钮触发新的运"
-"行。"
+msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
+msgstr "在 {timeFromNow} 已计算出最新成功的匹配数据，您可以单击下面的按钮触发新的运行。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
-msgid ""
-"Match data is computed via a task schedule, nightly by default (you can "
+msgid "Match data is computed via a task schedule, nightly by default (you can "
 msgstr "默认将在夜间通过任务日程安排计算匹配数据（可以 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
@@ -2098,8 +1969,7 @@ msgid "Unsupported part number detected"
 msgstr "检测到不支持的部件号"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
-msgid ""
-"Physical system is reported as virtual guest, please check hardware data"
+msgid "Physical system is reported as virtual guest, please check hardware data"
 msgstr "物理系统已报告为虚拟 Guest，请检查硬件数据"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
@@ -2111,18 +1981,12 @@ msgid "System has an unknown number of sockets, assuming 16"
 msgstr "系统包含未知数量的插槽，将假定为 16 个"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
-msgid ""
-"Two subscriptions with the same part number are in a bundle - merged into a "
-"single one"
+msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
 msgstr "某个捆绑包中包含两个具有相同部件号的订阅 - 已合并成一个订阅"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-msgid ""
-"Two subscriptions with the same part number (and other properties) have been "
-"merged together - start/end dates might be indicative"
-msgstr ""
-"已将两个具有相同部件号（和其他属性）的订阅合并到一起 - 开始/结束日期可能会指"
-"示此状态"
+msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
+msgstr "已将两个具有相同部件号（和其他属性）的订阅合并到一起 - 开始/结束日期可能会指示此状态"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
@@ -2133,9 +1997,7 @@ msgid "Subscription IDs"
 msgstr "订阅 ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
-msgid ""
-"Subscription with unsupported part number and no associated product has been "
-"ignored."
+msgid "Subscription with unsupported part number and no associated product has been ignored."
 msgstr "已忽略包含不支持的部件号和非关联产品的订阅。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
@@ -2163,27 +2025,19 @@ msgid "Pins"
 msgstr "关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:95
-msgid ""
-"You can pin a subscription to a system to suggest a certain association to "
-"the matching algorithm. "
+msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
 msgstr "可将订阅关联到系统，以向匹配算法建议特定的关联。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
-msgid ""
-"Next time a matching is attempted, the algorithm will try to produce a "
-"result that applies the subscription to the system you specified. "
+msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
 msgstr "下一次尝试匹配时，算法将尝试生成一条可向指定的系统应用该订阅的结果。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:101
-msgid ""
-"Note that the algorithm might determine that a certain pin cannot be "
-"respected, "
+msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
 msgstr "请注意，根据订阅的可用性和适用性规则，算法可能会判定 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:103
-msgid ""
-"depending on a subscription's availablility and applicability rules, in that "
-"case it will be shown as not satisfied. "
+msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
 msgstr "无法遵循特定的关联，在这种情况下，该关联会显示为 \"不符合\"。 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
@@ -2272,9 +2126,7 @@ msgid "Save Pin"
 msgstr "保存关联"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:400
-msgid ""
-"No subscriptions have been found to match this system, considering all "
-"products installed, either directly or in virtual guests."
+msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
 msgstr "找不到与此系统匹配的订阅，将假定直接或者在虚拟 Guest 中安装所有产品。"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
@@ -2435,9 +2287,7 @@ msgid "Filter deleted successfully"
 msgstr "已成功删除过滤器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
-msgid ""
-"Bear in mind that all the associated projects need to be rebuilt after a "
-"filter update"
+msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr "请记住，在更新过滤器后，需要重构建所有关联的项目"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
@@ -2449,9 +2299,7 @@ msgid "Prefix"
 msgstr "前缀"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
+msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr "前缀将附加在通过模板创建的每个过滤器名称的前面"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
@@ -2567,8 +2415,7 @@ msgid "Rule"
 msgstr "规则"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:85
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
+msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "部分选定过滤器已用于项目中，无法删除。"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
@@ -2607,7 +2454,6 @@ msgid "AppStream modules with defaults"
 msgstr "含默认值的 AppStream 模块"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "模板"
 
@@ -2853,9 +2699,7 @@ msgid "Building project"
 msgstr "正在构建项目"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
+msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
 msgstr "该项目包含的通道具有未同步的补丁。将根据您的组织设置同步这些补丁。"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
@@ -2913,9 +2757,7 @@ msgid "Environment {name} deleted successfully"
 msgstr "已成功删除环境 {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
-msgid ""
-"This environment cannot be deleted since it is being used in an "
-"<link>autoinstallation distribution</link>."
+msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
 msgstr "此环境正被某个<link>自动安装发行套件</link>使用，无法删除。"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
@@ -2987,8 +2829,7 @@ msgid "filter out"
 msgstr "过滤掉"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
-msgid ""
-"select from the full source even if you have excluded them before with deny"
+msgid "select from the full source even if you have excluded them before with deny"
 msgstr "即使以前已使用 deny 将其排除，也要从整个源中选择"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:54
@@ -3114,9 +2955,8 @@ msgstr "包括建议项"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "类型"
 
@@ -3146,43 +2986,29 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "未找到您请求的页面 {currentUrl}。"
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid ""
-"If you typed this address into your browser, double-check the spelling and "
-"capitalization."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "如果您在浏览器中键入了此地址，请仔细检查拼写和字母大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "如果您使用的是链接，该链接可能不正确或已过时。请单击后退按钮 "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid ""
-"If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "如果您觉得您错误抵达了此页面，请联系我们并描述您是如何收到 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this group"
+msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the <link>Highstate</link> for the changes to take effect."
-msgstr ""
-"已保存公式。请编辑已启用公式中的配置选项并应用 <link>Highstate</link>，以使更"
-"改生效。"
+msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
+msgstr "已保存公式。请编辑已启用公式中的配置选项并应用 <link>Highstate</link>，以使更改生效。"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -3193,9 +3019,7 @@ msgstr "无效目标类型。"
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid ""
-"Formula saved. Apply the <link>Highstate</link> for the changes to take "
-"effect."
+msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
 msgstr "已保存公式。请应用 <link>Highstate</link>，以使更改生效。"
 
 #: ../html/src/manager/header/search/search.tsx:10
@@ -3233,9 +3057,7 @@ msgstr "已安排映像构建。"
 
 #: ../html/src/manager/images/image-build.tsx:41
 #: ../html/src/manager/images/image-import.tsx:20
-msgid ""
-"There was an error while scheduling a task. Please make sure that the task "
-"scheduler is running."
+msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
 msgstr "安排任务时出错。请确保任务日程安排程序正在运行。"
 
 #: ../html/src/manager/images/image-build.tsx:205
@@ -3277,7 +3099,6 @@ msgid "Image Store"
 msgstr "映像存储区"
 
 #: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
 msgid "Path"
 msgstr "路径"
 
@@ -3388,9 +3209,6 @@ msgstr "创建更多自定义信息键"
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
 msgid "Update"
 msgstr "更新"
 
@@ -3403,9 +3221,7 @@ msgid "Create Image Profile"
 msgstr "创建映像配置文件"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:531
-msgid ""
-"Label is required and must be a unique string and it cannot include any "
-"colons (:)."
+msgid "Label is required and must be a unique string and it cannot include any colons (:)."
 msgstr "标签是必填的，必须是唯一字符串，且不能包含冒号 (:)。"
 
 #: ../html/src/manager/images/image-profiles.tsx:26
@@ -3454,9 +3270,7 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "您确定要删除选定的配置文件吗？"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-msgid ""
-"Are you sure you want to delete selected profiles? ({count} profiles "
-"selected)"
+msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgstr "您确定要删除选定的配置文件吗？（已选择 {count} 个配置文件）"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
@@ -3466,7 +3280,6 @@ msgstr "使用身份凭证"
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
 msgstr "用户名"
 
@@ -3523,8 +3336,7 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "您确定要删除选定的存储区吗？"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-msgid ""
-"Are you sure you want to delete selected stores? ({count} stores selected)"
+msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr "您确定要删除选定的存储区吗？（已选择 {count} 个存储区）"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
@@ -3832,8 +3644,6 @@ msgid "Building"
 msgstr "正在构建"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "未知"
 
@@ -3858,7 +3668,6 @@ msgstr "（过时）"
 #: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "更新"
 
@@ -3875,51 +3684,32 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "您确定要删除选定的映像吗？"
 
 #: ../html/src/manager/images/image-view.tsx:741
-msgid ""
-"Are you sure you want to delete selected images? ({count} images selected)"
+msgid "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "您确定要删除选定的映像吗？（已选择 {count} 个映像）"
 
 #: ../html/src/manager/login/messages.tsx:14
-msgid ""
-"A schema upgrade is required. Please upgrade your schema at your earliest "
-"convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
-"需要进行纲要升级。请尽早升级您的纲要，以接收最新 bug 修复并避免潜在问题。"
+msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
+msgstr "需要进行纲要升级。请尽早升级您的纲要，以接收最新 bug 修复并避免潜在问题。"
 
 #: ../html/src/manager/login/messages.tsx:23
-msgid ""
-"Unable to validate the disk space availability. Please contact your system "
-"admistrator if this problem persists."
+msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
 msgstr "无法验证磁盘空间可用性。如果此问题持续出现，请联系您的系统管理员。"
 
 #: ../html/src/manager/login/messages.tsx:28
-msgid ""
-"Some important directories are missing. Please contact your system "
-"administrator to review the configuration."
+msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgstr "缺少一些重要目录。请联系您的系统管理员查看配置。"
 
 #: ../html/src/manager/login/messages.tsx:33
-msgid ""
-"The available disk space on the server is running low. Please contact your "
-"system administrator to add more disk space."
+msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
 msgstr "服务器上的可用磁盘空间不足。请联系您的系统管理员添加更多磁盘空间。"
 
 #: ../html/src/manager/login/messages.tsx:38
-msgid ""
-"The available disk space on the server is critically low. Please contact "
-"your system administrator to add more disk space."
+msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
 msgstr "服务器上的可用磁盘空间严重不足。请联系您的系统管理员添加更多磁盘空间。"
 
 #: ../html/src/manager/login/messages.tsx:53
-msgid ""
-"SUSE Manager PAYG instances must forward registration data to SCC when "
-"credentials are provided. Data will be sent independently of the "
-"configuration setting. To hide this warning please set 'forward_registration "
-"= 1' in rhn.conf."
-msgstr ""
-"提供身份凭证后，SUSE Manager PAYG 实例必定会将注册数据转发到 SCC。数据的发送"
-"将不受配置设置的影响。要隐藏此警告，请在 rhn.conf 中设置 "
-"\"forward_registration = 1\"。"
+msgid "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+msgstr "提供身份凭证后，SUSE Manager PAYG 实例必定会将注册数据转发到 SCC。数据的发送将不受配置设置的影响。要隐藏此警告，请在 rhn.conf 中设置 \"forward_registration = 1\"。"
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3927,9 +3717,7 @@ msgstr "正在登录..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
 #: ../html/src/manager/login/uyuni/login.tsx:40
-msgid ""
-"Discover a new way of managing your servers, packages, patches and more via "
-"one interface."
+msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
 msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的新方式。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
@@ -4028,8 +3816,7 @@ msgstr "您确定要删除选定项吗？"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:48
-msgid ""
-"This will remove the current schedule from all the systems assigned to it."
+msgid "This will remove the current schedule from all the systems assigned to it."
 msgstr "这会从指派到该项的所有系统中去除当前日程安排。"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
@@ -4216,9 +4003,7 @@ msgid "Calendar successfully refreshed"
 msgstr "已成功刷新日历"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
-msgid ""
-"Any pending maintenance-only actions for these systems will be cancelled "
-"unless they are inside the new maintenance windows."
+msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
 msgstr "除非这些系统的任何仅维护等待中操作处于新维护时段，否则会取消这些操作。"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
@@ -4260,9 +4045,7 @@ msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr "为 {count} 个系统指派维护日程安排"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
-msgid ""
-"Assigning a schedule will replace any prior assignments in all of the "
-"systems in the set."
+msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
 msgstr "指派一个日程安排会替换集内所有系统中以前的任何指派。"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
@@ -4307,9 +4090,7 @@ msgid "An error occurred while loading data. Please check server logs."
 msgstr "装载数据时出错。请查看服务器日志。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
-msgid ""
-"Ansible Control Node Configuration: add paths for Playbook discovery and "
-"Inventory files introspection."
+msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
 msgstr "Ansible 控制节点配置：添加用于剧本发现和库存文件自检的路径。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:166
@@ -4455,9 +4236,6 @@ msgstr "软件包状态"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "州/省"
 
@@ -4470,7 +4248,7 @@ msgid "Applying the packages states has been "
 msgstr "应用软件包状态 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 msgid "Summary"
 msgstr "摘要"
 
@@ -4479,9 +4257,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are available for installation "
-"on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
 msgstr "以下程序临时修复 (PTF) 现可安装在此系统上。 "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
@@ -4501,9 +4277,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are currently installed on this "
-"system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
 msgstr "此系统上目前已安装以下程序临时修复 (PTF)。 "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
@@ -4574,106 +4348,106 @@ msgstr "更新通知"
 msgid "PAYG instance is not compliant"
 msgstr "PAYG 实例不合规"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.tsx:64
+msgid "SCC Data Sync Disabled"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:245
+#: ../html/src/manager/notifications/notification-messages.tsx:246
 msgid "Info"
 msgstr "信息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Error"
 msgstr "错误"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:320
+#: ../html/src/manager/notifications/notification-messages.tsx:324
 msgid "show details"
 msgstr "显示细节"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:369
+#: ../html/src/manager/notifications/notification-messages.tsx:373
 msgid "Retry onboarding"
 msgstr "重试载入"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:379
+#: ../html/src/manager/notifications/notification-messages.tsx:383
 msgid "Retry repo sync"
 msgstr "重试储存库同步"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:406
 msgid "Unread Messages"
 msgstr "未读消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "All Messages"
 msgstr "所有消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "Filter by type"
 msgstr "按类型过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:439
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:443
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 msgid "Delete selected messages"
 msgstr "删除选定的消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:447
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 msgid "Mark selected as read"
 msgstr "将选定消息标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:465
-#: ../html/src/manager/notifications/notification-messages.tsx:543
+#: ../html/src/manager/notifications/notification-messages.tsx:469
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Notification Messages"
 msgstr "通知消息"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
+#: ../html/src/manager/notifications/notification-messages.tsx:474
 msgid "The server has collected the following notification messages."
 msgstr "服务器已收集以下通知消息。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:484
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 msgid "Filter by summary"
 msgstr "按摘要过滤"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Severity"
 msgstr "严重性"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Read|Delete"
 msgstr "阅读|删除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Unread"
 msgstr "标记为未读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Read"
 msgstr "标记为已读"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:531
+#: ../html/src/manager/notifications/notification-messages.tsx:535
 msgid "Delete Notification"
 msgstr "删除通知"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 连接已关闭。请刷新页面以重试。"
 
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "连接到服务器时出错。请刷新页面以重试。"
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this organization"
+msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr "已为此组中的每个受控端服务器安排了配置通道应用"
 
 #: ../html/src/manager/packages/list.tsx:80
@@ -4713,8 +4487,7 @@ msgid "The container based proxy configuration has been generated correctly."
 msgstr "已正确生成基于容器的代理配置。"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
-msgid ""
-"Generation of the proxy configuration in progress: waiting for a response..."
+msgid "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "正在生成代理配置：正在等待响应..."
 
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -4727,13 +4500,8 @@ msgid "Container Based Proxy Configuration"
 msgstr "基于容器的代理配置"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-msgid ""
-"You can generate a set of configuration files and certificates in order to "
-"register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .tar.gz archive to download."
-msgstr ""
-"您可以生成一组配置文件和证书以注册并运行基于容器的代理。填写并提交下面的表单"
-"后，系统将提供一个 .tar.gz 存档供您下载。"
+msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
+msgstr "您可以生成一组配置文件和证书以注册并运行基于容器的代理。填写并提交下面的表单后，系统将提供一个 .tar.gz 存档供您下载。"
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
@@ -5006,9 +4774,7 @@ msgid "The following recurring actions have been created."
 msgstr "已创建以下重复操作。"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:125
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
+msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
 msgstr "要创建新的重复操作，请转到您要为其创建操作的系统、组或组织。"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:170
@@ -5040,11 +4806,8 @@ msgid "Error when deleting the action. Check if Taskomatic is running"
 msgstr "删除操作时出错。请检查 Taskomatic 是否正在运行"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-msgid ""
-"The below times are displayed in the server time zone {timeZone}. The "
-"scheduled time will be the server time."
-msgstr ""
-"系统会按照服务器时区 {timeZone} 显示以下时间。安排的时间将会是服务器时间。"
+msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
+msgstr "系统会按照服务器时区 {timeZone} 显示以下时间。安排的时间将会是服务器时间。"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -5148,15 +4911,8 @@ msgid "Matching ssh-push minions..."
 msgstr "正在匹配 ssh-push 受控端..."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
-msgid ""
-"The formula catalog page enables viewing of currently installed <link>Salt "
-"Formulas</link>. Apply these formulas to individual systems or server "
-"groups. Formulas allow automatic installation and configuration of software "
-"and may be installed via RPM packages."
-msgstr ""
-"公式目录页面可用于查看目前已安装的 <link>Salt</link> 公式。这些公式可应用于不"
-"同的系统或服务器组。使用公式可以自动安装和配置软件，您可以通过 RPM 软件包来安"
-"装公式。"
+msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
+msgstr "公式目录页面可用于查看目前已安装的 <link>Salt</link> 公式。这些公式可应用于不同的系统或服务器组。使用公式可以自动安装和配置软件，您可以通过 RPM 软件包来安装公式。"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
@@ -5292,9 +5048,7 @@ msgid "Development debugging page"
 msgstr "开发调试页面"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
-msgid ""
-"This is a hidden page used by developers, if you found it by accident, good "
-"job!"
+msgid "This is a hidden page used by developers, if you found it by accident, good job!"
 msgstr "这是开发人员使用的隐藏页面，如果您无意间发现了该页面，那么为您点赞！"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
@@ -5322,9 +5076,7 @@ msgid "Child Channels:"
 msgstr "子通道："
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
+msgid "Any system registered using this activation key will be subscribed to the selected child channels."
 msgstr "使用此激活密钥注册的所有系统都将订阅所选子通道。"
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
@@ -5383,22 +5135,12 @@ msgid "Close"
 msgstr "关闭"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
-msgid ""
-"Request interrupted or invalid response received from the server. Please "
-"check if your minion was bootstrapped correctly."
-msgstr ""
-"请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
+msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+msgstr "请求已中断，或者从服务器收到了无效响应。请检查您的受控端是否已正常引导。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
-msgid ""
-"Bootstrap process initiated. Your system should be visible at the following "
-"location shortly: <link>systems</link>. If any issues arise, you'll receive "
-"an error notification. In case you're working with a transactional system, "
-"please perform a system reboot to complete the registration process."
-msgstr ""
-"已启动引导过程。您的系统应该会在以下位置短暂显示：<link>systems</link>。如果"
-"出现任何问题，您将收到错误通知。如果您使用的是事务系统，请执行系统重引导，以"
-"完成注册过程。"
+msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
+msgstr "已启动引导过程。您的系统应该会在以下位置短暂显示：<link>systems</link>。如果出现任何问题，您将收到错误通知。如果您使用的是事务系统，请执行系统重引导，以完成注册过程。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
@@ -5426,9 +5168,7 @@ msgid "e.g., ••••••••••••"
 msgstr "例如 ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
-msgid ""
-"The file will be stored in a temporary file on the server and will be "
-"deleted after the bootstrapping procedure"
+msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
 msgstr "该文件将存储在服务器上的临时文件中，在完成引导过程后将被删除"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
@@ -5440,28 +5180,16 @@ msgid "Bootstrap Minions"
 msgstr "引导受控端"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
-msgid ""
-"You can add systems to be managed by providing SSH credentials only. "
-"{productName} will prepare the system remotely and will perform the "
-"registration."
-msgstr ""
-"只有提供 SSH 身份凭证才能添加要管理的系统。{productName} 将远程准备系统并执行"
-"注册。"
+msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
+msgstr "只有提供 SSH 身份凭证才能添加要管理的系统。{productName} 将远程准备系统并执行注册。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr "例如 host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
-"{productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
-"该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建"
-"立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间 "
-"{productName} 的 SSH 密钥部署后设置。"
+msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
+msgstr "该用户仅在引导期间有效。以后的连接将由 rhn.conf 中指定的用户建立。\"ssh_push_sudo_user\" 键的默认用户为 \"root\"。此用户在引导期间 {productName} 的 SSH 密钥部署后设置。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
@@ -5486,9 +5214,7 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr "如不需要重新激活，则留空"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
-msgid ""
-"The hostname of the proxy is not fully qualified. This may cause problems "
-"when accessing the channels."
+msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
 msgstr "代理的主机名不是完全限定的。这可能导致在访问通道时出现问题。"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
@@ -5500,8 +5226,7 @@ msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "完全通过 SSH 管理系统（将不安装代理）"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
-msgid ""
-"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "正在进行引导，您确定要关闭此页面吗？"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
@@ -5512,14 +5237,12 @@ msgstr "机密计算功能"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "Yes"
 msgstr "是"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
 msgid "No"
 msgstr "否"
 
@@ -5751,21 +5474,11 @@ msgid "System Default Base Channel"
 msgstr "系统默认基础通道"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
-msgid ""
-"As a Channel Administrator, you may change the base channels your systems "
-"are subscribed to. Valid channels are either channels created by your "
-"organization, or the default SUSE base channel for your operating system "
-"version and processor type. Systems will be unsubscribed from all channels, "
-"and subscribed to their new base channels. "
-msgstr ""
-"作为通道管理员，您可以更改系统订阅的基础通道。有效通道是您的组织创建的通道，"
-"或者适用于您操作系统版本和处理器类型的默认 SUSE 基础通道。系统将取消订阅所有"
-"通道，然后订阅其新的基础通道。 "
+msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
+msgstr "作为通道管理员，您可以更改系统订阅的基础通道。有效通道是您的组织创建的通道，或者适用于您操作系统版本和处理器类型的默认 SUSE 基础通道。系统将取消订阅所有通道，然后订阅其新的基础通道。 "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
-msgid ""
-"This operation can have a dramatic effect on the packages and patches "
-"available to the systems, and should be used with caution."
+msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
 msgstr "此操作可能会对适用于系统的软件包和补丁造成重大影响，因此应该慎用。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
@@ -5802,7 +5515,6 @@ msgid "system(s) to subscribe"
 msgstr "个系统要订阅"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "（无）"
 
@@ -5828,15 +5540,11 @@ msgid "To make no changes for a channel, check Do Nothing for that channel."
 msgstr "要防止对某个通道进行更改，请选中该通道对应的 \"不执行任何操作\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:553
-msgid ""
-"To subscribe selected systems to a channel, check Subscribed for that "
-"channel."
+msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
 msgstr "要让选定的系统订阅某个通道，请选中该通道对应的 \"已订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:554
-msgid ""
-"To unsubscribe selected systems from a channel, check Unsubscribed for that "
-"channel."
+msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
 msgstr "要让选定的系统取消订阅某个通道，请选中该通道对应的 \"已取消订阅\"。"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:564
@@ -5890,22 +5598,12 @@ msgid "Changing the channels has been "
 msgstr "更改通道 "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
-msgid ""
-"You can change the base software channel your system is subscribed to. The "
-"system will be unsubscribed from all software channels, and subscribed to "
-"the new base software channel."
-msgstr ""
-"您可以更改系统订阅的基础软件通道。该系统将取消订阅所有软件通道，然后订阅新的"
-"基础软件通道。"
+msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
+msgstr "您可以更改系统订阅的基础软件通道。该系统将取消订阅所有软件通道，然后订阅新的基础软件通道。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
-msgid ""
-"This system is subscribed to the checked channels beneath, if any. Disabled "
-"checkboxes indicate channels that can't be manually subscribed or "
-"unsubscribed from."
-msgstr ""
-"此系统已订阅下面选中的通道（如果有）。已禁用的复选框表示相应的通道不可手动订"
-"阅或取消订阅。"
+msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
+msgstr "此系统已订阅下面选中的通道（如果有）。已禁用的复选框表示相应的通道不可手动订阅或取消订阅。"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:630
@@ -5927,7 +5625,6 @@ msgid "No Virtual Systems."
 msgstr "没有虚拟系统。"
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "基础软件通道"
 
@@ -6034,831 +5731,12 @@ msgstr "虚拟主机管理器"
 msgid "Add a virtual host manager"
 msgstr "添加虚拟主机管理器"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "请安装 libvirt Python 模块。"
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:161
-msgid "{name} selected"
-msgstr "已选择 {name}"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:240
-msgid "Action Status"
-msgstr "操作状态"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:225
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:246
-msgid "Can not contain the following characters: /\\"
-msgstr "不能包含以下字符：/\\"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:141
-msgid "Hypervisor"
-msgstr "超级管理程序"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:152
-msgid "Virtual Machine Type"
-msgstr "虚拟机类型"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:56
-msgid "Maximum Memory (MiB)"
-msgstr "最大内存 (MiB)"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:166
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:175
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:58
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:67
-msgid "A positive integer is required"
-msgstr "必须指定正整数"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:65
-msgid "Virtual CPU Count"
-msgstr "虚拟 CPU 计数"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
-msgid "Enable UEFI"
-msgstr "启用 UEFI"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
-msgid "UEFI firmware path"
-msgstr "UEFI 固件路径"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
-msgid "NVRAM template path"
-msgstr "NVRAM 模板路径"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
-msgid "Auto-installation Profile"
-msgstr "自动安装配置文件"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
-msgid "Kernel options"
-msgstr "内核选项"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
-msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr "已禁用群集支持，因为 VirtualDomain 资源代理 "
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
-msgid "Define as a cluster resource"
-msgstr "定义为群集资源"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
-msgid "Path to the cluster shared folder for VM definitions"
-msgstr "群集 VM 定义共享文件夹路径"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Graphics"
-msgstr "显卡"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "重试"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "正在连接..."
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "已断开连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "无法连接"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "切换完整大小"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "Guest 未运行"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "未知 Guest"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "出现了问题，已关闭连接"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "创建虚拟机"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
-msgid "Migrate"
-msgstr "迁移"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "选择要将虚拟 Guest 迁移到哪台主机。"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "目标主机"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
-msgid "Start / Resume"
-msgstr "开始/恢复"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
-msgid "Stop"
-msgstr "停止"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
-msgid "Force off"
-msgstr "强制关闭"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
-msgid "Suspend"
-msgstr "挂起"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
-msgid "Synchronize Guests List"
-msgstr "同步 Guest 列表"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
-msgid "Synchronize"
-msgstr "同步"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
-msgid "Hosted Virtual Systems"
-msgstr "托管虚拟系统"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
-msgstr "这是配置为在此主机上运行的虚拟 Guest 列表。"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
-msgid "Guest"
-msgstr "Guest"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
-msgid "Unregistered System"
-msgstr "未注册的系统"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
-msgid "Current Memory"
-msgstr "当前内存"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
-msgid "vCPUs"
-msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
-msgid "paused"
-msgstr "已暂停"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
-msgid "Graphical Console"
-msgstr "图形控制台"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
-msgid "Device type"
-msgstr "设备类型"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
-msgid "Disk"
-msgstr "磁盘"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:63
-msgid "CDROM"
-msgstr "CDROM"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:64
-msgid "Floppy"
-msgstr "软盘"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:75
-msgid "Bus"
-msgstr "总线"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:26
-msgid "File"
-msgstr "文件"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:35
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:113
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:500
-msgid "Format"
-msgstr "格式"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
-msgid "Source storage pool"
-msgstr "源储存池"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:82
-msgid "Source Volume"
-msgstr "源卷"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:95
-msgid "Disk size (GiB)"
-msgstr "磁盘大小 (GiB)"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
-msgid "Source template image URL"
-msgstr "源模板映像 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "磁盘"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
-msgid "Network"
-msgstr "网络"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:90
-msgid "MAC address"
-msgstr "MAC 地址"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
-msgid "Leave blank to generate a MAC address"
-msgstr "保留空白会生成 MAC 地址"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
-msgid "Networks"
-msgstr "网络"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
-msgid "Clear Fields"
-msgstr "清除字段"
-
-#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
-msgid "Single virtual machine using almost all the host resources"
-msgstr "单个虚拟机几乎使用了所有主机资源"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
-msgid "Create Virtual Network"
-msgstr "创建虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
-msgid "Start"
-msgstr "开始"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
-msgid "Virtual Networks"
-msgstr "虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
-msgstr "这是配置为在此主机上运行的虚拟网络列表。"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
-msgstr "此系统上的 Salt 版本不支持创建和编辑虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
-msgid "Autostart"
-msgstr "自动启动"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
-msgid "Persistent"
-msgstr "持久"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:264
-msgid "Bridge"
-msgstr "网桥"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:216
-msgid "network properties"
-msgstr "网络属性"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:233
-msgid "Network type"
-msgstr "网络类型"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:245
-msgid "Macvtap mode"
-msgstr "Macvtap 模式"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:254
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:266
-msgid "Start during virtual host boot"
-msgstr "在虚拟主机引导期间启动"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:260
-msgid "Connectivity"
-msgstr "连接"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:273
-msgid "Maximum Transmission Unit (MTU)"
-msgstr "最大传输单位 (MTU)"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:277
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:179
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:188
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:197
-msgid "The value has to be a positive integer"
-msgstr "值必须为正整数"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:285
-msgid "Virtual Port Type"
-msgstr "虚拟端口类型"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:301
-msgid "Select interfaces"
-msgstr "选择接口"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:307
-msgid "By physical function"
-msgstr "按物理功能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:310
-msgid "By virtual functions"
-msgstr "按虚拟功能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:311
-msgid "By interfaces"
-msgstr "按接口"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:322
-msgid "Interfaces"
-msgstr "接口"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:342
-msgid "Physical Function"
-msgstr "物理功能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:357
-msgid "Virtual Functions"
-msgstr "虚拟功能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:379
-msgid "VLAN tag"
-msgstr "VLAN 标记"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:383
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:57
-msgid "Integer between 0 and 4095"
-msgstr "0 到 4095 之间的整数"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
-msgid "VLAN tags trunking"
-msgstr "VLAN 标记中继"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
-msgid "NAT IPv4 range"
-msgstr "NAT IPv4 范围"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-msgid "Both values has to be IPv4 addresses"
-msgstr "两个值都必须为 IPv4 地址"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
-msgid "NAT port range"
-msgstr "NAT 端口范围"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
-msgid "Both values has to be positive integers"
-msgstr "两个值都必须为正整数"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
-msgid "Addressing"
-msgstr "寻址"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-msgid "Enable IPv6"
-msgstr "启用 IPv6"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
-msgid "Domain name"
-msgstr "域名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:19
-msgid "DNS"
-msgstr "DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:24
-msgid "Forwarders"
-msgstr "转发器"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:37
-msgid "Domain"
-msgstr "域"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:38
-msgid "DNS server address"
-msgstr "DNS 服务器地址"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:51
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:240
-msgid "Has to be a valid qualified host name"
-msgstr "必须为有效的限定主机名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:59
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:100
-msgid "Has to be an IP address"
-msgstr "必须为 IP 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:66
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:282
-msgid "Hosts"
-msgstr "主机"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:80
-msgid "Address"
-msgstr "地址"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:84
-msgid "hostnames (comma-separated)"
-msgstr "主机名（以逗号分隔）"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:112
-msgid "Has to be a comma-separated list of host names"
-msgstr "必须为主机名逗号分隔列表"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:119
-msgid "SRV records"
-msgstr "SRV 记录"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:139
-msgid "Service name"
-msgstr "服务名称"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:147
-msgid "Protocol"
-msgstr "协议"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:159
-msgid "Service domain name"
-msgstr "服务域名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:168
-msgid "Target hostname"
-msgstr "目标主机名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:175
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:222
-msgid "Port"
-msgstr "端口"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:184
-msgid "Target priority"
-msgstr "目标优先级"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:193
-msgid "Target weight"
-msgstr "目标权重"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:206
-msgid "TXT records"
-msgstr "TXT 记录"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:224
-msgid "Value"
-msgstr "值"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
-msgid "Network address"
-msgstr "网络地址"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:41
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:56
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:105
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:135
-msgid "v6"
-msgstr "v6"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:85
-msgid "IP address"
-msgstr "IP 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr "DHCP 唯一标识符 (DUID)"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:119
-msgid "Needs to be a MAC address"
-msgstr "必须为 MAC 地址"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:144
-msgid "BOOTP image file"
-msgstr "BOOTP 映像文件"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:145
-msgid "BOOTP server"
-msgstr "BOOTP 服务器"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:146
-msgid "TFTP root path"
-msgstr "TFTP 根路径"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:23
-msgid "Parameters"
-msgstr "参数"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:29
-msgid "By profile id"
-msgstr "按配置文件 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr "虚拟站接口 (VSI) 参数"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:38
-msgid "Profile id"
-msgstr "配置文件 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:48
-msgid "Interface id"
-msgstr "接口 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:56
-msgid "VSI manager id"
-msgstr "VSI 管理器 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:57
-msgid "VSI type id"
-msgstr "VSI 类型 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:60
-msgid "VSI type id version"
-msgstr "VSI 类型 ID 版本"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:66
-msgid "VSI instance id"
-msgstr "VSI 实例 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:70
-msgid "Value needs to be a valid UUID"
-msgstr "值必须为有效的 UUID"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:19
-msgid "VLANs"
-msgstr "VLAN"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:40
-msgid "Tag"
-msgstr "标记"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:43
-msgid "Native mode"
-msgstr "本机模式"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
-msgid "Tagged"
-msgstr "已标记"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
-msgid "Untagged"
-msgstr "未标记"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "不连接其他网络的虚拟网络"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "网络基于 macvtap 驱动程序使用物理接口池。 "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 池"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
-msgid "Could not get network devices from the server. Please try again."
-msgstr "无法从服务器获取网络设备。请重试。"
-
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:26
-msgid "Create Virtual Storage Pool"
-msgstr "创建虚拟储存池"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Pool"
-msgstr "虚拟储存池"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Volume"
-msgstr "虚拟储存卷"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
-msgid "Delete the pool, including the contained volumes. "
-msgstr "删除池，包括其中包含的卷。 "
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
-msgid "Cannot be undone"
-msgstr "无法撤销"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
-msgid "Edit Pool"
-msgstr "编辑池"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
-msgid "Location"
-msgstr "位置"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
-msgid "Usage"
-msgstr "用法"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-msgid "Create Pool"
-msgstr "创建池"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
-msgid "Virtual Storage Pools and Volumes"
-msgstr "虚拟储存池和卷"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
-msgstr "这是在此主机上定义的包含虚拟 Guest 磁盘的储存池列表。"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
-msgid "Filter by pool or volume name"
-msgstr "按池或卷名称过滤"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
-msgid "Partition separator"
-msgstr "分区分隔符"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
-msgid "Host name"
-msgstr "主机名"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:255
-msgid "Pool Type"
-msgstr "池类型"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:272
-msgid "Source"
-msgstr "源"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:314
-msgid "Devices"
-msgstr "设备"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:355
-msgid "Initiator IQN"
-msgstr "发起端 IQN"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:365
-msgid "Adapter type"
-msgstr "适配器类型"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:389
-msgid "Adapter name"
-msgstr "适配器名称"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:398
-msgid "Adapter parent PCI address"
-msgstr "适配器父项 PCI 地址"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:402
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:415
-msgid "PCI address formatted like 0000:00:00.0"
-msgstr "类似于 0000:00:00.0 格式的 PCI 地址"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:411
-msgid "Adapter parent address unique ID"
-msgstr "适配器父项地址唯一 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:422
-msgid "Adapter parent name"
-msgstr "适配器父项名称"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:430
-msgid "Adapter parent wwnn"
-msgstr "适配器父项 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:433
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:453
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:475
-msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr "长度为 16 个字符的十六进制值。示例：500277a4100c4e21"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:440
-msgid "Adapter parent wwpn"
-msgstr "适配器父项 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:450
-msgid "Adapter parent fabric wwn"
-msgstr "适配器父项结构 wwn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:460
-msgid "Adapter wwnn"
-msgstr "适配器 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:471
-msgid "Adapter wwpn"
-msgstr "适配器 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:482
-msgid "Manage vHBA deletion"
-msgstr "管理 vHBA 删除操作"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:491
-msgid "Source name"
-msgstr "源名称"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:517
-msgid "Passphrase"
-msgstr "通行口令"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:527
-msgid "Target"
-msgstr "目标"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:538
-msgid "Owner UID"
-msgstr "拥有者 UID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:542
-msgid "UID is a numeric value"
-msgstr "UID 是一个数字值"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:546
-msgid "Group ID"
-msgstr "组 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:550
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:559
-msgid "GID is a numeric value"
-msgstr "GID 是一个数字值"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
-msgid "Permission mode"
-msgstr "权限模式"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:555
-msgid "target directory permissions in octal form, like 0775"
-msgstr "八进制格式（例如 0775）的目标目录权限"
-
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:562
-msgid "SELinux label"
-msgstr "SELinux 标签"
-
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
-msgstr "无法从服务器获取储存池功能。请重试。"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "会话已失效，请重新装载页面。"
 
 #: ../html/src/utils/network.ts:99
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
+msgid "Authorization error, please reload the page or try to logout/login again."
 msgstr "授权错误，请重新装载页面或重试注销/登录。"
 
 #: ../html/src/utils/network.ts:101
@@ -6868,6 +5746,576 @@ msgstr "未找到资源。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 错误代码 "
+
+#~ msgid "Please install libvirt python module."
+#~ msgstr "请安装 libvirt Python 模块。"
+
+#~ msgid "Neither KVM nor Xen is running. Ensure they are installed and the kernel modules are loaded."
+#~ msgstr "KVM 和 Xen 均未运行。请确保已安装它们且已装载内核模块。"
+
+#~ msgid "{name} selected"
+#~ msgstr "已选择 {name}"
+
+#~ msgid "Action Status"
+#~ msgstr "操作状态"
+
+#~ msgid "Can not contain the following characters: /\\"
+#~ msgstr "不能包含以下字符：/\\"
+
+#~ msgid "Hypervisor"
+#~ msgstr "超级管理程序"
+
+#~ msgid "Virtual Machine Type"
+#~ msgstr "虚拟机类型"
+
+#~ msgid "Maximum Memory (MiB)"
+#~ msgstr "最大内存 (MiB)"
+
+#~ msgid "A positive integer is required"
+#~ msgstr "必须指定正整数"
+
+#~ msgid "Virtual CPU Count"
+#~ msgstr "虚拟 CPU 计数"
+
+#~ msgid "Enable UEFI"
+#~ msgstr "启用 UEFI"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFI 固件路径"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAM 模板路径"
+
+#~ msgid "Auto-installation Profile"
+#~ msgstr "自动安装配置文件"
+
+#~ msgid "Kernel options"
+#~ msgstr "内核选项"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr "已禁用群集支持，因为 VirtualDomain 资源代理 "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "定义为群集资源"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "群集 VM 定义共享文件夹路径"
+
+#~ msgid "Graphics"
+#~ msgstr "显卡"
+
+#~ msgid "Retry"
+#~ msgstr "重试"
+
+#~ msgid "Connecting..."
+#~ msgstr "正在连接..."
+
+#~ msgid "Disconnected"
+#~ msgstr "已断开连接"
+
+#~ msgid "Failed to connect"
+#~ msgstr "无法连接"
+
+#~ msgid "Toggle full size"
+#~ msgstr "切换完整大小"
+
+#~ msgid "Guest is not running"
+#~ msgstr "Guest 未运行"
+
+#~ msgid "Unknown guest"
+#~ msgstr "未知 Guest"
+
+#~ msgid "Something went wrong, connection is closed"
+#~ msgstr "出现了问题，已关闭连接"
+
+#~ msgid "Create Virtual Machine"
+#~ msgstr "创建虚拟机"
+
+#~ msgid "Migrate"
+#~ msgstr "迁移"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "选择要将虚拟 Guest 迁移到哪台主机。"
+
+#~ msgid "Target Host"
+#~ msgstr "目标主机"
+
+#~ msgid "Start / Resume"
+#~ msgstr "开始/恢复"
+
+#~ msgid "Stop"
+#~ msgstr "停止"
+
+#~ msgid "Force off"
+#~ msgstr "强制关闭"
+
+#~ msgid "Suspend"
+#~ msgstr "挂起"
+
+#~ msgid "Synchronize Guests List"
+#~ msgstr "同步 Guest 列表"
+
+#~ msgid "Synchronize"
+#~ msgstr "同步"
+
+#~ msgid "Hosted Virtual Systems"
+#~ msgstr "托管虚拟系统"
+
+#~ msgid "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr "这是配置为在此主机上运行的虚拟 Guest 列表。"
+
+#~ msgid "Guest"
+#~ msgstr "Guest"
+
+#~ msgid "Unregistered System"
+#~ msgstr "未注册的系统"
+
+#~ msgid "Current Memory"
+#~ msgstr "当前内存"
+
+#~ msgid "vCPUs"
+#~ msgstr "vCPU"
+
+#~ msgid "paused"
+#~ msgstr "已暂停"
+
+#~ msgid "Graphical Console"
+#~ msgstr "图形控制台"
+
+#~ msgid "Device type"
+#~ msgstr "设备类型"
+
+#~ msgid "Disk"
+#~ msgstr "磁盘"
+
+#~ msgid "CDROM"
+#~ msgstr "CDROM"
+
+#~ msgid "Floppy"
+#~ msgstr "软盘"
+
+#~ msgid "Bus"
+#~ msgstr "总线"
+
+#~ msgid "File"
+#~ msgstr "文件"
+
+#~ msgid "Format"
+#~ msgstr "格式"
+
+#~ msgid "Source storage pool"
+#~ msgstr "源储存池"
+
+#~ msgid "Source Volume"
+#~ msgstr "源卷"
+
+#~ msgid "Disk size (GiB)"
+#~ msgstr "磁盘大小 (GiB)"
+
+#~ msgid "Source template image URL"
+#~ msgstr "源模板映像 URL"
+
+#~ msgid "Disks"
+#~ msgstr "磁盘"
+
+#~ msgid "Network"
+#~ msgstr "网络"
+
+#~ msgid "MAC address"
+#~ msgstr "MAC 地址"
+
+#~ msgid "Leave blank to generate a MAC address"
+#~ msgstr "保留空白会生成 MAC 地址"
+
+#~ msgid "Networks"
+#~ msgstr "网络"
+
+#~ msgid "Clear Fields"
+#~ msgstr "清除字段"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "单个虚拟机几乎使用了所有主机资源"
+
+#~ msgid "Create Virtual Network"
+#~ msgstr "创建虚拟网络"
+
+#~ msgid "Start"
+#~ msgstr "开始"
+
+#~ msgid "Virtual Networks"
+#~ msgstr "虚拟网络"
+
+#~ msgid "This is a list of virtual networks which are configured to run on this host."
+#~ msgstr "这是配置为在此主机上运行的虚拟网络列表。"
+
+#~ msgid "The Salt version on this system does not support virtual network creating and editing"
+#~ msgstr "此系统上的 Salt 版本不支持创建和编辑虚拟网络"
+
+#~ msgid "Autostart"
+#~ msgstr "自动启动"
+
+#~ msgid "Persistent"
+#~ msgstr "持久"
+
+#~ msgid "Bridge"
+#~ msgstr "网桥"
+
+#~ msgid "network properties"
+#~ msgstr "网络属性"
+
+#~ msgid "Network type"
+#~ msgstr "网络类型"
+
+#~ msgid "Macvtap mode"
+#~ msgstr "Macvtap 模式"
+
+#~ msgid "Start during virtual host boot"
+#~ msgstr "在虚拟主机引导期间启动"
+
+#~ msgid "Connectivity"
+#~ msgstr "连接"
+
+#~ msgid "Maximum Transmission Unit (MTU)"
+#~ msgstr "最大传输单位 (MTU)"
+
+#~ msgid "The value has to be a positive integer"
+#~ msgstr "值必须为正整数"
+
+#~ msgid "Virtual Port Type"
+#~ msgstr "虚拟端口类型"
+
+#~ msgid "Select interfaces"
+#~ msgstr "选择接口"
+
+#~ msgid "By physical function"
+#~ msgstr "按物理功能"
+
+#~ msgid "By virtual functions"
+#~ msgstr "按虚拟功能"
+
+#~ msgid "By interfaces"
+#~ msgstr "按接口"
+
+#~ msgid "Interfaces"
+#~ msgstr "接口"
+
+#~ msgid "Physical Function"
+#~ msgstr "物理功能"
+
+#~ msgid "Virtual Functions"
+#~ msgstr "虚拟功能"
+
+#~ msgid "VLAN tag"
+#~ msgstr "VLAN 标记"
+
+#~ msgid "Integer between 0 and 4095"
+#~ msgstr "0 到 4095 之间的整数"
+
+#~ msgid "VLAN tags trunking"
+#~ msgstr "VLAN 标记中继"
+
+#~ msgid "NAT IPv4 range"
+#~ msgstr "NAT IPv4 范围"
+
+#~ msgid "Both values has to be IPv4 addresses"
+#~ msgstr "两个值都必须为 IPv4 地址"
+
+#~ msgid "NAT port range"
+#~ msgstr "NAT 端口范围"
+
+#~ msgid "Both values has to be positive integers"
+#~ msgstr "两个值都必须为正整数"
+
+#~ msgid "Addressing"
+#~ msgstr "寻址"
+
+#~ msgid "Enable IPv6"
+#~ msgstr "启用 IPv6"
+
+#~ msgid "Domain name"
+#~ msgstr "域名"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "Forwarders"
+#~ msgstr "转发器"
+
+#~ msgid "Domain"
+#~ msgstr "域"
+
+#~ msgid "DNS server address"
+#~ msgstr "DNS 服务器地址"
+
+#~ msgid "Has to be a valid qualified host name"
+#~ msgstr "必须为有效的限定主机名"
+
+#~ msgid "Has to be an IP address"
+#~ msgstr "必须为 IP 地址"
+
+#~ msgid "Hosts"
+#~ msgstr "主机"
+
+#~ msgid "Address"
+#~ msgstr "地址"
+
+#~ msgid "hostnames (comma-separated)"
+#~ msgstr "主机名（以逗号分隔）"
+
+#~ msgid "Has to be a comma-separated list of host names"
+#~ msgstr "必须为主机名逗号分隔列表"
+
+#~ msgid "SRV records"
+#~ msgstr "SRV 记录"
+
+#~ msgid "Service name"
+#~ msgstr "服务名称"
+
+#~ msgid "Protocol"
+#~ msgstr "协议"
+
+#~ msgid "Service domain name"
+#~ msgstr "服务域名"
+
+#~ msgid "Target hostname"
+#~ msgstr "目标主机名"
+
+#~ msgid "Port"
+#~ msgstr "端口"
+
+#~ msgid "Target priority"
+#~ msgstr "目标优先级"
+
+#~ msgid "Target weight"
+#~ msgstr "目标权重"
+
+#~ msgid "TXT records"
+#~ msgstr "TXT 记录"
+
+#~ msgid "Value"
+#~ msgstr "值"
+
+#~ msgid "Network address"
+#~ msgstr "网络地址"
+
+#~ msgid "v6"
+#~ msgstr "v6"
+
+#~ msgid "IP address"
+#~ msgstr "IP 地址"
+
+#~ msgid "DHCP Unique Identifier (DUID)"
+#~ msgstr "DHCP 唯一标识符 (DUID)"
+
+#~ msgid "Needs to be a MAC address"
+#~ msgstr "必须为 MAC 地址"
+
+#~ msgid "BOOTP image file"
+#~ msgstr "BOOTP 映像文件"
+
+#~ msgid "BOOTP server"
+#~ msgstr "BOOTP 服务器"
+
+#~ msgid "TFTP root path"
+#~ msgstr "TFTP 根路径"
+
+#~ msgid "Parameters"
+#~ msgstr "参数"
+
+#~ msgid "By profile id"
+#~ msgstr "按配置文件 ID"
+
+#~ msgid "Virtual Station Interface (VSI) parameters"
+#~ msgstr "虚拟站接口 (VSI) 参数"
+
+#~ msgid "Profile id"
+#~ msgstr "配置文件 ID"
+
+#~ msgid "Interface id"
+#~ msgstr "接口 ID"
+
+#~ msgid "VSI manager id"
+#~ msgstr "VSI 管理器 ID"
+
+#~ msgid "VSI type id"
+#~ msgstr "VSI 类型 ID"
+
+#~ msgid "VSI type id version"
+#~ msgstr "VSI 类型 ID 版本"
+
+#~ msgid "VSI instance id"
+#~ msgstr "VSI 实例 ID"
+
+#~ msgid "Value needs to be a valid UUID"
+#~ msgstr "值必须为有效的 UUID"
+
+#~ msgid "VLANs"
+#~ msgstr "VLAN"
+
+#~ msgid "Tag"
+#~ msgstr "标记"
+
+#~ msgid "Native mode"
+#~ msgstr "本机模式"
+
+#~ msgid "Tagged"
+#~ msgstr "已标记"
+
+#~ msgid "Untagged"
+#~ msgstr "未标记"
+
+#~ msgid "Use an existing and configured bridge device. No iptables rule, IP address or DHCP/DNS service are added"
+#~ msgstr "使用已配置的现有网桥设备。未添加 iptables 规则、IP 地址或 DHCP/DNS 服务"
+
+#~ msgid "Virtual network using the host IP routing stack and NAT"
+#~ msgstr "使用主机 IP 路由堆栈和 NAT 的虚拟网路"
+
+#~ msgid "Virtual network using the host IP routing stack, without NAT"
+#~ msgstr "使用主机 IP 路由堆栈但没有 NAT 的虚拟网路"
+
+#~ msgid "Virtual network using the host IP routing stack, without firewall rules and NAT"
+#~ msgstr "使用主机 IP 路由堆栈但没有防火墙规则和 NAT 的虚拟网路"
+
+#~ msgid "Virtual network with no connection to other networks"
+#~ msgstr "不连接其他网络的虚拟网络"
+
+#~ msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "网络基于 macvtap 驱动程序使用物理接口池。 "
+
+#~ msgid "SR-IOV pool"
+#~ msgstr "SR-IOV 池"
+
+#~ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+#~ msgstr "直通 SR-IOV 虚拟功能池中的一个设备"
+
+#~ msgid "Could not get network devices from the server. Please try again."
+#~ msgstr "无法从服务器获取网络设备。请重试。"
+
+#~ msgid "Create Virtual Storage Pool"
+#~ msgstr "创建虚拟储存池"
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "虚拟储存池"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "虚拟储存卷"
+
+#~ msgid "Delete the pool, including the contained volumes. "
+#~ msgstr "删除池，包括其中包含的卷。 "
+
+#~ msgid "Cannot be undone"
+#~ msgstr "无法撤销"
+
+#~ msgid "Edit Pool"
+#~ msgstr "编辑池"
+
+#~ msgid "Location"
+#~ msgstr "位置"
+
+#~ msgid "Usage"
+#~ msgstr "用法"
+
+#~ msgid "Create Pool"
+#~ msgstr "创建池"
+
+#~ msgid "Virtual Storage Pools and Volumes"
+#~ msgstr "虚拟储存池和卷"
+
+#~ msgid "This is the list of storage pools defined on this host containing virtual guests disks."
+#~ msgstr "这是在此主机上定义的包含虚拟 Guest 磁盘的储存池列表。"
+
+#~ msgid "Filter by pool or volume name"
+#~ msgstr "按池或卷名称过滤"
+
+#~ msgid "Partition separator"
+#~ msgstr "分区分隔符"
+
+#~ msgid "Host name"
+#~ msgstr "主机名"
+
+#~ msgid "Pool Type"
+#~ msgstr "池类型"
+
+#~ msgid "Source"
+#~ msgstr "源"
+
+#~ msgid "Devices"
+#~ msgstr "设备"
+
+#~ msgid "Initiator IQN"
+#~ msgstr "发起端 IQN"
+
+#~ msgid "Adapter type"
+#~ msgstr "适配器类型"
+
+#~ msgid "Adapter name"
+#~ msgstr "适配器名称"
+
+#~ msgid "Adapter parent PCI address"
+#~ msgstr "适配器父项 PCI 地址"
+
+#~ msgid "PCI address formatted like 0000:00:00.0"
+#~ msgstr "类似于 0000:00:00.0 格式的 PCI 地址"
+
+#~ msgid "Adapter parent address unique ID"
+#~ msgstr "适配器父项地址唯一 ID"
+
+#~ msgid "Adapter parent name"
+#~ msgstr "适配器父项名称"
+
+#~ msgid "Adapter parent wwnn"
+#~ msgstr "适配器父项 wwnn"
+
+#~ msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+#~ msgstr "长度为 16 个字符的十六进制值。示例：500277a4100c4e21"
+
+#~ msgid "Adapter parent wwpn"
+#~ msgstr "适配器父项 wwpn"
+
+#~ msgid "Adapter parent fabric wwn"
+#~ msgstr "适配器父项结构 wwn"
+
+#~ msgid "Adapter wwnn"
+#~ msgstr "适配器 wwnn"
+
+#~ msgid "Adapter wwpn"
+#~ msgstr "适配器 wwpn"
+
+#~ msgid "Manage vHBA deletion"
+#~ msgstr "管理 vHBA 删除操作"
+
+#~ msgid "Source name"
+#~ msgstr "源名称"
+
+#~ msgid "Passphrase"
+#~ msgstr "通行口令"
+
+#~ msgid "Target"
+#~ msgstr "目标"
+
+#~ msgid "Owner UID"
+#~ msgstr "拥有者 UID"
+
+#~ msgid "UID is a numeric value"
+#~ msgstr "UID 是一个数字值"
+
+#~ msgid "Group ID"
+#~ msgstr "组 ID"
+
+#~ msgid "GID is a numeric value"
+#~ msgstr "GID 是一个数字值"
+
+#~ msgid "Permission mode"
+#~ msgstr "权限模式"
+
+#~ msgid "target directory permissions in octal form, like 0775"
+#~ msgstr "八进制格式（例如 0775）的目标目录权限"
+
+#~ msgid "SELinux label"
+#~ msgstr "SELinux 标签"
+
+#~ msgid "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr "无法从服务器获取储存池功能。请重试。"
 
 #~ msgid "Learn more about"
 #~ msgstr "了解详细信息"
@@ -6969,14 +6417,10 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Manage"
 #~ msgstr "Manager"
 
-#~ msgid ""
-#~ "Action has been successfully added to the action chain <link>'{name}'</"
-#~ "link>."
+#~ msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 #~ msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
-#~ msgid ""
-#~ "The following channel installations for '{product}' failed. Please check "
-#~ "log files."
+#~ msgid "The following channel installations for '{product}' failed. Please check log files."
 #~ msgstr "\"{product}\" 的下列通道安装失败。请检查日志文件。"
 
 #~ msgid "Instance Details for '{name}'"
@@ -6998,10 +6442,7 @@ msgstr "HTTP 错误代码 "
 #~ msgstr "删除 Pay-as-you-go"
 
 #, fuzzy
-#~ msgid ""
-#~ "Successfully bootstrapped host! Your system should appear in "
-#~ "<link>systems</link> shortly. If it is a transactional system, please "
-#~ "reboot it to finish registration."
+#~ msgid "Successfully bootstrapped host! Your system should appear in <link>systems</link> shortly. If it is a transactional system, please reboot it to finish registration."
 #~ msgstr "中。如果这是事务性系统，请将其重引导以完成注册"
 
 #~ msgid " for the changes to take effect."
@@ -7175,14 +6616,10 @@ msgstr "HTTP 错误代码 "
 #~ msgid "NOTE: before joining a new node, make sure that the node has:"
 #~ msgstr "注意：在加入某个新节点之前，请确保："
 
-#~ msgid ""
-#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
-#~ "children channels of CaaSP channels"
-#~ msgstr ""
-#~ "为该节点指派了容器即服务平台 (CaaSP) 频道 - 或 CaaSP 频道的任何子频道"
+#~ msgid "Container as a Service Platform (CaaSP) channels assigned - or any children channels of CaaSP channels"
+#~ msgstr "为该节点指派了容器即服务平台 (CaaSP) 频道 - 或 CaaSP 频道的任何子频道"
 
-#~ msgid ""
-#~ "The management node can access the node as root via ssh without password"
+#~ msgid "The management node can access the node as root via ssh without password"
 #~ msgstr "管理节点可以在不使用口令的情况下以 root 身份通过 SSH 访问该节点"
 
 #~ msgid "Select system to join"
@@ -7236,9 +6673,7 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Upgrade"
 #~ msgstr "升级"
 
-#~ msgid ""
-#~ "provided channel that corresponds to the installed SUSE Linux version. "
-#~ "Instead of the default, "
+#~ msgid "provided channel that corresponds to the installed SUSE Linux version. Instead of the default, "
 #~ msgstr "提供的与所安装 SUSE Linux 版本对应的频道。除了默认频道， "
 
 #~ msgid "Upcoming Maintenance Windows"
@@ -7247,42 +6682,22 @@ msgstr "HTTP 错误代码 "
 #~ msgid "End"
 #~ msgstr "结束"
 
-#~ msgid ""
-#~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
-#~ "used on each system!"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
 #~ msgstr "检测到多个组公式。在每个系统上只能对 \"{0}\" 使用一个公式！"
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "例如 \"0 15 2 ? * 7\""
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is up but the JMX configuration is "
-#~ "disabled. Click the Enable button to enable the JMX configuration or "
-#~ "click Disable to stop the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启"
-#~ "用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+#~ msgstr "Tomcat 普罗米修斯导出器已启动，但 JMX 配置已禁用。请单击 \"启用\" 按钮以启用 JMX 配置，或单击 \"禁用\" 以停止普罗米修斯导出器。"
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is down but the JMX configuration is "
-#~ "enabled. Click the Disable button to disable the JMX configuration or "
-#~ "click Enable to start the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁"
-#~ "用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+#~ msgstr "Tomcat 普罗米修斯导出器已关闭，但 JMX 配置已启用。请单击 \"禁用\" 按钮以禁用 JMX 配置，或单击 \"启用\" 以启动普罗米修斯导出器。"
 
-#~ msgid ""
-#~ "If you used a bookmark, the page may have moved to a different location "
-#~ "since the bookmark was created. Use the top (or left) navigation bars to "
-#~ "find the page you are looking for, and if you find the document be sure "
-#~ "to update your bookmark."
-#~ msgstr ""
-#~ "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或"
-#~ "左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
 
-#~ msgid ""
-#~ "Session expired, please reload the page to receive notifications in real-"
-#~ "time."
+#~ msgid "Session expired, please reload the page to receive notifications in real-time."
 #~ msgstr "会话已失效，请重新装载页面以实时接收通知。"
 
 #~ msgid "Session expired, please reload the page to run command on systems."

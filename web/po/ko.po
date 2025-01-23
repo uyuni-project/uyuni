@@ -9,15 +9,11 @@
 #: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"POT-Creation-Date: 2025-01-23 15:55+0100\n"
 "PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -33,12 +29,8 @@ msgid "remaining"
 msgstr "남음"
 
 #: ../html/javascript/spacewalk-essentials.js:481
-msgid ""
-"The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
-"Edge"
-msgstr ""
-"Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 "
-"사용하십시오."
+msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
+msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Chrome 또는 Edge를 사용하십시오."
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:89
@@ -48,9 +40,7 @@ msgstr "작업이 <link>예약</link>되었습니다."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:77
-msgid ""
-"Unable to schedule action. Please check the server logs for detailed "
-"information."
+msgid "Unable to schedule action. Please check the server logs for detailed information."
 msgstr "작업을 예약할 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오."
 
 #: ../html/src/components/CoCoScansList.tsx:122
@@ -64,9 +54,6 @@ msgstr "증명 실행 확인"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
 msgstr "일정"
 
@@ -102,12 +89,8 @@ msgid "Invalid format of fields: {fields}"
 msgstr "잘못된 필드 유형: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:213
-msgid ""
-"On this page you can configure Salt Formulas to automatically install and "
-"configure software."
-msgstr ""
-"이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습"
-"니다."
+msgid "On this page you can configure Salt Formulas to automatically install and configure software."
+msgstr "이 페이지에서 소프트웨어를 자동으로 설치 및 구성할 Salt 수식을 구성할 수 있습니다."
 
 #: ../html/src/components/FormulaForm.tsx:268
 msgid "Expand All Sections"
@@ -130,14 +113,8 @@ msgid "new action chain"
 msgstr "새 작업 체인"
 
 #: ../html/src/components/action-schedule.tsx:198
-msgid ""
-"There are multiple maintenance schedules for selected systems. Make sure "
-"that systems in the set use at most 1 maintenance schedule if you want to "
-"schedule by date or maintenance window."
-msgstr ""
-"선택한 시스템에 여러 유지보수 일정이 있습니다. 날짜 또는 유지보수 기간을 기준"
-"으로 예약하려면 세트 단위의 시스템이 최대 1개의 유지보수 일정을 사용하는지 확"
-"인하십시오."
+msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
+msgstr "선택한 시스템에 여러 유지보수 일정이 있습니다. 날짜 또는 유지보수 기간을 기준으로 예약하려면 세트 단위의 시스템이 최대 1개의 유지보수 일정을 사용하는지 확인하십시오."
 
 #: ../html/src/components/action-schedule.tsx:205
 msgid "No upcoming maintenance windows"
@@ -184,7 +161,6 @@ msgstr "{date}의 {time}에 실행된 #{identifier} 증명"
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "시스템"
 
@@ -195,7 +171,7 @@ msgid "Environment Type"
 msgstr "환경 유형"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "생성됨"
 
@@ -230,8 +206,6 @@ msgstr "증명 시간"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:200
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "작업"
 
@@ -262,7 +236,7 @@ msgid "Last modified on"
 msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 msgid "Action"
 msgstr "작업"
 
@@ -333,8 +307,6 @@ msgstr "일정 선택"
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "N/A"
 
@@ -368,9 +340,7 @@ msgid "Are you sure you want to {action} {name}"
 msgstr "{action} {name}을(를) 수행하시겠습니까?"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
-msgid ""
-"Are you sure you want to {action} the selected {name}s? ({count} {name}s "
-"selected)"
+msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
 msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 선택됨)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:61
@@ -390,8 +360,6 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
 msgstr "취소"
 
@@ -423,11 +391,6 @@ msgstr "취소"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "삭제"
 
@@ -444,14 +407,8 @@ msgid " No group"
 msgstr " 그룹 없음"
 
 #: ../html/src/components/formula-selection.tsx:272
-msgid ""
-"On this page you can select Salt Formulas for this group/system, which can "
-"then be configured on group and system level. This allows you to "
-"automatically install and configure software."
-msgstr ""
-"이 페이지에서 이 그룹/시스템에 대한 Salt 수식을 선택한 후 그룹 및 시스템 수준"
-"에서 구성할 수 있습니다. 이를 통해 소프트웨어를 자동으로 설치 및 구성할 수 있"
-"습니다."
+msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
+msgstr "이 페이지에서 이 그룹/시스템에 대한 Salt 수식을 선택한 후 그룹 및 시스템 수준에서 구성할 수 있습니다. 이를 통해 소프트웨어를 자동으로 설치 및 구성할 수 있습니다."
 
 #: ../html/src/components/formula-selection.tsx:299
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:65
@@ -465,7 +422,6 @@ msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "재설정"
 
@@ -513,8 +469,6 @@ msgstr "필수"
 #: ../html/src/components/input/range/Range.stories.tsx:24
 #: ../html/src/components/input/select/simple.stories.tsx:32
 #: ../html/src/components/input/text/Text.stories.tsx:38
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "제출"
 
@@ -559,13 +513,6 @@ msgstr "로그인"
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "이름"
 
@@ -577,7 +524,6 @@ msgstr "이름"
 #: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "비밀번호"
 
@@ -769,9 +715,7 @@ msgid "Monthly:"
 msgstr "매월:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:468
-msgid ""
-"Days are limited to 28 to have a recurring schedule available for all the "
-"months"
+msgid "Days are limited to 28 to have a recurring schedule available for all the months"
 msgstr "모든 달에 반복 일정을 사용할 수 있도록 일수는 28일로 제한됩니다."
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:483
@@ -826,8 +770,6 @@ msgstr "구성 채널: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "편집"
 
@@ -848,10 +790,8 @@ msgid "Reboot state will be put last."
 msgstr "재부팅 상태는 마지막에 배치됩니다."
 
 #: ../html/src/components/states-picker.tsx:132
-msgid ""
-"'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
-"'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
+msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
+msgstr "'시스템 재부팅'과 '필요한 경우 시스템 재부팅' 상태는 함께 사용할 수 없습니다."
 
 #: ../html/src/components/states-picker.tsx:155
 msgid "State assignments have been saved."
@@ -966,8 +906,7 @@ msgid "Assign"
 msgstr "할당"
 
 #: ../html/src/components/states-picker.tsx:513
-msgid ""
-"Select the systems to schedule for immediate state execution and confirm."
+msgid "Select the systems to schedule for immediate state execution and confirm."
 msgstr "즉시 상태 실행을 예약할 시스템을 선택하고 확인합니다."
 
 #: ../html/src/components/states-picker.tsx:523
@@ -1124,10 +1063,6 @@ msgstr "도움말"
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "로드하는 중..."
 
@@ -1190,29 +1125,19 @@ msgstr "내부 오류가 발생했습니다. 세부 정보는 서버 로그를 �
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
-"모니터링을 활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
+msgstr "모니터링을 활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
-msgid ""
-"Failed to enable all monitoring services. Some services are still disabled. "
-"See the server logs for details."
-msgstr ""
-"일부 모니터링 서비스를 활성화하지 못했습니다. 일부 서비스가 아직 비활성화 상"
-"태입니다. 세부 정보는 서버 로그를 참조하십시오."
+msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
+msgstr "일부 모니터링 서비스를 활성화하지 못했습니다. 일부 서비스가 아직 비활성화 상태입니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
-"모니터링을 비활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
+msgstr "모니터링을 비활성화하지 못했습니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
-msgid ""
-"Failed to disable all monitoring services. Some services are still enabled. "
-"See the server logs for details."
-msgstr ""
-"일부 모니터링 서비스를 비활성화하지 못했습니다. 일부 서비스가 아직 활성화 상"
-"태입니다. 세부 정보는 서버 로그를 참조하십시오."
+msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
+msgstr "일부 모니터링 서비스를 비활성화하지 못했습니다. 일부 서비스가 아직 활성화 상태입니다. 세부 정보는 서버 로그를 참조하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
@@ -1223,34 +1148,20 @@ msgid "Monitoring disabled successfully."
 msgstr "모니터링이 비활성화되었습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
-msgid ""
-"The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
-msgstr ""
-"Tomcat Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. "
+msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. "
+msgstr "Tomcat Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:42
-msgid ""
-"The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
-msgstr ""
-"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. "
+msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. "
+msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:46
-msgid ""
-"The Taskomatic Prometheus exporter is up but the JMX configuration is "
-"disabled. "
-msgstr ""
-"Taskomatic Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니"
-"다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 "
-"Prometheus 내보내기를 중지하십시오. "
+msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. "
+msgstr "Taskomatic Prometheus 내보내기가 실행 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheus 내보내기를 중지하십시오. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
-msgid ""
-"The Taskomatic Prometheus exporter is down but the JMX configuration is "
-"enabled. "
-msgstr ""
-"Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성"
-"화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내"
-"보내기를 시작하십시오. "
+msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. "
+msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오. "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
@@ -1258,9 +1169,7 @@ msgstr "모니터링 상태가 변경되지 않았습니다."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr ""
-"오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시"
-"오."
+msgstr "오류가 발생했습니다. 모니터링 상태를 알 수 없습니다. 페이지를 새로 고치십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
@@ -1340,10 +1249,6 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "SUSE Manager 서버 모니터링을 설정하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:219
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
 msgid "General"
 msgstr "일반"
 
@@ -1356,7 +1261,6 @@ msgid "Organizations"
 msgstr "조직"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "다시 시작"
 
@@ -1375,9 +1279,7 @@ msgid "Restarting"
 msgstr "다시 시작"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:406
-msgid ""
-" Tomcat and Taskomatic is needed for the configuration changes to take "
-"effect."
+msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
 msgstr " 구성 변경 사항이 적용되려면 Tomcat 및 Taskomatic이 필요합니다."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:41
@@ -1401,9 +1303,6 @@ msgstr "PAYG SSH 데이터 추가"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
 msgid "Create"
 msgstr "만들기"
 
@@ -1452,17 +1351,8 @@ msgstr "PAYG 연결 추가"
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
-msgid ""
-"Request interrupted or invalid response received from the server. Please try "
-"again."
-msgstr ""
-"요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다. 다시 시도하"
-"십시오."
+msgid "Request interrupted or invalid response received from the server. Please try again."
+msgstr "요청이 중단되거나 서버로부터 유효하지 않은 응답이 수신되었습니다. 다시 시도하십시오."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:25
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:33
@@ -1491,8 +1381,7 @@ msgid "Editing ssh connection data.."
 msgstr "SSH 연결 데이터 편집 중..."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
-msgid ""
-"When editing the SSH connection all needed credentials must be re-provided."
+msgid "When editing the SSH connection all needed credentials must be re-provided."
 msgstr "SSH 연결을 편집할 때 필요한 모든 인증서를 다시 제공해야 합니다."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
@@ -1544,8 +1433,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:435
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Refresh"
 msgstr "새로 고침"
 
@@ -1563,12 +1451,8 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "작업 실패: 서버에서 빈 회신"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:159
-msgid ""
-"No SUSE Manager Server Subscription available. Products requiring Client "
-"Tools Channel will not be shown."
-msgstr ""
-"사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요"
-"한 제품이 표시되지 않습니다."
+msgid "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+msgstr "사용할 수 있는 SUSE Manager 서버 구독이 없습니다. 클라이언트 도구 채널이 필요한 제품이 표시되지 않습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:206
 msgid "The product catalog refresh is running..."
@@ -1583,12 +1467,8 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:337
-msgid ""
-"A refresh of the product data is currently running in the background. Please "
-"try again later."
-msgstr ""
-"제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하"
-"십시오."
+msgid "A refresh of the product data is currently running in the background. Please try again later."
+msgstr "제품 데이터 새로 고침이 현재 백그라운드에서 실행 중입니다. 나중에 다시 시도하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:342
 msgid "The product catalog is still refreshing, please wait."
@@ -1612,28 +1492,16 @@ msgid "Why aren't all products displayed in the list?"
 msgstr "목록에 모든 제품이 표시되지 않는 이유가 무엇입니까?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:428
-msgid ""
-"The products displayed on this list are directly linked to your Organization "
-"credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
-"이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩"
-"니다."
+msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
+msgstr "이 목록에 표시되는 제품은 조직 인증서(미러 인증서)와 SUSE 구독에 직접 연결됩니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:433
-msgid ""
-"If you believe there are products missing, make sure you have added the "
-"correct Organization credentials in the previous wizard step."
-msgstr ""
-"제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인"
-"하십시오."
+msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
+msgstr "제품이 누락된 경우 이전 마법사 단계에서 올바른 조직 인증서를 추가했는지 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:443
-msgid ""
-"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-"Products can only be managed on the ISS master."
-msgstr ""
-"이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마"
-"스터에서만 제품을 관리할 수 있습니다."
+msgid "This server is configured as an Inter-Server Synchronisation (ISS) slave. Products can only be managed on the ISS master."
+msgstr "이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마스터에서만 제품을 관리할 수 있습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:541
 msgid "Filter by architecture"
@@ -1652,7 +1520,6 @@ msgstr "제품 설명"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "아키텍처"
 
@@ -1790,9 +1657,7 @@ msgid "Runtime Status"
 msgstr "런타임 상태"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:185
-msgid ""
-"The server is running or has finished executing the following tasks during "
-"the latest 5 minutes."
+msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
 msgstr "서버가 실행 중이거나 최근 5분 동안 다음 작업의 실행을 완료했습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:188
@@ -1807,7 +1672,6 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1842,14 +1706,13 @@ msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
-"세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
+msgstr "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:557
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
@@ -1867,8 +1730,7 @@ msgid "AppStream {stream} has {count} packages:"
 msgstr "AppStream {stream}에 {count}개 패키지 있음:"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
-msgid ""
-"Updating the selection of AppStream modules has been <link>scheduled</link>."
+msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
 msgstr "AppStream 모듈의 일부 업데이트가 <link>예약</link>되었습니다."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:116
@@ -1878,12 +1740,8 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:31
-msgid ""
-"Please review the changes below before scheduling an action to apply the "
-"changes on the system."
-msgstr ""
-"시스템에서 변경 사항을 적용하기 위한 작업을 예약하기 전에 아래의 변경 사항을 "
-"검토하십시오."
+msgid "Please review the changes below before scheduling an action to apply the changes on the system."
+msgstr "시스템에서 변경 사항을 적용하기 위한 작업을 예약하기 전에 아래의 변경 사항을 검토하십시오."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:49
 msgid "Streams to be enabled:"
@@ -1933,12 +1791,8 @@ msgid "Not affected"
 msgstr "적용되지 않음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
-msgid ""
-"The client is not affected because none of the known CVE vulnerable packages "
-"are installed."
-msgstr ""
-"이 클라이언트에는 알려진 CVE 취약 패키지가 설치되어 있지 않으므로 영향을 받"
-"지 않습니다."
+msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
+msgstr "이 클라이언트에는 알려진 CVE 취약 패키지가 설치되어 있지 않으므로 영향을 받지 않습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
 msgid "Patched"
@@ -1953,9 +1807,7 @@ msgid "Affected, patch is unavailable"
 msgstr "영향을 받음, 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
-msgid ""
-"The client is affected by a vulnerability for which a patch has not yet been "
-"released."
+msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgstr "이 클라이언트는 아직 패치가 릴리스되지 않은 취약점의 영향을 받습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
@@ -1963,9 +1815,7 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "영향을 받음, 관련 채널에서 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid ""
-"The client is affected by a vulnerability for which a patch has been "
-"released,"
+msgid "The client is affected by a vulnerability for which a patch has been released,"
 msgstr "이 클라이언트는 패치가 릴리스된 취약점의 영향을 받습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
@@ -1977,12 +1827,8 @@ msgid "Unknown, CVE metadata not available"
 msgstr "알 수 없음, CVE 메타데이터 사용 불가"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
-msgid ""
-"It is not possible to scan the client server for CVE vulnerabilities without "
-"channels or OVAL metadata."
-msgstr ""
-"채널 또는 OVAL 메타데이터가 없으면 클라이언트 서버에서 CVE 취약점을 스캔할 "
-"수 없습니다."
+msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
+msgstr "채널 또는 OVAL 메타데이터가 없으면 클라이언트 서버에서 CVE 취약점을 스캔할 수 없습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
@@ -2083,12 +1929,8 @@ msgid "Match data status"
 msgstr "데이터 상태 일치"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-msgid ""
-"Could not start a matching run. Please contact your SUSE Manager "
-"administrator to make sure the task scheduler is running."
-msgstr ""
-"일치하는 실행을 시작할 수 없습니다. SUSE Manager 관리자에게 문의하여 작업 스"
-"케줄러가 실행 중인지 확인하십시오."
+msgid "Could not start a matching run. Please contact your SUSE Manager administrator to make sure the task scheduler is running."
+msgstr "일치하는 실행을 시작할 수 없습니다. SUSE Manager 관리자에게 문의하여 작업 스케줄러가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -2099,23 +1941,15 @@ msgid "You can also trigger a first run now by clicking the button below."
 msgstr "아래 버튼을 클릭하여 첫 번째 실행을 트리거할 수도 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
-msgid ""
-"Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr ""
-"현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {timeFromNow}에 시작되었"
-"습니다."
+msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
+msgstr "현재 일치 데이터를 다시 계산하는 중입니다. 이 작업은 {timeFromNow}에 시작되었습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:117
-msgid ""
-"Latest successful match data was computed {timeFromNow}, you can trigger a "
-"new run by clicking the button below."
-msgstr ""
-"마지막 일치 데이터는 {timeFromNow}에 계산되었으며, 이제 아래 버튼을 클릭하여 "
-"새 실행을 트리거할 수 있습니다."
+msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
+msgstr "마지막 일치 데이터는 {timeFromNow}에 계산되었으며, 이제 아래 버튼을 클릭하여 새 실행을 트리거할 수 있습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:126
-msgid ""
-"Match data is computed via a task schedule, nightly by default (you can "
+msgid "Match data is computed via a task schedule, nightly by default (you can "
 msgstr "일치 데이터는 작업 일정을 통해 계산되며, 기본값은 야간(사용자는 "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:128
@@ -2135,33 +1969,24 @@ msgid "Unsupported part number detected"
 msgstr "지원되지 않는 파트 번호 감지됨"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
-msgid ""
-"Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
-"물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
+msgid "Physical system is reported as virtual guest, please check hardware data"
+msgstr "물리적 시스템이 가상 게스트로 보고되었습니다. 하드웨어 데이터를 확인하십시오."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
-"가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
+msgstr "가상 게스트에 알 수 없는 호스트가 있으며, 물리적 시스템으로 간주됩니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
 msgstr "시스템에 알 수 없는 소켓이 있으며, 16으로 간주됩니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
-msgid ""
-"Two subscriptions with the same part number are in a bundle - merged into a "
-"single one"
+msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
 msgstr "번들에 파트 번호가 동일한 구독이 2개 있음 - 하나로 병합"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
-msgid ""
-"Two subscriptions with the same part number (and other properties) have been "
-"merged together - start/end dates might be indicative"
-msgstr ""
-"파트 번호(및 기타 속성)가 동일한 구독 2개가 병합됨 - 시작/종료 날짜를 나타낼 "
-"수 있음"
+msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
+msgstr "파트 번호(및 기타 속성)가 동일한 구독 2개가 병합됨 - 시작/종료 날짜를 나타낼 수 있음"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
@@ -2172,11 +1997,8 @@ msgid "Subscription IDs"
 msgstr "구독 ID"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
-msgid ""
-"Subscription with unsupported part number and no associated product has been "
-"ignored."
-msgstr ""
-"부품 번호가 지원되지 않은 구독 및 관련 제품이 없는 구독이 무시되었습니다."
+msgid "Subscription with unsupported part number and no associated product has been ignored."
+msgstr "부품 번호가 지원되지 않은 구독 및 관련 제품이 없는 구독이 무시되었습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
@@ -2203,33 +2025,20 @@ msgid "Pins"
 msgstr "핀"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:95
-msgid ""
-"You can pin a subscription to a system to suggest a certain association to "
-"the matching algorithm. "
-msgstr ""
-"시스템에 구독을 고정하여 일치 알고리즘에 특정 연결을 제안할 수 있습니다. "
+msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
+msgstr "시스템에 구독을 고정하여 일치 알고리즘에 특정 연결을 제안할 수 있습니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:98
-msgid ""
-"Next time a matching is attempted, the algorithm will try to produce a "
-"result that applies the subscription to the system you specified. "
-msgstr ""
-"다음 일치 시도 시, 알고리즘은 사용자가 지정한 시스템에 구독을 적용한 결과를 "
-"제공합니다. "
+msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
+msgstr "다음 일치 시도 시, 알고리즘은 사용자가 지정한 시스템에 구독을 적용한 결과를 제공합니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:101
-msgid ""
-"Note that the algorithm might determine that a certain pin cannot be "
-"respected, "
+msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
 msgstr "알고리즘이 특정 고정을 유지할 수 없다고 판단할 수 있으며, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:103
-msgid ""
-"depending on a subscription's availablility and applicability rules, in that "
-"case it will be shown as not satisfied. "
-msgstr ""
-"이는 구독 가용성 및 적용 가능성 규칙에 따라 다르고, 해당 경우에는 충족되지 않"
-"음으로 표시됩니다. "
+msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
+msgstr "이는 구독 가용성 및 적용 가능성 규칙에 따라 다르고, 해당 경우에는 충족되지 않음으로 표시됩니다. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:117
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:144
@@ -2317,12 +2126,8 @@ msgid "Save Pin"
 msgstr "핀 저장"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:400
-msgid ""
-"No subscriptions have been found to match this system, considering all "
-"products installed, either directly or in virtual guests."
-msgstr ""
-"직접 또는 가상 게스트에 설치된 모든 제품을 고려할 때 이 시스템과 일치하는 구"
-"독을 찾지 못했습니다."
+msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
+msgstr "직접 또는 가상 게스트에 설치된 모든 제품을 고려할 때 이 시스템과 일치하는 구독을 찾지 못했습니다."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:65
 msgid "Filter by description"
@@ -2482,9 +2287,7 @@ msgid "Filter deleted successfully"
 msgstr "필터 삭제됨"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
-msgid ""
-"Bear in mind that all the associated projects need to be rebuilt after a "
-"filter update"
+msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
 msgstr "필터를 업데이트한 후에는 연결된 모든 프로젝트를 다시 빌드해야 합니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
@@ -2496,9 +2299,7 @@ msgid "Prefix"
 msgstr "접두사"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
-msgid ""
-"The prefix will be prepended to the name of every individual filter created "
-"by the template"
+msgid "The prefix will be prepended to the name of every individual filter created by the template"
 msgstr "접두사는 템플릿에 의해 생성된 모든 개별 필터의 이름 앞에 추가됩니다."
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:104
@@ -2614,8 +2415,7 @@ msgid "Rule"
 msgstr "규칙"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:85
-msgid ""
-"Some of the selected filters are used in projects and can not be deleted."
+msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr "선택한 필터 중 일부가 프로젝트에서 사용되며 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:138
@@ -2654,7 +2454,6 @@ msgid "AppStream modules with defaults"
 msgstr "기본값이 있는 AppStream 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "템플릿"
 
@@ -2900,12 +2699,8 @@ msgid "Building project"
 msgstr "프로젝트 빌드 중"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:96
-msgid ""
-"The project contains channels with unsynchronized patches. They will be "
-"synchronized depending on your Organization settings."
-msgstr ""
-"프로젝트에 동기화되지 않은 패치가 있는 채널이 포함되어 있습니다. 그러한 채널"
-"은 조직 설정에 따라 동기화됩니다."
+msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
+msgstr "프로젝트에 동기화되지 않은 패치가 있는 채널이 포함되어 있습니다. 그러한 채널은 조직 설정에 따라 동기화됩니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:108
 msgid "Version Message"
@@ -2962,11 +2757,8 @@ msgid "Environment {name} deleted successfully"
 msgstr "{name} 환경 삭제됨"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:138
-msgid ""
-"This environment cannot be deleted since it is being used in an "
-"<link>autoinstallation distribution</link>."
-msgstr ""
-"이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
+msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
+msgstr "이 환경은 <link>자동 설치 배포</link>에서 사용 중이므로 삭제할 수 없습니다."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:23
 msgid "New"
@@ -3037,8 +2829,7 @@ msgid "filter out"
 msgstr "필터링"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
-msgid ""
-"select from the full source even if you have excluded them before with deny"
+msgid "select from the full source even if you have excluded them before with deny"
 msgstr "거부를 사용하여 이전에 제외한 경우에도 전체 소스에서 선택"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:54
@@ -3164,9 +2955,8 @@ msgstr "권장에 포함"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "유형"
 
@@ -3196,51 +2986,29 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:12
-msgid ""
-"If you typed this address into your browser, double-check the spelling and "
-"capitalization."
-msgstr ""
-"이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오. 복사"
-"한 주소가 오래되었을 수도 있습니다."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
+msgstr "이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오. 복사한 주소가 오래되었을 수도 있습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:18
-msgid ""
-"If you followed a link, the link may be incorrect or outdated. Click on the "
-"back button in your "
-msgstr ""
-"링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클"
-"릭하십시오. "
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
+msgstr "링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클릭하십시오. "
 
 #: ../html/src/manager/errors/not-found.tsx:25
-msgid ""
-"If you used a bookmark, the page may have moved to a different location "
-"since the bookmark was "
-msgstr ""
-"책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했"
-"을 수 있습니다. "
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "책갈피를 사용한 경우, 책갈피가 이전에 사용된 이후 페이지가 다른 위치로 이동했을 수 있습니다. "
 
 #: ../html/src/manager/errors/not-found.tsx:32
-msgid ""
-"If you feel you've reached this page in error, please contact us with "
-"details of how you received "
-msgstr ""
-"이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하"
-"십시오. "
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
+msgstr "이 페이지에 잘못 도달했다고 생각되는 경우 수신 방법에 대한 세부 정보를 문의하십시오. "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this group"
+msgid "Applying the config channels has been scheduled for each minion server in this group"
 msgstr "이 그룹의 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:15
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:15
-msgid ""
-"Formula saved. Edit configuration options in the enabled formulas and apply "
-"the <link>Highstate</link> for the changes to take effect."
-msgstr ""
-"수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 "
-"<link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
+msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
+msgstr "수식이 저장되었습니다. 활성화된 수식에서 구성 옵션을 편집하고 <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:24
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:21
@@ -3251,12 +3019,8 @@ msgstr "잘못된 대상 유형입니다."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:14
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:14
-msgid ""
-"Formula saved. Apply the <link>Highstate</link> for the changes to take "
-"effect."
-msgstr ""
-"수식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십"
-"시오."
+msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
+msgstr "수식이 저장되었습니다. <link>Highstate</link>를 적용하여 변경 사항을 적용하십시오."
 
 #: ../html/src/manager/header/search/search.tsx:10
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:183
@@ -3293,12 +3057,8 @@ msgstr "이미지 빌드가 예약되었습니다."
 
 #: ../html/src/manager/images/image-build.tsx:41
 #: ../html/src/manager/images/image-import.tsx:20
-msgid ""
-"There was an error while scheduling a task. Please make sure that the task "
-"scheduler is running."
-msgstr ""
-"작업을 예약하는 동안 오류가 발생했습니다. 작업 스케줄러가 실행 중인지 확인하"
-"십시오."
+msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
+msgstr "작업을 예약하는 동안 오류가 발생했습니다. 작업 스케줄러가 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/images/image-build.tsx:205
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1048
@@ -3339,7 +3099,6 @@ msgid "Image Store"
 msgstr "이미지 저장소"
 
 #: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
 msgid "Path"
 msgstr "경로"
 
@@ -3450,9 +3209,6 @@ msgstr "추가 사용자 정의 정보 키 만들기"
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
 msgid "Update"
 msgstr "업데이트"
 
@@ -3465,9 +3221,7 @@ msgid "Create Image Profile"
 msgstr "이미지 프로파일 만들기"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:531
-msgid ""
-"Label is required and must be a unique string and it cannot include any "
-"colons (:)."
+msgid "Label is required and must be a unique string and it cannot include any colons (:)."
 msgstr "레이블은 필수이며 고유 문자열이고 콜론(:)을 포함할 수 없습니다."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
@@ -3516,9 +3270,7 @@ msgid "Are you sure you want to delete the selected profile?"
 msgstr "선택한 프로파일을 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
-msgid ""
-"Are you sure you want to delete selected profiles? ({count} profiles "
-"selected)"
+msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
 msgstr "선택한 프로파일을 삭제하시겠습니까?({count}개 프로파일 선택됨)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
@@ -3528,7 +3280,6 @@ msgstr "자격 증명 사용"
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
 msgstr "사용자 이름"
 
@@ -3585,8 +3336,7 @@ msgid "Are you sure you want to delete the selected store?"
 msgstr "선택한 저장소를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-stores.tsx:237
-msgid ""
-"Are you sure you want to delete selected stores? ({count} stores selected)"
+msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
 msgstr "선택한 저장소를 삭제하시겠습니까?({count}개 저장소 선택됨)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
@@ -3894,8 +3644,6 @@ msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -3920,7 +3668,6 @@ msgstr "(사용되지 않음)"
 #: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
 
@@ -3937,60 +3684,32 @@ msgid "Are you sure you want to delete the selected image?"
 msgstr "선택한 이미지를 삭제하시겠습니까?"
 
 #: ../html/src/manager/images/image-view.tsx:741
-msgid ""
-"Are you sure you want to delete selected images? ({count} images selected)"
+msgid "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "선택한 이미지를 삭제하시겠습니까?({count}개 이미지 선택됨)"
 
 #: ../html/src/manager/login/messages.tsx:14
-msgid ""
-"A schema upgrade is required. Please upgrade your schema at your earliest "
-"convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
-"스키마를 업데이트해야 합니다. 최신 버그 수정을 수신하고 잠재적인 문제를 방지"
-"하려면 최대한 빨리 스키마를 업데이트하십시오."
+msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
+msgstr "스키마를 업데이트해야 합니다. 최신 버그 수정을 수신하고 잠재적인 문제를 방지하려면 최대한 빨리 스키마를 업데이트하십시오."
 
 #: ../html/src/manager/login/messages.tsx:23
-msgid ""
-"Unable to validate the disk space availability. Please contact your system "
-"admistrator if this problem persists."
-msgstr ""
-"디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에"
-"게 문의하십시오."
+msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+msgstr "디스크 공간 가용성을 확인할 수 없습니다. 이 문제가 지속되면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:28
-msgid ""
-"Some important directories are missing. Please contact your system "
-"administrator to review the configuration."
-msgstr ""
-"일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문"
-"의하십시오."
+msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
+msgstr "일부 중요한 디렉토리가 누락되었습니다. 구성을 검토하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:33
-msgid ""
-"The available disk space on the server is running low. Please contact your "
-"system administrator to add more disk space."
-msgstr ""
-"서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스"
-"템 관리자에게 문의하십시오."
+msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+msgstr "서버에서 사용 가능한 디스크 공간이 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:38
-msgid ""
-"The available disk space on the server is critically low. Please contact "
-"your system administrator to add more disk space."
-msgstr ""
-"서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 "
-"시스템 관리자에게 문의하십시오."
+msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+msgstr "서버에서 사용 가능한 디스크 공간이 매우 부족합니다. 디스크 공간을 추가하려면 시스템 관리자에게 문의하십시오."
 
 #: ../html/src/manager/login/messages.tsx:53
-msgid ""
-"SUSE Manager PAYG instances must forward registration data to SCC when "
-"credentials are provided. Data will be sent independently of the "
-"configuration setting. To hide this warning please set 'forward_registration "
-"= 1' in rhn.conf."
-msgstr ""
-"SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해"
-"야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn."
-"conf에서 'forward_registration = 1'을 설정하십시오."
+msgid "SUSE Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
+msgstr "SUSE Manager PAYG 인스턴스는 자격 증명이 제공되면 등록 데이터를 SCC로 전달해야 합니다. 데이터는 구성 설정과 관계없이 전송됩니다. 이 경고를 숨기려면 rhn.conf에서 'forward_registration = 1'을 설정하십시오."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -3998,12 +3717,8 @@ msgstr "로그인 중..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
 #: ../html/src/manager/login/uyuni/login.tsx:40
-msgid ""
-"Discover a new way of managing your servers, packages, patches and more via "
-"one interface."
-msgstr ""
-"서버, 패키지, 패치 등을 단일 인터페이스에서 관리하기 위한 새로운 방법을 알아"
-"보십시오."
+msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
+msgstr "서버, 패키지, 패치 등을 단일 인터페이스에서 관리하기 위한 새로운 방법을 알아보십시오."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 #, fuzzy
@@ -4037,9 +3752,7 @@ msgstr "계정이 비활성화되었습니다."
 
 #: ../html/src/manager/login/use-login-api.ts:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
-"이 사용자에는 API 액세스에 대한 읽기 권한만 있습니다. WebUI 로그인이 거부되었"
-"습니다."
+msgstr "이 사용자에는 API 액세스에 대한 읽기 권한만 있습니다. WebUI 로그인이 거부되었습니다."
 
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
@@ -4103,8 +3816,7 @@ msgstr "선택한 항목을 삭제하시겠습니까?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:48
-msgid ""
-"This will remove the current schedule from all the systems assigned to it."
+msgid "This will remove the current schedule from all the systems assigned to it."
 msgstr "이 작업을 수행하면 할당된 모든 시스템에서 현재 일정이 제거됩니다."
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:46
@@ -4291,12 +4003,8 @@ msgid "Calendar successfully refreshed"
 msgstr "달력 새로 고침"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
-msgid ""
-"Any pending maintenance-only actions for these systems will be cancelled "
-"unless they are inside the new maintenance windows."
-msgstr ""
-"새 유지보수 기간에 해당하는 경우를 제외하고 이 시스템에 대해 대기 중인 모든 "
-"유지보수 전용 작업이 취소됩니다."
+msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
+msgstr "새 유지보수 기간에 해당하는 경우를 제외하고 이 시스템에 대해 대기 중인 모든 유지보수 전용 작업이 취소됩니다."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:26
 msgid "Are you sure you want to proceed?"
@@ -4337,9 +4045,7 @@ msgid "Assign a maintenance schedule to {count} system(s)"
 msgstr "유지보수 일정을 {count}개 시스템에 할당"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:22
-msgid ""
-"Assigning a schedule will replace any prior assignments in all of the "
-"systems in the set."
+msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
 msgstr "일정을 할당하면 집합 내 모든 시스템의 모든 이전 할당이 대체됩니다."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
@@ -4384,12 +4090,8 @@ msgid "An error occurred while loading data. Please check server logs."
 msgstr "데이터를 로드하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
-msgid ""
-"Ansible Control Node Configuration: add paths for Playbook discovery and "
-"Inventory files introspection."
-msgstr ""
-"Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일 검사를 위한 경로를 추"
-"가합니다."
+msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
+msgstr "Ansible 제어 노드 구성: 플레이북 검색 및 인벤토리 파일 검사를 위한 경로를 추가합니다."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:166
 msgid "Playbook Directories"
@@ -4534,9 +4236,6 @@ msgstr "패키지 상태"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "시/도"
 
@@ -4549,7 +4248,7 @@ msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 msgid "Summary"
 msgstr "요약"
 
@@ -4558,9 +4257,7 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "프로그램 임시 수정(PTF) 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are available for installation "
-"on this system. "
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
 msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:33
@@ -4580,9 +4277,7 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "프로그램 임시 수정(PTF) 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:29
-msgid ""
-"The following Program Temporary Fixes (PTFs) are currently installed on this "
-"system. "
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
 msgstr "이 시스템에 현재 설치된 프로그램 임시 수정(PTF)은 다음과 같습니다. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:34
@@ -4653,109 +4348,106 @@ msgstr "알림 업데이트"
 msgid "PAYG instance is not compliant"
 msgstr "PAYG 인스턴스가 호환되지 않음"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.tsx:64
+msgid "SCC Data Sync Disabled"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:245
+#: ../html/src/manager/notifications/notification-messages.tsx:246
 msgid "Info"
 msgstr "정보"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Warning"
 msgstr "경고"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Error"
 msgstr "오류"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:320
+#: ../html/src/manager/notifications/notification-messages.tsx:324
 msgid "show details"
 msgstr "세부 사항 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:369
+#: ../html/src/manager/notifications/notification-messages.tsx:373
 msgid "Retry onboarding"
 msgstr "온보딩 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:379
+#: ../html/src/manager/notifications/notification-messages.tsx:383
 msgid "Retry repo sync"
 msgstr "저장소 동기화 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:406
 msgid "Unread Messages"
 msgstr "읽지 않은 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "All Messages"
 msgstr "모든 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "Filter by type"
 msgstr "유형을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:439
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:443
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 msgid "Delete selected messages"
 msgstr "선택한 메시지 삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:447
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 msgid "Mark selected as read"
 msgstr "선택 항목을 읽음으로 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:465
-#: ../html/src/manager/notifications/notification-messages.tsx:543
+#: ../html/src/manager/notifications/notification-messages.tsx:469
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Notification Messages"
 msgstr "알림 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
+#: ../html/src/manager/notifications/notification-messages.tsx:474
 msgid "The server has collected the following notification messages."
 msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:484
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Severity"
 msgstr "심각도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Read|Delete"
 msgstr "읽기|삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Unread"
 msgstr "읽지 않음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Read"
 msgstr "읽음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:531
+#: ../html/src/manager/notifications/notification-messages.tsx:535
 msgid "Delete Notification"
 msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
-"Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
+msgstr "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
-msgstr ""
-"서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십"
-"시오."
+msgstr "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십시오."
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:29
-msgid ""
-"Applying the config channels has been scheduled for each minion server in "
-"this organization"
+msgid "Applying the config channels has been scheduled for each minion server in this organization"
 msgstr "이 조직에서 각 minion 서버에 구성 채널 적용이 예약되었습니다."
 
 #: ../html/src/manager/packages/list.tsx:80
@@ -4795,8 +4487,7 @@ msgid "The container based proxy configuration has been generated correctly."
 msgstr "컨테이너 기반 프록시 구성이 올바르게 생성되었습니다."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:33
-msgid ""
-"Generation of the proxy configuration in progress: waiting for a response..."
+msgid "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
 
 #: ../html/src/manager/proxy/container-config.tsx:142
@@ -4809,14 +4500,8 @@ msgid "Container Based Proxy Configuration"
 msgstr "컨테이너 기반 프록시 구성"
 
 #: ../html/src/manager/proxy/container-config.tsx:185
-msgid ""
-"You can generate a set of configuration files and certificates in order to "
-"register and run a container-based proxy. Once the following form is filled "
-"out and submitted you will get a .tar.gz archive to download."
-msgstr ""
-"컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생성"
-"할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 .tar.gz 아카이브가 "
-"제공됩니다."
+msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
+msgstr "컨테이너 기반 프록시를 등록 및 실행하기 위해 구성 파일과 인증서 세트를 생성할 수 있습니다. 다음 양식을 작성한 후 제출하면 다운로드할 .tar.gz 아카이브가 제공됩니다."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "Proxy FQDN"
@@ -5089,12 +4774,8 @@ msgid "The following recurring actions have been created."
 msgstr "다음 반복 작업이 생성되었습니다."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:125
-msgid ""
-"To create new recurring actions head to the system, group or organization "
-"you want to create the action for."
-msgstr ""
-"새 반복 작업을 생성하려면 작업을 생성할 시스템, 그룹 또는 조직으로 이동하십시"
-"오."
+msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
+msgstr "새 반복 작업을 생성하려면 작업을 생성할 시스템, 그룹 또는 조직으로 이동하십시오."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:170
 msgid "Frequency"
@@ -5122,17 +4803,11 @@ msgstr "그룹"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:133
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
-"작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시"
-"오."
+msgstr "작업을 삭제하는 동안 오류가 발생했습니다. Taskomatic이 실행 중인지 확인하십시오."
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:148
-msgid ""
-"The below times are displayed in the server time zone {timeZone}. The "
-"scheduled time will be the server time."
-msgstr ""
-"아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩"
-"니다."
+msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
+msgstr "아래 시간은 서버 시간대 {timeZone}에 표시됩니다. 예약된 시간은 서버 시간이 됩니다."
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -5236,16 +4911,8 @@ msgid "Matching ssh-push minions..."
 msgstr "ssh-push minion을 일치시키는 중..."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:62
-msgid ""
-"The formula catalog page enables viewing of currently installed <link>Salt "
-"Formulas</link>. Apply these formulas to individual systems or server "
-"groups. Formulas allow automatic installation and configuration of software "
-"and may be installed via RPM packages."
-msgstr ""
-"공식 카탈로그 페이지에서는 현재 설치된 <link>Salt 공식</link>을 볼 수 있습니"
-"다. 개별 시스템이나 서버 그룹에 이러한 공식을 적용하십시오. 공식을 사용하면 "
-"소프트웨어의 자동 설치 및 구성이 가능하며 RPM 패키지를 통해 설치할 수 있습니"
-"다."
+msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
+msgstr "공식 카탈로그 페이지에서는 현재 설치된 <link>Salt 공식</link>을 볼 수 있습니다. 개별 시스템이나 서버 그룹에 이러한 공식을 적용하십시오. 공식을 사용하면 소프트웨어의 자동 설치 및 구성이 가능하며 RPM 패키지를 통해 설치할 수 있습니다."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:95
 msgid "Formula Catalog"
@@ -5381,12 +5048,8 @@ msgid "Development debugging page"
 msgstr "개발 디버깅 페이지"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
-msgid ""
-"This is a hidden page used by developers, if you found it by accident, good "
-"job!"
-msgstr ""
-"개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단"
-"하시네요!"
+msgid "This is a hidden page used by developers, if you found it by accident, good job!"
+msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단하시네요!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5413,11 +5076,8 @@ msgid "Child Channels:"
 msgstr "하위 채널:"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
-msgid ""
-"Any system registered using this activation key will be subscribed to the "
-"selected child channels."
-msgstr ""
-"이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
+msgid "Any system registered using this activation key will be subscribed to the selected child channels."
+msgstr "이 활성화 키를 사용하여 등록된 모든 시스템이 선택한 하위 채널에 등록됩니다."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
@@ -5475,23 +5135,12 @@ msgid "Close"
 msgstr "닫기"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
-msgid ""
-"Request interrupted or invalid response received from the server. Please "
-"check if your minion was bootstrapped correctly."
-msgstr ""
-"서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바"
-"르게 부트스트랩되었는지 확인하십시오."
+msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
+msgstr "서버로부터 수신된 중단되거나 유효하지 않은 응답을 요청하십시오. minion이 올바르게 부트스트랩되었는지 확인하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:356
-msgid ""
-"Bootstrap process initiated. Your system should be visible at the following "
-"location shortly: <link>systems</link>. If any issues arise, you'll receive "
-"an error notification. In case you're working with a transactional system, "
-"please perform a system reboot to complete the registration process."
-msgstr ""
-"부트스트랩 프로세스가 시작되었습니다. 시스템이 곧 다음 위치에 표시됨: <link>"
-"시스템</link>. 문제가 발생하면 오류 알림이 제공됩니다. 트랜잭션 시스템으로 작"
-"업 중인 경우 시스템 재부팅을 수행하여 등록 프로세스를 완료하십시오."
+msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
+msgstr "부트스트랩 프로세스가 시작되었습니다. 시스템이 곧 다음 위치에 표시됨: <link>시스템</link>. 문제가 발생하면 오류 알림이 제공됩니다. 트랜잭션 시스템으로 작업 중인 경우 시스템 재부팅을 수행하여 등록 프로세스를 완료하십시오."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:376
 msgid "Show additional details about this error"
@@ -5519,9 +5168,7 @@ msgid "e.g., ••••••••••••"
 msgstr "예: ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:440
-msgid ""
-"The file will be stored in a temporary file on the server and will be "
-"deleted after the bootstrapping procedure"
+msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
 msgstr "파일이 서버의 임시 파일에 저장되고 부트스트랩 절차 후에 삭제됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:453
@@ -5533,29 +5180,16 @@ msgid "Bootstrap Minions"
 msgstr "부트스트랩 Minion"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:468
-msgid ""
-"You can add systems to be managed by providing SSH credentials only. "
-"{productName} will prepare the system remotely and will perform the "
-"registration."
-msgstr ""
-"SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {productName}은"
-"(는) 시스템을 원격으로 준비하며 등록을 수행합니다."
+msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
+msgstr "SSH 인증서만을 제공하여 관리할 시스템을 추가할 수 있습니다. {productName}은(는) 시스템을 원격으로 준비하며 등록을 수행합니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:482
 msgid "e.g., host.domain.com"
 msgstr "예: host.domain.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:519
-msgid ""
-"The user will have an effect only during the bootstrap process. Further "
-"connections will be made by the user specified in rhn.conf. The default user "
-"for the key 'ssh_push_sudo_user' is 'root'. This user is set after "
-"{productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
-"사용자는 부트스트랩 프로세스 중에만 영향을 미칩니다. 추가 연결은 rhn.conf에 "
-"지정된 사용자에 의해 수행됩니다. 'ssh_push_sudo_user' 키의 기본 사용자는 "
-"'root'입니다. 이 사용자는 부트스트랩 절차 중에 {productName}의 SSH 키가 배포"
-"된 후에 설정됩니다."
+msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
+msgstr "사용자는 부트스트랩 프로세스 중에만 영향을 미칩니다. 추가 연결은 rhn.conf에 지정된 사용자에 의해 수행됩니다. 'ssh_push_sudo_user' 키의 기본 사용자는 'root'입니다. 이 사용자는 부트스트랩 절차 중에 {productName}의 SSH 키가 배포된 후에 설정됩니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:528
 msgid "Authentication Method"
@@ -5580,12 +5214,8 @@ msgid "Leave empty when no reactivation is wanted"
 msgstr "재활성화를 원하지 않는 경우 비워둡니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:631
-msgid ""
-"The hostname of the proxy is not fully qualified. This may cause problems "
-"when accessing the channels."
-msgstr ""
-"프록시의 호스트 이름이 완전하지 않습니다. 이로 인해 채널에 액세스할 때 문제"
-"가 발생할 수 있습니다."
+msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
+msgstr "프록시의 호스트 이름이 완전하지 않습니다. 이로 인해 채널에 액세스할 때 문제가 발생할 수 있습니다."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:648
 msgid "Disable SSH strict host key checking during bootstrap process"
@@ -5596,8 +5226,7 @@ msgid "Manage system completely via SSH (will not install an agent)"
 msgstr "SSH를 통해 시스템을 완전히 관리합니다(에이전트를 설치하지 않음)."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:680
-msgid ""
-"Are you sure you want to close this page while bootstrapping is in progress ?"
+msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
 msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:114
@@ -5608,14 +5237,12 @@ msgstr "기밀 컴퓨팅 성능"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "Yes"
 msgstr "예"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
 msgid "No"
 msgstr "아니요"
 
@@ -5810,8 +5437,7 @@ msgstr "선택한 시스템 집합 제거"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
-"Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
+msgstr "Taskomatic에서 작업을 예약하는 동안 오류가 발생했습니다. 로그를 확인하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "Could not determine system default channel."
@@ -5848,25 +5474,12 @@ msgid "System Default Base Channel"
 msgstr "시스템 기본값 기본 채널"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:151
-msgid ""
-"As a Channel Administrator, you may change the base channels your systems "
-"are subscribed to. Valid channels are either channels created by your "
-"organization, or the default SUSE base channel for your operating system "
-"version and processor type. Systems will be unsubscribed from all channels, "
-"and subscribed to their new base channels. "
-msgstr ""
-"채널 관리자는 시스템이 가입한 기본 채널을 변경할 수 있습니다. 유효한 채널은 "
-"조직이 생성한 채널 또는 운영 체제 버전 및 프로세서 유형에 대한 기본 SUSE 기"
-"본 채널입니다. 시스템은 모든 채널에서 가입이 취소되며 새 기본 채널에 가입합니"
-"다. "
+msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
+msgstr "채널 관리자는 시스템이 가입한 기본 채널을 변경할 수 있습니다. 유효한 채널은 조직이 생성한 채널 또는 운영 체제 버전 및 프로세서 유형에 대한 기본 SUSE 기본 채널입니다. 시스템은 모든 채널에서 가입이 취소되며 새 기본 채널에 가입합니다. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:156
-msgid ""
-"This operation can have a dramatic effect on the packages and patches "
-"available to the systems, and should be used with caution."
-msgstr ""
-"이 작업은 시스템에서 사용할 수 있는 패키지 및 패치에 커다란 영향을 주며 유의"
-"하여 사용해야 합니다."
+msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
+msgstr "이 작업은 시스템에서 사용할 수 있는 패키지 및 패치에 커다란 영향을 주며 유의하여 사용해야 합니다."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:173
 msgid "Current base Channel"
@@ -5902,7 +5515,6 @@ msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(없음)"
 
@@ -5925,23 +5537,15 @@ msgstr "조직의 채널 목록은 아래와 같습니다. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:552
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
-"채널을 변경하려면 해당 채널에 대해 아무 작업도 하지 않음을 선택하십시오."
+msgstr "채널을 변경하려면 해당 채널에 대해 아무 작업도 하지 않음을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:553
-msgid ""
-"To subscribe selected systems to a channel, check Subscribed for that "
-"channel."
-msgstr ""
-"선택한 시스템을 채널에 가입시키려면 해당 채널에 대하여 가입됨을 선택하십시오."
+msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
+msgstr "선택한 시스템을 채널에 가입시키려면 해당 채널에 대하여 가입됨을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:554
-msgid ""
-"To unsubscribe selected systems from a channel, check Unsubscribed for that "
-"channel."
-msgstr ""
-"선택한 시스템의 채널 가입을 취소하려면 해당 채널에 대하여 가입 취소됨을 선택"
-"하십시오."
+msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
+msgstr "선택한 시스템의 채널 가입을 취소하려면 해당 채널에 대하여 가입 취소됨을 선택하십시오."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:564
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:733
@@ -5994,22 +5598,12 @@ msgid "Changing the channels has been "
 msgstr "채널 변경이 "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:584
-msgid ""
-"You can change the base software channel your system is subscribed to. The "
-"system will be unsubscribed from all software channels, and subscribed to "
-"the new base software channel."
-msgstr ""
-"시스템이 가입한 기본 소프트웨어 채널 시스템을 변경할 수 있습니다. 모든 소프트"
-"웨어 채널에서 시스템의 가입이 취소되고 새 기본 소프트웨어 채널에 가입합니다."
+msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
+msgstr "시스템이 가입한 기본 소프트웨어 채널 시스템을 변경할 수 있습니다. 모든 소프트웨어 채널에서 시스템의 가입이 취소되고 새 기본 소프트웨어 채널에 가입합니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:610
-msgid ""
-"This system is subscribed to the checked channels beneath, if any. Disabled "
-"checkboxes indicate channels that can't be manually subscribed or "
-"unsubscribed from."
-msgstr ""
-"이 시스템은 아래에 선택한 채널에 가입되었습니다(있는 경우). 비활성화된 확인란"
-"은 채널에 수동으로 가입 또는 가입 취소할 수 없음을 나타냅니다."
+msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
+msgstr "이 시스템은 아래에 선택한 채널에 가입되었습니다(있는 경우). 비활성화된 확인란은 채널에 수동으로 가입 또는 가입 취소할 수 없음을 나타냅니다."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:629
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:630
@@ -6031,7 +5625,6 @@ msgid "No Virtual Systems."
 msgstr "가상 시스템 없음"
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
@@ -6138,837 +5731,13 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "libvirt python 모듈을 설치하십시오."
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확"
-"인하십시오."
-
-#: ../html/src/manager/virtualization/ListTab.tsx:161
-msgid "{name} selected"
-msgstr "{name} 선택됨"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:240
-msgid "Action Status"
-msgstr "작업 상태"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:225
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:246
-msgid "Can not contain the following characters: /\\"
-msgstr "다음 문자를 포함할 수 없음: /\\"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:141
-msgid "Hypervisor"
-msgstr "하이퍼바이저"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:152
-msgid "Virtual Machine Type"
-msgstr "가상 머신 유형"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:56
-msgid "Maximum Memory (MiB)"
-msgstr "최대 메모리(MiB)"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:166
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:175
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:58
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:67
-msgid "A positive integer is required"
-msgstr "양수 필요"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:65
-msgid "Virtual CPU Count"
-msgstr "가상 CPU 수"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
-msgid "Enable UEFI"
-msgstr "UEFI 활성화"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
-msgid "UEFI firmware path"
-msgstr "UEFI 펌웨어 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
-msgid "NVRAM template path"
-msgstr "NVRAM 템플릿 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
-msgid "Auto-installation Profile"
-msgstr "자동 설치 프로파일"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
-msgid "Kernel options"
-msgstr "커널 옵션"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
-msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
-msgid "Define as a cluster resource"
-msgstr "클러스터 리소스로 정의"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
-msgid "Path to the cluster shared folder for VM definitions"
-msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Graphics"
-msgstr "그래픽"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "재시도"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "연결 중..."
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "연결 끊김"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "연결 실패"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "전체 크기 전환"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "게스트가 실행 중이 아님"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "알 수 없는 게스트"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "가상 머신 생성"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
-msgid "Migrate"
-msgstr "마이그레이트"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "대상 호스트"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
-msgid "Start / Resume"
-msgstr "시작/다시 시작"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
-msgid "Stop"
-msgstr "중지"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
-msgid "Force off"
-msgstr "강제 종료"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
-msgid "Suspend"
-msgstr "일시 중지"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
-msgid "Synchronize Guests List"
-msgstr "게스트 목록 동기화"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
-msgid "Synchronize"
-msgstr "동기화"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
-msgid "Hosted Virtual Systems"
-msgstr "호스팅된 가상 시스템"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
-msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
-msgid "Guest"
-msgstr "게스트"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
-msgid "Unregistered System"
-msgstr "미등록 시스템"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
-msgid "Current Memory"
-msgstr "현재 메모리"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
-msgid "vCPUs"
-msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
-msgid "paused"
-msgstr "일시 중지됨"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
-msgid "Graphical Console"
-msgstr "그래픽 콘솔"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
-msgid "Device type"
-msgstr "장치 유형"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
-msgid "Disk"
-msgstr "디스크"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:63
-msgid "CDROM"
-msgstr "CDROM"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:64
-msgid "Floppy"
-msgstr "플로피"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:75
-msgid "Bus"
-msgstr "버스"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:26
-msgid "File"
-msgstr "파일"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:35
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:113
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:500
-msgid "Format"
-msgstr "형식"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
-msgid "Source storage pool"
-msgstr "소스 저장소 풀"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:82
-msgid "Source Volume"
-msgstr "소스 볼륨"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:95
-msgid "Disk size (GiB)"
-msgstr "디스크 크기(GiB)"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
-msgid "Source template image URL"
-msgstr "소스 템플릿 이미지 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "디스크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
-msgid "Network"
-msgstr "네트워크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:90
-msgid "MAC address"
-msgstr "MAC 주소"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
-msgid "Leave blank to generate a MAC address"
-msgstr "MAC 주소를 생성하려면 공백 유지"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
-msgid "Networks"
-msgstr "네트워크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
-msgid "Clear Fields"
-msgstr "필드 지우기"
-
-#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
-msgid "Single virtual machine using almost all the host resources"
-msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
-msgid "Create Virtual Network"
-msgstr "가상 네트워크 만들기"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
-msgid "Start"
-msgstr "시작"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
-msgid "Virtual Networks"
-msgstr "가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
-msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
-msgstr ""
-"이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
-msgid "Autostart"
-msgstr "자동 시작"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
-msgid "Persistent"
-msgstr "영구"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:264
-msgid "Bridge"
-msgstr "브리지"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:216
-msgid "network properties"
-msgstr "네트워크 속성"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:233
-msgid "Network type"
-msgstr "네트워크 유형"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:245
-msgid "Macvtap mode"
-msgstr "Macvtap 모드"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:254
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:266
-msgid "Start during virtual host boot"
-msgstr "가상 호스트 부팅 중 시작"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:260
-msgid "Connectivity"
-msgstr "연결성"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:273
-msgid "Maximum Transmission Unit (MTU)"
-msgstr "최대 전송 단위(MTU)"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:277
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:179
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:188
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:197
-msgid "The value has to be a positive integer"
-msgstr "값은 양의 정수여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:285
-msgid "Virtual Port Type"
-msgstr "가상 포트 유형"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:301
-msgid "Select interfaces"
-msgstr "인터페이스 선택"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:307
-msgid "By physical function"
-msgstr "물리적 기능별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:310
-msgid "By virtual functions"
-msgstr "가상 기능별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:311
-msgid "By interfaces"
-msgstr "인터페이스별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:322
-msgid "Interfaces"
-msgstr "인터페이스"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:342
-msgid "Physical Function"
-msgstr "물리적 기능"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:357
-msgid "Virtual Functions"
-msgstr "가상 기능"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:379
-msgid "VLAN tag"
-msgstr "VLAN 태그"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:383
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:57
-msgid "Integer between 0 and 4095"
-msgstr "0에서 4095 사이의 정수"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
-msgid "VLAN tags trunking"
-msgstr "VLAN 태그 트렁킹"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
-msgid "NAT IPv4 range"
-msgstr "NAT IPv4 범위"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-msgid "Both values has to be IPv4 addresses"
-msgstr "두 값 모두 IPv4 주소여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
-msgid "NAT port range"
-msgstr "NAT 포트 범위"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
-msgid "Both values has to be positive integers"
-msgstr "두 값 모두 양의 정수여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
-msgid "Addressing"
-msgstr "주소"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-msgid "Enable IPv6"
-msgstr "IPv6 활성화"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
-msgid "Domain name"
-msgstr "도메인 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:19
-msgid "DNS"
-msgstr "DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:24
-msgid "Forwarders"
-msgstr "전달자"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:37
-msgid "Domain"
-msgstr "도메인"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:38
-msgid "DNS server address"
-msgstr "DNS 서버 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:51
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:240
-msgid "Has to be a valid qualified host name"
-msgstr "유효한 정규화된 호스트 이름이어야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:59
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:100
-msgid "Has to be an IP address"
-msgstr "IP 주소여야 함"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:66
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:282
-msgid "Hosts"
-msgstr "호스트"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:80
-msgid "Address"
-msgstr "주소"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:84
-msgid "hostnames (comma-separated)"
-msgstr "호스트 이름(쉼표로 구분)"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:112
-msgid "Has to be a comma-separated list of host names"
-msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:119
-msgid "SRV records"
-msgstr "SRV 레코드"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:139
-msgid "Service name"
-msgstr "서비스 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:147
-msgid "Protocol"
-msgstr "프로토콜"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:159
-msgid "Service domain name"
-msgstr "서비스 도메인 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:168
-msgid "Target hostname"
-msgstr "대상 호스트 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:175
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:222
-msgid "Port"
-msgstr "포트"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:184
-msgid "Target priority"
-msgstr "대상 우선순위"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:193
-msgid "Target weight"
-msgstr "대상 가중치"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:206
-msgid "TXT records"
-msgstr "TXT 레코드"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:224
-msgid "Value"
-msgstr "값"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
-msgid "Network address"
-msgstr "네트워크 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:41
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:56
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:105
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:135
-msgid "v6"
-msgstr "v6"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:85
-msgid "IP address"
-msgstr "IP 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr "DHCP 고유 식별자(DUID)"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:119
-msgid "Needs to be a MAC address"
-msgstr "MAC 주소여야 함"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:144
-msgid "BOOTP image file"
-msgstr "BOOTP 이미지 파일"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:145
-msgid "BOOTP server"
-msgstr "BOOTP 서버"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:146
-msgid "TFTP root path"
-msgstr "TFTP 루트 경로"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:23
-msgid "Parameters"
-msgstr "파라미터"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:29
-msgid "By profile id"
-msgstr "프로파일 ID별"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr "VSI(Virtual Station Interface) 파라미터"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:38
-msgid "Profile id"
-msgstr "프로파일 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:48
-msgid "Interface id"
-msgstr "인터페이스 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:56
-msgid "VSI manager id"
-msgstr "VSI 관리자 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:57
-msgid "VSI type id"
-msgstr "VSI 유형 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:60
-msgid "VSI type id version"
-msgstr "VSI 유형 ID 버전"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:66
-msgid "VSI instance id"
-msgstr "VSI 인스턴스 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:70
-msgid "Value needs to be a valid UUID"
-msgstr "값은 유효한 UUID여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:19
-msgid "VLANs"
-msgstr "VLAN"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:40
-msgid "Tag"
-msgstr "태그"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:43
-msgid "Native mode"
-msgstr "기본 모드"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
-msgid "Tagged"
-msgstr "태그됨"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
-msgid "Untagged"
-msgstr "태그되지 않음"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
-"DNS 서비스가 추가되지 않았습니다."
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 풀"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
-msgid "Could not get network devices from the server. Please try again."
-msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
-
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:26
-msgid "Create Virtual Storage Pool"
-msgstr "가상 저장소 풀 생성"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Pool"
-msgstr "가상 저장소 풀"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Volume"
-msgstr "가상 저장소 볼륨"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
-msgid "Delete the pool, including the contained volumes. "
-msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
-msgid "Cannot be undone"
-msgstr "실행을 취소할 수 없음"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
-msgid "Edit Pool"
-msgstr "풀 편집"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
-msgid "Location"
-msgstr "위치"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
-msgid "Usage"
-msgstr "사용"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-msgid "Create Pool"
-msgstr "풀 생성"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
-msgid "Virtual Storage Pools and Volumes"
-msgstr "가상 저장소 풀 및 볼륨"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
-msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
-msgid "Filter by pool or volume name"
-msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
-msgid "Partition separator"
-msgstr "파티션 구분자"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
-msgid "Host name"
-msgstr "호스트 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:255
-msgid "Pool Type"
-msgstr "풀 유형"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:272
-msgid "Source"
-msgstr "소스"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:314
-msgid "Devices"
-msgstr "장치"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:355
-msgid "Initiator IQN"
-msgstr "이니시에이터 IQN"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:365
-msgid "Adapter type"
-msgstr "어댑터 유형"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:389
-msgid "Adapter name"
-msgstr "어댑터 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:398
-msgid "Adapter parent PCI address"
-msgstr "어댑터 상위 PCI 주소"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:402
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:415
-msgid "PCI address formatted like 0000:00:00.0"
-msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:411
-msgid "Adapter parent address unique ID"
-msgstr "어댑터 상위 주소 고유 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:422
-msgid "Adapter parent name"
-msgstr "어댑터 상위 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:430
-msgid "Adapter parent wwnn"
-msgstr "어댑터 상위 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:433
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:453
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:475
-msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:440
-msgid "Adapter parent wwpn"
-msgstr "어댑터 상위 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:450
-msgid "Adapter parent fabric wwn"
-msgstr "어댑터 상위 패브릭 wwn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:460
-msgid "Adapter wwnn"
-msgstr "어댑터 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:471
-msgid "Adapter wwpn"
-msgstr "어댑터 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:482
-msgid "Manage vHBA deletion"
-msgstr "vHBA 감지 관리"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:491
-msgid "Source name"
-msgstr "소스 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:517
-msgid "Passphrase"
-msgstr "비밀번호"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:527
-msgid "Target"
-msgstr "대상"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:538
-msgid "Owner UID"
-msgstr "소유자 UID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:542
-msgid "UID is a numeric value"
-msgstr "UID는 숫자 값입니다."
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:546
-msgid "Group ID"
-msgstr "그룹 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:550
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:559
-msgid "GID is a numeric value"
-msgstr "GID는 숫자 값입니다."
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
-msgid "Permission mode"
-msgstr "권한 모드"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:555
-msgid "target directory permissions in octal form, like 0775"
-msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
-
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:562
-msgid "SELinux label"
-msgstr "SELinux 레이블"
-
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
-msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "세션이 만료되었습니다. 페이지를 다시 로드하십시오."
 
 #: ../html/src/utils/network.ts:99
-msgid ""
-"Authorization error, please reload the page or try to logout/login again."
-msgstr ""
-"인증 오류입니다. 페이지를 다시 로드하거나 로그아웃한 후 다시 로그인하십시오."
+msgid "Authorization error, please reload the page or try to logout/login again."
+msgstr "인증 오류입니다. 페이지를 다시 로드하거나 로그아웃한 후 다시 로그인하십시오."
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
@@ -6977,6 +5746,576 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Please install libvirt python module."
+#~ msgstr "libvirt python 모듈을 설치하십시오."
+
+#~ msgid "Neither KVM nor Xen is running. Ensure they are installed and the kernel modules are loaded."
+#~ msgstr "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확인하십시오."
+
+#~ msgid "{name} selected"
+#~ msgstr "{name} 선택됨"
+
+#~ msgid "Action Status"
+#~ msgstr "작업 상태"
+
+#~ msgid "Can not contain the following characters: /\\"
+#~ msgstr "다음 문자를 포함할 수 없음: /\\"
+
+#~ msgid "Hypervisor"
+#~ msgstr "하이퍼바이저"
+
+#~ msgid "Virtual Machine Type"
+#~ msgstr "가상 머신 유형"
+
+#~ msgid "Maximum Memory (MiB)"
+#~ msgstr "최대 메모리(MiB)"
+
+#~ msgid "A positive integer is required"
+#~ msgstr "양수 필요"
+
+#~ msgid "Virtual CPU Count"
+#~ msgstr "가상 CPU 수"
+
+#~ msgid "Enable UEFI"
+#~ msgstr "UEFI 활성화"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFI 펌웨어 경로"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAM 템플릿 경로"
+
+#~ msgid "Auto-installation Profile"
+#~ msgstr "자동 설치 프로파일"
+
+#~ msgid "Kernel options"
+#~ msgstr "커널 옵션"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "클러스터 리소스로 정의"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
+
+#~ msgid "Graphics"
+#~ msgstr "그래픽"
+
+#~ msgid "Retry"
+#~ msgstr "재시도"
+
+#~ msgid "Connecting..."
+#~ msgstr "연결 중..."
+
+#~ msgid "Disconnected"
+#~ msgstr "연결 끊김"
+
+#~ msgid "Failed to connect"
+#~ msgstr "연결 실패"
+
+#~ msgid "Toggle full size"
+#~ msgstr "전체 크기 전환"
+
+#~ msgid "Guest is not running"
+#~ msgstr "게스트가 실행 중이 아님"
+
+#~ msgid "Unknown guest"
+#~ msgstr "알 수 없는 게스트"
+
+#~ msgid "Something went wrong, connection is closed"
+#~ msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
+
+#~ msgid "Create Virtual Machine"
+#~ msgstr "가상 머신 생성"
+
+#~ msgid "Migrate"
+#~ msgstr "마이그레이트"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
+
+#~ msgid "Target Host"
+#~ msgstr "대상 호스트"
+
+#~ msgid "Start / Resume"
+#~ msgstr "시작/다시 시작"
+
+#~ msgid "Stop"
+#~ msgstr "중지"
+
+#~ msgid "Force off"
+#~ msgstr "강제 종료"
+
+#~ msgid "Suspend"
+#~ msgstr "일시 중지"
+
+#~ msgid "Synchronize Guests List"
+#~ msgstr "게스트 목록 동기화"
+
+#~ msgid "Synchronize"
+#~ msgstr "동기화"
+
+#~ msgid "Hosted Virtual Systems"
+#~ msgstr "호스팅된 가상 시스템"
+
+#~ msgid "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
+
+#~ msgid "Guest"
+#~ msgstr "게스트"
+
+#~ msgid "Unregistered System"
+#~ msgstr "미등록 시스템"
+
+#~ msgid "Current Memory"
+#~ msgstr "현재 메모리"
+
+#~ msgid "vCPUs"
+#~ msgstr "vCPU"
+
+#~ msgid "paused"
+#~ msgstr "일시 중지됨"
+
+#~ msgid "Graphical Console"
+#~ msgstr "그래픽 콘솔"
+
+#~ msgid "Device type"
+#~ msgstr "장치 유형"
+
+#~ msgid "Disk"
+#~ msgstr "디스크"
+
+#~ msgid "CDROM"
+#~ msgstr "CDROM"
+
+#~ msgid "Floppy"
+#~ msgstr "플로피"
+
+#~ msgid "Bus"
+#~ msgstr "버스"
+
+#~ msgid "File"
+#~ msgstr "파일"
+
+#~ msgid "Format"
+#~ msgstr "형식"
+
+#~ msgid "Source storage pool"
+#~ msgstr "소스 저장소 풀"
+
+#~ msgid "Source Volume"
+#~ msgstr "소스 볼륨"
+
+#~ msgid "Disk size (GiB)"
+#~ msgstr "디스크 크기(GiB)"
+
+#~ msgid "Source template image URL"
+#~ msgstr "소스 템플릿 이미지 URL"
+
+#~ msgid "Disks"
+#~ msgstr "디스크"
+
+#~ msgid "Network"
+#~ msgstr "네트워크"
+
+#~ msgid "MAC address"
+#~ msgstr "MAC 주소"
+
+#~ msgid "Leave blank to generate a MAC address"
+#~ msgstr "MAC 주소를 생성하려면 공백 유지"
+
+#~ msgid "Networks"
+#~ msgstr "네트워크"
+
+#~ msgid "Clear Fields"
+#~ msgstr "필드 지우기"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
+
+#~ msgid "Create Virtual Network"
+#~ msgstr "가상 네트워크 만들기"
+
+#~ msgid "Start"
+#~ msgstr "시작"
+
+#~ msgid "Virtual Networks"
+#~ msgstr "가상 네트워크"
+
+#~ msgid "This is a list of virtual networks which are configured to run on this host."
+#~ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
+
+#~ msgid "The Salt version on this system does not support virtual network creating and editing"
+#~ msgstr "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
+
+#~ msgid "Autostart"
+#~ msgstr "자동 시작"
+
+#~ msgid "Persistent"
+#~ msgstr "영구"
+
+#~ msgid "Bridge"
+#~ msgstr "브리지"
+
+#~ msgid "network properties"
+#~ msgstr "네트워크 속성"
+
+#~ msgid "Network type"
+#~ msgstr "네트워크 유형"
+
+#~ msgid "Macvtap mode"
+#~ msgstr "Macvtap 모드"
+
+#~ msgid "Start during virtual host boot"
+#~ msgstr "가상 호스트 부팅 중 시작"
+
+#~ msgid "Connectivity"
+#~ msgstr "연결성"
+
+#~ msgid "Maximum Transmission Unit (MTU)"
+#~ msgstr "최대 전송 단위(MTU)"
+
+#~ msgid "The value has to be a positive integer"
+#~ msgstr "값은 양의 정수여야 합니다."
+
+#~ msgid "Virtual Port Type"
+#~ msgstr "가상 포트 유형"
+
+#~ msgid "Select interfaces"
+#~ msgstr "인터페이스 선택"
+
+#~ msgid "By physical function"
+#~ msgstr "물리적 기능별"
+
+#~ msgid "By virtual functions"
+#~ msgstr "가상 기능별"
+
+#~ msgid "By interfaces"
+#~ msgstr "인터페이스별"
+
+#~ msgid "Interfaces"
+#~ msgstr "인터페이스"
+
+#~ msgid "Physical Function"
+#~ msgstr "물리적 기능"
+
+#~ msgid "Virtual Functions"
+#~ msgstr "가상 기능"
+
+#~ msgid "VLAN tag"
+#~ msgstr "VLAN 태그"
+
+#~ msgid "Integer between 0 and 4095"
+#~ msgstr "0에서 4095 사이의 정수"
+
+#~ msgid "VLAN tags trunking"
+#~ msgstr "VLAN 태그 트렁킹"
+
+#~ msgid "NAT IPv4 range"
+#~ msgstr "NAT IPv4 범위"
+
+#~ msgid "Both values has to be IPv4 addresses"
+#~ msgstr "두 값 모두 IPv4 주소여야 합니다."
+
+#~ msgid "NAT port range"
+#~ msgstr "NAT 포트 범위"
+
+#~ msgid "Both values has to be positive integers"
+#~ msgstr "두 값 모두 양의 정수여야 합니다."
+
+#~ msgid "Addressing"
+#~ msgstr "주소"
+
+#~ msgid "Enable IPv6"
+#~ msgstr "IPv6 활성화"
+
+#~ msgid "Domain name"
+#~ msgstr "도메인 이름"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "Forwarders"
+#~ msgstr "전달자"
+
+#~ msgid "Domain"
+#~ msgstr "도메인"
+
+#~ msgid "DNS server address"
+#~ msgstr "DNS 서버 주소"
+
+#~ msgid "Has to be a valid qualified host name"
+#~ msgstr "유효한 정규화된 호스트 이름이어야 합니다."
+
+#~ msgid "Has to be an IP address"
+#~ msgstr "IP 주소여야 함"
+
+#~ msgid "Hosts"
+#~ msgstr "호스트"
+
+#~ msgid "Address"
+#~ msgstr "주소"
+
+#~ msgid "hostnames (comma-separated)"
+#~ msgstr "호스트 이름(쉼표로 구분)"
+
+#~ msgid "Has to be a comma-separated list of host names"
+#~ msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
+
+#~ msgid "SRV records"
+#~ msgstr "SRV 레코드"
+
+#~ msgid "Service name"
+#~ msgstr "서비스 이름"
+
+#~ msgid "Protocol"
+#~ msgstr "프로토콜"
+
+#~ msgid "Service domain name"
+#~ msgstr "서비스 도메인 이름"
+
+#~ msgid "Target hostname"
+#~ msgstr "대상 호스트 이름"
+
+#~ msgid "Port"
+#~ msgstr "포트"
+
+#~ msgid "Target priority"
+#~ msgstr "대상 우선순위"
+
+#~ msgid "Target weight"
+#~ msgstr "대상 가중치"
+
+#~ msgid "TXT records"
+#~ msgstr "TXT 레코드"
+
+#~ msgid "Value"
+#~ msgstr "값"
+
+#~ msgid "Network address"
+#~ msgstr "네트워크 주소"
+
+#~ msgid "v6"
+#~ msgstr "v6"
+
+#~ msgid "IP address"
+#~ msgstr "IP 주소"
+
+#~ msgid "DHCP Unique Identifier (DUID)"
+#~ msgstr "DHCP 고유 식별자(DUID)"
+
+#~ msgid "Needs to be a MAC address"
+#~ msgstr "MAC 주소여야 함"
+
+#~ msgid "BOOTP image file"
+#~ msgstr "BOOTP 이미지 파일"
+
+#~ msgid "BOOTP server"
+#~ msgstr "BOOTP 서버"
+
+#~ msgid "TFTP root path"
+#~ msgstr "TFTP 루트 경로"
+
+#~ msgid "Parameters"
+#~ msgstr "파라미터"
+
+#~ msgid "By profile id"
+#~ msgstr "프로파일 ID별"
+
+#~ msgid "Virtual Station Interface (VSI) parameters"
+#~ msgstr "VSI(Virtual Station Interface) 파라미터"
+
+#~ msgid "Profile id"
+#~ msgstr "프로파일 ID"
+
+#~ msgid "Interface id"
+#~ msgstr "인터페이스 ID"
+
+#~ msgid "VSI manager id"
+#~ msgstr "VSI 관리자 ID"
+
+#~ msgid "VSI type id"
+#~ msgstr "VSI 유형 ID"
+
+#~ msgid "VSI type id version"
+#~ msgstr "VSI 유형 ID 버전"
+
+#~ msgid "VSI instance id"
+#~ msgstr "VSI 인스턴스 ID"
+
+#~ msgid "Value needs to be a valid UUID"
+#~ msgstr "값은 유효한 UUID여야 합니다."
+
+#~ msgid "VLANs"
+#~ msgstr "VLAN"
+
+#~ msgid "Tag"
+#~ msgstr "태그"
+
+#~ msgid "Native mode"
+#~ msgstr "기본 모드"
+
+#~ msgid "Tagged"
+#~ msgstr "태그됨"
+
+#~ msgid "Untagged"
+#~ msgstr "태그되지 않음"
+
+#~ msgid "Use an existing and configured bridge device. No iptables rule, IP address or DHCP/DNS service are added"
+#~ msgstr "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/DNS 서비스가 추가되지 않았습니다."
+
+#~ msgid "Virtual network using the host IP routing stack and NAT"
+#~ msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
+
+#~ msgid "Virtual network using the host IP routing stack, without NAT"
+#~ msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#~ msgid "Virtual network using the host IP routing stack, without firewall rules and NAT"
+#~ msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#~ msgid "Virtual network with no connection to other networks"
+#~ msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
+
+#~ msgid "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
+
+#~ msgid "SR-IOV pool"
+#~ msgstr "SR-IOV 풀"
+
+#~ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+#~ msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
+
+#~ msgid "Could not get network devices from the server. Please try again."
+#~ msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
+
+#~ msgid "Create Virtual Storage Pool"
+#~ msgstr "가상 저장소 풀 생성"
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "가상 저장소 풀"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "가상 저장소 볼륨"
+
+#~ msgid "Delete the pool, including the contained volumes. "
+#~ msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
+
+#~ msgid "Cannot be undone"
+#~ msgstr "실행을 취소할 수 없음"
+
+#~ msgid "Edit Pool"
+#~ msgstr "풀 편집"
+
+#~ msgid "Location"
+#~ msgstr "위치"
+
+#~ msgid "Usage"
+#~ msgstr "사용"
+
+#~ msgid "Create Pool"
+#~ msgstr "풀 생성"
+
+#~ msgid "Virtual Storage Pools and Volumes"
+#~ msgstr "가상 저장소 풀 및 볼륨"
+
+#~ msgid "This is the list of storage pools defined on this host containing virtual guests disks."
+#~ msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
+
+#~ msgid "Filter by pool or volume name"
+#~ msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
+
+#~ msgid "Partition separator"
+#~ msgstr "파티션 구분자"
+
+#~ msgid "Host name"
+#~ msgstr "호스트 이름"
+
+#~ msgid "Pool Type"
+#~ msgstr "풀 유형"
+
+#~ msgid "Source"
+#~ msgstr "소스"
+
+#~ msgid "Devices"
+#~ msgstr "장치"
+
+#~ msgid "Initiator IQN"
+#~ msgstr "이니시에이터 IQN"
+
+#~ msgid "Adapter type"
+#~ msgstr "어댑터 유형"
+
+#~ msgid "Adapter name"
+#~ msgstr "어댑터 이름"
+
+#~ msgid "Adapter parent PCI address"
+#~ msgstr "어댑터 상위 PCI 주소"
+
+#~ msgid "PCI address formatted like 0000:00:00.0"
+#~ msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
+
+#~ msgid "Adapter parent address unique ID"
+#~ msgstr "어댑터 상위 주소 고유 ID"
+
+#~ msgid "Adapter parent name"
+#~ msgstr "어댑터 상위 이름"
+
+#~ msgid "Adapter parent wwnn"
+#~ msgstr "어댑터 상위 wwnn"
+
+#~ msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+#~ msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
+
+#~ msgid "Adapter parent wwpn"
+#~ msgstr "어댑터 상위 wwpn"
+
+#~ msgid "Adapter parent fabric wwn"
+#~ msgstr "어댑터 상위 패브릭 wwn"
+
+#~ msgid "Adapter wwnn"
+#~ msgstr "어댑터 wwnn"
+
+#~ msgid "Adapter wwpn"
+#~ msgstr "어댑터 wwpn"
+
+#~ msgid "Manage vHBA deletion"
+#~ msgstr "vHBA 감지 관리"
+
+#~ msgid "Source name"
+#~ msgstr "소스 이름"
+
+#~ msgid "Passphrase"
+#~ msgstr "비밀번호"
+
+#~ msgid "Target"
+#~ msgstr "대상"
+
+#~ msgid "Owner UID"
+#~ msgstr "소유자 UID"
+
+#~ msgid "UID is a numeric value"
+#~ msgstr "UID는 숫자 값입니다."
+
+#~ msgid "Group ID"
+#~ msgstr "그룹 ID"
+
+#~ msgid "GID is a numeric value"
+#~ msgstr "GID는 숫자 값입니다."
+
+#~ msgid "Permission mode"
+#~ msgstr "권한 모드"
+
+#~ msgid "target directory permissions in octal form, like 0775"
+#~ msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
+
+#~ msgid "SELinux label"
+#~ msgstr "SELinux 레이블"
+
+#~ msgid "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
 #~ msgid "Learn more about"
 #~ msgstr "자세히 알아보기"
@@ -7078,17 +6417,11 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Manage"
 #~ msgstr "Manager"
 
-#~ msgid ""
-#~ "Action has been successfully added to the action chain <link>'{name}'</"
-#~ "link>."
+#~ msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 #~ msgstr "작업이 작업 체인 <link>'{name}'</link>에 추가되었습니다."
 
-#~ msgid ""
-#~ "The following channel installations for '{product}' failed. Please check "
-#~ "log files."
-#~ msgstr ""
-#~ "'{product}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시"
-#~ "오."
+#~ msgid "The following channel installations for '{product}' failed. Please check log files."
+#~ msgstr "'{product}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #~ msgid "Instance Details for '{name}'"
 #~ msgstr "'{name}'용 인스턴스 세부 사항"
@@ -7109,10 +6442,7 @@ msgstr "HTTP 오류 코드 "
 #~ msgstr "용량제 삭제"
 
 #, fuzzy
-#~ msgid ""
-#~ "Successfully bootstrapped host! Your system should appear in "
-#~ "<link>systems</link> shortly. If it is a transactional system, please "
-#~ "reboot it to finish registration."
+#~ msgid "Successfully bootstrapped host! Your system should appear in <link>systems</link> shortly. If it is a transactional system, please reboot it to finish registration."
 #~ msgstr "잠시 후에. 트랜잭션 시스템인 경우 재부팅하여 등록을 완료하십시오."
 
 #~ msgid " for the changes to take effect."
@@ -7278,8 +6608,7 @@ msgstr "HTTP 오류 코드 "
 #~ msgstr "클러스터를 삭제하시겠습니까?"
 
 #~ msgid "This will not destroy the cluster. It will only remove it from Uyuni"
-#~ msgstr ""
-#~ "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
+#~ msgstr "이 작업을 수행해도 클러스터가 폐기되지 않습니다. Uyuni에서만 제거됩니다."
 
 #~ msgid "Join "
 #~ msgstr "조인 "
@@ -7287,18 +6616,11 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "NOTE: before joining a new node, make sure that the node has:"
 #~ msgstr "참고: 새 노드를 조인하기 전 노드에 다음이 있는지 확인:"
 
-#~ msgid ""
-#~ "Container as a Service Platform (CaaSP) channels assigned - or any "
-#~ "children channels of CaaSP channels"
-#~ msgstr ""
-#~ "CaaSP(Container as a Service Platform) 채널 할당됨 - 또는 CaaSP 채널의 모"
-#~ "든 하위 채널"
+#~ msgid "Container as a Service Platform (CaaSP) channels assigned - or any children channels of CaaSP channels"
+#~ msgstr "CaaSP(Container as a Service Platform) 채널 할당됨 - 또는 CaaSP 채널의 모든 하위 채널"
 
-#~ msgid ""
-#~ "The management node can access the node as root via ssh without password"
-#~ msgstr ""
-#~ "관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 "
-#~ "있습니다."
+#~ msgid "The management node can access the node as root via ssh without password"
+#~ msgstr "관리 노드는 비밀번호를 사용하지 않고 ssh를 통해 루트로 노드에 액세스할 수 있습니다."
 
 #~ msgid "Select system to join"
 #~ msgstr "조인할 시스템 선택"
@@ -7351,11 +6673,8 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Upgrade"
 #~ msgstr "업그레이드"
 
-#~ msgid ""
-#~ "provided channel that corresponds to the installed SUSE Linux version. "
-#~ "Instead of the default, "
-#~ msgstr ""
-#~ "설치된 SUSE Linux 버전에 해당하는 채널이 제공되었습니다. 기본값 대신, "
+#~ msgid "provided channel that corresponds to the installed SUSE Linux version. Instead of the default, "
+#~ msgstr "설치된 SUSE Linux 버전에 해당하는 채널이 제공되었습니다. 기본값 대신, "
 
 #~ msgid "Upcoming Maintenance Windows"
 #~ msgstr "향후 유지보수 기간"
@@ -7363,52 +6682,23 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "End"
 #~ msgstr "종료"
 
-#~ msgid ""
-#~ "Multiple Group formulas detected. Only one formula for \"{0}\" can be "
-#~ "used on each system!"
-#~ msgstr ""
-#~ "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{0}\"에 대한 1개의 수식"
-#~ "만 사용할 수 있습니다!"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
+#~ msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{0}\"에 대한 1개의 수식만 사용할 수 있습니다!"
 
 #~ msgid "e.g. \"0 15 2 ? * 7\""
 #~ msgstr "예: \"0 15 2 ? * 7\""
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is up but the JMX configuration is "
-#~ "disabled. Click the Enable button to enable the JMX configuration or "
-#~ "click Disable to stop the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. "
-#~ "활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 "
-#~ "Prometheu 내보내기를 중지하십시오."
+#~ msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
+#~ msgstr "Tomcat Prometheus 내보내기가 작동 중이지만 JMX 구성이 비활성화되었습니다. 활성화 버튼을 클릭하여 JMX 구성을 활성화하거나 비활성화를 클릭하여 Prometheu 내보내기를 중지하십시오."
 
-#~ msgid ""
-#~ "The Tomcat Prometheus exporter is down but the JMX configuration is "
-#~ "enabled. Click the Disable button to disable the JMX configuration or "
-#~ "click Enable to start the Prometheus exporter."
-#~ msgstr ""
-#~ "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비"
-#~ "활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 "
-#~ "Prometheus 내보내기를 시작하십시오."
+#~ msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
+#~ msgstr "Tomcat Prometheus 내보내기가 중지되었지만 JMX 구성이 활성화되었습니다. 비활성화 버튼을 클릭하여 JMX 구성을 비활성화하거나 활성화를 클릭하여 Prometheus 내보내기를 시작하십시오."
 
-#~ msgid ""
-#~ "If you used a bookmark, the page may have moved to a different location "
-#~ "since the bookmark was created. Use the top (or left) navigation bars to "
-#~ "find the page you are looking for, and if you find the document be sure "
-#~ "to update your bookmark."
-#~ msgstr ""
-#~ "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었"
-#~ "을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 사용하여 찾고 있는 페이"
-#~ "지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 사용하여 찾고 있는 페이지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
 
-#~ msgid ""
-#~ "Session expired, please reload the page to receive notifications in real-"
-#~ "time."
-#~ msgstr ""
-#~ "세션이 만료되었습니다. 페이지를 다시 로드하여 실시간으로 알림을 수신하십시"
-#~ "오."
+#~ msgid "Session expired, please reload the page to receive notifications in real-time."
+#~ msgstr "세션이 만료되었습니다. 페이지를 다시 로드하여 실시간으로 알림을 수신하십시오."
 
 #~ msgid "Session expired, please reload the page to run command on systems."
-#~ msgstr ""
-#~ "세션이 만료되었습니다. 시스템에서 명령을 실행하려면 페이지를 다시 로드하십"
-#~ "시오."
+#~ msgstr "세션이 만료되었습니다. 시스템에서 명령을 실행하려면 페이지를 다시 로드하십시오."
