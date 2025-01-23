@@ -5646,21 +5646,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.summary" xml:space="preserve">
         <source>Transfer the selected systems to the selected organization. If the operation is successful, the systems will no longer be visible in this organization.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Prenos vybraných systémov do vybranej organizácie. Ak bude operácia úspešná, systémy už nebudú v tejto organizácii viditeľné.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.org" xml:space="preserve">
         <source>Target Organization</source>
-        <target/>
+        <target state="translated">Cieľová organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.notrust" xml:space="preserve">
         <source>No trusted organizations</source>
-        <target/>
+        <target state="translated">Žiadne dôveryhodné organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5668,28 +5668,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM System Delete Confirm-->
       <trans-unit id="ssm.delete.systems.header" xml:space="preserve">
         <source>Confirm System Profiles Deletion</source>
-        <target/>
+        <target state="translated">Potvrdiť vymazanie systémových profilov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.summary" xml:space="preserve">
         <source>This will delete the selected profiles permanently.</source>
-        <target/>
+        <target state="translated">Týmto sa natrvalo vymažú vybrané profily.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Deletion</source>
-        <target/>
+        <target state="translated">Potvrdiť vymazanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.confirmmessage" xml:space="preserve">
         <source>The selected systems in the System Set Manager have been queued for deletion.</source>
-        <target/>
+        <target state="translated">Vybrané systémy v Správcovi sád systémov boli zaradené na vymazanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
@@ -5697,35 +5697,35 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM Hardware Refresh -->
       <trans-unit id="ssm.hw.systems.header" xml:space="preserve">
         <source>Confirm Hardware Profiles Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie hardvérových profilov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.summary" xml:space="preserve">
         <source>You will schedule a hardware profile update of the {0} you have selected.</source>
-        <target/>
+        <target state="translated">Naplánujete aktualizáciu hardvérového profilu {0}, ktorý ste vybrali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.summary.empty" xml:space="preserve">
         <source>No systems are selected.</source>
-        <target/>
+        <target state="translated">Nie sú vybrané žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
         <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">1 hardvérový profil &lt;a href="/rhn/schedule/PendingActions.do"&gt;je naplánovaný&lt;/a&gt; na obnovenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5733,56 +5733,56 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM Software Refresh -->
       <trans-unit id="ssm.sw.systems.header" xml:space="preserve">
         <source>Confirm Package Profiles Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie profilov balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.summary" xml:space="preserve">
         <source>You will schedule a package profile update of the {0} you have selected.</source>
-        <target/>
+        <target state="translated">Naplánujete aktualizáciu profilu balíkov {0}, ktorý ste vybrali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.summary.empty" xml:space="preserve">
         <source>No systems are selected.</source>
-        <target/>
+        <target state="translated">Nie sú vybrané žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
         <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">1 profil balíkov &lt;a href="/rhn/schedule/PendingActions.do"&gt;je naplánovaný&lt;/a&gt; na obnovenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.hardware" xml:space="preserve">
         <source>Hardware</source>
-        <target/>
+        <target state="translated">Hardvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.software" xml:space="preserve">
         <source>Software</source>
-        <target/>
+        <target state="translated">Softvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target/>
+        <target state="translated">Predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
