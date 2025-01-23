@@ -1,7 +1,4 @@
-.btn,
-.btn-default,
-.btn-primary,
-.btn-danger {
+.btn {
   color: inherit;
   font-weight: bold;
   padding: 6px 14px;
@@ -12,7 +9,7 @@
   transition: none;
   text-decoration: none;
   box-shadow: none;
-  align-self: center;
+  min-height: 37px;
 
   &:hover {
     text-decoration: none;
@@ -21,6 +18,7 @@
   &.btn-sm {
     padding: 4px 10px;
     font-size: 12px;
+    min-height: 30px;
   }
 
   .input-group-btn & {
@@ -72,13 +70,10 @@
 
 .btn-tertiary {
   background: none;
-  border: 0;
-  padding: 6px 8px;
   color: $eos-bc-pine-500;
   font-weight: bold;
   text-decoration: underline;
-  text-underline-offset: .2rem;
-  align-self: center;
+  text-underline-offset: .3rem;
 
   i {
     margin-right: 0;
@@ -89,8 +84,9 @@
   &:focus,
   &:hover:not(:disabled):not(.disabled) {
     text-decoration: underline;
-    text-underline-offset: .2rem;
+    text-underline-offset: .3rem;
     color: $eos-bc-green-900;
+    border-color: transparent ;
   }
 
   &.disabled,
