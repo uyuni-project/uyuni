@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -57,6 +57,8 @@ Feature: Action chain on traditional clients
   Scenario: Add a patch installation to the action chain on traditional client
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I enter "andromeda" as the filtered synopsis
+    And I click on the filter button
     And I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I check radio button "schedule-by-action-chain"

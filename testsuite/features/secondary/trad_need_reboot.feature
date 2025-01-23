@@ -1,7 +1,7 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-# TODO: This feature must run before install a patch in the client
+# TODO: This feature must run before installing a patch in the client
 # Feature dependency: trad_action_chain.feature
 
 @scope_traditional_client
@@ -37,6 +37,8 @@ Feature: Reboot required after patch
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I enter "andromeda" as the filtered synopsis
+    And I click on the filter button
     And I check "andromeda-dummy-6789" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"

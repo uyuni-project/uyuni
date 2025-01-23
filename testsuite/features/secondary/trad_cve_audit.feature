@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 SUSE LLC
+# Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle_client
@@ -93,7 +93,8 @@ Feature: CVE Audit on traditional clients
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
-    And I wait until I see "milkyway-dummy-2345" text, refreshing the page
+    And I enter "milkyway" as the filtered synopsis
+    And I click on the filter button
     And I check "milkyway-dummy-2345" in the list
     And I click on "Apply Patches"
     And I click on "Confirm"

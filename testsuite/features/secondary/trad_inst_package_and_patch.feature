@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -44,6 +44,8 @@ Feature: Install a package to the traditional client
     Given I am on the Systems overview page of this "sle_client"
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
+    And I enter "andromeda" as the filtered synopsis
+    And I click on the filter button
     And I check "andromeda-dummy-6789" in the list
     And I check "allowVendorChange"
     And I click on "Apply Patches"

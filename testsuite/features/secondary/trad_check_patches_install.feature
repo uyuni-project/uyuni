@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 SUSE LLC
+# Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_traditional_client
@@ -52,7 +52,9 @@ Feature: Display patches
     When I follow "Software" in the content area
     And I follow "Patches" in the content area
     Then I should see a "Relevant Patches" text
-    And I should see a "Test update for andromeda-dummy" text
+    When I enter "dummy" as the filtered synopsis
+    And I click on the filter button
+    Then I should see a "Test update for andromeda-dummy" text
     And I should see a "Test update for virgo-dummy" text
 
   Scenario: Cleanup: regenerate search index for later tests
