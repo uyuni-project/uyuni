@@ -65,6 +65,8 @@ class DebPackage:
         return setattr(self, key, value)
 
     def evr(self):
+        # The format is: [epoch:]upstream_version[-debian_revision].
+        # https://www.debian.org/doc/debian-policy/ch-controlfields.html#version
         evr = ""
         if self.epoch:
            evr = evr + "{}:".format(self.epoch)
@@ -73,6 +75,9 @@ class DebPackage:
         if self.release:
            evr = evr + "-{}".format(self.release)
         return evr
+
+    def nevra(self):
+        return f"{self.name}_{self.evr()}_{self.arch}"
 
     def is_populated(self):
         return all([attribute is not None for attribute in (self.name, self.epoch,
@@ -351,6 +356,14 @@ class ContentSource:
             except ValueError:
                 self.timeout = 300
 
+            try:
+                # extended reposync nevra filter enable
+                # this will filter packages based on full nevra
+                # instead of package name only.
+                self.nevra_filter = bool(CFG.REPOSYNC_NEVRA_FILTER)
+            except (AttributeError, ValueError):
+                self.nevra_filter = False
+
             # SUSE vendor repositories belongs to org = NULL
             # The repository cache root will be "/var/cache/rhn/reposync/REPOSITORY_LABEL/"
             root = os.path.join(CACHE_DIR, str(org or "NULL"), self.reponame)
@@ -412,7 +425,9 @@ class ContentSource:
                 filters.append(('-', [p]))
 
         if filters:
-            pkglist = self._filter_packages(pkglist, filters)
+            pkglist = self._filter_packages(
+                pkglist, filters, nevra_filter=self.nevra_filter
+            )
             self.num_excluded = self.num_packages - len(pkglist)
 
         to_return = []
@@ -442,7 +457,7 @@ class ContentSource:
             return -1
 
     @staticmethod
-    def _filter_packages(packages, filters):
+    def _filter_packages(packages, filters, nevra_filter=False):
         """ implement include / exclude logic
             filters are: [ ('+', includelist1), ('-', excludelist1),
                            ('+', includelist2), ... ]
@@ -468,7 +483,11 @@ class ContentSource:
             if sense == '+':
                 # include
                 for excluded_pkg in excluded:
-                    if reobj.match(excluded_pkg['name']):
+                    if nevra_filter:
+                        pkg_name = excluded_pkg.nevra()
+                    else:
+                        pkg_name = excluded_pkg["name"]
+                    if reobj.match(pkg_name):
                         allmatched_include.insert(0, excluded_pkg)
                         selected.insert(0, excluded_pkg)
                 for pkg in allmatched_include:
@@ -477,10 +496,13 @@ class ContentSource:
             elif sense == '-':
                 # exclude
                 for selected_pkg in selected:
-                    if reobj.match(selected_pkg['name']):
+                    if nevra_filter:
+                        pkg_name = selected_pkg.nevra()
+                    else:
+                        pkg_name = selected_pkg["name"]
+                    if reobj.match(pkg_name):
                         allmatched_exclude.insert(0, selected_pkg)
                         excluded.insert(0, selected_pkg)
-
                 for pkg in allmatched_exclude:
                     if pkg in selected:
                         selected.remove(pkg)
