@@ -23,7 +23,7 @@ fi
 
 # Start with the given schema name and version
 schema="$1"
-version=$(rpm -q --queryformat '%version' ${schema})
+version=$(rpm -q --queryformat '%{version}' ${schema})
 
 # Get the upgrade dir for the current schema and version
 current_dir="$(find ${upgrade_dir} -name "$schema-$version-to-*")"
