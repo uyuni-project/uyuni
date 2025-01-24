@@ -141,6 +141,7 @@ import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoTask;
 import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
@@ -295,6 +296,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             Task.class,
+            TaskoBunch.class,
             TaskoTask.class,
             TaskoTemplate.class,
             TemplateString.class,

@@ -3,34 +3,6 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.taskomatic.domain.TaskoBunch"
-        table="rhnTaskoBunch">
-
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">RHN_TASKO_BUNCH_ID_SEQ</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-
-        <property name="name" type="string" column="name" unique="true"/>
-        <property name="description" type="string" column="description"/>
-        <property name="orgBunch" type="string" column="org_bunch"/>
-
-        <property name="created" column="created" type="timestamp"
-            insert="false" update="false"/>
-        <property name="modified" column="modified" type="timestamp"
-            insert="false" update="false"/>
-
-        <list name="templates" inverse="true" lazy="false" table="rhnTaskoTemplate">
-            <key column="bunch_id"/>
-            <index column="ordering"/>
-            <one-to-many class="com.redhat.rhn.taskomatic.domain.TaskoTemplate"/>
-        </list>
-
-    </class>
-
     <query name="TaskoBunch.lookupByName">
         <![CDATA[FROM com.redhat.rhn.taskomatic.domain.TaskoBunch WHERE name = :name]]>
     </query>
