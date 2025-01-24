@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lzdownload"
+version = "0.1"
+dependencies = [
+    "psycopg2-binary==2.9.10",
+    "urlgrabber"
+]
+
+[project.scripts]
+lzdownload = "lzdownload:main"
