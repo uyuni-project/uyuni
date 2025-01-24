@@ -592,8 +592,9 @@ public class DownloadController {
                 halt(HttpStatus.SC_BAD_REQUEST, "Token does not specify the organization");
             }
             else if (!ChannelFactory.isAccessibleBy(channel, orgId)) {
-                LOG.info("Forbidden: Token does not provide access to channel {}", channel);
-                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(channel));
+                String sanitChannel = StringUtil.sanitizeLogInput(channel);
+                LOG.info("Forbidden: Token does not provide access to channel {}", sanitChannel);
+                halt(HttpStatus.SC_FORBIDDEN, "Token does not provide access to channel %s".formatted(sanitChannel));
             }
         }
         catch (TokenParsingException e) {
