@@ -1,6 +1,6 @@
 import json
-from uyuni_health_check.config_loader import ConfigLoader
-from uyuni_health_check.utils import run_command, HealthException, console
+from uyuni_health_check import config
+from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
     console,
     build_image,
@@ -9,20 +9,17 @@ from uyuni_health_check.containers.manager import (
     podman,
 )
 
-conf = ConfigLoader()
-
-
-def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=None):
+def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False):
     if container_is_running("uyuni-health-check-grafana"):
         console.log(
             "Skipped as the uyuni-health-check-grafana container is already running"
         )
     else:
-        build_grafana_image("health-check-grafana", config)
-        grafana_cfg = conf.get_config_dir_path("grafana")
+        build_grafana_image("health-check-grafana")
+        grafana_cfg = config.get_config_dir_path("grafana")
         console.log("GRAFANA CFG DIR: ",grafana_cfg)
         grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.template.json")
-        render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime, config)
+        render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime)
 
         # Run the container
         podman(
@@ -48,7 +45,7 @@ def prepare_grafana(from_datetime=None, to_datetime=None, verbose=False, config=
             ],
         )
 
-def build_grafana_image(image, config):
+def build_grafana_image(image: str):
     console.log(f"Building {image}")
     if image_exists(image):
         console.log(f"[yellow]Skipped as the {image} image is already present")
@@ -58,7 +55,7 @@ def build_grafana_image(image, config):
     build_image(image, image_path=image_path)
     console.log(f"[green]The {image} image was built successfully")
 
-def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_datetime, config=None):
+def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_datetime):
     """
     Render grafana dashboard file
     """
@@ -67,4 +64,4 @@ def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_d
         data = json.load(f)
         data["time"]["from"] = from_datetime
         data["time"]["to"] = to_datetime
-        config.write_config("grafana", "dashboards/supportconfig_with_logs.json", data, isjson=True)
+        config.write_config("grafana", "dashboards/supportconfig_with_logs.json", data, is_json=True)
