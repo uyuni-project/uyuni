@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 15:01+0100\n"
+"POT-Creation-Date: 2025-01-24 15:21+0100\n"
 "PO-Revision-Date: 2011-03-04 16:08+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Serbian <trans-sr@lists.fedoraproject.org>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -130,7 +131,8 @@ msgid "Invalid system release version requested"
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1065
-msgid "Unable to find a valid network interface, both ipaddr and ip6addr not found."
+msgid ""
+"Unable to find a valid network interface, both ipaddr and ip6addr not found."
 msgstr ""
 
 #: ../server/handlers/xmlrpc/registration.py:1117
@@ -175,7 +177,8 @@ msgstr ""
 
 #: ../server/importlib/userAuth.py:144
 #, python-format
-msgid "You are not allowed to manage channel %s, or that channel does not exist"
+msgid ""
+"You are not allowed to manage channel %s, or that channel does not exist"
 msgstr ""
 
 #: ../server/importlib/userAuth.py:204
@@ -188,7 +191,9 @@ msgstr ""
 
 #: ../server/rhnChannel.py:1999
 #, python-format
-msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
+msgid ""
+"Your account does not have access to any channels matching "
+"(release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr ""
 
 #: ../server/rhnChannel.py:2014
@@ -229,7 +234,8 @@ msgstr ""
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
-"  were available.  To entitle this system to service, login to the web site at:\n"
+"  were available.  To entitle this system to service, login to the web site "
+"at:\n"
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
@@ -278,7 +284,9 @@ msgid "Maximum usage count of %s reached"
 msgstr ""
 
 #: ../server/rhnServer/server_token.py:744
-msgid "Stacking of re-registration tokens with different base entitlements is not supported"
+msgid ""
+"Stacking of re-registration tokens with different base entitlements is not "
+"supported"
 msgstr ""
 
 #: ../server/rhnServer/server_token.py:811
@@ -450,7 +458,8 @@ msgid ""
 "     Please re-register this system by running mgr_register as root.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this system.\n"
+"     select \"Subscription Management\" to enable the service for this "
+"system.\n"
 "     "
 msgstr ""
 
@@ -469,7 +478,8 @@ msgid ""
 "     This system does not have a valid entitlement for SUSE Manager.\n"
 "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-"     select \"Subscription Management\" to enable the service for this system.\n"
+"     select \"Subscription Management\" to enable the service for this "
+"system.\n"
 "     "
 msgstr ""
 
@@ -519,8 +529,10 @@ msgid ""
 "     User group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     user account. Please check with the organization administrator for your\n"
-"     account if the maximum number of users allowed to subscribe to server needs\n"
+"     user account. Please check with the organization administrator for "
+"your\n"
+"     account if the maximum number of users allowed to subscribe to server "
+"needs\n"
 "     to be changed.\n"
 "     "
 msgstr ""
@@ -531,8 +543,10 @@ msgid ""
 "     System group membership limits exceeded.\n"
 "\n"
 "     The current settings for your account do not allow you to add another\n"
-"     system profile. Please check with the organization administrator for your\n"
-"     account for modifying the maximum number of system profiles that can be\n"
+"     system profile. Please check with the organization administrator for "
+"your\n"
+"     account for modifying the maximum number of system profiles that can "
+"be\n"
 "     subscribed to your account.\n"
 "     "
 msgstr ""
@@ -553,8 +567,10 @@ msgstr ""
 #: ../common/rhnException.py:122
 msgid ""
 "\n"
-"    This system is already registered as a Salt Minion. If you want to register it as a traditional client\n"
-"    please delete it first via the web UI or API and then register it using the traditional tools.\n"
+"    This system is already registered as a Salt Minion. If you want to "
+"register it as a traditional client\n"
+"    please delete it first via the web UI or API and then register it using "
+"the traditional tools.\n"
 "    "
 msgstr ""
 
@@ -728,7 +744,8 @@ msgstr ""
 #: ../common/rhnException.py:206
 msgid ""
 "\n"
-"     This SUSE Manager server is not allowed to use Inter Server Sync on this server\n"
+"     This SUSE Manager server is not allowed to use Inter Server Sync on "
+"this server\n"
 "     "
 msgstr ""
 
@@ -954,7 +971,8 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: There was a problem communicating with the ISS Master.\n"
-"       Depending on the specific error details, please review your configuration,\n"
+"       Depending on the specific error details, please review your "
+"configuration,\n"
 "       basic network connectivity, and/or name resolution, and try again.\n"
 "       Error message: %s\n"
 msgstr ""
@@ -964,7 +982,8 @@ msgstr ""
 msgid ""
 "\n"
 "ERROR: a child-channel cannot be synced without its parent being synced as\n"
-"       well. A parent needs to be either (a) previously synced or (b) synced\n"
+"       well. A parent needs to be either (a) previously synced or (b) "
+"synced\n"
 "       in tandem with the desired child-channel. Missing parents for this\n"
 "       transaction:\n"
 "       %s\n"
@@ -1152,7 +1171,9 @@ msgid "seconds"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:358
-msgid "ERROR: The dump is missing package data, use --no-rpms to skip this step or fix the content to include package data."
+msgid ""
+"ERROR: The dump is missing package data, use --no-rpms to skip this step or "
+"fix the content to include package data."
 msgstr ""
 
 #. the orgs() method doesn't exist; that's fine we just
@@ -1181,8 +1202,11 @@ msgstr ""
 #: ../satellite_tools/satsync.py:534
 #, python-brace-format
 msgid ""
-"ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\n"
-"Please use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
+"ERROR: Live content synchronizing with RHN Classic Hosted is no longer "
+"supported.\n"
+"Please use the cdn-sync command instead unless you are attempting to sync "
+"from another {PRODUCT_NAME} via Inter-Server-Sync (ISS), or from local "
+"content on disk via Channel Dump ISOs."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:542
@@ -1228,7 +1252,8 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:604
 #, python-format
-msgid "   Encountered some errors with %s data (see logs (%s) for more information)"
+msgid ""
+"   Encountered some errors with %s data (see logs (%s) for more information)"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:606
@@ -1471,7 +1496,9 @@ msgstr ""
 
 #. not in the cache
 #: ../satellite_tools/satsync.py:1733
-msgid "Package Not Found in Cache, Clear the Cache to                                  Regenerate it."
+msgid ""
+"Package Not Found in Cache, Clear the Cache "
+"to                                  Regenerate it."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:1739
@@ -1505,7 +1532,9 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2232
 #, python-format
-msgid "DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man mgr-inter-sync\" for more information."
+msgid ""
+"DEBUG ONLY: max. batch-size for XML/database-import processing (1..%s).\"man "
+"mgr-inter-sync\" for more information."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2235
@@ -1517,7 +1546,9 @@ msgid "process data for this channel only"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2239
-msgid "disk dump will be considered to be a full export; see \"man mgr-inter-sync\" for more information."
+msgid ""
+"disk dump will be considered to be a full export; see \"man mgr-inter-sync\" "
+"for more information."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2242
@@ -1526,7 +1557,8 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:2244
 #, python-format
-msgid "override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
+msgid ""
+"override debug level set in /etc/rhn/rhn.conf (which is currently set at %s)."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2246
@@ -1623,7 +1655,9 @@ msgid "do not remove rpms when importing from local dump"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2292
-msgid "the fully qualified domain name of the master Satellite. Valid with --mount-point only. Required if you want to import org data and channel permissions."
+msgid ""
+"the fully qualified domain name of the master Satellite. Valid with --mount-"
+"point only. Required if you want to import org data and channel permissions."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2302
@@ -1676,16 +1710,20 @@ msgid "ERROR: Unable to lookup Org Id %s"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2386
-msgid "WARNING: --list-channels option overrides any --step option. --step ignored."
+msgid ""
+"WARNING: --list-channels option overrides any --step option. --step ignored."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2401
 #, python-format
-msgid "ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
+msgid ""
+"ERROR: '%s' is not a valid step. See 'man mgr-inter-sync' for more detail."
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2433
-msgid "ERROR: No channels currently imported; try mgr-inter-sync --list-channels; then mgr-inter-sync -c chn0 -c chn1..."
+msgid ""
+"ERROR: No channels currently imported; try mgr-inter-sync --list-channels; "
+"then mgr-inter-sync -c chn0 -c chn1..."
 msgstr ""
 
 #. int(None) --> TypeError
@@ -1776,7 +1814,9 @@ msgid "  16 - server.mount_point not set in the configuration file"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2518
-msgid "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"
+msgid ""
+"  17 - SQL error during retrieving the channels already imported in the SUSE "
+"Manager database"
 msgstr ""
 
 #: ../satellite_tools/satsync.py:2519
