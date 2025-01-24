@@ -1,4 +1,4 @@
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
+import { StoryRow, StripedStorySection, StorySection } from "manager/storybook/layout";
 
 import { Button } from "components/buttons";
 import { Form } from "./input/form/Form";
@@ -12,6 +12,10 @@ export default () => {
         <Button
           className="btn-primary bt-sm"
           text="Submit"
+        />
+        <Button
+          className="btn-default bt-sm"
+          text="Clear"
         />
       </div>
     </div>
@@ -45,41 +49,78 @@ export default () => {
       <h2>Buttons</h2>
       <p>Different button styling variants tailored for various scenarios as required.</p>
       <StripedStorySection>
-        <div className="row">
-          <div className="col-md-1">
-            <h5>Primary</h5>
-            <Button className="btn-primary">Button</Button>
-            <h5 className="mt-5">Small</h5>
-            <Button className="btn-primary btn-sm">Button</Button>
-          </div>
-          <div className="col-md-1">
-            <h5>Secondary</h5>
-            <Button className="btn-default">Button</Button>
-            <h5 className="mt-5">Small</h5>
-            <Button className="btn-default btn-sm">Button</Button>
-          </div>
-          <div className="col-md-1">
-            <h5>Danger</h5>
-            <Button className="btn-danger">Danger</Button>
-            <h5 className="mt-5">Small</h5>
-            <Button className="btn-danger btn-sm">Button</Button>
-          </div>
-          <div className="col-md-1">
-            <h5>Tertiary</h5>
-            <Button className="btn-tertiary" title="Delete" icon="fa-trash"></Button>
-          </div>
-        </div>
-        <h5 className="mt-5">Variants</h5>
         <StoryRow>
-          <Button title="Add" className="btn-default" icon="fa-plus"></Button>
-          <Button title="Delete" className="btn-default" icon="fa-trash"></Button>
-          <Button className="btn-primary" icon="fa-plus">Primary</Button>
-          <Button className="btn-tertiary" icon="fa-plus">Tertiary</Button>
-          <Button className="btn-tertiary" >Tertiary</Button>
+          <Button className="btn-primary" text="Primary" />
+          <Button className="btn-default" text="Default" />
+          <Button className="btn-danger" text="Danger" />
+          <Button className="btn-tertiary" text="Tertiary" />
         </StoryRow>
-
       </StripedStorySection>
-      <hr></hr>
+      <StorySection>
+        &lt;Button className="btn-primary" text="Primary" /&gt; <br />
+        &lt;Button className="btn-default" text="Default" /&gt;<br />
+        &lt;Button className="btn-danger" text="Danger" /&gt;<br />
+        &lt;Button className="btn-tertiary" text="Tertiary" /&gt;
+      </StorySection>
+
+      <h2>Variants</h2>
+      <p><strong>Note: </strong>Icon-only buttons should always include a descriptive <code>title</code> attribute or <br />an accessible label (via <code>aria-labe</code>l or <code>aria-labelledby</code>) to ensure clarity and accessibility for all users.</p>
+      <StripedStorySection>
+        <StoryRow>
+          <Button className="btn-primary" title="Add" icon="fa-plus" />
+          <Button className="btn-default" title="Delete" icon="fa-trash" />
+          <Button className="btn-primary" icon="fa-plus" text="Primary" />
+          <Button className="btn-default" icon="fa-plus" text="Default" />
+          <Button className="btn-tertiary" icon="fa-plus" text="Tertiary" />
+          <Button className="btn-tertiary" title="Delete" icon="fa-trash" />
+        </StoryRow>
+      </StripedStorySection>
+      <StorySection>
+        &lt;Button className="btn-primary" title="Add" icon="fa-plus" /&gt; <br />
+        &lt;Button className="btn-default" title="Delete" icon="fa-trash" /&gt;<br />
+        &lt;Button className="btn-primary" icon="fa-plus" text="Primary" /&gt;<br />
+        &lt;Button className="btn-default" icon="fa-plus" text="Default" /&gt;<br />
+        &lt;Button className="btn-tertiary" icon="fa-plus" text="Tertiary" /&gt;<br />
+        &lt;Button className="btn-tertiary" title="Delete" icon="fa-trash" /&gt;
+      </StorySection>
+
+      <h2>Sizes</h2>
+      <p>We support two button sizes: default and small. Use <code>btn-sm</code> for the small button size.</p>
+      <StripedStorySection>
+        <StoryRow>
+          <Button className="btn-primary btn-sm" text="Small button" />
+          <Button className="btn-default btn-sm" text="Small button" />
+          <Button className="btn-danger btn-sm" text="Small button" />
+          <Button className="btn-default btn-sm" title="Delete" icon="fa-trash" />
+          <Button className="btn-primary btn-sm" title="Add" icon="fa-plus" />
+          <Button className="btn-tertiary btn-sm" title="Delete" icon="fa-trash" />
+        </StoryRow>
+      </StripedStorySection>
+      <StorySection>
+        &lt;Button className="btn-primary btn-sm" text="Small button" /&gt; <br />
+        &lt;Button className="btn-default btn-sm" text="Small button" /&gt;<br />
+        &lt;Button className="btn-danger btn-sm" text="Small button" /&gt;<br />
+        &lt;Button className="btn-default btn-sm" title="Delete" icon="fa-trash" /&gt;<br />
+        &lt;Button className="btn-primary btn-sm" title="Add" icon="fa-plus" /&gt;<br />
+        &lt;Button className="btn-tertiary btn-sm" title="Delete" icon="fa-trash" /&gt;<br />
+      </StorySection>
+
+      <h2>Disabled</h2>
+      <p>Make buttons look inactive by adding the disabled boolean attribute to any <code>Button</code> element.</p>
+      <StripedStorySection>
+        <StoryRow>
+          <Button className="btn-primary" text="Primary" disabled />
+          <Button className="btn-default" text="Default" disabled />
+          <Button className="btn-danger" text="Danger" disabled />
+          <Button className="btn-tertiary" text="Tertiary" disabled />
+        </StoryRow>
+      </StripedStorySection>
+      <StorySection>
+        &lt;Button className="btn-primary" text="Primary" disabled /&gt; <br />
+        &lt;Button className="btn-default" text="Default" disabled /&gt;<br />
+        &lt;Button className="btn-danger" text="Danger" disabled /&gt;<br />
+        &lt;Button className="btn-tertiary" text="Tertiary" disabled /&gt;<br />
+      </StorySection>
       <h2>Choosing a button</h2>
       <p>Every button type has a specific role. Select the appropriate button type based on the screen's context to ensure a clear and seamless user experience.</p>
       <table className="table table-striped mt-3">
@@ -97,7 +138,7 @@ export default () => {
             </td>
           </tr>
           <tr>
-            <td><strong>Secondary</strong>  </td>
+            <td><strong>Default</strong>  </td>
             <td>Less important actions, alternative options, supporting information and the most commonly used option.
               <p><strong> Example:</strong>"Edit", "Download" or "Cancel"</p>
             </td>
@@ -113,15 +154,14 @@ export default () => {
             <td>Only icon buttons are ideal for presenting actions in compact layouts.
               <p><strong>Example:</strong> Table, Cards.</p>
               <p>They can be used individually or grouped together.</p>
-              <p>To enhance clarity, always pair icon buttons with tooltips to give users a brief explanation of their function.</p>
+              <p>To enhance clarity, always pair icon buttons with title attribute to give users a brief explanation of their function.</p>
             </td>
           </tr>
           <tr>
             <td><strong>Tertiary</strong>  </td>
             <td>
-              <p>Tertiary buttons are designed for less prominent actions and should not compete visually with primary or secondary buttons. </p>
+              <p>Tertiary buttons are designed for less prominent actions and should not compete visually with Primary or Default buttons. </p>
               <p>Use icon-only tertiary buttons in cards, forms, inline action or components where space is limited.</p>
-              <p>Icon-only buttons should always include a descriptive <code>title</code> attribute or an accessible label (via <code>aria-labe</code>l or <code>aria-labelledby</code>) to ensure clarity and accessibility for all users.</p>
               <p><strong>Example:</strong> Inline action buttons for editing an email address in a form.</p>
             </td>
           </tr>
@@ -157,7 +197,7 @@ export default () => {
       </div>
       <div className="row mt-5">
         <div className="col-md-6">
-          <p>When buttons in a group are aligned to the right, position the primary button at the end, with the secondary action button placed next to it.</p>
+          <p>When buttons in a group are aligned to the right, position the Primary button at the end, with the Default action button placed next to it.</p>
           <p><strong>Example:</strong> Modals, Action Bars, Multi-step interfaces</p>
           <BootstrapPanel title="Confirmation Modal" footer={modalButtonsConfirm}>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum commodo massa et tellus tempor, at faucibus tortor volutpat.</p>
@@ -174,7 +214,15 @@ export default () => {
       <div className="row mt-5">
         <div className="col-md-6">
           <h5>Tertiary buttons Examples:</h5>
-          <BootstrapPanel title="Forms" footer={listButtons}>
+          <BootstrapPanel title="Forms" footer={
+            <div className="form-group btn-group">
+              <div className="col-lg-offset-3 offset-lg-3 col-lg-6">
+                <Button
+                  className="btn-primary bt-sm"
+                  text="Submit"
+                />
+              </div>
+            </div>}>
             <Text
               name="firstname"
               label={t("Name")}
