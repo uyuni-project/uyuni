@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager-proxy
-Version:        5.0.2
-Release:        1
+Version:        5.0.3
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Proxy
 License:        GPL-2.0-only
@@ -26,8 +26,7 @@ Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 Requires:       spacewalk-proxy-common
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Supplements:    packageand(spacewalk-proxy-installer:supportutils)
 
 %description

@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2022 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_tomcat
@@ -11,7 +11,7 @@ Feature: Basic web security measures and recommendations
     When I clear browser cookies
 
   Scenario: Caching should be enabled for static content
-    Given I retrieve any static resource
+    When I retrieve a "css" static resource
     Then the response header "ETag" should not be present
     And the response header "Pragma" should not be present
     And the response header "Expires" should not be "0"
@@ -22,5 +22,5 @@ Feature: Basic web security measures and recommendations
     And the response header "X-Permitted-Cross-Domain-Policies" should be "master-only"
 
   Scenario: Obsolete and problematic headers for static content
-    Given I retrieve any static resource
+    Given I retrieve a "javascript" static resource
     Then the response header "X-WebKit-CSP" should not be present

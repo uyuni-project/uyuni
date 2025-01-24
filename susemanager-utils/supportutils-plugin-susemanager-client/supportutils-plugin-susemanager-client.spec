@@ -17,7 +17,7 @@
 
 
 Name:           supportutils-plugin-susemanager-client
-Version:        5.0.3
+Version:        5.0.4
 Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Client
@@ -26,8 +26,7 @@ Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
 BuildRequires:  supportutils
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Supplements:    packageand(salt-minion:supportutils)
 Supplements:    packageand(spacewalk-check:supportutils)
 

@@ -1,2 +1,0 @@
-- Salt API should listen on localhost rather than 127.0.0.1
-  (bsc#1230865)

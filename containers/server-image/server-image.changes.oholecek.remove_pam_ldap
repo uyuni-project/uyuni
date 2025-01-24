@@ -1,1 +1,0 @@
-- remove pam_ldap as it is no longer shipped (bsc#1231377)

@@ -17,7 +17,7 @@
 
 
 Name:           supportutils-plugin-susemanager
-Version:        5.0.4
+Version:        5.0.5
 Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager
@@ -25,8 +25,7 @@ License:        GPL-2.0-only
 Group:          Documentation/SuSE
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 BuildArch:      noarch
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
+Requires:       supportutils
 Requires:       susemanager
 Requires:       perl(XML::Simple)
 Supplements:    packageand(spacewalk-common:supportutils)

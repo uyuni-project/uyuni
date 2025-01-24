@@ -67,46 +67,53 @@
         </and>
     </condition>
 
+    <!-- The command to execute to deploy, for each deployment mode -->
     <condition property="deploy.executor.command" value="sh">
         <equals arg1="${deploy.mode}" arg2="local"/>
     </condition>
 
-    <condition property="deploy.executor.parameters" value="-c">
-        <equals arg1="${deploy.mode}" arg2="local"/>
-    </condition>
-
     <condition property="deploy.executor.command" value="ssh">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
-    </condition>
-
-    <condition property="deploy.executor.parameters" value="${ssh.command.args}">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
+        <or>
+            <equals arg1="${deploy.mode}" arg2="remote"/>
+            <equals arg1="${deploy.mode}" arg2="remote-container"/>
+        </or>
     </condition>
 
     <condition property="deploy.executor.command" value="mgrctl">
         <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
-    <condition property="deploy.executor.parameters" value="exec ${mgrctl.backend.parameter} -i --">
-        <equals arg1="${deploy.mode}" arg2="container"/>
+    <!-- The parameters for the executor, for each deployment mode -->
+    <condition property="deploy.executor.parameters" value="-c">
+        <equals arg1="${deploy.mode}" arg2="local"/>
     </condition>
 
-    <condition property="deploy.executor.command" value="ssh">
-        <equals arg1="${deploy.mode}" arg2="remote-container"/>
+    <condition property="deploy.executor.parameters" value="${ssh.command.args}">
+        <equals arg1="${deploy.mode}" arg2="remote"/>
+    </condition>
+
+    <condition property="deploy.executor.parameters" value="exec ${mgrctl.backend.parameter} -i --">
+        <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
     <condition property="deploy.executor.parameters" value="${ssh.command.args} mgrctl exec ${mgrctl.backend.parameter} -i --">
         <equals arg1="${deploy.mode}" arg2="remote-container"/>
     </condition>
 
+    <!-- True if the deployment mode requires a SSH connection -->
     <condition property="deploy.requires.ssh" value="true">
-        <equals arg1="${deploy.mode}" arg2="remote"/>
+        <or>
+            <equals arg1="${deploy.mode}" arg2="remote"/>
+            <equals arg1="${deploy.mode}" arg2="remote-container"/>
+        </or>
     </condition>
 
+    <!-- True if the deployment mode requires mgrctl to be locally installed -->
     <condition property="deploy.requires.mgrctl" value="true">
         <equals arg1="${deploy.mode}" arg2="container"/>
     </condition>
 
+    <!-- True if the deployment mode requires mgrctl to be installed on the target server -->
     <condition property="deploy.requires.remote-mgrctl" value="true">
         <equals arg1="${deploy.mode}" arg2="remote-container"/>
     </condition>
@@ -145,6 +152,36 @@
             <exec failonerror="true" executable="${deploy.executor.command}" outputproperty="@{outputProperty}" resultproperty="@{resultProperty}" logerror="true">
                 <arg line="${deploy.executor.parameters} '@{command}'"/>
             </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="apidoc">
+        <attribute name="doclet-class"/>
+        <attribute name="template-dir"/>
+        <attribute name="output-dir" default="${report.dir}/apidocs/@{template-dir}"/>
+        <sequential>
+            <path id="javadocpath">
+                <pathelement location="build/classes"/>
+                <path refid="libjars"/>
+            </path>
+
+            <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak"/>
+
+            <mkdir dir="@{output-dir}/handlers/"/>
+            <javadoc doclet="com.redhat.rhn.internal.doclet.@{doclet-class}" docletpathref="javadocpath"
+                    classpathref="libjars" sourcepath="code/src"
+                    additionalparam="-debug -d @{output-dir} -templates buildconf/apidoc/@{template-dir} -product '${product.name}' -apiversion '${java.apiversion}'">
+                <fileset dir="code">
+                    <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
+                    <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
+                    <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
+                    <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
+                    <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
+                </fileset>
+                <excludepackage name="**/*"/>
+            </javadoc>
+
+            <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
         </sequential>
     </macrodef>
 
@@ -527,43 +564,28 @@
         </report>
     </target>
 
-    <target name="apidoc-singlepage" description="Generate the api for jsps">
-        <property name="doclet.class" value="SinglePageDoclet"/>
-        <property name="template.dir" value="singlepage"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-singlepage" depends="compile" description="Generate API documentation as a single JSP">
+        <apidoc doclet-class="SinglePageDoclet" template-dir="singlepage"/>
     </target>
 
-    <target name="apidoc-jsp" description="Generate the api for jsps">
-        <property name="doclet.class" value="JSPDoclet"/>
-        <property name="template.dir" value="jsp"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-jsp" depends="compile" description="Generate API documentation as JSPs">
+        <apidoc doclet-class="JSPDoclet" template-dir="jsp"/>
     </target>
 
-    <target name="apidoc-html" description="Generate the api for jsps">
-        <property name="doclet.class" value="HtmlDoclet"/>
-        <property name="template.dir" value="html"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-html" depends="compile" description="Generate API documentation as HTML">
+        <apidoc doclet-class="HtmlDoclet" template-dir="html"/>
     </target>
 
-    <target name="apidoc-docbook" description="Generate docbook xml from the API">
-        <property name="doclet.class" value="DocBookDoclet"/>
-        <property name="template.dir" value="docbook"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
+    <target name="apidoc-docbook" depends="compile" description="Generate API documentation as DocBook XML">
+        <apidoc doclet-class="DocBookDoclet" template-dir="docbook"/>
     </target>
 
-    <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
-        <property name="doclet.class" value="AsciidocDoclet"/>
-        <property name="template.dir" value="asciidoc"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
-        <delete dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+    <target name="apidoc-asciidoc" depends="compile" description="Generate API documentation as asciidoc">
+        <apidoc doclet-class="AsciidocDoclet" template-dir="asciidoc"/>
+        <delete dir="${report.dir}/apidocs/asciidoc/handlers/"/>
     </target>
 
-    <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
+    <target name="apidoc-validate" depends="apidoc-docbook" description="Validate the API documentation">
         <exec executable="/usr/bin/xmllint" failonerror="true">
             <arg value="--xinclude"/>
             <arg value="--postvalid"/>
@@ -572,31 +594,9 @@
         <echo message="${line.separator}The generated API documentation is valid."/>
     </target>
 
-    <target name="apidoc" description="Generate the api documentation" depends="compile">
-        <path id="javadocpath">
-            <pathelement location="build/classes"/>
-            <path refid="libjars"/>
-        </path>
-
-        <move file="${build.dir}/classes/log4j2.xml" tofile="${build.dir}/classes/log4j2.xml.bak"/>
-
-        <mkdir dir="${report.dir}/apidocs"/>
-        <mkdir dir="${report.dir}/apidocs/${template.dir}/"/>
-        <mkdir dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
-        <javadoc doclet="com.redhat.rhn.internal.doclet.${doclet.class}" docletpathref="javadocpath"
-                 classpathref="libjars" sourcepath="code/src"
-                 additionalparam="-debug -d ${apidoc.output} -templates buildconf/apidoc/${template.dir} -product '${product.name}' -apiversion '${java.apiversion}'">
-            <fileset dir="code">
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/redhat/rhn/frontend/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/redhat/rhn/domain/config/xmlrpc/serializer/*Serializer.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/**/*Handler.java"/>
-                <include name="**/src/com/suse/manager/xmlrpc/serializer/*Serializer.java"/>
-            </fileset>
-            <excludepackage name="**/*"/>
-        </javadoc>
-
-        <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
+    <target name="deploy-apidoc" depends="apidoc-jsp" description="Deploy API documentation to an existing server instance">
+        <echo message="Copying apidoc files to server..."/>
+        <deploy-directory source="${report.dir}/apidocs/jsp" destination="${deploy.dir}/apidoc"/>
     </target>
 
     <target name="make-eclipse-project" description="Configures this checkout as an eclipse project.">

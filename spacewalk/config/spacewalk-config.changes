@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 13 15:08:46 CET 2025 - rosuna@suse.com
+
+- version 5.0.5-0
+  * Remove no longer valid PAM configuration (bsc#1231377)
+
+-------------------------------------------------------------------
 Thu Aug 01 09:25:53 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.4-0

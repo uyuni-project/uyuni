@@ -43,7 +43,7 @@ endif
 
 GMSGFMT = ${BIN}/msgfmt
 MSGFMT = ${BIN}/msgfmt
-MSGMERGE = ${BIN}/intltool-update -x --gettext-package=$(PACKAGE) --dist
+MSGMERGE = ${BIN}/msgmerge --previous
 
 INCLUDES = -I.. -I$(top_srcdir)/intl
 
@@ -166,7 +166,7 @@ update-po: Makefile POTFILES.in $(PACKAGE).pot
 	  lang=`echo $$cat | sed 's/\.gmo$$//'`; \
 	  echo "$$lang:"; \
 	  cp $$lang.po $$lang.old.po; \
-	  if $(MSGMERGE) $$lang; then \
+	  if $(MSGMERGE) -o $$lang.po $$lang.po $(PACKAGE).pot; then \
 	    rm -f $$lang.old.po ; \
 	  else \
 	    echo "msgmerge for $$cat failed!"; \

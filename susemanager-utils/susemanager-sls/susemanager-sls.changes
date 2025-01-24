@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Mon Jan 13 15:15:38 CET 2025 - rosuna@suse.com
+
+- version 5.0.12-0
+  * Adapt mgr_server grain and reportdb_user state to work with
+    containerized server
+  * Fix rebootifneeded state which misses definition of a variable
+    (bsc#1233426)
+  * Prevent warning message for unsigned Debian repositories
+    when using new deb822 format (bsc#1234251)
+  * Do not set "Trusted" for Debian repositories when the repo
+    should be signed
+  * suma_minion: prevent issues when calling Salt runners (bsc#1228232)
+  * Prevent a crash on "reboot_info" module for Liberty 6,
+    RHEL 6 & clones (bsc#1231404)
+  * Improve appstreams context selection (bsc#1231459)
+  * Collect uname, SAP workloads and container runtime data
+    on hardware profile update (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Thu Oct 03 16:18:47 CEST 2024 - rosuna@suse.com
 
 - version 5.0.11-0
