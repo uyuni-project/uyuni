@@ -141,6 +141,8 @@ import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.taskomatic.domain.TaskoTask;
+import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
@@ -293,6 +295,8 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             Task.class,
+            TaskoTask.class,
+            TaskoTemplate.class,
             TemplateString.class,
             TokenChannelAppStream.class,
             Token.class,
