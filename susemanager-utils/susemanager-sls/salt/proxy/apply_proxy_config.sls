@@ -28,6 +28,7 @@ mgrpxy_installed:
         max_cache_size_mb: {{ pillar['max_cache_size_mb']|int }}
         server_version: "{{ pillar['server_version'] }}"
         email: {{ pillar['email'] }}
+        replace_fqdns: {{ pillar['replace_fqdns'] }}
 
 /etc/uyuni/proxy/httpd.yaml:
   file.managed:
