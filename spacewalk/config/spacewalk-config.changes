@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jan 24 13:21:03 CET 2025 - marina.latini@suse.com
+
+- version 5.1.3-0
+  * Remove the virtualization code
+
+-------------------------------------------------------------------
 Thu Dec 12 09:22:02 CET 2024 - rosuna@suse.com
 
 - version 5.1.2-0

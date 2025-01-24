@@ -9,15 +9,11 @@
 #: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"POT-Creation-Date: 2025-01-23 15:55+0100\n"
 "PO-Revision-Date: 2025-01-17 07:50+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -64,9 +60,6 @@ msgstr "증명 실행 확인"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
 msgstr "일정"
 
@@ -184,7 +177,6 @@ msgstr "{date}의 {time}에 실행된 #{identifier} 증명"
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "시스템"
 
@@ -195,7 +187,7 @@ msgid "Environment Type"
 msgstr "환경 유형"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "생성됨"
 
@@ -230,8 +222,6 @@ msgstr "증명 시간"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:200
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "작업"
 
@@ -262,7 +252,7 @@ msgid "Last modified on"
 msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 msgid "Action"
 msgstr "작업"
 
@@ -333,8 +323,6 @@ msgstr "일정 선택"
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "N/A"
 
@@ -390,8 +378,6 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
 msgstr "취소"
 
@@ -423,11 +409,6 @@ msgstr "취소"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "삭제"
 
@@ -465,7 +446,6 @@ msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "재설정"
 
@@ -513,8 +493,6 @@ msgstr "필수"
 #: ../html/src/components/input/range/Range.stories.tsx:24
 #: ../html/src/components/input/select/simple.stories.tsx:32
 #: ../html/src/components/input/text/Text.stories.tsx:38
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "제출"
 
@@ -559,13 +537,6 @@ msgstr "로그인"
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "이름"
 
@@ -577,7 +548,6 @@ msgstr "이름"
 #: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "비밀번호"
 
@@ -826,8 +796,6 @@ msgstr "구성 채널: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "편집"
 
@@ -1124,10 +1092,6 @@ msgstr "도움말"
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "로드하는 중..."
 
@@ -1340,10 +1304,6 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "SUSE Manager 서버 모니터링을 설정하십시오."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:219
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
 msgid "General"
 msgstr "일반"
 
@@ -1356,7 +1316,6 @@ msgid "Organizations"
 msgstr "조직"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "다시 시작"
 
@@ -1401,9 +1360,6 @@ msgstr "PAYG SSH 데이터 추가"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
 msgid "Create"
 msgstr "만들기"
 
@@ -1452,11 +1408,6 @@ msgstr "PAYG 연결 추가"
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -1544,8 +1495,7 @@ msgstr "SUSE Customer Center에서 제품 카탈로그 새로 고침"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:435
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Refresh"
 msgstr "새로 고침"
 
@@ -1652,7 +1602,6 @@ msgstr "제품 설명"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "아키텍처"
 
@@ -1807,7 +1756,6 @@ msgstr " 초"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "이름을 기준으로 필터링"
 
@@ -1842,14 +1790,14 @@ msgstr "현재 서버에서 실행 중인 작업이 없습니다."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "세션이 만료되었습니다. 최신 데이터를 보려면 페이지를 다시 로드하십시오."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:557
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "서버 오류가 발생했습니다. 로그 파일을 확인하십시오."
@@ -2654,7 +2602,6 @@ msgid "AppStream modules with defaults"
 msgstr "기본값이 있는 AppStream 모듈"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "템플릿"
 
@@ -3164,9 +3111,8 @@ msgstr "권장에 포함"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "유형"
 
@@ -3339,7 +3285,6 @@ msgid "Image Store"
 msgstr "이미지 저장소"
 
 #: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
 msgid "Path"
 msgstr "경로"
 
@@ -3450,9 +3395,6 @@ msgstr "추가 사용자 정의 정보 키 만들기"
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
 msgid "Update"
 msgstr "업데이트"
 
@@ -3528,7 +3470,6 @@ msgstr "자격 증명 사용"
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
 msgstr "사용자 이름"
 
@@ -3894,8 +3835,6 @@ msgid "Building"
 msgstr "빌드하는 중"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "알 수 없음"
 
@@ -3920,7 +3859,6 @@ msgstr "(사용되지 않음)"
 #: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "업데이트"
 
@@ -4534,9 +4472,6 @@ msgstr "패키지 상태"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "시/도"
 
@@ -4549,7 +4484,7 @@ msgid "Applying the packages states has been "
 msgstr "패키지 상태 적용이 "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 msgid "Summary"
 msgstr "요약"
 
@@ -4653,92 +4588,95 @@ msgstr "알림 업데이트"
 msgid "PAYG instance is not compliant"
 msgstr "PAYG 인스턴스가 호환되지 않음"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.tsx:64
+msgid "SCC Data Sync Disabled"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:245
+#: ../html/src/manager/notifications/notification-messages.tsx:246
 msgid "Info"
 msgstr "정보"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Warning"
 msgstr "경고"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Error"
 msgstr "오류"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:320
+#: ../html/src/manager/notifications/notification-messages.tsx:324
 msgid "show details"
 msgstr "세부 사항 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:369
+#: ../html/src/manager/notifications/notification-messages.tsx:373
 msgid "Retry onboarding"
 msgstr "온보딩 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:379
+#: ../html/src/manager/notifications/notification-messages.tsx:383
 msgid "Retry repo sync"
 msgstr "저장소 동기화 다시 시도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:406
 msgid "Unread Messages"
 msgstr "읽지 않은 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "All Messages"
 msgstr "모든 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "Filter by type"
 msgstr "유형을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:439
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:443
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 msgid "Delete selected messages"
 msgstr "선택한 메시지 삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:447
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 msgid "Mark selected as read"
 msgstr "선택 항목을 읽음으로 표시"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:465
-#: ../html/src/manager/notifications/notification-messages.tsx:543
+#: ../html/src/manager/notifications/notification-messages.tsx:469
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Notification Messages"
 msgstr "알림 메시지"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
+#: ../html/src/manager/notifications/notification-messages.tsx:474
 msgid "The server has collected the following notification messages."
 msgstr "서버에서 다음 알림 메시지가 수집되었습니다."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:484
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 msgid "Filter by summary"
 msgstr "요약을 기준으로 필터링"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Severity"
 msgstr "심각도"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Read|Delete"
 msgstr "읽기|삭제"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Unread"
 msgstr "읽지 않음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Read"
 msgstr "읽음으로 플래그 지정"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:531
+#: ../html/src/manager/notifications/notification-messages.tsx:535
 msgid "Delete Notification"
 msgstr "알림 삭제"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr ""
 "Websocket 연결이 종료되었습니다. 페이지를 새로 고친 후 다시 시도하십시오."
@@ -4746,7 +4684,6 @@ msgstr ""
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 "서버에 연결하는 동안 오류가 발생했습니다. 페이지를 새로 고친 후 다시 시도하십"
@@ -5608,14 +5545,12 @@ msgstr "기밀 컴퓨팅 성능"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "Yes"
 msgstr "예"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
 msgid "No"
 msgstr "아니요"
 
@@ -5902,7 +5837,6 @@ msgid "system(s) to subscribe"
 msgstr "가입할 시스템"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(없음)"
 
@@ -6031,7 +5965,6 @@ msgid "No Virtual Systems."
 msgstr "가상 시스템 없음"
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "기본 소프트웨어 채널"
 
@@ -6138,828 +6071,6 @@ msgstr "가상 호스트 관리자"
 msgid "Add a virtual host manager"
 msgstr "가상 호스트 관리자 추가"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "libvirt python 모듈을 설치하십시오."
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 확"
-"인하십시오."
-
-#: ../html/src/manager/virtualization/ListTab.tsx:161
-msgid "{name} selected"
-msgstr "{name} 선택됨"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:240
-msgid "Action Status"
-msgstr "작업 상태"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:225
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:246
-msgid "Can not contain the following characters: /\\"
-msgstr "다음 문자를 포함할 수 없음: /\\"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:141
-msgid "Hypervisor"
-msgstr "하이퍼바이저"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:152
-msgid "Virtual Machine Type"
-msgstr "가상 머신 유형"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:56
-msgid "Maximum Memory (MiB)"
-msgstr "최대 메모리(MiB)"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:166
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:175
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:58
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:67
-msgid "A positive integer is required"
-msgstr "양수 필요"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:65
-msgid "Virtual CPU Count"
-msgstr "가상 CPU 수"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
-msgid "Enable UEFI"
-msgstr "UEFI 활성화"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
-msgid "UEFI firmware path"
-msgstr "UEFI 펌웨어 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
-msgid "NVRAM template path"
-msgstr "NVRAM 템플릿 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
-msgid "Auto-installation Profile"
-msgstr "자동 설치 프로파일"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
-msgid "Kernel options"
-msgstr "커널 옵션"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
-msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
-msgid "Define as a cluster resource"
-msgstr "클러스터 리소스로 정의"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
-msgid "Path to the cluster shared folder for VM definitions"
-msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Graphics"
-msgstr "그래픽"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "재시도"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "연결 중..."
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "연결 끊김"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "연결 실패"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "전체 크기 전환"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "게스트가 실행 중이 아님"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "알 수 없는 게스트"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "가상 머신 생성"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
-msgid "Migrate"
-msgstr "마이그레이트"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "대상 호스트"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
-msgid "Start / Resume"
-msgstr "시작/다시 시작"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
-msgid "Stop"
-msgstr "중지"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
-msgid "Force off"
-msgstr "강제 종료"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
-msgid "Suspend"
-msgstr "일시 중지"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
-msgid "Synchronize Guests List"
-msgstr "게스트 목록 동기화"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
-msgid "Synchronize"
-msgstr "동기화"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
-msgid "Hosted Virtual Systems"
-msgstr "호스팅된 가상 시스템"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
-msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
-msgid "Guest"
-msgstr "게스트"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
-msgid "Unregistered System"
-msgstr "미등록 시스템"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
-msgid "Current Memory"
-msgstr "현재 메모리"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
-msgid "vCPUs"
-msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
-msgid "paused"
-msgstr "일시 중지됨"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
-msgid "Graphical Console"
-msgstr "그래픽 콘솔"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
-msgid "Device type"
-msgstr "장치 유형"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
-msgid "Disk"
-msgstr "디스크"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:63
-msgid "CDROM"
-msgstr "CDROM"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:64
-msgid "Floppy"
-msgstr "플로피"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:75
-msgid "Bus"
-msgstr "버스"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:26
-msgid "File"
-msgstr "파일"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:35
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:113
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:500
-msgid "Format"
-msgstr "형식"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
-msgid "Source storage pool"
-msgstr "소스 저장소 풀"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:82
-msgid "Source Volume"
-msgstr "소스 볼륨"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:95
-msgid "Disk size (GiB)"
-msgstr "디스크 크기(GiB)"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
-msgid "Source template image URL"
-msgstr "소스 템플릿 이미지 URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "디스크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
-msgid "Network"
-msgstr "네트워크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:90
-msgid "MAC address"
-msgstr "MAC 주소"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
-msgid "Leave blank to generate a MAC address"
-msgstr "MAC 주소를 생성하려면 공백 유지"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
-msgid "Networks"
-msgstr "네트워크"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
-msgid "Clear Fields"
-msgstr "필드 지우기"
-
-#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
-msgid "Single virtual machine using almost all the host resources"
-msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
-msgid "Create Virtual Network"
-msgstr "가상 네트워크 만들기"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
-msgid "Start"
-msgstr "시작"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
-msgid "Virtual Networks"
-msgstr "가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
-msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
-msgstr ""
-"이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
-msgid "Autostart"
-msgstr "자동 시작"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
-msgid "Persistent"
-msgstr "영구"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:264
-msgid "Bridge"
-msgstr "브리지"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:216
-msgid "network properties"
-msgstr "네트워크 속성"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:233
-msgid "Network type"
-msgstr "네트워크 유형"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:245
-msgid "Macvtap mode"
-msgstr "Macvtap 모드"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:254
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:266
-msgid "Start during virtual host boot"
-msgstr "가상 호스트 부팅 중 시작"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:260
-msgid "Connectivity"
-msgstr "연결성"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:273
-msgid "Maximum Transmission Unit (MTU)"
-msgstr "최대 전송 단위(MTU)"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:277
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:179
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:188
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:197
-msgid "The value has to be a positive integer"
-msgstr "값은 양의 정수여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:285
-msgid "Virtual Port Type"
-msgstr "가상 포트 유형"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:301
-msgid "Select interfaces"
-msgstr "인터페이스 선택"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:307
-msgid "By physical function"
-msgstr "물리적 기능별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:310
-msgid "By virtual functions"
-msgstr "가상 기능별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:311
-msgid "By interfaces"
-msgstr "인터페이스별"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:322
-msgid "Interfaces"
-msgstr "인터페이스"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:342
-msgid "Physical Function"
-msgstr "물리적 기능"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:357
-msgid "Virtual Functions"
-msgstr "가상 기능"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:379
-msgid "VLAN tag"
-msgstr "VLAN 태그"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:383
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:57
-msgid "Integer between 0 and 4095"
-msgstr "0에서 4095 사이의 정수"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
-msgid "VLAN tags trunking"
-msgstr "VLAN 태그 트렁킹"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
-msgid "NAT IPv4 range"
-msgstr "NAT IPv4 범위"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-msgid "Both values has to be IPv4 addresses"
-msgstr "두 값 모두 IPv4 주소여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
-msgid "NAT port range"
-msgstr "NAT 포트 범위"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
-msgid "Both values has to be positive integers"
-msgstr "두 값 모두 양의 정수여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
-msgid "Addressing"
-msgstr "주소"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-msgid "Enable IPv6"
-msgstr "IPv6 활성화"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
-msgid "Domain name"
-msgstr "도메인 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:19
-msgid "DNS"
-msgstr "DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:24
-msgid "Forwarders"
-msgstr "전달자"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:37
-msgid "Domain"
-msgstr "도메인"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:38
-msgid "DNS server address"
-msgstr "DNS 서버 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:51
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:240
-msgid "Has to be a valid qualified host name"
-msgstr "유효한 정규화된 호스트 이름이어야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:59
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:100
-msgid "Has to be an IP address"
-msgstr "IP 주소여야 함"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:66
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:282
-msgid "Hosts"
-msgstr "호스트"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:80
-msgid "Address"
-msgstr "주소"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:84
-msgid "hostnames (comma-separated)"
-msgstr "호스트 이름(쉼표로 구분)"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:112
-msgid "Has to be a comma-separated list of host names"
-msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:119
-msgid "SRV records"
-msgstr "SRV 레코드"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:139
-msgid "Service name"
-msgstr "서비스 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:147
-msgid "Protocol"
-msgstr "프로토콜"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:159
-msgid "Service domain name"
-msgstr "서비스 도메인 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:168
-msgid "Target hostname"
-msgstr "대상 호스트 이름"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:175
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:222
-msgid "Port"
-msgstr "포트"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:184
-msgid "Target priority"
-msgstr "대상 우선순위"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:193
-msgid "Target weight"
-msgstr "대상 가중치"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:206
-msgid "TXT records"
-msgstr "TXT 레코드"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:224
-msgid "Value"
-msgstr "값"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
-msgid "Network address"
-msgstr "네트워크 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:41
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:56
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:105
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:135
-msgid "v6"
-msgstr "v6"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:85
-msgid "IP address"
-msgstr "IP 주소"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr "DHCP 고유 식별자(DUID)"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:119
-msgid "Needs to be a MAC address"
-msgstr "MAC 주소여야 함"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:144
-msgid "BOOTP image file"
-msgstr "BOOTP 이미지 파일"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:145
-msgid "BOOTP server"
-msgstr "BOOTP 서버"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:146
-msgid "TFTP root path"
-msgstr "TFTP 루트 경로"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:23
-msgid "Parameters"
-msgstr "파라미터"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:29
-msgid "By profile id"
-msgstr "프로파일 ID별"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr "VSI(Virtual Station Interface) 파라미터"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:38
-msgid "Profile id"
-msgstr "프로파일 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:48
-msgid "Interface id"
-msgstr "인터페이스 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:56
-msgid "VSI manager id"
-msgstr "VSI 관리자 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:57
-msgid "VSI type id"
-msgstr "VSI 유형 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:60
-msgid "VSI type id version"
-msgstr "VSI 유형 ID 버전"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:66
-msgid "VSI instance id"
-msgstr "VSI 인스턴스 ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:70
-msgid "Value needs to be a valid UUID"
-msgstr "값은 유효한 UUID여야 합니다."
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:19
-msgid "VLANs"
-msgstr "VLAN"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:40
-msgid "Tag"
-msgstr "태그"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:43
-msgid "Native mode"
-msgstr "기본 모드"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
-msgid "Tagged"
-msgstr "태그됨"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
-msgid "Untagged"
-msgstr "태그되지 않음"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
-"DNS 서비스가 추가되지 않았습니다."
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV 풀"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
-msgid "Could not get network devices from the server. Please try again."
-msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
-
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:26
-msgid "Create Virtual Storage Pool"
-msgstr "가상 저장소 풀 생성"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Pool"
-msgstr "가상 저장소 풀"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Volume"
-msgstr "가상 저장소 볼륨"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
-msgid "Delete the pool, including the contained volumes. "
-msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
-msgid "Cannot be undone"
-msgstr "실행을 취소할 수 없음"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
-msgid "Edit Pool"
-msgstr "풀 편집"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
-msgid "Location"
-msgstr "위치"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
-msgid "Usage"
-msgstr "사용"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-msgid "Create Pool"
-msgstr "풀 생성"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
-msgid "Virtual Storage Pools and Volumes"
-msgstr "가상 저장소 풀 및 볼륨"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
-msgstr "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
-msgid "Filter by pool or volume name"
-msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
-msgid "Partition separator"
-msgstr "파티션 구분자"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
-msgid "Host name"
-msgstr "호스트 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:255
-msgid "Pool Type"
-msgstr "풀 유형"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:272
-msgid "Source"
-msgstr "소스"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:314
-msgid "Devices"
-msgstr "장치"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:355
-msgid "Initiator IQN"
-msgstr "이니시에이터 IQN"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:365
-msgid "Adapter type"
-msgstr "어댑터 유형"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:389
-msgid "Adapter name"
-msgstr "어댑터 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:398
-msgid "Adapter parent PCI address"
-msgstr "어댑터 상위 PCI 주소"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:402
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:415
-msgid "PCI address formatted like 0000:00:00.0"
-msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:411
-msgid "Adapter parent address unique ID"
-msgstr "어댑터 상위 주소 고유 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:422
-msgid "Adapter parent name"
-msgstr "어댑터 상위 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:430
-msgid "Adapter parent wwnn"
-msgstr "어댑터 상위 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:433
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:453
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:475
-msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:440
-msgid "Adapter parent wwpn"
-msgstr "어댑터 상위 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:450
-msgid "Adapter parent fabric wwn"
-msgstr "어댑터 상위 패브릭 wwn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:460
-msgid "Adapter wwnn"
-msgstr "어댑터 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:471
-msgid "Adapter wwpn"
-msgstr "어댑터 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:482
-msgid "Manage vHBA deletion"
-msgstr "vHBA 감지 관리"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:491
-msgid "Source name"
-msgstr "소스 이름"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:517
-msgid "Passphrase"
-msgstr "비밀번호"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:527
-msgid "Target"
-msgstr "대상"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:538
-msgid "Owner UID"
-msgstr "소유자 UID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:542
-msgid "UID is a numeric value"
-msgstr "UID는 숫자 값입니다."
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:546
-msgid "Group ID"
-msgstr "그룹 ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:550
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:559
-msgid "GID is a numeric value"
-msgstr "GID는 숫자 값입니다."
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
-msgid "Permission mode"
-msgstr "권한 모드"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:555
-msgid "target directory permissions in octal form, like 0775"
-msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
-
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:562
-msgid "SELinux label"
-msgstr "SELinux 레이블"
-
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
-msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "세션이 만료되었습니다. 페이지를 다시 로드하십시오."
@@ -6977,6 +6088,599 @@ msgstr "리소스를 찾을 수 없음"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP 오류 코드 "
+
+#~ msgid "Please install libvirt python module."
+#~ msgstr "libvirt python 모듈을 설치하십시오."
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM 또는 Xen도 실행 중이 아닙니다. 설치되어 있고 커널 모듈이 로드되었는지 "
+#~ "확인하십시오."
+
+#~ msgid "{name} selected"
+#~ msgstr "{name} 선택됨"
+
+#~ msgid "Action Status"
+#~ msgstr "작업 상태"
+
+#~ msgid "Can not contain the following characters: /\\"
+#~ msgstr "다음 문자를 포함할 수 없음: /\\"
+
+#~ msgid "Hypervisor"
+#~ msgstr "하이퍼바이저"
+
+#~ msgid "Virtual Machine Type"
+#~ msgstr "가상 머신 유형"
+
+#~ msgid "Maximum Memory (MiB)"
+#~ msgstr "최대 메모리(MiB)"
+
+#~ msgid "A positive integer is required"
+#~ msgstr "양수 필요"
+
+#~ msgid "Virtual CPU Count"
+#~ msgstr "가상 CPU 수"
+
+#~ msgid "Enable UEFI"
+#~ msgstr "UEFI 활성화"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFI 펌웨어 경로"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAM 템플릿 경로"
+
+#~ msgid "Auto-installation Profile"
+#~ msgstr "자동 설치 프로파일"
+
+#~ msgid "Kernel options"
+#~ msgstr "커널 옵션"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "가상 도메인 리소스 에이전트 이후 클러스터 지원이 비활성화되었습니다. "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "클러스터 리소스로 정의"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "VM 정의를 위한 클러스터 공유 폴더 경로"
+
+#~ msgid "Graphics"
+#~ msgstr "그래픽"
+
+#~ msgid "Retry"
+#~ msgstr "재시도"
+
+#~ msgid "Connecting..."
+#~ msgstr "연결 중..."
+
+#~ msgid "Disconnected"
+#~ msgstr "연결 끊김"
+
+#~ msgid "Failed to connect"
+#~ msgstr "연결 실패"
+
+#~ msgid "Toggle full size"
+#~ msgstr "전체 크기 전환"
+
+#~ msgid "Guest is not running"
+#~ msgstr "게스트가 실행 중이 아님"
+
+#~ msgid "Unknown guest"
+#~ msgstr "알 수 없는 게스트"
+
+#~ msgid "Something went wrong, connection is closed"
+#~ msgstr "오류가 발생했습니다. 연결이 종료되었습니다."
+
+#~ msgid "Create Virtual Machine"
+#~ msgstr "가상 머신 생성"
+
+#~ msgid "Migrate"
+#~ msgstr "마이그레이트"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "가상 게스트를 마이그레이션할 위치를 선택합니다."
+
+#~ msgid "Target Host"
+#~ msgstr "대상 호스트"
+
+#~ msgid "Start / Resume"
+#~ msgstr "시작/다시 시작"
+
+#~ msgid "Stop"
+#~ msgstr "중지"
+
+#~ msgid "Force off"
+#~ msgstr "강제 종료"
+
+#~ msgid "Suspend"
+#~ msgstr "일시 중지"
+
+#~ msgid "Synchronize Guests List"
+#~ msgstr "게스트 목록 동기화"
+
+#~ msgid "Synchronize"
+#~ msgstr "동기화"
+
+#~ msgid "Hosted Virtual Systems"
+#~ msgstr "호스팅된 가상 시스템"
+
+#~ msgid ""
+#~ "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr "이 호스트에서 실행하도록 구성된 가상 게스트 목록입니다."
+
+#~ msgid "Guest"
+#~ msgstr "게스트"
+
+#~ msgid "Unregistered System"
+#~ msgstr "미등록 시스템"
+
+#~ msgid "Current Memory"
+#~ msgstr "현재 메모리"
+
+#~ msgid "vCPUs"
+#~ msgstr "vCPU"
+
+#~ msgid "paused"
+#~ msgstr "일시 중지됨"
+
+#~ msgid "Graphical Console"
+#~ msgstr "그래픽 콘솔"
+
+#~ msgid "Device type"
+#~ msgstr "장치 유형"
+
+#~ msgid "Disk"
+#~ msgstr "디스크"
+
+#~ msgid "CDROM"
+#~ msgstr "CDROM"
+
+#~ msgid "Floppy"
+#~ msgstr "플로피"
+
+#~ msgid "Bus"
+#~ msgstr "버스"
+
+#~ msgid "File"
+#~ msgstr "파일"
+
+#~ msgid "Format"
+#~ msgstr "형식"
+
+#~ msgid "Source storage pool"
+#~ msgstr "소스 저장소 풀"
+
+#~ msgid "Source Volume"
+#~ msgstr "소스 볼륨"
+
+#~ msgid "Disk size (GiB)"
+#~ msgstr "디스크 크기(GiB)"
+
+#~ msgid "Source template image URL"
+#~ msgstr "소스 템플릿 이미지 URL"
+
+#~ msgid "Disks"
+#~ msgstr "디스크"
+
+#~ msgid "Network"
+#~ msgstr "네트워크"
+
+#~ msgid "MAC address"
+#~ msgstr "MAC 주소"
+
+#~ msgid "Leave blank to generate a MAC address"
+#~ msgstr "MAC 주소를 생성하려면 공백 유지"
+
+#~ msgid "Networks"
+#~ msgstr "네트워크"
+
+#~ msgid "Clear Fields"
+#~ msgstr "필드 지우기"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "거의 모든 호스트 리소스를 사용하는 단일 가상 머신"
+
+#~ msgid "Create Virtual Network"
+#~ msgstr "가상 네트워크 만들기"
+
+#~ msgid "Start"
+#~ msgstr "시작"
+
+#~ msgid "Virtual Networks"
+#~ msgstr "가상 네트워크"
+
+#~ msgid ""
+#~ "This is a list of virtual networks which are configured to run on this "
+#~ "host."
+#~ msgstr "이 호스트에서 실행하도록 구성된 가상 네트워크 목록입니다."
+
+#~ msgid ""
+#~ "The Salt version on this system does not support virtual network creating "
+#~ "and editing"
+#~ msgstr ""
+#~ "이 시스템의 Salt 버전은 가상 네트워크 생성 및 편집을 지원하지 않습니다."
+
+#~ msgid "Autostart"
+#~ msgstr "자동 시작"
+
+#~ msgid "Persistent"
+#~ msgstr "영구"
+
+#~ msgid "Bridge"
+#~ msgstr "브리지"
+
+#~ msgid "network properties"
+#~ msgstr "네트워크 속성"
+
+#~ msgid "Network type"
+#~ msgstr "네트워크 유형"
+
+#~ msgid "Macvtap mode"
+#~ msgstr "Macvtap 모드"
+
+#~ msgid "Start during virtual host boot"
+#~ msgstr "가상 호스트 부팅 중 시작"
+
+#~ msgid "Connectivity"
+#~ msgstr "연결성"
+
+#~ msgid "Maximum Transmission Unit (MTU)"
+#~ msgstr "최대 전송 단위(MTU)"
+
+#~ msgid "The value has to be a positive integer"
+#~ msgstr "값은 양의 정수여야 합니다."
+
+#~ msgid "Virtual Port Type"
+#~ msgstr "가상 포트 유형"
+
+#~ msgid "Select interfaces"
+#~ msgstr "인터페이스 선택"
+
+#~ msgid "By physical function"
+#~ msgstr "물리적 기능별"
+
+#~ msgid "By virtual functions"
+#~ msgstr "가상 기능별"
+
+#~ msgid "By interfaces"
+#~ msgstr "인터페이스별"
+
+#~ msgid "Interfaces"
+#~ msgstr "인터페이스"
+
+#~ msgid "Physical Function"
+#~ msgstr "물리적 기능"
+
+#~ msgid "Virtual Functions"
+#~ msgstr "가상 기능"
+
+#~ msgid "VLAN tag"
+#~ msgstr "VLAN 태그"
+
+#~ msgid "Integer between 0 and 4095"
+#~ msgstr "0에서 4095 사이의 정수"
+
+#~ msgid "VLAN tags trunking"
+#~ msgstr "VLAN 태그 트렁킹"
+
+#~ msgid "NAT IPv4 range"
+#~ msgstr "NAT IPv4 범위"
+
+#~ msgid "Both values has to be IPv4 addresses"
+#~ msgstr "두 값 모두 IPv4 주소여야 합니다."
+
+#~ msgid "NAT port range"
+#~ msgstr "NAT 포트 범위"
+
+#~ msgid "Both values has to be positive integers"
+#~ msgstr "두 값 모두 양의 정수여야 합니다."
+
+#~ msgid "Addressing"
+#~ msgstr "주소"
+
+#~ msgid "Enable IPv6"
+#~ msgstr "IPv6 활성화"
+
+#~ msgid "Domain name"
+#~ msgstr "도메인 이름"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "Forwarders"
+#~ msgstr "전달자"
+
+#~ msgid "Domain"
+#~ msgstr "도메인"
+
+#~ msgid "DNS server address"
+#~ msgstr "DNS 서버 주소"
+
+#~ msgid "Has to be a valid qualified host name"
+#~ msgstr "유효한 정규화된 호스트 이름이어야 합니다."
+
+#~ msgid "Has to be an IP address"
+#~ msgstr "IP 주소여야 함"
+
+#~ msgid "Hosts"
+#~ msgstr "호스트"
+
+#~ msgid "Address"
+#~ msgstr "주소"
+
+#~ msgid "hostnames (comma-separated)"
+#~ msgstr "호스트 이름(쉼표로 구분)"
+
+#~ msgid "Has to be a comma-separated list of host names"
+#~ msgstr "쉼표로 구분된 호스트 이름 목록이어야 합니다."
+
+#~ msgid "SRV records"
+#~ msgstr "SRV 레코드"
+
+#~ msgid "Service name"
+#~ msgstr "서비스 이름"
+
+#~ msgid "Protocol"
+#~ msgstr "프로토콜"
+
+#~ msgid "Service domain name"
+#~ msgstr "서비스 도메인 이름"
+
+#~ msgid "Target hostname"
+#~ msgstr "대상 호스트 이름"
+
+#~ msgid "Port"
+#~ msgstr "포트"
+
+#~ msgid "Target priority"
+#~ msgstr "대상 우선순위"
+
+#~ msgid "Target weight"
+#~ msgstr "대상 가중치"
+
+#~ msgid "TXT records"
+#~ msgstr "TXT 레코드"
+
+#~ msgid "Value"
+#~ msgstr "값"
+
+#~ msgid "Network address"
+#~ msgstr "네트워크 주소"
+
+#~ msgid "v6"
+#~ msgstr "v6"
+
+#~ msgid "IP address"
+#~ msgstr "IP 주소"
+
+#~ msgid "DHCP Unique Identifier (DUID)"
+#~ msgstr "DHCP 고유 식별자(DUID)"
+
+#~ msgid "Needs to be a MAC address"
+#~ msgstr "MAC 주소여야 함"
+
+#~ msgid "BOOTP image file"
+#~ msgstr "BOOTP 이미지 파일"
+
+#~ msgid "BOOTP server"
+#~ msgstr "BOOTP 서버"
+
+#~ msgid "TFTP root path"
+#~ msgstr "TFTP 루트 경로"
+
+#~ msgid "Parameters"
+#~ msgstr "파라미터"
+
+#~ msgid "By profile id"
+#~ msgstr "프로파일 ID별"
+
+#~ msgid "Virtual Station Interface (VSI) parameters"
+#~ msgstr "VSI(Virtual Station Interface) 파라미터"
+
+#~ msgid "Profile id"
+#~ msgstr "프로파일 ID"
+
+#~ msgid "Interface id"
+#~ msgstr "인터페이스 ID"
+
+#~ msgid "VSI manager id"
+#~ msgstr "VSI 관리자 ID"
+
+#~ msgid "VSI type id"
+#~ msgstr "VSI 유형 ID"
+
+#~ msgid "VSI type id version"
+#~ msgstr "VSI 유형 ID 버전"
+
+#~ msgid "VSI instance id"
+#~ msgstr "VSI 인스턴스 ID"
+
+#~ msgid "Value needs to be a valid UUID"
+#~ msgstr "값은 유효한 UUID여야 합니다."
+
+#~ msgid "VLANs"
+#~ msgstr "VLAN"
+
+#~ msgid "Tag"
+#~ msgstr "태그"
+
+#~ msgid "Native mode"
+#~ msgstr "기본 모드"
+
+#~ msgid "Tagged"
+#~ msgstr "태그됨"
+
+#~ msgid "Untagged"
+#~ msgstr "태그되지 않음"
+
+#~ msgid ""
+#~ "Use an existing and configured bridge device. No iptables rule, IP "
+#~ "address or DHCP/DNS service are added"
+#~ msgstr ""
+#~ "기존 및 구성된 브리지 장치를 사용합니다. iptables 규칙, IP 주소 또는 DHCP/"
+#~ "DNS 서비스가 추가되지 않았습니다."
+
+#~ msgid "Virtual network using the host IP routing stack and NAT"
+#~ msgstr "호스트 IP 라우팅 스택 및 NAT를 사용하는 가상 네트워크"
+
+#~ msgid "Virtual network using the host IP routing stack, without NAT"
+#~ msgstr "NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#~ msgid ""
+#~ "Virtual network using the host IP routing stack, without firewall rules "
+#~ "and NAT"
+#~ msgstr ""
+#~ "방화벽 규칙 및 NAT 없이 호스트 IP 라우팅 스택을 사용하는 가상 네트워크"
+
+#~ msgid "Virtual network with no connection to other networks"
+#~ msgstr "다른 네트워크에 연결되지 않은 가상 네트워크"
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr "물리적 인터페이스 풀을 사용하는 macvtap 드라이버 기반 네트워크. "
+
+#~ msgid "SR-IOV pool"
+#~ msgstr "SR-IOV 풀"
+
+#~ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+#~ msgstr "SR-IOV 가상 기능 풀 중 하나의 장치 통과"
+
+#~ msgid "Could not get network devices from the server. Please try again."
+#~ msgstr "서버에서 네트워크 장치를 가져올 수 없습니다. 다시 시도하십시오."
+
+#~ msgid "Create Virtual Storage Pool"
+#~ msgstr "가상 저장소 풀 생성"
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "가상 저장소 풀"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "가상 저장소 볼륨"
+
+#~ msgid "Delete the pool, including the contained volumes. "
+#~ msgstr "포함된 볼륨을 포함하여 풀을 삭제하십시오. "
+
+#~ msgid "Cannot be undone"
+#~ msgstr "실행을 취소할 수 없음"
+
+#~ msgid "Edit Pool"
+#~ msgstr "풀 편집"
+
+#~ msgid "Location"
+#~ msgstr "위치"
+
+#~ msgid "Usage"
+#~ msgstr "사용"
+
+#~ msgid "Create Pool"
+#~ msgstr "풀 생성"
+
+#~ msgid "Virtual Storage Pools and Volumes"
+#~ msgstr "가상 저장소 풀 및 볼륨"
+
+#~ msgid ""
+#~ "This is the list of storage pools defined on this host containing virtual "
+#~ "guests disks."
+#~ msgstr ""
+#~ "가상 게스트 디스크를 포함한 이 호스트에 정의된 저장소 풀의 목록입니다."
+
+#~ msgid "Filter by pool or volume name"
+#~ msgstr "풀 또는 볼륨 이름을 기준으로 필터링"
+
+#~ msgid "Partition separator"
+#~ msgstr "파티션 구분자"
+
+#~ msgid "Host name"
+#~ msgstr "호스트 이름"
+
+#~ msgid "Pool Type"
+#~ msgstr "풀 유형"
+
+#~ msgid "Source"
+#~ msgstr "소스"
+
+#~ msgid "Devices"
+#~ msgstr "장치"
+
+#~ msgid "Initiator IQN"
+#~ msgstr "이니시에이터 IQN"
+
+#~ msgid "Adapter type"
+#~ msgstr "어댑터 유형"
+
+#~ msgid "Adapter name"
+#~ msgstr "어댑터 이름"
+
+#~ msgid "Adapter parent PCI address"
+#~ msgstr "어댑터 상위 PCI 주소"
+
+#~ msgid "PCI address formatted like 0000:00:00.0"
+#~ msgstr "0000:00:00.0와 같은 형식의 PCI 주소"
+
+#~ msgid "Adapter parent address unique ID"
+#~ msgstr "어댑터 상위 주소 고유 ID"
+
+#~ msgid "Adapter parent name"
+#~ msgstr "어댑터 상위 이름"
+
+#~ msgid "Adapter parent wwnn"
+#~ msgstr "어댑터 상위 wwnn"
+
+#~ msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+#~ msgstr "16자리 Long 16진법 값입니다. 예: 500277a4100c4e21"
+
+#~ msgid "Adapter parent wwpn"
+#~ msgstr "어댑터 상위 wwpn"
+
+#~ msgid "Adapter parent fabric wwn"
+#~ msgstr "어댑터 상위 패브릭 wwn"
+
+#~ msgid "Adapter wwnn"
+#~ msgstr "어댑터 wwnn"
+
+#~ msgid "Adapter wwpn"
+#~ msgstr "어댑터 wwpn"
+
+#~ msgid "Manage vHBA deletion"
+#~ msgstr "vHBA 감지 관리"
+
+#~ msgid "Source name"
+#~ msgstr "소스 이름"
+
+#~ msgid "Passphrase"
+#~ msgstr "비밀번호"
+
+#~ msgid "Target"
+#~ msgstr "대상"
+
+#~ msgid "Owner UID"
+#~ msgstr "소유자 UID"
+
+#~ msgid "UID is a numeric value"
+#~ msgstr "UID는 숫자 값입니다."
+
+#~ msgid "Group ID"
+#~ msgstr "그룹 ID"
+
+#~ msgid "GID is a numeric value"
+#~ msgstr "GID는 숫자 값입니다."
+
+#~ msgid "Permission mode"
+#~ msgstr "권한 모드"
+
+#~ msgid "target directory permissions in octal form, like 0775"
+#~ msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
+
+#~ msgid "SELinux label"
+#~ msgstr "SELinux 레이블"
+
+#~ msgid ""
+#~ "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr "서버에서 저장소 풀 기능을 가져올 수 없습니다. 다시 시도하십시오."
 
 #~ msgid "Learn more about"
 #~ msgstr "자세히 알아보기"

@@ -1,11 +1,10 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
-if [ $# -ne 2 ];
+if [ $# -ne 1 ];
 then
-    echo "Usage: $0 <schema_name> <schema_version>"
+    echo "Usage: $0 <schema_name>"
     echo "where"
     echo "    schema_name        name of the schema to update (susemanager-schema or uyuni-reportdb-schema)"
-    echo "    schema_version     version of the schema currently installed"
     exit 1
 fi
 
@@ -24,7 +23,7 @@ fi
 
 # Start with the given schema name and version
 schema="$1"
-version="$2"
+version=$(rpm -q --queryformat '%{version}' ${schema})
 
 # Get the upgrade dir for the current schema and version
 current_dir="$(find ${upgrade_dir} -name "$schema-$version-to-*")"

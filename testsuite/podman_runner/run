@@ -16,8 +16,8 @@ set -e
 ./04_setup_ssh_controller.sh
 ./05_install_gems_in_controller.sh
 ./06_collect_and_tag_flaky_tests_in_controller.sh
-./07_start_server.sh
-./08_manager_setup.sh
+./07_server_setup.sh
+./08_start_server.sh
 ./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh

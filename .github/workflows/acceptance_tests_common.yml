@@ -82,10 +82,10 @@ jobs:
         run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
+      - name: setup-server-container
+        run: ./testsuite/podman_runner/07_server_setup.sh
       - name: start-server-container
-        run: ./testsuite/podman_runner/07_start_server.sh
-      - name: mgr-setup
-        run: ./testsuite/podman_runner/08_manager_setup.sh
+        run: ./testsuite/podman_runner/08_start_server.sh
       - name: build_code
         run: ./testsuite/podman_runner/09_build_server_code.sh
 #     - name: copy_ca

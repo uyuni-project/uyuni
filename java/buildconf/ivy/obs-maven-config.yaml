@@ -34,7 +34,7 @@ artifacts:
     jar: cglib.jar
     repository: Leap
   - artifact: classmate
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: javax.mail
     jar: javax.mail.jar
     package: javamail
@@ -84,7 +84,7 @@ artifacts:
     package: apache-commons-compress
     repository: Leap
   - artifact: concurrentlinkedhashmap-lru
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: dom4j
     repository: Leap_sle
   - artifact: ehcache-core
@@ -331,19 +331,19 @@ artifacts:
   - artifact: jetty-util
     repository: Leap_sle
   - artifact: glassfish-jaxb-api
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: jaxb-runtime
     package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
+    repository: Leap 
   - artifact: jaxb-impl
     package: glassfish-jaxb-runtime
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: txw2
     package: glassfish-jaxb-txw2
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: glassfish-activation
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: istack-commons-runtime
     repository: Leap
   - artifact: stax-ex
-    repository: Uyuni_Other
+    repository: Leap 

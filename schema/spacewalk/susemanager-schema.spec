@@ -20,7 +20,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           susemanager-schema
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        SQL schema for Spacewalk server
 License:        GPL-2.0-only
