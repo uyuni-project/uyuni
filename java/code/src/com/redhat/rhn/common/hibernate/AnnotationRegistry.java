@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
@@ -166,6 +168,8 @@ public class AnnotationRegistry {
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
             // do not add class at the endi, but keep the alphabetical order
             AccessToken.class,
+            ActionChain.class,
+            ActionChainEntry.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
