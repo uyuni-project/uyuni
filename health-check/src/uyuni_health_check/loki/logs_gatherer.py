@@ -1,14 +1,12 @@
 from uyuni_health_check.containers.manager import podman
 from uyuni_health_check.utils import run_command, HealthException, console
 from uyuni_health_check.outputter import outputter
-from uyuni_health_check.config_loader import ConfigLoader
+from uyuni_health_check import config
 from rich.markdown import Markdown
 from datetime import datetime, timedelta
 from rich import print
 import json
 from json.decoder import JSONDecodeError
-
-conf = ConfigLoader()
 
 
 def show_full_error_logs(from_datetime, to_datetime, since, console: "Console", loki=None):
@@ -58,14 +56,14 @@ def show_error_logs_stats(from_datetime, to_datetime, since, console: "Console",
 
 def query_loki(from_dt, to_dt, since, query):
 
-    loki_container_name = conf.global_config['loki']['loki_container_name']
-    loki_port = conf.global_config['loki']['loki_port']
+    loki_container_name = config.load_prop('loki.loki_container_name')
+    loki_port = config.load_prop('loki.loki_port')
     loki_url = f"http://{loki_container_name}:{loki_port}"
 
-    network_name = conf.global_config['podman']['network_name']
-    logcli_container_name = conf.global_config['logcli']['logcli_container_name']
+    network_name = config.load_prop('podman.network_name')
+    logcli_container_name = config.load_prop('logcli.logcli_container_name')
 
-    logcli_image_name = conf.global_config['logcli']['logcli_image_name']
+    logcli_image_name = config.load_prop('logcli.logcli_image_name')
 
     podman_args =  [
             "run",
