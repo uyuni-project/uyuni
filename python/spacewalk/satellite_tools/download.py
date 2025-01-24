@@ -145,6 +145,14 @@ class PyCurlFileObjectThread(PyCurlFileObject):
         # pylint: disable-next=unused-variable
         (scheme, host, path, parm, query, frag) = parts
         opts.find_proxy(url, scheme)
+        try:
+            # Ensure the parent directory exists
+            os.makedirs(
+                os.path.dirname(filename), exist_ok=True
+            )  # Create missing directories
+        # pylint: disable-next=broad-exception-caught
+        except Exception as e:
+            print(f"Error creating directories: {e}")
         super().__init__(url, filename, opts)
 
     def _do_open(self):
