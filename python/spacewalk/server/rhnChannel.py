@@ -1157,6 +1157,7 @@ def list_packages_source(channel_id):
                     new_evr["release"],
                     new_evr["epoch"],
                 ]
+            # pylint: disable-next=possibly-used-before-assignment
             ret.append(new_evr_list)
 
     return ret

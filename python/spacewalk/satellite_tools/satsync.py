@@ -20,7 +20,6 @@
 # __lang. imports__
 # pylint: disable=E0012, C0413
 import datetime
-import time
 import os
 import sys
 import stat
@@ -320,6 +319,7 @@ class Runner:
             except RhnSyncException:
                 rhnSQL.rollback()
                 raise
+            # pylint: disable-next=possibly-used-before-assignment
             except exception:
                 e = sys.exc_info()[1]
                 msg = _(
@@ -532,7 +532,6 @@ def sendMail(forceEmail=0):
 
 
 class Syncer:
-
     """high-level sychronization/import class
     NOTE: there should *ONLY* be one instance of this.
     """
@@ -1307,7 +1306,13 @@ class Syncer:
                 db_checksum = row["checksum"]
                 db_package_size = row["package_size"]
                 db_path = row["path"]
-                log(3, "PKG Metadata values: {}, {}, {}, {}".format(checksum_type, checksum, package_size, l_timestamp))
+                log(
+                    3,
+                    # pylint: disable-next=consider-using-f-string
+                    "PKG Metadata values: {}, {}, {}, {}".format(
+                        checksum_type, checksum, package_size, l_timestamp
+                    ),
+                )
 
                 if not (
                     l_timestamp <= db_timestamp
@@ -1316,8 +1321,19 @@ class Syncer:
                 ):
                     # package doesn't match
                     channel_package = package_id
-                    log(3, "Package id {} has different checksum {} vs. {}, package size {} vs. {} or timestamp {} > {}".format(
-                        channel_package, checksum, db_checksum, package_size, db_package_size, l_timestamp, db_timestamp))
+                    log(
+                        3,
+                        # pylint: disable-next=consider-using-f-string
+                        "Package id {} has different checksum {} vs. {}, package size {} vs. {} or timestamp {} > {}".format(
+                            channel_package,
+                            checksum,
+                            db_checksum,
+                            package_size,
+                            db_package_size,
+                            l_timestamp,
+                            db_timestamp,
+                        ),
+                    )
 
                 if check_rpms:
                     if db_path:
@@ -1329,19 +1345,33 @@ class Syncer:
                             # file doesn't match
                             fs_package = package_id
                             channel_package = package_id
-                            log(3, "Package id {} - {} verify failed: {}".format(package_id, db_path, errcode))
+                            log(
+                                3,
+                                # pylint: disable-next=consider-using-f-string
+                                "Package id {} - {} verify failed: {}".format(
+                                    package_id, db_path, errcode
+                                ),
+                            )
                         path = db_path
                     else:
                         # upload package and reimport metadata
                         channel_package = package_id
                         fs_package = package_id
+                        # pylint: disable-next=consider-using-f-string
                         log(3, "Package id {} path not found in db".format(package_id))
             else:
-                log(3, "Package id {} found in DB, but missing checksum_type {}".format(package_id, checksum_type))
+                log(
+                    3,
+                    # pylint: disable-next=consider-using-f-string
+                    "Package id {} found in DB, but missing checksum_type {}".format(
+                        package_id, checksum_type
+                    ),
+                )
         else:
             # package is missing from the DB
             channel_package = package_id
             fs_package = package_id
+            # pylint: disable-next=consider-using-f-string
             log(3, "Package id {} not found in db".format(package_id))
 
         if channel_package:
