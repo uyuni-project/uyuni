@@ -41,10 +41,11 @@ def load_prop(property: str) -> Any:
     res = parse_config().copy()
     for prop_part in property.split('.'):
         try:
-            res = res.get(prop_part, {})
-        except (AttributeError, ValueError):
-            res = None
-            break
+            res = res[prop_part]
+        except Exception as e:
+            raise ValueError(
+                f"Invalid config lookup ({property}); trying to get {prop_part} from {res}"
+            ) from e
     return res
 
 def write_config(component: str, config_file_path: str, content: str, is_json=False):
