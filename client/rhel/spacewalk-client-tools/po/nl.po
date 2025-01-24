@@ -20,10 +20,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 15:01+0100\n"
+"POT-Creation-Date: 2025-01-24 15:21+0100\n"
 "PO-Revision-Date: 2018-03-16 11:03+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Dutch (http://www.transifex.com/projects/p/spacewalk/language/nl/)\n"
+"Language-Team: Dutch (http://www.transifex.com/projects/p/spacewalk/language/"
+"nl/)\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,8 +34,12 @@ msgstr ""
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
-msgid "This client requires the server to support %s, which the current server does not support"
-msgstr "Deze client vereist dat de server %s ondersteunt, de huidige server ondersteunt dit niet"
+msgid ""
+"This client requires the server to support %s, which the current server does "
+"not support"
+msgstr ""
+"Deze client vereist dat de server %s ondersteunt, de huidige server "
+"ondersteunt dit niet"
 
 #: ../src/up2date_client/config.py:162
 #, python-format
@@ -115,7 +120,9 @@ msgstr "Kan SystemId niet situeren"
 
 #: ../src/up2date_client/rhnChannel.py:119
 msgid "This system may not be updated until it is associated with a channel."
-msgstr "Dit systeem mag niet worden bijgewerkt totdat het is geassocieerd met een kanaal."
+msgstr ""
+"Dit systeem mag niet worden bijgewerkt totdat het is geassocieerd met een "
+"kanaal."
 
 #: ../src/up2date_client/rhncli.py:65
 #, fuzzy
@@ -128,11 +135,13 @@ msgstr "Geef een http-proxy op om te gebruiken"
 
 #: ../src/up2date_client/rhncli.py:69
 msgid "Specify a username to use with an authenticated http proxy"
-msgstr "Geef een gebruikersnaam op om te gebruiken voor een authenticated http proxy"
+msgstr ""
+"Geef een gebruikersnaam op om te gebruiken voor een authenticated http proxy"
 
 #: ../src/up2date_client/rhncli.py:71
 msgid "Specify a password to use with an authenticated http proxy"
-msgstr "Geef een wachtwoord op om te gebruiken voor een authenticated http proxy"
+msgstr ""
+"Geef een wachtwoord op om te gebruiken voor een authenticated http proxy"
 
 #: ../src/up2date_client/rhncli.py:93
 msgid ""
@@ -145,7 +154,8 @@ msgstr ""
 #: ../src/up2date_client/rhncli.py:96
 #, python-format
 msgid "An unexpected OS error occurred: %s\n"
-msgstr "Er werd een onverwachte fout door het besturingssysteem veroorzaakt: %s\n"
+msgstr ""
+"Er werd een onverwachte fout door het besturingssysteem veroorzaakt: %s\n"
 
 #: ../src/up2date_client/rhncli.py:101
 msgid "A connection was attempted with a malformed URI.\n"
@@ -169,8 +179,12 @@ msgid "There was an SSL error: %s\n"
 msgstr "Er deed zich een SSL fout voor: %s\n"
 
 #: ../src/up2date_client/rhncli.py:112
-msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
-msgstr "Een veelvoorkomende oorzaak van deze fout is een incorrecte systeemtijd. Verzeker u ervan dat de tijd op dit systeem correct is.\n"
+msgid ""
+"A common cause of this error is the system time being incorrect. Verify that "
+"the time on this system is correct.\n"
+msgstr ""
+"Een veelvoorkomende oorzaak van deze fout is een incorrecte systeemtijd. "
+"Verzeker u ervan dat de tijd op dit systeem correct is.\n"
 
 #: ../src/up2date_client/rhncli.py:119
 #, python-format
@@ -236,8 +250,12 @@ msgid "You specified an invalid protocol. Only https and http are allowed."
 msgstr "Ongeldig protocol opgegeven. Alleen https en http zijn toegestaan."
 
 #: ../src/up2date_client/rhnregGui.py:305
-msgid "You will not be able to successfully register this system without contacting a Spacewalk server."
-msgstr "Je zult dit systeem niet succesvol kunnen registreren zonder contact te maken met een Spacewalk-server."
+msgid ""
+"You will not be able to successfully register this system without contacting "
+"a Spacewalk server."
+msgstr ""
+"Je zult dit systeem niet succesvol kunnen registreren zonder contact te "
+"maken met een Spacewalk-server."
 
 #: ../src/up2date_client/rhnregGui.py:325
 msgid "Cannot contact selected server"
@@ -250,8 +268,12 @@ msgstr "We konden geen contact krijgen met de Satellite of Proxy op '%s.'"
 
 #: ../src/up2date_client/rhnregGui.py:328
 #, python-format
-msgid "Double-check the location - is '%s' correct? If not, you can correct it and try again."
-msgstr "Controleer de locatie nogmaals - is '%s' correct? Zo niet dan kun je het corrigeren en opnieuw proberen."
+msgid ""
+"Double-check the location - is '%s' correct? If not, you can correct it and "
+"try again."
+msgstr ""
+"Controleer de locatie nogmaals - is '%s' correct? Zo niet dan kun je het "
+"corrigeren en opnieuw proberen."
 
 #: ../src/up2date_client/rhnregGui.py:331
 msgid "Make sure the network connection on this system is operational."
@@ -259,7 +281,8 @@ msgstr "Verzeker je ervan dat de netwerkverbinding op dit systeem actief is."
 
 #: ../src/up2date_client/rhnregGui.py:341
 msgid "There was an error communicating with Spacewalk server."
-msgstr "Er deed zich een fout voor tijdens het communiceren met de Spacewalk-server."
+msgstr ""
+"Er deed zich een fout voor tijdens het communiceren met de Spacewalk-server."
 
 #: ../src/up2date_client/rhnregGui.py:342
 msgid "The server may be in outage mode. You may have to try connecting later."
@@ -267,11 +290,13 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:344
 msgid "You may be running a client that is incompatible with the server."
-msgstr "Het kan zijn dat je een client gebruikt die niet compatibel is met de server."
+msgstr ""
+"Het kan zijn dat je een client gebruikt die niet compatibel is met de server."
 
 #: ../src/up2date_client/rhnregGui.py:377
 #, python-format
-msgid "Please enter your account information for the <b>%s</b> Spacewalk server:"
+msgid ""
+"Please enter your account information for the <b>%s</b> Spacewalk server:"
 msgstr "Voer je accountinformatie in voor de <b>%s</b> Spacewalk-server:"
 
 #: ../src/up2date_client/rhnregGui.py:416
@@ -287,12 +312,18 @@ msgid "There was an error while logging in."
 msgstr "Er deed zich een fout voor bij het inloggen."
 
 #: ../src/up2date_client/rhnregGui.py:462
-msgid "There was an error communicating with the registration server.  The message was:\n"
-msgstr "Er trad een fout op tijdens het communiceren met de registratie-server.  De foutmelding was:\n"
+msgid ""
+"There was an error communicating with the registration server.  The message "
+"was:\n"
+msgstr ""
+"Er trad een fout op tijdens het communiceren met de registratie-server.  De "
+"foutmelding was:\n"
 
 #: ../src/up2date_client/rhnregGui.py:603
 msgid "There was an error while assembling information for the profile."
-msgstr "Er deed zich een fout voor bij het samenstellen van informatie voor het profiel."
+msgstr ""
+"Er deed zich een fout voor bij het samenstellen van informatie voor het "
+"profiel."
 
 #: ../src/up2date_client/rhnregGui.py:624
 msgid "Error running hardware profile"
@@ -312,7 +343,9 @@ msgstr "Er trad een fout op tijdens het communiceren met Red Hat Network."
 
 #: ../src/up2date_client/rhnregGui.py:700
 msgid "Registering system and sending profile information.  Please wait."
-msgstr "Systeem registreren en profiel informatiesysteem verzenten. Gelieve te wachten."
+msgstr ""
+"Systeem registreren en profiel informatiesysteem verzenten. Gelieve te "
+"wachten."
 
 #: ../src/up2date_client/rhnregGui.py:719
 msgid "Registering System"
@@ -329,8 +362,12 @@ msgstr "Probleem met het registreren van het systeem:\n"
 
 #: ../src/up2date_client/rhnregGui.py:751
 #, python-format
-msgid "The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it."
-msgstr "Het opgegeven installatienummer [ %s ] is geen geldig installatienummer. Ga terug naar het vorige scherm en corrigeer."
+msgid ""
+"The installation number [ %s ] provided is not a valid installation number. "
+"Please go back to the previous screen and fix it."
+msgstr ""
+"Het opgegeven installatienummer [ %s ] is geen geldig installatienummer. Ga "
+"terug naar het vorige scherm en corrigeer."
 
 #: ../src/up2date_client/rhnregGui.py:761 ../src/up2date_client/tui.py:1004
 msgid "Problem registering system."
@@ -387,8 +424,12 @@ msgstr "U dient een certificaat te selecteren."
 #. TODO Modify rhnlib to raise a unique exception for the not a
 #. cert file case.
 #: ../src/up2date_client/rhnregGui.py:966
-msgid "There was an SSL error. This could be because the file you picked was not a certificate file."
-msgstr "Er deed zich een SSL-fout voor. De reden kan zijn dat het gekozen bestand geen certificaatbestand is."
+msgid ""
+"There was an SSL error. This could be because the file you picked was not a "
+"certificate file."
+msgstr ""
+"Er deed zich een SSL-fout voor. De reden kan zijn dat het gekozen bestand "
+"geen certificaatbestand is."
 
 #. TODO Provide better messages
 #: ../src/up2date_client/rhnregGui.py:974
@@ -429,7 +470,9 @@ msgstr "Architectuur"
 
 #: ../src/up2date_client/rhnregGui.py:1221
 msgid "Building a list of RPM packages installed on your system.  Please wait."
-msgstr "Bezig met het aanmaken van een lijst met de op uw systeem geïnstalleerde RPM-pakketten. Even geduld alstublieft."
+msgstr ""
+"Bezig met het aanmaken van een lijst met de op uw systeem geïnstalleerde RPM-"
+"pakketten. Even geduld alstublieft."
 
 #: ../src/up2date_client/rhnregGui.py:1252
 msgid ""
@@ -450,8 +493,14 @@ msgstr ""
 
 #: ../src/up2date_client/rhnregGui.py:1324
 #, fuzzy, python-format
-msgid "This error shouldn't have happened. If you'd like to help us improve this program, please file a bug at bugzilla.suse.com. Including the relevant parts of '%s' would be very helpful. Thanks!"
-msgstr "Deze fout had niet voor moeten komen. As je ons wil helpen om dit programma te verbeteren, dien dan een bug in bij bugzilla.redhat.com. Invoegen van de relevante delen van '%s' zou zeer nuttig zijn. Bedankt!"
+msgid ""
+"This error shouldn't have happened. If you'd like to help us improve this "
+"program, please file a bug at bugzilla.suse.com. Including the relevant "
+"parts of '%s' would be very helpful. Thanks!"
+msgstr ""
+"Deze fout had niet voor moeten komen. As je ons wil helpen om dit programma "
+"te verbeteren, dien dan een bug in bij bugzilla.redhat.com. Invoegen van de "
+"relevante delen van '%s' zou zeer nuttig zijn. Bedankt!"
 
 #: ../src/up2date_client/rhnreg_constants.py:19
 msgid "Uyuni"
@@ -469,8 +518,14 @@ msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:25
 #, fuzzy, python-brace-format
-msgid "Please enter the location of your {PRODUCT_NAME} server and of its SSL certificate. The SSL certificate is only required if you will be connecting over https (recommended)."
-msgstr "Voer de locatie van je Red Hat Satellite server in en diens SSL-certificaat. Het SSL-certificaat is alleen nodig als je verbinding maakt over https (aanbevolen)."
+msgid ""
+"Please enter the location of your {PRODUCT_NAME} server and of its SSL "
+"certificate. The SSL certificate is only required if you will be connecting "
+"over https (recommended)."
+msgstr ""
+"Voer de locatie van je Red Hat Satellite server in en diens SSL-certificaat. "
+"Het SSL-certificaat is alleen nodig als je verbinding maakt over https "
+"(aanbevolen)."
 
 #: ../src/up2date_client/rhnreg_constants.py:29
 #, python-brace-format
@@ -487,8 +542,12 @@ msgid "You must enter a valid {PRODUCT_NAME} URL."
 msgstr "Je dient een geldige Satellite-URL op te geven."
 
 #: ../src/up2date_client/rhnreg_constants.py:32
-msgid "If you are using https you must enter the location of a valid SSL certificate."
-msgstr "Als je https gebruikt moet je de locatie van een geldig SSL-certificaat invoeren."
+msgid ""
+"If you are using https you must enter the location of a valid SSL "
+"certificate."
+msgstr ""
+"Als je https gebruikt moet je de locatie van een geldig SSL-certificaat "
+"invoeren."
 
 #. Connect Window
 #: ../src/up2date_client/rhnreg_constants.py:36
@@ -513,14 +572,20 @@ msgstr "Systeemregistratie"
 #: ../src/up2date_client/rhnreg_constants.py:43
 #, fuzzy, python-brace-format
 msgid ""
-"This assistant will guide you through connecting your system to {PRODUCT_NAME} to receive software updates, including security updates, to keep your system supported and compliant.  You will need the following at this time:\n"
+"This assistant will guide you through connecting your system to "
+"{PRODUCT_NAME} to receive software updates, including security updates, to "
+"keep your system supported and compliant.  You will need the following at "
+"this time:\n"
 "\n"
 " * A network connection\n"
 " * Your {PRODUCT_NAME} Login & password\n"
 " * The location of a {PRODUCT_NAME} Server or Proxy\n"
 "\n"
 msgstr ""
-"Deze assistent zal je begeleiden bij het verbinden van je systeem met Red Hat Satellite voor het ontvangen van softwareupdates, inclusief beveiligingsupdates, om je systeem ondersteund te houden en aan normen te voldoen. Je zult hierbij het volgende nodig hebben:\n"
+"Deze assistent zal je begeleiden bij het verbinden van je systeem met Red "
+"Hat Satellite voor het ontvangen van softwareupdates, inclusief "
+"beveiligingsupdates, om je systeem ondersteund te houden en aan normen te "
+"voldoen. Je zult hierbij het volgende nodig hebben:\n"
 "\n"
 "* Een netwerkverbinding\n"
 "* Je Red Hat Login en wachtwoord\n"
@@ -539,8 +604,12 @@ msgstr "Waarom registreren"
 
 #: ../src/up2date_client/rhnreg_constants.py:58
 #, fuzzy, python-brace-format
-msgid "Connecting your system to {PRODUCT_NAME} allows you to take full advantage of the benefits of a paid subscription, including:"
-msgstr "Het verbinden van je syteem met Red Hat Satellite stelt je in staat om de voordelen van een betaald abonnement volledig te benutten, waaronder:"
+msgid ""
+"Connecting your system to {PRODUCT_NAME} allows you to take full advantage "
+"of the benefits of a paid subscription, including:"
+msgstr ""
+"Het verbinden van je syteem met Red Hat Satellite stelt je in staat om de "
+"voordelen van een betaald abonnement volledig te benutten, waaronder:"
 
 #: ../src/up2date_client/rhnreg_constants.py:60
 msgid "Security & Updates:"
@@ -560,27 +629,44 @@ msgstr "Voldoet aan:"
 
 #: ../src/up2date_client/rhnreg_constants.py:64
 #, fuzzy
-msgid "Receive the latest software updates, including security updates, keeping this system updated and secure."
-msgstr "Ontvang de nieuwste softwareupdates, inclusief veiligheidsupdates, zodat dit Red Hat Enterprise Linux systeem actueel en veilig blijft."
+msgid ""
+"Receive the latest software updates, including security updates, keeping "
+"this system updated and secure."
+msgstr ""
+"Ontvang de nieuwste softwareupdates, inclusief veiligheidsupdates, zodat dit "
+"Red Hat Enterprise Linux systeem actueel en veilig blijft."
 
 #: ../src/up2date_client/rhnreg_constants.py:66
 #, fuzzy
-msgid "Download installation images for system releases, including new releases."
-msgstr "Download installatiemedia voor Red Hat Enterprise Linux uitgaven, inclusief nieuwe uitgaven."
+msgid ""
+"Download installation images for system releases, including new releases."
+msgstr ""
+"Download installatiemedia voor Red Hat Enterprise Linux uitgaven, inclusief "
+"nieuwe uitgaven."
 
 #: ../src/up2date_client/rhnreg_constants.py:68
 #, fuzzy
-msgid "Access to the technical support experts for help with any issues you might encounter with this system."
-msgstr "Toegang tot experts in technische ondersteuning bij Red Hat of Red Hat's partners voor hulp bij eventuele problemen die u hebt met dit systeem."
+msgid ""
+"Access to the technical support experts for help with any issues you might "
+"encounter with this system."
+msgstr ""
+"Toegang tot experts in technische ondersteuning bij Red Hat of Red Hat's "
+"partners voor hulp bij eventuele problemen die u hebt met dit systeem."
 
 #: ../src/up2date_client/rhnreg_constants.py:70
-msgid "Stay in compliance with your subscription agreement and manage subscriptions for systems connected to your account."
-msgstr "Blijf voldoen aan je abonnementsovereenkomst en beheer abonnementen voor systemen die verbonden zijn met je account."
+msgid ""
+"Stay in compliance with your subscription agreement and manage subscriptions "
+"for systems connected to your account."
+msgstr ""
+"Blijf voldoen aan je abonnementsovereenkomst en beheer abonnementen voor "
+"systemen die verbonden zijn met je account."
 
 #: ../src/up2date_client/rhnreg_constants.py:73
 #, fuzzy
 msgid "Tip: SUSE values your privacy: https://www.suse.com/company/legal/"
-msgstr "Tip: Red Hat respecteert je privacy: http://www.redhat.com/legal/privacy_statement.html"
+msgstr ""
+"Tip: Red Hat respecteert je privacy: http://www.redhat.com/legal/"
+"privacy_statement.html"
 
 #: ../src/up2date_client/rhnreg_constants.py:75
 msgid "Take me back to the registration"
@@ -593,13 +679,21 @@ msgstr "Softwareupdate is niet ingesteld"
 
 #: ../src/up2date_client/rhnreg_constants.py:79
 #, fuzzy, python-brace-format
-msgid "Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll miss out on the benefits of a SLES/RHEL subscription:\n"
-msgstr "Weet je zeker dat je je systeem niet wilt verbinden met Red Hat Satellite? Je zult de voordelen van een Red Hat Enterprise Linux abonnement missen:\n"
+msgid ""
+"Are you sure you don't want to connect your system to {PRODUCT_NAME}? You'll "
+"miss out on the benefits of a SLES/RHEL subscription:\n"
+msgstr ""
+"Weet je zeker dat je je systeem niet wilt verbinden met Red Hat Satellite? "
+"Je zult de voordelen van een Red Hat Enterprise Linux abonnement missen:\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:81
 #, fuzzy, python-brace-format
-msgid "You will not be able to take advantage of these subscription privileges without connecting your system to {PRODUCT_NAME}.\n"
-msgstr "Je zult geen gebruik kunnen maken van deze abonnementsprivileges zonder je systeem te verbinden met Red Hat Satellite.\n"
+msgid ""
+"You will not be able to take advantage of these subscription privileges "
+"without connecting your system to {PRODUCT_NAME}.\n"
+msgstr ""
+"Je zult geen gebruik kunnen maken van deze abonnementsprivileges zonder je "
+"systeem te verbinden met Red Hat Satellite.\n"
 
 #: ../src/up2date_client/rhnreg_constants.py:83
 msgid "Take me back to the setup process."
@@ -640,8 +734,12 @@ msgstr "Wachtwoord:"
 
 #: ../src/up2date_client/rhnreg_constants.py:92
 #, fuzzy, python-brace-format
-msgid "Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} Organization Administrator."
-msgstr "Tip: Je wachtwoord vergeten?  Contacteer je Satellite's Organization Administrator."
+msgid ""
+"Tip: Forgot your login or password?  Contact your {PRODUCT_NAME} "
+"Organization Administrator."
+msgstr ""
+"Tip: Je wachtwoord vergeten?  Contacteer je Satellite's Organization "
+"Administrator."
 
 #: ../src/up2date_client/rhnreg_constants.py:94
 msgid "Please enter a desired login."
@@ -679,8 +777,12 @@ msgid "Confirm operating system release selection"
 msgstr "Bevestig selectie uitgave besturingssysteem"
 
 #: ../src/up2date_client/rhnreg_constants.py:104
-msgid "Your system will be subscribed to the base software channel to receive all available updates."
-msgstr "Je systeem zal geabonneerd worden op het basis softwarekanaal en alle beschikbare updates ontvangen."
+msgid ""
+"Your system will be subscribed to the base software channel to receive all "
+"available updates."
+msgstr ""
+"Je systeem zal geabonneerd worden op het basis softwarekanaal en alle "
+"beschikbare updates ontvangen."
 
 #. Hardware Window
 #: ../src/up2date_client/rhnreg_constants.py:109
@@ -689,12 +791,22 @@ msgstr "Maak Profiel Aan - Hardware"
 
 #: ../src/up2date_client/rhnreg_constants.py:110
 #, fuzzy, python-brace-format
-msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
-msgstr "Een profielnaam is een beschrijvende naam die je kiest om dit systeemprofiel te identificeren op de Red Hat Satellite webpagina's. Optioneel kunt u een computer serie- of identificatienummer mee opgeven."
+msgid ""
+"A Profile Name is a descriptive name that you choose to identify this System "
+"Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer "
+"serial or identification number."
+msgstr ""
+"Een profielnaam is een beschrijvende naam die je kiest om dit systeemprofiel "
+"te identificeren op de Red Hat Satellite webpagina's. Optioneel kunt u een "
+"computer serie- of identificatienummer mee opgeven."
 
 #: ../src/up2date_client/rhnreg_constants.py:114
-msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
-msgstr "Bijkomende hardware-informatie, zoals PCI-apparaten, schijfgroottes en mount points zullen in het profiel worden opgenomen."
+msgid ""
+"Additional hardware information including PCI devices, disk sizes and mount "
+"points will be included in the profile."
+msgstr ""
+"Bijkomende hardware-informatie, zoals PCI-apparaten, schijfgroottes en mount "
+"points zullen in het profiel worden opgenomen."
 
 #: ../src/up2date_client/rhnreg_constants.py:117
 msgid "Include the following information about hardware and network:"
@@ -706,16 +818,22 @@ msgid "Create Profile - Packages"
 msgstr "Maak Profiel Aan - Paketten"
 
 #: ../src/up2date_client/rhnreg_constants.py:122
-msgid "RPM information is important to determine what updated software packages are relevant to this system."
-msgstr "RPM informatie is belangrijk om na te gaan welke bijgewerkte softwarepakketten relevant zijn voor dit systeem."
+msgid ""
+"RPM information is important to determine what updated software packages are "
+"relevant to this system."
+msgstr ""
+"RPM informatie is belangrijk om na te gaan welke bijgewerkte "
+"softwarepakketten relevant zijn voor dit systeem."
 
 #: ../src/up2date_client/rhnreg_constants.py:125
 msgid "Include RPM packages installed on this system in my System Profile"
-msgstr "Vervat de geïnstalleerde pakketten op dit systeem in mijn systeemprofiel"
+msgstr ""
+"Vervat de geïnstalleerde pakketten op dit systeem in mijn systeemprofiel"
 
 #: ../src/up2date_client/rhnreg_constants.py:127
 msgid "You may deselect individual packages by unchecking them below."
-msgstr "Je kunt individuele pakketten deselecteren door ze hieronder uit te vinken."
+msgstr ""
+"Je kunt individuele pakketten deselecteren door ze hieronder uit te vinken."
 
 #: ../src/up2date_client/rhnreg_constants.py:129
 msgid "Building Package List"
@@ -734,7 +852,8 @@ msgstr "Systeem is al geregistreerd"
 #: ../src/up2date_client/rhnreg_constants.py:135
 #: ../data/rh_register.glade.h:126
 msgid "It appears this system has already been set up for software updates:"
-msgstr "Het ziet er naar uit dat dit systeem al ingesteld is voor softwareupdates:"
+msgstr ""
+"Het ziet er naar uit dat dit systeem al ingesteld is voor softwareupdates:"
 
 #: ../src/up2date_client/rhnreg_constants.py:136
 #: ../data/rh_register.glade.h:131
@@ -743,11 +862,16 @@ msgstr "Ben je zeker dat je wil doorgaan?"
 
 #: ../src/up2date_client/rhnreg_constants.py:138
 msgid ""
-"This system has already been registered using Red Hat Subscription Management.\n"
+"This system has already been registered using Red Hat Subscription "
+"Management.\n"
 "\n"
-"Your system is being registered again using Red Hat Satellite or Red Hat Satellite Proxy technology. Red Hat recommends that customers only register once.\n"
+"Your system is being registered again using Red Hat Satellite or Red Hat "
+"Satellite Proxy technology. Red Hat recommends that customers only register "
+"once.\n"
 "\n"
-"To learn more about RHN Classic/Red Hat Satellite registration and technologies please consult this Knowledge Base Article: https://access.redhat.com/kb/docs/DOC-45563"
+"To learn more about RHN Classic/Red Hat Satellite registration and "
+"technologies please consult this Knowledge Base Article: https://access."
+"redhat.com/kb/docs/DOC-45563"
 msgstr ""
 
 #. Send Window
@@ -761,11 +885,16 @@ msgstr "Verzend profielinformatie naar Red Hat Satellite"
 msgid ""
 "We are finished collecting information for the System Profile.\n"
 "\n"
-"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click \"Cancel\" and no information will be sent.  You can run the registration program later by typing `rhn_register` at the command line."
+"Press \"Next\" to send this System Profile to {PRODUCT_NAME}.  Click "
+"\"Cancel\" and no information will be sent.  You can run the registration "
+"program later by typing `rhn_register` at the command line."
 msgstr ""
 "We hebben de nodige informatie verzameld voor het systeemprofiel.\n"
 "\n"
-"Klik \"Volgende\" om dit systeemprofiel te verzenden naar Red Hat Satellite. Klik \"Annuleren\" en er zal geen informatie verzonden worden. Je kunt het registratieprogramma later opstarten door `rhn_register` te typen op de commandoregel."
+"Klik \"Volgende\" om dit systeemprofiel te verzenden naar Red Hat Satellite. "
+"Klik \"Annuleren\" en er zal geen informatie verzonden worden. Je kunt het "
+"registratieprogramma later opstarten door `rhn_register` te typen op de "
+"commandoregel."
 
 #. Sending Window
 #: ../src/up2date_client/rhnreg_constants.py:153
@@ -780,7 +909,14 @@ msgstr "Updates geconfigureerd"
 
 #: ../src/up2date_client/rhnreg_constants.py:157
 #, python-format, python-brace-format
-msgid "You may now run '%s update' from this system's command line to get the latest software updates from {PRODUCT_NAME}. You will need to run this periodically to get the latest updates. Alternatively, you may configure this system for automatic software updates (also known as 'auto errata update') via the {PRODUCT_NAME} web interface. (Instructions for this are in the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the main {PRODUCT_NAME} web interface.)"
+msgid ""
+"You may now run '%s update' from this system's command line to get the "
+"latest software updates from {PRODUCT_NAME}. You will need to run this "
+"periodically to get the latest updates. Alternatively, you may configure "
+"this system for automatic software updates (also known as 'auto errata "
+"update') via the {PRODUCT_NAME} web interface. (Instructions for this are in "
+"the {PRODUCT_NAME} Reference Guide, available from the 'Help' button in the "
+"main {PRODUCT_NAME} web interface.)"
 msgstr ""
 
 #. Review Window
@@ -794,13 +930,16 @@ msgstr "Controleer de onderstaande abonnementsgegevens:"
 
 #: ../src/up2date_client/rhnreg_constants.py:170
 #, python-format, python-brace-format
-msgid "The installation number %s was activated during this system's initial connection to {PRODUCT_NAME}."
+msgid ""
+"The installation number %s was activated during this system's initial "
+"connection to {PRODUCT_NAME}."
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:172
 #, fuzzy
 msgid "Subscriptions have been activated for the following products/services:"
-msgstr "Abonnementen zijn geactiveerd voor de volgende Red Hat producten en diensten:"
+msgstr ""
+"Abonnementen zijn geactiveerd voor de volgende Red Hat producten en diensten:"
 
 #: ../src/up2date_client/rhnreg_constants.py:174
 msgid "Software Channel Subscriptions:"
@@ -812,7 +951,11 @@ msgstr "Dit systeem zal updates ontvangen van de volgende softwarekanalen:"
 
 #: ../src/up2date_client/rhnreg_constants.py:177
 #, python-brace-format
-msgid "Warning: Only installed product listed above will receive updates and support. If you would like to receive updates for additional products, please login to your {PRODUCT_NAME} web interface and subscribe this system to the appropriate software channels."
+msgid ""
+"Warning: Only installed product listed above will receive updates and "
+"support. If you would like to receive updates for additional products, "
+"please login to your {PRODUCT_NAME} web interface and subscribe this system "
+"to the appropriate software channels."
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:183
@@ -821,7 +964,8 @@ msgid ""
 "Warning: %s is not present, could not enable it.\n"
 "Automatic updates will not work."
 msgstr ""
-"Waarschuwing: yum-rhn-plugin is niet aanwezig, kon niet ingeschakeld worden.\n"
+"Waarschuwing: yum-rhn-plugin is niet aanwezig, kon niet ingeschakeld "
+"worden.\n"
 "Automatisch bijwerken zal niet werken."
 
 #: ../src/up2date_client/rhnreg_constants.py:185
@@ -836,18 +980,37 @@ msgid ""
 "%s is not enabled.\n"
 "Automatic updates will not work."
 msgstr ""
-"Waarschuwing: Er deed zich een fout voor bij het aanzetten van yum-rhn-plugin.\n"
+"Waarschuwing: Er deed zich een fout voor bij het aanzetten van yum-rhn-"
+"plugin.\n"
 "yum-rhn-plugin is niet aangezet.\n"
 "Automatisch bijwerken zal niet werken."
 
 #: ../src/up2date_client/rhnreg_constants.py:189
-msgid "You were unable to be subscribed to the following software channels because there were insufficient subscriptions available in your account:"
-msgstr "Je kon je niet abonneren op de volgende softwarekanalen omdat er onvoldoende abonnementen beschikbaar zijn in je account:"
+msgid ""
+"You were unable to be subscribed to the following software channels because "
+"there were insufficient subscriptions available in your account:"
+msgstr ""
+"Je kon je niet abonneren op de volgende softwarekanalen omdat er onvoldoende "
+"abonnementen beschikbaar zijn in je account:"
 
 #: ../src/up2date_client/rhnreg_constants.py:193
 #, fuzzy, python-brace-format
-msgid "This system was unable to subscribe to any software channels. Your system will not receive any software updates to keep it secure and supported. Contact your {PRODUCT_NAME} administrator about this problem. Once you make the appropriate active subscriptions available in your account, you may browse to this system's profile in the {PRODUCT_NAME} web interface and subscribe this system to software channels via the software > software channels tab."
-msgstr "Dit systeem was niet in staat zich te abonneren op een softwarekanaal. Je systeem zal geen softwareupdates ontvangen om het veilig en ondersteund te houden. Neem contact op met je Satellite-administrator over dit probleem. Nadat je de juiste actieve abonnementen in je account beschikbaar hebt gemaakt, kun je naar het profiel van dit systeem bladeren in de RHN-webinterface en dit systeem abonneren op softwarekanalen via de tab software > softwarekanalen."
+msgid ""
+"This system was unable to subscribe to any software channels. Your system "
+"will not receive any software updates to keep it secure and supported. "
+"Contact your {PRODUCT_NAME} administrator about this problem. Once you make "
+"the appropriate active subscriptions available in your account, you may "
+"browse to this system's profile in the {PRODUCT_NAME} web interface and "
+"subscribe this system to software channels via the software > software "
+"channels tab."
+msgstr ""
+"Dit systeem was niet in staat zich te abonneren op een softwarekanaal. Je "
+"systeem zal geen softwareupdates ontvangen om het veilig en ondersteund te "
+"houden. Neem contact op met je Satellite-administrator over dit probleem. "
+"Nadat je de juiste actieve abonnementen in je account beschikbaar hebt "
+"gemaakt, kun je naar het profiel van dit systeem bladeren in de RHN-"
+"webinterface en dit systeem abonneren op softwarekanalen via de tab software "
+"> softwarekanalen."
 
 #: ../src/up2date_client/rhnreg_constants.py:199
 msgid "Service Level:"
@@ -855,39 +1018,87 @@ msgstr "Serviceniveau:"
 
 #: ../src/up2date_client/rhnreg_constants.py:200
 #, python-brace-format
-msgid "Depending on what {PRODUCT_NAME} system types are associated with a system, you'll enjoy different benefits. The following are the {PRODUCT_NAME} system types associated with this system:"
+msgid ""
+"Depending on what {PRODUCT_NAME} system types are associated with a system, "
+"you'll enjoy different benefits. The following are the {PRODUCT_NAME} system "
+"types associated with this system:"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:204
 #, fuzzy, python-brace-format
-msgid "This system was unable to be associated with the following {PRODUCT_NAME} system type(s) because there were insufficient subscriptions available in your account:"
-msgstr "Dit systeem kon niet geassocieerd worden met de volgende RHN-module(s) omdat er onvoldoende abonnementen beschikbaar zijn in je account:"
+msgid ""
+"This system was unable to be associated with the following {PRODUCT_NAME} "
+"system type(s) because there were insufficient subscriptions available in "
+"your account:"
+msgstr ""
+"Dit systeem kon niet geassocieerd worden met de volgende RHN-module(s) omdat "
+"er onvoldoende abonnementen beschikbaar zijn in je account:"
 
 #: ../src/up2date_client/rhnreg_constants.py:207
 #, fuzzy
-msgid "Management type: automatic updates, systems grouping, systems permissions, system package profiling, bare-metal provisioning, existing state provisioning, rollbacks, configuration management"
-msgstr "Beheersmodule: automatisch bijwerken, systeemgroepen, systeemrechten, systeem-pakketprofilering"
+msgid ""
+"Management type: automatic updates, systems grouping, systems permissions, "
+"system package profiling, bare-metal provisioning, existing state "
+"provisioning, rollbacks, configuration management"
+msgstr ""
+"Beheersmodule: automatisch bijwerken, systeemgroepen, systeemrechten, "
+"systeem-pakketprofilering"
 
 #: ../src/up2date_client/rhnreg_constants.py:212
 #, fuzzy
-msgid "Virtualization type: software updates for a limited number of virtual guests on this system."
-msgstr "Virtualisatiemodule: softwareupdates voor een beperkt aantal virtuele gasten op dit systeem."
+msgid ""
+"Virtualization type: software updates for a limited number of virtual guests "
+"on this system."
+msgstr ""
+"Virtualisatiemodule: softwareupdates voor een beperkt aantal virtuele gasten "
+"op dit systeem."
 
 #: ../src/up2date_client/rhnreg_constants.py:216
 #, fuzzy, python-brace-format
-msgid "<b>Warning:</b> Any guest systems you create on this system and register to {PRODUCT_NAME} will consume system subscriptions beyond this host system's subscription. You will need to: (1) make a virtualization system entitlement available and (2) apply that system entitlement to this system in {PRODUCT_NAME} web interface if you do not want virtual guests of this system to consume additional subscriptions."
-msgstr "<b>Waarschuwing:</b> Alle gastsystemen die je aanmaakt op dit systeem en registreert bij RHN zullen Red Hat Enterprise Linux abonnementen gebruiken bovenop het abonnement voor het hostsysteem. Je zult het volgende moeten doen als je niet wil dat virtuele gasten op dit systeem aanvullende abonnementen verbruiken: (1) maak een virtualisatie- of virtualisatieplatformrecht beschikbaar en (2) pas dat systeemrecht op dit systeem toe in RHN's webinterface."
+msgid ""
+"<b>Warning:</b> Any guest systems you create on this system and register to "
+"{PRODUCT_NAME} will consume system subscriptions beyond this host system's "
+"subscription. You will need to: (1) make a virtualization system entitlement "
+"available and (2) apply that system entitlement to this system in "
+"{PRODUCT_NAME} web interface if you do not want virtual guests of this "
+"system to consume additional subscriptions."
+msgstr ""
+"<b>Waarschuwing:</b> Alle gastsystemen die je aanmaakt op dit systeem en "
+"registreert bij RHN zullen Red Hat Enterprise Linux abonnementen gebruiken "
+"bovenop het abonnement voor het hostsysteem. Je zult het volgende moeten "
+"doen als je niet wil dat virtuele gasten op dit systeem aanvullende "
+"abonnementen verbruiken: (1) maak een virtualisatie- of "
+"virtualisatieplatformrecht beschikbaar en (2) pas dat systeemrecht op dit "
+"systeem toe in RHN's webinterface."
 
 #: ../src/up2date_client/rhnreg_constants.py:224
 #, fuzzy, python-brace-format
-msgid "This system was unable to be associated with any {PRODUCT_NAME} system types. This system will not receive any software updates to keep it secure and supported. Contace your {PRODUCT_NAME} administrator about this problem. Once you make the appropriate active subscriptions available in your account, you may browse to this system's profile in the {PRODUCT_NAME} web interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
-msgstr "Dit systeem was niet in staat zich te abonneren op een softwarekanaal. Je systeem zal geen softwareupdates ontvangen om het veilig en ondersteund te houden. Neem contact op met je Satellite-administrator over dit probleem. Nadat je de juiste actieve abonnementen in je account beschikbaar hebt gemaakt, kun je naar het profiel van dit systeem bladeren in de RHN-webinterface en dit systeem abonneren op softwarekanalen via de tab software > softwarekanalen."
+msgid ""
+"This system was unable to be associated with any {PRODUCT_NAME} system "
+"types. This system will not receive any software updates to keep it secure "
+"and supported. Contace your {PRODUCT_NAME} administrator about this problem. "
+"Once you make the appropriate active subscriptions available in your "
+"account, you may browse to this system's profile in the {PRODUCT_NAME} web "
+"interface, delete the profile, and re-connect this system to {PRODUCT_NAME}."
+msgstr ""
+"Dit systeem was niet in staat zich te abonneren op een softwarekanaal. Je "
+"systeem zal geen softwareupdates ontvangen om het veilig en ondersteund te "
+"houden. Neem contact op met je Satellite-administrator over dit probleem. "
+"Nadat je de juiste actieve abonnementen in je account beschikbaar hebt "
+"gemaakt, kun je naar het profiel van dit systeem bladeren in de RHN-"
+"webinterface en dit systeem abonneren op softwarekanalen via de tab software "
+"> softwarekanalen."
 
 #: ../src/up2date_client/rhnreg_constants.py:231
 #, python-format, python-brace-format
 msgid ""
 "Universal default activation key detected\n"
-"A universal default activation key was detected in your account. This means that a set of properties (software channel subscriptions, package installations, system group memberships, etc.) for your system's connection to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the activation key rather than your installation number.  You may also refer to the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
+"A universal default activation key was detected in your account. This means "
+"that a set of properties (software channel subscriptions, package "
+"installations, system group memberships, etc.) for your system's connection "
+"to {PRODUCT_NAME} Server or {PRODUCT_NAME} Proxyhave been determined by the "
+"activation key rather than your installation number.  You may also refer to "
+"the {PRODUCT_NAME} Reference Guide for more details about activation keys. \n"
 "Universal Default activation key: %s"
 msgstr ""
 
@@ -906,24 +1117,34 @@ msgid ""
 "\n"
 "Make sure that the network connection on this system is operational.\n"
 "\n"
-"This system will not be able to successfully receive software updates without connecting to an {PRODUCT_NAME} server/proxy"
+"This system will not be able to successfully receive software updates "
+"without connecting to an {PRODUCT_NAME} server/proxy"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:252
 #, python-format
 msgid "Architecture: %s, OS Release: %s, OS Version: %s"
-msgstr "Architectuur: %s, Uitgave besturingssysteem: %s, Versie besturingssysteem: %s"
+msgstr ""
+"Architectuur: %s, Uitgave besturingssysteem: %s, Versie besturingssysteem: %s"
 
 #: ../src/up2date_client/rhnreg_constants.py:254
-msgid "This server doesn't support functionality needed by this version of the software update setup client. Please try again with a newer server."
-msgstr "Functionaliteit die door deze versie van de softwareupdate-client wordt vereist wordt door deze server niet ondersteunt. Probeer het opnieuw met een nieuwere server."
+msgid ""
+"This server doesn't support functionality needed by this version of the "
+"software update setup client. Please try again with a newer server."
+msgstr ""
+"Functionaliteit die door deze versie van de softwareupdate-client wordt "
+"vereist wordt door deze server niet ondersteunt. Probeer het opnieuw met een "
+"nieuwere server."
 
 #: ../src/up2date_client/rhnreg_constants.py:260
 #, python-format, python-brace-format
 msgid ""
 "<b><span size=\"16000\">Incompatible Certificate File</span></b>\n"
 "\n"
-"The certificate you provided, <b>%s</b>, is not compatible with  the {PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you have provided a valid certificate file. Are you sure you have provided the correct certificate, and that the certificate file has not been corrupted?\n"
+"The certificate you provided, <b>%s</b>, is not compatible with  the "
+"{PRODUCT_NAME} server at <b>%s</b>. You may want to double-check that you "
+"have provided a valid certificate file. Are you sure you have provided the "
+"correct certificate, and that the certificate file has not been corrupted?\n"
 "\n"
 "Please try again with a different certificate file."
 msgstr ""
@@ -932,27 +1153,47 @@ msgstr ""
 msgid ""
 "<b><span size=\"12000\">Incompatible Certificate File</span></b>\n"
 "\n"
-" The certificate is expired. Please ensure you have the correct  certificate and your system time is correct."
+" The certificate is expired. Please ensure you have the correct  certificate "
+"and your system time is correct."
 msgstr ""
 "<b><span size=\"12000\">Niet-compatibel Certificaatbestand</span></b>\n"
 "\n"
-"Het certificaat is verlopen. Verzeker je ervan dat je het juiste certificaat hebt en dat de systeemtijd correct is."
+"Het certificaat is verlopen. Verzeker je ervan dat je het juiste certificaat "
+"hebt en dat de systeemtijd correct is."
 
 #: ../src/up2date_client/rhnreg_constants.py:272
 #, fuzzy, python-brace-format
-msgid "Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/up2date. You can either make the serverURL use http instead of https, or you can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/rhn, and ensure sslCACert points to it."
-msgstr "Controleer de waarden van sslCACert en serverURL in /etc/sysconfig/rhn/up2date. Je kunt de serverURL ofwel gebruik laten maken van http in plaats van https, of je kunt het SSL-certificaat downloaden van je Satellite, het in /usr/share/rhn plaatsen, en ervoor zorgen dat sslCACert ernaar verwijst."
+msgid ""
+"Please verify the values of sslCACert and serverURL in /etc/sysconfig/rhn/"
+"up2date. You can either make the serverURL use http instead of https, or you "
+"can download the SSL cert from your {PRODUCT_NAME}, place it in /usr/share/"
+"rhn, and ensure sslCACert points to it."
+msgstr ""
+"Controleer de waarden van sslCACert en serverURL in /etc/sysconfig/rhn/"
+"up2date. Je kunt de serverURL ofwel gebruik laten maken van http in plaats "
+"van https, of je kunt het SSL-certificaat downloaden van je Satellite, het "
+"in /usr/share/rhn plaatsen, en ervoor zorgen dat sslCACert ernaar verwijst."
 
 #: ../src/up2date_client/rhnreg_constants.py:278
 #, fuzzy, python-brace-format
 msgid ""
 "Problem registering system.\n"
 "\n"
-"A universal default activation key limits the number of systems which can connect to the {PRODUCT_NAME} organization associated with your login. To allow this system to connect, please contact your {PRODUCT_NAME} organization administrator to increase the number of systems allowed to connect or to disable this universal default activation key."
+"A universal default activation key limits the number of systems which can "
+"connect to the {PRODUCT_NAME} organization associated with your login. To "
+"allow this system to connect, please contact your {PRODUCT_NAME} "
+"organization administrator to increase the number of systems allowed to "
+"connect or to disable this universal default activation key."
 msgstr ""
 "Probleem bij systeemregistratie.\n"
 "\n"
-"Een universele standaard activatiesleutel beperkt het aantal systemen dat zich kan verbinden met de RHN-organisatie die geassocieerd wordt met je login. Om dit systeem toe te staan te verbinden, contacteer je RHN-organisatie administrator om het aantal systemen dat verbinding mag maken te vehogen of om deze universele standaard activatiesleutel uit te zetten. Meer details zijn beschikbaar in Red Hat Knowledgebase artikel #7924 op http://kbase.redhat.com/faq/FAQ_61_7924.shtm"
+"Een universele standaard activatiesleutel beperkt het aantal systemen dat "
+"zich kan verbinden met de RHN-organisatie die geassocieerd wordt met je "
+"login. Om dit systeem toe te staan te verbinden, contacteer je RHN-"
+"organisatie administrator om het aantal systemen dat verbinding mag maken te "
+"vehogen of om deze universele standaard activatiesleutel uit te zetten. Meer "
+"details zijn beschikbaar in Red Hat Knowledgebase artikel #7924 op http://"
+"kbase.redhat.com/faq/FAQ_61_7924.shtm"
 
 #: ../src/up2date_client/rhnreg_constants.py:288
 msgid ""
@@ -962,7 +1203,9 @@ msgid ""
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:291
-msgid "Warning:You will not be able to limit this system to minor release that is older than the recent minor release if you select this option.\n"
+msgid ""
+"Warning:You will not be able to limit this system to minor release that is "
+"older than the recent minor release if you select this option.\n"
 msgstr ""
 
 #: ../src/up2date_client/rhnreg_constants.py:296
@@ -1095,11 +1338,14 @@ msgstr "Probleem tijdens het verzenden van het hardware profiel."
 
 #: ../src/up2date_client/tui.py:1039
 msgid "Problem sending package list:\n"
-msgstr "Er deed zich een probleem voor tijdens het zenden van de lijst met pakketten:\n"
+msgstr ""
+"Er deed zich een probleem voor tijdens het zenden van de lijst met "
+"pakketten:\n"
 
 #: ../src/up2date_client/tui.py:1042
 msgid "Problem sending package list."
-msgstr "Er deed zich een probleem voor tijdens het zenden van de lijst met pakketten."
+msgstr ""
+"Er deed zich een probleem voor tijdens het zenden van de lijst met pakketten."
 
 #: ../src/up2date_client/tui.py:1096
 msgid "Finish"
@@ -1111,8 +1357,10 @@ msgid "You specified an invalid protocol.Only https and http are allowed."
 msgstr "Ongeldig protocol opgegeven. Alleen https en http zijn toegestaan."
 
 #: ../src/up2date_client/tui.py:1241
-msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
-msgstr "  <Tab>/<Alt-Tab> navigeren  |  <Spatie> selecteer  |  <F12> volgend scherm"
+msgid ""
+"  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+msgstr ""
+"  <Tab>/<Alt-Tab> navigeren  |  <Spatie> selecteer  |  <F12> volgend scherm"
 
 #: ../src/up2date_client/tui.py:1345
 #, fuzzy, python-brace-format
@@ -1139,7 +1387,9 @@ msgstr "RPM afhankelijkheidsprobleem. De foutmelding was:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:130
 msgid "Error communicating with server. The message was:\n"
-msgstr "Er trad een fout op tijdens het communiceren met de server. De foutmelding was:\n"
+msgstr ""
+"Er trad een fout op tijdens het communiceren met de server. De foutmelding "
+"was:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:137
 msgid "File Not Found: \n"
@@ -1175,21 +1425,30 @@ msgstr "Netwerkfout:"
 #: ../src/up2date_client/up2dateErrors.py:297
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to register this\n"
+"    Your organization does not have enough Management entitlements to "
+"register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees existing\n"
-"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
+"    You should be able to register this system after your organization frees "
+"existing\n"
+"    or purchases additional entitlements. Additional entitlements may be "
+"purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation key is set\n"
-"    on the account as a universal default, you can disable this key and retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation "
+"key is set\n"
+"    on the account as a universal default, you can disable this key and "
+"retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #: ../src/bin/rhn-profile-sync.py:37
-msgid "You need to register this system by running `rhn_register` before using this option"
-msgstr "U dient dit systeem te registreren door `rhn_register` uit te voeren alvorens deze optie te gebruiken"
+msgid ""
+"You need to register this system by running `rhn_register` before using this "
+"option"
+msgstr ""
+"U dient dit systeem te registreren door `rhn_register` uit te voeren "
+"alvorens deze optie te gebruiken"
 
 #: ../src/bin/rhn-profile-sync.py:45
 msgid "Updating package profile..."
@@ -1206,7 +1465,8 @@ msgstr "Bijwerken van het virtualisatieprofiel..."
 #: ../src/bin/rhn_check.py:423
 #, fuzzy
 msgid "Attempting to run more than one instance of mgr_check. Exiting.\n"
-msgstr "Poging om meer dan één instance van rhn_check uit te voeren. Sluiten.\n"
+msgstr ""
+"Poging om meer dan één instance van rhn_check uit te voeren. Sluiten.\n"
 
 #: ../src/bin/rhn_register.py:38
 msgid "Do not attempt to use X"
@@ -1241,8 +1501,11 @@ msgid "Specify an activation key"
 msgstr "Geef een activeringssleutel op"
 
 #: ../src/bin/rhnreg_ks.py:64
-msgid "Subscribe this system to the EUS channel tied to the system's redhat-release"
-msgstr "Abonneer dit systeem op het EUS-kanaal dat gebonden is aan de redhat-release van het systeem"
+msgid ""
+"Subscribe this system to the EUS channel tied to the system's redhat-release"
+msgstr ""
+"Abonneer dit systeem op het EUS-kanaal dat gebonden is aan de redhat-release "
+"van het systeem"
 
 #: ../src/bin/rhnreg_ks.py:66
 msgid "[Deprecated] Read contact info from stdin"
@@ -1270,28 +1533,39 @@ msgstr "Registreer het systeem, ook als het al geregistreerd is"
 
 #: ../src/bin/rhnreg_ks.py:86
 msgid "A username and password are required to register a system."
-msgstr "Een gebruikersnaam en wachtwoord zijn vereist om een systeem te registreren."
+msgstr ""
+"Een gebruikersnaam en wachtwoord zijn vereist om een systeem te registreren."
 
 #: ../src/bin/rhnreg_ks.py:91
 msgid "This system is already registered. Use --force to override"
-msgstr "Dit systeem is reeds geregistreerd. Gebruik --force om te overschrijven"
+msgstr ""
+"Dit systeem is reeds geregistreerd. Gebruik --force om te overschrijven"
 
 #: ../src/bin/rhnreg_ks.py:125
-msgid "Usage of --use-eus-channel option with --activationkey is not supported. Please use username and password instead."
-msgstr "Gebruik van de --use-eus-channel optie samen met --activationkey is niet ondersteund. Gebruik een gebruikersnaam een wachtwoord."
+msgid ""
+"Usage of --use-eus-channel option with --activationkey is not supported. "
+"Please use username and password instead."
+msgstr ""
+"Gebruik van de --use-eus-channel optie samen met --activationkey is niet "
+"ondersteund. Gebruik een gebruikersnaam een wachtwoord."
 
 #: ../src/bin/rhnreg_ks.py:128
 msgid "The server you are registering against does not support EUS."
 msgstr "De server waar je tegen registreert ondersteunt geen EUS."
 
 #: ../src/bin/rhnreg_ks.py:154
-msgid "Warning: --contactinfo option has been deprecated. Please login to the server web user Interface and update your contactinfo. "
-msgstr "Waarschuwing: de optie --contactinfo is verouderd. Log in op de webinterface van de server en werk je contactinformatie bij."
+msgid ""
+"Warning: --contactinfo option has been deprecated. Please login to the "
+"server web user Interface and update your contactinfo. "
+msgstr ""
+"Waarschuwing: de optie --contactinfo is verouderd. Log in op de webinterface "
+"van de server en werk je contactinformatie bij."
 
 #: ../src/bin/rhnreg_ks.py:175
 #, fuzzy, python-format
 msgid "Warning: %s is not present, could not enable it."
-msgstr "Waarschuwing: yum-rhn-plugin is niet aanwezig, kon niet ingeschakeld worden"
+msgstr ""
+"Waarschuwing: yum-rhn-plugin is niet aanwezig, kon niet ingeschakeld worden"
 
 #: ../src/bin/rhnreg_ks.py:178
 #, fuzzy, python-format
@@ -1303,8 +1577,13 @@ msgstr ""
 "yum-rhn-plugin is niet aangezet.\n"
 
 #: ../src/bin/rhnreg_ks.py:206
-msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
-msgstr "Er werd geen profielnaam opgegeven, en de hostnaam en IP-adres konden niet nagegaan worden om te gebruiken als profielnaam. Gelieve een naam op te geven."
+msgid ""
+"A profilename was not specified, and hostname and IP address could not be "
+"determined to use as a profilename, please specify one."
+msgstr ""
+"Er werd geen profielnaam opgegeven, en de hostnaam en IP-adres konden niet "
+"nagegaan worden om te gebruiken als profielnaam. Gelieve een naam op te "
+"geven."
 
 #: ../src/bin/spacewalk-channel.py:98
 msgid "name of channel you want to (un)subscribe"
@@ -1432,14 +1711,21 @@ msgid "progress status"
 msgstr "voortgangsstatus"
 
 #: ../data/rh_register.glade.h:1
-msgid "<b>The network connection on your system is not active. Your system cannot be set up for software updates at this time.</b>"
-msgstr "<b>De netwerkverbinding op je systeem is niet actief. Je systeem kan op dit moment niet ingesteld worden voor softwareupdates.</b>"
+msgid ""
+"<b>The network connection on your system is not active. Your system cannot "
+"be set up for software updates at this time.</b>"
+msgstr ""
+"<b>De netwerkverbinding op je systeem is niet actief. Je systeem kan op dit "
+"moment niet ingesteld worden voor softwareupdates.</b>"
 
 #: ../data/rh_register.glade.h:2
 msgid ""
-"This system will <b>not</b> be able to successfully receive software updates, including security updates, from Red Hat without connecting to a Red Hat Satellite or Red Hat Network Classic.\n"
+"This system will <b>not</b> be able to successfully receive software "
+"updates, including security updates, from Red Hat without connecting to a "
+"Red Hat Satellite or Red Hat Network Classic.\n"
 "\n"
-"To keep your system updated, secure, and supported, please register this system at your earliest convenience."
+"To keep your system updated, secure, and supported, please register this "
+"system at your earliest convenience."
 msgstr ""
 
 #: ../data/rh_register.glade.h:5
@@ -1447,7 +1733,8 @@ msgid "Why Should I Connect to RHN? ..."
 msgstr "Waarom Zou Ik Verbinden met RHN? ..."
 
 #: ../data/rh_register.glade.h:7
-msgid "I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
+msgid ""
+"I'd like to register with an Red Hat Satellite or Red Hat Satellite Proxy"
 msgstr ""
 
 #: ../data/rh_register.glade.h:8
@@ -1491,8 +1778,12 @@ msgid "_Login:"
 msgstr "_Login:"
 
 #: ../data/rh_register.glade.h:19
-msgid "<small>Tip: Forgot your login or password? Contact your Satellite's <i>Organization Administrator</i>.</small>"
-msgstr "<small>Tip: Inlognaam of wachtwoord vergeten? Neem contact op met de <i>Organisatiebeheerder</i> van je Satellite.</small>"
+msgid ""
+"<small>Tip: Forgot your login or password? Contact your Satellite's "
+"<i>Organization Administrator</i>.</small>"
+msgstr ""
+"<small>Tip: Inlognaam of wachtwoord vergeten? Neem contact op met de "
+"<i>Organisatiebeheerder</i> van je Satellite.</small>"
 
 #: ../data/rh_register.glade.h:20
 msgid "Hardware Info"
@@ -1539,8 +1830,14 @@ msgid "Start Window"
 msgstr ""
 
 #: ../data/rh_register.glade.h:31
-msgid "This assistant will guide you through the process of registering your system with Red Hat to receive software updates and other benefits. You will need the following to register:"
-msgstr "Deze assitent zal je begeleiden bij het registreren van uw systeem bij Red Hat voor het ontvangen van softwareupdates en andere voordelen. Je zult voor de registratie het volgende nodig hebben:"
+msgid ""
+"This assistant will guide you through the process of registering your system "
+"with Red Hat to receive software updates and other benefits. You will need "
+"the following to register:"
+msgstr ""
+"Deze assitent zal je begeleiden bij het registreren van uw systeem bij Red "
+"Hat voor het ontvangen van softwareupdates en andere voordelen. Je zult voor "
+"de registratie het volgende nodig hebben:"
 
 #: ../data/rh_register.glade.h:32
 msgid "• A network connection"
@@ -1567,7 +1864,9 @@ msgid "Why Should I Register?"
 msgstr "Waarom zou ik registreren?"
 
 #: ../data/rh_register.glade.h:38
-msgid "Would you like to register your system at this time? <b>(Strongly recommended.)</b>"
+msgid ""
+"Would you like to register your system at this time? <b>(Strongly "
+"recommended.)</b>"
 msgstr "Wil je je systeem nu registreren? <b>(Sterk aanbevolen.)</b>"
 
 #: ../data/rh_register.glade.h:39
@@ -1583,24 +1882,38 @@ msgid "Link To Subscription"
 msgstr "Link naar abonnement"
 
 #: ../data/rh_register.glade.h:42
-msgid "Your system will need to access a subscription. This will allow you to keep your system updated, secure, and supported."
+msgid ""
+"Your system will need to access a subscription. This will allow you to keep "
+"your system updated, secure, and supported."
 msgstr ""
 
 #: ../data/rh_register.glade.h:43
-msgid "<b>You have no active subscriptions available in your account.</b> You will need to do one of the following to create an active subscription in your account before this system can be registered:"
-msgstr "<b>Er zijn geen actieve abonnementen beschikbaar in je account.</b> Je zult een van het volgende moeten doen om een actief abonnement aan te maken in je account, zodat dit systeem geregistreerd kan worden:"
+msgid ""
+"<b>You have no active subscriptions available in your account.</b> You will "
+"need to do one of the following to create an active subscription in your "
+"account before this system can be registered:"
+msgstr ""
+"<b>Er zijn geen actieve abonnementen beschikbaar in je account.</b> Je zult "
+"een van het volgende moeten doen om een actief abonnement aan te maken in je "
+"account, zodat dit systeem geregistreerd kan worden:"
 
 #: ../data/rh_register.glade.h:44
-msgid "Purchase an additional Red Hat Enterprise Linux subscription at http://www.redhat.com/store/."
+msgid ""
+"Purchase an additional Red Hat Enterprise Linux subscription at http://www."
+"redhat.com/store/."
 msgstr ""
 
 #: ../data/rh_register.glade.h:45
-msgid "Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your RHN > Subscription Management > System Entitlements."
+msgid ""
+"Log in to http://rhn.redhat.com/ and unentitle an inactive system at Your "
+"RHN > Subscription Management > System Entitlements."
 msgstr ""
 
 #: ../data/rh_register.glade.h:46
-msgid "Activate a previously purchased subscription you have not yet activated."
-msgstr "Activeer een eerder aangeschaft abonnement dat je nog niet geactiveerd hebt."
+msgid ""
+"Activate a previously purchased subscription you have not yet activated."
+msgstr ""
+"Activeer een eerder aangeschaft abonnement dat je nog niet geactiveerd hebt."
 
 #: ../data/rh_register.glade.h:47
 msgid "•"
@@ -1635,8 +1948,12 @@ msgid "<big><b>System Name</b></big>"
 msgstr "<big><b>Systeemnaam</b></big>"
 
 #: ../data/rh_register.glade.h:56
-msgid "A recognizable name will help you identify this system in a management interface."
-msgstr "Een herkenbare naam zal je helpen dit systeem te identificeren in een beheersinterface."
+msgid ""
+"A recognizable name will help you identify this system in a management "
+"interface."
+msgstr ""
+"Een herkenbare naam zal je helpen dit systeem te identificeren in een "
+"beheersinterface."
 
 #: ../data/rh_register.glade.h:57
 msgid "System _Name:"
@@ -1651,8 +1968,12 @@ msgid "<big><b>Profile Data</b></big>"
 msgstr "<big><b>Profieldata</b></big>"
 
 #: ../data/rh_register.glade.h:60
-msgid "Send us a profile of your current hardware and packages so we can determine what updates are available."
-msgstr "Stuur ons een profiel van je huidige hardware en paketten zodat we kunnen bepalen welke updates beschikbaar zijn."
+msgid ""
+"Send us a profile of your current hardware and packages so we can determine "
+"what updates are available."
+msgstr ""
+"Stuur ons een profiel van je huidige hardware en paketten zodat we kunnen "
+"bepalen welke updates beschikbaar zijn."
 
 #: ../data/rh_register.glade.h:61
 msgid "_View Hardware Profile ..."
@@ -1687,8 +2008,12 @@ msgid "Send package profile checkbox"
 msgstr "Hardware-profiel v_erzenden"
 
 #: ../data/rh_register.glade.h:70
-msgid "Registering your system with Red Hat allows you to take full advantage of the benefits of a paid subscription, including:"
-msgstr "Het registreren van je syteem bij Red Hat stelt je in staat om de voordelen van een betaald abonnement volledig te benutten, waaronder:"
+msgid ""
+"Registering your system with Red Hat allows you to take full advantage of "
+"the benefits of a paid subscription, including:"
+msgstr ""
+"Het registreren van je syteem bij Red Hat stelt je in staat om de voordelen "
+"van een betaald abonnement volledig te benutten, waaronder:"
 
 #: ../data/rh_register.glade.h:71
 msgid "_Close"
@@ -1703,24 +2028,36 @@ msgid "<b>Security &amp; Updates:</b>"
 msgstr "<b>Beveiliging &amp; Updates:</b>"
 
 #: ../data/rh_register.glade.h:74
-msgid "Receive the latest software updates, including security updates, keeping this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
-msgstr "Ontvang de nieuwste softwareupdates, inclusief beveiligingsupdates, zodat dit Red Hat Enterprise Linux systeem <b>actueel en veilig</b> blijft."
+msgid ""
+"Receive the latest software updates, including security updates, keeping "
+"this Red Hat Enterprise Linux system <b>updated</b> and <b>secure</b>."
+msgstr ""
+"Ontvang de nieuwste softwareupdates, inclusief beveiligingsupdates, zodat "
+"dit Red Hat Enterprise Linux systeem <b>actueel en veilig</b> blijft."
 
 #: ../data/rh_register.glade.h:75
 msgid "<b>Downloads &amp; Upgrades:</b>"
 msgstr "<b>Downloads &amp; nieuwe versies:</b>"
 
 #: ../data/rh_register.glade.h:76
-msgid "Download installation images for Red Hat Enterprise Linux releases, including new releases."
-msgstr "Download installatiemedia voor Red Hat Enterprise Linux uitgaven, inclusief nieuwe uitgaven."
+msgid ""
+"Download installation images for Red Hat Enterprise Linux releases, "
+"including new releases."
+msgstr ""
+"Download installatiemedia voor Red Hat Enterprise Linux uitgaven, inclusief "
+"nieuwe uitgaven."
 
 #: ../data/rh_register.glade.h:77
 msgid "<b>Support:</b>"
 msgstr "<b>Ondersteuning:</b>"
 
 #: ../data/rh_register.glade.h:78
-msgid "Access to the technical support experts at Red Hat or Red Hat's partners for help with any issues you might encounter with this system."
-msgstr "Toegang tot experts in technische ondersteuning bij Red Hat of Red Hat's partners voor hulp bij eventuele problemen die u hebt met dit systeem."
+msgid ""
+"Access to the technical support experts at Red Hat or Red Hat's partners for "
+"help with any issues you might encounter with this system."
+msgstr ""
+"Toegang tot experts in technische ondersteuning bij Red Hat of Red Hat's "
+"partners voor hulp bij eventuele problemen die u hebt met dit systeem."
 
 #: ../data/rh_register.glade.h:79
 msgid "<b>Management:</b>"
@@ -1731,12 +2068,20 @@ msgid "Management"
 msgstr "Beheer"
 
 #: ../data/rh_register.glade.h:81
-msgid "Manage subscriptions and systems registered to Customer Portal via access.redhat.com or through one of our other subscription management services."
-msgstr "Beheer abonnementen en systemen geregistreerd bij het Klantportaal via access.redhat.com og via een van de andere abonnement-beheerdiensten."
+msgid ""
+"Manage subscriptions and systems registered to Customer Portal via access."
+"redhat.com or through one of our other subscription management services."
+msgstr ""
+"Beheer abonnementen en systemen geregistreerd bij het Klantportaal via "
+"access.redhat.com og via een van de andere abonnement-beheerdiensten."
 
 #: ../data/rh_register.glade.h:82
-msgid "<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/privacy_statement.html.</small>"
-msgstr "<small><b>Tip:</b> Red Hat respecteert je privacy: http://www.redhat.com/legal/privacy_statement.html</small>"
+msgid ""
+"<small><b>Tip:</b> Red Hat values your privacy: http://www.redhat.com/legal/"
+"privacy_statement.html.</small>"
+msgstr ""
+"<small><b>Tip:</b> Red Hat respecteert je privacy: http://www.redhat.com/"
+"legal/privacy_statement.html</small>"
 
 #: ../data/rh_register.glade.h:83
 msgid "Provide a Security Certificate"
@@ -1745,9 +2090,12 @@ msgstr "Geef een beveiligingscertificaat op"
 #: ../data/rh_register.glade.h:85
 #, no-c-format
 msgid ""
-"A security certificate compatible with <b>%s</b> was not found on this system.\n"
+"A security certificate compatible with <b>%s</b> was not found on this "
+"system.\n"
 "\n"
-"A security certificate, using SSL technology, is necessary to ensure that data communicated between this system and Spacewalk (including your login and password) is secure."
+"A security certificate, using SSL technology, is necessary to ensure that "
+"data communicated between this system and Spacewalk (including your login "
+"and password) is secure."
 msgstr ""
 
 #: ../data/rh_register.glade.h:88
@@ -1763,15 +2111,21 @@ msgid "Select A File"
 msgstr "Selecteer een bestand"
 
 #: ../data/rh_register.glade.h:91
-msgid "I <b>_don't</b> have an SSL certificate. I will contact my system administrator for assistance and will register at a later time."
-msgstr "Ik heb <b>_geen</b> SSL-certificaat. Ik zal contact opnemen met mijn systeembeheerder voor assistentie en zal later registreren."
+msgid ""
+"I <b>_don't</b> have an SSL certificate. I will contact my system "
+"administrator for assistance and will register at a later time."
+msgstr ""
+"Ik heb <b>_geen</b> SSL-certificaat. Ik zal contact opnemen met mijn "
+"systeembeheerder voor assistentie en zal later registreren."
 
 #: ../data/rh_register.glade.h:92
 msgid "Your system is not setup for software updates."
 msgstr "Je systeem is niet ingesteld voor softwareupdates."
 
 #: ../data/rh_register.glade.h:93
-msgid "You won't be able to receive software updates, including security updates, for this system."
+msgid ""
+"You won't be able to receive software updates, including security updates, "
+"for this system."
 msgstr ""
 
 #: ../data/rh_register.glade.h:94
@@ -1844,10 +2198,14 @@ msgstr "_Ja, doorgaan"
 
 #: ../data/rh_register.glade.h:113
 msgid "<big><b>Moving to earlier releases won't be possible</b></big>"
-msgstr "<big><b>Teruggaan naar eerdere uitgaven zal niet mogelijk zijn</b></big>"
+msgstr ""
+"<big><b>Teruggaan naar eerdere uitgaven zal niet mogelijk zijn</b></big>"
 
 #: ../data/rh_register.glade.h:114
-msgid "Your system will be subscribed to the base software channel.  You will not be able to move this system to an earlier minor release channel if you continue (you will be able to move to a later release.)"
+msgid ""
+"Your system will be subscribed to the base software channel.  You will not "
+"be able to move this system to an earlier minor release channel if you "
+"continue (you will be able to move to a later release.)"
 msgstr ""
 
 #: ../data/rh_register.glade.h:115
@@ -1879,15 +2237,20 @@ msgid "Register Later"
 msgstr "Later registreren"
 
 #: ../data/rh_register.glade.h:122
-msgid "Are you sure you don't want to register your system with Red Hat? You'll miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
-msgstr "Weet je zeker dat je je systeem niet wil registreren bij Red Hat? Je zult de voordelen van een Red Hat Enterprise Linux abonnement missen:"
+msgid ""
+"Are you sure you don't want to register your system with Red Hat? You'll "
+"miss out on the benefits of a Red Hat Enterprise Linux Subscription:"
+msgstr ""
+"Weet je zeker dat je je systeem niet wil registreren bij Red Hat? Je zult de "
+"voordelen van een Red Hat Enterprise Linux abonnement missen:"
 
 #: ../data/rh_register.glade.h:123
 msgid "Management:"
 msgstr "Beheer:"
 
 #: ../data/rh_register.glade.h:124
-msgid "You will not be able to take advantage of these benefits without registering."
+msgid ""
+"You will not be able to take advantage of these benefits without registering."
 msgstr "Je zult deze voordelen niet kunnen benutten zonder registratie."
 
 #: ../data/rh_register.glade.h:127
@@ -1911,15 +2274,22 @@ msgid "<b>Warning</b>"
 msgstr "<b>Waarschuwing</b>"
 
 #: ../data/rh_register.glade.h:133
-msgid "This system has already been registered with RHN using RHN certificate-based technology."
+msgid ""
+"This system has already been registered with RHN using RHN certificate-based "
+"technology."
 msgstr ""
 
 #: ../data/rh_register.glade.h:134
-msgid "Your system is being registered again using RHN Classic technology. Red Hat recommends that customers only register once."
+msgid ""
+"Your system is being registered again using RHN Classic technology. Red Hat "
+"recommends that customers only register once."
 msgstr ""
 
 #: ../data/rh_register.glade.h:135
-msgid "To learn more about RHN registration and technologies please consult this Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
+msgid ""
+"To learn more about RHN registration and technologies please consult this "
+"Knowledge Base Article: <a href=\"https://access.redhat.com/kb/docs/"
+"DOC-45563\">https://access.redhat.com/kb/docs/DOC-45563</a>\n"
 msgstr ""
 
 #: ../data/rh_register.glade.h:137
@@ -1928,13 +2298,22 @@ msgstr "Instellen softwareupdates is compleet voor dit systeem."
 
 #: ../data/rh_register.glade.h:138
 msgid ""
-"Your system is now ready to receive the software updates that will keep it secure and supported.\n"
+"Your system is now ready to receive the software updates that will keep it "
+"secure and supported.\n"
 "\n"
-"You'll know when software updates are available when a package icon appears in the notification area of your desktop (usually in the upper-right corner, circled below.) Clicking on this icon, when available, will guide you through applying any updates that are available:"
+"You'll know when software updates are available when a package icon appears "
+"in the notification area of your desktop (usually in the upper-right corner, "
+"circled below.) Clicking on this icon, when available, will guide you "
+"through applying any updates that are available:"
 msgstr ""
-"Je systeem is nu gereed om de softwareupdates te ontvangen die het veilig en ondersteund zullen houden.\n"
+"Je systeem is nu gereed om de softwareupdates te ontvangen die het veilig en "
+"ondersteund zullen houden.\n"
 "\n"
-"Je zult weten dat er softwareupdates beschikbaar zijn als een pakketicoon verschijnt in het mededelingengebied van je desktop (meestal in de rechterbovenhoek, hieronder omcirkeld). Klikken op dit icoon als het beschikbaar is zal je begeleiden door het toepassen van de beschikbare updates:"
+"Je zult weten dat er softwareupdates beschikbaar zijn als een pakketicoon "
+"verschijnt in het mededelingengebied van je desktop (meestal in de "
+"rechterbovenhoek, hieronder omcirkeld). Klikken op dit icoon als het "
+"beschikbaar is zal je begeleiden door het toepassen van de beschikbare "
+"updates:"
 
 #: ../data/rh_register.glade.h:141
 msgid "Aplet screenshot"
@@ -1949,11 +2328,15 @@ msgid "Limited updates"
 msgstr "Beperkte updates"
 
 #: ../data/rh_register.glade.h:145
-msgid "<b>_Limited updates</b> will be provided to this system, maintaining compatibility with the selected minor release software channel:"
+msgid ""
+"<b>_Limited updates</b> will be provided to this system, maintaining "
+"compatibility with the selected minor release software channel:"
 msgstr ""
 
 #: ../data/rh_register.glade.h:146
-msgid "Limited updates will be provided to this system, maintaining compatibility with the selected minor release software channel:"
+msgid ""
+"Limited updates will be provided to this system, maintaining compatibility "
+"with the selected minor release software channel:"
 msgstr ""
 
 #: ../data/rh_register.glade.h:147
@@ -1969,38 +2352,61 @@ msgid "       "
 msgstr "       "
 
 #: ../data/rh_register.glade.h:150
-msgid "<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red Hat."
+msgid ""
+"<b>Tip:</b> Minor releases with a '*' are currently fully supported by Red "
+"Hat."
 msgstr ""
 
 #: ../data/rh_register.glade.h:152
-msgid "<b>_All available updates</b> will be provided to this system. If kept updated, this system will always be equivalent to the latest minor release in the main 'Red Hat Enterprise Linux x' software channel."
+msgid ""
+"<b>_All available updates</b> will be provided to this system. If kept "
+"updated, this system will always be equivalent to the latest minor release "
+"in the main 'Red Hat Enterprise Linux x' software channel."
 msgstr ""
 
 #: ../data/rh_register.glade.h:153
-msgid "All available updates will be provided to this system. If kept updated, this system will always be equivalent to the latest minor release in the main 'Red Hat Enterprise Linux x' software channel."
+msgid ""
+"All available updates will be provided to this system. If kept updated, this "
+"system will always be equivalent to the latest minor release in the main "
+"'Red Hat Enterprise Linux x' software channel."
 msgstr ""
 
 #: ../data/rh_register.glade.h:154
-msgid "<b>Warning:</b> Using this option, your system will always be the most recent minor release and <b>cannot</b> be limited to an older release version."
+msgid ""
+"<b>Warning:</b> Using this option, your system will always be the most "
+"recent minor release and <b>cannot</b> be limited to an older release "
+"version."
 msgstr ""
 
 #: ../data/rh_register.glade.h:155
-msgid "Warning: Using this option, your system will always be the most recent minor release and cannot be limited to an older release version."
+msgid ""
+"Warning: Using this option, your system will always be the most recent minor "
+"release and cannot be limited to an older release version."
 msgstr ""
 
 #: ../data/rh_register.glade.h:156
 msgid "<b>Your system was registered for updates during installation.</b>"
-msgstr "<b>Je systeem is geregistreerd voor updates tijdens de installatie.</b>"
+msgstr ""
+"<b>Je systeem is geregistreerd voor updates tijdens de installatie.</b>"
 
 #: ../data/rh_register.glade.h:157
 msgid ""
-"Your system is ready to receive the software updates that will keep it secure and supported.\n"
+"Your system is ready to receive the software updates that will keep it "
+"secure and supported.\n"
 "\n"
-"You'll know when software updates are available when a package icon appears in the notification area of your desktop (usually in the upper-right corner, circled below.) Clicking on this icon, when available, will guide you through applying any updates that are available:"
+"You'll know when software updates are available when a package icon appears "
+"in the notification area of your desktop (usually in the upper-right corner, "
+"circled below.) Clicking on this icon, when available, will guide you "
+"through applying any updates that are available:"
 msgstr ""
-"Je systeem is nu gereed om de softwareupdates te ontvangen die het veilig en ondersteund zullen houden.\n"
+"Je systeem is nu gereed om de softwareupdates te ontvangen die het veilig en "
+"ondersteund zullen houden.\n"
 "\n"
-"Je zult weten dat er softwareupdates beschikbaar zijn als een pakketicoon verschijnt in het mededelingengebied van je desktop (meestal in de rechterbovenhoek, hieronder omcirkeld). Klikken op dit icoon als het beschikbaar is zal je begeleiden door het toepassen van de beschikbare updates:"
+"Je zult weten dat er softwareupdates beschikbaar zijn als een pakketicoon "
+"verschijnt in het mededelingengebied van je desktop (meestal in de "
+"rechterbovenhoek, hieronder omcirkeld). Klikken op dit icoon als het "
+"beschikbaar is zal je begeleiden door het toepassen van de beschikbare "
+"updates:"
 
 #: ../data/rh_register.glade.h:160
 msgid "icon of aplet"
