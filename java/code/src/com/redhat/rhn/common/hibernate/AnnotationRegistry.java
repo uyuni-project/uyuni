@@ -131,6 +131,10 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.state.OrgStateRevision;
+import com.redhat.rhn.domain.state.ServerGroupStateRevision;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
@@ -234,6 +238,7 @@ public class AnnotationRegistry {
             Org.class,
             OrgConfig.class,
             OrgRecurringAction.class,
+            OrgStateRevision.class,
             PackageArch.class,
             PackageBreaks.class,
             PackageCapability.class,
@@ -285,13 +290,16 @@ public class AnnotationRegistry {
             ServerCoCoAttestationReport.class,
             ServerGroup.class,
             ServerGroupManager.class,
+            ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerPath.class,
             ServerPathId.class,
+            ServerStateRevision.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SslCryptoKey.class,
             StateChange.class,
+            StateRevision.class,
             Task.class,
             TaskoBunch.class,
             TaskoTask.class,
