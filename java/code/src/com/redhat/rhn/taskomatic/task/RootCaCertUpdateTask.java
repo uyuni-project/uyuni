@@ -16,10 +16,6 @@ import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -75,58 +71,17 @@ public class RootCaCertUpdateTask extends RhnJavaJob {
             return; // nothing to do
         }
 
-        for (Map.Entry<String, String> pair : filenameToRootCaCertMap.entrySet()) {
-            String fileName = pair.getKey();
-            String rootCaCertContent = pair.getValue();
-
-            if (fileName.isEmpty()) {
-                continue;
-            }
-
-            if (rootCaCertContent.isEmpty()) {
-                try {
-                    removeCertificate(fileName);
-                    log.info("CA certificate file: {} successfully removed", fileName);
-                }
-                catch (IOException e) {
-                    log.error("error when removing CA certificate file {}: {}", fileName, e);
-                }
-            }
-            else {
-                try {
-                    saveCertificate(fileName, rootCaCertContent);
-                    log.info("CA certificate file: {} successfully written", fileName);
-                }
-                catch (IOException e) {
-                    log.error("error when writing CA certificate file {}: {}", fileName, e);
-                }
-            }
-        }
-
+        CertificateUtils.saveCertificates(filenameToRootCaCertMap);
         updateCaCertificates();
-    }
-
-    private void removeCertificate(String fileName) throws IOException {
-        String fullPathName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
-        Files.delete(Path.of(fullPathName));
-    }
-
-    private void saveCertificate(String fileName, String rootCaCertContent) throws IOException {
-        String fullPathName = CertificateUtils.CERTS_PATH.resolve(fileName).toString();
-        try (FileWriter fw = new FileWriter(fullPathName, false)) {
-            fw.write(rootCaCertContent);
-        }
     }
 
     private void updateCaCertificates() throws JobExecutionException {
         try {
-            String[] cmd = {"systemctl", "is-active", "--quiet", "ca-certificates.path"};
-            executeExtCmd(cmd);
+            executeExtCmd(CertificateUtils.getCertificatesUpdateServiceCmd());
         }
         catch (Exception e) {
             log.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
-            String[] cmd = {"/usr/share/rhn/certs/update-ca-cert-trust.sh"};
-            executeExtCmd(cmd);
+            executeExtCmd(CertificateUtils.getCertificatesUpdateShellCmd());
         }
     }
 }
