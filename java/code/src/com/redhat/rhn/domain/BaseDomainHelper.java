@@ -34,7 +34,7 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 public abstract class BaseDomainHelper implements Serializable {
     private Date created = new Date();
-    private Date modified;
+    private Date modified = new Date();
 
     /**
      * Create a new empty object
@@ -65,7 +65,7 @@ public abstract class BaseDomainHelper implements Serializable {
      * Gets the current value of modified
      * @return Date the current value
      */
-    @Column(name = "modified")
+    @Column(name = "modified", nullable = false)
     @UpdateTimestamp
     public Date getModified() {
         return this.modified;
