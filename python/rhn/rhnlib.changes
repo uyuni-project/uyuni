@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri Jan 24 13:32:21 CET 2025 - marina.latini@suse.com
+
+- version 5.1.2-0
+  * Remove conflict with proxy installer since it is now
+    container-only
+
+-------------------------------------------------------------------
 Mon Oct 14 15:39:39 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0
