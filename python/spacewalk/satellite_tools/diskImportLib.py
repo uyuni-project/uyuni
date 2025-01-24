@@ -30,6 +30,7 @@ from spacewalk.server.importlib import orgImport
 from spacewalk.server.importlib import supportInformationImport, suseProductsImport
 
 
+# pylint: disable-next=missing-class-docstring
 class Backend:
     __backend = None
 
@@ -67,7 +68,6 @@ def rpmsPath(obj_id, mountPoint, sources=0):
 
 # pylint: disable=W0232
 class diskImportLibContainer:
-
     """virtual class - redefines endContainerCallback"""
 
     # pylint: disable=E1101,E0203,W0201
