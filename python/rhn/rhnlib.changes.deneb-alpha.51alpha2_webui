@@ -1,2 +1,0 @@
-- Remove conflict with proxy installer since it is now
-  container-only
