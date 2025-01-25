@@ -93,4 +93,13 @@ public class CriterionType implements BaseCriteria {
     public void setComment(String value) {
         this.comment = value;
     }
+
+    @Override
+    public String toString() {
+        return "CriterionType{" +
+               "testRef='" + testRef + '\'' +
+               ", negate=" + negate +
+               ", comment='" + comment + '\'' +
+               '}';
+    }
 }
