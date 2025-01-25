@@ -110,6 +110,9 @@ public class OvalParser {
      * */
     public void parseDefinitionsInBulk(File ovalFile, OVALDefinitionsBulkHandler bulkHandler) {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        // Disable external entities processing as a protection measure against XXE.
+        xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
+
         try {
             XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
             // Disable external entities processing as a protection measure against XXE.
