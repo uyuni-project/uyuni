@@ -137,4 +137,14 @@ public class CriteriaType implements BaseCriteria {
     public void setComment(String value) {
         this.comment = value;
     }
+
+    @Override
+    public String toString() {
+        return "CriteriaType{" +
+               "children=" + children +
+               ", operator=" + operator +
+               ", negate=" + negate +
+               ", comment='" + comment + '\'' +
+               '}';
+    }
 }
