@@ -17,7 +17,7 @@
 CREATE TABLE suseOVALPlatformVulnerablePackage
 (
     product_os_id        NUMERIC NOT NULL
-                            REFERENCES suseOVALOsProduct (id),
+                            REFERENCES suseOVALOsProduct (id) ON DELETE CASCADE,
     platform_id          NUMERIC NOT NULL
                             REFERENCES suseOVALPlatform (id),
     cve_id               NUMERIC NOT NULL
