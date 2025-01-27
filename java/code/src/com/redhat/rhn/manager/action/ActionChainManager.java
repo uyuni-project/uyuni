@@ -558,10 +558,10 @@ public class ActionChainManager {
 
         // This won't actually apply the errata because we're passing in an action chain
         return ErrataManager.applyErrata(user,
-                errataIds.stream().map(Integer::longValue).toList(),
+                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
                 earliest,
                 actionChain,
-                servers.stream().map(Server::getId).toList(), true, false
+                servers.stream().map(Server::getId).collect(Collectors.toList()), true, false
         );
 
     }
@@ -585,10 +585,10 @@ public class ActionChainManager {
 
         // This won't actually apply the errata because we're passing in an action chain
         return ErrataManager.applyErrata(user,
-                errataIds.stream().map(Integer::longValue).toList(),
+                errataIds.stream().map(Integer::longValue).collect(Collectors.toList()),
                 earliest,
                 actionChain,
-                servers.stream().map(Server::getId).toList(), onlyRelevant, false);
+                servers.stream().map(Server::getId).collect(Collectors.toList()), onlyRelevant, false);
     }
 
 

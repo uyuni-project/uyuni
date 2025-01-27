@@ -518,6 +518,6 @@ public class MaintenanceHandler extends BaseHandler {
     private static List<RescheduleStrategy> createStrategiesFromStrings(List<String> strategyLabels) {
         return strategyLabels.stream()
                 .map(label -> RescheduleStrategyType.fromLabel(label).createInstance())
-                .toList();
+                .collect(Collectors.toList());
     }
 }

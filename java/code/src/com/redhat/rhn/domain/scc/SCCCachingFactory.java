@@ -448,7 +448,7 @@ import javax.persistence.NoResultException;
     public static List<Long> lookupRepositoryIdsWithAuth() {
         List<BigDecimal> resultList =
                 getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
-        return resultList.stream().map(BigDecimal::longValue).toList();
+        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
     }
 
     /**

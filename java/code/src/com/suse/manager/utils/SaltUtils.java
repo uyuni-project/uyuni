@@ -1617,7 +1617,7 @@ public class SaltUtils {
 
         Collection<InstalledPackage> unchanged = oldPackageMap.entrySet().stream().filter(
             e -> newPackageMap.containsKey(e.getKey())
-        ).map(Map.Entry::getValue).toList();
+        ).map(Map.Entry::getValue).collect(Collectors.toList());
         packages.retainAll(unchanged);
 
         Map<String, Tuple2<String, Pkg.Info>> packagesToAdd = newPackageMap.entrySet().stream().filter(
@@ -1677,7 +1677,7 @@ public class SaltUtils {
         return packageInfoAndNameBySaltPackageKey.entrySet().stream().map(e -> createInstalledPackage(
                 packageNames.get(e.getValue().getA()),
                 packageEvrsBySaltPackageKey.get(e.getKey()), e.getValue().getB(), server))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1856,7 +1856,7 @@ public class SaltUtils {
                         result.getDnsFqdns().stream()
                     ),
                     result.getCustomFqdns().stream()
-                ).distinct().toList()
+                ).distinct().collect(Collectors.toList())
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
         server.setContainerRuntime(result.getContainerRuntime());

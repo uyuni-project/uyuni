@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
@@ -957,7 +958,7 @@ public class ChannelFactory extends HibernateFactory {
                 .stream()
                 .map(Arrays::asList)
                 .map(r -> new SsmChannelDto((long)r.get(0), (String)r.get(1), r.get(2) != null))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
