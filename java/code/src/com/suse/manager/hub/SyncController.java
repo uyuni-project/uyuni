@@ -12,7 +12,6 @@
 package com.suse.manager.hub;
 
 import static com.suse.manager.hub.IssSparkHelper.allowingOnlyHub;
-import static com.suse.manager.hub.IssSparkHelper.allowingOnlyPeripheral;
 import static com.suse.manager.hub.IssSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.IssSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
@@ -28,7 +27,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
-import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
@@ -86,8 +84,6 @@ public class SyncController {
         post("/iss/sync/ping", asJson(usingTokenAuthentication(this::ping)));
         post("/iss/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
         post("/iss/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
-        post("/iss/sync/generateCredentials",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
         get("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
         post("/iss/sync/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
@@ -183,18 +179,6 @@ public class SyncController {
         catch (TaskomaticApiException ex) {
             LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn());
             return internalServerError(response, "Unable to schedule root CA certificate update");
-        }
-    }
-
-    private String generateCredentials(Request request, Response response, IssAccessToken token) {
-        try {
-            HubSCCCredentials credentials = hubManager.generateSCCCredentials(token);
-            return success(response, new SCCCredentialsJson(credentials.getUsername(), credentials.getPassword()));
-        }
-        catch (IllegalArgumentException ex) {
-            // This should never happen, fqdn guaranteed be a peripheral after calling allowingOnlyPeripheral() when
-            // initializing the route.
-            return badRequest(response, "Specified FQDN is not a known peripheral");
         }
     }
 
