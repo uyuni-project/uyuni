@@ -41,6 +41,10 @@ Feature: Very first settings
     Given I am authorized for the "Admin" section
 
   Scenario: Wait for refresh of list of products to finish
+    # WORKAROUND: remove when taskomatic has no more problem
+    #             sending the mgr-sync refresh via XML-RPC API
+    When I refresh SCC
+    # END OF WORKAROUND
     When I wait until mgr-sync refresh is finished
 
   Scenario: Create testing username
