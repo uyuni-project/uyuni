@@ -13,7 +13,6 @@ package com.suse.manager.hub;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
-import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
@@ -66,8 +65,8 @@ public class DefaultIssInternalClient implements IssInternalClient {
     }
 
     @Override
-    public void register(IssRole role, String token, String rootCA) throws IOException {
-        invokePostMethod("register", new RegisterJson(role, token, rootCA), Void.class);
+    public void registerHub(String token, String rootCA) throws IOException {
+        invokePostMethod("registerHub", new RegisterJson(token, rootCA), Void.class);
     }
 
     @Override
