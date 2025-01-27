@@ -36,7 +36,7 @@ export default function AppStreams({ matcher }) {
               className="btn-tertiary"
               handler={enableBrowse}
               icon={isLoading ? "fa-refresh fa-spin fa-fw" : "fa-search fa-fw"}
-              text="Browse available modules"
+              text={t("Browse available modules")}
             />
           </div>
         </div>

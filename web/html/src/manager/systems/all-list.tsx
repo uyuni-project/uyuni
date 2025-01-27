@@ -65,7 +65,7 @@ export function AllSystems(props: Props) {
             data-senna-off="true"
           >
             <IconTag type="item-download-csv" />
-            Download CSV
+            {t("Download CSV")}
           </a>
         </div>
       </div>

@@ -65,9 +65,9 @@ Feature: Advanced content management
     Given I am authorized for the "Admin" section
     When I follow the left menu "Users > User List > Active"
     And I follow "norole"
-    And I follow "Delete"
+    And I follow "Delete User"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
-    When I click on "Delete"
+    When I click on "Delete User"
     Then I should see a "Active Users" text
     And I should not see a "norole" link

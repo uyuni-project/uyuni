@@ -61,7 +61,7 @@ Feature: Configuration state channels
     When I follow the left menu "Configuration > Channels"
     And I follow "My State Channel"
     And I follow "View/Edit 'init.sls' File"
-    When I follow "Delete This File Revision"
+    When I follow "Delete"
     And I click on "Delete Configuration Revision"
     Then I should see a "Cannot delete the only revision for the init.sls file" text
     And I should see a "Revision 1 of /init.sls from channel My State Channel" text

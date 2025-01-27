@@ -99,9 +99,9 @@ Feature: Correct timezone display
   Scenario: Cleanup: Delete user
     When I follow the left menu "Users > User List > Active"
     And I follow "MalaysianUser"
-    And I follow "Delete"
+    And I follow "Delete User"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
-    When I click on "Delete"
+    When I click on "Delete User"
     Then I should see a "Active Users" text
     And I should not see a "MalaysianUser" link
