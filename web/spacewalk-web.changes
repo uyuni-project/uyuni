@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Jan 24 14:46:12 CET 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Fixed misleading error while waiting for SCC credentials
+    synchronisation (bsc#1227374)
+  * Show Source String change for translations
+  * Remove virtualization features
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+
+-------------------------------------------------------------------
 Mon Dec 16 13:37:50 CET 2024 - rosuna@suse.com
 
 - version 5.1.5-0

@@ -1,4 +1,40 @@
 -------------------------------------------------------------------
+Fri Jan 24 14:20:49 CET 2025 - marina.latini@suse.com
+
+- version 5.1.7-0
+  * Filter away Debian12 boostrap extra log messages (bsc#1216553)
+  * Fixes bug when accessing menu Systems | System Set Manager |
+    Misc | Reboot with no system selected (bsc#1222820)
+  * Fixed migration options after migrating a minion to
+    Liberty Linux 9 (bsc#1233258)
+  * Fixes: updated packages list when a SUSE Linux Micro gets
+    updated (bsc#1227118)
+  * Fix formatting in 'contentmanagement' API docs (bsc#1225287)
+  * Ensure channel lists are reliably sorted by name (bsc#1233724)
+  * Fix internal server error in 'listSystemsByPatchStatus' API
+    endpoint (bsc#1235908)
+  * More robust parsing of max memory configuration (bsc#1229000)
+  * Remove virtualization features
+  * Show an error notification only when we invalidate the
+    Pay-As-You-Go credentials (bsc#1228956)
+  * Fix Monitoring detection on Oracle Linux (bsc#1234033)
+  * Handle new kind of auth tokens
+  * Support new official SUSE update hosts
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+  * Rename SUSEProductSCCRepository to the more meaningful
+    name ChannelTemplate
+  * Various improvements for ContentSyncManager in regard of
+    hibernate schema and performance
+  * Make the list for package actions unique so it can be passed
+    to salt (bsc#1232042)
+  * Modify systems refresh Pillar API to allow refresh pillar data
+    of all systems
+  * Implement SUSE Linux Enterprise Server to
+    SUSE Linux Enterprise Server for SAP migration
+  * Add recommended extensions always to migration targets
+
+-------------------------------------------------------------------
 Mon Jan 13 10:09:34 CET 2025 - marina.latini@suse.com
 
 - version 5.1.6-0
