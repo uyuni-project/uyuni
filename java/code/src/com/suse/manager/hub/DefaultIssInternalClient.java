@@ -75,16 +75,6 @@ public class DefaultIssInternalClient implements IssInternalClient {
     }
 
     @Override
-    public SCCCredentialsJson generateCredentials() throws IOException {
-        SCCCredentialsJson responseObject = invokePostMethod("generateCredentials", null, SCCCredentialsJson.class);
-        if (responseObject == null) {
-            throw new IOException("Null response object received");
-        }
-
-        return responseObject;
-    }
-
-    @Override
     public ManagerInfoJson getManagerInfo() throws IOException {
         return invokeGetMethod("managerinfo", ManagerInfoJson.class);
     }
