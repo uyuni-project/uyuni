@@ -22,63 +22,97 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * POJO for a suseProducts row.
  */
+@Entity
+@Table(name = "suseProducts")
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
-    /** The id. */
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_seq")
+    @SequenceGenerator(name = "suse_product_seq", sequenceName = "SUSE_PRODUCTS_ID_SEQ", allocationSize = 1)
+    private Long id;
 
-    /** The name. */
+    @Column(name = "name")
     private String name;
 
-    /** The version. */
+    @Column(name = "version")
     private String version;
 
-    /** The release. */
+    @Column(name = "release")
     private String release;
 
-    /** The arch. */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "arch_type_id")
     private PackageArch arch;
 
-    /** The friendly name. */
+    @Column(name = "friendly_name")
     private String friendlyName;
 
-    /** The description */
+    @Column(name = "description")
     private String description;
 
-    /** The product id. */
+    @Column(name = "product_id")
     private long productId;
 
-    /** The channel family */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "channel_family_id")
     private ChannelFamily channelFamily;
 
-    /** True if the product is a base product */
+    @Column(name = "base", nullable = false)
+    @Type(type = "yes_no")
     private boolean base;
 
-    /** True if the product is 'free' */
+    @Column(name = "free", nullable = false)
+    @Type(type = "yes_no")
     private boolean free;
 
-    /** The release stage */
+    @Enumerated(EnumType.STRING)
+    @Column(name = "release_stage")
     private ReleaseStage releaseStage;
 
-    /** available upgrades for this product; */
+
+
+    @ManyToMany
+    @JoinTable(
+            name = "suseUpgradePath",
+            joinColumns = @JoinColumn(name = "from_pdid"),
+            inverseJoinColumns = @JoinColumn(name = "to_pdid")
+    )
     private Set<SUSEProduct> upgrades = new HashSet<>();
 
-    /** available products from which upgrade to this is possible */
+    @ManyToMany(mappedBy = "upgrades")
     private Set<SUSEProduct> downgrades = new HashSet<>();
 
-    /** product channels */
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
-    /** repositories */
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ChannelTemplate> channelTemplates = new HashSet<>();
 
     /**
