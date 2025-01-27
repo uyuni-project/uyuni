@@ -553,8 +553,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(clientFactoryMock).newInternalClient(REMOTE_SERVER_FQDN, remoteTokenForLocal, null);
             will(returnValue(internalClient));
 
-            allowing(internalClient).register(
-                with(equal(IssRole.HUB)),
+            allowing(internalClient).registerHub(
                 with(any(String.class)),
                 with(aNull(String.class))
             );
