@@ -7,6 +7,7 @@
 
 @sle_minion
 @scope_salt
+@skip_if_github_validation
 Feature: Lock packages on SLES salt minion
 
   Scenario: Log in as org admin user
