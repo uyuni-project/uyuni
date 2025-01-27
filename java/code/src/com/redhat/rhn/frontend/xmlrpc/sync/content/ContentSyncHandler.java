@@ -251,8 +251,8 @@ public class ContentSyncHandler extends BaseHandler {
 
         List<String> mandatoryChannelLabels =
                 SUSEProductFactory.findNotSyncedMandatoryChannels(channelLabel)
-                .map(ChannelTemplate::getChannelLabel)
-                .toList();
+                        .map(ChannelTemplate::getChannelLabel)
+                        .toList();
 
         LinkedHashSet<String> channelLabelsToAdd = new LinkedHashSet<>(mandatoryChannelLabels);
         channelLabelsToAdd.add(channelLabel);

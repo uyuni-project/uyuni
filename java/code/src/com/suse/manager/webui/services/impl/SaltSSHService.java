@@ -409,7 +409,7 @@ public class SaltSSHService {
 
         return serverPaths.stream()
                           .sorted(Comparator.comparing(ServerPath::getPosition).reversed())
-                          .toList();
+                          .collect(Collectors.toList());
     }
 
     /**
@@ -844,7 +844,7 @@ public class SaltSSHService {
                         (saltRes) -> saltRes.values().stream()
                                             .filter(value -> !value.isResult())
                                             .map(StateApplyResult::getComment)
-                                            .toList()
+                                            .collect(Collectors.toList())
                     );
 
                     return result.isEmpty() ? Optional.<List<String>>empty() : Optional.of(result);
@@ -965,7 +965,7 @@ public class SaltSSHService {
                                 .filter(SaltSSHService::isApplyHighstate)
                                 .filter(state -> state instanceof ActionSaltState)
                                 .map(state -> ((ActionSaltState)state).getActionId())
-                        .toList()
+                        .collect(Collectors.toList())
                 ));
     }
 

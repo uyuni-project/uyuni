@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 public class HubReportDbUpdateWorker implements QueueWorker {
@@ -101,7 +102,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             return false;
         });
 
-        return tableEntry.stream().map(t -> String.valueOf(t.getValue())).toList();
+        return tableEntry.stream().map(t -> String.valueOf(t.getValue())).collect(Collectors.toList());
     }
 
     private void updateRemoteData(Session remoteSession, Session localSession, String tableName, long mgmId) {

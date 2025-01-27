@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BooleanSupplier;
+import java.util.stream.Collectors;
 
 /**
  * An abstract implementation that provides utility methods to extract vulnerable package information from
@@ -74,7 +75,7 @@ public abstract class CriteriaTreeBasedExtractor implements VulnerablePackagesEx
                 }
             }).filter(Objects::nonNull)
             .flatMap(Collection::stream)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     /**

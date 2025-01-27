@@ -169,6 +169,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -228,7 +229,7 @@ public class SystemManager extends BaseManager {
         List<SystemIDInfo> systemIDInfos =
                 this.serverFactory.lookupSystemsVisibleToUserWithEntitlement(user, entitlement);
 
-        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).toList();
+        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).collect(Collectors.toList());
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
@@ -236,7 +237,7 @@ public class SystemManager extends BaseManager {
         return systemIDInfos.stream()
                 .map(s -> new SystemGroupsDTO(s.getSystemID(),
                         managedGroupsPerServer.getOrDefault(s.getSystemID(), new ArrayList<>())))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -248,7 +249,7 @@ public class SystemManager extends BaseManager {
         if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
             return;
         }
-        List<Long> serverIds = servers.stream().map(Server::getId).toList();
+        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
         List<Long> snapshottableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
@@ -505,11 +506,11 @@ public class SystemManager extends BaseManager {
         Set<String> hwAddrs = hwAddress.map(Collections::singleton).orElse(emptySet());
         List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
         if (!matchingProfiles.isEmpty()) {
-            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).toList());
+            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
         }
 
         String uniqueId = SystemManagerUtils.createUniqueId(
-                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).toList());
+                Stream.of(hwAddress, hostname).flatMap(Opt::stream).collect(Collectors.toList()));
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -1708,7 +1709,7 @@ public class SystemManager extends BaseManager {
         params.put("feature", feat);
 
         DataResult<Map<String, Long>> result = m.execute(params, sids);
-        return result.stream().map(Map::values).flatMap(Collection::stream).toList();
+        return result.stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     /**
@@ -2925,7 +2926,7 @@ public class SystemManager extends BaseManager {
         SelectMode mode = ModeFactory.getMode("System_queries", "system_ids");
         Map<String, Object> params = new HashMap<>();
         DataResult<Map<String, Object>> dr = mode.execute(params);
-        return dr.stream().map(data -> (Long)data.get("id")).toList();
+        return dr.stream().map(data -> (Long)data.get("id")).collect(Collectors.toList());
     }
 
     /**

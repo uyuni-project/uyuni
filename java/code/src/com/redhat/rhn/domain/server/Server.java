@@ -898,7 +898,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<ServerGroupType> getEntitledGroupTypes() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(ServerGroup::getGroupType).toList();
+                .map(ServerGroup::getGroupType).collect(Collectors.toList());
     }
 
     /**
@@ -907,7 +907,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<EntitlementServerGroup> getEntitledGroups() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(s -> (EntitlementServerGroup) s).toList();
+                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
     }
 
     /**
@@ -917,8 +917,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @SuppressWarnings("java:S6204")
     public List<ManagedServerGroup> getManagedGroups() {
         return this.groups.stream().filter(g -> g.getGroupType() == null)
-                .map(s -> (ManagedServerGroup) s)
-                .collect(Collectors.toList());
+                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
     }
 
     /**

@@ -178,7 +178,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
@@ -224,7 +224,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
@@ -270,7 +270,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         SystemManager.subscribeServerToChannel(user, testMinionServer, channel);
@@ -322,7 +322,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
@@ -366,7 +366,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p1 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
@@ -424,7 +424,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         mins.add(testMinion);
 
         List<MinionSummary> minionSummaries = mins.stream().
-                map(MinionSummary::new).toList();
+                map(MinionSummary::new).collect(Collectors.toList());
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Package p1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");

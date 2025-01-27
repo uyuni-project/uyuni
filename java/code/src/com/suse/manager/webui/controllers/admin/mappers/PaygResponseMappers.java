@@ -26,6 +26,7 @@ import com.suse.manager.webui.utils.ViewHelper;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PaygResponseMappers {
     private static LocalizationService ls = LocalizationService.getInstance();
@@ -49,7 +50,7 @@ public class PaygResponseMappers {
                     paygResponse.setLastChange(ViewHelper.formatDateTimeToISO(payg.getModified()));
                     return paygResponse;
                 })
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

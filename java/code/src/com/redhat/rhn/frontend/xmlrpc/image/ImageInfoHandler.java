@@ -450,7 +450,7 @@ public class ImageInfoHandler extends BaseHandler {
 
         List<Long> eids = opt.get().getPatches().stream()
                 .map(Errata::getId)
-                .toList();
+                .collect(Collectors.toList());
         return ErrataFactory.search(eids, loggedInUser.getOrg());
     }
 

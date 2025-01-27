@@ -70,6 +70,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Test for the content-management related methods in {@link ChannelManager}
@@ -195,7 +196,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChannel, tgtChannel, user);
         List<Long> ids = ChannelManager.latestPackagesInChannel(tgtChannel).stream()
                 .map(p -> (Long) p.get("id"))
-                .toList();
+                .collect(Collectors.toList());
         assertEquals(2, ids.size());
         assertContains(ids, pack4.getId());
         assertContains(ids, pack5.getId());
