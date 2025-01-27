@@ -359,38 +359,35 @@ public class HubManager {
     }
 
     private void registerToRemote(User user, IssServer remoteServer, String remoteToken, String rootCA)
-        throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
+            throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
 
-        if (remoteServer instanceof IssPeripheral peripheral) {
-
-            // Register this server on the remote with the opposite role
-            IssRole localRoleForRemote = IssRole.HUB;
-
-            // Create a client to connect to the internal API of the remote server
-            var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
-
-            // Issue a token for granting access to the remote server
-            Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
-            // Send the local trusted root, if we needed a different certificate to connect
-            String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
-
-            internalApi.register(localRoleForRemote, localAccessToken.getSerializedForm(), localRootCA);
-
-            // if the remote server is a peripheral, generate the scc credentials for it
-            HubSCCCredentials credentials = generateCredentials(peripheral);
-            internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
-
-            // Query Report DB connection values and set create a User
-            ManagerInfoJson managerInfo = internalApi.getManagerInfo();
-            Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
-                    remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
-            boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
-            if (changed) {
-                setReportDbUser(user, peripheralServer, false);
-            }
-        }
-        else {
+        // Ensure the remote server is a peripheral
+        if (!(remoteServer instanceof IssPeripheral peripheral)) {
             throw new IllegalStateException("Server " + remoteServer + "is not a peripheral server");
+        }
+
+        // Create a client to connect to the internal API of the remote server
+        var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
+
+        // Issue a token for granting access to the remote server
+        Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
+        // Send the local trusted root, if we needed a different certificate to connect
+        String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
+
+        // Register this server on the remote with the hub role
+        internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA);
+
+        // Generate the scc credentials and send them to the peripheral
+        HubSCCCredentials credentials = generateCredentials(peripheral);
+        internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
+
+        // Query Report DB connection values and set create a User
+        ManagerInfoJson managerInfo = internalApi.getManagerInfo();
+        Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
+                remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
+        boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
+        if (changed) {
+            setReportDbUser(user, peripheralServer, false);
         }
     }
 
