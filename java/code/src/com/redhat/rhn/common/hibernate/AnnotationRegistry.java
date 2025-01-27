@@ -76,6 +76,7 @@ import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -300,6 +301,7 @@ public class AnnotationRegistry {
             SslCryptoKey.class,
             StateChange.class,
             StateRevision.class,
+            SUSEProduct.class,
             Task.class,
             TaskoBunch.class,
             TaskoTask.class,
