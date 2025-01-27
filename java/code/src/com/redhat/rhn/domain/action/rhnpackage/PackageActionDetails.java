@@ -24,16 +24,50 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 /**
  * PackageActionDetails
  */
+@Entity
+@Table(name = "rhnActionPackage")
 public class PackageActionDetails extends ActionChild {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "package_action_seq")
+    @SequenceGenerator(name = "package_action_seq", sequenceName = "RHN_ACT_P_ID_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long packageId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "name_id")
     private PackageName packageName;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "evr_id")
     private PackageEvr evr;
+
+    @Column(name = "parameter")
     private String parameter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "package_arch_id")
     private PackageArch arch;
+
+    @OneToMany(mappedBy = "id.details", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Transient
     private Set<PackageActionResult> results = new HashSet<>();
 
     /**
