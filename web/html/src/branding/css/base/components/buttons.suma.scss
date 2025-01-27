@@ -74,11 +74,7 @@
   font-weight: bold;
   text-decoration: underline;
   text-underline-offset: .3rem;
-
-  i {
-    margin-right: 0;
-    text-decoration: none;
-  }
+  gap: 0.3em;
  
   &:active,
   &:focus,
@@ -91,9 +87,14 @@
 
   &.disabled,
   &:disabled {
-    opacity: 0.6;
-    pointer-events: auto;
-    cursor: not-allowed;
+    &,
+    &:active {
+      pointer-events: auto;
+      cursor: not-allowed;
+      border-color: transparent;
+      text-decoration: underline;
+      text-underline-offset: .3rem;
+    }
   }
 }
 
@@ -203,6 +204,7 @@
 }
 
 .panel-heading,
+.panel-heading a:not(.btn-tertiary),
 th > a,
 th .orderBy {
   border: none;

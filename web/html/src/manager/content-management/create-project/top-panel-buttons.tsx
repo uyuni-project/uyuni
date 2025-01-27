@@ -14,7 +14,6 @@ const TopPanelButtons = (props: TopPanelButtonsProps) => {
         className="btn-primary"
         title={t("Create project")}
         text={t("Create")}
-        icon="fa-plus"
         action={props.onCreate}
       />
     </div>
