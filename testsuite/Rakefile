@@ -82,39 +82,25 @@ namespace :utils do
       end
     end
   end
+
   desc 'Filter set test'
   task :filter_secondary, [:filter_yaml, :input_yaml, :output_yaml] do |_t, args|
     filter_yaml = args[:filter_yaml]
     input_yaml = args[:input_yaml]
     output_yaml = args[:output_yaml]
-    puts "DEBUG"
-    puts "filter_yaml"
-    puts filter_yaml
-    puts "input_yaml"
-    puts input_yaml
-    puts "output yaml"
-    puts output_yaml
-    filter_t = YAML.load_file(filter_yaml)
-    input_t = YAML.load_file(input_yaml)
-    output_t = ["features/secondary/srv_users.feature"]
-    for i in filter_t
-      if i == ''
-        next
-      end
-      puts "i:"
-      puts i
-      for j in input_t
-        puts "j"
-        puts j
-        if j.include?(i)
-          puts "yeah, append it"
-          output_t.append(j)
-        end
-      end
-    end
-    puts "output"
-    puts output_t
-    File.write(output_yaml, output_t.to_yaml)
+
+    # Load test lists from the provided YAML files
+    filter_tests = YAML.load_file(filter_yaml) || []
+    input_tests = YAML.load_file(input_yaml) || []
+
+    # Intersect filter_tests with input_tests to create the filtered set
+    filtered_tests = input_tests.select { |test| filter_tests.include?(test) }
+
+    # Log for debugging
+    puts "Filtered Tests: #{filtered_tests}"
+
+    # Write the filtered tests to the output YAML
+    File.write(output_yaml, filtered_tests.to_yaml)
   end
 
   desc 'Generate feature file for a client from a template and include it in a yaml file'
