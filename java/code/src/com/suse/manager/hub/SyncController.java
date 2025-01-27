@@ -29,9 +29,6 @@ import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
-import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
@@ -51,7 +48,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Optional;
 
 import spark.Request;
 import spark.Response;
@@ -92,7 +88,6 @@ public class SyncController {
         post("/iss/sync/generateCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
         get("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
-        post("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::setManagerInfo))));
         post("/iss/sync/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
         post("/iss/sync/removeReportDbCredentials",
@@ -153,17 +148,6 @@ public class SyncController {
         }
         localRcm.rollbackTransaction();
         return badRequest(response, "Request failed");
-    }
-
-    private String setManagerInfo(Request request, Response response, IssAccessToken token) {
-        ManagerInfoJson managerInfo = GSON.fromJson(request.body(), ManagerInfoJson.class);
-        Optional<Server> peripheralServer = ServerFactory.findByFqdn(token.getServerFqdn());
-        if (peripheralServer.isEmpty()) {
-            LOGGER.error("Request failed - unable to find peripheral system for fqdn {}", token.getServerFqdn());
-            return badRequest(response, "Request failed");
-        }
-        SystemManager.updateMgrServerInfo(peripheralServer.get(), managerInfo);
-        return success(response);
     }
 
     private String getManagerInfo(Request request, Response response, IssAccessToken token) {
