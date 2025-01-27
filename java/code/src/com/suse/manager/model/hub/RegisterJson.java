@@ -15,8 +15,6 @@ import java.util.Objects;
 
 public class RegisterJson {
 
-    private IssRole role;
-
     private String token;
 
     private String rootCA;
@@ -25,27 +23,17 @@ public class RegisterJson {
      * Default constructor
      */
     public RegisterJson() {
-        this(IssRole.HUB, null, null);
+        this(null, null);
     }
 
     /**
      * Builds a request instance
-     * @param roleIn the remote server role
      * @param tokenIn the token
      * @param rootCAIn the root certificate
      */
-    public RegisterJson(IssRole roleIn, String tokenIn, String rootCAIn) {
-        this.role = roleIn;
+    public RegisterJson(String tokenIn, String rootCAIn) {
         this.token = tokenIn;
         this.rootCA = rootCAIn;
-    }
-
-    public IssRole getRole() {
-        return role;
-    }
-
-    public void setRole(IssRole roleIn) {
-        this.role = roleIn;
     }
 
     public String getToken() {
@@ -69,21 +57,19 @@ public class RegisterJson {
         if (!(o instanceof RegisterJson that)) {
             return false;
         }
-        return Objects.equals(getRole(), that.getRole()) &&
-                    Objects.equals(getToken(), that.getToken()) &&
+        return Objects.equals(getToken(), that.getToken()) &&
                     Objects.equals(getRootCA(), that.getRootCA());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getRole(), getToken(), getRootCA());
+        return Objects.hash(getToken(), getRootCA());
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("RegisterJson{");
-        sb.append("role='").append(role).append('\'');
-        sb.append(", token='").append(token).append('\'');
+        sb.append("token='").append(token).append('\'');
         sb.append(", rootCA='").append(rootCA).append('\'');
         sb.append('}');
         return sb.toString();
