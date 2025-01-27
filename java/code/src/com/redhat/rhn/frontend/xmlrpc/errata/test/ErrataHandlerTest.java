@@ -328,7 +328,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package unpatched1 = createTestPackage(user, channel1, "noarch");
         createLaterTestPackage(user, userErrata, channel1, unpatched1);
 
-        Server server1 = createTestServer(user, Stream.of(channel1).toList());
+        Server server1 = createTestServer(user, Stream.of(channel1).collect(Collectors.toList()));
         createTestInstalledPackage(unpatched1, server1);
 
         UpdateErrataCacheCommand uECC = new UpdateErrataCacheCommand();
@@ -351,7 +351,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         Package unpatchedPkg2 = createTestPackage(admin, channel2, "noarch");
         createLaterTestPackage(admin, vendorErrata, channel2, unpatchedPkg2);
 
-        Server server2 = createTestServer(admin, Stream.of(channel2).toList());
+        Server server2 = createTestServer(admin, Stream.of(channel2).collect(Collectors.toList()));
         createTestInstalledPackage(unpatchedPkg2, server2);
 
         uECC.updateErrataCacheForServer(server2.getId(), false);

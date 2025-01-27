@@ -825,7 +825,7 @@ public class DistUpgradeManager extends BaseManager {
             }
             else {
                 List<String> missing = missingAddonSuccessors.stream().map(SUSEProduct::getFriendlyName)
-                        .toList();
+                        .collect(Collectors.toList());
                 if (LOG.isWarnEnabled()) {
                     LOG.warn("No migration target found for '{}'. Skipping", String.join(", ", missing));
                 }

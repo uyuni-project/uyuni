@@ -104,7 +104,7 @@ public class ChannelsApiController {
                 .distinct()
                 .filter(Channel::isModular)
                 .map(ChannelsJson.ChannelJson::new)
-                .toList();
+                .collect(Collectors.toList());
 
         return result(res, ResultJson.success(jsonChannels), new TypeToken<>() { });
     }

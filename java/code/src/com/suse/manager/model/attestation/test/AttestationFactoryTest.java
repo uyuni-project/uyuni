@@ -45,6 +45,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class AttestationFactoryTest extends BaseTestCaseWithUser {
 
@@ -138,7 +139,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertNotEmpty(results);
         List<CoCoResultType> rTypeList = results.stream()
                 .map(CoCoAttestationResult::getResultType)
-                .toList();
+                .collect(Collectors.toList());
         assertContains(rTypeList, CoCoResultType.SEV_SNP);
         assertContains(rTypeList, CoCoResultType.SECURE_BOOT);
         assertNotContains(rTypeList, CoCoResultType.NONE);

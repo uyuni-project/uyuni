@@ -57,6 +57,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -240,7 +241,7 @@ public class FormulaController {
                     FormulaFactory.saveGroupFormulaData(formData, group, formulaName);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
-                            .map(MinionServer::getMinionId).toList();
+                            .map(MinionServer::getMinionId).collect(Collectors.toList());
                     saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:
@@ -355,7 +356,7 @@ public class FormulaController {
                     FormulaFactory.saveGroupFormulas(group, selectedFormulas);
                     List<String> minionIds = group.getServers().stream()
                             .flatMap(s -> Opt.stream(s.asMinionServer()))
-                            .map(MinionServer::getMinionId).toList();
+                            .map(MinionServer::getMinionId).collect(Collectors.toList());
                     saltApi.refreshPillar(new MinionList(minionIds));
                     break;
                 default:

@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils;
 
 import org.jose4j.jwt.JwtClaims;
 
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.Set;
 
@@ -60,9 +61,7 @@ public class DownloadTokenBuilder extends TokenBuilder {
     public JwtClaims getClaims() {
         JwtClaims claims = super.getClaims();
         claims.setClaim("org", this.orgId);
-        onlyChannels.ifPresent(channels ->
-                claims.setStringListClaim("onlyChannels",
-                        channels.stream().toList()));
+        onlyChannels.ifPresent(channels -> claims.setStringListClaim("onlyChannels", new ArrayList<>(channels)));
         return claims;
     }
 }

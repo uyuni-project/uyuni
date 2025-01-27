@@ -382,6 +382,6 @@ public class MinionServerFactory extends HibernateFactory {
         return allMinions.stream().filter(
                 minionSummary -> MinionServerFactory.findByMinionId(minionSummary.getMinionId())
                 .map(Server::isDeniedOnPayg)
-                .orElse(false)).toList();
+                .orElse(false)).collect(Collectors.toList());
     }
 }

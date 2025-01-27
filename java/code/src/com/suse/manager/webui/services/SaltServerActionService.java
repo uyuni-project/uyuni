@@ -403,7 +403,7 @@ public class SaltServerActionService {
         }
 
         List<MinionServer> sshPushMinions = MinionServerFactory.findMinionsByServerIds(
-                sshMinionSummaries.stream().map(MinionSummary::getServerId).toList());
+                sshMinionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
         if (!sshPushMinions.isEmpty()) {
             for (MinionServer sshMinion : sshPushMinions) {
@@ -520,7 +520,7 @@ public class SaltServerActionService {
             // first check if there's an action chain with a reboot already executing
             Map<String, Result<Map<String, String>>> pendingResumeConf = saltApi.getPendingResume(
                     sshMinions.stream().map(MinionSummary::getMinionId)
-                            .toList()
+                            .collect(Collectors.toList())
             );
             List<MinionSummary> targetSSHMinions = sshMinions.stream()
                     .filter(sshMinion -> {
@@ -557,7 +557,7 @@ public class SaltServerActionService {
 
             Map<String, Result<Map<String, ApplyResult>>> res = saltSSHService.callSyncSSH(call,
                     new MinionList(targetSSHMinions.stream().map(MinionSummary::getMinionId)
-                            .toList()),
+                            .collect(Collectors.toList())),
                     extraFilerefs);
 
             res.forEach((minionId, chunkResult) -> {
@@ -838,7 +838,7 @@ public class SaltServerActionService {
                         ServerAction sa = saCalls.getKey();
                         List<LocalCall<?>> calls = saCalls.getValue();
                         return convertToState(actionChain.getId(), sa, calls, minion).stream();
-                    }).toList();
+                    }).collect(Collectors.toList());
 
             statesPerMinion.put(minion, states);
         });
@@ -1073,7 +1073,7 @@ public class SaltServerActionService {
                                                 e.getValue().getB().endsWith("-X") ?
                                                     e.getValue().getB().substring(0, e.getValue().getB().length() - 2) :
                                                     e.getValue().getB()))
-                                        .toList()))
+                                        .collect(Collectors.toList())))
                 ),
                 Map.Entry::getValue
         ));
@@ -1139,7 +1139,7 @@ public class SaltServerActionService {
                 }
         });
         List<List<String>> duplicatedPkgs = pkgsAll.stream()
-                .filter(p -> !uniquePkgs.contains(p)).toList();
+                .filter(p -> !uniquePkgs.contains(p)).collect(Collectors.toList());
 
         Map<String, Object> params = new HashMap<>();
         params.put(PARAM_PKGS, uniquePkgs);
@@ -1418,7 +1418,7 @@ public class SaltServerActionService {
         imageStores.add(profile.getTargetStore());
 
         List<MinionServer> minions = MinionServerFactory.findMinionsByServerIds(
-                minionSummaries.stream().map(MinionSummary::getServerId).toList());
+                minionSummaries.stream().map(MinionSummary::getServerId).collect(Collectors.toList()));
 
         //TODO: optimal scheduling would be to group by host and orgid
         return minions.stream().collect(
@@ -1533,7 +1533,7 @@ public class SaltServerActionService {
         distupgrade.put("channels", subbed.stream()
                 .sorted()
                 .map(c -> "susemanager:" + c.getLabel())
-                .toList());
+                .collect(Collectors.toList()));
         if (Objects.nonNull(action.getDetails().getMissingSuccessors())) {
             pillar.put("missing_successors", Arrays.asList(action.getDetails().getMissingSuccessors().split(",")));
         }
@@ -1762,8 +1762,8 @@ public class SaltServerActionService {
             .map(d -> d.getStream() == null ?
                 singletonList(d.getModuleName()) :
                 Arrays.asList(d.getModuleName(), d.getStream()))
-            .collect(toList());
-        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).collect(toList());
+            .toList();
+        var disableParams = details.get(false).stream().map(AppStreamActionDetails::getModuleName).toList();
 
         Optional<Map<String, Object>> params = Optional.of(Map.of(
             PARAM_APPSTREAMS_ENABLE, enableParams,
@@ -1822,7 +1822,7 @@ public class SaltServerActionService {
     private Map<Boolean, List<MinionSummary>> execute(Action actionIn, LocalCall<?> call,
             List<MinionSummary> minionSummaries, boolean forcePackageListRefresh,
             boolean isStagingJob) {
-        List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId).toList();
+        List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId).collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Executing action for: {}", minionIds.stream().collect(Collectors.joining(", ")));
@@ -1857,7 +1857,7 @@ public class SaltServerActionService {
             ActionChain actionChain,
             Set<MinionSummary> minionSummaries) {
         List<String> minionIds = minionSummaries.stream().map(MinionSummary::getMinionId)
-                .toList();
+                .collect(Collectors.toList());
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("Executing action chain for: {}", String.join(", ", minionIds));
@@ -2091,14 +2091,13 @@ public class SaltServerActionService {
 
             while (!actionIdsDependencies.isEmpty()) {
                 Long acId = actionIdsDependencies.pop();
-                List<ServerAction> serverActionsWithPrereq = serverActions.stream()
+                serverActions.stream()
                         .filter(s -> s.getParentAction().getPrerequisite() != null)
                         .filter(s -> s.getParentAction().getPrerequisite().getId().equals(acId))
-                        .toList();
-                for (ServerAction sa : serverActionsWithPrereq) {
-                    actionIdsDependencies.push(sa.getParentAction().getId());
-                    sa.fail("Prerequisite failed");
-                }
+                        .forEach(sa -> {
+                            actionIdsDependencies.push(sa.getParentAction().getId());
+                            sa.fail("Prerequisite failed");
+                        });
             }
         }
     }

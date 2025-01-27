@@ -47,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @apidoc.namespace actionchain
@@ -329,7 +330,7 @@ public class ActionChainHandler extends BaseHandler {
         List<Long> actionIds = null;
         try {
             List<Server> serverIds = sids.stream().map(sid ->
-                    this.acUtil.getServerById(sid, loggedInUser)).toList();
+                    this.acUtil.getServerById(sid, loggedInUser)).collect(Collectors.toList());
 
             actionIds = ActionChainManager.scheduleErrataUpdate(loggedInUser,
                     serverIds,
@@ -654,7 +655,7 @@ public class ActionChainHandler extends BaseHandler {
                             (String) specifier.get("channelLabel"),
                             (String) specifier.get("filePath"),
                             (Integer) specifier.get("revision")).getId()
-        ).toList();
+        ).collect(Collectors.toList());
 
         try {
             ActionChainManager.createConfigActions(loggedInUser, revisionIds, server,

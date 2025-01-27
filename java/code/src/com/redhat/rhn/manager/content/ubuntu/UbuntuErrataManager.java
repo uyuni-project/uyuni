@@ -206,10 +206,10 @@ public class UbuntuErrataManager {
                                                     else {
                                                         return Stream.empty();
                                                     }
-                                                }).toList();
+                                                }).collect(Collectors.toList());
                                 return Stream.of(new Tuple3<>(name, version, archs));
                             })
-                    ).toList();
+                    ).collect(Collectors.toList());
 
             if (packageData.isEmpty()) {
                 // Skip Errata when we have no matching packages
@@ -392,7 +392,7 @@ public class UbuntuErrataManager {
         Map<Long, List<Long>> errataToChannels = changedErrata.stream().collect(
                 Collectors.toMap(
                         Errata::getId,
-                        e -> e.getChannels().stream().map(Channel::getId).toList()
+                        e -> e.getChannels().stream().map(Channel::getId).collect(Collectors.toList())
                         )
                 );
         changedErrata.stream().flatMap(e -> e.getChannels().stream()).distinct()

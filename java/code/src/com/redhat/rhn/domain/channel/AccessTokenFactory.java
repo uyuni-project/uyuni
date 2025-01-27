@@ -127,7 +127,7 @@ public class AccessTokenFactory extends HibernateFactory {
                     tokensToActivate.stream()
                             .anyMatch(newToken ->
                                     newToken.getChannels().containsAll(token.getChannels()));
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**

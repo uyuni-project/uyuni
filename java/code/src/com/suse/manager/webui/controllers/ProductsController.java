@@ -338,7 +338,7 @@ public class ProductsController {
                         catch (NoSuchElementException e) {
                             log.error("Fail to load mandatory channels for channel {}", channelId, e);
                         }
-                        return channels.map(Channel::getId).toList();
+                        return channels.map(Channel::getId).collect(Collectors.toList());
                     }
             ));
             return result(response, ResultJson.success(result), new TypeToken<>() { });
@@ -436,7 +436,7 @@ public class ProductsController {
                                 )
                         ).collect(Collectors.toSet()));
 
-            }).toList());
+            }).collect(Collectors.toList()));
             return json(response, new SUSEProductsJson(jsonProducts, null), new TypeToken<>() { });
         }
         catch (Exception e) {

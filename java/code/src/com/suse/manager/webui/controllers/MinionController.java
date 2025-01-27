@@ -236,7 +236,7 @@ public class MinionController {
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
                 .map(SimpleMinionJson::fromMinionServer)
-                .toList();
+                .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         String orgId = request.queryParams("oid");
@@ -285,7 +285,7 @@ public class MinionController {
         List<Server> servers = ServerFactory.lookupByIdsAndOrg(systems, user.getOrg());
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(servers)
                 .map(SimpleMinionJson::fromMinionServer)
-                .toList();
+                .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
@@ -350,7 +350,7 @@ public class MinionController {
         List<Server> groupServers = ServerGroupFactory.listServers(group);
         List<SimpleMinionJson> minions = MinionServerUtils.filterSaltMinions(groupServers)
                 .map(SimpleMinionJson::fromMinionServer)
-                .toList();
+                .collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", grpId);
@@ -380,7 +380,7 @@ public class MinionController {
                 ServerGroupFactory.lookupByIdAndOrg(Long.parseLong(grpId), user.getOrg());
 
         List<SimpleMinionJson> minions = ServerGroupFactory.listMinionIdsForServerGroup(group).stream()
-                .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).toList();
+                .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("groupId", grpId);
@@ -405,7 +405,7 @@ public class MinionController {
     public static ModelAndView ssmHighstate(Request request, Response response, User user) {
         List<SimpleMinionJson> minions =
                 MinionServerFactory.findMinionIdsByServerIds(SsmManager.listServerIds(user)).stream()
-                        .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).toList();
+                        .map(m -> new SimpleMinionJson(m.getServerId(), m.getMinionId())).collect(Collectors.toList());
 
         Map<String, Object> data = new HashMap<>();
         data.put("minions", Json.GSON.toJson(minions));
@@ -486,10 +486,10 @@ public class MinionController {
                     List<String> path = proxy.getServerPaths().stream()
                             .sorted(Comparator.comparingLong(ServerPath::getPosition))
                             .map(ServerPath::getHostname)
-                            .toList();
+                            .collect(Collectors.toList());
                     entry.put("path", path);
                     return entry; })
-                .toList();
+                .collect(Collectors.toList());
         model.put("proxies", Json.GSON.toJson(proxies));
     }
 
@@ -506,7 +506,7 @@ public class MinionController {
         ActivationKeyManager akm = ActivationKeyManager.getInstance();
         List<String> visibleBootstrapKeys = akm.findAllActive(user).stream()
                 .map(ActivationKey::getKey)
-                .toList();
+                .collect(Collectors.toList());
         data.put("availableActivationKeys", Json.GSON.toJson(visibleBootstrapKeys));
         addProxies(user, data);
         return new ModelAndView(data, "templates/minion/bootstrap.jade");
@@ -549,7 +549,7 @@ public class MinionController {
         List<SimpleMinionJson> minions =
                 MinionServerFactory.lookupByIds(SsmManager.listServerIds(user))
                         .filter(m -> !m.isProxy())
-                        .map(m -> new SimpleMinionJson(m.getId(), m.getMinionId())).toList();
+                        .map(m -> new SimpleMinionJson(m.getId(), m.getMinionId())).collect(Collectors.toList());
         if (minions.size() == SsmManager.listServerIds(user).size()) {
             data.put("minions", Json.GSON.toJson(minions));
         }
@@ -662,7 +662,7 @@ public class MinionController {
                     "name", minionServer.getName(),
                     "cocoSupport", minionServer.doesOsSupportCoCoAttestation()
                 ))
-                .toList()
+                .collect(Collectors.toList())
         ));
         addCoCoMetadata(data);
 
@@ -689,7 +689,7 @@ public class MinionController {
                     "name", minionServer.getName(),
                     "cocoSupport", minionServer.doesOsSupportCoCoAttestation()
                 ))
-                .toList()
+                .collect(Collectors.toList())
         ));
         addActionChains(user, data);
 

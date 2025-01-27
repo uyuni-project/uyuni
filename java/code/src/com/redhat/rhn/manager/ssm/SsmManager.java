@@ -156,7 +156,7 @@ public class SsmManager {
         List<Long> serverIds = ServerFactory.findServersInSetByChannel(user, baseChannelId);
         return serverIds.stream()
                 .map(ServerFactory::lookupById)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -215,7 +215,7 @@ public class SsmManager {
                 )
         ).flatMap(Function.identity());
 
-        return Stream.concat(succededResults, erroredResults).toList();
+        return Stream.concat(succededResults, erroredResults).collect(Collectors.toList());
     }
 
     private static Stream<ChannelSelectionResult> handleChannelChangesForSystemsWithNoBaseChannel(

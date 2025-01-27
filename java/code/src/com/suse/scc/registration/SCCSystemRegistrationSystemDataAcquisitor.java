@@ -90,7 +90,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                     })
                     .filter(Objects::nonNull)
                     .map(SCCMinProductJson::new)
-                    .toList();
+                    .collect(Collectors.toList());
 
             SCCHwInfoJson hwInfo = new SCCHwInfoJson();
 

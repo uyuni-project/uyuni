@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class PXEEvent {
     private static final Logger LOG = LogManager.getLogger(PXEEvent.class);
@@ -97,7 +98,7 @@ public class PXEEvent {
         return macGrains.entrySet().stream()
                 .filter(e -> !e.getKey().equals("lo"))
                 .map(e -> (String)e.getValue())
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**

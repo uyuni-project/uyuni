@@ -31,6 +31,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -76,7 +77,7 @@ public class GroupRecurringAction extends RecurringAction {
     @Override
     public List<MinionServer> computeMinions() {
         return MinionServerUtils.filterSaltMinions(ServerGroupFactory.listServers(group))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
