@@ -91,11 +91,6 @@ public class DefaultIssInternalClient implements IssInternalClient {
     }
 
     @Override
-    public void setManagerInfo(ManagerInfoJson managerInfo) throws IOException {
-        invokePostMethod("managerinfo", managerInfo, Void.class);
-    }
-
-    @Override
     public void storeReportDbCredentials(String username, String password) throws IOException {
         invokePostMethod("storeReportDbCredentials", Map.of("username", username, "password", password), Void.class);
     }
