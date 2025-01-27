@@ -33,6 +33,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
 import com.suse.manager.model.hub.IssAccessToken;
+import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
@@ -83,7 +84,7 @@ public class SyncController {
      */
     public void initRoutes() {
         post("/iss/sync/ping", asJson(usingTokenAuthentication(this::ping)));
-        post("/iss/sync/register", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::register))));
+        post("/iss/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
         post("/iss/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
         post("/iss/sync/generateCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::generateCredentials))));
@@ -160,7 +161,7 @@ public class SyncController {
         return message(response, "Pinged from %s".formatted(token.getServerFqdn()));
     }
 
-    private String register(Request request, Response response, IssAccessToken token) {
+    private String registerHub(Request request, Response response, IssAccessToken token) {
         RegisterJson registerRequest = GSON.fromJson(request.body(), RegisterJson.class);
 
         String tokenToStore = registerRequest.getToken();
@@ -171,7 +172,7 @@ public class SyncController {
 
         try {
             hubManager.storeAccessToken(token, tokenToStore);
-            hubManager.saveNewServer(token, registerRequest.getRole(), registerRequest.getRootCA());
+            hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA());
 
             return success(response);
         }
