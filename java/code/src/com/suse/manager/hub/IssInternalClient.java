@@ -56,12 +56,6 @@ public interface IssInternalClient {
     ManagerInfoJson getManagerInfo() throws IOException;
 
     /**
-     * Send Manager information to a hub server
-     * @param managerInfo the {@link ManagerInfoJson} information
-     */
-    void setManagerInfo(ManagerInfoJson managerInfo) throws IOException;
-
-    /**
      * Store Report DB credentials on the remote peripheral server
      * @param username the username
      * @param password the password
