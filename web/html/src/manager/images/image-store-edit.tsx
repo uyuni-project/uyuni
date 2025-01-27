@@ -198,7 +198,6 @@ class CreateImageStore extends React.Component<Props, State> {
         key="clear-btn"
         id="clear-btn"
         className="btn-default"
-        icon="fa-eraser"
         text={t("Clear fields")}
         handler={this.clearFields}
       />,
@@ -210,7 +209,6 @@ class CreateImageStore extends React.Component<Props, State> {
           key="update-btn"
           id="update-btn"
           className="btn-primary me-4"
-          icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
         />
@@ -221,7 +219,6 @@ class CreateImageStore extends React.Component<Props, State> {
           key="create-btn"
           id="create-btn"
           className="btn-primary me-4"
-          icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}
         />
