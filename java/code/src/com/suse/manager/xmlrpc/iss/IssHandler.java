@@ -21,7 +21,6 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
-import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -34,7 +33,6 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
-import java.util.Arrays;
 
 /**
  * IssHandler
@@ -134,10 +132,9 @@ public class IssHandler extends BaseHandler {
     }
 
     /**
-     * Registers automatically a remote server with the specified ISS role.
+     * Registers automatically a remote PERIPHERAL server.
      * @param loggedInUser the user logged in. It must have the sat admin role.
      * @param fqdn the FQDN of the remote server to register
-     * @param role the ISS role of the remote server. Can be either HUB or PERIPHERAL
      * @param username the name of the user, needed to access the remote server. It must have the sat admin role.
      * @param password the password of the user, needed to access the remote server.
      * @return 1 on success, exception otherwise
@@ -145,22 +142,20 @@ public class IssHandler extends BaseHandler {
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
-     * @apidoc.param #param_desc("string", "role", "the ISS role of the remote server. Either HUB or PERIPHERAL")
      * @apidoc.param #param_desc("string", "username", "the name of the user, needed to access the remote server
      * It must have the sat admin role")
      * @apidoc.param #param_desc("string", "password", "the password of the user, needed to access the remote
      * server")
      * @apidoc.returntype #return_int_success()
      */
-    public int register(User loggedInUser, String fqdn, String role, String username, String password) {
-        return register(loggedInUser, fqdn, role, username, password, null);
+    public int register(User loggedInUser, String fqdn, String username, String password) {
+        return register(loggedInUser, fqdn, username, password, null);
     }
 
     /**
-     * Registers automatically a remote server with the specified ISS role.
+     * Registers automatically a remote PERIPHERAL server.
      * @param loggedInUser the user logged in. It must have the sat admin role.
      * @param fqdn the FQDN of the remote server to register
-     * @param role the ISS role of the remote server. Can be either HUB or PERIPHERAL
      * @param username the name of the user, needed to access the remote server. It must have the sat admin role.
      * @param password the password of the user, needed to access the remote server.
      * @param rootCA the root CA certificate, in case it's needed to establish a secure connection
@@ -169,7 +164,6 @@ public class IssHandler extends BaseHandler {
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
-     * @apidoc.param #param_desc("string", "role", "the ISS role of the remote server. Either HUB or PERIPHERAL")
      * @apidoc.param #param_desc("string", "username", "the name of the user, needed to access the remote server
      * It must have the sat admin role")
      * @apidoc.param #param_desc("string", "password", "the password of the user, needed to access the remote
@@ -178,13 +172,8 @@ public class IssHandler extends BaseHandler {
      * connection")
      * @apidoc.returntype #return_int_success()
      */
-    public int register(User loggedInUser, String fqdn, String role, String username, String password, String rootCA) {
+    public int register(User loggedInUser, String fqdn, String username, String password, String rootCA) {
         ensureSatAdmin(loggedInUser);
-
-        IssRole remoteRole = Arrays.stream(IssRole.values())
-            .filter(r -> r.name().equalsIgnoreCase(role))
-            .findFirst()
-            .orElseThrow(() -> new InvalidParameterException("Invalid role specified"));
 
         if (StringUtils.isEmpty(fqdn)) {
             throw new InvalidParameterException("No FQDN specified");
@@ -195,7 +184,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            hubManager.register(loggedInUser, fqdn, remoteRole, username, password, rootCA);
+            hubManager.register(loggedInUser, fqdn, username, password, rootCA);
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
@@ -222,29 +211,26 @@ public class IssHandler extends BaseHandler {
     }
 
     /**
-     * Registers a remote server with the specified ISS role using an existing specified access token.
+     * Registers a remote PERIPHERAL server using an existing specified access token.
      * @param loggedInUser the user logged in. It must have the sat admin role.
      * @param fqdn the FQDN of the remote server to register
-     * @param role the ISS role of the remote server. Can be either HUB or PERIPHERAL
      * @param token the token used to authenticate on the remote server.
      * @return 1 on success, exception otherwise
      *
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
-     * @apidoc.param #param_desc("string", "role", "the ISS role of the remote server. Either HUB or PERIPHERAL")
      * @apidoc.param #param_desc("string", "token", "the token used to authenticate on the remote server.")
      * @apidoc.returntype #return_int_success()
      */
-    public int registerWithToken(User loggedInUser, String fqdn, String role, String token) {
-        return registerWithToken(loggedInUser, fqdn, role, token, null);
+    public int registerWithToken(User loggedInUser, String fqdn, String token) {
+        return registerWithToken(loggedInUser, fqdn, token, null);
     }
 
     /**
-     * Registers a remote server with the specified ISS role using an existing specified access token.
+     * Registers a remote PERIPHERAL server using an existing specified access token.
      * @param loggedInUser the user logged in. It must have the sat admin role.
      * @param fqdn the FQDN of the remote server to register
-     * @param role the ISS role of the remote server. Can be either HUB or PERIPHERAL
      * @param token the token used to authenticate on the remote server.
      * @param rootCA the root CA certificate, in case it's needed to establish a secure connection
      * @return 1 on success, exception otherwise
@@ -252,19 +238,13 @@ public class IssHandler extends BaseHandler {
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
-     * @apidoc.param #param_desc("string", "role", "the ISS role of the remote server. Either HUB or PERIPHERAL")
      * @apidoc.param #param_desc("string", "token", "the token used to authenticate on the remote server.")
      * @apidoc.param #param_desc("string", "rootCA", "the root CA certificate, in case it's needed to establish a secure
      * connection")
      * @apidoc.returntype #return_int_success()
      */
-    public int registerWithToken(User loggedInUser, String fqdn, String role, String token, String rootCA) {
+    public int registerWithToken(User loggedInUser, String fqdn, String token, String rootCA) {
         ensureSatAdmin(loggedInUser);
-
-        IssRole remoteRole = Arrays.stream(IssRole.values())
-            .filter(r -> r.name().equalsIgnoreCase(role))
-            .findFirst()
-            .orElseThrow(() -> new InvalidParameterException("Invalid role specified"));
 
         if (StringUtils.isEmpty(fqdn)) {
             throw new InvalidParameterException("No FQDN specified");
@@ -275,7 +255,7 @@ public class IssHandler extends BaseHandler {
         }
 
         try {
-            hubManager.register(loggedInUser, fqdn, remoteRole, token, rootCA);
+            hubManager.register(loggedInUser, fqdn, token, rootCA);
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
