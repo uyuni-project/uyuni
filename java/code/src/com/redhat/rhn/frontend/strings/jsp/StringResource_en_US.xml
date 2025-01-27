@@ -1868,13 +1868,13 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
-        <source>Deactivate</source>
+        <source>Deactivate User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
       </trans-unit>
       <trans-unit id="userdetails.jsp.enable" xml:space="preserve">
-        <source>Reactivate</source>
+        <source>Reactivate User</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
