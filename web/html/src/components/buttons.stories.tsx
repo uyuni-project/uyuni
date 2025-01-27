@@ -206,6 +206,20 @@ export default () => {
         </tbody>
       </table>
       <hr></hr>
+      <h2 className="mt-5">Best Practices to Write Useful Button Labels</h2>
+      <ul className="mt-0">
+        <li>Button labels should typically range from 1 to 3 words to maintain clarity and make them easy to scan.</li>
+        <li>Ensure labels are action-oriented and provide clear guidance on what the button does.</li>
+        <li>Avoid Repetition in Bulk Actions: In lists or bulk-action scenarios, avoid redundant labels for buttons acting on "selected items."
+          <br />
+          <strong>Example:</strong>
+          <ul>
+            <li><strong>Good:</strong> "Apply," "Install," "Save"</li>
+            <li><strong>Avoid:</strong> "Apply to Selected Items," "Install Selected Items," "Save Selected Items"</li>
+          </ul>
+        </li>
+      </ul>
+      <hr></hr>
       <h2 className="mt-5">Placement</h2>
       <div className="row">
         <div className="col-md-6">
@@ -246,7 +260,7 @@ export default () => {
         </div>
       </div>
       <div className="row mt-5">
-        <div className="col-md-4">
+        <div className="col-md-6">
           <BootstrapPanel title="Remove Selected item" footer={modalButtonsDelete}>
             <p>Are you sure you want to remove the selected items? (3 items selected)?</p>
           </BootstrapPanel>
