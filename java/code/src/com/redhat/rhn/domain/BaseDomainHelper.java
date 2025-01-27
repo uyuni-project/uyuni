@@ -33,7 +33,11 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class BaseDomainHelper implements Serializable {
+    @Column(name = "created", nullable = false, updatable = false)
+    @CreationTimestamp
     private Date created = new Date();
+    @Column(name = "modified", nullable = false)
+    @UpdateTimestamp
     private Date modified = new Date();
 
     /**
@@ -47,8 +51,6 @@ public abstract class BaseDomainHelper implements Serializable {
      * Gets the current value of created
      * @return Date the current value
      */
-    @Column(name = "created", nullable = false, updatable = false)
-    @CreationTimestamp
     public Date getCreated() {
         return this.created;
     }
@@ -65,8 +67,6 @@ public abstract class BaseDomainHelper implements Serializable {
      * Gets the current value of modified
      * @return Date the current value
      */
-    @Column(name = "modified", nullable = false)
-    @UpdateTimestamp
     public Date getModified() {
         return this.modified;
     }

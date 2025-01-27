@@ -16,6 +16,9 @@ package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
+import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
@@ -179,6 +182,7 @@ public class AnnotationRegistry {
             AccessToken.class,
             ActionChain.class,
             ActionChainEntry.class,
+            ActionChild.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
@@ -244,6 +248,8 @@ public class AnnotationRegistry {
             OrgConfig.class,
             OrgRecurringAction.class,
             OrgStateRevision.class,
+            PackageActionDetails.class,
+            PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
             PackageCapability.class,
