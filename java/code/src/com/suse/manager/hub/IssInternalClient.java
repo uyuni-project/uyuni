@@ -13,7 +13,6 @@ package com.suse.manager.hub;
 
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 
-import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 
@@ -25,13 +24,12 @@ import java.io.IOException;
 public interface IssInternalClient {
 
     /**
-     * Register a remote server with the given role
-     * @param role the ISS role
+     * Register a remote server as a hub
      * @param token the token issued by the remote server to grant access
      * @param rootCA the root certificate, if needed
      * @throws IOException when the communication fails
      */
-    void register(IssRole role, String token, String rootCA) throws IOException;
+    void registerHub(String token, String rootCA) throws IOException;
 
     /**
      * Store the SCC credentials on the remote peripheral server
