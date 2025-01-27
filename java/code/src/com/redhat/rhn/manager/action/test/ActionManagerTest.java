@@ -563,7 +563,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .collect(Collectors.toList());
 
         servers.remove(0);
-        Collection<Long> activeServers = servers.stream().map(Server::getId).toList();
+        Collection<Long> activeServers = servers.stream().map(Server::getId).collect(Collectors.toList());
 
         Map<Action, Set<Server>> actionMap = actionList.stream()
                 .map(a -> new ImmutablePair<>(

@@ -42,6 +42,7 @@ import com.suse.utils.Opt;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * FormulaHandler
@@ -165,7 +166,7 @@ public class FormulaHandler extends BaseHandler {
                     .map(Server::asMinionServer)
                     .flatMap(Opt::stream)
                     .map(MinionServer::getMinionId)
-                    .toList();
+                    .collect(Collectors.toList());
             saltApi.refreshPillar(new MinionList(minions));
         }
         catch (ValidatorException e) {
@@ -254,7 +255,7 @@ public class FormulaHandler extends BaseHandler {
             List<Integer> sids) {
         List<Long> ids = sids.stream()
                 .map(Integer::longValue)
-                .toList();
+                .collect(Collectors.toList());
         return this.formulaManager.getCombinedFormulaDataForSystems(loggedInUser, ids, formulaName);
     }
 

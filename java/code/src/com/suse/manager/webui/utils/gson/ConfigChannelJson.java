@@ -20,6 +20,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
@@ -174,7 +175,7 @@ public class ConfigChannelJson {
     public static List<ConfigChannelJson> listOrdered(List<ConfigChannel> channelsIn) {
         return IntStream.range(0, channelsIn.size())
                 .mapToObj(i -> new ConfigChannelJson(channelsIn.get(i), i + 1))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -360,7 +360,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                     .filter(Server::hasVirtualizationEntitlement)
                     .toList();
             virtHosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
-            List<String> minionIds = virtHosts.stream().map(MinionServer::getMinionId).toList();
+            List<String> minionIds = virtHosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
             GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
             log.warn("Refreshed virtualization hosts pillar");
         }
@@ -376,7 +376,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
         try {
             List<MinionServer> hosts = MinionServerFactory.listMinions();
             hosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
-            List<String> minionIds = hosts.stream().map(MinionServer::getMinionId).toList();
+            List<String> minionIds = hosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
             GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
             log.info("Refreshed hosts pillar");
         }
@@ -397,7 +397,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private void allSystemsSyncAll() {
         try {
             List<String> minionIds = MinionServerFactory.listMinions()
-                    .stream().map(MinionServer::getMinionId).toList();
+                    .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
             GlobalInstanceHolder.SALT_API.syncAllAsync(new MinionList(minionIds));
             log.info("Sync all scheduled on all systems");
         }

@@ -390,7 +390,7 @@ public class ImageInfoJson {
             json.addProperty("name", file.getFile());
             json.addProperty("url", OSImageStoreUtils.getOSImageFileURI(file));
             return json;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -412,7 +412,7 @@ public class ImageInfoJson {
                                      target.getVersion() + "-" +
                                      target.getRevisionNumber());
             return json;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -434,7 +434,7 @@ public class ImageInfoJson {
                                      source.getVersion() + "-" +
                                      source.getRevisionNumber());
             return json;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     /**

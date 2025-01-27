@@ -37,6 +37,7 @@ import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -87,7 +88,7 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
                     })
                     .filter(Objects::nonNull)
                     .map(SCCMinProductJson::new)
-                    .toList();
+                    .collect(Collectors.toList());
 
             SCCHwInfoJson hwInfo = new SCCHwInfoJson();
 

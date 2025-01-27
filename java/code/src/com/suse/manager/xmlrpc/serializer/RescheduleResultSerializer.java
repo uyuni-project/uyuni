@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Serializer for {@link com.suse.manager.maintenance.rescheduling.RescheduleResult}
@@ -78,7 +79,7 @@ public class RescheduleResultSerializer extends ApiResponseSerializer<Reschedule
                 a.put("prerequisite", action.getPrerequisite().getId());
             }
             a.put("affected_system_ids", src.getActionsServers().get(action).stream()
-                    .map(Server::getId).toList());
+                    .map(Server::getId).collect(Collectors.toList()));
             a.put("details", StringUtil.toPlainText(action.getFormatter().getNotes()));
             actions.add(a);
         }

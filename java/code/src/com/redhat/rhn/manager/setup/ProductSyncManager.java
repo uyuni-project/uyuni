@@ -106,7 +106,7 @@ public class ProductSyncManager {
             // Ident are in the form 'product_id-label'. If the product id is negative, the ident starts with a minus,
             // so we need to skip the first character when performing the indexOf
             id -> Long.valueOf(id.substring(0, id.indexOf('-', 1)))
-        ).toList();
+        ).collect(Collectors.toList());
 
         // Retrieve the tree structure
         final Map<Long, Long> productTreeMap =
@@ -428,10 +428,10 @@ public class ProductSyncManager {
         List<Channel> mandatoryChannelsOut = collect.get(true).stream()
         // Add base channel on top of everything else so it can be added first.
         .sorted((a, b) -> StringUtils.isBlank(a.getParentLabel()) ? -1 :
-                StringUtils.isBlank(b.getParentLabel()) ? 1 : 0).map(mapping).toList();
+                StringUtils.isBlank(b.getParentLabel()) ? 1 : 0).map(mapping).collect(Collectors.toList());
 
         List<Channel> optionalChannelsOut = collect.get(false).stream()
-                .map(mapping).toList();
+                .map(mapping).collect(Collectors.toList());
 
         // Setup the product that will be displayed
         SetupWizardProductDto displayProduct = new SetupWizardProductDto(

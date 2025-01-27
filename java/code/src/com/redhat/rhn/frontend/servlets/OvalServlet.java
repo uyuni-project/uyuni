@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -85,7 +86,7 @@ public class OvalServlet extends HttpServlet {
             ovalFiles = erratas.stream()
                     .flatMap(errata -> ErrataFactory.lookupErrataFilesByErrataAndFileType(errata.getId(), "oval")
                             .stream())
-                    .toList();
+                    .collect(Collectors.toList());
         }
 
         if (format.equals("xml")) {
@@ -103,7 +104,7 @@ public class OvalServlet extends HttpServlet {
             return Collections.emptyList();
         }
         return Arrays.stream(errataIds).map(id -> URLDecoder.decode(id, StandardCharsets.UTF_8))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private String getFormat(HttpServletRequest request) {

@@ -331,11 +331,9 @@ public class SaltActionChainGeneratorService {
                 if (moduleRun.getKwargs() != null) {
                     Map<String, List<List<String>>> paramPillar =
                             (Map<String, List<List<String>>>) moduleRun.getKwargs().get("pillar");
-                    if (!paramPillar.get("param_pkgs").stream()
+                    if (paramPillar.get("param_pkgs").stream()
                             .filter(e -> !e.isEmpty())
-                            .map(e -> e.get(0))
-                            .filter("salt"::equals)
-                            .toList().isEmpty()) {
+                            .map(e -> e.get(0)).anyMatch("salt"::equals)) {
                         return true;
                     }
                 }

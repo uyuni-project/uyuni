@@ -26,6 +26,7 @@ import com.suse.manager.api.ReadOnly;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -116,7 +117,7 @@ public class ImageStoreHandler extends BaseHandler {
     @ReadOnly
     public List<ImageStore> listImageStores(User loggedInUser) {
         ensureImageAdmin(loggedInUser);
-        return ImageStoreFactory.listImageStores(loggedInUser.getOrg()).stream().toList();
+        return new ArrayList<>(ImageStoreFactory.listImageStores(loggedInUser.getOrg()));
     }
 
     /**

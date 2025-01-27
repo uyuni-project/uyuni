@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -193,7 +194,7 @@ public class MaintenanceController {
     }
 
     private static List<MaintenanceWindowDataJson> eventsToJson(User user, List<MaintenanceWindowData> events) {
-        return events.stream().map(event -> eventToJson(user, event)).toList();
+        return events.stream().map(event -> eventToJson(user, event)).collect(Collectors.toList());
     }
 
     private static MaintenanceWindowDataJson eventToJson(User user, MaintenanceWindowData event) {

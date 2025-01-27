@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.Tuple;
 
@@ -66,7 +67,7 @@ public class PackageOverview extends BaseTupleDto {
                 .map(value ->
                         Arrays.stream(value.split(","))
                                 .map(c -> new Row(Map.of("name", c)))
-                                .toList())
+                                .collect(Collectors.toList()))
                 .orElse(new ArrayList<>());
     }
 

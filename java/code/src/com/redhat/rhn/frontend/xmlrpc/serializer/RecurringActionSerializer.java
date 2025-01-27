@@ -26,6 +26,7 @@ import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
 import java.util.Comparator;
+import java.util.stream.Collectors;
 
 /**
  * Serializer for {@link com.redhat.rhn.domain.recurringactions.RecurringAction} class and subclasses
@@ -70,7 +71,7 @@ public class RecurringActionSerializer extends ApiResponseSerializer<RecurringAc
             builder.add("states", stateAction.getStateConfig().stream()
                     .sorted(Comparator.comparing(RecurringStateConfig::getPosition))
                     .map(RecurringStateConfig::getStateName)
-                    .toList());
+                    .collect(Collectors.toList()));
         }
         else if (src.getActionType().equals(RecurringActionType.ActionType.HIGHSTATE)) {
             builder.add("test", ((RecurringHighstate) src.getRecurringActionType()).isTestMode());

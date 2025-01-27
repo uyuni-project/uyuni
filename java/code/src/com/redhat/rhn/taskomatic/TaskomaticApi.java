@@ -682,7 +682,7 @@ public class TaskomaticApi {
                             params.put("staging_job_minion_server_id", Long.toString(minionData.getKey()));
                             params.put("earliest_action", minionData.getValue().toInstant().toString());
                             return params;
-                        })).toList();
+                        })).collect(Collectors.toList());
         invoke("tasko.scheduleRuns", MINION_ACTION_BUNCH_LABEL, MINION_ACTION_JOB_DOWNLOAD_PREFIX, paramList);
     }
 

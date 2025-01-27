@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -103,7 +104,7 @@ public class ConfidentialComputingController {
         List<CoCoAttestationReportJson> reportsJson = attestationManager.listCoCoAttestationReportsForUser(user, pc)
             .stream()
             .map(CoCoAttestationReportJson::new)
-            .toList();
+            .collect(Collectors.toList());
 
         return json(GSON, response, new PagedDataResultJson<>(reportsJson, totalSize, Collections.emptySet()),
             new TypeToken<>() { });
