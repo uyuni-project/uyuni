@@ -42,7 +42,6 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
@@ -179,11 +178,10 @@ public class HubManager {
     }
 
     /**
-     * Register a remote server with the specified role for ISS
+     * Register a remote PERIPHERAL server
      *
      * @param user the user performing the operation
      * @param remoteServer the peripheral server FQDN
-     * @param role the ISS role, either hub or peripheral
      * @param username the username of a {@link RoleFactory#SAT_ADMIN} of the remote server
      * @param password the password of the specified user
      * @param rootCA the optional root CA of the remote server. can be null
@@ -193,7 +191,7 @@ public class HubManager {
      * @throws TokenBuildingException if an error occurs while generating the token for the server
      * @throws IOException when connecting to the server fails
      */
-    public void register(User user, String remoteServer, IssRole role, String username, String password, String rootCA)
+    public void register(User user, String remoteServer, String username, String password, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -207,15 +205,14 @@ public class HubManager {
             remoteToken = externalClient.generateAccessToken(ConfigDefaults.get().getHostname());
         }
 
-        registerWithToken(user, remoteServer, role, rootCA, remoteToken);
+        registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
-     * Register a remote server with the specified role for ISS
+     * Register a remote PERIPHERAL server
      *
      * @param user the user performing the operation
      * @param remoteServer the peripheral server FQDN
-     * @param role the ISS role, either hub or peripheral
      * @param remoteToken the token used to connect to the peripheral server
      * @param rootCA the optional root CA of the peripheral server
      *
@@ -224,7 +221,7 @@ public class HubManager {
      * @throws TokenBuildingException if an error occurs while generating the token for the peripheral server
      * @throws IOException when connecting to the peripheral server fails
      */
-    public void register(User user, String remoteServer, IssRole role, String remoteToken, String rootCA)
+    public void register(User user, String remoteServer, String remoteToken, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -232,7 +229,7 @@ public class HubManager {
         // Verify this server is not already registered as hub or peripheral
         ensureServerNotRegistered(remoteServer);
 
-        registerWithToken(user, remoteServer, role, rootCA, remoteToken);
+        registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
@@ -352,31 +349,33 @@ public class HubManager {
                 reportDbName, reportDbHost, reportDbPort);
     }
 
-    private void registerWithToken(User user, String remoteServer, IssRole role, String rootCA, String remoteToken)
+    private void registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
-        IssServer registeredServer = createServer(role, remoteServer, rootCA, user);
+        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, user);
         registerToRemote(user, registeredServer, remoteToken, rootCA);
     }
 
     private void registerToRemote(User user, IssServer remoteServer, String remoteToken, String rootCA)
         throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
 
-        // Create a client to connect to the internal API of the remote server
-        IssInternalClient internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
-
-        // Register this server on the remote with the opposite role
-        IssRole localRoleForRemote = remoteServer.getRole() == IssRole.HUB ? IssRole.PERIPHERAL : IssRole.HUB;
-        // Issue a token for granting access to the remote server
-        Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
-        // Send the local trusted root, if we needed a different certificate to connect
-        String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
-
-        internalApi.register(localRoleForRemote, localAccessToken.getSerializedForm(), localRootCA);
-
         if (remoteServer instanceof IssPeripheral peripheral) {
+
+            // Register this server on the remote with the opposite role
+            IssRole localRoleForRemote = IssRole.HUB;
+
+            // Create a client to connect to the internal API of the remote server
+            var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
+
+            // Issue a token for granting access to the remote server
+            Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
+            // Send the local trusted root, if we needed a different certificate to connect
+            String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
+
+            internalApi.register(localRoleForRemote, localAccessToken.getSerializedForm(), localRootCA);
+
             // if the remote server is a peripheral, generate the scc credentials for it
             HubSCCCredentials credentials = generateCredentials(peripheral);
             internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
@@ -390,15 +389,8 @@ public class HubManager {
                 setReportDbUser(user, peripheralServer, false);
             }
         }
-        else if (remoteServer instanceof IssHub hub) {
-            // If remote server is a hub, ask for the credentials
-            SCCCredentialsJson credentialsJson = internalApi.generateCredentials();
-            saveCredentials(hub, credentialsJson.getUsername(), credentialsJson.getPassword());
-
-            internalApi.setManagerInfo(collectManagerInfo());
-        }
         else {
-            throw new IllegalStateException("Unknown IssServer class " + remoteServer.getClass());
+            throw new IllegalStateException("Server " + remoteServer + "is not a peripheral server");
         }
     }
 
