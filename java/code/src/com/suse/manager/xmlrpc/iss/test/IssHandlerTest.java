@@ -23,7 +23,6 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 import com.suse.manager.hub.HubManager;
-import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -132,21 +131,21 @@ public class IssHandlerTest extends BaseHandlerTestCase {
     public void ensureOnlySatAdminCanRegister() throws Exception {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-                .register(satAdmin, "remote-server.dev.local", IssRole.PERIPHERAL, "admin", "admin", null);
+                .register(satAdmin, "remote-server.dev.local", "admin", "admin", null);
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.register(regular, "remote-server.dev.local", "PERIPHERAL", "admin", "admin", null)
+            () -> issHandler.register(regular, "remote-server.dev.local", "admin", "admin", null)
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.register(admin, "remote-server.dev.local", "PERIPHERAL", "admin", "admin", null)
+            () -> issHandler.register(admin, "remote-server.dev.local", "admin", "admin", null)
         );
 
         assertDoesNotThrow(
-            () -> issHandler.register(satAdmin, "remote-server.dev.local", "PERIPHERAL", "admin", "admin", null)
+            () -> issHandler.register(satAdmin, "remote-server.dev.local", "admin", "admin", null)
         );
     }
 
@@ -154,41 +153,41 @@ public class IssHandlerTest extends BaseHandlerTestCase {
     public void throwsCorrectExceptionsWhenRegisteringFails() throws Exception {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-certificate.dev.local", IssRole.PERIPHERAL, "admin", "admin", "dummy");
+            .register(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy");
         expectations.will(throwException(new CertificateException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-parsing.dev.local", IssRole.PERIPHERAL, "admin", "admin", "dummy");
+            .register(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy");
         expectations.will(throwException(new TokenParsingException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-building.dev.local", IssRole.PERIPHERAL, "admin", "admin", "dummy");
+            .register(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy");
         expectations.will(throwException(new TokenBuildingException("Unable to build")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-connecting.dev.local", IssRole.PERIPHERAL, "admin", "admin", "dummy");
+            .register(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy");
         expectations.will(throwException(new IOException("Unable to connect")));
 
         context.checking(expectations);
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.register(satAdmin, "fails-certificate.dev.local", "PERIPHERAL", "admin", "admin", "dummy")
+            () -> issHandler.register(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-parsing.dev.local", "PERIPHERAL", "admin", "admin", "dummy")
+            () -> issHandler.register(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-building.dev.local", "PERIPHERAL", "admin", "admin", "dummy")
+            () -> issHandler.register(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-connecting.dev.local", "PERIPHERAL", "admin", "admin", "dummy")
+            () -> issHandler.register(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
         );
     }
 
@@ -196,21 +195,21 @@ public class IssHandlerTest extends BaseHandlerTestCase {
     public void ensureOnlySatAdminCanRegisterWithToken() throws Exception {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "remote-server.dev.local", IssRole.PERIPHERAL, "token", null);
+            .register(satAdmin, "remote-server.dev.local", "token", null);
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerWithToken(regular, "remote-server.dev.local", "PERIPHERAL", "token", null)
+            () -> issHandler.registerWithToken(regular, "remote-server.dev.local", "token", null)
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerWithToken(admin, "remote-server.dev.local", "PERIPHERAL", "token", null)
+            () -> issHandler.registerWithToken(admin, "remote-server.dev.local", "token", null)
         );
 
         assertDoesNotThrow(
-            () -> issHandler.registerWithToken(satAdmin, "remote-server.dev.local", "PERIPHERAL", "token", null)
+            () -> issHandler.registerWithToken(satAdmin, "remote-server.dev.local", "token", null)
         );
     }
 
@@ -218,41 +217,41 @@ public class IssHandlerTest extends BaseHandlerTestCase {
     public void throwsCorrectExceptionsWhenRegisteringWithTokenFails() throws Exception {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-certificate.dev.local", IssRole.PERIPHERAL, "token", "dummy");
+            .register(satAdmin, "fails-certificate.dev.local", "token", "dummy");
         expectations.will(throwException(new CertificateException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-parsing.dev.local", IssRole.PERIPHERAL, "token", "dummy");
+            .register(satAdmin, "fails-parsing.dev.local", "token", "dummy");
         expectations.will(throwException(new TokenParsingException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-building.dev.local", IssRole.PERIPHERAL, "token", "dummy");
+            .register(satAdmin, "fails-building.dev.local", "token", "dummy");
         expectations.will(throwException(new TokenBuildingException("Unable to build")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-connecting.dev.local", IssRole.PERIPHERAL, "token", "dummy");
+            .register(satAdmin, "fails-connecting.dev.local", "token", "dummy");
         expectations.will(throwException(new IOException("Unable to connect")));
 
         context.checking(expectations);
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-certificate.dev.local", "PERIPHERAL", "token", "dummy")
+            () -> issHandler.registerWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-parsing.dev.local", "PERIPHERAL", "token", "dummy")
+            () -> issHandler.registerWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-building.dev.local", "PERIPHERAL", "token", "dummy")
+            () -> issHandler.registerWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-connecting.dev.local", "PERIPHERAL", "token", "dummy")
+            () -> issHandler.registerWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
         );
     }
 }
