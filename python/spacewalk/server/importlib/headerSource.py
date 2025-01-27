@@ -16,7 +16,6 @@
 # Converts headers to the intermediate format
 #
 
-import time
 from .importLib import File, Dependency, ChangeLog, Channel, \
     IncompletePackage, Package, SourcePackage
 from .backendLib import gmtime, localtime
@@ -74,7 +73,6 @@ class rpmPackage(IncompletePackage):
         self['org_id'] = org_id
         self['header_start'] = header_start
         self['header_end'] = header_end
-        self['last_modified'] = localtime(time.time())
         if 'sigmd5' in self:
             if self['sigmd5']:
                 self['sigchecksum_type'] = 'md5'
