@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
@@ -326,7 +327,8 @@ public class AnnotationRegistry {
             UserInfo.class,
             UserNotification.class,
             VHMCredentials.class,
-            VirtualHostManagerNodeInfo.class
+            VirtualHostManagerNodeInfo.class,
+            XccdfTestResult.class
     );
 
     /**
