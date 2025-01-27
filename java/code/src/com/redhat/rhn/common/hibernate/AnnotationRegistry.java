@@ -64,6 +64,7 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
+import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
@@ -224,6 +225,7 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InternalState.class,
             InventoryPath.class,
+            IssMaster.class,
             KiwiProfile.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
