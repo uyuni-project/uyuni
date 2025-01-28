@@ -96,7 +96,7 @@ import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.admin.AdminPaygHandler;
-import com.suse.manager.xmlrpc.iss.IssHandler;
+import com.suse.manager.xmlrpc.iss.HubHandler;
 import com.suse.manager.xmlrpc.maintenance.MaintenanceHandler;
 
 import java.util.HashMap;
@@ -211,7 +211,7 @@ public class HandlerFactory {
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
-        factory.addHandler("sync.iss", new IssHandler());
+        factory.addHandler("sync.hub", new HubHandler());
         factory.addHandler("sync.master", new MasterHandler());
         factory.addHandler("sync.slave", new SlaveHandler());
         factory.addHandler("sync.content", new ContentSyncHandler());
