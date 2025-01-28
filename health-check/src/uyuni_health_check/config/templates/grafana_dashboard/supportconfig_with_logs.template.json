@@ -166,7 +166,7 @@
           "root_selector": "memory",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -272,7 +272,7 @@
           "root_selector": "disk",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -380,7 +380,7 @@
           "root_selector": "salt_configuration[name=\"worker_threads\"]",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -454,7 +454,7 @@
           "root_selector": "salt_configuration[name=\"sock_pool_size\"]",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -548,7 +548,7 @@
           "source": "url",
           "summarizeExpression": "",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -643,7 +643,7 @@
           "source": "url",
           "summarizeExpression": "",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -720,7 +720,7 @@
           "root_selector": "salt_configuration[name=\"timeout\"]",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -794,7 +794,7 @@
           "root_selector": "salt_configuration[name=\"gather_job_timeout\"]",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -889,7 +889,7 @@
           "source": "url",
           "summarizeExpression": "",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -984,7 +984,7 @@
           "source": "url",
           "summarizeExpression": "",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -1066,7 +1066,7 @@
           "root_selector": "salt_jobs",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
@@ -1180,7 +1180,7 @@
           "root_selector": "salt_jobs",
           "source": "url",
           "type": "json",
-          "url": "http://uyuni_health_check_supportconfig-exporter:9000/metrics.json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
           "url_options": {
             "data": "",
             "method": "GET"
