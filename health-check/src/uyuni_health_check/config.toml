@@ -6,7 +6,7 @@ container_name = "health_check_promtail"
 image = "localhost/promtail"
 
 [loki]
-container_name = "uyuni_health_check_loki"
+container_name = "health_check_loki"
 jobs = ["cobbler", "postgresql", "rhn", "apache"]
 image = "docker.io/grafana/loki"
 
