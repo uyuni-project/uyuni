@@ -1,6 +1,6 @@
 from typing import List
 from uyuni_health_check import config
-from uyuni_health_check.utils import run_command, HealthException, console
+from uyuni_health_check.utils import run_command, console
 
 
 def podman(cmd: List[str], verbose=False, raise_exc=True) -> List:
