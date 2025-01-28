@@ -19,7 +19,7 @@ import spark.Response;
  * A route that gets the authentication token in addition to the request and response.
  */
 @FunctionalInterface
-public interface RouteWithIssToken {
+public interface RouteWithHubToken {
 
     /**
      * Invoked when a request is made on this route's corresponding path.

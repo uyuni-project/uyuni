@@ -37,13 +37,13 @@ import javax.servlet.http.HttpServletResponse;
 import spark.Route;
 import spark.Spark;
 
-public final class IssSparkHelper {
+public final class HubSparkHelper {
 
-    private static final Logger LOGGER = LogManager.getLogger(IssSparkHelper.class);
+    private static final Logger LOGGER = LogManager.getLogger(HubSparkHelper.class);
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
 
-    private IssSparkHelper() {
+    private HubSparkHelper() {
         // Prevent instantiation
     }
 
@@ -53,7 +53,7 @@ public final class IssSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static Route usingTokenAuthentication(RouteWithIssToken route) {
+    public static Route usingTokenAuthentication(RouteWithHubToken route) {
         return (request, response) -> {
             String authorization = request.headers("Authorization");
             if (authorization == null || !authorization.startsWith("Bearer")) {
@@ -109,7 +109,7 @@ public final class IssSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithIssToken allowingOnlyHub(RouteWithIssToken route) {
+    public static RouteWithHubToken allowingOnlyHub(RouteWithHubToken route) {
         return allowingOnly(List.of(IssRole.HUB), route);
     }
 
@@ -118,7 +118,7 @@ public final class IssSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithIssToken allowingOnlyPeripheral(RouteWithIssToken route) {
+    public static RouteWithHubToken allowingOnlyPeripheral(RouteWithHubToken route) {
         return allowingOnly(List.of(IssRole.PERIPHERAL), route);
     }
 
@@ -127,11 +127,11 @@ public final class IssSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithIssToken allowingOnlyUnregistered(RouteWithIssToken route) {
+    public static RouteWithHubToken allowingOnlyUnregistered(RouteWithHubToken route) {
         return allowingOnly(List.of(), route);
     }
 
-    private static RouteWithIssToken allowingOnly(List<IssRole> allowedRoles, RouteWithIssToken route) {
+    private static RouteWithHubToken allowingOnly(List<IssRole> allowedRoles, RouteWithHubToken route) {
         return (request, response, issAccessToken) -> {
             String fqdn = issAccessToken.getServerFqdn();
             Optional<IssHub> issHub = HUB_FACTORY.lookupIssHubByFqdn(fqdn);
