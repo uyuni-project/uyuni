@@ -33,7 +33,7 @@ def cli(ctx, supportconfig_path, verbose):
 
     try:
         console.log("[bold]Checking connection with podman:")
-        run_command(cmd=["podman", "--version"], console=console, quiet=False)
+        run_command(cmd=["podman", "--version"], verbose=True)
     except HealthException as err:
         console.log("[red bold]" + str(err))
         console.print(Markdown("# Execution Finished"))
@@ -45,15 +45,15 @@ def cli(ctx, supportconfig_path, verbose):
     "--since",
     default=7,
     type=int,
-    help="Show logs from last X days. (Default: 7)",
+    help="Show logs from last X days (default: 7)",
 )
 @click.option(
     "--from_datetime",
-    help="Start looking for logs at this absolute time ",
+    help="Look for logs from this date (in ISO 8601 format)",
 )
 @click.option(
     "--to_datetime",
-    help="Stop looking for logs at this absolute time",
+    help="Exclude logs after this date (in ISO 8601 format)",
 )
 @click.pass_context
 def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
@@ -67,36 +67,26 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     supportconfig_path: str | None = ctx.obj["supportconfig_path"]
 
     if not supportconfig_path:
-        console.log("[red bold]You must provide a path to a supportconfig!")
+        console.log("[red bold]Provide a supportconfig path")
         exit(1)
 
     try:
         with console.status(status=None):
-
-            console.log(
-                "[bold]Creating health-check-network podman network for containers"
-            )
             uyuni_health_check.containers.manager.create_podman_network(verbose=verbose)
 
-            console.log("[bold]Deploying promtail and Loki")
-            run_loki(
-                supportconfig_path=supportconfig_path, verbose=verbose
-            )
+            run_loki(supportconfig_path, verbose)
             wait_promtail_init()
             #wait_loki_init()
 
-            console.log("[bold]Building exporter")
-            exporter.prepare_exporter(
-                supportconfig_path=supportconfig_path
-            )
-
-            console.log("[bold]Preparing Grafana")
-            prepare_grafana(from_datetime, to_datetime, verbose=verbose)
+            exporter.prepare_exporter(supportconfig_path, verbose)
+            prepare_grafana(from_datetime, to_datetime, verbose)
 
         console.print(Markdown("# Execution Finished"))
 
     except HealthException as err:
         console.log("[red bold]" + str(err))
+        if verbose:
+            raise err
 
 
 @cli.command()

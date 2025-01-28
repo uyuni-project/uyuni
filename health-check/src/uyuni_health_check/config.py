@@ -1,6 +1,6 @@
 import functools
 import os
-from typing import Any, Dict
+from typing import Any, Dict, List
 import tomli
 from pathlib import Path
 import json
@@ -70,3 +70,11 @@ def get_grafana_config_dir():
 
 def get_prometheus_config_dir():
     return os.path.join(CONFIG_DIR, "prometheus")
+
+def get_all_container_image_names() -> List[str]:
+    res = []
+    conf = parse_config().copy()
+    for section in conf.values():
+        if "image" in section:
+            res.append(section.get("image"))
+    return res

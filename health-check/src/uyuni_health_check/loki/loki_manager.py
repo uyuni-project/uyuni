@@ -20,19 +20,17 @@ PROMTAIL_TARGETS = 6
 LOKI_WAIT_TIMEOUT = 120
 
 
-def download_component_build_image(image, verbose=False):
-    console.log(f"Downloading and building {image} image...")
+def download_component_build_image(image:str, verbose=False):
     if image_exists(image):
-        console.log(f"[yellow]Skipped as the {image} image is already present")
         return
 
-    # Fetch the logcli binary from the latest release
-    url = f"https://github.com/grafana/loki/releases/download/v3.3.0/{image}-linux-amd64.zip"
-    dest_dir = config.load_dockerfile_dir(image)
+    console.log("[bold]Building Promtail image")
+    url = "https://github.com/grafana/loki/releases/download/v3.3.0/promtail-linux-amd64.zip"
+    dest_dir = config.load_dockerfile_dir("promtail")
     response = requests.get(url)
-    zip = zipfile.ZipFile(io.BytesIO(response.content))
-    zip.extract(f"{image}-linux-amd64", dest_dir)
-    build_image(image, image_path=dest_dir, verbose=verbose)
+    zip_archive = zipfile.ZipFile(io.BytesIO(response.content))
+    zip_archive.extract("promtail-linux-amd64", dest_dir)
+    build_image(image, dest_dir, verbose=verbose)
     console.log(f"[green]The {image} image was built successfully")
 
 
@@ -40,55 +38,57 @@ def run_loki(supportconfig_path=None, verbose=False):
     """
     Run promtail and loki to aggregate the logs
     """
-    if container_is_running("uyuni_health_check_loki"):
-        console.log("[yellow]Skipped as the loki container is already running")
-    else:
-        promtail_template = config.load_jinja_template("promtail/promtail.yaml.j2")
-        render_promtail_cfg(supportconfig_path, promtail_template)
-        loki_config_file_path = config.get_config_file_path("loki")
-        promtail_config_file_path = config.get_config_file_path("promtail")
-        podman(
-            [
-                "run",
-                "--replace",
-                "-d",
-                "--network",
-                "health-check-network",
-                "-p",
-                "3100:3100",
-                "--name",
-                "uyuni_health_check_loki",
-                "-v",
-                f"{loki_config_file_path}:/etc/loki/local-config.yaml",
-                "docker.io/grafana/loki",
-            ],
-            quiet=not verbose,
-        )
+    loki_name = config.load_prop("loki.container_name")
+    network = config.load_prop("podman.network_name")
 
-        # Run promtail only now since it pushes data to loki
-        console.log("[bold]Building promtail image")
-        download_component_build_image("promtail", verbose=verbose)
-        podman_args = [
+    console.log("[bold]Deploying Promtail and Loki containers")
+
+    if container_is_running(loki_name):
+        console.log("[yellow]Skipped, Loki container already exists")
+        return
+
+    promtail_template = config.load_jinja_template("promtail/promtail.yaml.j2")
+    render_promtail_cfg(supportconfig_path, promtail_template)
+    podman(
+        [
             "run",
             "--replace",
+            "--detach",
             "--network",
-            "health-check-network",
-            "-p",
-            "9081:9081",
-            "-d",
-            "-v",
-            f"{promtail_config_file_path}:/etc/promtail/config.yml",
-            "-v",
-            f"{supportconfig_path}:{supportconfig_path}",
+            network,
+            "--publish",
+            "3100:3100",
             "--name",
-            "uyuni_health_check_promtail",
-            "promtail",
-        ]
+            loki_name,
+            "--volume",
+            f"{config.get_config_file_path('loki')}:/etc/loki/local-config.yaml",
+            config.load_prop("loki.image"),
+        ],
+        verbose,
+    )
 
-        podman(
-            podman_args,
-            quiet=not verbose,
-        )
+    # Run promtail only now since it pushes data to loki
+    promtail_image = config.load_prop("promtail.image")
+
+    download_component_build_image(promtail_image, verbose=verbose)
+    podman_args = [
+        "run",
+        "--replace",
+        "--network",
+        network,
+        "--publish",
+        "9081:9081",
+        "--detach",
+        "--volume",
+        f"{config.get_config_file_path('promtail')}:/etc/promtail/config.yml",
+        "--volume",
+        f"{supportconfig_path}:{supportconfig_path}",
+        "--name",
+        config.load_prop("promtail.container_name"),
+        promtail_image,
+    ]
+
+    podman(podman_args, verbose)
 
 
 def render_promtail_cfg(supportconfig_path=None, promtail_template=None):
@@ -151,13 +151,15 @@ def wait_promtail_init():
     loki_url = "http://localhost:3100"
     start_time = time.time()
     timeout = 60
+    console.log("[bold]Waiting for Promtail to process logs")
+
     while not check_series_in_loki(loki_url):
         elapsed_time = time.time() - start_time
         if elapsed_time >= timeout:
             console.log("Timeout waiting for promtail to finish!")
             break
         time.sleep(10)
-    console.log("Promtail finished processing logs!")
+    console.log("Promtail finished processing logs")
 
 def wait_loki_init(verbose=False):
     """
@@ -167,6 +169,7 @@ def wait_loki_init(verbose=False):
       - promtail to have read the logs and the loki ingester having handled them
     """
     metrics = None
+    timeout = False
     request_message_bytes_sum = 0
     loki_ingester_chunk_entries_count = 0
     start_time = time.time()
@@ -191,23 +194,24 @@ def wait_loki_init(verbose=False):
         )
         or loki_ingester_chunk_entries_count == 0
         or not ready
+        and not timeout
     ):
         if verbose:
             console.log("Waiting for promtail metrics to be collected")
         time.sleep(5)
-        response = requests.get(f"http://localhost:3100/metrics")
+        response = requests.get("http://localhost:3100/metrics")
         if verbose:
             console.log("loki metrics 3100 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
             request_message_bytes_sum = re.findall(
-                'loki_request_message_bytes_sum{.*"loki_api_v1_push"} ([0-9]+)', content
+                'loki_request_message_bytes_sum{.*"loki_api_v1_push"} (\d+)', content
             )
             request_message_bytes_sum = (
                 int(request_message_bytes_sum[0]) if request_message_bytes_sum else 0
             )
             loki_ingester_chunk_entries_count = re.findall(
-                "loki_ingester_chunk_entries_count ([0-9]+)", content
+                "loki_ingester_chunk_entries_count (\d+)", content
             )
             loki_ingester_chunk_entries_count = (
                 int(loki_ingester_chunk_entries_count[0])
@@ -215,19 +219,19 @@ def wait_loki_init(verbose=False):
                 else 0
             )
 
-        response = requests.get(f"http://localhost:9081/metrics")
+        response = requests.get("http://localhost:9081/metrics")
         if verbose:
             console.log("promtail metrics 9081 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
-            active = re.findall("promtail_targets_active_total ([0-9]+)", content)
+            active = re.findall("promtail_targets_active_total (\d+)", content)
             encoded_bytes_total = re.findall(
-                "promtail_encoded_bytes_total{.*} ([0-9]+)", content
+                "promtail_encoded_bytes_total{.*} (\d+)", content
             )
             sent_bytes_total = re.findall(
-                "promtail_sent_bytes_total{.*} ([0-9]+)", content
+                "promtail_sent_bytes_total{.*} (\d+)", content
             )
-            active_files = re.findall("promtail_files_active_total ([0-9]+)", content)
+            active_files = re.findall("promtail_files_active_total (\d+)", content)
             lags = re.findall(
                 'promtail_stream_lag_seconds{filename="([^"]+)".*} ([0-9.]+)', content
             )
@@ -268,8 +272,8 @@ def wait_loki_init(verbose=False):
         
         # check timeout
         if (time.time() - start_time) > LOKI_WAIT_TIMEOUT:
-            timeouted = True
-    if timeouted:
+            timeout = True
+    if timeout:
         raise HealthException(
             "[red bold]Timeout has been reached waiting for Loki and promtail. Something unexpected may happen. Please check and try again."
         )
