@@ -390,7 +390,7 @@ def get_arguments():
         nargs='*',
         type=str,
         dest="replace_fqdns",
-        help="Replace these FQDNs with proxy hostname in cobbler menu files",
+        help="Replace additional FQDNs with proxy hostname in cobbler menu files",
     )
     return parser.parse_args()
 
