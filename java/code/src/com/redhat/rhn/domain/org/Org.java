@@ -32,6 +32,7 @@ import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -53,7 +54,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,36 +63,88 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+
 /**
  * Class Org that reflects the DB representation of web_customer DB table:
  * web_customer
  */
-public class Org extends BaseDomainHelper implements SaltConfigurable, Serializable {
+@Entity
+@Table(name = "WEB_CUSTOMER")
+public class Org extends BaseDomainHelper implements SaltConfigurable {
 
     private static final String USER_ID_KEY = "user_id";
     private static final String ORG_ID_KEY = "org_id";
 
     protected static Logger log = LogManager.getLogger(Org.class);
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_customer_seq")
+    @SequenceGenerator(name = "web_customer_seq", sequenceName = "web_customer_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name")
     private String name;
-    private Set<UserGroup> usergroups;
-    private Set<Channel> ownedChannels;
-    private Set<CustomDataKey> customDataKeys;
-    private Set<Org> trustedOrgs;
-    private Set<IssSlave> allowedToSlaves;
-    private Token token;
+
+    @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true)
+    private OrgConfig orgConfig;
+
+    @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true)
     private OrgAdminManagement orgAdminMgmt;
 
-    private OrgConfig orgConfig;
-    private Set<Pillar> pillars = new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orgId")
+    private Set<UserGroupImpl> userGroups;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
+    private Set<Channel> ownedChannels;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
+    private Set<CustomDataKey> customDataKeys;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnTrustedOrgs",
+            joinColumns = @JoinColumn(name = "org_id"),
+            inverseJoinColumns = @JoinColumn(name = "org_trust_id")
+    )
+    private Set<Org> trustedOrgs;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "rhnissslaveorgs",
+            joinColumns = @JoinColumn(name = "org_id"),
+            inverseJoinColumns = @JoinColumn(name = "slave_id")
+    )
+    private Set<IssSlave> allowedToSlaves;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
+    private Set<Pillar> pillars;
+
+    @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
+    //TODO
+    private Token token;
 
 
     /**
      * Construct new Org
      */
     protected Org() {
-        usergroups = new HashSet<>();
+        userGroups = new HashSet<>();
     }
 
     /**
@@ -183,7 +235,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      */
     public Set<Role> getRoles() {
         Set<Role> orgRoles = new HashSet<>();
-        for (UserGroup ug : usergroups) {
+        for (UserGroup ug : userGroups) {
             orgRoles.add(ug.getRole());
         }
         return Collections.unmodifiableSet(orgRoles);
@@ -210,7 +262,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
             // Create a new UserGroup based on the Role specified
             UserGroup newGroup = UserGroupFactory
             .createUserGroup(this, newRole);
-            usergroups.add(newGroup);
+            userGroups.add((UserGroupImpl) newGroup);
         }
     }
 
@@ -221,7 +273,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * @return the UserGroup if found, otherwise null.
      */
     public UserGroup getUserGroup(Role roleIn) {
-        for (UserGroup ug : usergroups) {
+        for (UserGroup ug : userGroups) {
             if (ug.getRole().equals(roleIn)) {
                 return ug;
             }
@@ -234,8 +286,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * to map Roles to UserGroups
      * @return userGroup array
      */
-    public Set<UserGroup> getUserGroups() {
-        return usergroups;
+    public Set<UserGroupImpl> getUserGroups() {
+        return userGroups;
     }
 
     /**
@@ -243,8 +295,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable, Serializa
      * to map Roles to UserGroups
      * @param ugIn the new array
      */
-    public void setUserGroups(Set<UserGroup> ugIn) {
-        usergroups = ugIn;
+    public void setUserGroups(Set<UserGroupImpl> ugIn) {
+        userGroups = ugIn;
     }
 
     /**
