@@ -136,16 +136,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.register(regular, "remote-server.dev.local", "admin", "admin", null)
+            () -> issHandler.registerPeripheral(regular, "remote-server.dev.local", "admin", "admin")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.register(admin, "remote-server.dev.local", "admin", "admin", null)
+            () -> issHandler.registerPeripheral(admin, "remote-server.dev.local", "admin", "admin")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.register(satAdmin, "remote-server.dev.local", "admin", "admin", null)
+            () -> issHandler.registerPeripheral(satAdmin, "remote-server.dev.local", "admin", "admin")
         );
     }
 
@@ -172,22 +172,22 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.register(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
+            () -> issHandler.registerPeripheral(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
+            () -> issHandler.registerPeripheral(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
+            () -> issHandler.registerPeripheral(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.register(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
+            () -> issHandler.registerPeripheral(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
         );
     }
 
@@ -200,16 +200,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerWithToken(regular, "remote-server.dev.local", "token", null)
+            () -> issHandler.registerPeripheralWithToken(regular, "remote-server.dev.local", "token")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerWithToken(admin, "remote-server.dev.local", "token", null)
+            () -> issHandler.registerPeripheralWithToken(admin, "remote-server.dev.local", "token")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.registerWithToken(satAdmin, "remote-server.dev.local", "token", null)
+            () -> issHandler.registerPeripheralWithToken(satAdmin, "remote-server.dev.local", "token")
         );
     }
 
@@ -236,22 +236,22 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
+            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
+            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
+            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
+            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
         );
     }
 }
