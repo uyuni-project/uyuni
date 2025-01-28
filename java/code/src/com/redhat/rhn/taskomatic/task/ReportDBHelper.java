@@ -221,7 +221,7 @@ public class ReportDBHelper {
      */
     public void createDBUser(Session session, String dbName, String username, String password) {
         final String sql = """
-                CREATE ROLE %1$s WITH LOGIN PASSWORD ''%2$s'' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+                CREATE ROLE %1$s WITH LOGIN PASSWORD '%2$s' NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
                 GRANT CONNECT ON DATABASE %3$s TO %1$s;
                 GRANT USAGE ON SCHEMA public TO %1$s;
                 GRANT SELECT ON ALL TABLES IN SCHEMA public TO %1$s;
@@ -238,7 +238,7 @@ public class ReportDBHelper {
      * @param password the new password to set
      */
     public void changeDBPassword(Session session, String username, String password) {
-        final String sql = "ALTER USER %1$s PASSWORD ''%2$s''".formatted(username, password);
+        final String sql = "ALTER USER %1$s PASSWORD '%2$s'".formatted(username, password);
         var i = new GeneratedWriteMode("alter.user", session, sql, Collections.emptyList());
         i.executeUpdate(Collections.emptyMap());
     }
