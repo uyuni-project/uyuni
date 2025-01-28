@@ -38,9 +38,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * HTTP Client for the ISS internal server-to-server APIs
+ * HTTP Client for the Hub Inter-Server-Sync internal server-to-server APIs
  */
-public class DefaultIssInternalClient implements IssInternalClient {
+public class DefaultHubInternalClient implements HubInternalClient {
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
@@ -58,7 +58,7 @@ public class DefaultIssInternalClient implements IssInternalClient {
      * @param tokenIn the token for authenticating
      * @param rootCA the root certificate, if needed to establish a secure connection
      */
-    public DefaultIssInternalClient(String remoteHostIn, String tokenIn, Optional<Certificate> rootCA) {
+    public DefaultHubInternalClient(String remoteHostIn, String tokenIn, Optional<Certificate> rootCA) {
         this.remoteHost = remoteHostIn;
         this.httpClientAdapter = new HttpClientAdapter(rootCA.stream().toList());
         this.accessToken = tokenIn;
