@@ -72,7 +72,7 @@ public class RestIssExternalClient implements IssExternalClient {
 
     @Override
     public String generateAccessToken(String fqdn) throws IOException {
-        HttpPost request = createPostRequest("sync.iss", "generateAccessToken", Map.of("fqdn", fqdn));
+        HttpPost request = createPostRequest("sync.hub", "generateAccessToken", Map.of("fqdn", fqdn));
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {
@@ -92,7 +92,7 @@ public class RestIssExternalClient implements IssExternalClient {
 
     @Override
     public void storeAccessToken(String fqdn, String token) throws IOException {
-        HttpPost request = createPostRequest("sync.iss", "storeAccessToken", Map.of("fqdn", fqdn, "token", token));
+        HttpPost request = createPostRequest("sync.hub", "storeAccessToken", Map.of("fqdn", fqdn, "token", token));
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {

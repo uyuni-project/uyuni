@@ -35,21 +35,21 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 
 /**
- * IssHandler
+ * HubHandler
  *
- * @apidoc.namespace sync.iss
- * @apidoc.doc Contains methods to set up and manage ISS v3 sync
+ * @apidoc.namespace sync.hub
+ * @apidoc.doc Contains methods to set up and manage Hub Inter-Server synchronization
  */
-public class IssHandler extends BaseHandler {
+public class HubHandler extends BaseHandler {
 
-    private static final Logger LOGGER = LogManager.getLogger(IssHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(HubHandler.class);
 
     private final HubManager hubManager;
 
     /**
      * Default constructor
      */
-    public IssHandler() {
+    public HubHandler() {
         this(new HubManager());
     }
 
@@ -57,7 +57,7 @@ public class IssHandler extends BaseHandler {
      * Builds a handler with the specified dependencies
      * @param hubManagerIn the hub manager
      */
-    public IssHandler(HubManager hubManagerIn) {
+    public HubHandler(HubManager hubManagerIn) {
         this.hubManager = hubManagerIn;
     }
 
