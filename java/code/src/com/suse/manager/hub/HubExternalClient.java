@@ -14,9 +14,9 @@ package com.suse.manager.hub;
 import java.io.IOException;
 
 /**
- * ISS Client to connect to a remote server and invoke the public XMLRPC/Rest-like APIs.
+ * Hub Inter-Server-Sync Client to connect to a remote server and invoke the public XMLRPC/Rest-like APIs.
  */
-public interface IssExternalClient extends AutoCloseable {
+public interface HubExternalClient extends AutoCloseable {
 
     /**
      * Issue a token for the given remote server
