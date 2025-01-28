@@ -4673,19 +4673,23 @@ not be modified on this page. Instead, please visit the "Users" top-level
 navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;*Tip:&lt;/strong&gt; Na tejto stránke nie je možné zmeniť oprávnenia
+administrátora organizácie. Namiesto toho navštívte vyššie navigačnú kartu "Používatelia"
+na najvyššej úrovni, aby ste získali prístup k profilom jednotlivých používateľov
+vo vašej organizácii. Rolu administrátora organizácie môžete udeliť alebo odobrať
+v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov.</target>
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Tip:&lt;/strong&gt; Táto organizácia je vaša predvolená organizácia pre @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
-        <target/>
+        <target state="translated">neobmedzené</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.notApplicable" xml:space="preserve">
         <source>N/A</source>
-        <target/>
+        <target state="translated">N/A</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementDetails.header.entitlementUsage" xml:space="preserve">
         <source>Entitlement Usage</source>
@@ -4693,29 +4697,29 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="probedetails.jsp.start_date" xml:space="preserve">
         <source>Start date:</source>
-        <target/>
+        <target state="translated">Dátum začiatku:</target>
       </trans-unit>
       <trans-unit id="probedetails.jsp.end_date" xml:space="preserve">
         <source>End date:</source>
-        <target/>
+        <target state="translated">Dátum konca:</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date" xml:space="preserve">
         <source>Issue Start Date: </source>
-        <target/>
+        <target state="translated">Dátum začiatku vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date" xml:space="preserve">
         <source>Issue End Date: </source>
-        <target/>
+        <target state="translated">Dátum konca vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip" xml:space="preserve">
         <source>'kernel', 'slessp1-glibc'</source>
-        <target/>
+        <target state="translated">'kernel', 'slessp1-glibc'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
@@ -4729,7 +4733,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie vráti výsledky z kompletného súboru opráv vydaných @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4743,124 +4747,124 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratasearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
-        <target/>
+        <target state="translated">Hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
-        <target/>
+        <target state="translated">Čo treba hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory" xml:space="preserve">
         <source>Patch Advisory</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="simple_errata_search" xml:space="preserve">
         <source>Synopsis</source>
-        <target/>
+        <target state="translated">Súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory" xml:space="preserve">
         <source>Patch Advisory (ex: slessp1-glibc)</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu (napr.: slessp1-glibc)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_package_name" xml:space="preserve">
         <source>Package Name (ex: kernel)</source>
-        <target/>
+        <target state="translated">Názov balíka (napr.: jadro)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_cve" xml:space="preserve">
         <source>CVE (ex: CVE-2006-4535)</source>
-        <target/>
+        <target state="translated">CVE (napr.: CVE-2006-4535)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search_by_issue_dates" xml:space="preserve">
         <source>Search by Issue Dates:</source>
-        <target/>
+        <target state="translated">Vyhľadávanie podľa dátumu vydania:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.issue_date" xml:space="preserve">
         <source>Issue Dates to Search:</source>
-        <target/>
+        <target state="translated">Dátumy vydania na vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields" xml:space="preserve">
         <source>All Fields </source>
-        <target/>
+        <target state="translated">Všetky polia </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="search.jsp.package_name" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.noerrata" xml:space="preserve">
         <source>No patches.</source>
-        <target/>
+        <target state="translated">Žiadne opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip" xml:space="preserve">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
-        <target/>
+        <target state="translated">Použite 'všetky polia' na vyhľadávanie súhrnu, opisu, predmetu alebo riešenia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
-        <target/>
+        <target state="translated">Typy opráv na vyhľadávanie:.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.issueDate" xml:space="preserve">
         <source>Issue Date</source>
-        <target/>
+        <target state="translated">Dátum vydania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary" xml:space="preserve">
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
-        <target/>
+        <target state="translated"> &lt;p&gt; Nasledujúci zoznam opráv predstavuje opravy, ktoré vlastní vaša organizácia.&lt;/p&gt; &lt;p&gt; Kliknutím na upozornenie na opravu môžete upraviť podrobnosti o oprave alebo zoznam balíkov, na ktoré sa oprava vzťahuje. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
-        <target/>
+        <target state="translated">Správa opráv</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Opravy</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
-        <target/>
+        <target state="translated">Vymazať opravy</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata" xml:space="preserve">
         <source>Clone Patches</source>
@@ -4918,49 +4922,49 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="details.jsp.keywords" xml:space="preserve">
         <source>Keywords</source>
-        <target/>
+        <target state="translated">Kľúčové slová</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.cves" xml:space="preserve">
         <source>CVEs</source>
-        <target/>
+        <target state="translated">CVE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.references" xml:space="preserve">
         <source>References</source>
-        <target/>
+        <target state="translated">Odkazy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.none" xml:space="preserve">
         <source>&lt;span class="no-details"&gt;(none)&lt;/span&gt;</source>
-        <target/>
+        <target state="translated">&lt;span class="no-details"&gt;(žiadne)&lt;/span&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.issued" xml:space="preserve">
         <source>Issued:</source>
-        <target/>
+        <target state="translated">Vydané:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.updated" xml:space="preserve">
         <source>Updated:</source>
-        <target/>
+        <target state="translated">Aktualizované:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.bugnumber" xml:space="preserve">
         <source>Bug# {0}</source>
-        <target/>
+        <target state="translated">Chyba# {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
           <context context-type="paramnotes">Numerical id of a bug</context>
@@ -4968,133 +4972,133 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.create.jsp.createerrata" xml:space="preserve">
         <source>Create Patch</source>
-        <target/>
+        <target state="translated">Vytvoriť opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions" xml:space="preserve">
         <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
-        <target/>
+        <target state="translated">Vytvorte novú opravu tu.  Požadované položky sú označené (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Treba upozorniť, že oprava bude priamo pridaná do jedného alebo viacerých kanálov vybraných nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis" xml:space="preserve">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Súhrn&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisory" xml:space="preserve">
         <source>Advisory&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Upozornenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryrelease" xml:space="preserve">
         <source>Advisory Release&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Vydanie upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisorytype" xml:space="preserve">
         <source>Advisory Type&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Typ upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity" xml:space="preserve">
         <source>Advisory Severity:</source>
-        <target/>
+        <target state="translated">Závažnosť upozornenia:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.product" xml:space="preserve">
         <source>Product&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Produkt&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.from" xml:space="preserve">
         <source>Author:</source>
-        <target/>
+        <target state="translated">Autor:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugs" xml:space="preserve">
         <source>Bugs:</source>
-        <target/>
+        <target state="translated">Chyby:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.newbug" xml:space="preserve">
         <source>New Bug</source>
-        <target/>
+        <target state="translated">Nová chyba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.id" xml:space="preserve">
         <source>ID:</source>
-        <target/>
+        <target state="translated">ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.summary" xml:space="preserve">
         <source>Summary:</source>
-        <target/>
+        <target state="translated">Súhrn:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugurl" xml:space="preserve">
         <source>Bugzilla URL:</source>
-        <target/>
+        <target state="translated">Bugzilla URL:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.topic" xml:space="preserve">
         <source>Topic&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Predmet&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.description" xml:space="preserve">
         <source>Description&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Popis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution" xml:space="preserve">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Riešenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.keywords" xml:space="preserve">
         <source>Keywords:</source>
-        <target/>
+        <target state="translated">Kľúčové slová:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.references" xml:space="preserve">
         <source>References:</source>
-        <target/>
+        <target state="translated">Referencie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
