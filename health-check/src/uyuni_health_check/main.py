@@ -2,13 +2,11 @@ import click
 from rich.markdown import Markdown
 
 from uyuni_health_check.grafana.grafana_manager import prepare_grafana
-from uyuni_health_check.utils import console, HealthException, run_command
-from uyuni_health_check.loki.loki_manager import (
-    run_loki,
-    wait_promtail_init,
-)
+import uyuni_health_check.utils as utils
+from uyuni_health_check.utils import console, HealthException
+from uyuni_health_check.loki.loki_manager import run_loki
 from uyuni_health_check.exporters import exporter
-import uyuni_health_check.containers.manager
+from uyuni_health_check.containers.manager import create_podman_network
 import uyuni_health_check.metrics
 
 
@@ -16,8 +14,8 @@ import uyuni_health_check.metrics
 @click.option(
     "-s",
     "--supportconfig_path",
-    default=None,
     help="Path to supportconfig path as the data source",
+    required=True,
 )
 @click.option(
     "-v",
@@ -26,14 +24,14 @@ import uyuni_health_check.metrics
     help="Show more stdout, including image building",
 )
 @click.pass_context
-def cli(ctx, supportconfig_path, verbose):
+def cli(ctx:click.Context, supportconfig_path: str, verbose: bool):
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
     ctx.obj["supportconfig_path"] = supportconfig_path
 
     try:
         console.log("[bold]Checking connection with podman:")
-        run_command(cmd=["podman", "--version"], verbose=True)
+        utils.run_command(cmd=["podman", "--version"], verbose=True)
     except HealthException as err:
         console.log("[red bold]" + str(err))
         console.print(Markdown("# Execution Finished"))
@@ -50,10 +48,12 @@ def cli(ctx, supportconfig_path, verbose):
 @click.option(
     "--from_datetime",
     help="Look for logs from this date (in ISO 8601 format)",
+    callback=utils.validate_date,
 )
 @click.option(
     "--to_datetime",
     help="Exclude logs after this date (in ISO 8601 format)",
+    callback=utils.validate_date,
 )
 @click.pass_context
 def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
@@ -64,20 +64,15 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 
     """
     verbose: bool = ctx.obj["verbose"]
-    supportconfig_path: str | None = ctx.obj["supportconfig_path"]
+    supportconfig_path: str = ctx.obj["supportconfig_path"]
 
-    if not supportconfig_path:
-        console.log("[red bold]Provide a supportconfig path")
-        exit(1)
+    if not from_datetime or not to_datetime:
+        from_datetime, to_datetime = utils.get_dates(since)
 
     try:
         with console.status(status=None):
-            uyuni_health_check.containers.manager.create_podman_network(verbose=verbose)
-
+            create_podman_network(verbose=verbose)
             run_loki(supportconfig_path, verbose)
-            wait_promtail_init()
-            #wait_loki_init()
-
             exporter.prepare_exporter(supportconfig_path, verbose)
             prepare_grafana(from_datetime, to_datetime, verbose)
 

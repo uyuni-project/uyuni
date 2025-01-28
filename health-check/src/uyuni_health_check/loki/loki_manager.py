@@ -89,6 +89,7 @@ def run_loki(supportconfig_path=None, verbose=False):
     ]
 
     podman(podman_args, verbose)
+    wait_promtail_init()
 
 
 def render_promtail_cfg(supportconfig_path=None, promtail_template=None):
