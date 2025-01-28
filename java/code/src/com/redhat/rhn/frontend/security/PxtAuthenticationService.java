@@ -70,7 +70,7 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
         set.add("/rhn/ResetLink");
         set.add("/rhn/ResetPasswordSubmit");
         set.add("/rhn/saltboot");
-        set.add("/rhn/iss");
+        set.add("/rhn/hub");
 
         // HTTP API public endpoints
         set.addAll(HttpApiRegistry.getUnautenticatedRoutes());
