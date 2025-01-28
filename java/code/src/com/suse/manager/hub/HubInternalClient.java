@@ -16,9 +16,9 @@ import com.suse.manager.model.hub.ManagerInfoJson;
 import java.io.IOException;
 
 /**
- * ISS Client to connect a remote server and invoke the private server-to-server Rest-like API
+ * Hub Inter-Server-Sync Client to connect a remote server and invoke the private server-to-server Rest-like API
  */
-public interface IssInternalClient {
+public interface HubInternalClient {
 
     /**
      * Register a remote server as a hub

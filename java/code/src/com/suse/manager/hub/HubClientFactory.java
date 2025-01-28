@@ -11,13 +11,13 @@
 
 package com.suse.manager.hub;
 
-import com.suse.manager.xmlrpc.iss.RestIssExternalClient;
+import com.suse.manager.xmlrpc.iss.RestHubExternalClient;
 import com.suse.utils.CertificateUtils;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
 
-public class IssClientFactory {
+public class HubClientFactory {
 
     /**
      * Creates a new ISS client for the internal API
@@ -27,8 +27,8 @@ public class IssClientFactory {
      * @return a client to invoke the internal APIs
      * @throws CertificateException when the certificate is not parseable
      */
-    public IssInternalClient newInternalClient(String fqdn, String token, String rootCA) throws CertificateException {
-        return new DefaultIssInternalClient(fqdn, token, CertificateUtils.parse(rootCA));
+    public HubInternalClient newInternalClient(String fqdn, String token, String rootCA) throws CertificateException {
+        return new DefaultHubInternalClient(fqdn, token, CertificateUtils.parse(rootCA));
     }
 
     /**
@@ -41,9 +41,9 @@ public class IssClientFactory {
      * @throws IOException when the client cannot be created
      * @throws CertificateException when the certificate is not parseable
      */
-    public IssExternalClient newExternalClient(String fqdn, String username, String password, String rootCA)
+    public HubExternalClient newExternalClient(String fqdn, String username, String password, String rootCA)
         throws CertificateException, IOException {
-        return new RestIssExternalClient(fqdn, username, password, CertificateUtils.parse(rootCA));
+        return new RestHubExternalClient(fqdn, username, password, CertificateUtils.parse(rootCA));
     }
 
 }
