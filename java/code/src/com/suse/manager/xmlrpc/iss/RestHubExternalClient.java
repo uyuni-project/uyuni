@@ -13,7 +13,7 @@ package com.suse.manager.xmlrpc.iss;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
-import com.suse.manager.hub.IssExternalClient;
+import com.suse.manager.hub.HubExternalClient;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 
 import com.google.gson.Gson;
@@ -36,9 +36,9 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * HTTP Client for the ISS External-facing APIs
+ * HTTP Client for the Hub Inter-Server-Sync External-facing APIs
  */
-public class RestIssExternalClient implements IssExternalClient {
+public class RestHubExternalClient implements HubExternalClient {
 
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -59,7 +59,7 @@ public class RestIssExternalClient implements IssExternalClient {
      * @param rootCA the root certificate, if needed to establish a secure connection
      * @throws IOException when a failure happens while establishing the connection
      */
-    public RestIssExternalClient(String remoteHostIn, String username, String password, Optional<Certificate> rootCA)
+    public RestHubExternalClient(String remoteHostIn, String username, String password, Optional<Certificate> rootCA)
         throws IOException {
         List<Certificate> maybeRootCAs = rootCA.stream().toList();
 
