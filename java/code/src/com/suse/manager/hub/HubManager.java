@@ -72,7 +72,7 @@ public class HubManager {
 
     private final HubFactory hubFactory;
 
-    private final IssClientFactory clientFactory;
+    private final HubClientFactory clientFactory;
 
     private final SystemEntitlementManager systemEntitlementManager;
 
@@ -86,7 +86,7 @@ public class HubManager {
      * Default constructor
      */
     public HubManager() {
-        this(new HubFactory(), new IssClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi(),
+        this(new HubFactory(), new HubClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi(),
                 GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
     }
 
@@ -98,7 +98,7 @@ public class HubManager {
      * @param taskomaticApiIn the TaskomaticApi object
      * @param systemEntitlementManagerIn the system entitlement manager
      */
-    public HubManager(HubFactory hubFactoryIn, IssClientFactory clientFactoryIn,
+    public HubManager(HubFactory hubFactoryIn, HubClientFactory clientFactoryIn,
                       MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn,
                       SystemEntitlementManager systemEntitlementManagerIn) {
         this.hubFactory = hubFactoryIn;
@@ -314,7 +314,7 @@ public class HubManager {
             IssPeripheral remoteServer = issPeripheral.get();
             IssAccessToken token = hubFactory.lookupAccessTokenFor(remoteServer.getFqdn());
 
-            IssInternalClient internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(),
+            HubInternalClient internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(),
                     token.getToken(), remoteServer.getRootCa());
             internalApi.storeReportDbCredentials(credentials.getUsername(), credentials.getPassword());
             String summary = "Report Database credentials changed by " + user.getLogin();
