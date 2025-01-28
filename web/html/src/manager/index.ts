@@ -66,7 +66,9 @@ window.spaImportReactPage = function spaImportReactPage(pageName) {
   SpaRenderer.addReactApp(pageName);
 
   if (!pages[pageName]) {
-    throw new RangeError(`Found no page with name "${pageName}", did you bind the renderer in \`pages\`?`);
+    throw new RangeError(
+      `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
+    );
   }
 
   return pages[pageName]();

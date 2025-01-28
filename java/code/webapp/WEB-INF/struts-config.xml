@@ -7872,17 +7872,6 @@
     </action>
 
     <!-- Setup wizard -->
-    <action path="/admin/setup/ProxySettings"
-            scope="request"
-            type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
-            className="com.redhat.rhn.frontend.struts.RhnActionMapping"
-            parameter="dispatch">
-      <set-property property="postRequiredIfSubmitted" value="true" />
-      <set-property property="acls" value="user_role(satellite_admin)" />
-      <forward name="default"
-               path="/WEB-INF/pages/admin/setup/proxy-settings.jsp" />
-    </action>
-
     <action path="/admin/setup/MirrorCredentials"
             scope="request"
             type="com.redhat.rhn.frontend.action.satellite.SetupWizardAction"
