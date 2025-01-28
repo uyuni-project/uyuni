@@ -28,7 +28,7 @@ class RemoteNode
     @target = ENV.fetch(ENV_VAR_BY_HOST[@host], nil).to_s.strip
     # Remove /etc/motd, or any output from run will contain the content of /etc/motd
     ssh('rm -f /etc/motd && touch /etc/motd', host: @target) unless @host == 'localhost'
-    out, _err, _code = ssh('hostname', host: @target)
+    out, _err, _code = ssh('echo $HOSTNAME', host: @target)
     @hostname = out.strip
     raise LoadError, "We can't connect to #{@host} through SSH." if @hostname.empty?
 

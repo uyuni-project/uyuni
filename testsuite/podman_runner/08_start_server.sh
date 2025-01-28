@@ -66,3 +66,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
 sudo -i podman exec -d server prometheus
 
+# mgrctl should not be installed in this container
+sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
+
+
