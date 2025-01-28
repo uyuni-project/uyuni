@@ -17,11 +17,13 @@ import static com.suse.manager.hub.IssSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.IssSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static spark.Spark.post;
 
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.RegisterJson;
@@ -101,6 +103,10 @@ public class SyncController {
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn());
             return badRequest(response, "The specified token is not parseable");
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn());
+            return internalServerError(response, "Unable to schedule root CA certificate update");
         }
     }
 
