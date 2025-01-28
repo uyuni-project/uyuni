@@ -66,26 +66,28 @@ public class DefaultHubInternalClient implements HubInternalClient {
 
     @Override
     public void registerHub(String token, String rootCA) throws IOException {
-        invokePostMethod("registerHub", new RegisterJson(token, rootCA), Void.class);
+        invokePostMethod("hub/sync", "registerHub", new RegisterJson(token, rootCA), Void.class);
     }
 
     @Override
     public void storeCredentials(String username, String password) throws IOException {
-        invokePostMethod("storeCredentials", new SCCCredentialsJson(username, password), Void.class);
+        invokePostMethod("hub/sync", "storeCredentials", new SCCCredentialsJson(username, password), Void.class);
     }
 
     @Override
     public ManagerInfoJson getManagerInfo() throws IOException {
-        return invokeGetMethod("managerinfo", ManagerInfoJson.class);
+        return invokeGetMethod("hub", "managerinfo", ManagerInfoJson.class);
     }
 
     @Override
     public void storeReportDbCredentials(String username, String password) throws IOException {
-        invokePostMethod("storeReportDbCredentials", Map.of("username", username, "password", password), Void.class);
+        invokePostMethod("hub", "storeReportDbCredentials",
+                Map.of("username", username, "password", password), Void.class);
     }
 
-    private <Res> Res invokeGetMethod(String apiMethod, Class<Res> responseClass) throws IOException {
-        HttpGet request = new HttpGet(("https://%s/rhn/iss/sync/%s").formatted(remoteHost, apiMethod));
+    private <Res> Res invokeGetMethod(String namespace, String apiMethod, Class<Res> responseClass)
+            throws IOException {
+        HttpGet request = new HttpGet(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
         request.setHeader("Authorization", "Bearer " + accessToken);
 
         HttpResponse response = httpClientAdapter.executeRequest(request);
@@ -105,9 +107,9 @@ public class DefaultHubInternalClient implements HubInternalClient {
         return null;
     }
 
-    private <Req, Res> Res invokePostMethod(String apiMethod, Req requestObject, Class<Res> responseClass)
-        throws IOException {
-        HttpPost request = new HttpPost(("https://%s/rhn/iss/sync/%s").formatted(remoteHost, apiMethod));
+    private <Req, Res> Res invokePostMethod(String namespace, String apiMethod, Req requestObject,
+                                            Class<Res> responseClass) throws IOException {
+        HttpPost request = new HttpPost(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
         request.setHeader("Authorization", "Bearer " + accessToken);
 
         // Add the request object, if specified
