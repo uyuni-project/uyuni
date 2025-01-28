@@ -141,15 +141,15 @@ public class IssHandler extends BaseHandler {
      *
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register")
      * @apidoc.param #param_desc("string", "username", "the name of the user, needed to access the remote server
      * It must have the sat admin role")
      * @apidoc.param #param_desc("string", "password", "the password of the user, needed to access the remote
      * server")
      * @apidoc.returntype #return_int_success()
      */
-    public int register(User loggedInUser, String fqdn, String username, String password) {
-        return register(loggedInUser, fqdn, username, password, null);
+    public int registerPeripheral(User loggedInUser, String fqdn, String username, String password) {
+        return registerPeripheral(loggedInUser, fqdn, username, password, null);
     }
 
     /**
@@ -163,7 +163,7 @@ public class IssHandler extends BaseHandler {
      *
      * @apidoc.doc Registers automatically a remote server with the specified ISS role.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register")
      * @apidoc.param #param_desc("string", "username", "the name of the user, needed to access the remote server
      * It must have the sat admin role")
      * @apidoc.param #param_desc("string", "password", "the password of the user, needed to access the remote
@@ -172,7 +172,7 @@ public class IssHandler extends BaseHandler {
      * connection")
      * @apidoc.returntype #return_int_success()
      */
-    public int register(User loggedInUser, String fqdn, String username, String password, String rootCA) {
+    public int registerPeripheral(User loggedInUser, String fqdn, String username, String password, String rootCA) {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
@@ -219,12 +219,12 @@ public class IssHandler extends BaseHandler {
      *
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register")
      * @apidoc.param #param_desc("string", "token", "the token used to authenticate on the remote server.")
      * @apidoc.returntype #return_int_success()
      */
-    public int registerWithToken(User loggedInUser, String fqdn, String token) {
-        return registerWithToken(loggedInUser, fqdn, token, null);
+    public int registerPeripheralWithToken(User loggedInUser, String fqdn, String token) {
+        return registerPeripheralWithToken(loggedInUser, fqdn, token, null);
     }
 
     /**
@@ -237,13 +237,13 @@ public class IssHandler extends BaseHandler {
      *
      * @apidoc.doc Registers a remote server with the specified ISS role using an existing specified access token.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register ")
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to register")
      * @apidoc.param #param_desc("string", "token", "the token used to authenticate on the remote server.")
      * @apidoc.param #param_desc("string", "rootCA", "the root CA certificate, in case it's needed to establish a secure
      * connection")
      * @apidoc.returntype #return_int_success()
      */
-    public int registerWithToken(User loggedInUser, String fqdn, String token, String rootCA) {
+    public int registerPeripheralWithToken(User loggedInUser, String fqdn, String token, String rootCA) {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
