@@ -28,7 +28,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.hub.SyncController;
+import com.suse.manager.hub.HubController;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -284,8 +284,8 @@ public class Router implements SparkApplication {
     }
 
     private static void initISSv3Routes() {
-        SyncController syncController = new SyncController();
+        HubController hubController = new HubController();
 
-        syncController.initRoutes();
+        hubController.initRoutes();
     }
 }

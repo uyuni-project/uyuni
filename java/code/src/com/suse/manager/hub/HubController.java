@@ -51,9 +51,9 @@ import java.util.Map;
 import spark.Request;
 import spark.Response;
 
-public class SyncController {
+public class HubController {
 
-    private static final Logger LOGGER = LogManager.getLogger(SyncController.class);
+    private static final Logger LOGGER = LogManager.getLogger(HubController.class);
 
     private final HubManager hubManager;
 
@@ -65,7 +65,7 @@ public class SyncController {
     /**
      * Default constructor
      */
-    public SyncController() {
+    public HubController() {
         this(new HubManager());
     }
 
@@ -73,7 +73,7 @@ public class SyncController {
      * Builds an instance with the specified hub manager
      * @param hubManagerIn the hub manager
      */
-    public SyncController(HubManager hubManagerIn) {
+    public HubController(HubManager hubManagerIn) {
         this.hubManager = hubManagerIn;
     }
 
