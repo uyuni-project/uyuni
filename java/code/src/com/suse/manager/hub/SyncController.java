@@ -81,13 +81,13 @@ public class SyncController {
      * Initialize the API routes
      */
     public void initRoutes() {
-        post("/iss/sync/ping", asJson(usingTokenAuthentication(this::ping)));
-        post("/iss/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
-        post("/iss/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
-        get("/iss/sync/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
-        post("/iss/sync/storeReportDbCredentials",
+        post("/hub/ping", asJson(usingTokenAuthentication(this::ping)));
+        post("/hub/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
+        post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
+        get("/hub/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
+        post("/hub/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
-        post("/iss/sync/removeReportDbCredentials",
+        post("/hub/removeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
     }
 
