@@ -202,7 +202,7 @@ public class TaskoXmlRpcHandler {
     private TaskoBunch doBasicCheck(Integer orgId, String bunchName, String jobLabel)
             throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
 
-        TaskoBunch bunch = checkBunchName(orgId, bunchName);
+        TaskoBunch bunch = TaskoFactory.checkBunchName(orgId, bunchName);
         isAlreadyScheduled(orgId, jobLabel);
         return bunch;
     }
@@ -307,7 +307,7 @@ public class TaskoXmlRpcHandler {
     public Date scheduleSingleBunchRun(Integer orgId, String bunchName, Map params, Date start)
             throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
 
-        String jobLabel = getUniqueSingleJobLabel(orgId, bunchName);
+        String jobLabel = TaskoFactory.getUniqueSingleJobLabel(orgId, bunchName);
         return scheduleSingleBunchRun(orgId, bunchName, jobLabel, params, start);
     }
 
@@ -367,13 +367,12 @@ public class TaskoXmlRpcHandler {
 
      * @return List of scheduled dates
      * @throws NoSuchBunchTaskException thrown if bunch name not known
-     * @throws InvalidParamException shall not be thrown
      */
      public List<Date> scheduleRuns(Integer orgId, String bunchName, String jobLabel, List<Map<?, ?>> paramsList)
-             throws NoSuchBunchTaskException, InvalidParamException {
+             throws NoSuchBunchTaskException {
 
         List<Date> scheduleDates = new ArrayList<>();
-        TaskoBunch bunch = checkBunchName(orgId, bunchName);
+        TaskoBunch bunch = TaskoFactory.checkBunchName(orgId, bunchName);
         for (Map params : paramsList) {
            String label = getJobLabel(params, jobLabel);
 
@@ -452,33 +451,6 @@ public class TaskoXmlRpcHandler {
             throws NoSuchBunchTaskException, InvalidParamException, SchedulerException {
 
         return scheduleSingleBunchRun(null, bunchName, params, new Date());
-    }
-
-    private String getUniqueSingleJobLabel(Integer orgId, String bunchName) throws SchedulerException {
-        String jobLabel = "single-" + bunchName + "-";
-        int count = 0;
-        while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count)
-                .isEmpty() ||
-                (SchedulerKernel.getScheduler()
-                        .getTrigger(triggerKey(jobLabel + count,
-                                TaskoQuartzHelper.getGroupName(orgId))) != null)) {
-            count++;
-        }
-        return jobLabel + count;
-    }
-
-    private TaskoBunch checkBunchName(Integer orgId, String bunchName) throws NoSuchBunchTaskException {
-        TaskoBunch bunch = null;
-        if (orgId == null) {
-            bunch = TaskoFactory.lookupSatBunchByName(bunchName);
-        }
-        else {
-            bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
-        }
-        if (bunch == null) {
-            throw new NoSuchBunchTaskException(bunchName);
-        }
-        return bunch;
     }
 
     /**
