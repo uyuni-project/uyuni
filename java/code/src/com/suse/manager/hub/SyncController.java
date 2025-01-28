@@ -11,9 +11,9 @@
 
 package com.suse.manager.hub;
 
-import static com.suse.manager.hub.IssSparkHelper.allowingOnlyHub;
-import static com.suse.manager.hub.IssSparkHelper.allowingOnlyUnregistered;
-import static com.suse.manager.hub.IssSparkHelper.usingTokenAuthentication;
+import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
+import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
+import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
