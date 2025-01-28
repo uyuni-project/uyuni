@@ -27,7 +27,7 @@ import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.manager.xmlrpc.InvalidCertificateException;
-import com.suse.manager.xmlrpc.iss.IssHandler;
+import com.suse.manager.xmlrpc.iss.HubHandler;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -42,7 +42,7 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 
 @ExtendWith(JUnit5Mockery.class)
-public class IssHandlerTest extends BaseHandlerTestCase {
+public class HubHandlerTest extends BaseHandlerTestCase {
 
     @RegisterExtension
     protected final JUnit5Mockery context = new JUnit5Mockery() {{
@@ -51,7 +51,7 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
     private HubManager hubManagerMock;
 
-    private IssHandler issHandler;
+    private HubHandler hubHandler;
 
     @BeforeEach
     public void setup() {
@@ -59,7 +59,7 @@ public class IssHandlerTest extends BaseHandlerTestCase {
         context.setImposteriser((ByteBuddyClassImposteriser.INSTANCE));
 
         hubManagerMock = context.mock(HubManager.class);
-        issHandler = new IssHandler(hubManagerMock);
+        hubHandler = new HubHandler(hubManagerMock);
     }
 
     @Test
@@ -71,16 +71,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.generateAccessToken(regular, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(regular, "uyuni-server.dev.local")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.generateAccessToken(admin, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(admin, "uyuni-server.dev.local")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local")
         );
     }
 
@@ -92,7 +92,7 @@ public class IssHandlerTest extends BaseHandlerTestCase {
         context.checking(expectations);
 
         assertThrows(TokenCreationException.class,
-            () -> issHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local"));
+            () -> hubHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local"));
     }
 
     @Test
@@ -103,16 +103,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.storeAccessToken(regular, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(regular, "uyuni-server.dev.local", "dummy-token")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.storeAccessToken(admin, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(admin, "uyuni-server.dev.local", "dummy-token")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token")
         );
     }
 
@@ -124,7 +124,7 @@ public class IssHandlerTest extends BaseHandlerTestCase {
         context.checking(expectations);
 
         assertThrows(InvalidTokenException.class,
-            () -> issHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token"));
+            () -> hubHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token"));
     }
 
     @Test
@@ -136,16 +136,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerPeripheral(regular, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(regular, "remote-server.dev.local", "admin", "admin")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerPeripheral(admin, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(admin, "remote-server.dev.local", "admin", "admin")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.registerPeripheral(satAdmin, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(satAdmin, "remote-server.dev.local", "admin", "admin")
         );
     }
 
@@ -172,22 +172,22 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.registerPeripheral(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheral(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheral(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheral(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
         );
     }
 
@@ -200,16 +200,16 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerPeripheralWithToken(regular, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(regular, "remote-server.dev.local", "token")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> issHandler.registerPeripheralWithToken(admin, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(admin, "remote-server.dev.local", "token")
         );
 
         assertDoesNotThrow(
-            () -> issHandler.registerPeripheralWithToken(satAdmin, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "remote-server.dev.local", "token")
         );
     }
 
@@ -236,22 +236,22 @@ public class IssHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> issHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
         );
     }
 }
