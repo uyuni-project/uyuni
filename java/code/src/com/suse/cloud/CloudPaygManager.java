@@ -20,6 +20,8 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.scc.client.SCCConfig;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -34,6 +36,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -61,7 +64,7 @@ public class CloudPaygManager {
      */
     public CloudPaygManager() {
         tapi = new TaskomaticApi();
-        mgr = new ContentSyncManager(null, this);
+        mgr = new ContentSyncManager(Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), this);
         cacheTime = Instant.MIN;
         hasSCCCredentials = null;
         complainceInfo = null;
