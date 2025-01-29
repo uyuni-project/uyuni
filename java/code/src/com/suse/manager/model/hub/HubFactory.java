@@ -66,6 +66,23 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup {@link IssHub} object.
+     * A peripheral server should have not more than 1 Hub
+     * @return return {@link IssHub}
+     */
+    public Optional<IssHub> lookupIssHub() {
+        return getSession().createQuery("FROM IssHub", IssHub.class)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * @return return true, when this system is an Inter-Server-Sync Peripheral Server
+     */
+    public boolean isISSPeripheral() {
+        return lookupIssHub().isPresent();
+    }
+
+    /**
      * Lookup {@link IssPeripheral} object by its FQDN
      * @param fqdnIn the fqdn
      * @return return {@link IssPeripheral} with the given FQDN or empty

@@ -24,9 +24,10 @@ public interface HubInternalClient {
      * Register a remote server as a hub
      * @param token the token issued by the remote server to grant access
      * @param rootCA the root certificate, if needed
+     * @param gpgKey the gpg key, if needed
      * @throws IOException when the communication fails
      */
-    void registerHub(String token, String rootCA) throws IOException;
+    void registerHub(String token, String rootCA, String gpgKey) throws IOException;
 
     /**
      * Store the SCC credentials on the remote peripheral server

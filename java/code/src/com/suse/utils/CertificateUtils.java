@@ -25,6 +25,9 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
@@ -32,12 +35,19 @@ import java.security.cert.CertificateParsingException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public final class CertificateUtils {
 
     public static final Path CERTS_PATH = Path.of("/etc/pki/trust/anchors/");
 
     private static final Path LOCAL_TRUSTED_ROOT = CERTS_PATH.resolve("LOCAL-RHN-ORG-TRUSTED-SSL-CERT");
+
+    private static final Path GPG_PUBKEY = Path.of("/srv/susemanager/salt/gpg/mgr-gpg-pub.key");
+
+    private static final Path CUSTOMER_GPG_DIR = Path.of("/var/spacewalk/gpg");
+
+    private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
 
     private static final Logger LOG = LogManager.getLogger(CertificateUtils.class);
 
@@ -50,16 +60,25 @@ public final class CertificateUtils {
      * @return a string representation of the root certificate, in PEM format
      */
     public static String loadLocalTrustedRoot() throws IOException {
-        return loadPEMCertificate(LOCAL_TRUSTED_ROOT);
+        return loadTextFile(LOCAL_TRUSTED_ROOT);
     }
 
     /**
-     * Load the specified certificate file and return it PEM data in a string
-     * @param path the path of the certificate file to load
-     * @return a string representation of the certificate, in PEM format
+     * Loads the local GPG Key used for signing the metadata as ARMORED data.
+     * @return a string representation of the GPG key
      * @throws IOException when reading the data from file fails
      */
-    public static String loadPEMCertificate(Path path) throws IOException {
+    public static String loadGpgKey() throws IOException {
+        return loadTextFile(GPG_PUBKEY);
+    }
+
+    /**
+     * Load the specified file and return it Text data in a string
+     * @param path the path of the file to load
+     * @return a string representation of the file
+     * @throws IOException when reading the data from file fails
+     */
+    public static String loadTextFile(Path path) throws IOException {
         if (!Files.isReadable(path)) {
             return null;
         }
@@ -206,6 +225,47 @@ public final class CertificateUtils {
                     exitCode,
                     msg.isBlank() ? "" : ": " + msg)
             );
+        }
+    }
+
+    /**
+     * Import the GPG Key in the customer keyring
+     * @param gpgKey the gpg key (armored text)
+     * @throws IOException if something goes wrong
+     */
+    public static void importGpgKey(String gpgKey) throws IOException {
+        if (StringUtils.isBlank(gpgKey)) {
+            LOG.info("No GPG Key provided");
+            return;
+        }
+        FileAttribute<Set<PosixFilePermission>> fileAttributes =
+                PosixFilePermissions.asFileAttribute(PosixFilePermissions.fromString("rw-r-----"));
+        Path gpgTempFile = Files.createTempFile("susemanager-gpg-", ".tmp", fileAttributes);
+        try {
+
+            Files.writeString(gpgTempFile, gpgKey, StandardCharsets.UTF_8);
+            if (!Files.exists(CUSTOMER_GPG_RING)) {
+                initializeGpgKeyring();
+            }
+            String[] cmdAdd = {"gpg", "--no-default-keyring", "--import", "--import-options", "import-minimal",
+                    "--keyring", CUSTOMER_GPG_RING.toString(), gpgTempFile.toString()};
+            executeExtCmd(cmdAdd);
+            executeExtCmd(new String[]{"/usr/sbin/import-suma-build-keys"});
+        }
+        finally {
+            Files.deleteIfExists(gpgTempFile);
+        }
+    }
+
+    private static void initializeGpgKeyring() {
+        try {
+            executeExtCmd(new String[]{"mkdir", "-m", "700", "-p", CUSTOMER_GPG_DIR.toString()});
+            executeExtCmd(new String[]{"gpg", "--no-default-keyring", "--keyring", CUSTOMER_GPG_RING.toString(),
+                    "--fingerprint"});
+        }
+        catch (Exception e) {
+            LOG.error("Failed to initialize the customer gpg keyring: {}", e.getMessage());
+            throw e;
         }
     }
 }
