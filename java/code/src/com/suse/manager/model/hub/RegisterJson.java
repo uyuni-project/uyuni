@@ -19,21 +19,25 @@ public class RegisterJson {
 
     private String rootCA;
 
+    private String gpgKey;
+
     /**
      * Default constructor
      */
     public RegisterJson() {
-        this(null, null);
+        this(null, null, null);
     }
 
     /**
      * Builds a request instance
      * @param tokenIn the token
      * @param rootCAIn the root certificate
+     * @param gpgKeyIn the gpg key
      */
-    public RegisterJson(String tokenIn, String rootCAIn) {
+    public RegisterJson(String tokenIn, String rootCAIn, String gpgKeyIn) {
         this.token = tokenIn;
         this.rootCA = rootCAIn;
+        this.gpgKey = gpgKeyIn;
     }
 
     public String getToken() {
@@ -52,18 +56,27 @@ public class RegisterJson {
         this.rootCA = rootCAIn;
     }
 
+    public String getGpgKey() {
+        return gpgKey;
+    }
+
+    public void setGpgKey(String gpgKeyIn) {
+        gpgKey = gpgKeyIn;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof RegisterJson that)) {
             return false;
         }
         return Objects.equals(getToken(), that.getToken()) &&
-                    Objects.equals(getRootCA(), that.getRootCA());
+                Objects.equals(getRootCA(), that.getRootCA()) &&
+                Objects.equals(getGpgKey(), that.getGpgKey());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getToken(), getRootCA());
+        return Objects.hash(getToken(), getRootCA(), getGpgKey());
     }
 
     @Override
