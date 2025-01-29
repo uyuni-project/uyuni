@@ -5105,21 +5105,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="errata.create.jsp.notes" xml:space="preserve">
         <source>Notes:</source>
-        <target/>
+        <target state="translated">Poznámky:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.channels" xml:space="preserve">
         <source>Channels to add:</source>
-        <target/>
+        <target state="translated">Kanály na pridanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.description" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has different versions of these packages, or does not have the packages at all. Select the packages you want to push into this channel below, and click 'Continue'.</source>
-        <target/>
+        <target state="translated">Kanál &lt;strong&gt;{0}&lt;/strong&gt; má rôzne verzie týchto balíkov alebo ich vôbec nemá. Nižšie vyberte balíky, ktoré chcete do tohto kanála presunúť a kliknite na 'Pokračovať'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
@@ -5133,49 +5133,49 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.currentversion" xml:space="preserve">
         <source>Current Version in Channel</source>
-        <target/>
+        <target state="translated">Aktuálna verzia v kanáli</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.newversion" xml:space="preserve">
         <source>New Version to be Pushed</source>
-        <target/>
+        <target state="translated">Nová verzia, ktorá má byť presunutá</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.nopackages_pushed" xml:space="preserve">
         <source>No packages were pushed to channel &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Žiadne balíky neboli presunuté do kanála &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.packages_pushed" xml:space="preserve">
         <source>&lt;strong&gt;{1}&lt;/strong&gt; package(s) were pushed to channel &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{1}&lt;/strong&gt; balík(y) boli presunuté do kanála &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.summary" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has the following packages in common with &lt;strong&gt;{1}&lt;/strong&gt;. If the version of the package from the erratum is newer than the one in your channel, you will have the opportunity to update the channel when you publish this erratum.</source>
-        <target/>
+        <target state="translated">Kanál &lt;strong&gt;{0}&lt;/strong&gt; má tieto spoločné balíky s &lt;strong&gt;{1}&lt;/strong&gt;. Ak je verzia balíka z opravy chyby novšia ako verzia vo vašom kanáli, budete mať možnosť aktualizovať kanál pri zverejnení tejto opravy chyby.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.channel_version" xml:space="preserve">
         <source>Channel Version</source>
-        <target/>
+        <target state="translated">Verzia kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.errata_version" xml:space="preserve">
         <source>Errata Version</source>
-        <target/>
+        <target state="translated">Verzia opráv chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
@@ -5183,70 +5183,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- == Channels == -->
       <trans-unit id="channels.jsp.alt" xml:space="preserve">
         <source>Software Channel Icon</source>
-        <target/>
+        <target state="translated">Ikona softvérového kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Entitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.toolbar" xml:space="preserve">
         <source>Package Search</source>
-        <target/>
+        <target state="translated">Vyhľadávanie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.imgAlt" xml:space="preserve">
         <source>search</source>
-        <target/>
+        <target state="translated">hľadať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.pagesummary" xml:space="preserve">
         <source>Package Search will return packages from the specified set of software channels. </source>
-        <target/>
+        <target state="translated">Vyhľadávanie balíkov vráti balíky zo zadanej sady softvérových kanálov. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
-        <target/>
+        <target state="translated">Nižšie uveďte kritériá vyhľadávania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
-        <target/>
+        <target state="translated">Hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
-        <target/>
+        <target state="translated">Čo treba hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.wheresearch" xml:space="preserve">
         <source>Where to search:</source>
-        <target/>
+        <target state="translated">Kde hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.nopackages" xml:space="preserve">
         <source>No packages.</source>
-        <target/>
+        <target state="translated">Žiadne balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.name" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
@@ -5261,28 +5261,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="packagesearch.jsp.relevant" xml:space="preserve">
         <source>Only channels relevant to your systems</source>
-        <target/>
+        <target state="translated">Len kanály týkajúce sa vašich systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificchannel" xml:space="preserve">
         <source>Specific channel you have access to</source>
-        <target/>
+        <target state="translated">Špecifický kanál, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificarch" xml:space="preserve">
         <source>Packages of a specific architecture in any channel you have access to</source>
-        <target/>
+        <target state="translated">Balíky so špecifickou architektúrou v ktoromkoľvek kanáli, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchwherelegend" xml:space="preserve">
         <source>* means one or more channel architectures are not synchronized.</source>
-        <target/>
+        <target state="translated">* znamená, že jedna alebo viacero architektúr kanálov nie je synchronizovaných.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
@@ -5290,84 +5290,84 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM Overview -->
       <trans-unit id="ssm.overview.header" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target state="translated">Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary" xml:space="preserve">
         <source>Manage multiple systems simultaneously with system set manager.</source>
-        <target/>
+        <target state="translated">Spravujte viacero systémov súčasne pomocou správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary2" xml:space="preserve">
         <source>The navigation tabs above will assist you in executing the following actions.</source>
-        <target/>
+        <target state="translated">Vyššie uvedené navigačné karty vám pomôžu pri vykonávaní nasledujúcich činností.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems.list" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;Vypísať zoznam systémov&lt;/a&gt;, s ktorými ste si vybrali pracovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Naplánovať aktualizácie opráv&lt;/a&gt; týkajúcich sa vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.upgrade" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Zvýšiť verziu&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.install" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Inštalovať&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.remove" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Odstrániť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.verify" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Overiť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5381,7 +5381,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.groups.create" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;manage&lt;/a&gt; groups</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Vytvárať&lt;/a&gt; a &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;spravovať&lt;/a&gt; skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
