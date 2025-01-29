@@ -31,6 +31,7 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCVirtualizationHostJson;
 
@@ -116,7 +117,12 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();
             SCCCachingFactory.initNewSystemsToForward();
-            SCCConfig sccConfig = new SCCConfig(url, "", "", uuid);
+            SCCConfig sccConfig = new SCCConfigBuilder()
+                    .setUrl(url)
+                    .setUsername("")
+                    .setPassword("")
+                    .setUuid(uuid)
+                    .createSCCConfig();
             SCCClient sccClient = new SCCWebClient(sccConfig);
 
             SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);

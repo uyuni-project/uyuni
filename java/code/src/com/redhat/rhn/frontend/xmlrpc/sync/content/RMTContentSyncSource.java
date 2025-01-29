@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.credentials.RemoteCredentials;
 
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 
 import com.google.gson.Gson;
@@ -57,7 +58,7 @@ public class RMTContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Optional<Path> loggingDir) throws ContentSyncSourceException {
+    public SCCClient getClient(String uuid, Path loggingDir) throws ContentSyncSourceException {
         try {
             URI uri = new URI(credentials.getUrl());
             URI url = new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), null, null, null);
@@ -67,10 +68,13 @@ public class RMTContentSyncSource implements ContentSyncSource {
             @SuppressWarnings("unchecked")
             Map<String, String> headers = gson.fromJson(new String(credentials.getExtraAuthData()), Map.class);
 
-            SCCConfig config = loggingDir
-                .map(path -> path.toAbsolutePath().toString())
-                .map(path -> new SCCConfig(url, null, null, uuid, null, path, false, headers))
-                .orElseGet(() -> new SCCConfig(url, null, null, uuid, headers));
+            SCCConfig config = new SCCConfigBuilder()
+                    .setUrl(url)
+                    .setUuid(uuid)
+                    .setLoggingDir(loggingDir.toAbsolutePath().toString())
+                    .setSkipOwner(false)
+                    .setAdditionalHeaders(headers)
+                    .createSCCConfig();
 
             return new SCCWebClient(config);
         }

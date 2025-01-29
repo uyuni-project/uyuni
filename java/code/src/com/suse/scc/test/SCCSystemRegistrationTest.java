@@ -31,6 +31,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -169,8 +170,13 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
     public void testSuccessSystemRegistrationWhenAllSccRequestsFail() throws Exception {
         // setup
         this.setupSystems();
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -215,9 +221,13 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
         for (int i = 0; i < skipRegister; i++) {
             this.servers.get(i).setPayg(true);
         }
-
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -336,8 +346,13 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
      * Creates a Default {@link TestSCCWebClient} instance for testing purposes
      */
     private TestSCCWebClient getDefaultTestSCCWebClient() throws URISyntaxException {
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
