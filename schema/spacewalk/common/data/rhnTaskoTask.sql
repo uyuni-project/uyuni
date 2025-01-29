@@ -152,4 +152,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'oval-data-sync', 'com.redhat
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'root-ca-cert-update', 'com.redhat.rhn.taskomatic.task.RootCaCertUpdateTask');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'custom-gpg-key-import', 'com.redhat.rhn.taskomatic.task.GpgImportTask');
+
 commit;
