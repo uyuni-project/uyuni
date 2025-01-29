@@ -6,4 +6,8 @@ export default {
   "admin/setup/payg": () => import("./payg/payg.renderer"),
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
+  "admin/iss/hub": () => import("./iss/hub.renderer"),
+  "admin/iss/peripheral": () => import("./iss/peripheral.renderer"),
+  "admin/iss/list/hub": () => import("./iss/list/iss-hubs-list.renderer"),
+  "admin/iss/list/peripheral": () => import("./iss/list/iss-peripherals-list.renderer"),
 };
