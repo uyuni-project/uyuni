@@ -1,6 +1,6 @@
 /*
+ * Copyright (c) 2019--2025 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
- * Copyright (c) 2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -2140,23 +2140,23 @@ public class SystemManager extends BaseManager {
     /**
      * Create and provide proxy container configuration.
      *
-     * @param user the current user
-     * @param proxyName  the FQDN of the proxy
-     * @param proxyPort  the SSH port the proxy listens on
-     * @param server the FQDN of the server the proxy uses
-     * @param maxCache the maximum memory cache size
-     * @param email the email of proxy admin
-     * @param rootCA root CA used to sign the SSL certificate in PEM format
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @param rootCA          root CA used to sign the SSL certificate in PEM format
      * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
-     * @param proxyCertKey proxy CRT and key pair
-     * @param caPair the CA certificate and key used to sign the certificate to generate.
-     *               Can be omitted if proxyCertKey is provided
-     * @param caPassword the CA private key password.
-     *               Can be omitted if proxyCertKey is provided
-     * @param certData the data needed to generate the new proxy SSL certificate.
-     *               Can be omitted if proxyCertKey is provided
-     * @param certManager the SSLCertManager to use
-     * @return the configuration file
+     * @param proxyCertKey    proxy CRT and key pair
+     * @param caPair          the CA certificate and key used to sign the certificate to generate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param caPassword      the CA private key password.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certData        the data needed to generate the new proxy SSL certificate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certManager     the SSLCertManager to use
+     * @return the tarball configuration file as a byte array
      */
     public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
                                              Long maxCache, String email,
@@ -2167,6 +2167,41 @@ public class SystemManager extends BaseManager {
             throws SSLCertGenerationException {
 
         return new ProxyContainerConfigCreate().create(
+                saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager);
+    }
+
+
+    /**
+     * Create and provide proxy container configuration.
+     *
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @param rootCA          root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey    proxy CRT and key pair
+     * @param caPair          the CA certificate and key used to sign the certificate to generate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param caPassword      the CA private key password.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certData        the data needed to generate the new proxy SSL certificate.
+     *                        Can be omitted if proxyCertKey is provided
+     * @param certManager     the SSLCertManager to use
+     * @return the configuration files as a map
+     */
+    public Map<String, Object> createProxyContainerConfigFiles(
+            User user, String proxyName, Integer proxyPort, String server,
+            Long maxCache, String email,
+            String rootCA, List<String> intermediateCAs,
+            SSLCertPair proxyCertKey,
+            SSLCertPair caPair, String caPassword, SSLCertData certData,
+            SSLCertManager certManager
+    ) throws SSLCertGenerationException {
+        return new ProxyContainerConfigCreate().createFiles(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
                 rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager);
     }
@@ -3867,5 +3902,18 @@ public class SystemManager extends BaseManager {
         if (server != null) {
             updateSystemOverview(server.getId());
         }
+    }
+
+    /**
+     * Return <code>true</code> the given server has bootstrap entitlement,
+     * <code>false</code> otherwise.
+
+     * @param sid Server ID to lookup.
+     * @return <code>true</code> if the server has bootstrap entitlement,
+     *      <code>false</code> otherwise.
+     */
+    public static boolean serverHasProxyEntitlement(Long sid) {
+        Server s = ServerFactory.lookupById(sid);
+        return s.hasEntitlement(EntitlementManager.PROXY);
     }
 }
