@@ -73,6 +73,7 @@ import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientUtils;
+import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCOrderItemJson;
@@ -159,24 +160,22 @@ public class ContentSyncManager {
 
     private CloudPaygManager cloudPaygManager;
 
-    private final Optional<Path> tmpLoggingDir;
+    private final Path tmpLoggingDir;
 
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
-        cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
-        tmpLoggingDir = Optional.empty();
+        this(Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), GlobalInstanceHolder.PAYG_MANAGER);
     }
 
     /**
-     * Constructor for testing
-     * @param tmpLogDir overwrite logdir for credential output
+     * @param tmpLogDir logdir for credential output
      * @param paygMgrIn {@link CloudPaygManager} to use
      */
     public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
         cloudPaygManager = paygMgrIn;
-        tmpLoggingDir = Optional.ofNullable(tmpLogDir);
+        tmpLoggingDir = tmpLogDir;
     }
 
     /**
@@ -883,7 +882,7 @@ public class ContentSyncManager {
         List<SCCRepositoryAuth> allExistingRepoAuths = SCCCachingFactory.lookupRepositoryAuth();
 
         // cloudrmt and mirror work together
-        // mirror and scc doesn't work togehter
+        // mirror and scc doesn't work together
         //CLEANUP
         if (source instanceof LocalDirContentSyncSource) {
             // cleanup if we come from scc

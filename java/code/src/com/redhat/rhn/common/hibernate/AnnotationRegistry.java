@@ -147,6 +147,7 @@ import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannelToken;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
@@ -220,6 +221,7 @@ public class AnnotationRegistry {
             IssHub.class,
             IssPeripheral.class,
             IssPeripheralChannels.class,
+            IssPeripheralChannelToken.class,
             KiwiProfile.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
