@@ -144,4 +144,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'oval-data-sync-bunch', 'Gen
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'root-ca-cert-update-bunch', 'Updates root ca certificates', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'custom-gpg-key-import-bunch', 'Import a customer GPG key into the keyring', null);
+
 commit;
