@@ -31,6 +31,7 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     private Long id;
     private String fqdn;
     private String rootCa;
+    private String gpgKey;
     private SCCCredentials mirrorCredentials;
 
     protected IssHub() {
@@ -93,6 +94,15 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     }
 
     /**
+     * Get the configured GPG Key
+     * @return return the gpg key
+     */
+    @Column(name = "gpg_key")
+    public String getGpgKey() {
+        return gpgKey;
+    }
+
+    /**
      * Get the mirror credentials.
      * @return the credentials
      */
@@ -123,6 +133,13 @@ public class IssHub extends BaseDomainHelper implements IssServer {
     @Override
     public void setRootCa(String rootCaIn) {
         rootCa = rootCaIn;
+    }
+
+    /**
+     * @param gpgKeyIn the gpg key
+     */
+    public void setGpgKey(String gpgKeyIn) {
+        gpgKey = gpgKeyIn;
     }
 
     /**

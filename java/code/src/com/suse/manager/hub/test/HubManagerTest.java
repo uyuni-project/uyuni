@@ -404,13 +404,15 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void canSaveHubAndPeripheralServers() throws TaskomaticApiException {
-        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data");
+        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-certificate-data",
+                "dummy-gpg-key");
 
         Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn("dummy.hub.fqdn");
         assertTrue(issHub.isPresent());
         assertEquals("dummy-certificate-data", issHub.get().getRootCa());
+        assertEquals("dummy-gpg-key", issHub.get().getGpgKey());
 
-        hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null);
+        hubManager.saveNewServer(getValidToken("dummy.peripheral.fqdn"), IssRole.PERIPHERAL, null, null);
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn("dummy.peripheral.fqdn");
         assertTrue(issPeripheral.isPresent());
         assertNull(issPeripheral.get().getRootCa());
@@ -459,31 +461,32 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canSaveRootCa() throws TaskomaticApiException {
         mockTaskomaticApi.resetTaskomaticCall();
-        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data");
+        hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data",
+                "");
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy.hub.fqdn_root_ca.pem",
                 "dummy-hub-certificate-data");
 
         mockTaskomaticApi.resetTaskomaticCall();
-        hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "");
+        hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy2.hub.fqdn_root_ca.pem", "");
 
         mockTaskomaticApi.resetTaskomaticCall();
-        hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null);
+        hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy3.hub.fqdn_root_ca.pem", "");
 
         mockTaskomaticApi.resetTaskomaticCall();
         hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
-                "dummy-periph-certificate-data");
+                "dummy-periph-certificate-data", null);
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy.periph.fqdn_root_ca.pem",
                 "dummy-periph-certificate-data");
 
         mockTaskomaticApi.resetTaskomaticCall();
-        hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "");
+        hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy2.periph.fqdn_root_ca.pem",
                 "");
 
         mockTaskomaticApi.resetTaskomaticCall();
-        hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null);
+        hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
         mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy3.periph.fqdn_root_ca.pem",
                 "");
     }
@@ -493,7 +496,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         String peripheralFqdn = "dummy.peripheral.fqdn";
 
         IssAccessToken peripheralToken = getValidToken(peripheralFqdn);
-        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null);
+        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, null, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream()
@@ -509,7 +512,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
-        var hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null);
+        var hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listSCCCredentials().stream()
@@ -555,6 +558,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
             allowing(internalClient).registerHub(
                 with(any(String.class)),
+                with(aNull(String.class)),
                 with(aNull(String.class))
             );
 
