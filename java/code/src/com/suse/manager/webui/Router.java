@@ -20,7 +20,10 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -81,9 +84,12 @@ import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleControl
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
+import com.suse.scc.SCCEndpoints;
 
 import org.apache.http.HttpStatus;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
@@ -134,6 +140,15 @@ public class Router implements SparkApplication {
         DownloadController downloadController = new DownloadController(paygManager);
         ConfidentialComputingController confidentialComputingController =
                 new ConfidentialComputingController(attestationManager);
+
+        try {
+            URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
+            SCCEndpoints sccEndpoints = new SCCEndpoints(ContentSyncManager.getUUID(), url);
+            sccEndpoints.initRoutes(jade);
+        }
+        catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         // Login
         LoginController.initRoutes(jade);
