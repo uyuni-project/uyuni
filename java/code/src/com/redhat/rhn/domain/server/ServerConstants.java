@@ -1,6 +1,6 @@
 /*
+ * Copyright (c) 2013--2025 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
- * Copyright (c) 2013--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -122,5 +122,13 @@ public class ServerConstants {
      */
     public static final ServerGroupType getServerGroupTypePeripheralServerEntitled() {
         return ServerFactory.lookupServerGroupTypeByLabel("peripheral_server");
+    }
+
+    /**
+     * Static representing the Proxy entitled server group type
+     * @return ServerGroupType
+     */
+    public static final ServerGroupType getServerGroupTypeProxyEntitled() {
+        return ServerFactory.lookupServerGroupTypeByLabel("proxy_entitled");
     }
 }
