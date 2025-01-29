@@ -858,4 +858,16 @@ public class TaskomaticApi {
         paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
         invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
     }
+
+    /**
+     * Schedule an import of a GPG key.
+     * @param gpgKey the GPG key (armored text)
+     * @throws TaskomaticApiException if there was an error
+     */
+    public void scheduleSingleGpgKeyImport(String gpgKey) throws TaskomaticApiException {
+        if (StringUtils.isBlank(gpgKey)) {
+            return;
+        }
+        invoke("tasko.scheduleSingleSatBunchRun", "custom-gpg-key-import-bunch", Map.of("gpg-key", gpgKey));
+    }
 }
