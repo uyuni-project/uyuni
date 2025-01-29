@@ -27,6 +27,7 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -1538,10 +1539,16 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
-        return new HashSet<>(HibernateFactory.getSession()
-                .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")
-                .setParameter("systemIds", systemIds)
-                .list());
+        return HibernateFactory.getSession().createNativeQuery(
+                """
+                        SELECT sa.* FROM rhnServerAction sa
+                        JOIN rhnAction a ON sa.action_id = a.id JOIN rhnActionType at ON a.action_type = at.id
+                        WHERE sa.server_id IN (:systemIds) AND at.maintenance_mode_only = 'Y'
+                        AND sa.status IN (0, 1)
+                    """, ServerAction.class
+                )
+                .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
+                .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }
 
     /**
