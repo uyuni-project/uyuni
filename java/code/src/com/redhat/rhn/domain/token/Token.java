@@ -317,7 +317,12 @@ public class Token implements Identifiable {
      * @param u The user to set.
      */
     public void setCreator(User u) {
-        this.creator = (UserImpl) u;
+        if (u instanceof UserImpl) {
+            this.creator = (UserImpl) u;
+        }
+        else {
+            this.creator = null;
+        }
     }
 
     /**
