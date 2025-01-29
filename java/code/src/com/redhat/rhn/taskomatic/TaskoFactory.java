@@ -15,7 +15,10 @@
 package com.redhat.rhn.taskomatic;
 
 
+import static org.quartz.TriggerKey.triggerKey;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
@@ -502,5 +505,76 @@ public class TaskoFactory extends HibernateFactory {
         }
         return singleton.listObjectsByNamedQuery("TaskoSchedule.listNewerThanByBunch",
                 Map.of("bunch_id", bunch.getId(), "date", date));
+    }
+
+    protected static TaskoBunch checkBunchName(Integer orgId, String bunchName) throws NoSuchBunchTaskException {
+        TaskoBunch bunch;
+        if (orgId == null) {
+            bunch = TaskoFactory.lookupSatBunchByName(bunchName);
+        }
+        else {
+            bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
+        }
+        if (bunch == null) {
+            throw new NoSuchBunchTaskException(bunchName);
+        }
+        return bunch;
+    }
+
+    /**
+     * Get a unique label single job.
+     *
+     * @param orgId the organisation ID for the job
+     * @param bunchName the bunch name
+     * @return the unique job label
+     *
+     * @throws SchedulerException in case of internal scheduler error
+     * * *
+     * @throws SchedulerException in case of internal scheduler error
+     */
+    protected static String getUniqueSingleJobLabel(Integer orgId, String bunchName) throws SchedulerException {
+        String jobLabel = "single-" + bunchName + "-";
+        int count = 0;
+        while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count).isEmpty() ||
+                (SchedulerKernel.getScheduler() != null && SchedulerKernel.getScheduler()
+                        .getTrigger(triggerKey(jobLabel + count, TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+            count++;
+        }
+        return jobLabel + count;
+    }
+
+    /**
+     * Create a new single bunch run in the database.
+     *
+     * @param orgId the organization ID
+     * @param bunchName the bunch name
+     * @param params the job parameters
+     * @param start the start date of the job
+     * @throws NoSuchBunchTaskException if the bunchName doesn't refer to an existing bunch
+     * @throws SchedulerException for internal scheduler errors
+     */
+    public static void addSingleBunchRun(Integer orgId, String bunchName, Map<String, Object> params, Date start)
+            throws NoSuchBunchTaskException, SchedulerException {
+        TaskoBunch bunch = checkBunchName(orgId, bunchName);
+        String jobLabel = getUniqueSingleJobLabel(null, bunchName);
+        List<TaskoSchedule> taskoSchedules = TaskoFactory.listScheduleByLabel(jobLabel);
+
+        TaskoSchedule schedule;
+        if (taskoSchedules.isEmpty()) {
+            // create schedule
+            schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
+        }
+        else {
+            // update existing schedule
+            schedule = taskoSchedules.get(0);
+            schedule.setBunch(bunch);
+            schedule.setDataMap(params);
+            schedule.setActiveFrom(start);
+        }
+        // Don't set active till until the job it actually runs.
+        schedule.setActiveTill(null);
+        TaskoFactory.save(schedule);
+        HibernateFactory.commitTransaction();
+        log.info("Schedule created for {}.", jobLabel);
     }
 }

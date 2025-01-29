@@ -25,14 +25,16 @@ import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
 import com.redhat.rhn.manager.user.CreateUserCommand;
-import com.redhat.rhn.taskomatic.TaskomaticApi;
-import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.taskomatic.NoSuchBunchTaskException;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.quartz.SchedulerException;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -164,7 +166,6 @@ public class CreateOrgCommand {
         CryptoKey ssl = KickstartFactory.lookupCryptoKey("RHN-ORG-TRUSTED-SSL-CERT",
             defaultOrg);
         if (ssl != null && ssl.isSSL()) {
-            // TODO
             log.debug("Found a SSL key for the default org to copy: {}", ssl.getId());
             CreateCryptoKeyCommand createCryptoKey =
                 new CreateCryptoKeyCommand(createdOrg);
@@ -177,15 +178,13 @@ public class CreateOrgCommand {
         ChannelFamilyFactory.lookupOrCreatePrivateFamily(createdOrg);
 
         if (firstOrg) {
-            Map<String, String> params = new HashMap<>();
+            Map<String, Object> params = new HashMap<>();
             params.put("noRepoSync", "true");
             try {
-                new TaskomaticApi().scheduleSingleSatBunch(newUser,
-                        "mgr-sync-refresh-bunch", params);
+                TaskoFactory.addSingleBunchRun(null, "mgr-sync-refresh-bunch", params, new Date());
             }
-            catch (TaskomaticApiException e) {
-                log.error("Problem when running Taskomatic mgr-sync-refresh job: {}", e.getMessage());
-                // FIXME: return validator error ?
+            catch (NoSuchBunchTaskException | SchedulerException e) {
+                log.error("Failed to schedule mgr-sync-refresh job: {}", e.getMessage());
             }
         }
         return null;
