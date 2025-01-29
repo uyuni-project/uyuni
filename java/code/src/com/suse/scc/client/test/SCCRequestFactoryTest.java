@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCRequestFactory;
 
 import org.apache.http.client.methods.HttpGet;
@@ -45,8 +46,14 @@ public class SCCRequestFactoryTest  {
      */
     @Test
     public void testInitRequest() throws Exception {
-        SCCConfig config = new SCCConfig(new URI(TEST_SCHEME + "://" + TEST_HOST),
-                "user", "pass", TEST_UUID, null, SCCConfig.DEFAULT_LOGGING_DIR, true);
+        SCCConfig config = new SCCConfigBuilder()
+                .setUrl(new URI(TEST_SCHEME + "://" + TEST_HOST))
+                .setUsername("user")
+                .setPassword("pass")
+                .setUuid(TEST_UUID)
+                .setLoggingDir(SCCConfig.DEFAULT_LOGGING_DIR)
+                .setSkipOwner(true)
+                .createSCCConfig();
         SCCRequestFactory factory = SCCRequestFactory.getInstance();
         HttpRequestBase request = factory.initRequest("GET", TEST_PATH, config);
         assertInstanceOf(HttpGet.class, request);

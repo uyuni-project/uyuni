@@ -244,6 +244,7 @@ suseImageStore                     :: suseCredentials web_customer suseImageStor
 suseISSHub                         :: suseCredentials
 suseISSPeripheral                  :: suseCredentials
 suseISSPeripheralChannels          :: suseISSPeripheral rhnChannel
+suseISSPeripheralChannelToken      :: suseISSPeripheralChannels
 suseISSAccessToken                 :: iss_access_token_type_t
 suseMaintenanceCalendar            :: web_customer
 suseMaintenanceSchedule            :: web_customer suseMaintenanceCalendar
