@@ -5423,7 +5423,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.groups" xml:space="preserve">
         <source>Groups</source>
-        <target/>
+        <target state="translated">Skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
