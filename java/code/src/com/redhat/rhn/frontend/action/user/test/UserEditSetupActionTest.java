@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -57,7 +57,7 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
         Iterator it = UserFactory.IMPLIEDROLES.iterator();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         while (it.hasNext()) {
-            Role cr = (Role) it.next();
+            RoleImpl cr = (RoleImpl) it.next();
             user.getOrg().addRole(cr);
             user.addPermanentRole(cr);
         }

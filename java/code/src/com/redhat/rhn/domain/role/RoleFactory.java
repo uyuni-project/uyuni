@@ -39,7 +39,7 @@ public class RoleFactory extends HibernateFactory {
      * Create a new Role object
      * @return Role to use
      */
-    public static Role createRole() {
+    public static RoleImpl createRole() {
         return new RoleImpl();
     }
 
@@ -56,11 +56,10 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (Role) session.getNamedQuery("Role.findById")
-                                       .setParameter("id", id, StandardBasicTypes.LONG)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where id = :id", RoleImpl.class)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -68,47 +67,46 @@ public class RoleFactory extends HibernateFactory {
      * @param name Name of statetype
      * @return statetype whose name matches the given name.
      */
-    public static Role lookupByLabel(String name) {
+    public static RoleImpl lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
-        return (Role) session.getNamedQuery("Role.findByLabel")
-                                       .setParameter("label", name, StandardBasicTypes.STRING)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where label = :label", RoleImpl.class)
+                .setParameter("label", name, StandardBasicTypes.STRING)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
      * The constant representing org_admin role.  Used for comparison.
      */
-    public static final Role ORG_ADMIN = lookupByLabel("org_admin");
+    public static final RoleImpl ORG_ADMIN = lookupByLabel("org_admin");
 
     /**
      * The constant representing satellite_admin role.  Used for comparison.
      */
-    public static final Role SAT_ADMIN = lookupByLabel("satellite_admin");
+    public static final RoleImpl SAT_ADMIN = lookupByLabel("satellite_admin");
 
     /**
      * The constant representing channel_admin
      */
-    public static final Role CHANNEL_ADMIN = lookupByLabel("channel_admin");
+    public static final RoleImpl CHANNEL_ADMIN = lookupByLabel("channel_admin");
 
     /**
      * The constant representing config_admin
      */
-    public static final Role CONFIG_ADMIN = lookupByLabel("config_admin");
+    public static final RoleImpl CONFIG_ADMIN = lookupByLabel("config_admin");
 
     /**
      * The constant representing system_group_admin
      */
-    public static final Role SYSTEM_GROUP_ADMIN = lookupByLabel("system_group_admin");
+    public static final RoleImpl SYSTEM_GROUP_ADMIN = lookupByLabel("system_group_admin");
 
     /**
      * The constant representing activation_key_admin
      */
-    public static final Role ACTIVATION_KEY_ADMIN = lookupByLabel("activation_key_admin");
+    public static final RoleImpl ACTIVATION_KEY_ADMIN = lookupByLabel("activation_key_admin");
 
     /**
      * The constant representing image_admin
      */
-    public static final Role IMAGE_ADMIN = lookupByLabel("image_admin");
+    public static final RoleImpl IMAGE_ADMIN = lookupByLabel("image_admin");
 }

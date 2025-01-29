@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -940,7 +941,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server the server to find the admins of
      * @return list of User objects that can administer the system
      */
-    public static List<User> listAdministrators(Server server) {
+    public static List<UserImpl> listAdministrators(Server server) {
         return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
                 Map.of("sid", server.getId(), "org_id", server.getOrg().getId()));
     }

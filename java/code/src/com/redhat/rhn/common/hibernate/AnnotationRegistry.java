@@ -82,6 +82,7 @@ import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
@@ -324,6 +325,7 @@ public class AnnotationRegistry {
             Token.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
+            UserGroupMembersId.class,
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,

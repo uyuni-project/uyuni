@@ -103,6 +103,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.OperationDetailsDto;
@@ -1551,7 +1552,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
                 "testUser3", admin.getOrg().getId());
         nonGroupAdminUser.removePermanentRole(RoleFactory.ORG_ADMIN);
 
-        List<User> users = ServerFactory.listAdministrators(server);
+        List<UserImpl> users = ServerFactory.listAdministrators(server);
 
         boolean containsAdmin = false;
         boolean containsRegular = false;

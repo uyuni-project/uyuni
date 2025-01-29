@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Pillar;
@@ -107,13 +108,13 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true)
     private OrgAdminManagement orgAdminMgmt;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "orgId")
-    private Set<UserGroupImpl> userGroups;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
+    private Set<UserGroupImpl> userGroups = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
     private Set<Channel> ownedChannels;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
     private Set<CustomDataKey> customDataKeys;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -135,17 +136,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
     private Set<Pillar> pillars;
 
-    @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
-    //TODO
-    private Token token;
+    @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
+    private RegTokenOrgDefault regTokenOrgDefault;
 
-
-    /**
-     * Construct new Org
-     */
-    protected Org() {
-        userGroups = new HashSet<>();
-    }
 
     /**
      * @return Returns the customDataKeys.
@@ -255,7 +248,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * Add a Role to the Org.
      * @param newRole the role label we want to add to this Org
      */
-    public void addRole(Role newRole) {
+    public void addRole(RoleImpl newRole) {
         // Don't create and add a new group if the Org already has the
         // specified role.
         if (!hasRole(newRole)) {
@@ -272,8 +265,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @param roleIn the Role.label to translate to a UserGroup.ID
      * @return the UserGroup if found, otherwise null.
      */
-    public UserGroup getUserGroup(Role roleIn) {
-        for (UserGroup ug : userGroups) {
+    public UserGroupImpl getUserGroup(Role roleIn) {
+        for (UserGroupImpl ug : userGroups) {
             if (ug.getRole().equals(roleIn)) {
                 return ug;
             }

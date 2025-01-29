@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -110,7 +111,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     }
 
     protected void addRole(User user, Role role) {
-        user.getOrg().addRole(role);
+        user.getOrg().addRole((RoleImpl) role);
         user.addPermanentRole(role);
     }
 }
