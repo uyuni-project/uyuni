@@ -1,4 +1,5 @@
 --
+-- Copyright (c) 2016--2025 SUSE LLC
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -1094,5 +1095,28 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('mips-debian-linux'),
             lookup_sg_type('ansible_managed'));
+
+-- proxy_entitled compatibilities
+DO $$
+DECLARE
+    loop_server_arch_id INT; 
+    proxy_sg_type_id INT;
+BEGIN
+    proxy_sg_type_id := lookup_sg_type('proxy_entitled');
+    
+    FOR loop_server_arch_id IN
+        SELECT id FROM rhnserverarch
+    LOOP
+        INSERT INTO rhnServerServerGroupArchCompat (server_arch_id, server_group_type)
+        SELECT
+            loop_server_arch_id, 
+            proxy_sg_type_id 
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM rhnServerServerGroupArchCompat AS rs
+            WHERE rs.server_arch_id = loop_server_arch_id  AND rs.server_group_type = proxy_sg_type_id
+        );
+    END LOOP;
+END $$;
 
 commit;

@@ -25121,6 +25121,9 @@ given channel.</source>
       <trans-unit id="ansible_managed" xml:space="preserve">
         <source>Ansible Managed</source>
       </trans-unit>
+      <trans-unit id="proxy_entitled" xml:space="preserve">
+        <source>Proxy</source>
+      </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
       </trans-unit>

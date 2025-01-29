@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2017--2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -1244,7 +1245,7 @@ public class ActionFactory extends HibernateFactory {
             lookupActionTypeByLabel("coco.attestation");
 
     /**
-     * The constant representing appstreams changes action.
+     * The constant representing appstreams changes action. [ID:524]
      */
     public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
 
