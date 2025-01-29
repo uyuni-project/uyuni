@@ -171,13 +171,14 @@ public class HubManager {
      * @param accessToken the access token granting access and identifying the caller
      * @param role the role of the server
      * @param rootCA the root certificate, if needed
+     * @param gpgKey the gpg key, if needed
      * @return the persisted remote server
      */
-    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA)
+    public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA, String gpgKey)
             throws TaskomaticApiException {
         ensureValidToken(accessToken);
 
-        return createServer(role, accessToken.getServerFqdn(), rootCA, null);
+        return createServer(role, accessToken.getServerFqdn(), rootCA, gpgKey, null);
     }
 
     /**
@@ -357,7 +358,7 @@ public class HubManager {
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
-        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, user);
+        IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
         registerToRemote(user, registeredServer, remoteToken, rootCA);
     }
 
@@ -376,9 +377,12 @@ public class HubManager {
         Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
         // Send the local trusted root, if we needed a different certificate to connect
         String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
+        // Send the local GPG key used to sign metadata, if configured.
+        // This force metadata checking on the peripheral server when mirroring from the Hub
+        String localGpgKey = (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : null;
 
         // Register this server on the remote with the hub role
-        internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA);
+        internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey);
 
         // Generate the scc credentials and send them to the peripheral
         HubSCCCredentials credentials = generateCredentials(peripheral);
@@ -470,13 +474,15 @@ public class HubManager {
         return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
     }
 
-    private IssServer createServer(IssRole role, String serverFqdn, String rootCA, User user)
+    private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
             throws TaskomaticApiException {
         taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
+                hub.setGpgKey(gpgKey);
                 hubFactory.save(hub);
+                taskomaticApi.scheduleSingleGpgKeyImport(gpgKey);
                 yield hub;
             }
             case PERIPHERAL -> {

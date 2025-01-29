@@ -65,8 +65,8 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
-    public void registerHub(String token, String rootCA) throws IOException {
-        invokePostMethod("hub/sync", "registerHub", new RegisterJson(token, rootCA), Void.class);
+    public void registerHub(String token, String rootCA, String gpgKey) throws IOException {
+        invokePostMethod("hub/sync", "registerHub", new RegisterJson(token, rootCA, gpgKey), Void.class);
     }
 
     @Override
