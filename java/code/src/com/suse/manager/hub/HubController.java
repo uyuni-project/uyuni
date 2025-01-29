@@ -176,7 +176,7 @@ public class HubController {
 
         try {
             hubManager.storeAccessToken(token, tokenToStore);
-            hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA());
+            hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA(), registerRequest.getGpgKey());
 
             return success(response);
         }
