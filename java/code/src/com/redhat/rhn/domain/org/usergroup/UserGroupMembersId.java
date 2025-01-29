@@ -82,12 +82,10 @@ public class UserGroupMembersId implements Serializable {
         this.userGroup = userGroupIn;
     }
 
-    @Type(type = "yes_no")
     public Boolean isTemporary() {
         return temporary;
     }
 
-    @Type(type = "yes_no")
     public void setTemporary(Boolean temporaryIn) {
         this.temporary = temporaryIn;
     }
@@ -114,5 +112,14 @@ public class UserGroupMembersId implements Serializable {
                 .append(this.getUserGroup())
                 .append(this.isTemporary())
                 .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "UserGroupMembersId{" +
+                "user=" + user +
+                ", userGroup=" + userGroup +
+                ", temporary=" + temporary +
+                '}';
     }
 }
