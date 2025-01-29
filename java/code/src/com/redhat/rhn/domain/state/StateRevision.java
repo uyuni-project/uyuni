@@ -116,7 +116,12 @@ public class StateRevision {
      * @param creatorIn the creator to set
      */
     public void setCreator(User creatorIn) {
-        this.creator = (UserImpl) creatorIn;
+        if (creatorIn instanceof UserImpl) {
+            this.creator = (UserImpl) creatorIn;
+        }
+        else {
+            this.creator = null;
+        }
     }
 
     /**

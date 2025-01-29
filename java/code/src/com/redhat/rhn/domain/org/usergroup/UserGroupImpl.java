@@ -16,20 +16,50 @@
 package com.redhat.rhn.domain.org.usergroup;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Class UserGroup that reflects the DB representation of RHNUSERGROUP
  * DB table: RHNUSERGROUP
  */
+@Entity
+@Table(name = "RHNUSERGROUP")
 public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_user_group_id_seq")
+    @SequenceGenerator(name = "rhn_user_group_id_seq", sequenceName = "rhn_user_group_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @Column(name = "name", length = 64)
     private String name;
+
+    @Column(name = "description", length = 1024)
     private String description;
+
+    @Column(name = "current_members", insertable = false, updatable = true)
     private Long currentMembers;
-    private Long orgId;
-    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id", nullable = false)
+    private Org org;
+
+    @ManyToOne
+    @JoinColumn(name = "group_type", nullable = false)
+    private RoleImpl role;
 
     /**
      * Getter for id
@@ -108,7 +138,7 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      * {@inheritDoc}
      */
     @Override
-    public Role getRole() {
+    public RoleImpl getRole() {
         return role;
     }
 
@@ -118,25 +148,28 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      */
     @Override
     public void setRole(Role roleIn) {
-        role = roleIn;
+        if (roleIn instanceof RoleImpl) {
+            role = (RoleImpl) roleIn;
+        }
+        else {
+            role = null;
+        }
     }
 
     /**
-     * Getter for orgId
+     * Getter for org
      * {@inheritDoc}
      */
-    @Override
-    public Long getOrgId() {
-        return this.orgId;
+    public Org getOrg() {
+        return this.org;
     }
 
     /**
      * Setter for orgId
-     * {@inheritDoc}
+     * @param orgIn the org
      */
-    @Override
-    public void setOrgId(Long orgIdIn) {
-        this.orgId = orgIdIn;
+    public void setOrg(Org orgIn) {
+        this.org = orgIn;
     }
 
     /**
@@ -153,6 +186,6 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
     @Override
     public String toString() {
         return "ID: " + id + " name: " + name +
-                  " desc: " + description + " orgid: " + orgId;
+                " desc: " + description + " orgid: " + (org != null ? org.getId() : "null");
     }
 }

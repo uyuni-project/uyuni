@@ -15,93 +15,91 @@
 package com.redhat.rhn.domain.org.usergroup;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
-import java.io.Serializable;
-
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * UserGroupMembers
  */
-public class UserGroupMembers extends BaseDomainHelper implements Serializable {
-
-    private User user;
-    private UserGroup userGroup;
-    private boolean temporary;
-
+@Entity
+@NamedNativeQuery(
+        name = "UserGroupMembers.deleteTemporary",
+        query = "DELETE FROM rhnUserGroupMembers ugs WHERE temporary = 'Y'"
+)
+@Table(name = "rhnUserGroupMembers", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "user_group_id"})
+})
+public class UserGroupMembers  extends BaseDomainHelper {
+    @EmbeddedId
+    private UserGroupMembersId id;
     /**
-     * Constructor
+     * Default Constructor
      */
     public UserGroupMembers() {
-        temporary = false;
+        this.id = new UserGroupMembersId();
     }
 
     /**
-     * Constructor
-     * @param userIn user
-     * @param ugIn user group
+     * Constructor with parameters
+     * @param userIn The user
+     * @param userGroupIn The user group
+     * @param temporaryIn temporary
      */
-    public UserGroupMembers(User userIn, UserGroup ugIn) {
-        user = userIn;
-        userGroup = ugIn;
-        temporary = false;
-    }
-
-    /**
-     * Constructor
-     * @param userIn user
-     * @param ugIn user group
-     * @param tempIn temporary flag
-     */
-    public UserGroupMembers(User userIn, UserGroup ugIn, boolean tempIn) {
-        user = userIn;
-        userGroup = ugIn;
-        temporary = tempIn;
+    public UserGroupMembers(UserImpl userIn, UserGroupImpl userGroupIn, Boolean temporaryIn) {
+        this.id = new UserGroupMembersId(userIn, userGroupIn, temporaryIn);
     }
 
     /**
      * @return Returns the user.
      */
-    public User getUser() {
-        return user;
+    public UserImpl getUser() {
+        return this.getId().getUser();
     }
 
     /**
      * @param userIn The user to set.
      */
-    public void setUser(User userIn) {
-        user = userIn;
+    public void setUser(UserImpl userIn) {
+        this.getId().setUser(userIn);
     }
 
     /**
      * @return Returns the userGroup.
      */
-    public UserGroup getUserGroup() {
-        return userGroup;
+    public UserGroupImpl getUserGroup() {
+        return this.getId().getUserGroup();
     }
 
     /**
      * @param userGroupIn The userGroup to set.
      */
-    public void setUserGroup(UserGroup userGroupIn) {
-        userGroup = userGroupIn;
+    public void setUserGroup(UserGroupImpl userGroupIn) {
+        this.setUserGroup(userGroupIn);
     }
 
     /**
      * @return Returns the temporary.
      */
-    public boolean getTemporary() {
-        return temporary;
+    @Type(type = "yes_no")
+    public Boolean isTemporary() {
+        return this.getId().isTemporary();
     }
 
     /**
      * @param temporaryIn The temporary to set.
      */
-    public void setTemporary(boolean temporaryIn) {
-        temporary = temporaryIn;
+    @Type(type = "yes_no")
+    public void setTemporary(Boolean temporaryIn) {
+        this.getId().setTemporary(temporaryIn);
     }
 
     /**
@@ -113,9 +111,11 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
             return false;
         }
         return new EqualsBuilder()
-            .append(this.getUser(), other.getUser())
-            .append(this.getUserGroup(), other.getUserGroup())
-            .isEquals();
+                .append(this.getUser(), other.getUser())
+                .append(this.getUserGroup(), other.getUserGroup())
+                .append(this.isTemporary(), other.isTemporary())
+                .append(this.getId(), other.getId())
+                .isEquals();
     }
 
     /**
@@ -124,9 +124,18 @@ public class UserGroupMembers extends BaseDomainHelper implements Serializable {
     @Override
     public int hashCode() {
         return new HashCodeBuilder()
-            .append(this.getUser())
-            .append(this.getUserGroup())
-            .append(this.getTemporary())
-            .toHashCode();
+                .append(this.getUser())
+                .append(this.getUserGroup())
+                .append(this.isTemporary())
+                .append(this.getId())
+                .toHashCode();
+    }
+
+    public UserGroupMembersId getId() {
+        return id;
+    }
+
+    public void setId(UserGroupMembersId idIn) {
+        id = idIn;
     }
 }
