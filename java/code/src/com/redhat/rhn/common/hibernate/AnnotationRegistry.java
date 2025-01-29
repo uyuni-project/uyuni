@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -297,6 +299,8 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScriptActionDetails.class,
+            ScriptResult.class,
             ServerAppStream.class,
             Server.class,
             ServerCoCoAttestationConfig.class,
