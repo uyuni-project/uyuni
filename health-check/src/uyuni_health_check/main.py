@@ -66,7 +66,7 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     verbose: bool = ctx.obj["verbose"]
     supportconfig_path: str = ctx.obj["supportconfig_path"]
 
-    if not from_datetime or not to_datetime:
+    if not from_datetime and not to_datetime:
         from_datetime, to_datetime = utils.get_dates(since)
 
     try:
