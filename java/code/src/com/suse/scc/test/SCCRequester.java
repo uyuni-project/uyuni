@@ -17,6 +17,7 @@ package com.suse.scc.test;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 
 import org.apache.logging.log4j.LogManager;
@@ -43,8 +44,13 @@ public abstract class SCCRequester<T> implements Callable<T> {
      * @param uri the server URI
      */
     protected SCCRequester(URI uri) {
-        SCCConfig config = new SCCConfig(uri, "user", "password", null, null,
-            System.getProperty("java.io.tmpdir"), true);
+        SCCConfig config = new SCCConfigBuilder()
+                .setUrl(uri)
+                .setUsername("user")
+                .setPassword("password")
+                .setLoggingDir(System.getProperty("java.io.tmpdir"))
+                .setSkipOwner(true)
+                .createSCCConfig();
         scc = new SCCWebClient(config);
     }
 

@@ -25,7 +25,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name = "suseISSPeripheralChannels")
@@ -38,6 +40,8 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     protected IssPeripheralChannels() {
         // Default empty Constructor for Hibernate
     }
+
+    private IssPeripheralChannelToken token;
 
     /**
      * Constructor
@@ -60,6 +64,15 @@ public class IssPeripheralChannels extends BaseDomainHelper {
         peripheral = peripheralIn;
         channel = channelIn;
         peripheralOrgId = peripheralOrgIdIn;
+    }
+
+    @OneToOne(mappedBy = "peripheralChannel", fetch = FetchType.LAZY)
+    public IssPeripheralChannelToken getToken() {
+        return token;
+    }
+
+    public void setToken(IssPeripheralChannelToken tokenIn) {
+        this.token = tokenIn;
     }
 
     /**
@@ -95,7 +108,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     /**
      * Get the peripheral organization id where this channel should be assigned to.
      * Vendor Channels will have NULL here
-     * @return the peripherla organization id or NULL
+     * @return the peripheral organization id or NULL
      */
     @Column(name = "peripheral_org_id")
     public Integer getPeripheralOrgId() {
