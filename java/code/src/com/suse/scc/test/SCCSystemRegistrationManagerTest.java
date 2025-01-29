@@ -46,6 +46,7 @@ import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -80,8 +81,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
         testSystem.setServerInfo(serverInfo);
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password) {
@@ -161,8 +167,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         testSystem.setServerInfo(serverInfo);
         testSystem.setPayg(true);
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid"));
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig);
 
         SCCSystemRegistrationManager sccSystemRegistrationManager = new SCCSystemRegistrationManager(sccWebClient);
         SCCCachingFactory.initNewSystemsToForward();
@@ -191,8 +202,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         serverInfo.setCheckin(new Date(0)); // 1970-01-01 00:00:00 UTC
         testSystem.setServerInfo(serverInfo);
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password) {
@@ -267,9 +283,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
             }
 
         }
-
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password) {
@@ -330,8 +350,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         host.getGuests().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("qemu")));
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
 
 
             @Override
@@ -415,8 +440,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         host.getGuests().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("vmware")));
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
 
 
             @Override
@@ -514,8 +544,13 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         host.getGuests().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("aws_nitro")));
 
-        SCCWebClient sccWebClient = new SCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        SCCWebClient sccWebClient = new SCCWebClient(sccConfig) {
 
 
             @Override

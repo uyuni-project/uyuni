@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -205,8 +206,13 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
      * @throws URISyntaxException
      */
     public TestSCCWebClient getDefaultTestSCCWebClient() throws URISyntaxException {
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
