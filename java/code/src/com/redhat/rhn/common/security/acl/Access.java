@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2015--2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -675,5 +676,30 @@ public class Access extends BaseHandler {
         }
 
         return server.getChannels().stream().anyMatch(Channel::isModular);
+    }
+
+    /**
+     * Uses the sid param to decide if a system is a proxy
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use (unused)
+     * @return true if a system is a proxy, false otherwise
+     */
+    public boolean aclSystemIsConvertibleToProxy(Map<String, Object> ctx, String[] params) {
+        Long sid = getAsLong(ctx.get("sid"));
+        User user = (User) ctx.get("user");
+        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+
+        return lookedUp.isConvertibleToProxy();
+    }
+
+    /**
+     * Checks is server has a proxy entitlement
+     *
+     * @param ctx Context map to pass in.
+     * @param params Parameters to use to fetch from context.
+     * @return True if system has proxy entitlement, false otherwise.
+     */
+    public boolean aclSystemHasProxyEntitlement(Map<String, Object> ctx, String[] params) {
+        return SystemManager.serverHasProxyEntitlement(getAsLong(ctx.get("sid")));
     }
 }

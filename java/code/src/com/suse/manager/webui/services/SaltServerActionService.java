@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -44,6 +44,7 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ProxyConfigurationApplyAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -220,6 +221,7 @@ public class SaltServerActionService {
     public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
     public static final String PARAM_APPSTREAMS_DISABLE = "param_appstreams_disable";
+    public static final String APPLY_PROXY_CONFIG = "apply_proxy_config";
 
     /** SLS pillar parameter name for the list of update stack patch names. */
     public static final String PARAM_UPDATE_STACK_PATCHES = "param_update_stack_patches";
@@ -360,6 +362,9 @@ public class SaltServerActionService {
         }
         else if (ActionFactory.TYPE_APPSTREAM_CONFIGURE.equals(actionType)) {
             return appStreamAction(minions, (AppStreamAction) actionIn);
+        }
+        else if (ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY.equals(actionType)) {
+            return ((ProxyConfigurationApplyAction) actionIn).getApplyProxyConfigAction(minions);
         }
         else {
             if (LOG.isDebugEnabled()) {
@@ -1890,9 +1895,10 @@ public class SaltServerActionService {
      *
      * @param action the action to be executed
      * @param minion minion on which the action will be executed
+     * @return a map with the results for all calls
      */
-    public void executeSSHAction(Action action, MinionServer minion) {
-        executeSSHAction(action, minion, false);
+    public Map<LocalCall<?>, Optional<JsonElement>> executeSSHAction(Action action, MinionServer minion) {
+        return executeSSHAction(action, minion, false);
     }
 
     /**
@@ -1901,8 +1907,13 @@ public class SaltServerActionService {
      * @param action the action to be executed
      * @param minion minion on which the action will be executed
      * @param forcePkgRefresh set to true if a package list refresh should be scheduled at the end
+     * @return a map with the results for all calls
      */
-    public void executeSSHAction(Action action, MinionServer minion, boolean forcePkgRefresh) {
+    public Map<LocalCall<?>, Optional<JsonElement>> executeSSHAction(
+            Action action, MinionServer minion, boolean forcePkgRefresh
+    ) {
+        Map<LocalCall<?>, Optional<JsonElement>> results = new HashMap<>();
+
         Optional<ServerAction> serverAction = action.getServerActions().stream()
                 .filter(sa -> sa.getServerId().equals(minion.getId()))
                 .findFirst();
@@ -1993,6 +2004,7 @@ public class SaltServerActionService {
                             sa.setCompletionTime(new Date());
                         }
                     }, jsonResult -> {
+                        results.put(call, Optional.of(jsonResult));
                         String function = (String) call.getPayload().get("fun");
 
                         /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
@@ -2030,9 +2042,11 @@ public class SaltServerActionService {
                     sa.setStatus(STATUS_FAILED);
                     sa.setResultMsg("Minion is down or could not be contacted.");
                     sa.setCompletionTime(new Date());
+                    results.put(call, Optional.empty());
                 });
             }
         });
+        return results;
     }
 
     /**
