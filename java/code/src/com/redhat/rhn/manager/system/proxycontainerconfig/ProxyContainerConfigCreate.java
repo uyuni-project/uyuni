@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -26,7 +26,9 @@ import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.services.iface.SaltApi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Main handler for creating proxy container configuration files.
@@ -77,7 +79,7 @@ public class ProxyContainerConfigCreate {
      * @param certData                 the data needed to generate the new proxy SSL certificate.
      *                                 Can be omitted if proxyCertKey is not provided
      * @param certManager              the SSLCertManager to use
-     * @return the configuration file
+     * @return the tarball configuration file as a byte array
      */
     public byte[] create(
             SaltApi saltApi, SystemEntitlementManager systemEntitlementManager, User user,
@@ -93,6 +95,52 @@ public class ProxyContainerConfigCreate {
             handler.handle(context);
         }
         return context.getConfigTar();
+    }
+
+    /**
+     * Create and provide proxy container configuration files.
+     *
+     * @param saltApi                  the Salt API instance
+     * @param systemEntitlementManager the system entitlement manager instance
+     * @param user                     the current user
+     * @param serverFqdn               the FQDN of the server the proxy uses
+     * @param proxyFqdn                the FQDN of the proxy
+     * @param proxyPort                the SSH port the proxy listens on
+     * @param maxCache                 the maximum memory cache size
+     * @param email                    the email of proxy admin
+     * @param rootCA                   root CA used to sign the SSL certificate in PEM format
+     * @param intermediateCAs          intermediate CAs used to sign the SSL certificate in PEM format
+     * @param proxyCertKey             proxy CRT and key pair
+     * @param caPair                   the CA certificate and key used to sign the certificate to generate.
+     *                                 Can be omitted if proxyCertKey is not provided
+     * @param caPassword               the CA private key password.
+     *                                 Can be omitted if proxyCertKey is not provided
+     * @param certData                 the data needed to generate the new proxy SSL certificate.
+     *                                 Can be omitted if proxyCertKey is not provided
+     * @param certManager              the SSLCertManager to use
+     * @return the configuration files as a map
+     */
+    public Map<String, Object> createFiles(
+            SaltApi saltApi, SystemEntitlementManager systemEntitlementManager, User user,
+            String serverFqdn, String proxyFqdn, Integer proxyPort, Long maxCache, String email,
+            String rootCA, List<String> intermediateCAs, SSLCertPair proxyCertKey,
+            SSLCertPair caPair, String caPassword, SSLCertData certData, SSLCertManager certManager
+    ) {
+        ProxyContainerConfigCreateContext context = new ProxyContainerConfigCreateContext(
+                saltApi, user, systemEntitlementManager, serverFqdn, proxyFqdn, proxyPort, maxCache, email, rootCA,
+                intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager
+        );
+
+        for (ProxyContainerConfigCreateContextHandler handler : contextHandlerChain) {
+            handler.handle(context);
+        }
+
+        Map<String, Object> fileContents = new HashMap<>();
+        fileContents.putAll(context.getConfigMap());
+        fileContents.putAll(context.getHttpConfigMap());
+        fileContents.putAll(context.getSshConfigMap());
+
+        return fileContents;
     }
 
 }

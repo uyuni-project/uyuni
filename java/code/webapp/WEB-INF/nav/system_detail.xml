@@ -213,6 +213,11 @@
     <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
   </rhn-tab>
 
+  <rhn-tab name="Proxy" acl="system_has_proxy_entitlement()">
+    <rhn-tab-url>/rhn/manager/systems/details/proxy-config</rhn-tab-url>
+    <rhn-tab name="Configuration" url="/rhn/manager/systems/details/proxy-config"/>
+  </rhn-tab>
+
   <rhn-tab name="Ansible" acl="system_has_ansible_control_node_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/ansible/control-node</rhn-tab-url>
     <rhn-tab name="Ansible Control Node" url="/rhn/manager/systems/details/ansible/control-node" acl="system_has_ansible_control_node_entitlement()"/>
