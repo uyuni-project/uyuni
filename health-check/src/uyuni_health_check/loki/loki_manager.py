@@ -1,4 +1,5 @@
 """Module that controls the Loki and Promtail containers"""
+
 import io
 import os
 import requests
@@ -21,7 +22,7 @@ PROMTAIL_TARGETS = 6
 LOKI_WAIT_TIMEOUT = 120
 
 
-def download_component_build_image(image:str, verbose=False):
+def download_component_build_image(image: str, verbose=False):
     if image_exists(image):
         return
 
@@ -131,15 +132,23 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None):
     config.write_config("promtail", "config.yaml", promtail_template.render(**opts))
 
 
-
-def check_series_in_loki(loki_url, job_name="promtail-complete-job", flag="complete", message="Promtail finished!d"):
+def check_series_in_loki(
+    loki_url,
+    job_name="promtail-complete-job",
+    flag="complete",
+    message="Promtail finished!d",
+):
     query = f'{{job="{job_name}", flag="{flag}"}} |= "{message}"'
     end = int(time.time())
     start = end - 60 * 60
 
     response = requests.get(
         f"{loki_url}/loki/api/v1/query",
-        params={"query": query, "start": start * 1_000_000_000, "end": end * 1_000_000_000}
+        params={
+            "query": query,
+            "start": start * 1_000_000_000,
+            "end": end * 1_000_000_000,
+        },
     )
 
     if response.status_code == 200:
@@ -148,6 +157,7 @@ def check_series_in_loki(loki_url, job_name="promtail-complete-job", flag="compl
     else:
         print("Failed to query Loki:", response.text)
         return False
+
 
 def wait_promtail_init():
     loki_url = "http://localhost:3100"
@@ -162,6 +172,7 @@ def wait_promtail_init():
             break
         time.sleep(10)
     console.log("Promtail finished processing logs")
+
 
 def wait_loki_init(verbose=False):
     """
@@ -270,7 +281,6 @@ def wait_loki_init(verbose=False):
                 ready = True
             else:
                 ready = False
-
 
         # check timeout
         if (time.time() - start_time) > LOKI_WAIT_TIMEOUT:

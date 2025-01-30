@@ -1,4 +1,5 @@
 """Utils module for various utility functions"""
+
 from datetime import datetime, timedelta
 import subprocess
 from typing import List
@@ -8,6 +9,7 @@ from rich.text import Text
 
 
 console = Console()
+
 
 def validate_date(ctx: click.Context, param: str, date: str | None) -> str | None:
     del ctx, param
@@ -51,15 +53,19 @@ def run_command(cmd: List[str], verbose=False, raise_exc=True) -> List:
 
     return [stdout, stderr, retcode]
 
+
 def _handle_text_from_process(verbose: bool, *objs: str):
     if verbose:
         for obj in objs:
             console.log(Text.from_ansi(obj.strip()))
 
+
 def _check_retcode(retcode: int):
     match retcode:
-        case 0: ... # success
-        case 127: raise OSError("Command not found; podman is required")
+        case 0:
+            ...  # success
+        case 127:
+            raise OSError("Command not found; podman is required")
         case _:
             raise HealthException("An error happened while running Podman")
 

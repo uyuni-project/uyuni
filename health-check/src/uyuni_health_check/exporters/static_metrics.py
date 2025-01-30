@@ -1,4 +1,5 @@
 """Module for collecting metrics that are single-value integers"""
+
 import os
 import re
 from abc import ABC, abstractmethod
@@ -95,9 +96,10 @@ metrics_config = {
     },
     "major_version": {
         "filepath": "basic-environment.txt",
-        "pattern": r"^SUSE Manager release (\d)"
-    }
+        "pattern": r"^SUSE Manager release (\d)",
+    },
 }
+
 
 class StaticMetric(ABC):
     def __init__(self, name, supportconfig_path, filepath):
@@ -112,17 +114,21 @@ class StaticMetric(ABC):
     def get_value(self):
         pass
 
+
 class LogFileStaticMetric(StaticMetric):
     """
     A representation of a single metric that is captured by a regex and is an integer.
     """
-    def __init__(self, name, supportconfig_path, filepath, pattern, default = None):
+
+    def __init__(self, name, supportconfig_path, filepath, pattern, default=None):
         super().__init__(name, supportconfig_path, filepath)
         self.pattern = pattern
         self.default = default
 
     def get_value(self):
-        with open(os.path.join(self.supportconfig_path, self.filepath), encoding="UTF-8") as f:
+        with open(
+            os.path.join(self.supportconfig_path, self.filepath), encoding="UTF-8"
+        ) as f:
             content = f.read()
             pattern = re.compile(self.pattern, flags=re.MULTILINE)
             match = re.search(pattern, content)
@@ -150,8 +156,15 @@ class StaticMetricFactory:
     def create_metric(name, supportconfig_path, filepath, pattern, default=None):
         return LogFileStaticMetric(name, supportconfig_path, filepath, pattern, default)
 
+
 def create_static_metrics_collection(supportconfig_path):
     return {
-        name: StaticMetricFactory.create_metric(name, supportconfig_path, config["filepath"], config["pattern"], config.get("default"))
+        name: StaticMetricFactory.create_metric(
+            name,
+            supportconfig_path,
+            config["filepath"],
+            config["pattern"],
+            config.get("default"),
+        )
         for name, config in metrics_config.items()
     }

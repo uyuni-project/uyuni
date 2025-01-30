@@ -10,3 +10,7 @@ __pycache__
 **/config/grafana/dashboards/supportconfig_with_logs.json
 
 .vscode/
+
+# Generated files
+**/exporters/config.yml
+**/exporters/metrics

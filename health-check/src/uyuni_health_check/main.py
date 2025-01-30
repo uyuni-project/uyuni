@@ -1,4 +1,5 @@
 """Main module for the health check tool"""
+
 import click
 import os
 from rich.markdown import Markdown
@@ -8,7 +9,10 @@ import uyuni_health_check.utils as utils
 from uyuni_health_check.utils import console, HealthException
 from uyuni_health_check.loki.loki_manager import run_loki
 from uyuni_health_check.exporters import exporter
-from uyuni_health_check.containers.manager import create_podman_network, clean_containers
+from uyuni_health_check.containers.manager import (
+    create_podman_network,
+    clean_containers,
+)
 
 
 @click.group()
@@ -24,7 +28,7 @@ from uyuni_health_check.containers.manager import create_podman_network, clean_c
     help="Show more stdout, including image building",
 )
 @click.pass_context
-def cli(ctx:click.Context, supportconfig_path: str, verbose: bool):
+def cli(ctx: click.Context, supportconfig_path: str, verbose: bool):
     ctx.ensure_object(dict)
     ctx.obj["verbose"] = verbose
     ctx.obj["supportconfig_path"] = supportconfig_path
@@ -98,7 +102,7 @@ def clean(ctx: click.Context):
 
 def main():
     console.print(Markdown("# Uyuni Health Check"))
-    cli() # pylint: disable=no-value-for-parameter
+    cli()  # pylint: disable=no-value-for-parameter
 
 
 if __name__ == "__main__":

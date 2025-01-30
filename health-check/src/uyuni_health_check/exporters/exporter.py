@@ -1,4 +1,5 @@
 """Module that manages the supportconfig exporter container"""
+
 from uyuni_health_check import config
 from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
@@ -27,11 +28,7 @@ def prepare_exporter(supportconfig_path: str, verbose: bool):
 
     if not image_exists(image):
         console.log(f"[bold]Building {image} image")
-        build_image(
-            image,
-            config.load_dockerfile_dir("exporter"),
-            verbose=verbose
-        )
+        build_image(image, config.load_dockerfile_dir("exporter"), verbose=verbose)
         console.log(f"[green]The {image} image was built successfully")
 
     console.log(f"[bold]Deploying {exporter_name} container")

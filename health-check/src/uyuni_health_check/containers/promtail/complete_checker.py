@@ -9,7 +9,7 @@ import requests
 import logging
 
 
-path_list= ""
+path_list = ""
 positions_file = "/tmp/positions.yaml"
 
 logging.basicConfig(filename="/var/log/complete_checker.log", level=logging.INFO)
@@ -23,7 +23,6 @@ def complete() -> bool:
         logger.info("the positions file is not present yet")
         time.sleep(1)
     logger.info("the positions file is present!")
-
 
     while True:
         with open(positions_file, encoding="UTF-8") as f:
@@ -47,18 +46,18 @@ def complete() -> bool:
     logging.info("Promtail completed processing!")
     return True
 
-def push_flag_to_loki(loki_url="http://health_check_loki:3100", job_name="promtail-complete-job", flag="complete"):
+
+def push_flag_to_loki(
+    loki_url="http://health_check_loki:3100",
+    job_name="promtail-complete-job",
+    flag="complete",
+):
 
     log_entry = {
         "streams": [
             {
-                "stream": {
-                    "job": job_name,
-                    "flag": flag
-                },
-                "values": [
-                    [str(int(time.time() * 1e9)), "Promtail finished!d"]
-                ]
+                "stream": {"job": job_name, "flag": flag},
+                "values": [[str(int(time.time() * 1e9)), "Promtail finished!d"]],
             }
         ]
     }
@@ -66,13 +65,14 @@ def push_flag_to_loki(loki_url="http://health_check_loki:3100", job_name="promta
     response = requests.post(
         f"{loki_url}/loki/api/v1/push",
         headers={"Content-Type": "application/json"},
-        data=json.dumps(log_entry)
+        data=json.dumps(log_entry),
     )
 
     if response.status_code == 204:
         print("Flag log successfully pushed to Loki.")
     else:
         print("Failed to push log to Loki:", response.text)
+
 
 if __name__ == "__main__":
 
@@ -85,4 +85,3 @@ if __name__ == "__main__":
         time.sleep(10)
 
     push_flag_to_loki()
-

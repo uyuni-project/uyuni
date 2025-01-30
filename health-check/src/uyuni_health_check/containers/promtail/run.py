@@ -4,15 +4,25 @@
 import subprocess
 import time
 
+
 def is_process_running(process_name):
     try:
-        subprocess.run(["pgrep", "-f", process_name], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        subprocess.run(
+            ["pgrep", "-f", process_name],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
         return True
     except subprocess.CalledProcessError:
         return False
 
+
 def launch_process(command):
-    return subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    return subprocess.Popen(
+        command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
+    )
+
 
 promtail_command = "promtail --config.file=/etc/promtail/config.yml"
 promtail_process = launch_process(promtail_command)
