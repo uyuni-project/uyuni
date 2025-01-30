@@ -83,14 +83,14 @@ public class UserGroupMembers  extends BaseDomainHelper {
      * @param userGroupIn The userGroup to set.
      */
     public void setUserGroup(UserGroupImpl userGroupIn) {
-        this.setUserGroup(userGroupIn);
+        this.getId().setUserGroup(userGroupIn);
     }
 
     /**
      * @return Returns the temporary.
      */
     @Type(type = "yes_no")
-    public Boolean isTemporary() {
+    public boolean isTemporary() {
         return this.getId().isTemporary();
     }
 
@@ -98,7 +98,7 @@ public class UserGroupMembers  extends BaseDomainHelper {
      * @param temporaryIn The temporary to set.
      */
     @Type(type = "yes_no")
-    public void setTemporary(Boolean temporaryIn) {
+    public void setTemporary(boolean temporaryIn) {
         this.getId().setTemporary(temporaryIn);
     }
 
