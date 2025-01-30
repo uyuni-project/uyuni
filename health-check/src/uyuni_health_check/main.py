@@ -64,7 +64,7 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 
     """
     verbose: bool = ctx.obj["verbose"]
-    supportconfig_path: str = ctx.obj["supportconfig_path"]
+    supportconfig_path: str | None = ctx.obj["supportconfig_path"]
 
     if not supportconfig_path or not os.path.exists(supportconfig_path):
         console.log("[red bold] Supportconfig path not accessible, exitting")
