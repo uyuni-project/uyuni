@@ -762,6 +762,14 @@ Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   raise ScriptError, "Service #{service} not active" if output != 'active'
 end
 
+Then(/^files on container volumes should all have the proper SELinux label$/) do
+  node = get_target('server')
+  cmd = '[ "$(sestatus 2>/dev/null | head -n 1 | grep enabled)" != "" ] && ' \
+        '(find /var/lib/containers/storage/volumes/*/_data -exec ls -Zd {} \; | grep -v ":object_r:container_file_t:s0 ")'
+  output, _code = node.run_local(cmd, check_errors: false, verbose: true)
+  raise ScriptError, 'Wrong SELinux labels' if output != ''
+end
+
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|
   node = get_target(host)
   node.run(cmd)
