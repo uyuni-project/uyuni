@@ -1,0 +1,2 @@
+- Copy generated CA rpms instead of moving them to prevent
+  SELinux context category issues
