@@ -15,7 +15,7 @@ Replace FILE.json for every json file inside mirror directory.
 
 ## Repositories
 
-If you need new repositories, you need to create an empty directory for the ones you need and then run `create_repo`, to generate the new metadata.
+If you need new repositories, you need to create an empty directory for the ones you need and then run `create_repo .` for RPM repos, or `dpkg-scanpackages -m . /dev/null > Packages && gzip Packages` for Deb repos , to generate the new metadata.
 Initially you can create the repositories empty.
 
 Then, you need to edit the list of empty repos in `testsuite/features/support/constants.rb`.
