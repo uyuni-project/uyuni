@@ -493,7 +493,11 @@ class ContentSource:
                     pack.name, pack.version, pack.release, pack.epoch, pack.arch
                 )
             except ValueError as e:
-                log.error("Skipping package %s. Package contains incorrect metadata.\n%s", new_pack, e)
+                log.error(
+                    "Skipping package %s. Package contains incorrect metadata.\n%s",
+                    new_pack,
+                    e,
+                )
                 continue
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksum_type

@@ -26,6 +26,7 @@ SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, "gpgdir")
 
 logger = logging.getLogger(__name__)
 
+
 class GeneralRepoException(Exception):
     """
     Dpkg repository exception

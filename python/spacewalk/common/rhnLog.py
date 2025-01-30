@@ -308,6 +308,7 @@ def _exit():
 
 atexit.register(_exit)
 
+
 def log_level_to_logging_constant(rhnLog_log_level: int):
     mapping = {
         0: logging.ERROR,
@@ -317,6 +318,7 @@ def log_level_to_logging_constant(rhnLog_log_level: int):
     }
     # 4+: logging.DEBUG
     return mapping.get(rhnLog_log_level, logging.DEBUG)
+
 
 def align_root_logger():
     """Align the root logger with LOG.
@@ -336,14 +338,12 @@ def align_root_logger():
         handler = logging.FileHandler(filename=LOG.file)
 
     formatter = logging.Formatter(
-        fmt="%(asctime)s - %(name)s - %(message)s",
-        datefmt="%Y/%m/%d %H:%M:%S"
+        fmt="%(asctime)s - %(name)s - %(message)s", datefmt="%Y/%m/%d %H:%M:%S"
     )
     handler.setFormatter(formatter)
     root_logger = logging.getLogger(None)
     root_logger.handlers = [handler]
     root_logger.setLevel(log_level_to_logging_constant(LOG.level))
-
 
 
 # ------------------------------------------------------------------------------
