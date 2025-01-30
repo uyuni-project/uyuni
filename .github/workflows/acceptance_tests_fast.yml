@@ -1,7 +1,7 @@
 name: acceptance-tests-fast
 on:
   workflow_run:
-    workflows: [Suggested tests to cover this Pull Request]
+    workflows: ['Suggested tests to cover this Pull Request']
     types: [completed]
 #concurrency:
 #  group: ${{ github.workflow }}-${{ github.ref }}
