@@ -16,6 +16,8 @@ package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Map;
+
 /**
  * This is a System Item send to SCC for registration.
  */
@@ -33,6 +35,9 @@ public class SCCHwInfoJson {
 
     @SerializedName("cloud_provider")
     private String cloudProvider;
+
+    @SerializedName("arch_specs")
+    private Map<String, Object> archSpecs;
 
     public int getCpus() {
         return cpus;
@@ -88,5 +93,13 @@ public class SCCHwInfoJson {
 
     public void setMemTotal(int memTotalIn) {
         memTotal = memTotalIn;
+    }
+
+    public Map<String, Object> getArchSpecs() {
+        return archSpecs;
+    }
+
+    public void setArchSpecs(Map<String, Object> archSpecsIn) {
+        archSpecs = archSpecsIn;
     }
 }

@@ -169,6 +169,16 @@ fqdns:
 {% endif%}
 {%- endif%}
 
+cpu_arch_specs:
+  mgrcompat.module_run:
+    - name: cpuinfo.arch_specs
+    - require:
+{%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
+      - saltutil: sync_modules
+{%- else %}
+      - mgrcompat: sync_modules
+{%- endif %}
+
 include:
   - util.syncstates
   - util.syncmodules
