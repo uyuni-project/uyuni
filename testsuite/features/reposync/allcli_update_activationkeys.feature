@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Update activation keys
   In order to register systems to the spacewalk server
   As admin
