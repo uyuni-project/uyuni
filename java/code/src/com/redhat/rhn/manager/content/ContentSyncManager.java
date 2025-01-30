@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2014--2021 SUSE LLC
  *
+ *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
  * implied, including the implied warranties of MERCHANTABILITY or FITNESS
