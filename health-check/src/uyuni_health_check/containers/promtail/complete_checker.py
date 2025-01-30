@@ -47,7 +47,7 @@ def complete() -> bool:
     logging.info("Promtail completed processing!")
     return True
 
-def push_flag_to_loki(loki_url="http://uyuni_health_check_loki:3100", job_name="promtail-complete-job", flag="complete"):
+def push_flag_to_loki(loki_url="http://health_check_loki:3100", job_name="promtail-complete-job", flag="complete"):
 
     log_entry = {
         "streams": [

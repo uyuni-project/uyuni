@@ -6,7 +6,7 @@
 name = "uyuni-health-check"
 description = "Show Uyuni server health metrics and logs"
 readme = "README.md"
-requires-python = ">=3.6"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Operating System :: OS Independent",

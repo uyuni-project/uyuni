@@ -137,7 +137,7 @@ groups:
                 root_selector: salt_configuration[name="worker_threads"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -162,7 +162,7 @@ groups:
                 root_selector: hw[name="cpu_count"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -221,7 +221,7 @@ groups:
                 root_selector: memory[name="mem_total"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -245,7 +245,7 @@ groups:
                 root_selector: misc[name="master"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -308,7 +308,7 @@ groups:
                 root_selector: memory[name="mem_total"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -332,7 +332,7 @@ groups:
                 root_selector: misc[name="proxy"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -395,7 +395,7 @@ groups:
                 root_selector: memory[name="mem_total"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -420,7 +420,7 @@ groups:
                 root_selector: misc[name="master"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -484,7 +484,7 @@ groups:
                 root_selector: memory[name="mem_total"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -509,7 +509,7 @@ groups:
                 root_selector: misc[name="proxy"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -574,7 +574,7 @@ groups:
                 root_selector: config[name="java_salt_batch_size"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -603,7 +603,7 @@ groups:
                 root_selector: salt_keys[name="accepted"].length
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -725,7 +725,7 @@ groups:
                 root_selector: config[name="server_limit"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -750,7 +750,7 @@ groups:
                 root_selector: config[name="max_clients"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -818,7 +818,7 @@ groups:
                 root_selector: config[name="max_threads"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -843,7 +843,7 @@ groups:
                 root_selector: config[name="max_clients"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -966,7 +966,7 @@ groups:
                 root_selector: config[name="queued_salt_events"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1090,7 +1090,7 @@ groups:
                 root_selector: misc[name="num_of_channels"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1115,7 +1115,7 @@ groups:
                 root_selector: config[name="taskomatic_channel_repodata_workers"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1185,7 +1185,7 @@ groups:
                 root_selector: salt_keys[name="accepted"].length
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1210,7 +1210,7 @@ groups:
                 root_selector: config[name="org_quartz_threadpool_threadcount"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1280,7 +1280,7 @@ groups:
                 root_selector: salt_keys[name="accepted"].length
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1305,7 +1305,7 @@ groups:
                 root_selector: config[name="org_quartz_scheduler_idlewaittime"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1372,7 +1372,7 @@ groups:
                 root_selector: salt_keys[name="accepted"].length
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1396,7 +1396,7 @@ groups:
                 root_selector: config[name="taskomatic_minion_action_executor_parallel_threads"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1463,7 +1463,7 @@ groups:
                 root_selector: config[name="shared_buffers_to_mem_ratio"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1534,7 +1534,7 @@ groups:
                 root_selector: config[name = "java_message_queue_thread_pool_size"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1559,7 +1559,7 @@ groups:
                 root_selector: config[name = "org_quartz_threadpool_threadcount"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1584,7 +1584,7 @@ groups:
                 root_selector: config[name = "salt_thread_pool"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1723,7 +1723,7 @@ groups:
                 root_selector: config[name="salt_pub_hwm"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1790,7 +1790,7 @@ groups:
                 root_selector: memory[name="fs_mount_insufficient"]
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1856,7 +1856,7 @@ groups:
                 root_selector: memory[name="fs_mount_out_of_space"]
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1919,7 +1919,7 @@ groups:
                 root_selector: hw[name="cpu_count"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -1944,7 +1944,7 @@ groups:
                 root_selector: misc[name="master"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -2008,7 +2008,7 @@ groups:
                 root_selector: hw[name="cpu_count"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
@@ -2033,7 +2033,7 @@ groups:
                 root_selector: misc[name="proxy"].value
                 source: url
                 type: json
-                url: http://uyuni_health_check_supportconfig-exporter:9000/metrics.json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
                 url_options:
                     data: ""
                     method: GET
