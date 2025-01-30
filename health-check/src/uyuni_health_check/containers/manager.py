@@ -1,3 +1,4 @@
+"""Module that contains podman-related functionality"""
 from typing import List
 from uyuni_health_check import config
 from uyuni_health_check.utils import run_command, console
@@ -18,6 +19,7 @@ def build_image(name: str, containerfile_path: str, build_args: List[str] | None
     """
     podman_args = ["build", "-t", f"{name}"]
     if build_args:
+        # pylint: disable-next=expression-not-assigned
         [podman_args.append(f'--build-arg="{param}"') for param in build_args]
     podman_args.append(containerfile_path)
 

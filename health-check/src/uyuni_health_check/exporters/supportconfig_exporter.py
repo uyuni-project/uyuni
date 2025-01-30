@@ -1,6 +1,10 @@
 # SPDX-FileCopyrightText: 2023 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
+"""
+Main supportconfig exporter module that collects metrics into a json file
+and serves the file by using an HTTP server.
+"""
 
 from collections import defaultdict, namedtuple
 import os
@@ -28,6 +32,7 @@ signal.signal(signal.SIGTERM, sigterm_handler)
 
 
 class SupportConfigMetricsCollector:
+    """A collector that collects metrics, and exports them into a file."""
     def __init__(self, supportconfig_path=None):
         if not supportconfig_path:
             raise ValueError("A 'supportconfig_path' must be set via config.yml file")
@@ -47,16 +52,16 @@ class SupportConfigMetricsCollector:
         self.fs_mount_out_of_space = -1
         self.roles = [
             {
-                'name':'master',
-                'value': 0,
+                "name":"master",
+                "value": 0,
             },
             {
-                'name':'proxy',
-                'value': 0,
+                "name":"proxy",
+                "value": 0,
             },
             {
-                'name': 'client',
-                'value': 0,
+                "name": "client",
+                "value": 0,
             },
         ]
         self.parse()
@@ -81,12 +86,12 @@ class SupportConfigMetricsCollector:
 
     def parse_shared_buffers_to_mem_ratio(self, memory: int):
         """
-        Parse the ratio of PostgreSQL's shared_buffers property to the amount of RAM.
+        Parse the ratio of PostgreSQL"s shared_buffers property to the amount of RAM.
         """
         filename = os.path.join(self.supportconfig_path, "spacewalk-debug/database/postgresql.conf")
         if not os.path.exists(filename):
             return
-        with open(filename) as f:
+        with open(filename, encoding="UTF-8") as f:
             content = f.read()
             regex = r"^shared_buffers\s*=\s*(\d+)(\w+)$"
             pattern = re.compile(regex, flags=re.MULTILINE)
@@ -120,7 +125,7 @@ class SupportConfigMetricsCollector:
         if not os.path.exists(filename):
             return
 
-        with open(filename) as f:
+        with open(filename, encoding="UTF-8") as f:
             content = f.read()
             # Parse contents of server-tuning.conf first
             file_regex = r"(?s)/etc/apache2/server-tuning.conf(.*?)\[ Configuration File \]"
@@ -156,9 +161,9 @@ class SupportConfigMetricsCollector:
 
     def parse_roles(self):
         mapping = {
-            'plugin-susemanagerclient.txt': 'client',
-            'plugin-susemanagerproxy.txt': 'proxy',
-            'plugin-susemanager.txt': 'master'
+            "plugin-susemanagerclient.txt": "client",
+            "plugin-susemanagerproxy.txt": "proxy",
+            "plugin-susemanager.txt": "master"
         }
 
         for file, role in mapping.items():
@@ -184,21 +189,21 @@ class SupportConfigMetricsCollector:
         Can return multiple duplicate returns, e.g. when checking for two non-existent mounts
         /foo/bar and /foo/baz, both of which have common path /, then the result will
         contain two "/" entries. However, /foo/bar might have different min_size req., so
-        the result for the two entries might be different, e.g. '/foo/bar' reduces to '/', which
-        fulfills the min requirement for '/foo/bar' but not for '/foo/baz'.
+        the result for the two entries might be different, e.g. "/foo/bar" reduces to "/", which
+        fulfills the min requirement for "/foo/bar" but not for "/foo/baz".
 
         See self.parse_disk_layout for more information about disk layout parsing.
-        Return a dict with 'too_small' and 'out_of_space' props, where 1 = True and 0 = False.
+        Return a dict with "too_small" and "out_of_space" props, where 1 = True and 0 = False.
         This is necessary for Grafana alerts, which cannot work with True/False.
         """
         res = {
-            'mount': mount,
-            'too_small': -1,
-            'out_of_space': -1
+            "mount": mount,
+            "too_small": -1,
+            "out_of_space": -1
         }
 
         if mount not in fs:
-            if mount == '/':
+            if mount == "/":
                 return {}
             mount = os.path.dirname(mount)
             return self._check_vol_params(mount, min_size_gb, fs)
@@ -210,16 +215,16 @@ class SupportConfigMetricsCollector:
         # size format: 2T, or 560G
         size = disk["size"]
         if size[-1:].isnumeric():
-            size, unit = size, 'n/a'
+            unit = "n/a"
         else:
             size, unit = float(size[:-1]), size[-1:]
 
         match unit.lower():
-            case 'k': size /= (1024 * 1024)
-            case 'm': size /= 1024
-            case 'g': ... # already in GB
-            case 't': size *= 1024
-            case 'n/a': ... #no unit
+            case "k": size /= (1024 * 1024)
+            case "m": size /= 1024
+            case "g": ... # already in GB
+            case "t": size *= 1024
+            case "n/a": ... #no unit
             case _: print(f"Error when parsing shared buffer unit: {unit}")
 
         res["too_small"] = 1 if min_size_gb > size else 0
@@ -251,25 +256,25 @@ class SupportConfigMetricsCollector:
                 "proxy": [],
             }
         }
-        path_conf = namedtuple('PathConf', ['mount', 'min_size_gb', 'alternate_mount'], defaults=(None, None, None))
+        path_conf = namedtuple("PathConf", ["mount", "min_size_gb", "alternate_mount"], defaults=(None, None, None))
 
         # MLM 4.x, master
-        res[4]["master"].append(path_conf('/', 40))
-        res[4]["master"].append(path_conf('/var/lib/pgsql', 50, '/pgsql_storage'))
-        res[4]["master"].append(path_conf('/var/spacewalk', 100, '/manager_storage'))
-        res[4]["master"].append(path_conf('/var/cache', 10))
+        res[4]["master"].append(path_conf("/", 40))
+        res[4]["master"].append(path_conf("/var/lib/pgsql", 50, "/pgsql_storage"))
+        res[4]["master"].append(path_conf("/var/spacewalk", 100, "/manager_storage"))
+        res[4]["master"].append(path_conf("/var/cache", 10))
         # MLM 4.x, proxy
-        res[4]["proxy"].append(path_conf('/srv', 100))
-        res[4]["proxy"].append(path_conf('/var/cache', 100))
+        res[4]["proxy"].append(path_conf("/srv", 100))
+        res[4]["proxy"].append(path_conf("/var/cache", 100))
         # MLM 5.x, master
-        res[5]["master"].append(path_conf('/', 20))
-        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-pgsql', 50, '/pgsql_storage'))
-        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-pgsql', 100, '/manager_storage'))
-        res[5]["master"].append(path_conf('/var/lib/containers/storage/volumes/var-cache', 10))
+        res[5]["master"].append(path_conf("/", 20))
+        res[5]["master"].append(path_conf("/var/lib/containers/storage/volumes/var-pgsql", 50, "/pgsql_storage"))
+        res[5]["master"].append(path_conf("/var/lib/containers/storage/volumes/var-pgsql", 100, "/manager_storage"))
+        res[5]["master"].append(path_conf("/var/lib/containers/storage/volumes/var-cache", 10))
         # MLM 5.x, proxy
-        res[5]["proxy"].append(path_conf('/', 40,))
-        res[5]["proxy"].append(path_conf('/var/lib/containers/storage/volumes/srv-www', 100))
-        res[5]["proxy"].append(path_conf('/var/lib/containers/storage/volumes/var-cache', 100))
+        res[5]["proxy"].append(path_conf("/", 40,))
+        res[5]["proxy"].append(path_conf("/var/lib/containers/storage/volumes/srv-www", 100))
+        res[5]["proxy"].append(path_conf("/var/lib/containers/storage/volumes/var-cache", 100))
         return res
 
     def check_space_on_fs(self):
@@ -305,7 +310,7 @@ class SupportConfigMetricsCollector:
         diskinfo_path = os.path.join(self.supportconfig_path, "spacewalk-debug/diskinfo")
         if not os.path.isfile(diskinfo_path):
             return
-        with open(diskinfo_path) as f:
+        with open(diskinfo_path, encoding="UTF-8") as f:
             # skip header
             next(f)
             for line in f:
@@ -324,11 +329,12 @@ class SupportConfigMetricsCollector:
     def exists_salt_configuration_file(self):
         if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")):
             return True
-        
+
     def read_salt_configuration(self):
         content = None
         with open(
-            os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt")
+            os.path.join(self.supportconfig_path, "plugin-saltconfiguration.txt"),
+            encoding="UTF-8"
         ) as f:
             content = f.read()
         attrs_to_expose = [
@@ -353,7 +359,8 @@ class SupportConfigMetricsCollector:
     def read_salt_keys(self):
         content = None
         with open(
-            os.path.join(self.supportconfig_path, "plugin-saltminionskeys.txt")
+            os.path.join(self.supportconfig_path, "plugin-saltminionskeys.txt"),
+            encoding="UTF-8"
         ) as f:
             content = f.read()
         ret = []
@@ -377,18 +384,18 @@ class SupportConfigMetricsCollector:
             prop["length"] = len(prop["value"])
             ret.append(prop)
         return ret
-    
+
     def exists_salt_jobs_file(self):
         if os.path.isfile(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt")):
             return True
 
     def read_salt_jobs(self):
         content = None
-        with open(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt")) as f:
+        with open(os.path.join(self.supportconfig_path, "plugin-saltjobs.txt"), encoding="UTF-8") as f:
             content = f.read()
         res = []
         job_matches = re.findall(
-            "^'([0-9]+)':[\s\S]*?Function:\s+([\w.]+)[\s\S]*?StartTime:\s+(\d{4},\s\w{3}\s\d{2}\s\d{2}:\d{2}:\d{2}\.\d{6})", content, re.MULTILINE
+            r"^'([0-9]+)':[\s\S]*?Function:\s+([\w.]+)[\s\S]*?StartTime:\s+(\d{4},\s\w{3}\s\d{2}\s\d{2}:\d{2}:\d{2}\.\d{6})", content, re.MULTILINE
         )
         for job_match in job_matches:
             res.append({
@@ -471,14 +478,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
 def main():
     print("Supportconfig Exporter started")
-    if os.path.exists("config.yml"):
-        with open("config.yml", "r") as config_file:
-            try:
-                config = yaml.safe_load(config_file)
-                port = int(config["port"])
-                supportconfig_path = config["supportconfig_path"]
-            except yaml.YAMLError as error:
-                print(f"Could not load {config_file}: {error}")
+    if not os.path.exists("config.yml"):
+        print("Could not find config.yml")
+        exit(1)
+
+    with open("config.yml", "r", encoding="UTF-8") as config_file:
+        config = yaml.safe_load(config_file)
+        port = int(config["port"])
+        supportconfig_path = config["supportconfig_path"]
 
     collector = SupportConfigMetricsCollector(supportconfig_path)
     collector.write_metrics()

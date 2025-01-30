@@ -1,8 +1,8 @@
+"""A module that manages the Grafana container"""
 import json
 from uyuni_health_check import config
 from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
-    console,
     build_image,
     image_exists,
     container_is_running,
@@ -62,7 +62,7 @@ def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_d
     Render grafana dashboard file
     """
 
-    with open(grafana_dashboard_template, 'r') as f:
+    with open(grafana_dashboard_template, "r", encoding="UTF-8") as f:
         data = json.load(f)
         data["time"]["from"] = from_datetime
         data["time"]["to"] = to_datetime

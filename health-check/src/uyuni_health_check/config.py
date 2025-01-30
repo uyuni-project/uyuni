@@ -1,3 +1,8 @@
+"""
+Module that contains functionality related to reading `config.toml`
+and getting paths used for configuration, templating, or building
+containers
+"""
 import functools
 import os
 from typing import Any, Dict, List
@@ -37,14 +42,14 @@ def load_dockerfile_dir(dockerfile_dir: str) -> str:
 def get_config_dir_path(component: str) -> str:
     return os.path.join(CONFIG_DIR, component)
 
-def load_prop(property: str) -> Any:
+def load_prop(property_path: str) -> Any:
     res = parse_config().copy()
-    for prop_part in property.split('.'):
+    for prop_part in property_path.split("."):
         try:
             res = res[prop_part]
         except Exception as e:
             raise ValueError(
-                f"Invalid config lookup ({property}); trying to get {prop_part} from {res}"
+                f"Invalid config lookup ({property_path}); trying to get {prop_part} from {res}"
             ) from e
     return res
 
@@ -53,7 +58,7 @@ def write_config(component: str, config_file_path: str, content: str, is_json=Fa
     if not basedir.exists():
         basedir.mkdir(parents=True)
     file_path = os.path.join(basedir, config_file_path)
-    with open(file_path, "w") as file:
+    with open(file_path, "w", encoding="UTF-8") as file:
         if is_json:
             json.dump(content, file, indent=4)
         else:

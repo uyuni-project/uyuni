@@ -1,3 +1,4 @@
+"""Module that manages the supportconfig exporter container"""
 from uyuni_health_check import config
 from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
@@ -10,12 +11,12 @@ from uyuni_health_check.containers.manager import (
 
 def prepare_exporter(supportconfig_path: str, verbose: bool):
     """
-    Build the prometheus exporter image and deploy it on the server
+    Build the exporter image and deploy it on the server
 
     :param server: the Uyuni server to deploy the exporter on
     """
-    exporter_name = config.load_prop('exporter.container_name')
-    image = config.load_prop('exporter.image')
+    exporter_name = config.load_prop("exporter.container_name")
+    image = config.load_prop("exporter.image")
     console.log("[bold]Deploying supportconfig exporter")
 
     if container_is_running(f"{exporter_name}"):
@@ -39,7 +40,7 @@ def prepare_exporter(supportconfig_path: str, verbose: bool):
         "--replace",
         "--detach",
         "--network",
-        config.load_prop('podman.network_name'),
+        config.load_prop("podman.network_name"),
         "--publish",
         "9000:9000",
         "--volume",
