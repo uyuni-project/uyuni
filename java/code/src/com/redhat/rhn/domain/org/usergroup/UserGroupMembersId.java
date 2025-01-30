@@ -41,7 +41,7 @@ public class UserGroupMembersId implements Serializable {
 
     @Column(name = "temporary", insertable = false, updatable = false)
     @Type(type = "yes_no")
-    private Boolean temporary;
+    private boolean temporary;
 
     /**
      * default constructor

@@ -59,7 +59,7 @@ public class StateRevision {
     private Long id;
 
     @OneToMany(mappedBy = "stateRevision", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<PackageState> packageStates = new HashSet<>();;
+    private Set<PackageState> packageStates = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(
