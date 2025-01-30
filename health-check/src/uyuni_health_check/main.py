@@ -1,4 +1,6 @@
+"""Main module for the health check tool"""
 import click
+import os
 from rich.markdown import Markdown
 
 from uyuni_health_check.grafana.grafana_manager import prepare_grafana
@@ -6,8 +8,7 @@ import uyuni_health_check.utils as utils
 from uyuni_health_check.utils import console, HealthException
 from uyuni_health_check.loki.loki_manager import run_loki
 from uyuni_health_check.exporters import exporter
-from uyuni_health_check.containers.manager import create_podman_network
-import uyuni_health_check.metrics
+from uyuni_health_check.containers.manager import create_podman_network, clean_containers
 
 
 @click.group()
@@ -15,7 +16,6 @@ import uyuni_health_check.metrics
     "-s",
     "--supportconfig_path",
     help="Path to supportconfig path as the data source",
-    required=True,
 )
 @click.option(
     "-v",
@@ -66,6 +66,10 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     verbose: bool = ctx.obj["verbose"]
     supportconfig_path: str = ctx.obj["supportconfig_path"]
 
+    if not supportconfig_path or not os.path.exists(supportconfig_path):
+        console.log("[red bold] Supportconfig path not accessible, exitting")
+        exit(1)
+
     if not from_datetime and not to_datetime:
         from_datetime, to_datetime = utils.get_dates(since)
 
@@ -88,13 +92,13 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 @click.pass_context
 def clean(ctx: click.Context):
     verbose = ctx.obj["verbose"]
-    uyuni_health_check.containers.manager.clean_containers(verbose=verbose)
+    clean_containers(verbose=verbose)
     console.print(Markdown("# Execution Finished"))
 
 
 def main():
     console.print(Markdown("# Uyuni Health Check"))
-    cli()
+    cli() # pylint: disable=no-value-for-parameter
 
 
 if __name__ == "__main__":
