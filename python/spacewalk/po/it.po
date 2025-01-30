@@ -12,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-24 15:21+0100\n"
-"PO-Revision-Date: 2024-04-25 20:43+0000\n"
-"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
+"PO-Revision-Date: 2025-01-30 10:50+0000\n"
+"Last-Translator: Antonio Gemelli <antonio.gemelli@suse.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/backend-4-3/"
 "it/>\n"
 "Language: it\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../server/apacheAuth.py:66
 #, python-format
@@ -228,7 +228,7 @@ msgstr ""
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2278 ../server/rhnChannel.py:2293
 msgid "System Registered but Inactive"
-msgstr ""
+msgstr "Sistema registrato ma inattivo"
 
 #: ../server/rhnChannel.py:2279
 #, python-format
