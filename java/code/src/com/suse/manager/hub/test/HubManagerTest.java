@@ -79,6 +79,7 @@ import java.lang.reflect.Modifier;
 import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -108,49 +109,86 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     private String originalProductVersion;
 
     static class MockTaskomaticApi extends TaskomaticApi {
-        private boolean invokeCalled;
-        private String invokeName;
-        private String invokeBunch;
+        private int invoked;
+        private List<String> invokeNames;
+        private List<String> invokeBunches;
         private String invokeRootCaFilename;
         private String invokeRootCaContent;
+        private String invokeGpgKeyContent;
+        private int expectedInvocations;
+        private List<String> expectedInvocationNames;
+        private List<String> expectedInvocationBunches;
+        private String expectedRootCaFilename;
+        private String expectedRootCaContent;
+        private String expectedGpgKeyContent;
 
         MockTaskomaticApi() {
             resetTaskomaticCall();
         }
 
         public void resetTaskomaticCall() {
-            invokeCalled = false;
-            invokeName = "";
-            invokeBunch = "";
+            invoked = 0;
+            invokeNames = new ArrayList<>();
+            invokeBunches = new ArrayList<>();
             invokeRootCaFilename = null;
             invokeRootCaContent = null;
+            invokeGpgKeyContent = null;
         }
 
-        public void verifyTaskoRootCaCertUpdateCall(String expectedRootCaFilename,
-                                                    String expectedRootCaContent) {
-            assertTrue(invokeCalled);
-            assertEquals("tasko.scheduleSingleSatBunchRun", invokeName);
-            assertEquals("root-ca-cert-update-bunch", invokeBunch);
-            assertEquals(expectedRootCaFilename, invokeRootCaFilename);
-            assertEquals(expectedRootCaContent, invokeRootCaContent);
-            resetTaskomaticCall();
+        public void setExpectations(int expectedInvocationsIn,
+                                    List<String> expectedInvocationNamesIn,
+                                    List<String> expectedInvocationBunchesIn,
+                                    String expectedRootCaFilenameIn,
+                                    String expectedRootCaContentIn,
+                                    String expectedGpgKeyContentIn) {
+            expectedInvocations = expectedInvocationsIn;
+            expectedInvocationNames = expectedInvocationNamesIn;
+            expectedInvocationBunches = expectedInvocationBunchesIn;
+            expectedRootCaFilename = expectedRootCaFilenameIn;
+            expectedRootCaContent = expectedRootCaContentIn;
+            expectedGpgKeyContent = expectedGpgKeyContentIn;
+        }
+
+        public void verifyTaskoCall() {
+            assertEquals(expectedInvocations, invoked);
+            assertEquals(expectedInvocationNames, invokeNames);
+            assertEquals(expectedInvocationBunches, invokeBunches);
+            for (String bunch : invokeBunches) {
+                if (bunch.equals("root-ca-cert-update-bunch")) {
+                    assertEquals(expectedRootCaFilename, invokeRootCaFilename);
+                    assertEquals(expectedRootCaContent, invokeRootCaContent);
+                }
+                else if (bunch.equals("custom-gpg-key-import-bunch")) {
+                    assertEquals(expectedGpgKeyContent, invokeGpgKeyContent);
+                }
+                else {
+                    fail("Unexpected bunch called: " + bunch);
+                }
+            }
         }
 
         @Override
         protected Object invoke(String name, Object... args) throws TaskomaticApiException {
-            invokeCalled = true;
-            invokeName = name;
-            invokeBunch = (String) args[0];
+            invoked += 1;
+            invokeNames.add(name);
+            String bunch = (String) args[0];
+            invokeBunches.add(bunch);
             Map<String, Object> paramList = (Map<String, Object>) args[1];
-            Map<String, String> fileToCaCertMap = (Map<String, String>) paramList.get("filename_to_root_ca_cert_map");
-            Optional<Map.Entry<String, String>> firstKeyVal = fileToCaCertMap.entrySet().stream().findFirst();
-            if (firstKeyVal.isPresent()) {
-                invokeRootCaFilename = firstKeyVal.get().getKey();
-                invokeRootCaContent = firstKeyVal.get().getValue();
+            if (bunch.equals("root-ca-cert-update-bunch")) {
+                Map<String, String> fileToCaCertMap =
+                        (Map<String, String>) paramList.get("filename_to_root_ca_cert_map");
+                Optional<Map.Entry<String, String>> firstKeyVal = fileToCaCertMap.entrySet().stream().findFirst();
+                if (firstKeyVal.isPresent()) {
+                    invokeRootCaFilename = firstKeyVal.get().getKey();
+                    invokeRootCaContent = firstKeyVal.get().getValue();
+                }
+                else {
+                    invokeRootCaFilename = null;
+                    invokeRootCaContent = null;
+                }
             }
-            else {
-                invokeRootCaFilename = null;
-                invokeRootCaContent = null;
+            else if (bunch.equals("custom-gpg-key-import-bunch")) {
+                invokeGpgKeyContent = (String) paramList.get("gpg-key");
             }
             return null;
         }
@@ -459,36 +497,58 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canSaveRootCa() throws TaskomaticApiException {
+    public void canSaveRootCaAndGpg() throws TaskomaticApiException {
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(2,
+                List.of("tasko.scheduleSingleSatBunchRun", "tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch", "custom-gpg-key-import-bunch"),
+                "hub_dummy.hub.fqdn_root_ca.pem", "dummy-hub-certificate-data",
+                "dummy-gpg-key");
         hubManager.saveNewServer(getValidToken("dummy.hub.fqdn"), IssRole.HUB, "dummy-hub-certificate-data",
-                "");
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy.hub.fqdn_root_ca.pem",
-                "dummy-hub-certificate-data");
+                "dummy-gpg-key");
+        mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "hub_dummy2.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.hub.fqdn"), IssRole.HUB, "", "");
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy2.hub.fqdn_root_ca.pem", "");
+        mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "hub_dummy3.hub.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.hub.fqdn"), IssRole.HUB, null, null);
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("hub_dummy3.hub.fqdn_root_ca.pem", "");
+        mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "peripheral_dummy.periph.fqdn_root_ca.pem",
+                "dummy-periph-certificate-data", null);
         hubManager.saveNewServer(getValidToken("dummy.periph.fqdn"), IssRole.PERIPHERAL,
                 "dummy-periph-certificate-data", null);
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy.periph.fqdn_root_ca.pem",
-                "dummy-periph-certificate-data");
+        mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "peripheral_dummy2.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy2.periph.fqdn"), IssRole.PERIPHERAL, "", "");
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy2.periph.fqdn_root_ca.pem",
-                "");
+        mockTaskomaticApi.verifyTaskoCall();
 
         mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(1,
+                List.of("tasko.scheduleSingleSatBunchRun"),
+                List.of("root-ca-cert-update-bunch"),
+                "peripheral_dummy3.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
-        mockTaskomaticApi.verifyTaskoRootCaCertUpdateCall("peripheral_dummy3.periph.fqdn_root_ca.pem",
-                "");
+        mockTaskomaticApi.verifyTaskoCall();
     }
 
     @Test
