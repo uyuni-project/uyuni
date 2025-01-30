@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
@@ -42,9 +43,12 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.RhnMockHttpServletResponse;
+import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubClientFactory;
+import com.suse.manager.hub.HubController;
 import com.suse.manager.hub.HubExternalClient;
 import com.suse.manager.hub.HubInternalClient;
 import com.suse.manager.hub.HubManager;
@@ -59,10 +63,13 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
+import com.suse.utils.Json;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -80,10 +87,18 @@ import java.security.cert.CertificateException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import spark.Request;
+import spark.RequestResponseFactory;
+import spark.Response;
+import spark.RouteImpl;
+import spark.route.HttpMethod;
+import spark.routematch.RouteMatch;
 
 public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
@@ -625,5 +640,83 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         return null;
+    }
+
+    @Test
+    public void checkApiManagerinfo() throws Exception {
+        String apiUnderTest = "/hub/managerinfo";
+
+        String answerOK = (String) simulateHubControllerApi(apiUnderTest, HttpMethod.get, IssRole.HUB);
+        ManagerInfoJson mgrInfo = Json.GSON.fromJson(answerOK, ManagerInfoJson.class);
+        assertEquals("5.1.0", mgrInfo.getVersion());
+    }
+
+    @Test
+    public void ensureApiManagerinfoNotWorkingOnPut() {
+        String apiUnderTest = "/hub/managerinfo";
+
+        assertThrows(IllegalStateException.class,
+                () -> simulateHubControllerApi(apiUnderTest, HttpMethod.put, IssRole.HUB));
+    }
+
+    @Test
+    public void ensureApiManagerinfoNotWorkingOnPeripheral() throws Exception {
+        String apiUnderTest = "/hub/managerinfo";
+
+        String answerKO = (String) simulateHubControllerApi(apiUnderTest, HttpMethod.get, IssRole.PERIPHERAL);
+        ResultJson<?> resultKO = Json.GSON.fromJson(answerKO, ResultJson.class);
+        assertFalse(resultKO.isSuccess());
+        assertEquals("Token does not allow access to this resource", resultKO.getMessages().get(0));
+    }
+
+    private Object simulateHubControllerApi(String apiEndpoint, HttpMethod httpMethod, IssRole role)
+            throws Exception {
+        String dummyServerFqdn = "dummy-server.unit-test.local";
+
+        HubController syncController = new HubController();
+        syncController.initRoutes();
+
+        Token dummyServerToken = new IssTokenBuilder(dummyServerFqdn)
+                .usingServerSecret()
+                .build();
+        String authBearerToken = dummyServerToken.getSerializedForm();
+
+        hubFactory.saveToken(dummyServerFqdn, authBearerToken, TokenType.ISSUED, dummyServerToken.getExpirationTime());
+        switch (role) {
+            case HUB:
+                hubFactory.save(new IssHub(dummyServerFqdn, ""));
+                break;
+            case PERIPHERAL:
+                hubFactory.save(new IssPeripheral(dummyServerFqdn, ""));
+                break;
+            default:
+                throw new IllegalArgumentException("unsupported role " + role.getLabel());
+        }
+
+        return simulateApiEndpointCall(apiEndpoint, httpMethod, authBearerToken);
+    }
+
+    //maybe this method could be moved to SparkTestUtils?
+    private Object simulateApiEndpointCall(String apiEndpoint, HttpMethod httpMethod, String authBearerToken)
+            throws Exception {
+        Optional<RouteMatch> routeMatch = spark.Spark.routes()
+                .stream()
+                .filter(e -> apiEndpoint.equals(e.getMatchUri()))
+                .filter(e -> httpMethod.equals(e.getHttpMethod()))
+                .findAny();
+
+        if (routeMatch.isEmpty()) {
+            throw new IllegalStateException("route not found for " + apiEndpoint);
+        }
+
+        RouteImpl routeImpl = (RouteImpl) routeMatch.get().getTarget();
+
+        Map<String, String> httpHeaders = Map.of("Authorization", "Bearer " + authBearerToken);
+        Request dummyTestRequest =
+                SparkTestUtils.createMockRequestWithParams(apiEndpoint, new HashMap<>(), httpHeaders);
+        Response dummyTestResponse = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        Object returnObject = routeImpl.handle(dummyTestRequest, dummyTestResponse);
+        HibernateFactory.rollbackTransaction();
+        return returnObject;
     }
 }
