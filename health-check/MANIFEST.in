@@ -1,0 +1,3 @@
+include src/health_check/config.toml
+recursive-include src/health_check/config *
+recursive-include src/health_check/containers *

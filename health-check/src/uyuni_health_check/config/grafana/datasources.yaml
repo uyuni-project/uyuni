@@ -8,7 +8,7 @@ datasources:
   type: loki
   access: proxy 
   orgId: 1
-  url: http://uyuni_health_check_loki:3100
+  url: http://health_check_loki:3100
   basicAuth: false
   isDefault: true
   version: 1
