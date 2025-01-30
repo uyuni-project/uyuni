@@ -18,6 +18,7 @@ package com.redhat.rhn.common.finder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A Finder implementation that uses multiple finders to search
@@ -34,6 +35,6 @@ class CompositeFinder implements Finder {
     public List<String> findExcluding(String[] excluding, String endStr) {
         return this.finderList.stream()
                               .flatMap(finder -> finder.findExcluding(excluding, endStr).stream())
-                              .toList();
+                              .collect(Collectors.toList());
     }
 }

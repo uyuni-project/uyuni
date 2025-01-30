@@ -52,6 +52,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -297,7 +298,7 @@ public class ImageStoreController {
         List<ImageStore> imageStores = ImageStoreFactory.listImageStores(user.getOrg())
                 .stream()
                 .filter(s -> s.getStoreType().equals(ImageStoreFactory.TYPE_REGISTRY))
-                .toList();
+                .collect(Collectors.toList());
 
         return json(res, getJsonList(imageStores), new TypeToken<>() { });
     }
@@ -409,7 +410,7 @@ public class ImageStoreController {
             json.addProperty("uri", uriPrefix + imageStore.getUri());
             json.addProperty("type", imageStore.getStoreType().getLabel());
             return json;
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
     private static void setStoreCredentials(ImageStore store, ImageStoreCreateRequest request) {

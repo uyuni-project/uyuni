@@ -38,6 +38,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -325,6 +326,6 @@ public class MinionServerFactory extends HibernateFactory {
         return allMinions.stream().filter(
                 minionSummary -> MinionServerFactory.findByMinionId(minionSummary.getMinionId())
                 .map(Server::isDeniedOnPayg)
-                .orElse(false)).toList();
+                .orElse(false)).collect(Collectors.toList());
     }
 }

@@ -129,7 +129,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-                }).toList();
+                }).collect(Collectors.toList());
 
         m.executeUpdates(parameterList);
     }
@@ -154,7 +154,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-        }).toList();
+        }).collect(Collectors.toList());
 
         m.executeUpdates(parameterList);
     }
@@ -428,7 +428,7 @@ public class CVEAuditManager {
                     ).entrySet()
                     .stream()
                     // its safe to call get here since groupingBy will not produce empty lists
-                    .map(s -> s.getValue().get()).toList();
+                    .map(s -> s.getValue().get()).collect(Collectors.toList());
         });
     }
 
@@ -907,7 +907,7 @@ public class CVEAuditManager {
                         system.getPatchStatus(),
                         system.getChannels(),
                         system.getErratas()
-                )).toList();
+                )).collect(Collectors.toList());
     }
 
     /**

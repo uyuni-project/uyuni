@@ -103,7 +103,7 @@ public class RouteFactory {
         return Collectors.collectingAndThen(
                 Collectors.toList(),
                 list -> {
-                    list = list.stream().filter(Objects::nonNull).toList();
+                    list = list.stream().filter(Objects::nonNull).collect(Collectors.toList());
                     if (list.size() > 1) {
                         throw new IllegalStateException("Multiple items found.");
                     }

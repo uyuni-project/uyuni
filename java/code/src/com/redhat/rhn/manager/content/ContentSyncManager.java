@@ -328,7 +328,7 @@ public class ContentSyncManager {
         catch (IOException e) {
             LOG.error(e.getMessage(), e);
         }
-        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).toList()));
+        repos.addAll(collectRepos(flattenProducts(getAdditionalProducts()).collect(Collectors.toList())));
         return repos;
     }
 
@@ -506,7 +506,7 @@ public class ContentSyncManager {
                     return new MgrSyncProductDto(
                             root.getFriendlyName(), root.getProductId(), root.getId(), root.getVersion(), false,
                             baseChannel, allChannels, extensions);
-                }).toList();
+                }).collect(Collectors.toList());
     }
 
     /**
@@ -871,7 +871,7 @@ public class ContentSyncManager {
         List<SCCRepositoryJson> ptfRepos = repositories.stream()
                 .filter(r -> !availableRepoIds.contains(r.getSCCId()))
                 .filter(SCCRepositoryJson::isPtfRepository)
-                .toList();
+                .collect(Collectors.toList());
         generatePtfChannels(ptfRepos);
         Map<Long, SCCRepository> availableReposById = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(SCCRepository::getSccId, r -> r));
@@ -1095,7 +1095,7 @@ public class ContentSyncManager {
 
                     List<String> cList = Stream.concat(ptfInfo.getChannelParts().stream(), suffix.stream())
                             .filter(e -> !e.isBlank())
-                            .toList();
+                            .collect(Collectors.toList());
 
                     template.setChannelLabel(String.join("-", cList).toLowerCase().replaceAll("( for | )", "-"));
                     template.setChannelName(String.join(" ", cList));
@@ -1355,7 +1355,7 @@ public class ContentSyncManager {
             List<ContentSyncSource> sources = filterCredentials();
             List<SCCSubscriptionJson> subscriptions = sources.stream()
                     .flatMap(source -> updateSubscriptions(source).stream())
-                    .toList();
+                    .collect(Collectors.toList());
 
             LOG.debug("Found {} available subscriptions.", subscriptions.size());
             return subscriptions;
@@ -1633,7 +1633,7 @@ public class ContentSyncManager {
         });
 
         return tree.stream()             .filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1655,7 +1655,7 @@ public class ContentSyncManager {
      * @return a list of repositories
      */
     public static List<SCCRepositoryJson> collectRepos(List<SCCProductJson> products) {
-        return products.stream().flatMap(p -> p.getRepositories().stream()).toList();
+        return products.stream().flatMap(p -> p.getRepositories().stream()).collect(Collectors.toList());
     }
 
     private static <T> Map<Long, T> productAttributeOverride(List<ProductTreeEntry> tree,
@@ -1699,7 +1699,7 @@ public class ContentSyncManager {
                     .setProductType(productType)
                     .setReleaseStage(releaseStage)
                     .build();
-        }).toList();
+        }).collect(Collectors.toList());
     }
 
 
@@ -1957,7 +1957,7 @@ public class ContentSyncManager {
                         Stream.concat(
                                 products.stream(),
                                 getAdditionalProducts().stream()
-                        ).toList(),
+                        ).collect(Collectors.toList()),
                         loadStaticTree(), getAdditionalRepositories())
         );
     }
@@ -1975,7 +1975,7 @@ public class ContentSyncManager {
         Map<Long, SUSEProduct> processed = new HashMap<>();
 
         List<SCCProductJson> allProducts = overrideProductAttributes(
-                flattenProducts(products).toList(),
+                flattenProducts(products).collect(Collectors.toList()),
                 staticTree
         );
 
@@ -2129,7 +2129,7 @@ public class ContentSyncManager {
                 .map(ChannelTemplate::getProduct)
                 .distinct()
                 .flatMap(p -> getAvailableChannels(p, p, entriesByProducts, repoIdsWithAuth, allSUSEProdExt))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -2196,7 +2196,7 @@ public class ContentSyncManager {
         return listProducts().stream().flatMap(p -> Stream.concat(
                 p.getChannels().stream(),
                 p.getExtensions().stream().flatMap(e -> e.getChannels().stream())
-        )).toList();
+        )).collect(Collectors.toList());
     }
 
     protected Optional<String> getTokenFromURL(String url) {

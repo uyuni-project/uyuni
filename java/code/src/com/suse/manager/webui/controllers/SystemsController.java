@@ -191,7 +191,7 @@ public class SystemsController {
             return json(response, virtual.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(VirtualSystemOverview::getUuid)
-                    .toList()
+                    .collect(Collectors.toList())
             );
         }
 
@@ -280,7 +280,7 @@ public class SystemsController {
             return json(response, systems.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(SystemOverview::getId)
-                    .toList(), new TypeToken<>() { });
+                    .collect(Collectors.toList()), new TypeToken<>() { });
         }
 
         DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
@@ -509,7 +509,7 @@ public class SystemsController {
                             c.isCloned(),
                             c.getArchLabel()
                             ))
-                    .toList();
+                    .collect(Collectors.toList());
 
             return result(response, ResultJson.success(baseChannels), new TypeToken<>() { });
         });
@@ -679,7 +679,7 @@ public class SystemsController {
                                 c.getChannelArch().getLabel(),
                                 channelRecommendedFlags.get(c.getId()),
                                 preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
-                        .toList();
+                        .collect(Collectors.toList());
                 return result(response, ResultJson.success(jsonList), new TypeToken<>() { });
             }
             catch (LookupException e) {

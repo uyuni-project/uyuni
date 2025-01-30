@@ -37,6 +37,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -100,7 +101,7 @@ public class DependencyResolver {
                 .filter(f -> f instanceof ModuleFilter)
                 .map(ModuleFilter.class::cast)
                 .filter(f -> FilterCriteria.Matcher.EQUALS.equals(f.getCriteria().getMatcher()))
-                .toList();
+                .collect(toList());
 
         if (isModulesDisabled(filters) && !moduleFilters.isEmpty()) {
             throw new DependencyResolutionException("Modularity is disabled.", new ModularityDisabledException());
@@ -135,7 +136,7 @@ public class DependencyResolver {
     private DependencyResolutionResult resolveModularDependencies(List<ModuleFilter> filters)
             throws DependencyResolutionException {
         List<Channel> sources = this.getActiveSources();
-        List<Module> modules = filters.stream().map(ModuleFilter::getModule).toList();
+        List<Module> modules = filters.stream().map(ModuleFilter::getModule).collect(toList());
         ModulePackagesResponse modPkgList;
         try {
             modPkgList = modulemdApi.getPackagesForModules(sources, modules);
@@ -144,7 +145,7 @@ public class DependencyResolver {
             throw new DependencyResolutionException("Failed to resolve modular dependencies.", e);
         }
 
-        List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).toList();
+        List<Module> resolvedModules = modPkgList.getSelected().stream().map(Module::new).collect(Collectors.toList());
 
         // 1. Modular packages to be denied
         PackageFilter pkgDenyFilter = new ModularPackageFilter();
@@ -201,7 +202,7 @@ public class DependencyResolver {
                 .filter(Optional::isPresent)
                 .map(s -> s.get().getChannel())
                 .filter(Channel::isModular)
-                .toList();
+                .collect(toList());
     }
 
 }

@@ -30,6 +30,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
 
@@ -62,7 +63,7 @@ public class AbstractSCCSystemRegistrationTest extends BaseTestCaseWithUser {
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();
         this.testSystems = allUnregistered.stream()
                 .filter(i -> i.getOptServer().get().getServerInfo().getCheckin().equals(new Date(0)))
-                .toList();
+                .collect(Collectors.toList());
     }
 
 

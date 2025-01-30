@@ -101,7 +101,7 @@ public class ServletUtils {
 
             List<String> allValues = values.stream()
                     .map(v -> StringUtil.urlEncode(me.getKey()) + "=" + v)
-                    .toList();
+                    .collect(Collectors.toList());
 
             if (!allValues.isEmpty()) {
                 if (firstPass) {

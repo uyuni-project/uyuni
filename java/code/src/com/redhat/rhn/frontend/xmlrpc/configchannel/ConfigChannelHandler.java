@@ -68,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ConfigHandler
@@ -1030,6 +1031,6 @@ public class ConfigChannelHandler extends BaseHandler {
         List<Long> groupIds = StateFactory.listConfigChannelsSubscribedGroupIds(channel);
         return groupIds.stream()
             .map(gid -> ServerGroupFactory.lookupByIdAndOrg(gid, loggedInUser.getOrg()))
-            .toList();
+            .collect(Collectors.toList());
     }
 }

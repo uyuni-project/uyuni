@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class CoCoAttestationReportJson {
     private final long id;
@@ -84,7 +85,7 @@ public class CoCoAttestationReportJson {
             .map(label -> LocalizationService.getInstance().getMessage(label)).orElse(null);
         this.actionScheduledBy = action.map(Action::getSchedulerUser).map(User::getLogin).orElse(null);
 
-        this.results = report.getResults().stream().map(CoCoAttestationResultJson::new).toList();
+        this.results = report.getResults().stream().map(CoCoAttestationResultJson::new).collect(Collectors.toList());
     }
 
     public long getId() {
