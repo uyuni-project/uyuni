@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -25,6 +25,7 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
+    And files on container volumes should all have the proper SELinux label
 
 @proxy
   Scenario: The proxy is healthy
