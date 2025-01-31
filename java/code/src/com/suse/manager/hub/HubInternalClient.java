@@ -52,4 +52,19 @@ public interface HubInternalClient {
      */
     void storeReportDbCredentials(String username, String password) throws IOException;
 
+    /**
+     * De-register the calling server from the remote side
+     *
+     * @throws IOException when the communication fails
+     */
+    void deregister() throws IOException;
+
+    /**
+     * Replace the hub token on the remote peripheral server and get a new peripheral token back
+     * @param newHubToken the new hub token
+     * @return return the new peripheral token
+     * @throws IOException when the communication fails
+     */
+    String replaceTokens(String newHubToken) throws IOException;
+
 }
