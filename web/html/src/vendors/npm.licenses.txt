@@ -341,6 +341,13 @@ SOFTWARE.
 
 
 --------------------------------------------------------------------------------
+@etheryte/react-hooks v2.0.4 - Etheryte
+git+https://github.com/Etheryte/react-hooks.git
+--------------------------------------------------------------------------------
+
+
+
+--------------------------------------------------------------------------------
 @formatjs/ecma402-abstract v1.17.0 - Long Ho <holevietlong@gmail.com
 git@github.com:formatjs/formatjs.git
 --------------------------------------------------------------------------------
@@ -2585,7 +2592,7 @@ TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
-prop-types v15.7.2
+prop-types v15.8.1
 facebook/prop-types
 --------------------------------------------------------------------------------
 

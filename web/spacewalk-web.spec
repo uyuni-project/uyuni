@@ -64,7 +64,12 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+<<<<<<< HEAD
+License:         AND (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+=======
+License:         AND (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND MIT
+# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
+>>>>>>> 72c759a23d6 (Migrate proxy settings to React, fix input bugs and async issues (bsc#1235527) (#9644))
 Group:          Applications/Internet
 Requires:       httpd
 Requires:       spacewalk-branding
