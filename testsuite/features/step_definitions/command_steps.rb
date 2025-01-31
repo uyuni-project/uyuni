@@ -1545,13 +1545,15 @@ When(/^I generate the configuration "([^"]*)" of containerized proxy on the serv
 
     command = 'spacecmd -u admin -p admin ' \
               "proxy_container_config -- -o #{file_path} -p 8022 " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target('proxy').full_hostname.sub('proxy', 'pod-proxy')} " \
+              "#{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '/tmp/ca.crt /tmp/proxy.crt /tmp/proxy.key'
   else
     command = 'echo spacewalk > ca_pass && ' \
               'spacecmd --nossl -u admin -p admin ' \
               "proxy_container_config_generate_cert -- -o #{file_path} " \
-              "#{get_target('proxy').full_hostname} #{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
+              "#{get_target('proxy').full_hostname.sub('proxy', 'pod-proxy')} " \
+              "#{get_target('server').full_hostname} 2048 galaxy-noise@suse.de " \
               '--ssl-cname proxy.example.org --ca-pass ca_pass && ' \
               'rm ca_pass'
   end

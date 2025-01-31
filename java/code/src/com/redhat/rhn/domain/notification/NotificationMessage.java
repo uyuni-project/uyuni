@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
 import com.redhat.rhn.domain.notification.types.PaygNotCompliantWarning;
+import com.redhat.rhn.domain.notification.types.SCCOptOutWarning;
 import com.redhat.rhn.domain.notification.types.StateApplyFailed;
 import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
@@ -140,6 +141,8 @@ public class NotificationMessage implements Serializable {
                 return new Gson().fromJson(getData(), UpdateAvailable.class);
             case PaygNotCompliantWarning:
                 return new Gson().fromJson(getData(), PaygNotCompliantWarning.class);
+            case SCCOptOutWarning:
+                return new Gson().fromJson(getData(), SCCOptOutWarning.class);
             default: throw new RuntimeException("Notification type not found");
         }
     }
@@ -161,6 +164,7 @@ public class NotificationMessage implements Serializable {
             case SubscriptionWarning: return "Subscription Warning";
             case UpdateAvailable: return "Updates are Available";
             case PaygNotCompliantWarning: return "PAYG instance is not compliant";
+            case SCCOptOutWarning: return "SCC Data Sync Disabled";
             default: return getType().name();
         }
     }

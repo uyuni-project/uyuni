@@ -65,6 +65,7 @@ import com.suse.manager.webui.controllers.VirtualHostManagerController;
 import com.suse.manager.webui.controllers.VisualizationController;
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
+import com.suse.manager.webui.controllers.admin.EnableSCCDataForwardingController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.controllers.channels.ChannelsApiController;
@@ -186,6 +187,8 @@ public class Router implements SparkApplication {
 
         // Recurring Action
         RecurringActionController.initRoutes(jade);
+
+        EnableSCCDataForwardingController.initRoutes(jade);
 
         // Subscription Matching
         SubscriptionMatchingController.initRoutes(jade);

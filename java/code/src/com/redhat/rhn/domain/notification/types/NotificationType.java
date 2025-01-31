@@ -28,4 +28,5 @@ public enum NotificationType {
     SubscriptionWarning,
     UpdateAvailable,
     PaygNotCompliantWarning,
+    SCCOptOutWarning,
 }
