@@ -5990,8 +5990,8 @@ usuari abans d'intentar desactivar el seu compte.</target>
         </context-group>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
-        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
-        <target state="translated">Acabeu de crear el primer usuari del PRODUCTNAMEPRODUCTNAME.. Per a finalitzar la instal·lació, utilitzeu lt;a href."/rhn/admin/setup/ProxySettings.do"gt;Auxiliar d'instal·laciólt;/agt;.</target>
+        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
+        <target state="needs-adaptation">Acabeu de crear el primer usuari del PRODUCTNAMEPRODUCTNAME.. Per a finalitzar la instal·lació, utilitzeu lt;a href."/rhn/admin/setup/ProxySettings.do"gt;Auxiliar d'instal·laciólt;/agt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>

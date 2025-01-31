@@ -4522,56 +4522,56 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="org-config.scapfile-upload.jsp" xml:space="preserve">
         <source>Enable Upload Of Detailed SCAP Files</source>
-        <target/>
+        <target state="translated">Povoliť nahranie podrobných súborov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scapfile-sizelimit.jsp" xml:space="preserve">
         <source>SCAP File Upload Size Limit</source>
-        <target/>
+        <target state="translated">Obmedzenie veľkosti nahrávania súborov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scap-retention" xml:space="preserve">
         <source>Allow Deletion of SCAP Results</source>
-        <target/>
+        <target state="translated">Umožniť vymazanie výsledkov SCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org-config.scap-retention-period" xml:space="preserve">
         <source>Allow Deletion After (period in days)</source>
-        <target/>
+        <target state="translated">Umožniť vymazanie po (doba v dňoch)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.id.jsp" xml:space="preserve">
         <source>Organization ID</source>
-        <target/>
+        <target state="translated">ID organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.actkeys.jsp" xml:space="preserve">
         <source>Activation Keys</source>
-        <target/>
+        <target state="translated">Aktivačné kľúče</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.kickstart.profiles.jsp" xml:space="preserve">
         <source>Autoinstallation Profiles</source>
-        <target/>
+        <target state="translated">Profily automatickej inštalácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.config.channels.jsp" xml:space="preserve">
         <source>Configuration Channels</source>
-        <target/>
+        <target state="translated">Konfiguračné kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
@@ -4585,84 +4585,84 @@ budete okamžite odhlásení a &lt;b&gt;nebudete sa môcť znova prihlásiť&lt;
       </trans-unit>
       <trans-unit id="org.displayname" xml:space="preserve">
         <source>Organization</source>
-        <target/>
+        <target state="translated">Organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Users.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgdetails.jsp.submit" xml:space="preserve">
         <source>Update Organization</source>
-        <target/>
+        <target state="translated">Aktualizovať organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgchannel.jsp.submit" xml:space="preserve">
         <source>Modify Access</source>
-        <target/>
+        <target state="translated">Zmeniť prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/channels/OrgList.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgdelete.jsp.submit" xml:space="preserve">
         <source>Delete Organization</source>
-        <target/>
+        <target state="translated">Vymazať organizáciu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/DeleteOrg.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orgname.jsp.error" xml:space="preserve">
         <source>Organization Name must be between 3 and 128 characters.</source>
-        <target/>
+        <target state="translated">Názov organizácie musí mať 3 až 128 znakov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgDetails.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.users.summary" xml:space="preserve">
         <source>The following is a list of all users in the {0} organization. Note that you will only have access to modify the details of these users if you are logged into the {0} organization and have organization administrator privileges.</source>
-        <target/>
+        <target state="translated">Nasleduje zoznam všetkých používateľov v organizácii {0}. Treba upozorniť, že k zmene údajov o týchto používateľoch budete mať prístup len vtedy, ak ste prihlásení do organizácie {0} a máte oprávnenia administrátora organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="orglist.jsp.noOrgs" xml:space="preserve">
         <source>No Organizations.</source>
-        <target/>
+        <target state="translated">Žiadne organizácie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.jsp.noUsers" xml:space="preserve">
         <source>No Users.</source>
-        <target/>
+        <target state="translated">Žiadni používatelia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/UserList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.nopunc.displayname" xml:space="preserve">
         <source>Organization</source>
-        <target/>
+        <target state="translated">Organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
       </trans-unit>
       <trans-unit id="org.nopunc.sharedchannels" xml:space="preserve">
         <source>Channels Shared</source>
-        <target/>
+        <target state="translated">Zdieľané kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/multiorg/Organization</context>
         </context-group>
       </trans-unit>
       <trans-unit id="users.nopunc.displayname" xml:space="preserve">
         <source>Users</source>
-        <target/>
+        <target state="translated">Používatelia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.nopunc.displayname" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/Organization</context>
         </context-group>
@@ -4673,19 +4673,23 @@ not be modified on this page. Instead, please visit the "Users" top-level
 navigational tab above to access the profiles of individual users in your
 organization. You may grant or remove the organization administrator role in the
 "Roles" section of the "Details" tab in individual users' profiles.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;*Tip:&lt;/strong&gt; Na tejto stránke nie je možné zmeniť oprávnenia
+administrátora organizácie. Namiesto toho navštívte vyššie navigačnú kartu "Používatelia"
+na najvyššej úrovni, aby ste získali prístup k profilom jednotlivých používateľov
+vo vašej organizácii. Rolu administrátora organizácie môžete udeliť alebo odobrať
+v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov.</target>
       </trans-unit>
       <trans-unit id="organizations.tip" xml:space="preserve">
         <source>&lt;strong&gt;Tip:&lt;/strong&gt; This organization is your @@PRODUCT_NAME@@'s default organization.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;Tip:&lt;/strong&gt; Táto organizácia je vaša predvolená organizácia pre @@PRODUCT_NAME@@.</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.unlimited" xml:space="preserve">
         <source>unlimited</source>
-        <target/>
+        <target state="translated">neobmedzené</target>
       </trans-unit>
       <trans-unit id="softwareEntitlements.notApplicable" xml:space="preserve">
         <source>N/A</source>
-        <target/>
+        <target state="translated">N/A</target>
       </trans-unit>
       <trans-unit id="softwareEntitlementDetails.header.entitlementUsage" xml:space="preserve">
         <source>Entitlement Usage</source>
@@ -4693,29 +4697,29 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="probedetails.jsp.start_date" xml:space="preserve">
         <source>Start date:</source>
-        <target/>
+        <target state="translated">Dátum začiatku:</target>
       </trans-unit>
       <trans-unit id="probedetails.jsp.end_date" xml:space="preserve">
         <source>End date:</source>
-        <target/>
+        <target state="translated">Dátum konca:</target>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.start_date" xml:space="preserve">
         <source>Issue Start Date: </source>
-        <target/>
+        <target state="translated">Dátum začiatku vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.end_date" xml:space="preserve">
         <source>Issue End Date: </source>
-        <target/>
+        <target state="translated">Dátum konca vydania: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search.tip" xml:space="preserve">
         <source>'kernel', 'slessp1-glibc'</source>
-        <target/>
+        <target state="translated">'kernel', 'slessp1-glibc'</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search.do</context>
         </context-group>
@@ -4729,7 +4733,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratasearch.jsp.summary" xml:space="preserve">
         <source>Advanced Search will return results from the complete set of patches released by @@PRODUCT_NAME@@.</source>
-        <target/>
+        <target state="translated">Pokročilé vyhľadávanie vráti výsledky z kompletného súboru opráv vydaných @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
@@ -4743,124 +4747,124 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratasearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
-        <target/>
+        <target state="translated">Hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
-        <target/>
+        <target state="translated">Čo treba hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.errata_advisory" xml:space="preserve">
         <source>Patch Advisory</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="simple_errata_search" xml:space="preserve">
         <source>Synopsis</source>
-        <target/>
+        <target state="translated">Súhrn</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_advisory" xml:space="preserve">
         <source>Patch Advisory (ex: slessp1-glibc)</source>
-        <target/>
+        <target state="translated">Upozornenie na opravu (napr.: slessp1-glibc)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_package_name" xml:space="preserve">
         <source>Package Name (ex: kernel)</source>
-        <target/>
+        <target state="translated">Názov balíka (napr.: jadro)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_cve" xml:space="preserve">
         <source>CVE (ex: CVE-2006-4535)</source>
-        <target/>
+        <target state="translated">CVE (napr.: CVE-2006-4535)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.search_by_issue_dates" xml:space="preserve">
         <source>Search by Issue Dates:</source>
-        <target/>
+        <target state="translated">Vyhľadávanie podľa dátumu vydania:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.issue_date" xml:space="preserve">
         <source>Issue Dates to Search:</source>
-        <target/>
+        <target state="translated">Dátumy vydania na vyhľadávanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata_search_by_all_fields" xml:space="preserve">
         <source>All Fields </source>
-        <target/>
+        <target state="translated">Všetky polia </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="search.jsp.package_name" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.noerrata" xml:space="preserve">
         <source>No patches.</source>
-        <target/>
+        <target state="translated">Žiadne opravy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.whatsearch.tip" xml:space="preserve">
         <source>Use 'all fields' to search synopsis, description, topic, or solution.</source>
-        <target/>
+        <target state="translated">Použite 'všetky polia' na vyhľadávanie súhrnu, opisu, predmetu alebo riešenia.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratasearch.jsp.types_to_search" xml:space="preserve">
         <source>Types of Patches to Search:.</source>
-        <target/>
+        <target state="translated">Typy opráv na vyhľadávanie:.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.issueDate" xml:space="preserve">
         <source>Issue Date</source>
-        <target/>
+        <target state="translated">Dátum vydania</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="erratalist.jsp.ownederratapagesummary" xml:space="preserve">
         <source> &lt;p&gt; The following patch list represents patches owned by your organization.&lt;/p&gt; &lt;p&gt; Click on a patch's advisory to edit the patch details or the list of packages to which the patch applies. &lt;/p&gt;</source>
-        <target/>
+        <target state="translated"> &lt;p&gt; Nasledujúci zoznam opráv predstavuje opravy, ktoré vlastní vaša organizácia.&lt;/p&gt; &lt;p&gt; Kliknutím na upozornenie na opravu môžete upraviť podrobnosti o oprave alebo zoznam balíkov, na ktoré sa oprava vzťahuje. &lt;/p&gt;</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.erratamgmt" xml:space="preserve">
         <source>Patches Management</source>
-        <target/>
+        <target state="translated">Správa opráv</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Opravy</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.deleteerrata" xml:space="preserve">
         <source>Delete Patches</source>
-        <target/>
+        <target state="translated">Vymazať opravy</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata" xml:space="preserve">
         <source>Clone Patches</source>
@@ -4918,49 +4922,49 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="details.jsp.keywords" xml:space="preserve">
         <source>Keywords</source>
-        <target/>
+        <target state="translated">Kľúčové slová</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.cves" xml:space="preserve">
         <source>CVEs</source>
-        <target/>
+        <target state="translated">CVE</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.references" xml:space="preserve">
         <source>References</source>
-        <target/>
+        <target state="translated">Odkazy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.none" xml:space="preserve">
         <source>&lt;span class="no-details"&gt;(none)&lt;/span&gt;</source>
-        <target/>
+        <target state="translated">&lt;span class="no-details"&gt;(žiadne)&lt;/span&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.issued" xml:space="preserve">
         <source>Issued:</source>
-        <target/>
+        <target state="translated">Vydané:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.updated" xml:space="preserve">
         <source>Updated:</source>
-        <target/>
+        <target state="translated">Aktualizované:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.bugnumber" xml:space="preserve">
         <source>Bug# {0}</source>
-        <target/>
+        <target state="translated">Chyba# {0}</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
           <context context-type="paramnotes">Numerical id of a bug</context>
@@ -4968,154 +4972,154 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.create.jsp.createerrata" xml:space="preserve">
         <source>Create Patch</source>
-        <target/>
+        <target state="translated">Vytvoriť opravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.instructions" xml:space="preserve">
         <source>Create new patch here.  Required items are marked with a (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Note that the patch will be directly added to one or more channels chosen below.</source>
-        <target/>
+        <target state="translated">Vytvorte novú opravu tu.  Požadované položky sú označené (&lt;span class="required-form-field"&gt;*&lt;/span&gt;). Treba upozorniť, že oprava bude priamo pridaná do jedného alebo viacerých kanálov vybraných nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.synopsis" xml:space="preserve">
         <source>Synopsis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Súhrn&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisory" xml:space="preserve">
         <source>Advisory&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Upozornenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryrelease" xml:space="preserve">
         <source>Advisory Release&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Vydanie upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisorytype" xml:space="preserve">
         <source>Advisory Type&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Typ upozornenia&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.advisoryseverity" xml:space="preserve">
         <source>Advisory Severity:</source>
-        <target/>
+        <target state="translated">Závažnosť upozornenia:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.product" xml:space="preserve">
         <source>Product&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Produkt&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.from" xml:space="preserve">
         <source>Author:</source>
-        <target/>
+        <target state="translated">Autor:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugs" xml:space="preserve">
         <source>Bugs:</source>
-        <target/>
+        <target state="translated">Chyby:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.newbug" xml:space="preserve">
         <source>New Bug</source>
-        <target/>
+        <target state="translated">Nová chyba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.id" xml:space="preserve">
         <source>ID:</source>
-        <target/>
+        <target state="translated">ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.summary" xml:space="preserve">
         <source>Summary:</source>
-        <target/>
+        <target state="translated">Súhrn:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.bugurl" xml:space="preserve">
         <source>Bugzilla URL:</source>
-        <target/>
+        <target state="translated">Bugzilla URL:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.topic" xml:space="preserve">
         <source>Topic&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Predmet&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.description" xml:space="preserve">
         <source>Description&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Popis&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.solution" xml:space="preserve">
         <source>Solution&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</source>
-        <target/>
+        <target state="translated">Riešenie&lt;span class="required-form-field"&gt;*&lt;/span&gt;:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.keywords" xml:space="preserve">
         <source>Keywords:</source>
-        <target/>
+        <target state="translated">Kľúčové slová:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.references" xml:space="preserve">
         <source>References:</source>
-        <target/>
+        <target state="translated">Referencie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.notes" xml:space="preserve">
         <source>Notes:</source>
-        <target/>
+        <target state="translated">Poznámky:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.create.jsp.channels" xml:space="preserve">
         <source>Channels to add:</source>
-        <target/>
+        <target state="translated">Kanály na pridanie:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Create.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.description" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has different versions of these packages, or does not have the packages at all. Select the packages you want to push into this channel below, and click 'Continue'.</source>
-        <target/>
+        <target state="translated">Kanál &lt;strong&gt;{0}&lt;/strong&gt; má rôzne verzie týchto balíkov alebo ich vôbec nemá. Nižšie vyberte balíky, ktoré chcete do tohto kanála presunúť a kliknite na 'Pokračovať'.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
@@ -5129,49 +5133,49 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.currentversion" xml:space="preserve">
         <source>Current Version in Channel</source>
-        <target/>
+        <target state="translated">Aktuálna verzia v kanáli</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.newversion" xml:space="preserve">
         <source>New Version to be Pushed</source>
-        <target/>
+        <target state="translated">Nová verzia, ktorá má byť presunutá</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.nopackages_pushed" xml:space="preserve">
         <source>No packages were pushed to channel &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Žiadne balíky neboli presunuté do kanála &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.publish.packagepush.packages_pushed" xml:space="preserve">
         <source>&lt;strong&gt;{1}&lt;/strong&gt; package(s) were pushed to channel &lt;strong&gt;{0}&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{1}&lt;/strong&gt; balík(y) boli presunuté do kanála &lt;strong&gt;{0}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.summary" xml:space="preserve">
         <source>The channel &lt;strong&gt;{0}&lt;/strong&gt; has the following packages in common with &lt;strong&gt;{1}&lt;/strong&gt;. If the version of the package from the erratum is newer than the one in your channel, you will have the opportunity to update the channel when you publish this erratum.</source>
-        <target/>
+        <target state="translated">Kanál &lt;strong&gt;{0}&lt;/strong&gt; má tieto spoločné balíky s &lt;strong&gt;{1}&lt;/strong&gt;. Ak je verzia balíka z opravy chyby novšia ako verzia vo vašom kanáli, budete mať možnosť aktualizovať kanál pri zverejnení tejto opravy chyby.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.channel_version" xml:space="preserve">
         <source>Channel Version</source>
-        <target/>
+        <target state="translated">Verzia kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="errata.channel.intersection.errata_version" xml:space="preserve">
         <source>Errata Version</source>
-        <target/>
+        <target state="translated">Verzia opráv chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/ErrataChannelIntersection.do</context>
         </context-group>
@@ -5179,70 +5183,70 @@ organization. You may grant or remove the organization administrator role in the
       <!-- == Channels == -->
       <trans-unit id="channels.jsp.alt" xml:space="preserve">
         <source>Software Channel Icon</source>
-        <target/>
+        <target state="translated">Ikona softvérového kanála</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/Entitlements</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.toolbar" xml:space="preserve">
         <source>Package Search</source>
-        <target/>
+        <target state="translated">Vyhľadávanie balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.imgAlt" xml:space="preserve">
         <source>search</source>
-        <target/>
+        <target state="translated">hľadať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.pagesummary" xml:space="preserve">
         <source>Package Search will return packages from the specified set of software channels. </source>
-        <target/>
+        <target state="translated">Vyhľadávanie balíkov vráti balíky zo zadanej sady softvérových kanálov. </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.instructions" xml:space="preserve">
         <source>Specify your search criteria below.</source>
-        <target/>
+        <target state="translated">Nižšie uveďte kritériá vyhľadávania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchfor" xml:space="preserve">
         <source>Search For:</source>
-        <target/>
+        <target state="translated">Hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.whatsearch" xml:space="preserve">
         <source>What to search:</source>
-        <target/>
+        <target state="translated">Čo treba hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.wheresearch" xml:space="preserve">
         <source>Where to search:</source>
-        <target/>
+        <target state="translated">Kde hľadať:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.nopackages" xml:space="preserve">
         <source>No packages.</source>
-        <target/>
+        <target state="translated">Žiadne balíky.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.name" xml:space="preserve">
         <source>Package Name</source>
-        <target/>
+        <target state="translated">Názov balíka</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
           <context context-type="sourcefile">/rhn/errata/manage/PackagePush.do</context>
@@ -5257,28 +5261,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="packagesearch.jsp.relevant" xml:space="preserve">
         <source>Only channels relevant to your systems</source>
-        <target/>
+        <target state="translated">Len kanály týkajúce sa vašich systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificchannel" xml:space="preserve">
         <source>Specific channel you have access to</source>
-        <target/>
+        <target state="translated">Špecifický kanál, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificarch" xml:space="preserve">
         <source>Packages of a specific architecture in any channel you have access to</source>
-        <target/>
+        <target state="translated">Balíky so špecifickou architektúrou v ktoromkoľvek kanáli, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchwherelegend" xml:space="preserve">
         <source>* means one or more channel architectures are not synchronized.</source>
-        <target/>
+        <target state="translated">* znamená, že jedna alebo viacero architektúr kanálov nie je synchronizovaných.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
@@ -5286,84 +5290,84 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM Overview -->
       <trans-unit id="ssm.overview.header" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target state="translated">Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary" xml:space="preserve">
         <source>Manage multiple systems simultaneously with system set manager.</source>
-        <target/>
+        <target state="translated">Spravujte viacero systémov súčasne pomocou správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary2" xml:space="preserve">
         <source>The navigation tabs above will assist you in executing the following actions.</source>
-        <target/>
+        <target state="translated">Vyššie uvedené navigačné karty vám pomôžu pri vykonávaní nasledujúcich činností.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems.list" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;Vypísať zoznam systémov&lt;/a&gt;, s ktorými ste si vybrali pracovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Naplánovať aktualizácie opráv&lt;/a&gt; týkajúcich sa vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.upgrade" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Zvýšiť verziu&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.install" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Inštalovať&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.remove" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Odstrániť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.verify" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Overiť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5377,49 +5381,49 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.groups.create" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;manage&lt;/a&gt; groups</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Vytvárať&lt;/a&gt; a &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;spravovať&lt;/a&gt; skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Priradiť&lt;/a&gt; plán údržby vybraným systémom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.memberships" xml:space="preserve">
         <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;členstvo v kanáloch&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.subscriptions" xml:space="preserve">
         <source>Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;config channel subscriptions&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;konfigurácia predplatného kanálov&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.deploy" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;Deploy&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;Diff&lt;/a&gt; config channels</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;Nasadenie&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;Rozdiel&lt;/a&gt; konfiguračných kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target state="translated">Poskytovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5433,21 +5437,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Označiť&lt;/a&gt; systémy pre &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;vrátenie snímok späť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.remotecommands" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Spustiť &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;vzdialené príkazy&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.powermanagement.configure" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Configure power management&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Konfigurovať správu napájania&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5458,7 +5462,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Spustiť &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;operácie správy napájania&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5469,7 +5473,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.ipmi_note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The power management types listed are tested and supported, but others may work. Check the documentation for more details.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; Uvedené typy správy napájania sú testované a podporované, ale môžu fungovať aj iné. Ďalšie podrobnosti nájdete v dokumentácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5480,7 +5484,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.address_note" xml:space="preserve">
         <source>The hostname or IP address of the power management server.</source>
-        <target/>
+        <target state="translated">Názov hostiteľa alebo IP adresa servera správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5491,7 +5495,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.username_note" xml:space="preserve">
         <source>The username used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Používateľské meno používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5502,7 +5506,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.password_note" xml:space="preserve">
         <source>The password used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Heslo používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5513,7 +5517,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.identifier_note" xml:space="preserve">
         <source>The identifier used to specify this system on the power management server. Optional because not all power managment types will need this field. This field can also be used to pass additional options to the "fence agent". For example, if you are using an IPMI server that requires the Lanplus protocol (and this system's identifier was "System") then you can set a System Identifier of "-P System" to instruct fence_ipmilan to use the Lanplus protocol for this system. See the fence agent's documentation for additional options.</source>
-        <target/>
+        <target state="translated">Identifikátor používaný na určenie tohto systému na serveri správy napájania. Nepovinné, pretože nie všetky typy správy napájania budú toto pole potrebovať. Toto pole sa môže použiť aj na odovzdanie ďalších možností pre "fence agent". Ak napríklad používate server IPMI, ktorý vyžaduje protokol Lanplus (a identifikátor tohto systému bol "System"), potom môžete nastaviť identifikátor systému "-P System", aby ste inštruovali fence_ipmilan používať protokol Lanplus pre tento systém. Ďalšie možnosti nájdete v dokumentácii k fence agent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5524,7 +5528,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.security_warning" xml:space="preserve">
         <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See cobbler documentation for more information and mitigation strategies.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;BEZPEČNOSTNÉ VAROVANIE:&lt;/strong&gt; Informácie uložené na tejto stránke sú dostupné komukoľvek na sieti. Ďalšie informácie a stratégie obmedzenia nájdete v dokumentácii pre cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5535,49 +5539,49 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.misc" xml:space="preserve">
         <source>Misc</source>
-        <target/>
+        <target state="translated">Rôzne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardvérové profily&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;profily balíkov&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;systémové predvoľby&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.customvalues" xml:space="preserve">
         <source>Set and remove &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;custom values&lt;/a&gt; for selected systems</source>
-        <target/>
+        <target state="translated">Nastaviť a odstrániť &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;vlastné hodnoty&lt;/a&gt; pre vybrané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.delete" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Delete&lt;/a&gt; systems from @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Vymazať&lt;/a&gt; systémy z @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.reboot" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reboot&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reštartovať&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5591,28 +5595,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.misc.lock" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Zamknúť/odomknúť&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Auditovať&lt;/a&gt; systémy s OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.scheduled" xml:space="preserve">
         <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv &lt;a href="/rhn/schedule/PendingActions.do"&gt;naplánované&lt;/a&gt; na {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.queued" xml:space="preserve">
         <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv boli pridané do reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5620,14 +5624,14 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM System List -->
       <trans-unit id="ssm.list.systems.header" xml:space="preserve">
         <source>Selected Systems List</source>
-        <target/>
+        <target state="translated">Zoznam vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.list.systems.summary" xml:space="preserve">
         <source>&lt;p&gt;Below are your selected systems. All actions taken within this interface will apply only to the these systems.&lt;/p&gt;</source>
-        <target/>
+        <target state="translated">&lt;p&gt;Nižšie sú uvedené vaše vybrané systémy. Všetky akcie uskutočnené v rámci tohto rozhrania sa vzťahujú len na tieto systémy.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
@@ -5635,7 +5639,7 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Preniesť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5649,14 +5653,14 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.org" xml:space="preserve">
         <source>Target Organization</source>
-        <target/>
+        <target state="translated">Cieľová organizácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.migrate.systems.notrust" xml:space="preserve">
         <source>No trusted organizations</source>
-        <target/>
+        <target state="translated">Žiadne dôveryhodné organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -5671,21 +5675,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.delete.systems.summary" xml:space="preserve">
         <source>This will delete the selected profiles permanently.</source>
-        <target/>
+        <target state="translated">Týmto sa natrvalo vymažú vybrané profily.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Deletion</source>
-        <target/>
+        <target state="translated">Potvrdiť vymazanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.confirmmessage" xml:space="preserve">
         <source>The selected systems in the System Set Manager have been queued for deletion.</source>
-        <target/>
+        <target state="translated">Vybrané systémy v Správcovi sád systémov boli zaradené na vymazanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/DeleteConfirm.do</context>
         </context-group>
@@ -5693,35 +5697,35 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM Hardware Refresh -->
       <trans-unit id="ssm.hw.systems.header" xml:space="preserve">
         <source>Confirm Hardware Profiles Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie hardvérových profilov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.summary" xml:space="preserve">
         <source>You will schedule a hardware profile update of the {0} you have selected.</source>
-        <target/>
+        <target state="translated">Naplánujete aktualizáciu hardvérového profilu {0}, ktorý ste vybrali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.summary.empty" xml:space="preserve">
         <source>No systems are selected.</source>
-        <target/>
+        <target state="translated">Nie sú vybrané žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.hw.systems.confirmmessage" xml:space="preserve">
         <source>1 hardware profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">1 hardvérový profil &lt;a href="/rhn/schedule/PendingActions.do"&gt;je naplánovaný&lt;/a&gt; na obnovenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/HardwareRefresh.do</context>
         </context-group>
@@ -5729,56 +5733,56 @@ organization. You may grant or remove the organization administrator role in the
       <!-- SSM Software Refresh -->
       <trans-unit id="ssm.sw.systems.header" xml:space="preserve">
         <source>Confirm Package Profiles Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie profilov balíkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.summary" xml:space="preserve">
         <source>You will schedule a package profile update of the {0} you have selected.</source>
-        <target/>
+        <target state="translated">Naplánujete aktualizáciu profilu balíkov {0}, ktorý ste vybrali.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.summary.empty" xml:space="preserve">
         <source>No systems are selected.</source>
-        <target/>
+        <target state="translated">Nie sú vybrané žiadne systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmbutton" xml:space="preserve">
         <source>Confirm Refresh</source>
-        <target/>
+        <target state="translated">Potvrdiť obnovenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.sw.systems.confirmmessage" xml:space="preserve">
         <source>1 package profile &lt;a href="/rhn/schedule/PendingActions.do"&gt;is scheduled&lt;/a&gt; to be refreshed.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">1 profil balíkov &lt;a href="/rhn/schedule/PendingActions.do"&gt;je naplánovaný&lt;/a&gt; na obnovenie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/SoftwareRefresh.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.hardware" xml:space="preserve">
         <source>Hardware</source>
-        <target/>
+        <target state="translated">Hardvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.software" xml:space="preserve">
         <source>Software</source>
-        <target/>
+        <target state="translated">Softvér</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.tabs.preferences" xml:space="preserve">
         <source>Preferences</source>
-        <target/>
+        <target state="translated">Predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
