@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnpackage.profile.ProfileType;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -73,7 +74,7 @@ public class ProfileTypeTest extends RhnBaseTestCase {
     public static ProfileType lookupByLabel(String label) {
         Session session = HibernateFactory.getSession();
         return (ProfileType) session.getNamedQuery("ProfileType.findByLabel")
-                                        .setString("label", label)
+                                        .setParameter("label", label, StandardBasicTypes.STRING)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
                                         .uniqueResult();

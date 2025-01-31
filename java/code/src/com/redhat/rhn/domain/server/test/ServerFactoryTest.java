@@ -1430,10 +1430,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).get());
+        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
+
         // plain hostname: imprecise lookup
         String simpleHostname = HOSTNAME.split("\\.")[0];
-        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+
+        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).orElseThrow());
     }
 
     /**

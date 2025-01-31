@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageName;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -39,7 +40,7 @@ import javax.persistence.Table;
 @Entity
 @IdClass(ImagePackageKey.class)
 @Table(name = "suseImageInfoPackage")
-public class ImagePackage implements Comparable<ImagePackage> {
+public class ImagePackage implements Comparable<ImagePackage>, Serializable {
 
     private PackageEvr evr;
     private PackageName name;

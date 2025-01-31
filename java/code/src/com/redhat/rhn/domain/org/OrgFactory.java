@@ -36,7 +36,7 @@ import com.suse.manager.webui.services.SaltStateGeneratorService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.type.LongType;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.sql.Types;
 import java.util.Collections;
@@ -159,7 +159,7 @@ public class OrgFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
 
         return (CustomDataKey) session.getNamedQuery("CustomDataKey.findById")
-                .setParameter("id", cikid, LongType.INSTANCE)
+                .setParameter("id", cikid, StandardBasicTypes.LONG)
                 //Retrieve from cache if there
                 .setCacheable(true)
                 .uniqueResult();
@@ -234,7 +234,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveUsers(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfActiveUsers")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
 
     }
@@ -247,7 +247,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getActiveSystems(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfSystems")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
@@ -259,7 +259,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getServerGroups(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfServerGroups")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
@@ -271,7 +271,7 @@ public class OrgFactory extends HibernateFactory {
     public static Long getConfigChannels(Org orgIn) {
         Session session = HibernateFactory.getSession();
         return  (Long) session.getNamedQuery("Org.numOfConfigChannels")
-                .setParameter(ORG_ID, orgIn.getId(), LongType.INSTANCE)
+                .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
     }
 
