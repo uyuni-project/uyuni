@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2024-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning setting up a test environment.
@@ -7,7 +7,7 @@
 # setup wizard
 
 Then(/^HTTP proxy verification should have succeeded$/) do
-  raise ScriptError, 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+  raise ScriptError, 'Success icon not found' unless find('div.alert-success', wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
