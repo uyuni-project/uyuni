@@ -188,7 +188,7 @@ public class SCCWebClient implements SCCClient {
                     throw new RuntimeException(e1);
                 }
             }, executor);
-        }).collect(Collectors.toList());
+        }).toList();
 
         CompletableFuture<Void> voidCompletableFuture = CompletableFuture.allOf(
                 futures.toArray(new CompletableFuture[0]));
@@ -198,7 +198,7 @@ public class SCCWebClient implements SCCClient {
                 futures.stream().map(CompletableFuture::join)
                 )
                 .flatMap(p -> p.result.stream())
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private void addHeaders(AbstractHttpMessage request) {

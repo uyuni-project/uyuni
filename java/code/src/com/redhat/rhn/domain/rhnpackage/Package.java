@@ -600,8 +600,7 @@ public class Package extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object other) {
-        if (other instanceof Package) {
-            Package otherPack = (Package) other;
+        if (other instanceof Package otherPack) {
             return new EqualsBuilder().append(this.getId(), otherPack.getId())
                     .append(this.getPackageName(), otherPack.getPackageName())
                     .append(this.getPackageArch(), otherPack.getPackageArch())

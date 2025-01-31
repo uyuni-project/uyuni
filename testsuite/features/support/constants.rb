@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ENV_VAR_BY_HOST = {
@@ -1129,6 +1129,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp4-updates-x86_64
         sle-module-desktop-applications15-sp4-pool-x86_64
         sle-module-desktop-applications15-sp4-updates-x86_64
+        sle-product-sles15-sp4-ltss-updates-x86_64
         sle-module-devtools15-sp4-pool-x86_64
         sle-module-devtools15-sp4-updates-x86_64
         sle-module-containers15-sp4-pool-x86_64
@@ -1154,18 +1155,20 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp5-updates-x86_64
         sles15-sp5-devel-uyuni-client-x86_64
       ],
-    'sles15-sp6' =>
+    'sles15-sp6' => # CHECKED
       %w[
         sle-product-sles15-sp6-pool-x86_64
         sle-product-sles15-sp6-updates-x86_64
         sle-module-basesystem15-sp6-pool-x86_64
         sle-module-basesystem15-sp6-updates-x86_64
-        sle-module-server-applications15-sp6-pool-x86_64
-        sle-module-server-applications15-sp6-updates-x86_64
         sle-module-desktop-applications15-sp6-pool-x86_64
         sle-module-desktop-applications15-sp6-updates-x86_64
-        sle-module-devtools15-sp6-updates-x86_64
         sle-module-devtools15-sp6-pool-x86_64
+        sle-module-devtools15-sp6-updates-x86_64
+        sle-module-python3-15-sp6-pool-x86_64
+        sle-module-python3-15-sp6-updates-x86_64
+        sle-module-server-applications15-sp6-pool-x86_64
+        sle-module-server-applications15-sp6-updates-x86_64
         sles15-sp6-devel-uyuni-client-x86_64
       ],
     'slesforsap15-sp5' =>
@@ -1338,14 +1341,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'uyuni-proxy' => # CHECKED
       %w[
-        opensuse_leap15_5-x86_64
-        opensuse_leap15_5-uyuni-client-x86_64
-        opensuse_leap15_5-x86_64-backports-updates
-        opensuse_leap15_5-x86_64-non-oss
-        opensuse_leap15_5-x86_64-non-oss-updates
-        opensuse_leap15_5-x86_64-sle-updates
-        opensuse_leap15_5-x86_64-updates
-        uyuni-proxy-devel-leap-x86_64
+        opensuse_micro5_5-x86_64
+        opensuse_micro5_5-x86_64-sle-updates
+        opensuse_micro5_5-uyuni-client-x86_64
+        opensuse_micro5_5-uyuni-client-devel-x86_64
       ]
     # There are no channels for Retail under Uyuni
   }
@@ -1376,7 +1375,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-11-main-updates-amd64' => 60,
   'debian-11-pool-amd64' => 22_920,
   'debian-11-pool-amd64-uyuni' => 23_580,
-  'debian-11-suse-manager-tools-amd64' => 60,
+  'debian-11-suse-manager-tools-amd64' => 120,
   'debian-12-amd64-main-security-uyuni' => 240,
   'debian-12-amd64-main-updates-uyuni' => 120,
   'debian-12-amd64-uyuni-client-devel' => 60,
@@ -1384,15 +1383,15 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-main-updates-amd64' => 120,
   'debian-12-pool-amd64' => 27_960,
   'debian-12-pool-amd64-uyuni' => 28_260,
-  'debian-12-suse-manager-tools-amd64' => 60,
-  'el9-manager-tools-pool-x86_64' => 60,
-  'el9-manager-tools-pool-x86_64-alma' => 60,
-  'el9-manager-tools-pool-x86_64-ol9' => 60,
-  'el9-manager-tools-pool-x86_64-rocky' => 60,
-  'el9-manager-tools-updates-x86_64' => 60,
-  'el9-manager-tools-updates-x86_64-alma' => 60,
-  'el9-manager-tools-updates-x86_64-ol9' => 60,
-  'el9-manager-tools-updates-x86_64-rocky' => 60,
+  'debian-12-suse-manager-tools-amd64' => 120,
+  'el9-manager-tools-pool-x86_64' => 120,
+  'el9-manager-tools-pool-x86_64-alma' => 120,
+  'el9-manager-tools-pool-x86_64-ol9' => 120,
+  'el9-manager-tools-pool-x86_64-rocky' => 120,
+  'el9-manager-tools-updates-x86_64' => 120,
+  'el9-manager-tools-updates-x86_64-alma' => 120,
+  'el9-manager-tools-updates-x86_64-ol9' => 120,
+  'el9-manager-tools-updates-x86_64-rocky' => 120,
   'el9-pool-x86_64' => 60,
   'fake-base-channel-debian-like' => 120,
   'fake-base-channel-rh-like' => 120,
@@ -1459,35 +1458,35 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle15-sp2-installer-updates-x86_64' => 60,
   'sle15-sp3-installer-updates-x86_64' => 60,
   'sle15-sp4-installer-updates-x86_64' => 60,
-  'sle-manager-tools12-pool-x86_64-sp5' => 60,
-  'sle-manager-tools12-updates-x86_64-sp5' => 60,
-  'sle-manager-tools15-beta-pool-x86_64-sp4' => 60,
-  'sle-manager-tools15-beta-updates-x86_64-sp4' => 60,
-  'sle-manager-tools15-pool-s390x-sp5' => 60,
-  'sle-manager-tools15-pool-x86_64-sp2' => 60,
-  'sle-manager-tools15-pool-x86_64-sp3' => 60,
-  'sle-manager-tools15-pool-x86_64-sp4' => 60,
-  'sle-manager-tools15-pool-x86_64-sp5' => 60,
-  'sle-manager-tools15-pool-x86_64-sp6' => 60,
+  'sle-manager-tools12-pool-x86_64-sp5' => 120,
+  'sle-manager-tools12-updates-x86_64-sp5' => 120,
+  'sle-manager-tools15-beta-pool-x86_64-sp4' => 120,
+  'sle-manager-tools15-beta-updates-x86_64-sp4' => 120,
+  'sle-manager-tools15-pool-s390x-sp5' => 120,
+  'sle-manager-tools15-pool-x86_64-sp2' => 120,
+  'sle-manager-tools15-pool-x86_64-sp3' => 120,
+  'sle-manager-tools15-pool-x86_64-sp4' => 120,
+  'sle-manager-tools15-pool-x86_64-sp5' => 120,
+  'sle-manager-tools15-pool-x86_64-sp6' => 120,
   'sle-manager-tools15-updates-s390x-sp5' => 120,
-  'sle-manager-tools15-updates-x86_64-sp2' => 90,
-  'sle-manager-tools15-updates-x86_64-sp3' => 90,
-  'sle-manager-tools15-updates-x86_64-sp4' => 90,
-  'sle-manager-tools15-updates-x86_64-sp5' => 90,
-  'sle-manager-tools15-updates-x86_64-sp6' => 90,
-  'sle-manager-tools15-pool-aarch64-opensuse-15.6' => 60,
+  'sle-manager-tools15-updates-x86_64-sp2' => 120,
+  'sle-manager-tools15-updates-x86_64-sp3' => 120,
+  'sle-manager-tools15-updates-x86_64-sp4' => 120,
+  'sle-manager-tools15-updates-x86_64-sp5' => 120,
+  'sle-manager-tools15-updates-x86_64-sp6' => 120,
+  'sle-manager-tools15-pool-aarch64-opensuse-15.6' => 120,
   'sle-manager-tools15-updates-aarch64-opensuse-15.6' => 120,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 60,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 60,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 60,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.4' => 60,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.5' => 60,
-  'sle-manager-tools-for-micro6-pool-x86_64-6.0' => 60,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.1' => 60,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.2' => 60,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.3' => 60,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.4' => 60,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.5' => 60,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 120,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 120,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 120,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.4' => 120,
+  'sle-manager-tools-for-micro5-pool-x86_64-5.5' => 120,
+  'sle-manager-tools-for-micro6-pool-x86_64-6.0' => 120,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.1' => 120,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.2' => 120,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.3' => 120,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.4' => 120,
+  'sle-manager-tools-for-micro5-updates-x86_64-5.5' => 120,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 60,
   'sle-micro-5.3-pool-x86_64' => 120,
   'sle-micro-5.3-updates-x86_64' => 240,
@@ -1514,7 +1513,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-updates-s390x' => 600,
   'sle-module-basesystem15-sp5-updates-x86_64' => 540,
   'sle-module-basesystem15-sp6-pool-x86_64' => 300,
-  'sle-module-basesystem15-sp6-updates-x86_64' => 60,
+  'sle-module-basesystem15-sp6-updates-x86_64' => 400,
   'sle-module-containers15-sp4-pool-x86_64' => 60,
   'sle-module-containers15-sp4-pool-x86_64-proxy-4.3' => 60,
   'sle-module-containers15-sp4-pool-x86_64-smrbs-4.3' => 60,
@@ -1539,7 +1538,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-devtools15-sp4-updates-x86_64' => 600,
   'sle-module-devtools15-sp5-pool-x86_64' => 120,
   'sle-module-devtools15-sp5-updates-x86_64' => 300,
-  'sle-module-devtools15-sp6-updates-x86_64' => 60,
+  'sle-module-devtools15-sp6-updates-x86_64' => 240,
   'sle-module-devtools15-sp6-pool-x86_64' => 120,
   'sle-module-public-cloud15-sp4-pool-x86_64' => 840,
   'sle-module-public-cloud15-sp4-updates-x86_64' => 600,
@@ -1547,6 +1546,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-public-cloud15-sp5-updates-x86_64' => 420,
   'sle-module-python3-15-sp5-pool-x86_64' => 60,
   'sle-module-python3-15-sp5-updates-x86_64' => 60,
+  'sle-module-python3-15-sp6-pool-x86_64' => 60,
+  'sle-module-python3-15-sp6-updates-x86_64' => 60,
   'sle-module-server-applications15-sp2-pool-x86_64' => 60,
   'sle-module-server-applications15-sp2-updates-x86_64' => 120,
   'sle-module-server-applications15-sp3-pool-x86_64' => 60,
@@ -1585,6 +1586,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sles15-sp3-devel-uyuni-client-x86_64' => 60,
   'sles15-sp4-devel-uyuni-client-x86_64' => 60,
   'sles15-sp5-devel-uyuni-client-x86_64' => 60,
+  'sles15-sp6-devel-uyuni-client-x86_64' => 60,
   'sll-9-updates-x86_64' => 720,
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 2640,
@@ -1611,7 +1613,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2004-amd64-universe-uyuni' => 19_560,
   'ubuntu-2004-amd64-uyuni-client-devel' => 60,
   'ubuntu-2004-pool-amd64-uyuni' => 60,
-  'ubuntu-20.04-suse-manager-tools-amd64' => 60,
+  'ubuntu-20.04-suse-manager-tools-amd64' => 120,
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 2760,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
@@ -1624,7 +1626,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-universe-uyuni' => 24_000,
   'ubuntu-2204-amd64-uyuni-client-devel' => 60,
   'ubuntu-2204-pool-amd64-uyuni' => 60,
-  'ubuntu-22.04-suse-manager-tools-amd64' => 60,
+  'ubuntu-22.04-suse-manager-tools-amd64' => 120,
   'ubuntu-2404-amd64-main-amd64' => 780,
   'ubuntu-2404-amd64-main-security-amd64' => 2760,
   'ubuntu-2404-amd64-main-security-uyuni' => 2040,
@@ -1637,8 +1639,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 60,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
-  'ubuntu-24.04-suse-manager-tools-amd64' => 60,
-  'uyuni-proxy-devel-leap-x86_64' => 60
+  'ubuntu-24.04-suse-manager-tools-amd64' => 120,
+  'uyuni-proxy-devel-leap-x86_64' => 60,
+  'dev-suse-channel' => 300,
+  'dev-debian-like-channel' => 300,
+  'dev-rh-like-channel' => 300
 }.freeze
 
 EMPTY_CHANNELS = %w[

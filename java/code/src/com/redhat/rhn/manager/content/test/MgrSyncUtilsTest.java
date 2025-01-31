@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.manager.content.test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
@@ -27,9 +30,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
 
 
 public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
@@ -162,5 +168,63 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         URI expected = new URI(String.format("file://%s", fromdir));
         assertContains(opath.toString(), expected.toString());
         assertFalse(opath.toString().contains("%"), "Decoding error: " + opath);
+    }
+
+    @Test
+    public void testTokens() {
+        Map<String, Boolean> tokenMap = Map.of("os=RHEL", false,
+                "dlauth=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*~" +
+                        "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60", true,
+                "NoaBh00JIaJwSozVS2BK1G6x27JmfPxfKiiMZBlZ4SD1x3S_VUt7805g_G4XB0ShvcKDO4A5uhzvo74HNzCEAYh" +
+                        "MxG8dIw0ZIMla3FzxXCKR5gUaW6PeLjCHG4LrgoXa3zG7KPyy8OQMSAni9F1bs2fqOjKqgQ", true,
+                "", false,
+                "susetk=exp=1990353599~acl=/repo/$RCE/SLE11-WebYaST-SP2-Updates/sle-11-i586/*~" +
+                        "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60", true,
+                "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60", false,
+                "exp=18976547", false);
+        tokenMap.forEach((token, result) -> assertEquals(result, MgrSyncUtils.isAuthToken(token)));
+
+        assertThrows(ContentSyncException.class, () -> MgrSyncUtils.isAuthToken("exp=1234556&hmac=adf284875ee"));
+    }
+
+    @Test
+    public void testUrlToPath() throws IOException {
+        Path path = new File("/tmp/mirror").toPath();
+        URI fsPath = MgrSyncUtils.urlToFSPath("http://mirrors.fedoraproject.org/mirrorlist?repo=epel-7&arch=x86_64",
+                "epel7", path);
+        assertEquals("/tmp/mirror/mirrors.fedoraproject.org/mirrorlist/arch/x86_64/repo/epel-7", fsPath.getPath());
+        fsPath = MgrSyncUtils.urlToFSPath("http://localhost/pub/repositories/empty/",
+                "empty", path);
+        assertEquals("http://localhost/pub/repositories/empty/", fsPath.toString());
+        fsPath = MgrSyncUtils.urlToFSPath("http://external.domain.top/myrepo?387465284375628347568347565723567",
+                "myrepo", path);
+        assertEquals("/tmp/mirror/external.domain.top/myrepo", fsPath.getPath());
+        fsPath = MgrSyncUtils.urlToFSPath("http://external.domain.top/myrepo2?exttok=exp=1990353599~acl=*~" +
+                        "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
+                "myrepo", path);
+        assertEquals("/tmp/mirror/external.domain.top/myrepo2", fsPath.getPath());
+        fsPath = MgrSyncUtils.urlToFSPath("http://dl.suse.com/myrepo3?exttok=exp=1990353599~acl=*~" +
+                        "hmac=984b6b366f696884d0e3ac619af3a41b2d678eeec523135cc70921c541e5ec60",
+                "myrepo", path);
+        assertEquals("/tmp/mirror/myrepo3", fsPath.getPath());
+        try {
+            File tempLocalRepo = Paths.get(path.toString(), "repo", "RPMMD", "driverrepo").toFile();
+            tempLocalRepo.delete();
+            tempLocalRepo.mkdirs();
+            fsPath = MgrSyncUtils.urlToFSPath("http://external.domain.top/myrepo4",
+                    "driverrepo", path);
+            assertEquals(tempLocalRepo.getPath() + "/", fsPath.getPath());
+
+            tempLocalRepo = Paths.get(path.toString(), "mydriverrepo").toFile();
+            tempLocalRepo.delete();
+            tempLocalRepo.mkdirs();
+            fsPath = MgrSyncUtils.urlToFSPath("http://other.domain.top/mydriverrepo",
+                    "otherdriverrepo", path);
+            assertEquals(tempLocalRepo.getPath() + "/", fsPath.getPath());
+        }
+        finally {
+            FileUtils.deleteDirectory(path.toFile());
+        }
+
     }
 }

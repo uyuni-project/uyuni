@@ -191,7 +191,7 @@ public class SystemsController {
             return json(response, virtual.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(VirtualSystemOverview::getUuid)
-                    .collect(Collectors.toList())
+                    .toList()
             );
         }
 
@@ -280,7 +280,7 @@ public class SystemsController {
             return json(response, systems.stream()
                     .filter(SystemOverview::isSelectable)
                     .map(SystemOverview::getId)
-                    .collect(Collectors.toList()), new TypeToken<>() { });
+                    .toList(), new TypeToken<>() { });
         }
 
         DataResult<SystemOverview> systems = SystemManager.systemListNew(user, parser, pc);
@@ -499,7 +499,7 @@ public class SystemsController {
      */
     public String getAvailableBaseChannels(Request request, Response response, User user) {
         return withServer(request, response, user, server -> {
-            Set<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, server);
+            List<EssentialChannelDto> orgChannels = ChannelManager.listBaseChannelsForSystem(user, server);
             List<ChannelsJson.ChannelJson> baseChannels =
                     orgChannels.stream().map(c -> new ChannelsJson.ChannelJson(c.getId(),
                             c.getLabel(),
@@ -509,7 +509,7 @@ public class SystemsController {
                             c.isCloned(),
                             c.getArchLabel()
                             ))
-                    .collect(Collectors.toList());
+                    .toList();
 
             return result(response, ResultJson.success(baseChannels), new TypeToken<>() { });
         });
@@ -679,7 +679,7 @@ public class SystemsController {
                                 c.getChannelArch().getLabel(),
                                 channelRecommendedFlags.get(c.getId()),
                                 preservationsByNewChild.get(c) != null ? preservationsByNewChild.get(c).getId() : null))
-                        .collect(Collectors.toList());
+                        .toList();
                 return result(response, ResultJson.success(jsonList), new TypeToken<>() { });
             }
             catch (LookupException e) {

@@ -79,7 +79,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
     /** repositories */
-    private Set<SUSEProductSCCRepository> repositories = new HashSet<>();
+    private Set<ChannelTemplate> channelTemplates = new HashSet<>();
 
     /**
      * Default constructor.
@@ -334,17 +334,17 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
-     * @return Returns the repositories provided by SCC.
+     * @return Returns the channel templates provided by SCC.
      */
-    public Set<SUSEProductSCCRepository> getRepositories() {
-        return repositories;
+    public Set<ChannelTemplate> getChannelTemplates() {
+        return channelTemplates;
     }
 
     /**
-     * @param repositoriesIn The repositories to set.
+     * @param channelTemplatesIn The channel templates to set.
      */
-    public void setRepositories(Set<SUSEProductSCCRepository> repositoriesIn) {
-        this.repositories = repositoriesIn;
+    public void setChannelTemplates(Set<ChannelTemplate> channelTemplatesIn) {
+        this.channelTemplates = channelTemplatesIn;
     }
 
     /**
@@ -362,10 +362,9 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
      */
     @Override
     public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof SUSEProduct)) {
+        if (!(otherObject instanceof SUSEProduct other)) {
             return false;
         }
-        SUSEProduct other = (SUSEProduct) otherObject;
         return new EqualsBuilder()
             .append(getName(), other.getName())
             .append(getVersion(), other.getVersion())

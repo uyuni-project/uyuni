@@ -156,7 +156,7 @@ const ListPayg = (props: Props) => {
             <Button
               id="addPAYG"
               icon="fa-plus"
-              className={"btn-success"}
+              className={"btn-primary"}
               text={t("Add PAYG Connection")}
               handler={addPayg}
             />

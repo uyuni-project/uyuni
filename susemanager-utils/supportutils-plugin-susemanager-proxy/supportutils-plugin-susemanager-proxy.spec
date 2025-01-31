@@ -26,9 +26,7 @@ Group:          Documentation/SuSE
 Source:         %{name}-%{version}.tar.gz
 URL:            https://github.com/uyuni-project/uyuni
 Requires:       spacewalk-proxy-common
-Requires:       supportconfig-plugin-resource
-Requires:       supportconfig-plugin-tag
-Supplements:    packageand(spacewalk-proxy-installer:supportutils)
+Requires:       supportutils
 BuildArch:      noarch
 
 %description

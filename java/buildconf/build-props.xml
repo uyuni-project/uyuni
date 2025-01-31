@@ -148,7 +148,7 @@
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec logdriver quartz slf4j-api log4j/log4j-slf4j-impl
-             concurrent velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
+             velocity-engine-core simple-core  mockobjects mockobjects-core mockobjects-jdk1.4-j2ee1.3 strutstest" />
 
   <!-- deps needed for testing, but required to build -->
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
@@ -166,7 +166,7 @@
   <property name="build.jar.dependencies"
       value="ant ant-junit ${ant-contrib.path} antlr  ${test.build.jar.dependencies}
       ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}
-       concurrent xalan-j2" />
+       xalan-j2" />
 
   <property name="run.jar.dependencies"
       value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
@@ -204,14 +204,14 @@
              postgresql-jdbc ongres-scram/client ongres-scram/common
              ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
              taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
-             concurrent simple-core snakeyaml simple-xml ${commons-jexl}" />
+             simple-core snakeyaml simple-xml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
       value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-el commons-fileupload commons-io
              ${commons-lang} commons-logging ${commons-compress}
-             ${commons-validator} concurrent dom4j ${hibernate5deps} ${jta11-jars}
+             ${commons-validator} dom4j ${hibernate5deps} ${jta11-jars}
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz sitemesh ${struts-jars}

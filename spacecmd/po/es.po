@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-10-25 15:22+0200\n"
+"POT-Creation-Date: 2025-01-17 14:51+0100\n"
 "PO-Revision-Date: 2024-05-07 10:43+0000\n"
 "Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/spacecmd/es/"
@@ -305,20 +305,20 @@ msgid "Contact Method:         %s"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:970 ../src/spacecmd/kickstart.py:426
-#: ../src/spacecmd/system.py:2942
+#: ../src/spacecmd/system.py:2981
 msgid "Software Channels"
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:978 ../src/spacecmd/configchannel.py:807
-#: ../src/spacecmd/configchannel.py:921 ../src/spacecmd/system.py:2951
+#: ../src/spacecmd/configchannel.py:921 ../src/spacecmd/system.py:2990
 msgid "Configuration Channels"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:2956
+#: ../src/spacecmd/activationkey.py:984 ../src/spacecmd/system.py:2995
 msgid "Entitlements"
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:989 ../src/spacecmd/system.py:2962
+#: ../src/spacecmd/activationkey.py:989 ../src/spacecmd/system.py:3001
 msgid "System Groups"
 msgstr ""
 
@@ -484,7 +484,7 @@ msgid ""
 msgstr ""
 
 #: ../src/spacecmd/activationkey.py:1482 ../src/spacecmd/kickstart.py:461
-#: ../src/spacecmd/system.py:2937
+#: ../src/spacecmd/system.py:2976
 msgid "Activation Keys"
 msgstr ""
 
@@ -593,7 +593,7 @@ msgid ""
 "registered with this key."
 msgstr ""
 
-#: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4241
+#: ../src/spacecmd/activationkey.py:1809 ../src/spacecmd/system.py:4280
 msgid "Available contact methods: "
 msgstr ""
 
@@ -660,8 +660,8 @@ msgstr ""
 
 #: ../src/spacecmd/configchannel.py:82 ../src/spacecmd/configchannel.py:117
 #: ../src/spacecmd/group.py:547 ../src/spacecmd/group.py:601
-#: ../src/spacecmd/group.py:639 ../src/spacecmd/system.py:3173
-#: ../src/spacecmd/system.py:3271
+#: ../src/spacecmd/group.py:639 ../src/spacecmd/system.py:3212
+#: ../src/spacecmd/system.py:3310
 msgid "This version of the API doesn't support this method"
 msgstr ""
 
@@ -901,7 +901,7 @@ msgstr ""
 #: ../src/spacecmd/configchannel.py:482 ../src/spacecmd/cryptokey.py:107
 #: ../src/spacecmd/custominfo.py:60 ../src/spacecmd/custominfo.py:205
 #: ../src/spacecmd/group.py:190 ../src/spacecmd/softwarechannel.py:788
-#: ../src/spacecmd/system.py:3628
+#: ../src/spacecmd/system.py:3667
 msgid "Description:"
 msgstr ""
 
@@ -1582,7 +1582,7 @@ msgstr ""
 msgid "A path is required"
 msgstr ""
 
-#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2600
+#: ../src/spacecmd/distribution.py:135 ../src/spacecmd/system.py:2639
 msgid "A base channel is required"
 msgstr ""
 
@@ -1692,8 +1692,8 @@ msgstr ""
 #: ../src/spacecmd/errata.py:117 ../src/spacecmd/system.py:422
 #: ../src/spacecmd/system.py:731 ../src/spacecmd/system.py:887
 #: ../src/spacecmd/system.py:1024 ../src/spacecmd/system.py:1799
-#: ../src/spacecmd/system.py:3782 ../src/spacecmd/system.py:4092
-#: ../src/spacecmd/system.py:4154 ../src/spacecmd/system.py:4319
+#: ../src/spacecmd/system.py:3821 ../src/spacecmd/system.py:4131
+#: ../src/spacecmd/system.py:4193 ../src/spacecmd/system.py:4358
 msgid "Start Time [now]:"
 msgstr ""
 
@@ -1709,8 +1709,8 @@ msgstr ""
 #: ../src/spacecmd/errata.py:172 ../src/spacecmd/system.py:235
 #: ../src/spacecmd/system.py:472 ../src/spacecmd/system.py:826
 #: ../src/spacecmd/system.py:949 ../src/spacecmd/system.py:1104
-#: ../src/spacecmd/system.py:1818 ../src/spacecmd/system.py:3794
-#: ../src/spacecmd/system.py:4338
+#: ../src/spacecmd/system.py:1818 ../src/spacecmd/system.py:3833
+#: ../src/spacecmd/system.py:4377
 #, python-format
 msgid "Start Time: %s"
 msgstr ""
@@ -1964,7 +1964,7 @@ msgstr ""
 #: ../src/spacecmd/group.py:151 ../src/spacecmd/system.py:121
 #: ../src/spacecmd/system.py:237 ../src/spacecmd/system.py:480
 #: ../src/spacecmd/system.py:1511 ../src/spacecmd/system.py:1820
-#: ../src/spacecmd/system.py:4340
+#: ../src/spacecmd/system.py:4379
 msgid "Systems"
 msgstr ""
 
@@ -1974,8 +1974,8 @@ msgstr ""
 
 #: ../src/spacecmd/group.py:164 ../src/spacecmd/schedule.py:386
 #: ../src/spacecmd/ssm.py:88 ../src/spacecmd/ssm.py:136
-#: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4382
-#: ../src/spacecmd/system.py:4469
+#: ../src/spacecmd/ssm.py:186 ../src/spacecmd/system.py:4421
+#: ../src/spacecmd/system.py:4508
 msgid "No systems found"
 msgstr ""
 
@@ -4183,20 +4183,20 @@ msgstr ""
 #: ../src/spacecmd/system.py:1626 ../src/spacecmd/system.py:1690
 #: ../src/spacecmd/system.py:1734 ../src/spacecmd/system.py:1814
 #: ../src/spacecmd/system.py:1956 ../src/spacecmd/system.py:1998
-#: ../src/spacecmd/system.py:2087 ../src/spacecmd/system.py:2155
-#: ../src/spacecmd/system.py:2238 ../src/spacecmd/system.py:2293
-#: ../src/spacecmd/system.py:2353 ../src/spacecmd/system.py:2412
-#: ../src/spacecmd/system.py:2470 ../src/spacecmd/system.py:2531
-#: ../src/spacecmd/system.py:2610 ../src/spacecmd/system.py:2691
-#: ../src/spacecmd/system.py:2746 ../src/spacecmd/system.py:2849
-#: ../src/spacecmd/system.py:3002 ../src/spacecmd/system.py:3071
-#: ../src/spacecmd/system.py:3125 ../src/spacecmd/system.py:3194
-#: ../src/spacecmd/system.py:3290 ../src/spacecmd/system.py:3390
-#: ../src/spacecmd/system.py:3454 ../src/spacecmd/system.py:3510
-#: ../src/spacecmd/system.py:3686 ../src/spacecmd/system.py:3964
-#: ../src/spacecmd/system.py:4107 ../src/spacecmd/system.py:4169
-#: ../src/spacecmd/system.py:4217 ../src/spacecmd/system.py:4275
-#: ../src/spacecmd/system.py:4334
+#: ../src/spacecmd/system.py:2126 ../src/spacecmd/system.py:2194
+#: ../src/spacecmd/system.py:2277 ../src/spacecmd/system.py:2332
+#: ../src/spacecmd/system.py:2392 ../src/spacecmd/system.py:2451
+#: ../src/spacecmd/system.py:2509 ../src/spacecmd/system.py:2570
+#: ../src/spacecmd/system.py:2649 ../src/spacecmd/system.py:2730
+#: ../src/spacecmd/system.py:2785 ../src/spacecmd/system.py:2888
+#: ../src/spacecmd/system.py:3041 ../src/spacecmd/system.py:3110
+#: ../src/spacecmd/system.py:3164 ../src/spacecmd/system.py:3233
+#: ../src/spacecmd/system.py:3329 ../src/spacecmd/system.py:3429
+#: ../src/spacecmd/system.py:3493 ../src/spacecmd/system.py:3549
+#: ../src/spacecmd/system.py:3725 ../src/spacecmd/system.py:4003
+#: ../src/spacecmd/system.py:4146 ../src/spacecmd/system.py:4208
+#: ../src/spacecmd/system.py:4256 ../src/spacecmd/system.py:4314
+#: ../src/spacecmd/system.py:4373
 msgid "No systems selected"
 msgstr ""
 
@@ -4242,12 +4242,12 @@ msgstr ""
 
 #: ../src/spacecmd/scap.py:79 ../src/spacecmd/system.py:613
 #: ../src/spacecmd/system.py:1256 ../src/spacecmd/system.py:1308
-#: ../src/spacecmd/system.py:1407 ../src/spacecmd/system.py:2098
-#: ../src/spacecmd/system.py:2423 ../src/spacecmd/system.py:2481
-#: ../src/spacecmd/system.py:2704 ../src/spacecmd/system.py:2759
-#: ../src/spacecmd/system.py:3015 ../src/spacecmd/system.py:3140
-#: ../src/spacecmd/system.py:3232 ../src/spacecmd/system.py:3315
-#: ../src/spacecmd/system.py:3403
+#: ../src/spacecmd/system.py:1407 ../src/spacecmd/system.py:2137
+#: ../src/spacecmd/system.py:2462 ../src/spacecmd/system.py:2520
+#: ../src/spacecmd/system.py:2743 ../src/spacecmd/system.py:2798
+#: ../src/spacecmd/system.py:3054 ../src/spacecmd/system.py:3179
+#: ../src/spacecmd/system.py:3271 ../src/spacecmd/system.py:3354
+#: ../src/spacecmd/system.py:3442
 #, python-format
 msgid "System: %s"
 msgstr ""
@@ -4451,7 +4451,7 @@ msgid "Date:      %s"
 msgstr ""
 
 #: ../src/spacecmd/schedule.py:283 ../src/spacecmd/schedule.py:380
-#: ../src/spacecmd/system.py:3147
+#: ../src/spacecmd/system.py:3186
 #, python-format
 msgid "Completed: %s"
 msgstr ""
@@ -5028,7 +5028,7 @@ msgstr ""
 msgid "usage: softwarechannel_listarches"
 msgstr ""
 
-#: ../src/spacecmd/softwarechannel.py:660 ../src/spacecmd/system.py:3935
+#: ../src/spacecmd/softwarechannel.py:660 ../src/spacecmd/system.py:3974
 msgid "options:"
 msgstr ""
 
@@ -6075,7 +6075,7 @@ msgstr ""
 msgid "Newer there"
 msgstr ""
 
-#: ../src/spacecmd/system.py:76 ../src/spacecmd/system.py:3880
+#: ../src/spacecmd/system.py:76 ../src/spacecmd/system.py:3919
 msgid "Package"
 msgstr ""
 
@@ -6087,7 +6087,7 @@ msgstr ""
 msgid "Other System"
 msgstr ""
 
-#: ../src/spacecmd/system.py:79 ../src/spacecmd/system.py:3883
+#: ../src/spacecmd/system.py:79 ../src/spacecmd/system.py:3922
 msgid "Difference"
 msgstr ""
 
@@ -6234,7 +6234,7 @@ msgstr ""
 
 #: ../src/spacecmd/system.py:538 ../src/spacecmd/system.py:841
 #: ../src/spacecmd/system.py:969 ../src/spacecmd/system.py:1121
-#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4500
+#: ../src/spacecmd/system.py:1131 ../src/spacecmd/system.py:4539
 #, python-format
 msgid "Failed to schedule %s"
 msgstr ""
@@ -6709,46 +6709,54 @@ msgid "usage: system_rename OLDNAME NEWNAME"
 msgstr ""
 
 #: ../src/spacecmd/system.py:2061
-msgid "system_listcustomvalues: List the custom values for a system"
+msgid "system_refreshpillar: Refresh pillar data of system(s) "
 msgstr ""
 
 #: ../src/spacecmd/system.py:2062
+msgid "usage: system_refreshpillar [<SYSTEMS>]"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2100
+msgid "system_listcustomvalues: List the custom values for a system"
+msgstr ""
+
+#: ../src/spacecmd/system.py:2101
 msgid "usage: system_listcustomvalues <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2117
+#: ../src/spacecmd/system.py:2156
 msgid "system_addcustomvalue: Set a custom value for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2118
+#: ../src/spacecmd/system.py:2157
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2173
+#: ../src/spacecmd/system.py:2212
 msgid "system_updatecustomvalue: Update a custom value for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2174
+#: ../src/spacecmd/system.py:2213
 msgid "usage: system_updatecustomvalue KEY VALUE <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2206
+#: ../src/spacecmd/system.py:2245
 msgid "system_removecustomvalues: Remove a custom value for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2207
+#: ../src/spacecmd/system.py:2246
 msgid "usage: system_removecustomvalues <SYSTEMS> <KEY ...>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2243
+#: ../src/spacecmd/system.py:2282
 msgid "Delete these values [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2261
+#: ../src/spacecmd/system.py:2300
 msgid "system_addnote: Set a note for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2262
+#: ../src/spacecmd/system.py:2301
 msgid ""
 "usage: system_addnote <SYSTEM> [options]\n"
 "\n"
@@ -6757,84 +6765,84 @@ msgid ""
 "  -b BODY"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2297
+#: ../src/spacecmd/system.py:2336
 msgid "Subject of the Note:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2299
+#: ../src/spacecmd/system.py:2338
 msgid "Note Body (ctrl-D to finish):"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2303
+#: ../src/spacecmd/system.py:2342
 msgid "A subject is required"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2307
+#: ../src/spacecmd/system.py:2346
 msgid "A body is required"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2326
+#: ../src/spacecmd/system.py:2365
 msgid "system_deletenotes: Delete notes from a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2327
+#: ../src/spacecmd/system.py:2366
 msgid "usage: system_deletenotes <SYSTEM> <ID|*>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2359
+#: ../src/spacecmd/system.py:2398
 msgid "No notes to delete"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2374
+#: ../src/spacecmd/system.py:2413
 #, python-format
 msgid "%s is not a valid note ID"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2386
+#: ../src/spacecmd/system.py:2425
 msgid "system_listnotes: List the available notes for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2387
+#: ../src/spacecmd/system.py:2426
 msgid "usage: system_listnotes <SYSTEM>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2445
+#: ../src/spacecmd/system.py:2484
 msgid "system_listfqdns: List the associated FQDNs for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2446
+#: ../src/spacecmd/system.py:2485
 msgid "usage: system_listfqdns <SYSTEM>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2498
+#: ../src/spacecmd/system.py:2537
 msgid "system_setbasechannel: Set a system's base software channel"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2499
+#: ../src/spacecmd/system.py:2538
 msgid "usage: system_setbasechannel <SYSTEMS> CHANNEL"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2548 ../src/spacecmd/system.py:2637
+#: ../src/spacecmd/system.py:2587 ../src/spacecmd/system.py:2676
 #, python-format
 msgid "System:           %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2549 ../src/spacecmd/system.py:2638
+#: ../src/spacecmd/system.py:2588 ../src/spacecmd/system.py:2677
 #, python-format
 msgid "Old Base Channel: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2550 ../src/spacecmd/system.py:2640
+#: ../src/spacecmd/system.py:2589 ../src/spacecmd/system.py:2679
 #, python-format
 msgid "New Base Channel: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2569
+#: ../src/spacecmd/system.py:2608
 msgid ""
 "system_schedulechangechannels: Schedule changing a system's software channels"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2570
+#: ../src/spacecmd/system.py:2609
 msgid ""
 "usage: system_setbasechannel <SYSTEMS> [options]\n"
 "\n"
@@ -6844,134 +6852,134 @@ msgid ""
 "  -s START_TIME time defaults to now"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2639
+#: ../src/spacecmd/system.py:2678
 #, python-format
 msgid "Old Child Channels: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2641
+#: ../src/spacecmd/system.py:2680
 #, python-format
 msgid "New Child channels %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2656 ../src/spacecmd/system.py:4353
+#: ../src/spacecmd/system.py:2695 ../src/spacecmd/system.py:4392
 #, python-format
 msgid "Scheduled action id: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2663
+#: ../src/spacecmd/system.py:2702
 msgid "system_listbasechannel: List the base channel for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2664
+#: ../src/spacecmd/system.py:2703
 msgid "usage: system_listbasechannel <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2718
+#: ../src/spacecmd/system.py:2757
 msgid "system_listchildchannels: List the child channels for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2719
+#: ../src/spacecmd/system.py:2758
 msgid "usage: system_listchildchannels <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2773
+#: ../src/spacecmd/system.py:2812
 msgid "system_addchildchannels: Add child channels to a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2774
+#: ../src/spacecmd/system.py:2813
 msgid "usage: system_addchildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2797
+#: ../src/spacecmd/system.py:2836
 msgid "system_removechildchannels: Remove child channels from a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2798
+#: ../src/spacecmd/system.py:2837
 msgid "usage: system_removechildchannels <SYSTEMS> <CHANNEL ...>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2821
+#: ../src/spacecmd/system.py:2860
 msgid "system_details: Show the details of a system profile"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2822
+#: ../src/spacecmd/system.py:2861
 msgid "usage: system_details <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2875
+#: ../src/spacecmd/system.py:2914
 #, python-format
 msgid "Name:          %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2876
+#: ../src/spacecmd/system.py:2915
 #, python-format
 msgid "System ID:     %i"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2879
+#: ../src/spacecmd/system.py:2918
 #, python-format
 msgid "UUID:          %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2881
+#: ../src/spacecmd/system.py:2920
 #, python-format
 msgid "Locked:        %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2882
+#: ../src/spacecmd/system.py:2921
 #, python-format
 msgid "Registered:    %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2883
+#: ../src/spacecmd/system.py:2922
 #, python-format
 msgid "Last Checkin:  %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2884
+#: ../src/spacecmd/system.py:2923
 #, python-format
 msgid "OSA Status:    %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2885
+#: ../src/spacecmd/system.py:2924
 #, python-format
 msgid "Last Boot:     %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2887
+#: ../src/spacecmd/system.py:2926
 #, python-format
 msgid "Contact Method:%s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2931
+#: ../src/spacecmd/system.py:2970
 #, python-format
 msgid "Hostname:      %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2932
+#: ../src/spacecmd/system.py:2971
 #, python-format
 msgid "IP Address:    %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2933
+#: ../src/spacecmd/system.py:2972
 #, python-format
 msgid "Kernel:        %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2974
+#: ../src/spacecmd/system.py:3013
 msgid "system_listerrata: List available errata for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:2975
+#: ../src/spacecmd/system.py:3014
 msgid "usage: system_listerrata <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3029
+#: ../src/spacecmd/system.py:3068
 msgid "system_applyerrata: Apply errata to a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3030
+#: ../src/spacecmd/system.py:3069
 msgid ""
 "usage: system_applyerrata [options] <SYSTEMS>\n"
 "[ERRATA|search:XXX ...]\n"
@@ -6980,35 +6988,35 @@ msgid ""
 "  -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3092 ../src/spacecmd/system.py:3115
+#: ../src/spacecmd/system.py:3131 ../src/spacecmd/system.py:3154
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_listeventhistory instead.\n"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3095
+#: ../src/spacecmd/system.py:3134
 msgid "system_listevents: List the event history for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3096
+#: ../src/spacecmd/system.py:3135
 msgid "usage: system_listevents <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3146
+#: ../src/spacecmd/system.py:3185
 #, python-format
 msgid "Summary:   %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3148
+#: ../src/spacecmd/system.py:3187
 #, python-format
 msgid "Details:   %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3156
+#: ../src/spacecmd/system.py:3195
 msgid "system_listeventhistory: List the event history for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3157
+#: ../src/spacecmd/system.py:3196
 msgid ""
 "usage: system_listeventhistory <SYSTEMS> [options]\n"
 "\n"
@@ -7021,178 +7029,178 @@ msgid ""
 "limit]"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3210
+#: ../src/spacecmd/system.py:3249
 msgid "Invalid offset"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3217
+#: ../src/spacecmd/system.py:3256
 msgid "Invalid limit"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3242
+#: ../src/spacecmd/system.py:3281
 #, python-format
 msgid "Id:           %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3243
+#: ../src/spacecmd/system.py:3282
 #, python-format
 msgid "History type: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3244
+#: ../src/spacecmd/system.py:3283
 #, python-format
 msgid "Status:       %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3245
+#: ../src/spacecmd/system.py:3284
 #, python-format
 msgid "Summary:      %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3246
+#: ../src/spacecmd/system.py:3285
 #, python-format
 msgid "Completed:    %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3254
+#: ../src/spacecmd/system.py:3293
 msgid "system_eventdetails: Retrieve the details of an event for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3255
+#: ../src/spacecmd/system.py:3294
 msgid "usage: system_eventdetails <SYSTEM> <EVENT>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3294
+#: ../src/spacecmd/system.py:3333
 msgid "No event specified"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3300
+#: ../src/spacecmd/system.py:3339
 msgid "Invalid event id"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3322
+#: ../src/spacecmd/system.py:3361
 #, python-format
 msgid "No event %s found in the history of system %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3325
+#: ../src/spacecmd/system.py:3364
 #, python-format
 msgid "Id:              %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3327
+#: ../src/spacecmd/system.py:3366
 #, python-format
 msgid "History type:    %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3328
+#: ../src/spacecmd/system.py:3367
 #, python-format
 msgid "Status:          %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3329
+#: ../src/spacecmd/system.py:3368
 #, python-format
 msgid "Summary:         %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3331
+#: ../src/spacecmd/system.py:3370
 #, python-format
 msgid "Created:         %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3332
+#: ../src/spacecmd/system.py:3371
 #, python-format
 msgid "Picked up:       %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3333
+#: ../src/spacecmd/system.py:3372
 #, python-format
 msgid "Completed:       %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3337
+#: ../src/spacecmd/system.py:3376
 #, python-format
 msgid "Earliest action: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3338
+#: ../src/spacecmd/system.py:3377
 #, python-format
 msgid "Result message:  %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3339
+#: ../src/spacecmd/system.py:3378
 #, python-format
 msgid "Result code:     %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3344
+#: ../src/spacecmd/system.py:3383
 msgid "Additional info:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3353
+#: ../src/spacecmd/system.py:3392
 #, python-format
 msgid "    Result:          %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3354
+#: ../src/spacecmd/system.py:3393
 #, python-format
 msgid "    Detail:          %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3362
+#: ../src/spacecmd/system.py:3401
 msgid "system_listentitlements: List the entitlements for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3363
+#: ../src/spacecmd/system.py:3402
 msgid "usage: system_listentitlements <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3416
+#: ../src/spacecmd/system.py:3455
 msgid "system_addentitlements: Add entitlements to a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3417
+#: ../src/spacecmd/system.py:3456
 msgid "usage: system_addentitlements <SYSTEMS> ENTITLEMENT"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3472
+#: ../src/spacecmd/system.py:3511
 msgid "system_removeentitlement: Remove an entitlement from a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3473
+#: ../src/spacecmd/system.py:3512
 msgid "usage: system_removeentitlement <SYSTEMS> ENTITLEMENT"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3528
+#: ../src/spacecmd/system.py:3567
 msgid "system_listpackageprofiles: List all package profiles"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3529
+#: ../src/spacecmd/system.py:3568
 msgid "usage: system_listpackageprofiles"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3548
+#: ../src/spacecmd/system.py:3587
 msgid "system_deletepackageprofile: Delete a package profile"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3549
+#: ../src/spacecmd/system.py:3588
 msgid "usage: system_deletepackageprofile PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3573
+#: ../src/spacecmd/system.py:3612
 msgid "Delete this profile [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3584
+#: ../src/spacecmd/system.py:3623
 #, python-format
 msgid "%s is not a valid profile"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3595
+#: ../src/spacecmd/system.py:3634
 msgid "system_createpackageprofile: Create a package profile"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3596
+#: ../src/spacecmd/system.py:3635
 msgid ""
 "usage: system_createpackageprofile SYSTEM [options]\n"
 "\n"
@@ -7201,45 +7209,45 @@ msgid ""
 "  -d DESCRIPTION"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3627
+#: ../src/spacecmd/system.py:3666
 msgid "Profile Label:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3631
+#: ../src/spacecmd/system.py:3670
 msgid "A profile name is required"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3635
+#: ../src/spacecmd/system.py:3674
 msgid "A profile description is required"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3643
+#: ../src/spacecmd/system.py:3682
 #, python-format
 msgid "Created package profile '%s'"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3651
+#: ../src/spacecmd/system.py:3690
 msgid ""
 "system_comparepackageprofile: Compare a system against a package profile"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3652
+#: ../src/spacecmd/system.py:3691
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3715
+#: ../src/spacecmd/system.py:3754
 msgid "system_comparepackages: Compare the packages between two systems"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3716
+#: ../src/spacecmd/system.py:3755
 msgid "usage: system_comparepackages SOME_SYSTEM ANOTHER_SYSTEM"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3747
+#: ../src/spacecmd/system.py:3786
 msgid "system_syncpackages: Sync packages between two systems"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3748
+#: ../src/spacecmd/system.py:3787
 msgid ""
 "usage: system_syncpackages SOURCE TARGET [options]\n"
 "\n"
@@ -7247,97 +7255,97 @@ msgid ""
 "    -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3796
+#: ../src/spacecmd/system.py:3835
 msgid "Sync packages [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3838
+#: ../src/spacecmd/system.py:3877
 #, python-format
 msgid "Failed to filter package list, package %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3839
+#: ../src/spacecmd/system.py:3878
 msgid "found with no arch or arch_label"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3881
+#: ../src/spacecmd/system.py:3920
 msgid "System Version"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3882
+#: ../src/spacecmd/system.py:3921
 msgid "Channel Version"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3904
+#: ../src/spacecmd/system.py:3943
 msgid "Channel_newer_than_system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3917
+#: ../src/spacecmd/system.py:3956
 msgid "System_newer_than_channel"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3926
+#: ../src/spacecmd/system.py:3965
 msgid "Missing_in_channel"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3930
+#: ../src/spacecmd/system.py:3969
 msgid "system_comparewithchannel: Compare the installed packages on a"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3931
+#: ../src/spacecmd/system.py:3970
 msgid "                           system with those in the channels it is"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3932
+#: ../src/spacecmd/system.py:3971
 msgid "                           registerd to, or optionally some other"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3933
+#: ../src/spacecmd/system.py:3972
 msgid "                           channel"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3934
+#: ../src/spacecmd/system.py:3973
 msgid "usage: system_comparewithchannel <SYSTEMS> [options]"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3936
+#: ../src/spacecmd/system.py:3975
 msgid "         -c/--channel : Specific channel to compare against,"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3937
+#: ../src/spacecmd/system.py:3976
 msgid "                        default is those subscribed to, including"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3938
+#: ../src/spacecmd/system.py:3977
 msgid "                        child channels"
 msgstr ""
 
-#: ../src/spacecmd/system.py:3989
+#: ../src/spacecmd/system.py:4028
 msgid "Specified channel does not exist"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4000
+#: ../src/spacecmd/system.py:4039
 #, python-format
 msgid "system %s is not subscribed to any channel!"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4002
+#: ../src/spacecmd/system.py:4041
 msgid "Please subscribe to a channel, or specify achannel to compare with"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4036
+#: ../src/spacecmd/system.py:4075
 #, python-format
 msgid ""
 "\n"
 "System: %s"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4062
+#: ../src/spacecmd/system.py:4101
 msgid ""
 "system_schedulehardwarerefresh: Schedule a hardware refresh for a system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4063
+#: ../src/spacecmd/system.py:4102
 msgid ""
 "usage: system_schedulehardwarerefresh <SYSTEMS> [options]\n"
 "\n"
@@ -7345,13 +7353,13 @@ msgid ""
 "  -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4125
+#: ../src/spacecmd/system.py:4164
 msgid ""
 "system_schedulepackagerefresh: Schedule a software package refresh for a "
 "system"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4126
+#: ../src/spacecmd/system.py:4165
 msgid ""
 "usage: system_schedulepackagerefresh <SYSTEMS> [options])\n"
 "\n"
@@ -7359,35 +7367,35 @@ msgid ""
 "  -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4187
+#: ../src/spacecmd/system.py:4226
 msgid ""
 "system_show_packageversion: Shows version of installed package on given "
 "system(s)"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4188
+#: ../src/spacecmd/system.py:4227
 msgid "usage: system_show_packageversion <SYSTEM> <PACKAGE>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4220
+#: ../src/spacecmd/system.py:4259
 msgid "Package\tVersion\tRelease\tEpoch\tArch\tSystem"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4240
+#: ../src/spacecmd/system.py:4279
 msgid "system_setcontactmethod: Set the contact method for given system(s)."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4242
+#: ../src/spacecmd/system.py:4281
 msgid "usage: system_setcontactmethod <SYSTEMS> <CONTACT_METHOD>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4291
+#: ../src/spacecmd/system.py:4330
 msgid ""
 "system_scheduleapplyconfigchannels: Schedule applying the assigned config "
 "channels to the System (Minion only)"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4293
+#: ../src/spacecmd/system.py:4332
 msgid ""
 "usage: scheduleapplyconfigchannels <SYSTEMS> [options]\n"
 "\n"
@@ -7395,60 +7403,60 @@ msgid ""
 "        -s START_TIME"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4344
+#: ../src/spacecmd/system.py:4383
 msgid "Schedule applying config channels to these systems [y/N]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4361
+#: ../src/spacecmd/system.py:4400
 msgid ""
 "system_listmigrationtargets: List possible migration targets for given "
 "systems."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4362
+#: ../src/spacecmd/system.py:4401
 msgid "usage: system_listmigrationtargets <SYSTEMS>"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4388
+#: ../src/spacecmd/system.py:4427
 msgid "WARN: Cannot find system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4391
+#: ../src/spacecmd/system.py:4430
 msgid "System "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4395
+#: ../src/spacecmd/system.py:4434
 msgid "  No migration targets"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4398
+#: ../src/spacecmd/system.py:4437
 msgid "  Target #"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4399
+#: ../src/spacecmd/system.py:4438
 msgid "    IDs: "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4400
+#: ../src/spacecmd/system.py:4439
 msgid "    Friendly names: "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4408 ../src/spacecmd/system.py:4424
+#: ../src/spacecmd/system.py:4447 ../src/spacecmd/system.py:4463
 msgid ""
 "This method is deprecated and will be removed in a future API version. "
 "Please use system_scheduleproductmigration instead."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4410 ../src/spacecmd/system.py:4426
+#: ../src/spacecmd/system.py:4449 ../src/spacecmd/system.py:4465
 msgid "This method is deprecated and will be removed in a future API version"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4411
+#: ../src/spacecmd/system.py:4450
 msgid ""
 "system_schedulespmigration: Schedule a Service Pack migration for systems."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4412
+#: ../src/spacecmd/system.py:4451
 msgid ""
 "usage: system_schedulespmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7462,12 +7470,12 @@ msgid ""
 "spaces))"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4433
+#: ../src/spacecmd/system.py:4472
 msgid ""
 "system_scheduleproductmigration: Schedule a Product migration for systems."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4434
+#: ../src/spacecmd/system.py:4473
 msgid ""
 "usage: system_scheduleproductmigration <SYSTEM> <BASE_CHANNEL_LABEL> "
 "<MIGRATION_TARGET> [options] \n"
@@ -7485,33 +7493,33 @@ msgid ""
 "spaces))"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4488
+#: ../src/spacecmd/system.py:4527
 msgid "Cannot find system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4488
+#: ../src/spacecmd/system.py:4527
 msgid ". Skipping it."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4491
+#: ../src/spacecmd/system.py:4530
 msgid "Scheduling Product migration for system "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4492
+#: ../src/spacecmd/system.py:4531
 msgid "Migration target "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4498
+#: ../src/spacecmd/system.py:4537
 msgid "Scheduled action ID: "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4508
+#: ../src/spacecmd/system.py:4547
 msgid ""
 "system_bootstrap: Bootstrap a system for management via either Salt or Salt "
 "SSH."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4509
+#: ../src/spacecmd/system.py:4548
 msgid ""
 "usage: bootstrap [options]\n"
 "\n"
@@ -7529,67 +7537,67 @@ msgid ""
 "        "
 msgstr ""
 
-#: ../src/spacecmd/system.py:4543
+#: ../src/spacecmd/system.py:4582
 msgid "Hostname:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4544
+#: ../src/spacecmd/system.py:4583
 msgid "Port [22]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4547
+#: ../src/spacecmd/system.py:4586
 msgid "SSH User [root]:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4550
+#: ../src/spacecmd/system.py:4589
 msgid "SSH Password:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4552
+#: ../src/spacecmd/system.py:4591
 msgid "SSH Private Key File:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4553
+#: ../src/spacecmd/system.py:4592
 msgid "SSH Private Key Password:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4556
+#: ../src/spacecmd/system.py:4595
 msgid "Activation Key:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4559
+#: ../src/spacecmd/system.py:4598
 msgid "Reactivation Key:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4560
+#: ../src/spacecmd/system.py:4599
 msgid "Proxy System ID:"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4562
+#: ../src/spacecmd/system.py:4601
 msgid "Manage with Salt SSH"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4568
+#: ../src/spacecmd/system.py:4607
 msgid "Provided port must be numeric"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4573
+#: ../src/spacecmd/system.py:4612
 msgid "Hostname must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4576
+#: ../src/spacecmd/system.py:4615
 msgid "Either a SSH Password or a private key must be provided"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4584
+#: ../src/spacecmd/system.py:4623
 msgid "Server is not supporting reactivation keys at bootstrap time"
 msgstr ""
 
-#: ../src/spacecmd/system.py:4591
+#: ../src/spacecmd/system.py:4630
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr ""
 
-#: ../src/spacecmd/system.py:4605
+#: ../src/spacecmd/system.py:4644
 msgid ""
 "Initial phase successfully finished. Check event history for actions still "
 "running"

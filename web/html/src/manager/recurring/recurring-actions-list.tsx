@@ -99,7 +99,7 @@ class RecurringActionsList extends React.Component<Props, State> {
     const buttons = [
       <div className="btn-group pull-right">
         <Button
-          className="btn-default"
+          className="btn-primary"
           icon="fa-plus"
           text={t("Create")}
           title="Schedule a new Recurring Action"

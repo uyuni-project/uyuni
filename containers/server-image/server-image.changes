@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:39:23 CET 2024 - rosuna@suse.com
+
+- version 5.1.2
+  * Add aarch64 and ppc64 grub loaders (bsc#1231762)
+  * Use FILE: type for krb5 ccache
+  * Remove pam_ldap as it is no longer shipped (bsc#1231377)
+  * Add saline-formula to the Server container image
+
+-------------------------------------------------------------------
 Mon Oct 14 17:26:43 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1

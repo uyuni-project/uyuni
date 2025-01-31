@@ -22,9 +22,9 @@ import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
-import com.redhat.rhn.domain.product.SUSEProductSCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -457,7 +456,7 @@ public class SCCCachingFactory extends HibernateFactory {
     public static List<Long> lookupRepositoryIdsWithAuth() {
         List<BigDecimal> resultList =
                 getSession().getNamedNativeQuery("SCCRepositoryAuth.lookupRepoIdWithAuth").getResultList();
-        return resultList.stream().map(BigDecimal::longValue).collect(Collectors.toList());
+        return resultList.stream().map(BigDecimal::longValue).toList();
     }
 
     /**
@@ -504,8 +503,8 @@ public class SCCCachingFactory extends HibernateFactory {
                 ChannelFamilyFactory.MODULE_CHANNEL_FAMILY_LABEL);
         return prds.stream()
                 .filter(p -> cfList.contains(p.getChannelFamily().getLabel()))
-                .flatMap(p -> p.getRepositories().stream())
-                .map(SUSEProductSCCRepository::getRepository);
+                .flatMap(p -> p.getChannelTemplates().stream())
+                .map(ChannelTemplate::getRepository);
         }
 
     /**

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,10 +15,10 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.system;
 
+import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
-import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.FaultException;
@@ -126,6 +127,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidEntitlementException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageArchException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidPackageException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidProfileLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidSystemException;
 import com.redhat.rhn.frontend.xmlrpc.MethodInvalidParamException;
@@ -182,8 +184,6 @@ import com.redhat.rhn.manager.system.DuplicateSystemGrouping;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
-import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
-import com.redhat.rhn.manager.system.UpdateChildChannelsCommand;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -406,7 +406,7 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - the server corresponding to sid cannot be found.
      *   - the channel corresponding to cid is not a valid child channel.
-     *   - the user doesn't have subscribe access to any one of the current or
+     *   - the user doesn't have subscribed access to any one of the current or
      *     new child channels.
      * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
      * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
@@ -425,12 +425,12 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     @Deprecated
-    public int setChildChannels(User loggedInUser, Integer sid,
-            List channelIdsOrLabels)
-                    throws FaultException {
+    public int setChildChannels(User loggedInUser, Integer sid, List channelIdsOrLabels) throws FaultException {
 
         //Get the logged in user and server
         Server server = lookupServer(loggedInUser, sid);
+        List<String> channelLabels = new ArrayList<>();
+        String baseChannel = "";
 
         // Determine if user passed in a list of channel ids or labels... note: the list
         // must contain all ids or labels (i.e. not a combination of both)
@@ -438,6 +438,21 @@ public class SystemHandler extends BaseHandler {
         if (!channelIdsOrLabels.isEmpty()) {
             if (channelIdsOrLabels.get(0) instanceof String) {
                 receivedLabels = true;
+                Channel channel = ChannelFactory.lookupByLabel((String) channelIdsOrLabels.get(0));
+                if (channel == null) {
+                    throw new InvalidChannelLabelException();
+                }
+                if (channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
+                baseChannel = channel.getParentChannel().getLabel();
+            }
+            else {
+                Channel channel = ChannelFactory.lookupById(Long.valueOf((Integer) channelIdsOrLabels.get(0)));
+                if (channel == null || channel.getParentChannel() == null) {
+                    throw new InvalidChannelException();
+                }
+                baseChannel = channel.getParentChannel().getLabel();
             }
 
             // check to make sure that the objects are all the same type
@@ -446,80 +461,22 @@ public class SystemHandler extends BaseHandler {
                     if (!(object instanceof String)) {
                         throw new InvalidChannelListException();
                     }
+                    channelLabels.add((String) object);
                 }
                 else {
                     if (!(object instanceof Integer)) {
                         throw new InvalidChannelListException();
                     }
+                    channelLabels.add(ChannelFactory.lookupById(Long.valueOf((Integer) object)).getLabel());
                 }
             }
         }
 
-        List<Long> channelIds = new ArrayList<>();
-        if (receivedLabels) {
-            channelIds = ChannelFactory.getChannelIds(channelIdsOrLabels);
-
-            // if we weren't able to retrieve channel ids for all labels provided,
-            // one or more of the labels must be invalid...
-            if (channelIds.size() != channelIdsOrLabels.size()) {
-                throw new InvalidChannelLabelException();
-            }
-        }
-        else {
-            // unfortunately, the interface only allows Integer input (not Long);
-            // therefore, convert the input to Long, since channel ids are
-            // internally represented as Long
-            for (Object channelId : channelIdsOrLabels) {
-                channelIds.add(Long.valueOf((Integer) channelId));
-            }
-        }
-
-        UpdateChildChannelsCommand cmd = new UpdateChildChannelsCommand(loggedInUser,
-                server, channelIds);
-        cmd.setScheduleApplyChannelsState(true);
-        cmd.store();
+        scheduleChangeChannels(loggedInUser, sid, baseChannel, channelLabels, new Date());
 
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.childchannel"));
 
-        return 1;
-    }
-
-    /**
-     * Sets the base channel for the given server to the given channel
-     * @param loggedInUser The current user
-     * @param sid The id for the server
-     * @param cid The id for the channel
-     * @return Returns 1 if successful, exception otherwise
-     * @throws FaultException A FaultException is thrown if:
-     *   - the server corresponding to sid cannot be found.
-     *   - the channel corresponding to cid is not a base channel.
-     *   - the user doesn't have subscribe access to either the current or
-     *     the new base channel.
-     * @deprecated being replaced by system.setBaseChannel(string sessionKey,
-     * int serverId, string channelLabel)
-     *
-     * @apidoc.doc Assigns the server to a new baseChannel.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param("int", "sid")
-     * @apidoc.param #param_desc("int", "cid", "channel ID")
-     * @apidoc.returntype #return_int_success()
-     */
-    @Deprecated
-    public int setBaseChannel(User loggedInUser, Integer sid, Integer cid)
-            throws FaultException {
-        //Get the logged in user and server
-        Server server = lookupServer(loggedInUser, sid);
-        UpdateBaseChannelCommand cmd =
-                new UpdateBaseChannelCommand(
-                        loggedInUser, server, cid.longValue());
-        cmd.setScheduleApplyChannelsState(true);
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new InvalidChannelException(
-                    LocalizationService.getInstance()
-                    .getMessage(ve.getKey(), ve.getValues()));
-        }
         return 1;
     }
 
@@ -532,10 +489,11 @@ public class SystemHandler extends BaseHandler {
      * @throws FaultException A FaultException is thrown if:
      *   - the server corresponding to sid cannot be found.
      *   - the channel corresponding to cid is not a base channel.
-     *   - the user doesn't have subscribe access to either the current or
+     *   - the user doesn't have subscribed access to either the current or
      *     the new base channel.
      * @deprecated being replaced by system.scheduleChangeChannels(string sessionKey,
      * int serverId, String baseChannelLabel, array_single channelLabels, date earliestOccurrence).
+     * Internally it is already implemented using scheduleChangeChannels
      *
      *
      * @apidoc.doc Assigns the server to a new base channel.  If the user provides an empty
@@ -551,31 +509,8 @@ public class SystemHandler extends BaseHandler {
             throws FaultException {
         Server server = lookupServer(loggedInUser, sid);
 
-        UpdateBaseChannelCommand cmd = null;
-        if (StringUtils.isEmpty(channelLabel)) {
-            // if user provides an empty string for the channel label, they are requesting
-            // to remove the base channel
-            cmd = new UpdateBaseChannelCommand(loggedInUser, server, -1L);
-        }
-        else {
-            List<String> channelLabels = new ArrayList<>();
-            channelLabels.add(channelLabel);
+        scheduleChangeChannels(loggedInUser, sid, channelLabel, emptyList(), new Date());
 
-            List<Long> channelIds = ChannelFactory.getChannelIds(channelLabels);
-
-            if (!channelIds.isEmpty()) {
-                cmd = new UpdateBaseChannelCommand(loggedInUser, server, channelIds.get(0));
-                cmd.setScheduleApplyChannelsState(true);
-            }
-            else {
-                throw new InvalidChannelLabelException();
-            }
-        }
-        ValidatorError ve = cmd.store();
-        if (ve != null) {
-            throw new InvalidChannelException(LocalizationService.getInstance()
-                    .getMessage(ve.getKey(), ve.getValues()));
-        }
         SystemManager.snapshotServer(server, LocalizationService
                 .getInstance().getMessage("snapshots.basechannel"));
         return 1;
@@ -630,8 +565,15 @@ public class SystemHandler extends BaseHandler {
      * @apidoc.doc Schedule an action to change the channels of the given system. Works for both traditional
      * and Salt systems.
      * This method accepts labels for the base and child channels.
-     * If the user provides an empty string for the channelLabel, the current base channel and
-     * all child channels will be removed from the system.
+     * If the user provides an empty string for the baseChannelLabel and an empty list for the childLabels,
+     * the current base channel and all child channels will be removed from the system.
+     * If the user provides only a different baseChannelLabel and an empty list for childLabels,
+     * the new base channel is assigned to the system and we search for compatible child channels for the assigned one.
+     * If the base channel stay empty, all the child channels from the list should be compatible with the currently
+     * assigned base channel. The currently assigned child channels are exchanged with the channels provided in
+     * the childLabels list.
+     * When both baseChannelLabel and childLabels are provided, the compatibility is checked, and the system
+     * gets these new set of channels assigned.
      *
      * @apidoc.param #session_key()
      * @apidoc.param #array_single("int", "sids")
@@ -642,11 +584,6 @@ public class SystemHandler extends BaseHandler {
      */
     public List<Long> scheduleChangeChannels(User loggedInUser, List<Integer> sids, String baseChannelLabel,
                                              List childLabels, Date earliestOccurrence) {
-        //Get the logged in user and server
-        Set<Long> servers = sids.stream()
-                .map(sid -> lookupServer(loggedInUser, sid))
-                .map(Server::getId)
-                .collect(toSet());
         Optional<Channel> baseChannel = Optional.empty();
 
         // base channel
@@ -654,9 +591,29 @@ public class SystemHandler extends BaseHandler {
             List<Long> channelIds = ChannelFactory.getChannelIds(singletonList(baseChannelLabel));
             long baseChannelId = channelIds.stream().findFirst().orElseThrow(InvalidChannelLabelException::new);
             baseChannel = Optional.of(ChannelManager.lookupByIdAndUser(baseChannelId, loggedInUser));
+            if (baseChannel.filter(Channel::isBaseChannel).isEmpty()) {
+                throw new InvalidChannelException();
+            }
         }
         // else if the user provides an empty string for the channel label, they are requesting
         // to remove the base channel
+
+        //Get the logged in user and server
+        Set<Server> servers = sids.stream()
+                .map(sid -> lookupServer(loggedInUser, sid))
+                .collect(toSet());
+
+        for (Server s : servers) {
+            if (baseChannel.isPresent() && baseChannel.map(Channel::getChannelArch)
+                    .filter(arch -> arch.isCompatible(s.getServerArch()))
+                    .isEmpty()) {
+                throw new InvalidChannelException();
+            }
+        }
+
+        Set<Long> serverIds = servers.stream()
+                .map(Server::getId)
+                .collect(toSet());
 
         // check if user passed a list of labels for the child channels
         if (childLabels.stream().anyMatch(e -> !(e instanceof String))) {
@@ -674,15 +631,28 @@ public class SystemHandler extends BaseHandler {
 
         List<Channel> childChannels = channelIds.stream()
                 .map(cid -> ChannelFactory.lookupByIdAndUser(cid, loggedInUser))
-                .collect(Collectors.toList());
+                .toList();
+
+        // consistent check
+        long bid = baseChannel.map(Channel::getId).orElse(-1L);
+        for (Server s : servers) {
+            if (bid == -1L) {
+                bid = s.getBaseChannel().getId();
+            }
+            for (Channel cch : childChannels) {
+                if (!cch.getParentChannel().getId().equals(bid)) {
+                    throw new InvalidParentChannelException();
+                }
+            }
+        }
 
         try {
             Set<Action> action = ActionChainManager.scheduleSubscribeChannelsAction(loggedInUser,
-                    servers,
+                    serverIds,
                     baseChannel,
                     childChannels,
                     earliestOccurrence, null);
-            return action.stream().map(Action::getId).collect(toList());
+            return action.stream().map(Action::getId).toList();
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());
@@ -723,7 +693,7 @@ public class SystemHandler extends BaseHandler {
         Channel baseChannel = server.getBaseChannel();
         List<Map<String, Object>> returnList = new ArrayList<>();
 
-        Set<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
+        List<EssentialChannelDto> list = ChannelManager.listBaseChannelsForSystem(loggedInUser, server);
         for (EssentialChannelDto ch : list) {
             Boolean currentBase = (baseChannel != null) &&
                     baseChannel.getId().equals(ch.getId());
@@ -1589,7 +1559,7 @@ public class SystemHandler extends BaseHandler {
         Server server = lookupServer(loggedInUser, sid);
         DataResult<PackageListItem> packageListItems = PackageManager.systemPackageList(server.getId(), null);
         packageListItems.elaborate();
-        List<Map<String, Object>> maps = packageListItems.stream().map(pi -> {
+        return packageListItems.stream().map(pi -> {
             Map<String, Object> item = new LinkedHashMap<>();
             item.put("package_id", Objects.isNull(pi.getPackageId()) ? -1 : pi.getPackageId().intValue());
             item.put("name", pi.getName());
@@ -1601,8 +1571,7 @@ public class SystemHandler extends BaseHandler {
             Optional.ofNullable(pi.getInstallTimeObj()).ifPresent(it -> item.put("installtime", it));
             item.put("retracted", pi.isRetracted());
             return item;
-        }).collect(toList());
-        return maps;
+        }).toList();
     }
 
     /**
@@ -1648,7 +1617,7 @@ public class SystemHandler extends BaseHandler {
                 item.put("pending status", pi.getPending().equals("L") ? "Locking" : "Unlocking");
             }
             return item;
-        }).collect(toList());
+        }).toList();
     }
 
     /**
@@ -2912,7 +2881,7 @@ public class SystemHandler extends BaseHandler {
      * @param loggedInUser The current user
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2936,7 +2905,7 @@ public class SystemHandler extends BaseHandler {
      * @param request the spark request
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2954,13 +2923,65 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.HTTP)
+    public int provisionSystem(User loggedInUser, Integer sid, Integer proxy, String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, proxy, profileName, new Date());
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile.
+     *
+     * @param loggedInUser The current user
+     * @param request the spark request
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, Integer proxy,
+                               String profileName)
+            throws FaultException {
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, new Date());
+    }
+
+    /**
      * Provision a system using the specified kickstart/autoinstallation profile at specified time.
      *
      * @param loggedInUser The current user
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
      * @param earliestDate when the autoinstallation needs to be scheduled
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -2987,7 +3008,7 @@ public class SystemHandler extends BaseHandler {
      * @param sid of the system to be provisioned
      * @param profileName of Profile to be used.
      * @param earliestDate when the autoinstallation needs to be scheduled
-     * @return Returns 1 if successful, exception otherwise
+     * @return Returns id of the action if successful, exception otherwise
      * @throws FaultException A FaultException is thrown if the server corresponding to
      * id cannot be found or profile is not found.
      *
@@ -3003,6 +3024,63 @@ public class SystemHandler extends BaseHandler {
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
                                 String profileName, Date earliestDate)
             throws FaultException {
+        return provisionSystem(loggedInUser, request , sid, null, profileName, earliestDate);
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.HTTP)
+    public int provisionSystem(User loggedInUser, Integer sid,
+                               Integer proxy, String profileName, Date earliestDate)
+            throws FaultException {
+        HttpServletRequest request = RhnXmlRpcServer.getRequest();
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate);
+    }
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param request the request
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
+            Integer proxy, String profileName, Date earliestDate)
+        throws FaultException {
         log.debug("provisionSystem called.");
 
         // Lookup the server so we can validate it exists and throw error if not.
@@ -3023,10 +3101,19 @@ public class SystemHandler extends BaseHandler {
         KickstartHelper helper = new KickstartHelper(request);
         String host = helper.getKickstartHost();
 
-
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
                 ksdata.getId(), loggedInUser, earliestDate, host);
+        if (proxy != null) {
+            Server proxyServer = SystemManager.lookupByIdAndOrg(Long.valueOf(proxy), loggedInUser.getOrg());
+            if (proxyServer == null) {
+                throw new FaultException(-2, "provisionError", "Requested proxy is not available");
+            }
+            if (!proxyServer.isProxy()) {
+                throw new FaultException(-2, "provisionError", "Requested proxy is not registered proxy");
+            }
+            cmd.setProxy(proxyServer);
+        }
         ValidatorError ve = cmd.store();
         if (ve != null) {
             throw new FaultException(-2, "provisionError",
@@ -3748,7 +3835,7 @@ public class SystemHandler extends BaseHandler {
         // we need long values to pass to ErrataManager.applyErrataHelper
         List<Long> serverIds = sids.stream()
             .map(Integer::longValue)
-            .collect(toList());
+            .toList();
 
         if (!allowModules) {
             for (Long sid : serverIds) {
@@ -3762,7 +3849,7 @@ public class SystemHandler extends BaseHandler {
         }
         List<Long> eids = errataIds.stream()
             .map(Integer::longValue)
-            .collect(toList());
+            .toList();
 
         try {
             return ErrataManager.applyErrataHelper(loggedInUser,
@@ -4081,20 +4168,20 @@ public class SystemHandler extends BaseHandler {
             Long archId = packageMap.get("arch_id");
 
             return PackageFactory.lookupByNevraIds(org, nameId, evrId, archId).stream();
-        }).collect(toList());
+        }).toList();
 
         if (ActionFactory.TYPE_PACKAGES_UPDATE.equals(acT)) {
             List<Tuple2<Long, Long>> pidsidpairs = ErrataFactory.retractedPackages(
-                    packages.stream().map(Package::getId).collect(toList()),
-                    sids.stream().map(Integer::longValue).collect(toList())
+                    packages.stream().map(Package::getId).toList(),
+                    sids.stream().map(Integer::longValue).toList()
             );
             if (!pidsidpairs.isEmpty()) {
-                throw new RetractedPackageFault(pidsidpairs.stream().map(Tuple2::getA).collect(toList()));
+                throw new RetractedPackageFault(pidsidpairs.stream().map(Tuple2::getA).toList());
             }
         }
 
         // Check if the package is part of a PTF. If true it cannot be manually installed/updated/ removed
-        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).collect(toList());
+        List<Long> ptfPackages = packages.stream().filter(Package::isPartOfPtf).map(Package::getId).toList();
         if (!ptfPackages.isEmpty()) {
             throw new PtfPackageFault(ptfPackages);
         }
@@ -4104,7 +4191,7 @@ public class SystemHandler extends BaseHandler {
             List<Long> ptfMasterPackages = packages.stream()
                                                    .filter(Package::isMasterPtfPackage)
                                                    .map(Package::getId)
-                                                   .collect(toList());
+                                                   .toList();
             if (!ptfMasterPackages.isEmpty()) {
                 throw new PtfMasterFault(ptfMasterPackages);
             }
@@ -4324,12 +4411,12 @@ public class SystemHandler extends BaseHandler {
                                          List<Integer> packageIds, Date earliestOccurrence, Boolean allowModules) {
 
         List<Tuple2<Long, Long>> retracted = ErrataFactory.retractedPackages(
-                packageIds.stream().map(Integer::longValue).collect(toList()),
-                sids.stream().map(Integer::longValue).collect(toList()));
+                packageIds.stream().map(Integer::longValue).toList(),
+                sids.stream().map(Integer::longValue).toList());
 
         List<Long> retractedPids = retracted.stream()
                 .map(Tuple2::getA)
-                .collect(toList());
+                .toList();
         if (retracted.isEmpty()) {
             return schedulePackagesAction(loggedInUser, sids,
                     packageIdsToMaps(loggedInUser, packageIds), earliestOccurrence,
@@ -4834,13 +4921,13 @@ public class SystemHandler extends BaseHandler {
         Set<Package> pkgsAlreadyLocked = new HashSet<>();
         List<Package> pkgsFindAlreadyLocked = PackageManager.lookupByIdAndUser(
                 lockedPackagesResult.stream().map(PackageListItem::getPackageId)
-                        .collect(Collectors.toList()), loggedInUser);
+                        .toList(), loggedInUser);
         pkgsAlreadyLocked.addAll(pkgsFindAlreadyLocked);
 
         Set<Package> pkgsToLock = new HashSet<>();
         List<Package> pkgsFindToLock = PackageManager.lookupByIdAndUser(pkgIdsToLock
 
-                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+                .stream().map(Integer::longValue).toList(), loggedInUser);
         pkgsFindToLock.stream().filter(Objects::nonNull).forEach(pkgsToLock::add);
 
         pkgsToLock.removeAll(pkgsAlreadyLocked);
@@ -4850,7 +4937,7 @@ public class SystemHandler extends BaseHandler {
 
         Set<Package> pkgsToUnlock = new HashSet<>();
         List<Package> pkgsFindToUnlock = PackageManager.lookupByIdAndUser(pkgIdsToUnlock
-                .stream().map(Integer::longValue).collect(toList()), loggedInUser);
+                .stream().map(Integer::longValue).toList(), loggedInUser);
         pkgsFindToUnlock.stream().filter(Objects::nonNull).forEach(pkgsToUnlock::add);
 
         pkgsToUnlock.forEach(x -> x.setLockPending(Boolean.TRUE));
@@ -8080,7 +8167,7 @@ public class SystemHandler extends BaseHandler {
                             }
                             return ps.getIsEveryChannelSynced();
                         })
-                        .collect(toList());
+                        .toList();
                 targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
                 log.info("Using migration target: {}", targetProducts);
             }
@@ -8291,7 +8378,7 @@ public class SystemHandler extends BaseHandler {
                 .map(p -> new SUSEInstalledProduct(p.getName(), p.getVersion(),
                         p.getArch().getLabel(), p.getRelease(), p.isBaseproduct(),
                         p.getSUSEProduct().getFriendlyName()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -8668,8 +8755,8 @@ public class SystemHandler extends BaseHandler {
     public Long scheduleApplyHighstate(User loggedInUser, List<Integer> sids, Date earliestOccurrence, Boolean test) {
         List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
         try {
-            List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(Server::getId).collect(Collectors.toList());
+            Set<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
+                    .map(Server::getId).collect(toSet());
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
@@ -8733,10 +8820,10 @@ public class SystemHandler extends BaseHandler {
      */
     public Long scheduleApplyStates(User loggedInUser, List<Integer> sids, List<String> stateNames,
             Date earliestOccurrence, Boolean test) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).collect(Collectors.toList());
+        List<Long> sysids = sids.stream().map(Integer::longValue).toList();
         try {
             List<Long> visible = MinionServerFactory.lookupVisibleToUser(loggedInUser)
-                    .map(Server::getId).collect(Collectors.toList());
+                    .map(Server::getId).toList();
             if (!visible.containsAll(sysids)) {
                 sysids.removeAll(visible);
                 throw new UnsupportedOperationException("Some System not managed with Salt: " + sysids);
@@ -8985,7 +9072,7 @@ public class SystemHandler extends BaseHandler {
      *
      * @apidoc.doc refresh all the pillar data of a list of systems.
      * @apidoc.param #session_key()
-     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
      * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, List<Integer> sids) {
@@ -9004,7 +9091,7 @@ public class SystemHandler extends BaseHandler {
      * and can be one of 'general', 'group_membership', 'virtualization' or 'custom_info'.
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "subset", "subset of the pillar to refresh.")
-     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #array_single("int", "sids", "System IDs to be refreshed. If empty, all systems will be refreshed")
      * @apidoc.returntype #array_single("int", "skippedIds", "System IDs which couldn't be refreshed")
      */
     public List<Integer> refreshPillar(User loggedInUser, String subset, List<Integer> sids) {
@@ -9012,9 +9099,16 @@ public class SystemHandler extends BaseHandler {
         MinionPillarManager.PillarSubset subsetValue = subset != null ?
                 MinionPillarManager.PillarSubset.valueOf(subset.toUpperCase()) :
                 null;
-        for (Integer sysId : sids) {
-            if (SystemManager.isAvailableToUser(loggedInUser, sysId.longValue())) {
-                Server system = SystemManager.lookupByIdAndUser(Long.valueOf(sysId), loggedInUser);
+        List<Long> sysids;
+        if (sids == null || sids.isEmpty()) {
+            sysids = MinionServerFactory.lookupVisibleToUser(loggedInUser).map(MinionServer::getId).toList();
+        }
+        else {
+            sysids = sids.stream().map(Integer::longValue).toList();
+        }
+        for (Long sysId : sysids) {
+            if (SystemManager.isAvailableToUser(loggedInUser, sysId)) {
+                Server system = SystemManager.lookupByIdAndUser(sysId, loggedInUser);
                 system.asMinionServer().ifPresentOrElse(
                     minionServer -> {
                         if (subsetValue != null) {
@@ -9026,13 +9120,13 @@ public class SystemHandler extends BaseHandler {
                     },
                     () -> {
                         log.warn("system {} is not a salt minion, hence pillar will not be updated", sysId);
-                        skipped.add(sysId);
+                        skipped.add(sysId.intValue());
                     }
                 );
             }
             else {
                 log.warn("system {} is not available to user, hence pillar will not be refreshed", sysId);
-                skipped.add(sysId);
+                skipped.add(sysId.intValue());
             }
         }
         return skipped;
@@ -9054,7 +9148,7 @@ public class SystemHandler extends BaseHandler {
      */
 
     public List<Long> changeProxy(User loggedInUser, List<Integer> sids, Integer proxyId) {
-        List<Long> sysids = sids.stream().map(Integer::longValue).collect(toList());
+        List<Long> sysids = sids.stream().map(Integer::longValue).toList();
         try {
             return ActionManager.changeProxy(loggedInUser, sysids, proxyId.longValue());
         }

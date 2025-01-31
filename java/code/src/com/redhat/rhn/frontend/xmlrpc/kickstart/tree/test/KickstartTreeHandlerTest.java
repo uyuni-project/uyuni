@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.xmlrpc.kickstart.tree.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -145,8 +146,8 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         List ksProfiles = ksHandler.listKickstarts(admin);
         assertNotNull(ksTrees);
         assertNotNull(ksProfiles);
-        Integer numKsTrees = ksTrees.size();
-        Integer numKsProfiles = ksProfiles.size();
+        int numKsTrees = ksTrees.size();
+        int numKsProfiles = ksProfiles.size();
 
         // execute test...
         int result = handler.deleteTreeAndProfiles(admin, testTree.getLabel());
@@ -167,6 +168,6 @@ public class KickstartTreeHandlerTest extends BaseHandlerTestCase {
         assertNotNull(types);
         assertFalse(types.isEmpty());
         System.out.println("type: " + types.get(0).getClass().getName());
-        assertTrue(types.get(0) instanceof KickstartInstallType);
+        assertInstanceOf(KickstartInstallType.class, types.get(0));
     }
 }

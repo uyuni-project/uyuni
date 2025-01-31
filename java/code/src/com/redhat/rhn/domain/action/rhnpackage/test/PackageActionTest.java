@@ -15,8 +15,8 @@
 package com.redhat.rhn.domain.action.rhnpackage.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -56,14 +56,14 @@ public class PackageActionTest extends RhnBaseTestCase {
                 UserTestUtils.createOrg("testOrg" + this.getClass().getSimpleName())),
                 ActionFactory.TYPE_PACKAGES_VERIFY);
         assertNotNull(newA.getId());
-        assertTrue(newA instanceof PackageAction);
+        assertInstanceOf(PackageAction.class, newA);
         PackageAction p = (PackageAction) newA;
         assertNotNull(p.getDetails());
         assertEquals(p.getDetails().size(), 1);
         PackageActionDetails firstDetail =
             (PackageActionDetails) p.getDetails().toArray()[0];
 
-        /**
+        /*
          * Make sure PackageEvr was set & committed correctly
          */
         Set details = p.getDetails();
@@ -108,11 +108,11 @@ public class PackageActionTest extends RhnBaseTestCase {
         ActionFactory.save(testAction);
         flushAndEvict(testAction);
 
-        /**
+        /*
          * Get action back out of db and make sure it committed correctly
          */
         Action same = ActionFactory.lookupById(testAction.getId());
-        assertTrue(same instanceof PackageAction);
+        assertInstanceOf(PackageAction.class, same);
         PackageAction sameAction = (PackageAction) same;
 
         assertNotNull(sameAction.getDetails());
@@ -133,11 +133,11 @@ public class PackageActionTest extends RhnBaseTestCase {
         PackageActionDetailsTest.createTestDetailsWithName(usr, testAction);
         ActionFactory.save(testAction);
         flushAndEvict(testAction);
-        /**
+        /*
          * Get action back out of db and make sure it committed correctly
          */
         Action same = ActionFactory.lookupById(testAction.getId());
-        assertTrue(same instanceof PackageAction);
+        assertInstanceOf(PackageAction.class, same);
         PackageAction sameAction = (PackageAction) same;
 
         assertNotNull(sameAction.getDetails());

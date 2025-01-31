@@ -85,7 +85,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ConfigurationManager
@@ -181,7 +180,7 @@ public class ConfigurationManager extends BaseManager {
     public List<ConfigChannel> listGlobalChannels(User user) {
         return ConfigurationFactory.listGlobalChannels().stream()
                 .filter(c -> accessToChannel(user.getId(), c.getId()))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
@@ -1397,8 +1396,8 @@ public class ConfigurationManager extends BaseManager {
 
     private void removeChannelFromRecurringActions(List<RecurringAction> actions, ConfigChannel channel) {
         actions.forEach(a -> ((RecurringState) a.getRecurringActionType()).getStateConfig()
-                .removeIf(c -> c instanceof RecurringConfigChannel &&
-                        ((RecurringConfigChannel) c).getConfigChannel().equals(channel)));
+                .removeIf(c -> c instanceof RecurringConfigChannel reConfigChannel &&
+                        reConfigChannel.getConfigChannel().equals(channel)));
     }
 
     /**

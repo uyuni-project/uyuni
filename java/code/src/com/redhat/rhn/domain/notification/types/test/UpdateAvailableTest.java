@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,78 +14,256 @@
  */
 package com.redhat.rhn.domain.notification.types.test;
 
+
+import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_NAME;
+import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_MGR;
+import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_UYUNI;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
-import com.redhat.rhn.testing.MockObjectTestCase;
 
-import org.jmock.Expectations;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
-class UpdateAvailableTest extends MockObjectTestCase {
+import java.util.stream.Stream;
 
-    private Runtime runtimeMock;
-    private Process processMock;
+public class UpdateAvailableTest {
+    private static final String FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX =
+            "Failed to extract version from release notes from";
+    private static final String RELEASE_NOTES_HTML_ELEMENT =
+            "<html>Release Notes for v<span id=\"current_version\">%s</span>.</html>";
+    private static final String SUMA = "SUSE Manager";
+    private static final String UYUNI = "Uyuni";
 
+    /**
+     * Set up the test environment.
+     * Used to avoid property product_name overriding web.product_name.
+     */
     @BeforeEach
     public void setUp() {
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        runtimeMock = mock(Runtime.class);
-        processMock = mock(Process.class);
+        Config.get().remove("product_name");
     }
 
+    /**
+     * Test hasUpdateAvailable when a new version of SUMA is available.
+     */
     @Test
-    public void testPropertiesAndStrings() {
-        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
-        assertEquals(NotificationType.UpdateAvailable, notification.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, notification.getSeverity());
-        assertEquals("Updates are available.", notification.getSummary());
-        if (ConfigDefaults.get().isUyuni()) {
-            assertEquals("A new update for Uyuni is now available. For further details, please refer to the " +
-                         "<a href=\"https://www.uyuni-project.org/pages/stable-version.html\">release notes<a>.",
-                         notification.getDetails());
-        }
-        else {
-            assertEquals("A new update for SUSE Manager is now available. For further details, please refer to the " +
-                         "<a href=\"https://www.suse.com/releasenotes/x86_64/SUSE-MANAGER/4.3/index.html\">release " +
-                         "notes<a>.", notification.getDetails());
-        }
+    public void testSuccessSumaWhenUpdateAvailable() {
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, SUMA);
+        Config.get().setString(PRODUCT_VERSION_MGR, "5.0.1");
+
+        // "Mock" the release notes to contain a newer version
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return String.format(RELEASE_NOTES_HTML_ELEMENT, "5.3.2");
+            }
+        };
+
+        assertTrue(updateAvailable.hasUpdateAvailable());
+        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
+    /**
+     * Test hasUpdateAvailable when no new version of SUMA is available.
+     */
     @Test
-    public void testUpdatesAvailable() throws Exception {
-        // Return 0 on all invocations of exec() -> an update is available
-        checking(new Expectations() {{
-             allowing(runtimeMock).exec(with(any(String[].class)));
-             will(returnValue(processMock));
-             allowing(processMock).waitFor();
-             allowing(processMock).exitValue();
-             will(returnValue(0));
-        }});
+    public void testSuccessSumaWhenNoUpdateAvailable() {
+        final String currentVersion = "5.0.1";
 
-        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
-        assertTrue(notification.updateAvailable());
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, SUMA);
+        Config.get().setString(PRODUCT_VERSION_MGR, currentVersion);
+
+        // "Mock" the release notes to contain the same version
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return String.format(RELEASE_NOTES_HTML_ELEMENT, currentVersion);
+            }
+        };
+
+        assertFalse(updateAvailable.hasUpdateAvailable());
     }
 
+    /**
+     * Test hasUpdateAvailable when a new version of Uyuni is available.
+     */
     @Test
-    public void testNoUpdatesAvailable() throws Exception {
-        // Return 1 on all invocations of exec() -> no update is available
-        checking(new Expectations() {{
-             allowing(runtimeMock).exec(with(any(String[].class)));
-             will(returnValue(processMock));
-             allowing(processMock).waitFor();
-             allowing(processMock).exitValue();
-             will(returnValue(1));
-        }});
+    public void testSuccessUyuniWhenUpdateAvailable() {
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
 
-        UpdateAvailable notification = new UpdateAvailable(runtimeMock);
-        assertFalse(notification.updateAvailable());
+        // "Mock" the release notes to contain a newer version
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return String.format(RELEASE_NOTES_HTML_ELEMENT, "2024.08");
+            }
+        };
+
+        assertTrue(updateAvailable.hasUpdateAvailable());
+        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals("Updates are available.", updateAvailable.getSummary());
     }
+
+    /**
+     * Test the success of the method hasUpdateAvailable when no new version of Uyuni is available.
+     */
+    @Test
+    public void testSuccessUyuniWhenNoUpdateAvailable() {
+        final String currentVersion = "2024.07";
+
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, currentVersion);
+
+        // "Mock" the release notes to the same version
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return String.format(RELEASE_NOTES_HTML_ELEMENT, currentVersion);
+            }
+        };
+
+        assertFalse(updateAvailable.hasUpdateAvailable());
+    }
+
+    /**
+     * Test the failure of the method hasUpdateAvailable when the retrieved released notes belong to another product.
+     */
+    @Test
+    public void testFailureUyuniWhenWrongReleaseNotesRetrieved() {
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+
+        // "Mock" the release notes to retrieve a SUMA version
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return String.format(RELEASE_NOTES_HTML_ELEMENT, "5.0.1");
+            }
+        };
+
+        RhnRuntimeException thrown = assertThrows(RhnRuntimeException.class, updateAvailable::hasUpdateAvailable);
+
+        assertTrue(thrown.getMessage().contains(FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX));
+    }
+
+    /**
+     * Test the failure of the method hasUpdateAvailable when no version was extracted.
+     */
+    @Test
+    public void testFailureUyuniWhenNoVersionDetected() {
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return "";
+            }
+        };
+
+        RhnRuntimeException thrown = assertThrows(RhnRuntimeException.class, updateAvailable::hasUpdateAvailable);
+
+        assertTrue(thrown.getMessage().contains(FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX));
+    }
+
+    /**
+     * Test the failure of the method hasUpdateAvailable when no version can be extracted from html
+     * @param releaseNotesHtml the html content retrieved
+     */
+    @ParameterizedTest
+    @MethodSource("invalidHtmlData")
+    public void testFailureWhenInvalidHtml(String releaseNotesHtml) {
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return releaseNotesHtml;
+            }
+        };
+
+        RhnRuntimeException thrown = assertThrows(RhnRuntimeException.class, updateAvailable::hasUpdateAvailable);
+
+        assertTrue(thrown.getMessage().contains(FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX));
+
+    }
+
+    static Stream<Arguments> invalidHtmlData() {
+        return Stream.of(
+                Arguments.of(""),
+                Arguments.of("<html>Release Notes for v<div id=\"current_version\">2024-09</div>"),
+                Arguments.of("<html>Release Notes for v<span id=\"current_version\">"),
+                Arguments.of("<html>Release Notes for v<span id=\"current_version\" 2024-10</span>"),
+                Arguments.of("<html>Release Notes for v<span 2024-11</span"),
+                Arguments.of("<html>Release Notes for v<span id=\"otherid\">2024-08</span>")
+        );
+    }
+
+
+    /**
+     * Test the failure of the method hasUpdateAvailable when no version was extracted.
+     */
+    @Test
+    public void testFailureUyuniWhenDownloadFails() {
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                throw new DownloadException("dummy", new RuntimeException("dummy"));
+            }
+        };
+
+        RhnRuntimeException thrown = assertThrows(RhnRuntimeException.class, updateAvailable::hasUpdateAvailable);
+
+        assertTrue(thrown.getMessage().contains(FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX));
+    }
+
+    /**
+     * Test method hasUpdateAvailable is able to extract versions event when the element has more attributes than
+     * expected
+     * @param releaseNotesHtml the html content retrieved
+     */
+    @ParameterizedTest
+    @MethodSource("validHtmlData")
+    public void testSuccessWhenValidHtml(String releaseNotesHtml) {
+        // Set current product version
+        Config.get().setString(PRODUCT_NAME, UYUNI);
+        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+
+        UpdateAvailable updateAvailable = new UpdateAvailable() {
+            @Override
+            public String getReleaseNotes() {
+                return releaseNotesHtml;
+            }
+        };
+
+        assertDoesNotThrow(updateAvailable::hasUpdateAvailable);
+    }
+
+    static Stream<Arguments> validHtmlData() {
+        return Stream.of(
+                Arguments.of("<span id=\"current_version\">2025.01</span>"),
+                Arguments.of("...<span id=\"current_version\">2025.02</span>...not html"),
+                Arguments.of("<div><span class=\"some classes\" id=\"current_version\" " +
+                        "style=\"display:none\">2025.03</span></div>"),
+                Arguments.of("<span id=\"current_version\">2025.04</span><span id=\"current_version\">2025.05</span>")
+        );
+    }
+
 }

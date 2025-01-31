@@ -262,7 +262,8 @@ end
 # @param name [String] The name of the host.
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
 def suse_host?(name)
-  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+  os_family = get_target(name).os_family
+  %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
@@ -299,7 +300,8 @@ end
 # @param name [String] the host name to check
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
-  (name.include? 'rhlike') || (name.include? 'alma') || (name.include? 'centos') || (name.include? 'liberty') || (name.include? 'oracle') || (name.include? 'rocky')
+  os_family = get_target(name).os_family
+  %w[rocky centos redhat alma oracle liberty].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.
@@ -307,7 +309,8 @@ end
 # @param name [String] The host name to check.
 # @return [Boolean] Returns true if the host name is Debian-based, false otherwise.
 def deb_host?(name)
-  (name.include? 'deblike') || (name.include? 'debian') || (name.include? 'ubuntu')
+  os_family = get_target(name).os_family
+  %w[debian ubuntu].include? os_family
 end
 
 # Checks if a repository exists.
@@ -325,11 +328,13 @@ end
 # @return [String] The generated repository name.
 def generate_repository_name(repo_url)
   repo_name = repo_url.strip
-  repo_name.sub!(%r{http://download.suse.de/ibs/SUSE:/Maintenance:/}, '')
-  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/Maintenance:/}, '')
-  repo_name.sub!(%r{http://download.suse.de/download/ibs/SUSE:/}, '')
-  repo_name.sub!(%r{http://.*compute.internal/SUSE:/}, '')
-  repo_name.sub!(%r{http://.*compute.internal/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/download/ibs/SUSE:/Maintenance:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/download/ibs/SUSE:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/repositories/systemsmanagement:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/ibs/Devel:/Galaxy:/Manager:/}, '')
+  repo_name.sub!(%r{http://(download.suse.de|download.opensuse.org|minima-mirror-ci-bv.mgr.*|.*compute.internal)/SUSE:/Maintenance:/}, '')
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
@@ -584,28 +589,39 @@ end
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
 def channel_is_synced(channel)
+  sync_status = false
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
   if code.zero? && !result.include?('repo size: 0')
     # We want to check if no .new files exists. On a re-sync, the old files stay, the new one have this suffix until it's ready.
     _result, new_code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv.new", verbose: false, check_errors: false)
     log 'Channel synced, no .new files exist and number of solvables is bigger than 0' unless new_code.zero?
-    !new_code.zero?
+    sync_status = !new_code.zero?
   elsif result.include?('repo size: 0')
     if EMPTY_CHANNELS.include?(channel)
-      true
+      sync_status = true
     else
       _result, code = get_target('server').run("zcat /var/cache/rhn/repodata/#{channel}/*primary.xml.gz | grep 'packages=\"0\"'", verbose: false, check_errors: false)
       log "/var/cache/rhn/repodata/#{channel}/*primary.xml.gz contains 0 packages" if code.zero?
-      false
+      sync_status = false
     end
   else
     # If the solv file doesn't exist, we check if we are under a Debian-like repository
     command = "test -s /var/cache/rhn/repodata/#{channel}/Release && test -e /var/cache/rhn/repodata/#{channel}/Packages"
     _result, new_code = get_target('server').run(command, verbose: false, check_errors: false)
     log 'Debian-like channel synced, if Release and Packages files exist' if new_code.zero?
-    new_code.zero?
+    sync_status = new_code.zero?
   end
+  if sync_status
+    begin
+      duration = channel_synchronization_duration(channel)
+      log "Channel #{channel} synchronized in #{duration} seconds"
+    rescue ScriptError => e
+      log "Error while checking synchronization duration: #{e.message}"
+      sync_status = false
+    end
+  end
+  sync_status
 end
 
 # This function initializes the API client
@@ -623,7 +639,8 @@ def new_api_client
   when 'xmlrpc'
     ApiTestXmlrpc.new(hostname)
   when 'http'
-    ApiTestHttp.new(hostname, ssl_verify)
+    # We use API_PROTOCOL env. variable only for debugging purposes from our local machine, so we can skip the SSL verification
+    ApiTestHttp.new(hostname, false)
   else
     if product == 'SUSE Manager'
       ApiTestXmlrpc.new(hostname)
@@ -719,10 +736,11 @@ end
 # @param channels [Array<String>] The list of channels to filter.
 # @param filters [Array<String>] The list of filters to apply.
 def filter_channels(channels, filters = [])
+  filtered_channels = channels.clone
   filters.each do |filter|
-    channels.delete_if { |channel| channel.include? filter }
+    filtered_channels.delete_if { |channel| channel.include? filter }
   end
-  channels
+  filtered_channels
 end
 
 # Mutex for processes accessing the API of the server via admin user
@@ -737,4 +755,21 @@ def api_unlock
   File.open('server_api_call.lock') do |file|
     file.flock(File::LOCK_UN)
   end
+end
+
+# Function to get the highest event ID (latest event)
+#
+# @param host String The hostname of the system from requested
+def get_last_event(host)
+  node = get_target(host)
+  system_id = get_system_id(node)
+  $api_test.system.get_event_history(system_id, 0, 1)[0]
+end
+
+# Function to trigger the upgrade command
+#
+# @param hostname String The hostname of the system from requested
+# @param package String The package name where it will trigger an upgrade
+def trigger_upgrade(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 SUSE LLC
+ * Copyright (c) 2023--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,15 +14,16 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.download.DownloadException;
+import com.redhat.rhn.common.util.download.DownloadUtils;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
 import java.io.Serializable;
 
 /**
@@ -32,53 +33,33 @@ public class UpdateAvailable implements NotificationData, Serializable {
 
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
     private static final Logger LOG = LogManager.getLogger(UpdateAvailable.class);
-    private static final String UYUNI_PATCH_REPO = "systemsmanagement_Uyuni_Stable_Patches";
-    private static final String UYUNI_UPDATE_REPO = "systemsmanagement_Uyuni_Stable";
 
-    private final boolean mgr = !ConfigDefaults.get().isUyuni();
-    private final String version = StringUtils.substringBeforeLast(ConfigDefaults.get().getProductVersion(), ".");
-    private final transient Runtime runtime;
+    private static final String VERSION_ELEMENT_START = "<span";
+    private static final String VERSION_ELEMENT_ID_ATTRIBUTE = "id=\"current_version\"";
+    private static final String VERSION_ELEMENT_END = "</span>";
 
-    /**
-     * Constructor allowing to pass the runtime as argument.
-     *
-     * @param runtimeIn runtime object for command execution
-     */
-    public UpdateAvailable(Runtime runtimeIn) {
-        this.runtime = runtimeIn;
-    }
+    private final boolean isUyuni = ConfigDefaults.get().isUyuni();
+    private final Version version = new Version(
+            ConfigDefaults.get().getProductVersion(),
+            ConfigDefaults.get().isUyuni()
+    );
 
     /**
-     * returns true if there are updates available.
+     * returns true if there is a newer version available.
      *
      * @return boolean
      **/
-    public boolean updateAvailable() {
-        boolean hasUpdates = false;
-        String repo = mgr ? "SLE-Module-SUSE-Manager-Server-" + version + "-Updates" : UYUNI_PATCH_REPO;
-
+    public boolean hasUpdateAvailable() {
         try {
-            Process patchProc = runtime.exec(new String[]{"/bin/bash", "-c",
-                    "LC_ALL=C zypper lp -r " + repo + " | grep 'applicable patch'"});
-            patchProc.waitFor();
-            // 0 here means there are patches
-            hasUpdates = (0 == patchProc.exitValue());
-            if (!hasUpdates && !mgr) {
-                // Check for updates on uyuni when there are no patches
-                Process updateProc = runtime.exec(new String[]{"/bin/bash", "-c",
-                        "LC_ALL=C zypper lu -r " + UYUNI_UPDATE_REPO + " | grep 'Available Version'"});
-                updateProc.waitFor();
-                hasUpdates = (0 == updateProc.exitValue());
-            }
+            String releaseNotesHtmlContent = getReleaseNotes();
+            Version latestVersion = new Version(extractVersion(releaseNotesHtmlContent), isUyuni);
+            return latestVersion.isNewerThan(version);
         }
-        catch (IOException e) {
-            LOG.warn("Unable to check for updates", e);
+        catch (IllegalArgumentException | DownloadException e) {
+            throw new RhnRuntimeException(
+                    "Failed to extract version from release notes from " + getReleaseNotesUrl(), e
+            );
         }
-        catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            LOG.warn("Wait for update check was interrupted", e);
-        }
-        return hasUpdates;
     }
 
     @Override
@@ -98,9 +79,66 @@ public class UpdateAvailable implements NotificationData, Serializable {
 
     @Override
     public String getDetails() {
-        String url = mgr ?
-                "https://www.suse.com/releasenotes/x86_64/SUSE-MANAGER/" + version + "/index.html" :
-                "https://www.uyuni-project.org/pages/stable-version.html";
-        return LOCALIZATION_SERVICE.getMessage("notification.updateavailable.detail", url);
+        return LOCALIZATION_SERVICE.getMessage("notification.updateavailable.detail", getReleaseNotesUrl());
     }
+
+    /**
+     * Downloads the release notes.
+     *
+     * @return the release notes
+     */
+    public String getReleaseNotes() {
+        return DownloadUtils.downloadUrl(getReleaseNotesUrl());
+    }
+
+    /**
+     * Returns the URL to the release notes, considering the product.
+     *
+     * @return the URL to the release notes
+     */
+    public String getReleaseNotesUrl() {
+        return isUyuni ? "https://www.uyuni-project.org/pages/stable-version.html" :
+                "https://www.suse.com/releasenotes/x86_64/SUSE-MANAGER/" +
+                        version.getMajor() + "." + version.getMinor() +
+                        "/index.html";
+    }
+
+    /**
+     * Finds and retrieves the content of the first occurrence of a span element that has "current_version" as id
+     *
+     * @param html the HTML content
+     * @return the version as string
+     */
+    private static String extractVersion(String html) {
+        int startIndex = html.indexOf(VERSION_ELEMENT_START);
+        if (startIndex == -1) {
+            throw new IllegalArgumentException("Start tag " + VERSION_ELEMENT_START + " not found!");
+        }
+
+        while (startIndex != -1) {
+            // Find the closing '>' of the opening <span> tag
+            int tagEndIndex = html.indexOf(">", startIndex);
+            if (tagEndIndex == -1) {
+                throw new IllegalArgumentException("Malformed HTML: Missing '>' in <span> tag!");
+            }
+
+            // Check if this is the span element who has id="current_version"
+            String spanTag = html.substring(startIndex, tagEndIndex + 1);
+            if (spanTag.contains(VERSION_ELEMENT_ID_ATTRIBUTE)) {
+                // Find the closing </span>
+                int endIndex = html.indexOf(VERSION_ELEMENT_END, tagEndIndex);
+                if (endIndex == -1) {
+                    throw new IllegalArgumentException("Matching tag " + VERSION_ELEMENT_END + " not found!");
+                }
+
+                return html.substring(tagEndIndex + 1, endIndex).trim();
+            }
+
+            // Look for the next span open tag
+            startIndex = html.indexOf(VERSION_ELEMENT_START, tagEndIndex);
+        }
+
+        return "Span element with id='current_version' not found!";
+    }
+
 }

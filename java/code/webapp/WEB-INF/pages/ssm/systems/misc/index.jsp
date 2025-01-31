@@ -39,9 +39,9 @@
             <thead>
                 <tr>
                     <th align="left"><bean:message key="ssm.misc.index.syspref.preference"/></th>
-                    <th width="5%"><bean:message key="yes"/></th>
-                    <th width="5%"><bean:message key="no"/></th>
-                    <th width="5%"><bean:message key="ssm.misc.index.syspref.nochange"/></th>
+                    <th width="5%" class="text-center"><bean:message key="yes"/></th>
+                    <th width="5%" class="text-center"><bean:message key="no"/></th>
+                    <th width="5%" class="text-center"><bean:message key="ssm.misc.index.syspref.nochange"/></th>
                 </tr>
             </thead>
 

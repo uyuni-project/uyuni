@@ -46,17 +46,7 @@ function listenForGlobalNotificationChanges() {
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
   jQuery(scrollTarget).on("scroll", function () {
-    if(jQuery(this).scrollTop() > 100) {
-      jQuery('#scroll-top').show();
-    } else {
-      jQuery('#scroll-top').hide();
-    }
-
     sstScrollBehavior();
-  });
-
-  jQuery(document).on('click', '#scroll-top', function() {
-    jQuery(scrollTarget).scrollTo(0,0);
   });
 }
 
@@ -225,6 +215,35 @@ function showFatalError(message, exception) {
   }
 }
 
+/**
+ * Checks if the provided string is a valid URL.
+ *
+ * @param {string} url - The URL string to validate.
+ * @returns {boolean} - `true` if the string is a valid URL, otherwise `false`.
+ */
+function isValidUrl(url) {
+  try {
+      new URL(url);
+      return true;
+  } catch (_) {
+      return false;
+  }
+}
+
+/**
+ * Escapes special HTML characters in a string.
+ * @param {string} original - The string that may contain special HTML characters.
+ * @returns {string} - A new string with special HTML characters replaced with their entities.
+ */
+function escapeHtml(original) {
+  return original
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/\//g, '&#x2F;');
+}
 
 // Extension to Twitter Bootstrap.
 // Gives you a col-XX-auto class like Bootstrap

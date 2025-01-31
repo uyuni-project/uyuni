@@ -106,13 +106,13 @@
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <c:choose>
                                 <c:when test='${empty param.schid}'>
-                                    <html:submit property="create_button" styleClass="btn btn-success">
+                                    <html:submit property="create_button" styleClass="btn btn-primary">
                                         <bean:message key="schedule.edit.jsp.createschedule"/>
                                     </html:submit>
                                 </c:when>
                                 <c:otherwise>
                                     <c:if test="${active}">
-                                        <html:submit property="edit_button" styleClass="btn btn-success">
+                                        <html:submit property="edit_button" styleClass="btn btn-primary">
                                             <bean:message key="schedule.edit.jsp.updateschedule"/>
                                         </html:submit>
                                     </c:if>

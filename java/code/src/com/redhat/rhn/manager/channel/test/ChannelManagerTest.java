@@ -99,7 +99,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * ChannelManagerTest
@@ -437,11 +436,31 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         ChannelTestUtils.createTestChannel(user);
         ChannelTestUtils.createTestChannel(user);
-        Set<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
 
         assertTrue(channels.size() >= 2);
     }
 
+    @Test
+    public void testBaseChannelsForSystemSorted() throws Exception {
+        Server s = ServerTestUtils.createTestSystem(user);
+
+        Channel c = ChannelTestUtils.createTestChannel(user);
+        c.setName("A Channel");
+        TestUtils.saveAndReload(c);
+        c = ChannelTestUtils.createTestChannel(user);
+        c.setName("C Channel");
+        TestUtils.saveAndReload(c);
+        c = ChannelTestUtils.createTestChannel(user);
+        c.setName("B Channel");
+        TestUtils.saveAndReload(c);
+
+        List<String> channelNames = ChannelManager.listBaseChannelsForSystem(user, s).stream()
+                .map(EssentialChannelDto::getName).toList();
+
+        assertTrue(channelNames.indexOf("A Channel") < channelNames.indexOf("B Channel"));
+        assertTrue(channelNames.indexOf("B Channel") < channelNames.indexOf("C Channel"));
+    }
 
     @Test
     public void testBaseChannelsForLiberty() throws Exception {
@@ -465,13 +484,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // Test: list base channels for Liberty 7
         SUSEProductTestUtils.installSUSEProductOnServer(resProduct, s);
 
-        Set<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
 
         assertEquals(2, channels.size());
         List<String> expectedNames = new ArrayList<>(List.of(
                 "Channel for SUSE Liberty Linux 7 x86_64",
                 "Channel for SUSE Liberty Linux LTSS 7 x86_64"));
-        List<String> names = channels.stream().map(EssentialChannelDto::getName).collect(Collectors.toList());
+        List<String> names = channels.stream().map(EssentialChannelDto::getName).toList();
         expectedNames.removeAll(names);
         assertTrue(expectedNames.isEmpty(), "Missing expected channel names: " + expectedNames);
     }
@@ -526,7 +545,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 ChannelManager.RHEL_PRODUCT_NAME, version, release3);
         HibernateFactory.getSession().flush();
 
-        Set<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
         assertTrue(channels.size() >= 2);
     }
 
@@ -814,7 +833,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         commitHappened();
 
         // Ask for channels compatible with the new server's base
-        Set<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
+        List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
 
         // There should be two - we now list ALL custom-channelsl
         assertNotNull(compatibles);

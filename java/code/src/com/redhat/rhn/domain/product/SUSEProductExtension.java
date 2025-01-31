@@ -124,11 +124,9 @@ public class SUSEProductExtension extends BaseDomainHelper implements Serializab
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof SUSEProductExtension)) {
+        if (!(other instanceof SUSEProductExtension otherSUSEProductExtension)) {
             return false;
         }
-        SUSEProductExtension otherSUSEProductExtension = (SUSEProductExtension) other;
-
         return new EqualsBuilder()
             .append(getBaseProduct(), otherSUSEProductExtension.getBaseProduct())
             .append(getExtensionProduct(), otherSUSEProductExtension.getExtensionProduct())

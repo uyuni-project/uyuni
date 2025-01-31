@@ -113,7 +113,7 @@
           "SSDs": [],
           "server": "suma3pg.vagrant.local",
           "id": "clisles12-suma3pg.vagrant.local",
-          "osrelease": "12",
+          "osrelease": "7.2",
           "ps": "ps -efH",
           "server_id": 1617825398,
           "uuid": "75299898-533c-ff48-8b5c-be026df56f74",

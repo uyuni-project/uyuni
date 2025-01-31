@@ -31,7 +31,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.1.1
+Version:        5.1.5
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
@@ -153,21 +153,6 @@ Provides:       spacewalk(spacewalk-base-minimal-config) = %{version}-%{release}
 %description -n spacewalk-base-minimal-config
 Configuration file for spacewalk-base-minimal package.
 
-%package -n spacewalk-dobby
-Summary:        Perl modules and scripts to administer a PostgreSQL database
-License:        GPL-2.0-only
-# FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
-Group:          Applications/Internet
-Requires:       %{sbinpath}/runuser
-Requires:       perl-Filesys-Df
-Conflicts:      spacewalk-oracle
-Obsoletes:      rhn-dobby < 5.3.0
-Provides:       rhn-dobby = 5.3.0
-
-%description -n spacewalk-dobby
-Dobby is collection of Perl modules and scripts to administer a PostgreSQL
-database.
-
 %prep
 %setup -q
 pushd html/src
@@ -199,8 +184,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/httpd/conf
 mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 
 install -m 644 conf/rhn_web.conf %{buildroot}%{_datadir}/rhn/config-defaults
-install -m 644 conf/rhn_dobby.conf %{buildroot}%{_datadir}/rhn/config-defaults
-install -m 755 modules/dobby/scripts/check-database-space-usage.sh %{buildroot}%{_sysconfdir}/cron.daily/check-database-space-usage.sh
 
 if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
   SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
@@ -250,16 +233,6 @@ sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' %{b
 %defattr(644,root,root,755)
 %dir %{_datadir}/rhn
 %attr(644,root,%{apache_group}) %{_datadir}/rhn/config-defaults/rhn_web.conf
-
-%files -n spacewalk-dobby
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/db-control
-%{_mandir}/man1/db-control.1%{?ext_man}
-%{perl_vendorlib}/Dobby.pm
-%attr(644,root,root) %{_datadir}/rhn/config-defaults/rhn_dobby.conf
-%attr(0755,root,root) %{_sysconfdir}/cron.daily/check-database-space-usage.sh
-%{perl_vendorlib}/Dobby/
-%dir %{_datadir}/rhn
 
 %files -n spacewalk-html -f spacewalk-web.lang
 %defattr(644,root,root,755)

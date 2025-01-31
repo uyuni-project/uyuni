@@ -896,7 +896,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<ServerGroupType> getEntitledGroupTypes() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(ServerGroup::getGroupType).collect(Collectors.toList());
+                .map(ServerGroup::getGroupType).toList();
     }
 
     /**
@@ -905,7 +905,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<EntitlementServerGroup> getEntitledGroups() {
         return this.groups.stream().filter(g ->g.getGroupType() != null)
-                .map(s -> (EntitlementServerGroup) s).collect(Collectors.toList());
+                .map(s -> (EntitlementServerGroup) s).toList();
     }
 
     /**
@@ -914,7 +914,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public List<ManagedServerGroup> getManagedGroups() {
         return this.groups.stream().filter(g -> g.getGroupType() == null)
-                .map(s -> (ManagedServerGroup) s).collect(Collectors.toList());
+                .map(s -> (ManagedServerGroup) s)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1769,10 +1770,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Server)) {
+        if (!(other instanceof Server castOther)) {
             return false;
         }
-        Server castOther = (Server) other;
 
         Optional<PackageEvr> proxyVersion =
                 Optional.ofNullable(proxyInfo).map(ProxyInfo::getVersion);
@@ -2568,19 +2568,23 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * This is supposed to cover all RedHat flavors (incl. RHEL, RES and CentOS Linux)
      */
     boolean isRedHat6() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("6");
+        return ServerConstants.REDHAT.equals(getOsFamily()) &&
+                (getRelease().equals("6") || getRelease().startsWith("6."));
     }
 
     boolean isRedHat7() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("7");
+        return ServerConstants.REDHAT.equals(getOsFamily()) &&
+                (getRelease().equals("7") || getRelease().startsWith("7."));
     }
 
     boolean isRedHat8() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("8");
+        return ServerConstants.REDHAT.equals(getOsFamily()) &&
+                (getRelease().equals("8") || getRelease().startsWith("8."));
     }
 
     boolean isRedHat9() {
-        return ServerConstants.REDHAT.equals(getOsFamily()) && getRelease().equals("9");
+        return ServerConstants.REDHAT.equals(getOsFamily()) &&
+                (getRelease().equals("9") || getRelease().startsWith("9."));
     }
 
     public boolean isRedHat() {
@@ -2592,19 +2596,13 @@ public class Server extends BaseDomainHelper implements Identifiable {
     }
 
     boolean isAmazon2() {
-        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2");
+        return ServerConstants.AMAZON.equals(getOsFamily()) &&
+                (getRelease().equals("2") || getRelease().startsWith("2."));
     }
 
     boolean isAmazon2023() {
-        return ServerConstants.AMAZON.equals(getOsFamily()) && getRelease().equals("2023");
-    }
-
-    boolean isRocky8() {
-        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("8.");
-    }
-
-    boolean isRocky9() {
-        return ServerConstants.ROCKY.equals(getOs()) && getRelease().startsWith("9.");
+        return ServerConstants.AMAZON.equals(getOsFamily()) &&
+                (getRelease().equals("2023") || getRelease().startsWith("2023."));
     }
 
     /**

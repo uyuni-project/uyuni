@@ -19,7 +19,7 @@
                 <html:hidden property="sid" value="${param.sid}"/>
                 <div class="form-group">
                     <div class="col-md-offset-3 offset-md-3 col-md-6">
-                        <html:submit property="schedule_button" styleClass="btn btn-success">
+                        <html:submit property="schedule_button" styleClass="btn btn-primary">
                             <bean:message key="system.audit.schedulexccdf.jsp.button"/>
                         </html:submit>
                     </div>

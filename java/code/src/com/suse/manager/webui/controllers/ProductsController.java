@@ -249,7 +249,7 @@ public class ProductsController {
         List<String> identifiers = Json.GSON.fromJson(request.body(), new TypeToken<List<String>>() { }.getType());
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(null)) {
-            log.fatal("addProduct failed: Product Data refresh needed");
+            log.fatal("addChannelTemplate failed: Product Data refresh needed");
             return json(response, identifiers.stream().collect(Collectors.toMap(
                 Function.identity(),
                 ident -> LocalizationService.getInstance().getMessage("setup.product.error.dataneedsrefresh")
@@ -264,7 +264,7 @@ public class ProductsController {
         // Convert to a map specifying operation result for each product while logging the errors that have happened
         Map<String, String> resultMap = new HashMap<>();
         productStatusMap.forEach((product, error) -> {
-            error.ifPresent(ex -> log.fatal("addProduct() failed for {}", product, ex));
+            error.ifPresent(ex -> log.fatal("addChannelTemplate() failed for {}", product, ex));
             resultMap.put(product, error.map(Throwable::getMessage).orElse(null));
         });
 
@@ -338,7 +338,7 @@ public class ProductsController {
                         catch (NoSuchElementException e) {
                             log.error("Fail to load mandatory channels for channel {}", channelId, e);
                         }
-                        return channels.map(Channel::getId).collect(Collectors.toList());
+                        return channels.map(Channel::getId).toList();
                     }
             ));
             return result(response, ResultJson.success(result), new TypeToken<>() { });
@@ -436,7 +436,7 @@ public class ProductsController {
                                 )
                         ).collect(Collectors.toSet()));
 
-            }).collect(Collectors.toList()));
+            }).toList());
             return json(response, new SUSEProductsJson(jsonProducts, null), new TypeToken<>() { });
         }
         catch (Exception e) {

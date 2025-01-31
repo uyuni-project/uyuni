@@ -487,7 +487,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         <SubmitButton
           key="update-btn"
           id="update-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-edit"
           text={t("Update")}
           disabled={this.state.isInvalid}
@@ -498,7 +498,7 @@ class CreateImageProfile extends React.Component<Props, State> {
         <SubmitButton
           key="create-btn"
           id="create-btn"
-          className="btn-success"
+          className="btn-primary"
           icon="fa-plus"
           text={t("Create")}
           disabled={this.state.isInvalid}

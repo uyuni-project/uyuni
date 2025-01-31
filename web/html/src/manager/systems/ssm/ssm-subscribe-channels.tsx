@@ -185,8 +185,8 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
                 href="#"
-                data-toggle="modal"
-                data-target="#channelServersPopup"
+                data-bs-toggle="modal"
+                data-bs-target="#channelServersPopup"
                 onClick={() => this.showServersListPopUp(channel)}
               >
                 {channel.servers.length}
@@ -441,8 +441,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() =>
                       this.showServersListPopUp(
                         allowed.newBaseChannel ? allowed.newBaseChannel.name : "",
@@ -457,8 +457,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() =>
                       this.showServersListPopUp(
                         allowed.newBaseChannel ? allowed.newBaseChannel.name : t("(none)"),
@@ -671,8 +671,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.servers)}
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
@@ -682,8 +682,8 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
                   // eslint-disable-next-line jsx-a11y/anchor-is-valid
                   <a
                     href="#"
-                    data-toggle="modal"
-                    data-target="#channelServersPopup"
+                    data-bs-toggle="modal"
+                    data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}
                   >
                     <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
@@ -1076,7 +1076,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
             <Footer page={this.state.page}>
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 disabled={this.state.allowedBaseChannels.length === 0}
                 text={t("Next")}
@@ -1103,7 +1103,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
               />
               <AsyncButton
                 id="next-btn"
-                defaultType="btn-success"
+                defaultType="btn-default"
                 icon="fa-arrow-right"
                 text={t("Next")}
                 action={this.onGotoConfirm}
@@ -1132,7 +1132,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
                 text={t("Prev")}
                 handler={this.backToChildChannels}
               />
-              <AsyncButton id="confirm-btn" defaultType="btn-success" text={t("Confirm")} action={this.onConfirm} />
+              <AsyncButton id="confirm-btn" defaultType="btn-primary" text={t("Confirm")} action={this.onConfirm} />
             </Footer>
           }
         />

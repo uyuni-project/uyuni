@@ -106,7 +106,7 @@ public abstract class AbstractMinionBootstrapper {
     public BootstrapResult bootstrap(BootstrapParameters params, User user, String defaultContactMethod) {
         List<String> errors = validateBootstrap(params);
         if (!errors.isEmpty()) {
-            return new BootstrapResult(false, errors.stream().map(BootstrapError::new).collect(Collectors.toList()));
+            return new BootstrapResult(false, errors.stream().map(BootstrapError::new).toList());
         }
 
         return bootstrapInternal(params, user, defaultContactMethod);

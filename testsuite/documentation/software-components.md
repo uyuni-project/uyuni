@@ -34,6 +34,25 @@ to run lists of Cucumber features stored in YAML format
 * [`net-ssh`] is a Ruby library that allows to communicate with remote machines via SSH
 * [`net-scp`] is a Ruby library that allows to copy files to and from remote machines via SCP
 
+### NoSQL Database interaction
+
+* [`keyvalue_store`] is a custom Ruby class that allows to interact with a No-SQL database. So you can store a Map of key-value pairs in the database.
+
+### Metrics Collection
+
+* [`metrics_collector_handler`] is a custom Ruby class that allows to push metrics from the system tested to a Metrics Collector.
+  As default this handler is configured to connect to a Prometheus Push Gateway instance located in `nsa.mgr.suse.de:9091`, if you want to change it you need to set the `PROMETHEUS_PUSH_GATEWAY_URL` environment variable.
+
+### Code coverage
+
+* [`code_coverage`] is a custom Ruby class that allows to collect code coverage data from the server components while running our tests. It use Key-Value Store to store the data.
+  In order to enable this feature, you need to set the `CODE_COVERAGE` environment variable to `true`. Additionally, you need to set these environment variables to configure the Key-Value Store: `REDIS_HOST`, `REDIS_PORT`, `REDIS_USERNAME`, `REDIS_PASSWORD`
+
+### Quality Intelligence
+
+* [`quality_intelligence`] is a custom Ruby class that make use of `MetricsCollectorHandler` in order to monitor fitness functions in the test suite, like for example the time taken to bootstrap or onboard a minion. But it could be extend by embedding a `KeyValueStore` to store other QI data to process.
+In order to enable this feature, you need to set the `QUALITY_INTELLIGENCE` environment variable to `true`.
+
 ### Simulation of user interaction
 
 * [`capybara`](https://github.com/teamcapybara/capybara) simulates user interaction with a web interface.

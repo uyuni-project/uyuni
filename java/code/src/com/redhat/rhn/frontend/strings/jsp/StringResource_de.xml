@@ -263,6 +263,7 @@
       </trans-unit>
       <trans-unit id="errors.config_channel_label" xml:space="preserve">
         <source>{0} contains invalid characters. In addition to alphanumeric characters, '-' and '_' are allowed.</source>
+        <target state="translated">{0} enthält ungültige Zeichen. Neben den alphanumerischen Zeichen sind auch '-' und '_' erlaubt.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page with configuration channel label field</context>
         </context-group>
@@ -504,6 +505,7 @@
       </trans-unit>
       <trans-unit id="lookup.jsp.actionchain.reason1" xml:space="preserve">
         <source>The Action Chain requested does not exist. This is most likely if the Action Chain has been already scheduled and deleted.</source>
+        <target state="translated">Die angeforderte Aktionskette existiert nicht. Dies ist sehr wahrscheinlich, wenn die Aktionskette bereits eingeplant und gelöscht wurde.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Lookup error page</context>
         </context-group>
@@ -1031,7 +1033,7 @@
               page may have moved
           </context>
         </context-group>
-        <target state="needs-adaptation"/>
+        <target state="translated">Wenn Sie ein Lesezeichen verwendet haben, kann es sein, dass die Seite seit der Erstellung des Lesezeichens an eine andere Stelle verschoben wurde. Verwenden Sie das obere Navigationssymbol, um zur Homepage zu gelangen. Wenn Sie das Dokument finden, aktualisieren Sie Ihr Lesezeichen.</target>
       </trans-unit>
       <trans-unit id="404.jsp.reason4" xml:space="preserve">
         <source>If you feel you've reached this page in error, please contact us with details of how you received this message.</source>
@@ -1307,6 +1309,7 @@
       </trans-unit>
       <trans-unit id="preferences.jsp.receivetaskonote" xml:space="preserve">
         <source> Receive taskomatic notifications</source>
+        <target state="translated"> taskomatic-Benachrichtigungen erhalten</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -3079,6 +3082,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
       </trans-unit>
       <trans-unit id="actionchain.jsp.configfiles.diff" xml:space="preserve">
         <source>Compare {0} on</source>
+        <target state="translated">{0} vergleichen mit</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
@@ -3475,11 +3479,11 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
         <target>Die folgenden Pakete auf diesem System sind abgelaufen und können aktualisiert werden.</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
-        <source>Latest Package</source>
+        <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>Neuestes Paket</target>
+        <target state="translated">Paketname</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -3633,7 +3637,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
           <context context-type="sourcefile">/rhn/errata/AllErrata</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
         </context-group>
-        <target state="needs-adaptation">Keine Errata</target>
+        <target state="translated">Keine Patches</target>
       </trans-unit>
       <trans-unit id="erratalist.jsp.advisory" xml:space="preserve">
         <source>Advisory</source>
@@ -4395,6 +4399,7 @@ drücken und &lt;b&gt;können sich nicht wieder einloggen&lt;/b&gt;.</target>
       </trans-unit>
       <trans-unit id="satconfig.jsp.header" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration</source>
+        <target state="translated">@@PRODUCT_NAME@@-Konfiguration</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/OrgConfigDetails.do</context>
         </context-group>
@@ -11205,8 +11210,8 @@ Bitte beachten Sie, dass möglicherweise noch einige manuelle Konfigurationen di
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-        <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
+        <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+        <target state="needs-adaptation"> Sollten Sie ein vorhandenes Kickstart-Profil wiederverwenden wollen, empfehlen wir Ihnen, die Vorlage von /var/lib/rhn/kickstarts zu kopieren statt von Ihrem Browser. Dadurch wird gewährleistet, dass die Vorlagenvariablen erhalten bleiben und der Registrierungsprozess nach dem Kickstart ordnungsgemäß funktioniert.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -22327,13 +22332,6 @@ den Tab &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Aktivierun
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.kickstartable_distro_create_new.jsp" xml:space="preserve">
-        <source>Create Distribution</source>
-        <target>Distribution erstellen</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
         <source>Autoinstallable Distributions</source>
         <target>Distributionen, die gekickstartet werden können</target>
@@ -28563,8 +28561,8 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
-        <target state="needs-adaptation"/>
+        <source>Monitor this Host</source>
+        <target state="translated">Diesen Host überwachen</target>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
         <source>Formulas</source>
@@ -29372,14 +29370,21 @@ für einen angegebenen Channel aufgelistet wird.</target>
         <source>AppStreams</source>
         <target state="translated">AppStreams</target>
       </trans-unit>
-    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+        <source>Create Distribution</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
+        </context-group>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

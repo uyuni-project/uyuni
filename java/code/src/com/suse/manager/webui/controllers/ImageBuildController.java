@@ -91,7 +91,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -308,7 +307,7 @@ public class ImageBuildController {
             json.addProperty("id", s.getId());
             json.addProperty("name", s.getName());
             return json;
-        }).collect(Collectors.toList());
+        }).toList();
     }
 
     /**
@@ -783,7 +782,7 @@ public class ImageBuildController {
     private static List<JsonObject> getImageInfoSummaryList(
             List<ImageOverview> imageInfos) {
         return imageInfos.stream().map(ImageBuildController::getImageInfoSummary)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**

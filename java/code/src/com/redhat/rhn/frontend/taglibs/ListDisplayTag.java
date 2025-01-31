@@ -608,7 +608,7 @@ public class ListDisplayTag extends ListDisplayTagBase {
         if (getButton() != null && AclManager.hasAcl(getButtonAcl(),
                 (HttpServletRequest) pageContext.getRequest(), getMixins())) {
 
-            out.println("<button class=\"btn btn-primary\"" +
+            out.println("<button class=\"btn btn-default\"" +
                     " type=\"submit\" name=\"dispatch\" value=\"" +
                     LocalizationService.getInstance().getMessage(getButton()) +
                     "\">" +
@@ -643,9 +643,9 @@ public class ListDisplayTag extends ListDisplayTagBase {
         else {
             retval = new StringBuilder("<tr class=\"list-row-even");
         }
-        if (renderDisabled() && o instanceof UserOverview &&
-                ((UserOverview)o).getStatus() != null &&
-                ((UserOverview)o).getStatus().equals("disabled")) {
+        if (renderDisabled() && o instanceof UserOverview uOverview &&
+                uOverview.getStatus() != null &&
+                uOverview.getStatus().equals("disabled")) {
                 return retval.append("-disabled\">").toString();
         }
         return retval.append("\">").toString();

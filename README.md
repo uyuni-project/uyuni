@@ -8,7 +8,7 @@ Uyuni
 [Uyuni](https://www.uyuni-project.org/) is an open source systems management solution, forked
 from [Spacewalk](https://spacewalkproject.github.io/).
 
-It is the upstream community project from which [SUSE Manager](https://www.suse.com/products/suse-manager/)
+It is the upstream community project from which [SUSE Multi-Linux Manager](https://www.suse.com/products/multi-linux-manager/)
 is derived.
 
 Resources
@@ -22,4 +22,4 @@ Following links might be of value in case you are interested:
   * [Mailing lists](https://www.uyuni-project.org/pages/contact.html#ml)
   * [Bug reports](https://github.com/uyuni-project/uyuni/issues)
   * [Development Guides](https://github.com/uyuni-project/uyuni/wiki#development-guides)
-  * [SUSE Manager](https://www.suse.com/products/suse-manager/)
+  * [SUSE Multi-Linux Manager](https://www.suse.com/products/multi-linux-manager/)

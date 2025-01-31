@@ -149,7 +149,10 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
           }
         });
 
-        messages = messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
+        messages =
+          this.props.type === "state"
+            ? messages
+            : messages.concat(MessagesUtils.info(t("State assignments have been saved.")));
         this.setState({
           changed: new Map(), // clear changed
           // Update the channels with the new data
@@ -264,8 +267,8 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
               /* eslint-disable-next-line jsx-a11y/anchor-is-valid */
               <a
                 href="#"
-                data-toggle="modal"
-                data-target="#saltStatePopUp"
+                data-bs-toggle="modal"
+                data-bs-target="#saltStatePopUp"
                 onClick={() => {
                   this.showPopUp(currentChannel);
                 }}
@@ -363,14 +366,14 @@ class StatesPicker extends React.Component<StatesPickerProps, StatesPickerState>
         <button key="1" id="back-btn" className="btn btn-default" onClick={this.hideRanking}>
           {t("Back")}
         </button>,
-        <AsyncButton key="2" id="confirm-btn" defaultType="btn-success" action={this.save} text={t("Confirm")} />,
+        <AsyncButton key="2" id="confirm-btn" defaultType="btn-primary" action={this.save} text={t("Confirm")} />,
       ];
     } else {
       // Buttons for the list/search page
       if (this.state.changed.size > 0) {
         // Save/Rank changes
         buttons = [
-          <button key="1" id="save-btn" className="btn btn-success" onClick={this.showRanking}>
+          <button key="1" id="save-btn" className="btn btn-default" onClick={this.showRanking}>
             {t("Save Changes")}
           </button>,
         ];
@@ -541,7 +544,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
         <AsyncButton
           key="2"
           id="apply-btn"
-          defaultType="btn-success"
+          defaultType="btn-default"
           disabled={!this.props.assigned}
           action={this.props.type === "state" ? this.showPopup : this.props.applySaltState}
           text={t("Execute States")}
@@ -555,7 +558,7 @@ class ExecuteStatesButton extends React.Component<ExecuteStatesProps> {
             content={contentPopup}
             submitText={t("Confirm")}
             submitIcon="fa-check"
-            btnClass="btn-success"
+            btnClass="btn-primary"
             onConfirmAsync={this.onConfirmExecute}
           />
         ) : null}

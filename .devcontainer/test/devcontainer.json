@@ -5,9 +5,9 @@
   },
   // Edit these variables to match your environment
   "remoteEnv": {
-    "SERVER": "<user>-srv.mgr.suse.de",
-    "PROXY": "<user>-pxy.mgr.suse.de",
-    "MINION": "<user>-min-sles.mgr.suse.de",
+    "SERVER": "uyuni-master-server.mgr.suse.de",
+    "PROXY": "uyuni-master-proxy.mgr.suse.de",
+    "MINION": "uyuni-master-suse-minion.mgr.suse.de",
     "GITPROFILES": "https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/internal_nue",
     "AUTH_REGISTRY_CREDENTIALS": "cucutest|cucusecret",
     "AUTH_REGISTRY": "registry.mgr.suse.de:5000/cucutest",

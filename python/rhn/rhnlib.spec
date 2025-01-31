@@ -102,7 +102,6 @@ Conflicts:      rhncfg < 5.10.45
 Conflicts:      rhnclient < 0.10
 Conflicts:      rhnpush < 5.5.10
 Conflicts:      spacewalk-proxy < 1.3.6
-Conflicts:      spacewalk-proxy-installer < 1.3.2
 
 Provides:       rhnlib = %{version}-%{release}
 Obsoletes:      rhnlib < %{version}-%{release}
@@ -140,7 +139,6 @@ Conflicts:      rhncfg < 5.10.45
 Conflicts:      rhnclient < 0.10
 Conflicts:      rhnpush < 5.5.10
 Conflicts:      spacewalk-proxy < 1.3.6
-Conflicts:      spacewalk-proxy-installer < 1.3.2
 
 %description -n python3-rhnlib
 rhnlib is a collection of python modules used by the Spacewalk software.

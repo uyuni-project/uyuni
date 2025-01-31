@@ -148,14 +148,12 @@ public class SelectableChannel  implements Selectable, Comparable<SelectableChan
      */
     @Override
     public boolean equals(final Object other) {
-        if (other instanceof Channel) {
-            return this.getChannel().equals(other);
+        if (other instanceof Channel castOther) {
+            return this.getChannel().equals(castOther);
         }
-        if (!(other instanceof SelectableChannel)) {
+        if (!(other instanceof SelectableChannel castOther)) {
             return false;
         }
-        SelectableChannel castOther = (SelectableChannel) other;
-
         return new EqualsBuilder().append(getId(), castOther.getId()).isEquals();
     }
 

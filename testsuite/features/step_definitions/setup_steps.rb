@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2024-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning setting up a test environment.
@@ -503,5 +503,32 @@ When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
     step %(I check "#{unique_repo_name}" in the list)
+  end
+end
+
+When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" channel$/) do |host, channel_label|
+  target = get_target(host)
+  repo_urls =
+    if deb_host?(host)
+      repo_list_output, _code = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
+      repo_list_output.split("\n").map { |line| line.split[1].strip }
+    elsif rh_host?(host)
+      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/yum.repos.d/')
+      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
+    elsif suse_host?(host)
+      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/zypp/repos.d/')
+      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
+    else
+      raise ArgumentError, "OS family not supported: #{target.os_family}"
+    end
+  repo_urls.each do |repo_url|
+    next unless devel_repo?(repo_url)
+
+    unique_repo_name = generate_repository_name(repo_url)
+    unless repository_exist?(unique_repo_name)
+      content_type = deb_host?(host) ? 'deb' : 'yum'
+      $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)
+    end
+    $api_test.channel.software.associate_repo(channel_label, unique_repo_name)
   end
 end

@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.xmlrpc.system.test;
 import static com.redhat.rhn.testing.ErrataTestUtils.createTestChannelFamily;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.client.ClientCertificate;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
@@ -169,6 +171,7 @@ import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
+import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
@@ -206,7 +209,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerTest extends BaseHandlerTestCase {
@@ -348,8 +350,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testSetChildChannelsDeprecated() throws Exception {
         // the usage of setChildChannels API as tested by this junit where
         // channel ids are passed as arguments is being deprecated...
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
+        SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+        sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
+        List<Long> finishedActions = new ArrayList<>();
 
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
         assertNull(server.getBaseChannel());
         Integer sid = server.getId().intValue();
 
@@ -364,6 +372,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
+        TestUtils.flushAndEvict(server);
         server = reload(server);
         assertNotNull(server.getBaseChannel());
 
@@ -372,6 +381,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         cids.add(child2.getId().intValue());
 
         int result = handler.setChildChannels(admin, sid, cids);
+        Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        TestUtils.flushAndEvict(server);
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
@@ -382,6 +399,15 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, cids.size());
 
         result = handler.setChildChannels(admin, sid, cids);
+        first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> !finishedActions.contains(a.getId()))
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        TestUtils.flushAndEvict(server);
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
@@ -414,6 +440,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
+        TestUtils.flushAndEvict(server);
         server = reload(server);
         assertEquals(2, server.getChannels().size());
 
@@ -440,7 +467,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testSetChildChannels() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
+        SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+        sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
+        List<Long> finishedActions = new ArrayList<>();
+
+        Server server = MinionServerFactoryTest.createTestMinionServer(admin);
         assertNull(server.getBaseChannel());
         Integer sid = server.getId().intValue();
 
@@ -449,37 +483,60 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Channel child1 = ChannelFactoryTest.createTestChannel(admin);
         child1.setParentChannel(base);
+        String child1Label = child1.getLabel();
 
         Channel child2 = ChannelFactoryTest.createTestChannel(admin);
         child2.setParentChannel(base);
+        String child2Label = child2.getLabel();
+
+        TestUtils.flushAndEvict(child1);
+        TestUtils.flushAndEvict(child2);
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
+        TestUtils.saveAndFlush(server);
         server = reload(server);
         assertNotNull(server.getBaseChannel());
 
-        List channelLabels = new ArrayList<>();
-        channelLabels.add(new String(child1.getLabel()));
-        channelLabels.add(new String(child2.getLabel()));
+        List<String> channelLabels = new ArrayList<>();
+        channelLabels.add(child1Label);
+        channelLabels.add(child2Label);
 
         int result = handler.setChildChannels(admin, sid, channelLabels);
+        Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        TestUtils.flushAndEvict(server);
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
 
         //Try 'unsubscribing' from child1...
         channelLabels = new ArrayList<>();
-        channelLabels.add(new String(child2.getLabel()));
+        channelLabels.add(child2Label);
         assertEquals(1, channelLabels.size());
 
         result = handler.setChildChannels(admin, sid, channelLabels);
+        first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> !finishedActions.contains(a.getId()))
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        TestUtils.flushAndEvict(server);
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
 
         //Try putting an invalid channel in there
         channelLabels = new ArrayList<>();
-        channelLabels.add(new String("invalid-unknown-channel-label"));
+        channelLabels.add("invalid-unknown-channel-label");
         assertEquals(1, channelLabels.size());
 
         try {
@@ -491,10 +548,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
         assertEquals(2, server.getChannels().size());
 
+        TestUtils.flushAndEvict(server);
+        server = TestUtils.reload(server);
+
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
         channelLabels = new ArrayList<>();
-        channelLabels.add(new String(base2.getLabel()));
+        channelLabels.add(base2.getLabel());
         assertEquals(1, channelLabels.size());
 
         try {
@@ -505,6 +565,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
+        TestUtils.flushAndEvict(server);
         server = reload(server);
         assertEquals(2, server.getChannels().size());
 
@@ -532,8 +593,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testSetBaseChannelDeprecated() throws Exception {
         // the setBaseChannel API tested by this junit is being deprecated
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
+        SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+        sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
+        List<Long> finishedActions = new ArrayList<>();
 
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         assertNull(server.getBaseChannel());
         Integer sid = server.getId().intValue();
 
@@ -547,16 +614,34 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         child1.setParentChannel(base1);
 
         // Set base channel to base1
-        int result = handler.setBaseChannel(admin, sid,
-                base1.getId().intValue());
+        int result = handler.setBaseChannel(admin, sid, base1.getLabel());
+        Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base1.getLabel());
 
         // Set base channel to base2
-        result = handler.setBaseChannel(admin, sid,
-                base2.getId().intValue());
+        result = handler.setBaseChannel(admin, sid, base2.getLabel());
+        first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> !finishedActions.contains(a.getId()))
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
@@ -564,8 +649,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Try setting base channel to child
         try {
-            result = handler.setBaseChannel(admin, sid,
-                    child1.getId().intValue());
+            result = handler.setBaseChannel(admin, sid, child1.getLabel());
             fail("SystemHandler.setBaseChannel allowed invalid base channel to be set.");
         }
         catch (InvalidChannelException e) {
@@ -582,8 +666,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             ServerFactory.save(server);
 
 
-            result = handler.setBaseChannel(admin, sid,
-                    base1.getId().intValue());
+            result = handler.setBaseChannel(admin, sid, base1.getLabel());
             fail("allowed channel with incompatible arch to be set");
         }
         catch (InvalidChannelException e) {
@@ -593,7 +676,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
     @Test
     public void testSetBaseChannel() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(admin, true);
+        SystemHandler mockedHandler = getMockedHandler();
+        ActionChainManager.setTaskomaticApi(mockedHandler.getTaskomaticApi());
+        SaltServerActionService sa = GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE;
+        sa.setCommitTransaction(false);
+        sa.setSaltApi(saltApi);
+        List<Long> finishedActions = new ArrayList<>();
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(admin);
         assertNull(server.getBaseChannel());
         Integer sid = server.getId().intValue();
 
@@ -608,6 +698,16 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Set base channel to base1
         int result = handler.setBaseChannel(admin, sid, base1.getLabel());
+        Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
@@ -615,6 +715,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Set base channel to base2
         result = handler.setBaseChannel(admin, sid, base2.getLabel());
+        first = ActionFactory.listActionsForServer(admin, server).stream()
+                .filter(a -> !finishedActions.contains(a.getId()))
+                .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
+                .findFirst();
+        assertTrue(first.isPresent(), "No Subscribe Channels Action created");
+        sa.execute(first.get(), false, false, Optional.empty());
+        finishedActions.add(first.get().getId());
+
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
         server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
@@ -684,7 +795,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         var actionId = actionIds.get(0);
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertEquals(1, sca.getDetails().getChannels().size());
@@ -722,7 +833,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Action action = ActionFactory.lookupById(actionId);
         assertEquals(earliest, action.getEarliestAction());
-        assertTrue(action instanceof SubscribeChannelsAction);
+        assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
         assertEquals(base1.getId(), sca.getDetails().getBaseChannel().getId());
         assertTrue(sca.getDetails().getChannels().isEmpty());
@@ -3296,7 +3407,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Assert
         List<NetworkInterface> nics = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddress)
-                .collect(Collectors.toList());
+                .toList();
         assertEquals(1, nics.size());
         Server server = nics.get(0).getServer();
         assertEquals("test system", server.getName());

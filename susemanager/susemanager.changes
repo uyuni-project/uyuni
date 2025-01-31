@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Thu Dec 12 09:27:25 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Clean up the setup script (bsc#1231255)
+  * Remove now unneeded hostname calls (bsc#1231255)
+  * Mark dmidecode and logrotate as optional for Liberty 7 LTSS
+    (bsc#1226958)
+  * Read missing service stop before db changes
+  * Strip bootstrap repositories to contain only venv-salt-minion
+    and dependencies
+  * Remove OS definitions which do not have the Salt bundle or
+    are EOL
+  * Add bootstrap repo definitions for SL Micro 6.1 (bsc#1233595)
+  * Add bootstrap repo definition for Leap Micro 6.0 and 6.1
+
+-------------------------------------------------------------------
 Mon Oct 14 15:59:44 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

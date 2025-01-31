@@ -563,20 +563,14 @@ public class ImageInfoFactory extends HibernateFactory {
      */
     public static Checksum convertChecksum(
             com.redhat.rhn.domain.common.Checksum checksum) {
-        switch (checksum.getChecksumType().getLabel()) {
-        case "md5":
-            return new MD5Checksum(checksum.getChecksum());
-        case "sha1":
-            return new SHA1Checksum(checksum.getChecksum());
-        case "sha256":
-            return new SHA256Checksum(checksum.getChecksum());
-        case "sha384":
-            return new SHA384Checksum(checksum.getChecksum());
-        case "sha512":
-            return new SHA512Checksum(checksum.getChecksum());
-        default:
-            throw new IllegalArgumentException("Checksumtype not supported");
-        }
+        return switch (checksum.getChecksumType().getLabel()) {
+            case "md5" -> new MD5Checksum(checksum.getChecksum());
+            case "sha1" -> new SHA1Checksum(checksum.getChecksum());
+            case "sha256" -> new SHA256Checksum(checksum.getChecksum());
+            case "sha384" -> new SHA384Checksum(checksum.getChecksum());
+            case "sha512" -> new SHA512Checksum(checksum.getChecksum());
+            default -> throw new IllegalArgumentException("Checksumtype not supported");
+        };
     }
 
     /**

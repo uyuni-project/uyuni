@@ -117,11 +117,9 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
             return true;
         }
 
-        if (!(o instanceof BaseCredentials)) {
+        if (!(o instanceof BaseCredentials that)) {
             return false;
         }
-
-        BaseCredentials that = (BaseCredentials) o;
 
         return new EqualsBuilder()
             .append(user, that.user)

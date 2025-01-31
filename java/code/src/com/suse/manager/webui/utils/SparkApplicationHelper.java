@@ -55,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import de.neuland.jade4j.JadeConfiguration;
 import spark.ModelAndView;
@@ -214,11 +213,11 @@ public class SparkApplicationHelper {
         return (request, response) -> {
             ModelAndView modelAndView = route.handle(request, response);
             Object model = modelAndView.getModel();
-            if (model instanceof Map) {
+            if (model instanceof Map mod) {
                 User user = new RequestContext(request.raw()).getCurrentUser();
                 String docsLocale = Objects.requireNonNullElse(
                         user.getPreferredDocsLocale(), ConfigDefaults.get().getDefaultDocsLocale());
-                ((Map) model).put("docsLocale", docsLocale);
+                mod.put("docsLocale", docsLocale);
             }
             else {
                 throw new UnsupportedOperationException("docsLocale can only be added to a Map!");
@@ -239,10 +238,10 @@ public class SparkApplicationHelper {
             ModelAndView modelAndView = route.handle(request, response, user);
             List<String> roles = user.getRoles().stream()
                     .map(Role::getLabel)
-                    .collect(Collectors.toList());
+                    .toList();
             Object model = modelAndView.getModel();
-            if (model instanceof Map) {
-                ((Map) model).put("roles", GSON.toJson(roles));
+            if (model instanceof Map mod) {
+                mod.put("roles", GSON.toJson(roles));
             }
             else {
                 throw new UnsupportedOperationException("User roles can be added only to" +
@@ -332,9 +331,8 @@ public class SparkApplicationHelper {
         return (request, response) -> {
             ModelAndView modelAndView = route.handle(request, response);
             Object model = modelAndView.getModel();
-            if (model instanceof Map) {
-                ((Map) model).put("csrf_token",
-                        CSRFTokenValidator.getToken(request.session().raw()));
+            if (model instanceof Map mod) {
+                mod.put("csrf_token", CSRFTokenValidator.getToken(request.session().raw()));
             }
             else {
                 throw new UnsupportedOperationException("CSRF token can be added only to" +
@@ -358,8 +356,8 @@ public class SparkApplicationHelper {
             User user = new RequestContext(request.raw()).getCurrentUser();
             ModelAndView modelAndView = route.handle(request, response);
             Object model = modelAndView.getModel();
-            if (model instanceof Map) {
-                ((Map) model).put("pageSize", user.getPageSize());
+            if (model instanceof Map mod) {
+                mod.put("pageSize", user.getPageSize());
             }
             else {
                 throw new UnsupportedOperationException("User preferences can be added only to a Map!");

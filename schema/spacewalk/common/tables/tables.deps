@@ -258,7 +258,7 @@ susePackageState                   :: rhnPackageName rhnPackageEVR rhnPackageArc
 suseProducts                       :: rhnPackageArch rhnChannelFamily
 suseProductChannel                 :: suseProducts rhnChannel
 suseProductExtension               :: suseProducts
-suseProductSCCRepository           :: suseProducts suseSCCRepository
+suseChannelTemplate                :: suseProducts suseSCCRepository
 suseSaltPillar                     :: rhnServer rhnServerGroup web_customer
 suseSCCOrderItem                   :: suseCredentials
 suseSCCRegCache                    :: suseCredentials rhnServer

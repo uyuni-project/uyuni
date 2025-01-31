@@ -30,7 +30,7 @@ sudo -i podman exec server bash -c "[ -d /usr/share/susemanager/www/tomcat/webap
 # to try again and hope it succeeds.
 
 sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml ivy || ant -f manager-build.xml ivy || ant -f manager-build.xml ivy"
-sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml refresh-branding-jar deploy-local"
+sudo -i podman exec server bash -c "cd /java && ant -f manager-build.xml -Ddeploy.mode=local refresh-branding-jar deploy"
 sudo -i podman exec server bash -c "set -xe;cd /web/html/src;[ -d dist ] || mkdir dist;yarn install --force --ignore-optional --production=true --frozen-lockfile;yarn autoclean --force;yarn build:novalidate; rsync -a dist/ /usr/share/susemanager/www/htdocs/"
 sudo -i podman exec server bash -c "rctomcat restart"
 sudo -i podman exec server bash -c "rctaskomatic restart"

@@ -99,8 +99,6 @@ import com.suse.salt.netapi.calls.modules.Grains;
 import com.suse.salt.netapi.calls.modules.Zypper.ProductInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.parser.JsonParser;
-import com.suse.salt.netapi.results.Result;
-import com.suse.salt.netapi.utils.Xor;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
@@ -1041,7 +1039,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                                 ch.get("shortName"),
                                 ch.get("friendlyName")
                         ))
-                        .collect(Collectors.toList()) : null;
+                        .toList() : null;
         Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
         HibernateFactory.getSession().flush();
@@ -1054,18 +1052,6 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
                         will(returnValue(getSystemInfo(MINION_ID, testCase.productName.toLowerCase(),
                                 baseChannel != null ? key : null)));
-
-                        allowing(saltServiceMock).runRemoteCommand(
-                                with(any(MinionList.class)),
-                                with("rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release"));
-                        will(returnValue(singletonMap(MINION_ID,
-                                new Result<>(Xor.right(testCase.availableReleasePackages + "\n")))));
-
-                        allowing(saltServiceMock).runRemoteCommand(
-                                with(any(MinionList.class)),
-                                with("rpm -q --queryformat \"VERSION=%{VERSION}\\nPROVIDENAME=[%{PROVIDENAME},]\\n" +
-                                        "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + testCase.releasePackage));
-                        will(returnValue(singletonMap(MINION_ID, new Result<>(Xor.right(testCase.packageInfo)))));
 
                         allowing(saltServiceMock).redhatProductInfo(MINION_ID);
                         will(returnValue(Optional.of(new RedhatProductInfo(

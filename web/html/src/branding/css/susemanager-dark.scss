@@ -1,16 +1,14 @@
 $theme: "susemanager-dark";
 
-@import "./body.scss";
-@import "./fonts.scss";
+@import "./base/body.scss";
 
-@import "./bootstrap5-scaffolding-variables.scss";
+@import "./base/bootstrap/scaffolding-variables.scss";
 
 .new-theme {
-  @import "./bootstrap5-grid-patch.scss";
-  @import "bootstrap5/scss/bootstrap";
+  @import "./base/bootstrap/grid-patch.scss";
+  @import "bootstrap/scss/bootstrap";
 
-  @import "./mixins.scss";
-  @import "./susemanager/variables.scss";
+  @import "./variables.scss";
   @import "./susemanager-dark-variables.scss";
 
   display: flex;
@@ -23,5 +21,11 @@ $theme: "susemanager-dark";
   line-height: 1.5;
   color: $body-color;
 
-  @import "./susemanager/index.scss";  
+  @at-root {
+    :root {
+      --bs-body-color: #{$body-color};
+    }
+  }
+
+  @import "./base/index.scss";
 }

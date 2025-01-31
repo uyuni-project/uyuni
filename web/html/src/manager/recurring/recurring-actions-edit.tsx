@@ -204,7 +204,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
         />
         <AsyncButton
           action={this.onEdit}
-          defaultType="btn-success"
+          defaultType="btn-primary"
           text={(this.isEdit() ? t("Update ") : t("Create ")) + t("Schedule")}
         />
       </div>,

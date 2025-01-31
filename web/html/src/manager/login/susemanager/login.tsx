@@ -12,7 +12,7 @@ import { flatten } from "utils";
 import { ThemeProps } from "../login";
 import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
-import styles from "./login.module.less";
+import styles from "./login.module.scss";
 import logo from "./logo.svg";
 import mobileLogo from "./mobile-logo.svg";
 
@@ -41,13 +41,19 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
           </div>
           <p className={styles.productInfo}>
-            {t("<link>Learn more</link> about {product}.", {
+            {t("<link>Learn more</link> about {productName}.", {
               link: (str) => (
-                <a href={product.url} target="_blank" rel="noopener noreferrer" className={styles.productLink}>
+                <a
+                  key={str}
+                  href={product.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.productLink}
+                >
                   {str}
                 </a>
               ),
-              product: product.key,
+              productName: product.key,
             })}
           </p>
         </div>
@@ -103,17 +109,23 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             />
             <SubmitButton
               id="login-btn"
-              className={`btn-block btn-success ${styles.button}`}
+              className={`btn-block btn-primary ${styles.button}`}
               text={t("Sign In")}
               disabled={isLoading}
             />
           </form>
 
-          <div className={styles.loginFooter}>
-            <a href="/rhn/help/Copyright.do">Copyright Notice</a>
+          <div className={styles.loginFooter} role="contentinfo">
+            <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
             <span>
-              {`${props.productName} release `}
-              <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+              {t("{productName} release {versionNumber}", {
+                productName: props.productName,
+                versionNumber: (
+                  <a key="version" href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>
+                    {props.webVersion}
+                  </a>
+                ),
+              })}
             </span>
             {props.customFooter && <span>{props.customFooter}</span>}
           </div>

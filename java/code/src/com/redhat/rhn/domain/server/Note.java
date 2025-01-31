@@ -107,10 +107,9 @@ public class Note extends BaseDomainHelper {
      */
     @Override
     public boolean equals(final Object other) {
-        if (!(other instanceof Note)) {
+        if (!(other instanceof Note castOther)) {
             return false;
         }
-        Note castOther = (Note) other;
         return new EqualsBuilder().append(id, castOther.id)
                                   .append(subject, castOther.subject)
                                   .append(note, castOther.note)

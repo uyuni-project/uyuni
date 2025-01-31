@@ -1,8 +1,7 @@
 @media (max-width: $screen-tablet) {
   // TODO: Move this into the buttons module
   form {
-    .btn,
-    .btn-success {
+    .btn {
       width: 100%
     }
   }

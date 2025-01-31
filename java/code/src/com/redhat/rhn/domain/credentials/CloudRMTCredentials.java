@@ -136,11 +136,9 @@ public class CloudRMTCredentials extends RemoteCredentials implements CloudCrede
             return true;
         }
 
-        if (!(o instanceof CloudRMTCredentials)) {
+        if (!(o instanceof CloudRMTCredentials that)) {
             return false;
         }
-
-        CloudRMTCredentials that = (CloudRMTCredentials) o;
 
         return new EqualsBuilder()
             .appendSuper(super.equals(o))

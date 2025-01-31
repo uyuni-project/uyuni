@@ -95,6 +95,7 @@ public class SPMigrationAction extends RhnAction {
     private static final String IS_REDHAT_MINION = "isRedHatMinion";
     private static final String IS_SALT_UP_TO_DATE = "isSaltUpToDate";
     private static final String SALT_PACKAGE = "saltPackage";
+    private static final String HAS_DRYRUN_CAPABLITY = "hasDryRunCapability";
 
     // Form parameters
     private static final String ACTION_STEP = "step";
@@ -199,6 +200,7 @@ public class SPMigrationAction extends RhnAction {
         Long targetBaseChannel = null;
         Long[] targetChildChannels = null;
         boolean dryRun = false;
+        boolean hasDryRun = true;
         boolean goBack = false;
         boolean targetProductSelectedEmpty = false;
         boolean allowVendorChange = false;
@@ -224,6 +226,20 @@ public class SPMigrationAction extends RhnAction {
 
             // flag to know if we are going back or forward in the setup wizard
             goBack = dispatch.equals(LocalizationService.getInstance().getMessage(GO_BACK));
+
+            // flag to know if we should show the dry-run button or not
+            String bpProductClass = minion.map(m -> m.getInstalledProductSet()
+                    .map(i -> i.getBaseProduct().getChannelFamily().getLabel())
+                    .orElse("")).orElse("");
+
+            String tgtProductClass = Optional.ofNullable(targetBaseProduct)
+                    .map(SUSEProductFactory::getProductById)
+                    .map(s -> s.getChannelFamily().getLabel())
+                    .orElse("");
+
+            hasDryRun = !isRedHatMinion && bpProductClass.equals(tgtProductClass);
+            request.setAttribute(HAS_DRYRUN_CAPABLITY, hasDryRun);
+
         }
 
         // if submitting step 1 (TARGET) but no radio button
@@ -592,7 +608,7 @@ public class SPMigrationAction extends RhnAction {
         List<Channel> channels = details.getChannelTasks().stream()
                 .filter(channel -> channel.getTask() == DistUpgradeChannelTask.SUBSCRIBE)
                 .map(DistUpgradeChannelTask::getChannel)
-                .collect(Collectors.toList());
+                .toList();
 
         Set<Channel> baseChannelSet = channels.stream()
                 .filter(Channel::isBaseChannel)
@@ -604,7 +620,7 @@ public class SPMigrationAction extends RhnAction {
         }
 
         Channel baseChannel = baseChannelSet.iterator().next();
-        List<Long> channelIds = channels.stream().map(Channel::getId).collect(Collectors.toList());
+        List<Long> channelIds = channels.stream().map(Channel::getId).toList();
         List<EssentialChannelDto> childChannels = getChannelDTOs(ctx, baseChannel, channelIds);
 
         // Get name of original base channel if channel is cloned
@@ -618,7 +634,7 @@ public class SPMigrationAction extends RhnAction {
                 installedProducts,
                 server.getServerArch().getCompatibleChannelArch(),
                 ctx.getCurrentUser()
-        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).collect(Collectors.toList());
+        ).stream().filter(productSet -> productSet.getBaseProduct().equals(baseProduct)).toList();
 
         if (targetProductSet.isEmpty()) {
             logger.debug("No valid migration target found");

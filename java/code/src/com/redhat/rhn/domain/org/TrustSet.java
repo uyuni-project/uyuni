@@ -108,8 +108,8 @@ public class TrustSet implements Set<Org> {
      */
     @Override
     public boolean remove(Object o) {
-        if (o instanceof Org) {
-            return remove((Org) o);
+        if (o instanceof Org orgOther) {
+            return remove(orgOther);
         }
         return false;
     }

@@ -24,17 +24,12 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
-import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
-import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -50,8 +45,7 @@ import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.EssentialChannelDto;
-import com.redhat.rhn.manager.distupgrade.DistUpgradeManager;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -81,15 +75,12 @@ import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil.PublicCloudInstanceFlavor;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
 import com.suse.salt.netapi.datatypes.target.MinionList;
-import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
-import com.suse.salt.netapi.results.Result;
 import com.suse.utils.Opt;
 
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -97,9 +88,7 @@ import java.security.SecureRandom;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -350,6 +339,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             MinionList minionTarget = new MinionList(minionId);
             saltApi.updateSystemInfo(minionTarget);
             scheduleCoCoAttestation(registeredMinion);
+            schedulePackageListRefresh(registeredMinion);
         }
     }
 
@@ -377,6 +367,29 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         }
         catch (TaskomaticApiException e) {
             LOG.error("Unable to schedule attestation action. ", e);
+        }
+    }
+
+    /**
+     * Schedule a package list refresh when the minion supports transactional update
+     *
+     * @param minion the minion
+     */
+    private void schedulePackageListRefresh(MinionServer minion) {
+        if (!minion.doesOsSupportsTransactionalUpdate()) {
+            // no package list refresh wanted on startup
+            return;
+        }
+
+        try {
+            // eariest 1 minute later to finish the boot process
+            // randomize a bit to prevent a package list refresh storm on a mass reboot action
+            int rand = ThreadLocalRandom.current().nextInt(60, 90);
+            Date scheduleAt = Date.from(Instant.now().plus(rand, ChronoUnit.SECONDS));
+            ActionManager.schedulePackageRefresh(Optional.empty(), minion, scheduleAt);
+        }
+        catch (TaskomaticApiException e) {
+            LOG.error("Unable to schedule package list refresh action. ", e);
         }
     }
 
@@ -544,7 +557,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
 
             String osfullname = grains.getValueAsString("osfullname");
             String osfamily = grains.getValueAsString("os_family");
-            String osrelease = getOsRelease(minionId, grains);
+            String osrelease = grains.getOptionalAsString("osrelease").orElse("unknown");
 
             String kernelrelease = grains.getValueAsString("kernelrelease");
             String osarch = grains.getValueAsString("osarch");
@@ -672,18 +685,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
                 .getMap("susemanager")
                 .flatMap(suma -> suma.getOptionalAsString("activation_key"));
         return activationKeyOverride.isPresent() ? activationKeyOverride : activationKeyFromGrains;
-    }
-
-    /**
-     * Extract management key label from grains
-     *
-     * @param grains
-     * @return
-     */
-    private Optional<String> getManagementKeyLabelFromGrains(ValueMap grains) {
-        //apply management key properties that can be set before saving the server
-        return grains.getMap("susemanager")
-                .flatMap(suma -> suma.getOptionalAsString("management_key"));
     }
 
     /**
@@ -945,159 +946,6 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         );
     }
 
-    private static Optional<Channel> lookupBaseChannel(SUSEProduct sp, ChannelArch arch) {
-        Optional<EssentialChannelDto> productBaseChannelDto =
-                ofNullable(DistUpgradeManager.getProductBaseChannelDto(sp.getId(), arch));
-        Optional<Channel> baseChannel = productBaseChannelDto
-                .flatMap(base -> ofNullable(ChannelFactory.lookupById(base.getId())).map(c -> {
-                    LOG.info("Base channel {} found for OS: {}, version: {}, arch: {}", c.getName(), sp.getName(),
-                            sp.getVersion(), arch.getName());
-            return c;
-        }));
-        if (!baseChannel.isPresent()) {
-            LOG.warn("Product Base channel not found - refresh SCC sync?");
-            return empty();
-        }
-        return baseChannel;
-    }
-
-    private Optional<String> rpmErrQueryRHELProvidesRelease(String minionId) {
-        LOG.error("No package providing 'redhat-release' found on RHEL minion {}", minionId);
-        return empty();
-    }
-
-    private Optional<String> rpmErrQueryRHELRelease(SaltError err, String minionId) {
-        LOG.error("Error querying 'redhat-release' package on RHEL minion {}: {}", minionId, err);
-        return empty();
-    }
-
-    private String unknownRHELVersion(String minionId) {
-        LOG.error("Could not determine OS release version for RHEL minion {}", minionId);
-        return "unknown";
-    }
-
-    private Map<String, List<String>> parseRHELReleseQuery(String result) {
-        // Split the result into 3-line chunks per installed package version
-        String[] resultLines = result.split("\\r?\\n");
-        List<List<String>> resultItems = new ArrayList<>();
-        for (int i = 0; i < resultLines.length;) {
-            List<String> resultItem = new ArrayList<>();
-            for (int j = 0; j < 3; j++) {
-                resultItem.add(resultLines[i++]);
-            }
-            resultItems.add(resultItem);
-        }
-
-        // Create a map for each 3-line chunk from key-value pairs in each line
-        return resultItems.stream()
-                .map(list -> list.stream().map(line -> line.split("="))
-                        .collect(Collectors.toMap(linetoks -> linetoks[0],
-                                linetoks -> Arrays.asList(StringUtils
-                                        .splitPreserveAllTokens(linetoks[1], ",")))))
-                // Get the result map with the biggest rpm version
-                .max(Comparator.comparing(pkgInfoMap -> pkgInfoMap.get("VERSION").get(0),
-                        new RpmVersionComparator()))
-                .get();
-    }
-
-    private String getOsRelease(String minionId, ValueMap grains) {
-        // java port of up2dataUtils._getOSVersionAndRelease()
-        String osRelease = grains.getValueAsString("osrelease");
-
-        if ("redhat".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "centos".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "oel".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "alibaba cloud (aliyun)".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                "almalinux".equalsIgnoreCase(grains.getValueAsString("os")) ||
-                ("amazon".equalsIgnoreCase(grains.getValueAsString("os")) &&
-                 "2".equalsIgnoreCase(grains.getValueAsString("osmajorrelease"))) ||
-                "rocky".equalsIgnoreCase(grains.getValueAsString("os"))) {
-            MinionList target = new MinionList(Arrays.asList(minionId));
-            Optional<Result<String>> whatprovidesRes = saltApi.runRemoteCommand(target,
-                    "rpm -q --whatprovides --queryformat \"%{NAME}\\n\" redhat-release")
-                    .entrySet()
-                    .stream()
-                    .findFirst()
-                    .map(e -> of(e.getValue()))
-                    .orElse(empty());
-
-            osRelease = whatprovidesRes.flatMap(res -> res.fold(
-                    err -> err.fold(err1 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err2 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err3 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err4 -> rpmErrQueryRHELProvidesRelease(minionId),
-                            err5 -> rpmErrQueryRHELProvidesRelease(minionId)),
-                    r -> of(r.split("\\r?\\n")[0]) // Take the first line if multiple results return
-            ))
-            .flatMap(pkgStr -> {
-                String[] pkgs = StringUtils.split(pkgStr);
-                if (pkgs.length > 1) {
-                    LOG.warn("Multiple release packages are installed on minion: {}", minionId);
-                    // Pick the package with the biggest precedence:
-                    // sles_es > redhat > others (centos etc.)
-                    return Arrays.stream(pkgs).max(Comparator.comparingInt(s -> {
-                        switch (s) {
-                        case "sles_es-release-server":
-                            return 2;
-                        case "redhat-release-server":
-                            return 1;
-                        default:
-                            return 0;
-                        }
-                    }));
-                }
-                else {
-                    return of(pkgs[0]);
-                }
-            })
-            .flatMap(pkg ->
-                saltApi.runRemoteCommand(target,
-                        "rpm -q --queryformat \"" +
-                            "VERSION=%{VERSION}\\n" +
-                            "PROVIDENAME=[%{PROVIDENAME},]\\n" +
-                            "PROVIDEVERSION=[%{PROVIDEVERSION},]\\n\" " + pkg)
-                        .entrySet().stream().findFirst().map(Map.Entry::getValue)
-                        .flatMap(res -> res.fold(
-                                err -> err.fold(
-                                        err1 -> rpmErrQueryRHELRelease(err1, minionId),
-                                        err2 -> rpmErrQueryRHELRelease(err2, minionId),
-                                        err3 -> rpmErrQueryRHELRelease(err3, minionId),
-                                        err4 -> rpmErrQueryRHELRelease(err4, minionId),
-                                        err5 -> rpmErrQueryRHELRelease(err5, minionId)),
-                                Optional::of
-                        ))
-                        .map(result -> {
-                            if (result.split("\\r?\\n").length > 3) {
-                                // Output should be 3 lines per installed package version
-                                LOG.warn(String.format(
-                                        "Multiple versions of release package '%s' is installed on minion: %s",
-                                        pkg, minionId));
-                            }
-                            return this.parseRHELReleseQuery(result);
-                        })
-                        .map(pkgtags -> {
-                            Optional<String> version = Optional
-                                    .ofNullable(pkgtags.get("VERSION"))
-                                    .map(v -> v.stream().findFirst())
-                                    .orElse(empty());
-                            List<String> provideName = pkgtags.get("PROVIDENAME");
-                            List<String> provideVersion = pkgtags.get("PROVIDEVERSION");
-                            int idxReleasever = provideName
-                                    .indexOf("system-release(releasever)");
-                            if (idxReleasever > -1) {
-                                version = provideVersion.size() > idxReleasever ?
-                                        of(provideVersion.get(idxReleasever)) :
-                                        empty();
-                            }
-                            return version;
-                        })
-                        .orElse(empty())
-            )
-            .orElseGet(() -> unknownRHELVersion(minionId));
-        }
-        return osRelease;
-    }
-
     private void mapHardwareGrains(MinionServer server, ValueMap grains) {
         // for efficiency do this here
         server.setRam(grains.getValueAsLong("mem_total").orElse(0L));
@@ -1114,8 +962,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
     @Override
     public Consumer<Exception> getExceptionHandler() {
         return e -> {
-            if (e instanceof RegisterMinionException) {
-                RegisterMinionException rme = (RegisterMinionException) e;
+            if (e instanceof RegisterMinionException rme) {
                 NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                         new OnboardingFailed(rme.minionId, e.getLocalizedMessage())
                 );

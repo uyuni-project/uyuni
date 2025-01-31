@@ -1,4 +1,4 @@
-export SERVER="oscar-srv.mgr.suse.de"
+export SERVER="uyuni-master-server.mgr.suse.de"
 
 #### Generate certificates for Google Chrome
 if [ ! -f /etc/pki/trust/anchors/$SERVER.cert ]; then

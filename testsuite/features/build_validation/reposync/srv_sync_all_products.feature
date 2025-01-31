@@ -767,6 +767,38 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "debian-12" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "debian-12" have finished
 
+@cloud
+@proxy
+  Scenario: Add Manager Proxy 5.0 Public Cloud channels
+    When I add "sle-module-public-cloud15-sp6-pool-x86_64-proxy-5.0" channel
+    And I wait until the channel "sle-module-public-cloud15-sp6-pool-x86_64-proxy-5.0" has been synced
+    And I add "sle-module-public-cloud15-sp6-updates-x86_64-proxy-5.0" channel
+    And I wait until the channel "sle-module-public-cloud15-sp6-updates-x86_64-proxy-5.0" has been synced
+
+@uyuni
+@proxy
+  Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
+    And I wait until all synchronized channels for "uyuni-proxy" have finished
+
+@susemanager
+@proxy
+  Scenario: Add SUSE Linux Enterprise Micro 5.5 needed for Proxy
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
+    And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
+    And I select "SUSE Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
+    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+
 @susemanager
 @proxy
   Scenario: Add SUSE Manager Proxy Extension 5.0
@@ -793,8 +825,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
+  Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager
@@ -818,6 +850,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I see "Setup Wizard" text
     And I wait until I do not see "Loading" text
     Then I should not see a "Operation not successful" text
     And I should only see success signs in the product list

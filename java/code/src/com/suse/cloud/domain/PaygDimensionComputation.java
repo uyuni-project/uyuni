@@ -168,11 +168,9 @@ public class PaygDimensionComputation {
             return true;
         }
 
-        if (!(o instanceof PaygDimensionComputation)) {
+        if (!(o instanceof PaygDimensionComputation that)) {
             return false;
         }
-
-        PaygDimensionComputation that = (PaygDimensionComputation) o;
 
         return new EqualsBuilder().append(success, that.success).append(id, that.id)
                                   .append(timestamp, that.timestamp)

@@ -14,8 +14,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-26 14:34+0200\n"
-"PO-Revision-Date: 2024-07-06 12:47+0000\n"
+"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"PO-Revision-Date: 2024-12-07 15:48+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/backend/de/"
 ">\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.6.2\n"
+"X-Generator: Weblate 5.8.4\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -1260,7 +1260,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:817
 msgid "Retrieving / parsing channel data"
-msgstr ""
+msgstr "Kanaldaten werden abgerufen / geparst"
 
 #: ../satellite_tools/satsync.py:892
 msgid "Channel data complete"
@@ -1272,9 +1272,9 @@ msgid "%10s import from %s"
 msgstr "%10s importieren von %s"
 
 #: ../satellite_tools/satsync.py:913
-#, fuzzy, python-format
+#, python-format
 msgid "%10s import from %s - %s"
-msgstr "%10s importieren von %s - %s"
+msgstr "%10s von %s importieren - %s"
 
 #: ../satellite_tools/satsync.py:919
 #, python-format
@@ -1383,7 +1383,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1346
 msgid "Downloading rpm packages"
-msgstr ""
+msgstr "rpm-Pakete werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1355
 #, python-format
@@ -1400,11 +1400,11 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1396
 msgid "Downloading package metadata"
-msgstr ""
+msgstr "Paketmetadaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1430
 msgid "Downloading srpm packages"
-msgstr ""
+msgstr "srpm-Pakete werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1440
 #, python-format
@@ -1418,12 +1418,12 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1569
 msgid "Downloading source package metadata"
-msgstr ""
+msgstr "Quellpaketmetadaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1655 ../satellite_tools/satsync.py:2477
 #, python-format
 msgid "Unable to save file %s: %s"
-msgstr ""
+msgstr "Datei %s konnte nicht gespeichert werden: %s"
 
 #. for
 #. Retried a number of times and it still failed; log the
@@ -1431,7 +1431,7 @@ msgstr ""
 #: ../satellite_tools/satsync.py:1661
 #, python-format
 msgid "Failed to fetch file %s"
-msgstr ""
+msgstr "Datei %s konnte nicht abgerufen werden"
 
 #: ../satellite_tools/satsync.py:1666
 msgid "Downloading kickstartable trees metadata"
@@ -1448,7 +1448,7 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1895
 msgid "Downloading patch data"
-msgstr ""
+msgstr "Patchdaten werden heruntergeladen"
 
 #: ../satellite_tools/satsync.py:1897
 msgid "Forcing download of all patch data for requested channels."
@@ -1460,19 +1460,19 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:1924 ../satellite_tools/satsync.py:1955
 msgid "Downloading:"
-msgstr ""
+msgstr "Herunterladen:"
 
 #: ../satellite_tools/satsync.py:1930
 msgid " - complete"
-msgstr ""
+msgstr " - abgeschlossen"
 
 #: ../satellite_tools/satsync.py:1984
 msgid "Importing source package metadata"
-msgstr ""
+msgstr "Quellpaketmetadaten werden importiert"
 
 #: ../satellite_tools/satsync.py:1987
 msgid "Importing package metadata"
-msgstr ""
+msgstr "Paketmetadaten werden importiert"
 
 #: ../satellite_tools/satsync.py:1999
 msgid "Importing:  "
@@ -1828,11 +1828,11 @@ msgstr ""
 
 #: ../satellite_tools/satsync.py:3115
 msgid "  25 - no such directory"
-msgstr ""
+msgstr "  25 - kein solches Verzeichnis"
 
 #: ../satellite_tools/satsync.py:3116
 msgid "  26 - mount_point does not exist"
-msgstr ""
+msgstr "  26 - Einhängepunkt existiert nicht"
 
 #: ../satellite_tools/satsync.py:3117
 msgid "  27 - No such org"

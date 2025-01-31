@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:09:53 CET 2024 - rosuna@suse.com
+
+- version 5.1.2-0
+  * Add support for OES 24.4 (bsc#1230585)
+  * Set Ubuntu 24.04 as released
+
+-------------------------------------------------------------------
 Mon Oct 14 16:02:24 CEST 2024 - rosuna@suse.com
 
 - version 5.1.1-0

@@ -314,19 +314,33 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygData = HibernateFactory.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My JSchException exception");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
-        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
-        assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
-                UserNotificationFactory.listAllNotificationMessages().get(0).getType());
     }
 
     @Test
     public void testPaygDataExtractException() throws Exception {
+        CloudRMTCredentials cloudCreds =
+                CredentialsFactory.createCloudRmtCredentials("user", "pass", "http://cloud.org");
+        cloudCreds.setPaygSshData(paygData);
+        CredentialsFactory.storeCredentials(cloudCreds);
+        HibernateFactory.commitTransaction();
+
         checking(new Expectations() {
             {
                 allowing(contentSyncManagerMock).updateRepositoriesPayg();
                 oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
                 will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
+                allowing(contentSyncManagerMock).updateRepositoriesPayg();
+                oneOf(paygAuthDataExtractorMock).extractAuthData(with(any(PaygSshData.class)));
+                will(throwException(new PaygDataExtractException("My PaygDataExtractException")));
             }});
+        // First Call with error
+        paygUpdateAuthTask.execute(null);
+        paygData = HibernateFactory.reload(paygData);
+        assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
+        assertEquals(paygData.getStatus(), PaygSshData.Status.E);
+        assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
+
+        // Second Call with error
         paygUpdateAuthTask.execute(null);
         paygData = HibernateFactory.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
@@ -372,9 +386,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
-        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
-        assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
-                UserNotificationFactory.listAllNotificationMessages().get(0).getType());
+        assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
         creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
         assertTrue(creds.isPresent());
         assertEquals("0e248802", creds.get().getPassword());
@@ -387,6 +399,9 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
+        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
+        assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
+                UserNotificationFactory.listAllNotificationMessages().get(0).getType());
         creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
         assertTrue(creds.isPresent());
         assertEquals("invalidated", creds.get().getPassword());
@@ -415,9 +430,6 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         paygData = HibernateFactory.reload(paygData);
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
-        assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
-        assertEquals(NotificationType.PaygAuthenticationUpdateFailed,
-                UserNotificationFactory.listAllNotificationMessages().get(0).getType());
     }
 
     @Test

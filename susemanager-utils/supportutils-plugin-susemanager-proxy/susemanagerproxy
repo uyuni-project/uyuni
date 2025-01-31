@@ -33,7 +33,6 @@ spacewalk-proxy-broker
 spacewalk-proxy-common
 spacewalk-proxy-docs
 spacewalk-proxy-html
-spacewalk-proxy-installer
 spacewalk-proxy-management
 spacewalk-proxy-package-manager
 spacewalk-proxy-redirect

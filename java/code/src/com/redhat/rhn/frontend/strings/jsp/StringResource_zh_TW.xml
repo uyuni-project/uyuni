@@ -3470,11 +3470,11 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <target>本系統的以下套件已經過時，可能可以升級。</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.latest" xml:space="preserve">
-        <source>Latest Package</source>
+        <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/UpgradableList</context>
         </context-group>
-        <target>最新的套件</target>
+        <target state="needs-adaptation">最新的套件</target>
       </trans-unit>
       <trans-unit id="upgradable.jsp.installed" xml:space="preserve">
         <source>Installed Package</source>
@@ -11198,8 +11198,8 @@ Please note that some manual configuration of these scripts may still be require
         </context-group>
       </trans-unit>
       <trans-unit id="kickstart.advanced.filedetails.jsp.tip.copypaste" xml:space="preserve">
-          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/rhn/kickstarts instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
-        <target>若您希望重新使用既有的 kickstart 設定檔，建議您由 /var/lib/rhn/kickstarts 剪貼範本，而非透過您的瀏覽器進行剪貼。這可確保範本的變數能被保留，並且註冊程序在 kickstart 完成後將會正常運作。</target>
+          <source> If you wish to re-use an existing Autoinstallation Profile we recommend you to copy-paste the template from /var/lib/cobbler/templates instead of from your browser.  This will ensure that the template variables will be preserved and the registration process will work properly after the autoinstallation.</source>
+        <target state="needs-adaptation">若您希望重新使用既有的 kickstart 設定檔，建議您由 /var/lib/rhn/kickstarts 剪貼範本，而非透過您的瀏覽器進行剪貼。這可確保範本的變數能被保留，並且註冊程序在 kickstart 完成後將會正常運作。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/AdvancedMode* pages</context>
         </context-group>
@@ -22322,13 +22322,6 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
           <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.kickstartable_distro_create_new.jsp" xml:space="preserve">
-          <source>Create Distribution</source>
-        <target>建立發行套件</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.kickstartable_distributions.jsp" xml:space="preserve">
           <source>Autoinstallable Distributions</source>
         <target>可 Kickstart 的發行套件</target>
@@ -28559,7 +28552,7 @@ given channel.</source>
         <source>OS Image Build Host</source>
       </trans-unit>
       <trans-unit id="monitoring_entitled" xml:space="preserve">
-        <source>Monitored Host</source>
+        <source>Monitor this Host</source>
       <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="Formulas" xml:space="preserve">
@@ -29379,6 +29372,13 @@ given channel.</source>
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
       <target state="new"/>
   </trans-unit>
-      </body>
+      <trans-unit id="toolbar.create.distro" xml:space="preserve">
+          <source>Create Distribution</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/kickstart/ViewTrees.do</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>

@@ -108,10 +108,9 @@ public class StateChange implements Comparable<StateChange> {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof StateChange)) {
+        if (!(o instanceof StateChange that)) {
             return false;
         }
-        StateChange that = (StateChange) o;
         EqualsBuilder builder = new EqualsBuilder();
 
         builder.append(this.getId(), that.getId());

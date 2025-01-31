@@ -71,7 +71,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.model.Calendar;
@@ -625,7 +624,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
                         Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
-                .collect(Collectors.toList());
+                .toList();
 
         assertEquals(List.of(
                 Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),
@@ -660,7 +659,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
                         Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
-                .collect(Collectors.toList());
+                .toList();
 
         assertEquals(List.of(
                 Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),
@@ -679,7 +678,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
                         Instant.ofEpochMilli(event.getToMilliseconds()).toString()))
-                .collect(Collectors.toList());
+                .toList();
 
         assertEquals(List.of(
                 Triple.of("SAP Maintenance Window", "2020-04-27T06:00:00Z", "2020-04-27T08:00:00Z"),

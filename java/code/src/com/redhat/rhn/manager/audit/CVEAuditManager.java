@@ -129,7 +129,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-                }).collect(Collectors.toList());
+                }).toList();
 
         m.executeUpdates(parameterList);
     }
@@ -154,7 +154,7 @@ public class CVEAuditManager {
                         parameters.put("rank", chan.getRank());
                         return parameters;
                     });
-        }).collect(Collectors.toList());
+        }).toList();
 
         m.executeUpdates(parameterList);
     }
@@ -428,7 +428,7 @@ public class CVEAuditManager {
                     ).entrySet()
                     .stream()
                     // its safe to call get here since groupingBy will not produce empty lists
-                    .map(s -> s.getValue().get()).collect(Collectors.toList());
+                    .map(s -> s.getValue().get()).toList();
         });
     }
 
@@ -501,7 +501,7 @@ public class CVEAuditManager {
         List<SUSEProductDto> baseProductSources = findAllSourceProducts(baseProductID);
         List<Long> suseProductIDs = products.stream()
                 .map(SUSEProduct::getId)
-                .collect(Collectors.toList());
+                .toList();
 
         ChannelArch arch = auditTarget.getCompatibleChannelArch();
 
@@ -867,8 +867,7 @@ public class CVEAuditManager {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier)
-                .collect(Collectors.toList());
+        Stream<CVEPatchStatus> results = listSystemsByPatchStatus(user, cveIdentifier);
 
         return listSystemsByPatchStatus(results, patchStatuses)
                 .stream()
@@ -898,8 +897,7 @@ public class CVEAuditManager {
             throw new UnknownCVEIdentifierException();
         }
 
-        List<CVEPatchStatus> results = listImagesByPatchStatus(user, cveIdentifier)
-                .collect(Collectors.toList());
+        Stream<CVEPatchStatus> results = listImagesByPatchStatus(user, cveIdentifier);
 
         return listSystemsByPatchStatus(results, patchStatuses)
                 .stream()
@@ -909,7 +907,7 @@ public class CVEAuditManager {
                         system.getPatchStatus(),
                         system.getChannels(),
                         system.getErratas()
-                )).collect(Collectors.toList());
+                )).toList();
     }
 
     /**
@@ -933,14 +931,14 @@ public class CVEAuditManager {
      * @param patchStatuses the patch statuses
      * @return list of system records with patch status
      */
-    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(List<CVEPatchStatus> results,
+    private static List<CVEAuditSystemBuilder> listSystemsByPatchStatus(Stream<CVEPatchStatus> results,
             EnumSet<PatchStatus> patchStatuses) {
 
         List<CVEAuditSystemBuilder> ret = new LinkedList<>();
 
         // Group the results by system
         Map<Long, List<CVEPatchStatus>> resultsBySystem =
-                results.stream().collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
+                results.collect(Collectors.groupingBy(CVEPatchStatus::getSystemId));
 
         // Loop for each system, calculating the patch status individually
         for (Map.Entry<Long, List<CVEPatchStatus>> systemResultMap : resultsBySystem.entrySet()) {

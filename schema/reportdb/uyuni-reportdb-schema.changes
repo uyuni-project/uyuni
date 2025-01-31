@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Dec 12 10:11:07 CET 2024 - rosuna@suse.com
+
+- version 5.1.3-0
+  * Do not use Postgres extension dblink
+
+-------------------------------------------------------------------
 Tue Oct 15 09:11:11 CEST 2024 - rosuna@suse.com
 
 - version 5.1.2-0

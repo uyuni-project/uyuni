@@ -85,11 +85,9 @@ public class RHUICredentials extends BaseCredentials implements CloudCredentials
             return true;
         }
 
-        if (!(o instanceof RHUICredentials)) {
+        if (!(o instanceof RHUICredentials that)) {
             return false;
         }
-
-        RHUICredentials that = (RHUICredentials) o;
 
         return new EqualsBuilder()
             .appendSuper(super.equals(o))

@@ -109,10 +109,9 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
      */
     @Override
     public boolean equals(Object otherObject) {
-        if (!(otherObject instanceof SUSEProductChannel)) {
+        if (!(otherObject instanceof SUSEProductChannel other)) {
             return false;
         }
-        SUSEProductChannel other = (SUSEProductChannel) otherObject;
         return new EqualsBuilder()
             .append(getProduct(), other.getProduct())
             .append(getChannel(), other.getChannel())

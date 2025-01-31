@@ -83,7 +83,8 @@ def _parse_nsvca(module_info_output):
 
 
 def _get_module_info(module_names):
-    # Run the DNF command to get module info for all modules
+    # Run the DNF command to get module info for all active modules
+    # Parse all modules if no active ones are present
     command = ["dnf", "module", "info", "--quiet"] + module_names
     result = subprocess.run(command, capture_output=True, text=True)
 
@@ -91,7 +92,31 @@ def _get_module_info(module_names):
         log.error(f"Error running DNF command: {result.stderr}")
         return []
 
-    module_info_output = result.stdout.splitlines()
+    # Active modules are marked with [a]
+    # Example output
+    # Name             : perl-IO-Socket-SSL
+    # Stream           : 2.066 [d][e][a]
+    # Version          : 8090020231016070024
+    # Context          : 88fd4976
+    # Architecture     : x86_64
+    # Profiles         : common [d]
+    # Default profiles : common
+    # Repo             : susemanager:rockylinux8-x86_64-appstream
+    # Summary          : Perl library for transparent TLS
+    # Description      : IO::Socket::SSL is a drop-in replacement for ...
+    # Requires         : perl:[5.26]
+    #                  : platform:[el8]
+    # Artifacts        : perl-IO-Socket-SSL-0:2.066-4.module+el8.9.0+1517+e71a7a62.noarch
+
+    module_info_output = []
+
+    for module in re.findall(r"(Name\s+:.*?)(?=\n\s*\n|$)", result.stdout, re.DOTALL):
+        if re.search(r"Stream\s+:.*\[a\]", module):
+            module_info_output += module.splitlines()
+
+    # Parse all modules, if no active ones were found
+    if not module_info_output:
+        module_info_output = result.stdout.splitlines()
 
     nsvca_info_list = []
     current_module_info = []

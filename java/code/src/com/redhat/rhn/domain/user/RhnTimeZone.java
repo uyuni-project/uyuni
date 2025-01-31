@@ -68,11 +68,10 @@ public class RhnTimeZone {
     @Override
     public boolean equals(Object o) {
         boolean answer = false;
-        if (o instanceof RhnTimeZone) {
-            if (this.hashCode() == o.hashCode()) {
+        if (o instanceof RhnTimeZone && this.hashCode() == o.hashCode()) {
                 answer = true;
             }
-        }
+
         return answer;
     }
 

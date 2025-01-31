@@ -18,18 +18,18 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
-import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
+import com.redhat.rhn.taskomatic.task.threaded.AbstractQueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,29 +37,23 @@ import javax.persistence.criteria.CriteriaQuery;
 /**
  * Hub Reporting DB Task Driver
  */
-public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
+public class HubReportDbUpdateDriver extends AbstractQueueDriver<MgrServerInfo> {
 
-    private static Set<MgrServerInfo> currentMgrServerInfos = Collections.synchronizedSet(new HashSet<>());
+    private static final Set<MgrServerInfo> CURRENT_MGR_SERVER_INFOS = Collections.synchronizedSet(new HashSet<>());
     private Logger log;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLogger(Logger loggerIn) {
         this.log = loggerIn;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Logger getLogger() {
         return log;
     }
 
     public static Set<MgrServerInfo> getCurrentMgrServerInfos() {
-        return currentMgrServerInfos;
+        return CURRENT_MGR_SERVER_INFOS;
     }
 
     /**
@@ -75,61 +69,33 @@ public class HubReportDbUpdateDriver implements QueueDriver<MgrServerInfo> {
         return new HashSet<>(mgrServerInfos);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public List<MgrServerInfo> getCandidates() {
-        synchronized (currentMgrServerInfos) {
+    protected List<MgrServerInfo> getCandidates() {
+        synchronized (CURRENT_MGR_SERVER_INFOS) {
             Set<MgrServerInfo> candidates = getMgrServers();
             // Do not return candidates we are talking to already
-            for (MgrServerInfo s : currentMgrServerInfos) {
+            for (MgrServerInfo s : CURRENT_MGR_SERVER_INFOS) {
                 if (candidates.contains(s)) {
                     log.debug("Skipping system: {}", s.getServer().getName());
                     candidates.remove(s);
                 }
             }
             candidates.forEach(e ->  Hibernate.initialize(e.getReportDbCredentials()));
-            return candidates.stream().collect(Collectors.toList());
+            return new ArrayList<>(candidates);
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaxWorkers() {
         return Config.get()
                 .getInt(ConfigDefaults.REPORT_DB_HUB_WORKERS, 2);
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public QueueWorker makeWorker(MgrServerInfo workItem) {
+    protected QueueWorker makeWorker(MgrServerInfo workItem) {
         return new HubReportDbUpdateWorker(log, workItem);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean canContinue() {
-        return true;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize() {
-        //empty
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBlockingTaskQueue() {
         return true;

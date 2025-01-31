@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -56,7 +55,7 @@ public class SaltEventFactory extends HibernateFactory {
                 .filter(c -> c[0].equals(i))
                 .map(c -> (Long) c[1])
                 .findFirst()
-                .orElse(0L)).boxed().collect(Collectors.toList());
+                .orElse(0L)).boxed().toList();
     }
 
     /**
