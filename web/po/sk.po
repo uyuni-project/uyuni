@@ -3,17 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:46
 #: ../html/src/components/input/range/Range.tsx:47
-#: ../html/src/components/input/range/Range.tsx:59
+#: ../html/src/components/input/range/Range.tsx:48
 #: ../html/src/components/input/range/Range.tsx:60
+#: ../html/src/components/input/range/Range.tsx:61
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:55+0100\n"
+"POT-Creation-Date: 2025-01-31 14:15+0100\n"
 "PO-Revision-Date: 2025-01-23 17:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
@@ -24,11 +24,11 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Weblate 5.9.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:461
+#: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:481
+#: ../html/javascript/spacewalk-essentials.js:466
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -198,7 +198,7 @@ msgid "Last modified"
 msgstr "Naposledy zmenené"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:80
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
@@ -370,6 +370,7 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:114
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:186
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
@@ -481,7 +482,7 @@ msgstr "Prepnúť viditeľnosť sekcie"
 msgid "Minimum 2 characters"
 msgstr "Minimálne 2 znaky"
 
-#: ../html/src/components/input/InputBase.tsx:276
+#: ../html/src/components/input/InputBase.tsx:278
 msgid "required"
 msgstr "požadované"
 
@@ -549,6 +550,7 @@ msgstr "Názov"
 #: ../html/src/components/input/password/Password.stories.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:99
 #: ../html/src/manager/login/uyuni/login.tsx:90
@@ -631,7 +633,7 @@ msgstr "Nie je možné vykonať akciu."
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1135
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -790,6 +792,7 @@ msgid "Configuration Channel: {name}"
 msgstr "Konfiguračný kanál: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
 #: ../html/src/manager/images/image-stores.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:324
@@ -926,7 +929,7 @@ msgstr "Označenie kanála"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:74
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
@@ -1057,7 +1060,7 @@ msgid "({selectedCount} selected)"
 msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:329
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -1098,7 +1101,7 @@ msgstr "Text, ktorý sa má zobraziť pri prejdení myšou"
 msgid "Help"
 msgstr "Pomocník"
 
-#: ../html/src/components/utils/loading/Loading.tsx:16
+#: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
@@ -1386,33 +1389,28 @@ msgstr "Dáta pripojenia inštancie SSH"
 msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:312
-msgid "Setup Wizard"
-msgstr "Sprievodca nastavením"
-
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:111
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:59
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
 msgid "Filter by any value"
 msgstr "Filtrovať podľa ľubovoľnej hodnoty"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:116
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:64
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "Hostiteľ"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:140
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:88
 msgid "Last Update Status"
 msgstr "Stav poslednej aktualizácie"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:141
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:89
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
 msgid "never"
 msgstr "nikdy"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:160
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "Pridať pripojenie PAYG"
 
@@ -1525,7 +1523,7 @@ msgstr "Dokončené"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:159
+#: ../html/src/manager/admin/setup/products/products.tsx:132
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1533,21 +1531,21 @@ msgstr ""
 "Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
 "kanál nástrojov klienta sa nebudú zobrazovať."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:206
+#: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
 msgstr "Obnovovanie katalógu produktov prebieha..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:232
+#: ../html/src/manager/admin/setup/products/products.tsx:205
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 "Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
 "záznamov."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:277
+#: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:337
+#: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1555,28 +1553,28 @@ msgstr ""
 "Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
 "neskôr, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalóg produktov sa stále obnovuje, čakajte, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:344
+#: ../html/src/manager/admin/setup/products/products.tsx:291
 msgid "Select some product first."
 msgstr "Najskôr vyberte nejaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:353
-#: ../html/src/manager/admin/setup/products/products.tsx:362
+#: ../html/src/manager/admin/setup/products/products.tsx:300
+#: ../html/src/manager/admin/setup/products/products.tsx:309
 msgid "Add products"
 msgstr "Pridať produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:381
+#: ../html/src/manager/admin/setup/products/products.tsx:328
 msgid "Clear products selection"
 msgstr "Vymazať výber produktov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:425
+#: ../html/src/manager/admin/setup/products/products.tsx:372
 msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:428
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1585,7 +1583,7 @@ msgstr ""
 "vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi "
 "predplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:433
+#: ../html/src/manager/admin/setup/products/products.tsx:380
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1593,7 +1591,7 @@ msgstr ""
 "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
 "správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:443
+#: ../html/src/manager/admin/setup/products/products.tsx:390
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1601,66 +1599,66 @@ msgstr ""
 "Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
 "(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:541
+#: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:581
 msgid "Product Description"
 msgstr "Popis produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
-#: ../html/src/manager/admin/setup/products/products.tsx:1022
+#: ../html/src/manager/admin/setup/products/products.tsx:587
+#: ../html/src/manager/admin/setup/products/products.tsx:968
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:643
+#: ../html/src/manager/admin/setup/products/products.tsx:589
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:650
+#: ../html/src/manager/admin/setup/products/products.tsx:596
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:657
+#: ../html/src/manager/admin/setup/products/products.tsx:603
 msgid "Recommended"
 msgstr "Odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:828
+#: ../html/src/manager/admin/setup/products/products.tsx:774
 msgid " channels sync failed"
 msgstr " synchronizácia kanálov zlyhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:836
+#: ../html/src/manager/admin/setup/products/products.tsx:782
 msgid " channels sync in progress"
 msgstr " prebieha synchronizácia kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:844
+#: ../html/src/manager/admin/setup/products/products.tsx:790
 msgid " channels synced"
 msgstr " kanály synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:869
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
 "produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:870
+#: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid "Select this product"
 msgstr "Vybrať tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:882
+#: ../html/src/manager/admin/setup/products/products.tsx:828
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrkadlený."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:911
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
@@ -1668,57 +1666,144 @@ msgstr "Tento produkt je zrkadlený."
 msgid "recommended"
 msgstr "odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:967
+#: ../html/src/manager/admin/setup/products/products.tsx:913
 msgid "SCC product catalog refresh in progress"
 msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:970
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 msgid "Scheduling channels product resync"
 msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:973
+#: ../html/src/manager/admin/setup/products/products.tsx:919
 msgid "Channels product resync scheduled"
 msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:976
+#: ../html/src/manager/admin/setup/products/products.tsx:922
 msgid "Schedule channels product resync"
 msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1036
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "Show product's channels"
 msgstr "Zobraziť kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1108
+#: ../html/src/manager/admin/setup/products/products.tsx:1054
 msgid "Product Channels - "
 msgstr "Kanály produktov - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1113
+#: ../html/src/manager/admin/setup/products/products.tsx:1059
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "Vyberte voliteľné kanály, ktoré chcete pridať, a potvrďte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1117
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1119
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Optional Channels"
 msgstr "Voliteľné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1155
+#: ../html/src/manager/admin/setup/products/products.tsx:1101
 msgid "not synced"
 msgstr "nesynchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1158
+#: ../html/src/manager/admin/setup/products/products.tsx:1104
 msgid "sync in progress"
 msgstr "prebieha synchronizácia"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1161
+#: ../html/src/manager/admin/setup/products/products.tsx:1107
 msgid "synced"
 msgstr "synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1164
+#: ../html/src/manager/admin/setup/products/products.tsx:1110
 msgid "sync failed"
 msgstr "synchronizácia zlyhala"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
+msgid "Save and Verify"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
+#, fuzzy
+#| msgid "Node Hostname"
+msgid "HTTP Proxy Hostname"
+msgstr "Názov hostiteľa uzla"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
+#, fuzzy
+#| msgid "Host name"
+msgid "hostname:port"
+msgstr "Názov hostiteľa"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
+msgid ""
+"For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
+msgid "HTTP Proxy Username"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
+#: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
+msgid "Username"
+msgstr "Používateľské meno"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
+msgid "HTTP Proxy Password"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
+msgid "Illustration of a proxy server"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
+#: ../html/src/manager/admin/setup/setup-header.tsx:7
+#, fuzzy
+#| msgid "Proxy"
+msgid "HTTP Proxy"
+msgstr "Proxy"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
+msgid ""
+"If this server uses an HTTP proxy to access the outside network, you can use "
+"this form to configure it. If that is not the case, move on to "
+"<link>Organization Credentials</link>."
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:59
+msgid "Verifying proxy settings"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:62
+msgid "Successfully verified proxy settings"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:65
+msgid "Proxy settings are not valid"
+msgstr ""
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:12
+#, fuzzy
+#| msgid "Organization Unit"
+msgid "Organization Credentials"
+msgstr "Organizačná jednotka"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:17
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
+msgid "Products"
+msgstr "Produkty"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:22
+#, fuzzy
+#| msgid "Add PAYG Connection"
+msgid "PAYG Connections"
+msgstr "Pridať pripojenie PAYG"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:31
+msgid "Setup Wizard"
+msgstr "Sprievodca nastavením"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:97
 msgid " running"
@@ -2275,10 +2360,6 @@ msgstr "Krok 1/2: z tabuľky nižšie vyberte systém, ktorý chcete pripnúť."
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:291
 msgid "Socket/IFL count"
 msgstr "Počet Soket/IFL"
-
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
-msgid "Products"
-msgstr "Produkty"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
 msgid "Select"
@@ -3512,12 +3593,6 @@ msgstr "Naozaj chcete vymazať vybrané profily? ({count} vybraných profilov)"
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Použiť prihlasovanie údaje"
-
-#: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:88
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-msgid "Username"
-msgstr "Používateľské meno"
 
 #: ../html/src/manager/images/image-store-edit.tsx:237
 msgid "Edit Image Store: '"
@@ -6672,9 +6747,6 @@ msgstr "Kód chyby HTTP "
 #~ msgid "Partition separator"
 #~ msgstr "Oddeľovač oddielov"
 
-#~ msgid "Host name"
-#~ msgstr "Názov hostiteľa"
-
 #~ msgid "Pool Type"
 #~ msgstr "Typ fondu"
 
@@ -7041,9 +7113,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "System group"
 #~ msgstr "Systémová skupina"
-
-#~ msgid "Node Hostname"
-#~ msgstr "Názov hostiteľa uzla"
 
 #~ msgid " successfully."
 #~ msgstr " úspešne."
