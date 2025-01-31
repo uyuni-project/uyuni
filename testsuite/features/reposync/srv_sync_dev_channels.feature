@@ -6,10 +6,6 @@ Feature: Synchronize development channels
   As admin
   I want to synchronize the dev channels
 
-  Scenario: Log in as admin user
-    Given I am authorized for the "Admin" section
-    And I enable source package syncing
-
 @sle_minion
   Scenario: Synchronize Dev-SUSE-Channel channel
     Given I am authorized for the "Admin" section
@@ -45,6 +41,3 @@ Feature: Synchronize development channels
     And I click on "Sync Now"
     Then I should see a "Repository sync scheduled for Dev-RH-like-Channel." text
     And I wait until the channel "dev-rh-like-channel" has been synced
-
-  Scenario: Cleanup disable source package syncing
-    Then I disable source package syncing

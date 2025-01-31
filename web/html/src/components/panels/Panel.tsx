@@ -1,7 +1,7 @@
 import * as React from "react";
 
 type Props = {
-  headingLevel: keyof JSX.IntrinsicElements;
+  headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
   customIconClass?: string | null | undefined;
   title: string | null | undefined;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const Panel = (props: Props) => {
-  const { headingLevel: HeadingLevel } = props;
+  const { headingLevel: HeadingLevel = "h1" } = props;
 
   const titleContent = props.title && (
     <React.Fragment>

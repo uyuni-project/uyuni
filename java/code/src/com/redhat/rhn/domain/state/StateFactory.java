@@ -22,15 +22,15 @@ import com.redhat.rhn.domain.server.ServerGroup;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Property;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 /**
  * Factory class for working with states.
@@ -89,48 +89,25 @@ public class StateFactory extends HibernateFactory {
     }
 
     /**
-     * Lookup the latest set of {@link PackageState} objects for a given server.
-     *
-     * @param server the server
-     * @return the latest package states for this server
-     */
-    public static Optional<Set<PackageState>> latestPackageStates(MinionServer server) {
-        Optional<ServerStateRevision> revision = latestRevision(ServerStateRevision.class,
-                "server", server);
-        return revision.map(ServerStateRevision::getPackageStates);
-    }
-
-    /**
-     * Lookup the latest set of {@link PackageState} objects for a given server group.
-     *
-     * @param group the server group
-     * @return the latest package states for this server group
-     */
-    public static Optional<Set<PackageState>> latestPackageStates(ServerGroup group) {
-        Optional<ServerGroupStateRevision> revision = latestRevision(
-                ServerGroupStateRevision.class, "group", group);
-        return revision.map(ServerGroupStateRevision::getPackageStates);
-    }
-
-    /**
-     * Lookup the latest set of {@link PackageState} objects for a given organization.
-     *
-     * @param org the organization
-     * @return the latest package states for this organization
-     */
-    public static Optional<Set<PackageState>> latestPackageStates(Org org) {
-        Optional<OrgStateRevision> revision = latestRevision(OrgStateRevision.class,
-                "org", org);
-        return revision.map(OrgStateRevision::getPackageStates);
-    }
-
-    /**
      * Lookup the latest state revision of an org.
      * @param org the org
      * @return the optional {@link OrgStateRevision}
      */
     public static Optional<OrgStateRevision> latestStateRevision(Org org) {
-        return latestRevision(OrgStateRevision.class, "org", org);
+        String sql =
+                """
+                        SELECT DISTINCT ON (org_id) *, null as created, null as creator_id FROM
+                        suseOrgStateRevision WHERE org_id = :org
+                        ORDER BY org_id, state_revision_id desc limit 1;
+                """;
+        Query<OrgStateRevision> query = getSession().createNativeQuery(sql, OrgStateRevision.class);
+        query.setParameter("org", org.getId(), StandardBasicTypes.LONG);
+        try {
+            return Optional.ofNullable(query.getSingleResult());
+        }
+        catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -140,7 +117,20 @@ public class StateFactory extends HibernateFactory {
      */
     public static Optional<ServerGroupStateRevision> latestStateRevision(
             ServerGroup group) {
-        return latestRevision(ServerGroupStateRevision.class, "group", group);
+        String sql =
+                """
+                        SELECT DISTINCT ON (group_id) *, null as created, null as creator_id FROM
+                        suseServerGroupStateRevision WHERE group_id = :group
+                        ORDER BY group_id, state_revision_id desc limit 1;
+                """;
+        Query<ServerGroupStateRevision> query = getSession().createNativeQuery(sql, ServerGroupStateRevision.class);
+        query.setParameter("group", group.getId(), StandardBasicTypes.LONG);
+        try {
+            return Optional.ofNullable(query.getSingleResult());
+        }
+        catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -149,8 +139,56 @@ public class StateFactory extends HibernateFactory {
      * @return the optional {@link OrgStateRevision}
      */
     public static Optional<ServerStateRevision> latestStateRevision(MinionServer server) {
-        return latestRevision(ServerStateRevision.class, "server", server);
+        String sql =
+                """
+                        SELECT DISTINCT ON (server_id) *, null as created, null as creator_id FROM
+                        suseServerStateRevision WHERE server_id = :server
+                        ORDER BY server_id, state_revision_id desc limit 1;
+                """;
+        Query<ServerStateRevision> query = getSession().createNativeQuery(sql, ServerStateRevision.class);
+        query.setParameter("server", server.getId(), StandardBasicTypes.LONG);
+        try {
+            return Optional.ofNullable(query.getSingleResult());
+        }
+        catch (NoResultException e) {
+            return Optional.empty();
+        }
     }
+
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given server.
+     *
+     * @param server the server
+     * @return the latest package states for this server
+     */
+    public static Optional<Set<PackageState>> latestPackageStates(MinionServer server) {
+        Optional<ServerStateRevision> servers = latestStateRevision(server);
+        return servers.map(StateRevision::getPackageStates);
+    }
+
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given server group.
+     *
+     * @param group the server group
+     * @return the latest package states for this server group
+     */
+    public static Optional<Set<PackageState>> latestPackageStates(ServerGroup group) {
+        Optional<ServerGroupStateRevision> groups = latestStateRevision(group);
+        return groups.map(StateRevision::getPackageStates);
+    }
+
+    /**
+     * Lookup the latest set of {@link PackageState} objects for a given organization.
+     *
+     * @param org the organization
+     * @return the latest package states for this organization
+     */
+    public static Optional<Set<PackageState>> latestPackageStates(Org org) {
+        Optional<OrgStateRevision> orgs = latestStateRevision(org);
+        return orgs.map(StateRevision::getPackageStates);
+    }
+
+
 
     /**
      * Lookup the latest set of {@link ConfigChannel} objects for a given server.
@@ -159,10 +197,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest config channels for this server
      */
     public static Optional<List<ConfigChannel>> latestConfigChannels(MinionServer server) {
-        Optional<ServerStateRevision> revision = latestRevision(
-                ServerStateRevision.class, "server", server);
-        return Optional
-                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
+        Optional<ServerStateRevision> servers = latestStateRevision(server);
+        return servers.map(StateRevision::getConfigChannels);
     }
 
     /**
@@ -172,10 +208,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest config channels for this server
      */
     public static Optional<List<ConfigChannel>> latestConfigChannels(ServerGroup group) {
-        Optional<ServerGroupStateRevision> revision = latestRevision(
-                ServerGroupStateRevision.class, "group", group);
-        return Optional
-                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
+        Optional<ServerGroupStateRevision> groups = latestStateRevision(group);
+        return groups.map(StateRevision::getConfigChannels);
     }
 
     /**
@@ -185,23 +219,8 @@ public class StateFactory extends HibernateFactory {
      * @return the latest config channels for this server
      */
     public static Optional<List<ConfigChannel>> latestConfigChannels(Org org) {
-        Optional<OrgStateRevision> revision = latestRevision(
-                OrgStateRevision.class, "org", org);
-        return Optional
-                .ofNullable(revision.map(StateRevision::getConfigChannels).orElse(null));
-    }
-
-    private static <T extends StateRevision> Optional<T> latestRevision(
-            Class<T> revisionType, String field, Object bean) {
-        DetachedCriteria maxQuery = DetachedCriteria.forClass(revisionType)
-                .add(Restrictions.eq(field, bean))
-                .setProjection(Projections.max("id"));
-        T revision = (T) getSession()
-                .createCriteria(revisionType)
-                .add(Restrictions.eq(field, bean))
-                .add(Property.forName("id").eq(maxQuery))
-                .uniqueResult();
-        return Optional.ofNullable(revision);
+        Optional<OrgStateRevision> orgs = latestStateRevision(org);
+        return orgs.map(StateRevision::getConfigChannels);
     }
 
     /**

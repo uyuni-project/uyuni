@@ -24,6 +24,7 @@ import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,7 +54,7 @@ import javax.persistence.criteria.Root;
 })
 @Entity
 @Table(name = "suseSaltPillar")
-public class Pillar implements Identifiable {
+public class Pillar implements Identifiable, Serializable {
 
     @Id
     @GeneratedValue(generator = "pillar_seq")

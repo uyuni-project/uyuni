@@ -184,6 +184,11 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
 end
 
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
+  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel} #{append_includes}")
+end
+
 Then(/^I should get "([^"]*)"$/) do |value|
   raise ScriptError, "'#{value}' not found in output '#{$command_output}'" unless $command_output.include? value
 end
@@ -755,6 +760,14 @@ Then(/^socket "([^"]*)" is active on "([^"]*)"$/) do |service, host|
   output, _code = node.run("systemctl is-active '#{service}.socket'", check_errors: false)
   output = output.split(/\n+/)[-1]
   raise ScriptError, "Service #{service} not active" if output != 'active'
+end
+
+Then(/^files on container volumes should all have the proper SELinux label$/) do
+  node = get_target('server')
+  cmd = '[ "$(sestatus 2>/dev/null | head -n 1 | grep enabled)" != "" ] && ' \
+        '(find /var/lib/containers/storage/volumes/*/_data -exec ls -Zd {} \; | grep -v ":object_r:container_file_t:s0 ")'
+  output, _code = node.run_local(cmd, check_errors: false, verbose: true)
+  raise ScriptError, 'Wrong SELinux labels' if output != ''
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|

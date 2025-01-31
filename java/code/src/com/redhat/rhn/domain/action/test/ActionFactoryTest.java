@@ -533,8 +533,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
             //create packageArch
             Long testid = 100L;
-            String query = "PackageArch.findById";
-            PackageArch arch = (PackageArch) TestUtils.lookupFromCacheById(testid, query);
+            PackageArch arch = HibernateFactory.getSession().createNativeQuery("""
+                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
+                """, PackageArch.class).setParameter("id", testid).getSingleResult();
+
             d.setArch(arch);
 
             //create packageName

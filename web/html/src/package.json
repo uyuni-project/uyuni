@@ -59,6 +59,7 @@
     "@babel/preset-env": "7.16.7",
     "@babel/preset-react": "7.16.7",
     "@babel/preset-typescript": "7.16.7",
+    "@etheryte/react-hooks": "2.0.4",
     "@formatjs/intl": "^2.9.0",
     "@fullcalendar/core": "5.5.0",
     "@fullcalendar/daygrid": "5.5.0",
