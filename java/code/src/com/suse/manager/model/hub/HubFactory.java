@@ -55,6 +55,22 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Remove a {@ink IssPeripheral} object
+     * @param peripheralIn the object to remove
+     */
+    public void remove(IssPeripheral peripheralIn) {
+        removeObject(peripheralIn);
+    }
+
+    /**
+     * Remove a {@ink IssHub} object
+     * @param hubIn the object to remove
+     */
+    public void remove(IssHub hubIn) {
+        removeObject(hubIn);
+    }
+
+    /**
      * Lookup {@link IssHub} object by its FQDN
      * @param fqdnIn the fqdn
      * @return return {@link IssHub} with the given FQDN or empty
@@ -166,5 +182,17 @@ public class HubFactory extends HibernateFactory {
             .setParameter("type", type)
             .setParameter("fqdn", fqdn)
             .uniqueResult();
+    }
+
+    /**
+     * Delete all access tokens for the given server
+     * @param serverFqdn the FQDN for the server
+     * @return number of removed tokens
+     */
+    public int removeAccessTokensFor(String serverFqdn) {
+        return getSession()
+                .createNativeQuery("DELETE FROM suseISSAccessToken WHERE server_fqdn = :fqdn")
+                .setParameter("fqdn", serverFqdn)
+                .executeUpdate();
     }
 }

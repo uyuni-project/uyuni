@@ -63,6 +63,7 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -179,6 +180,111 @@ public class HubManager {
         ensureValidToken(accessToken);
 
         return createServer(role, accessToken.getServerFqdn(), rootCA, gpgKey, null);
+    }
+
+    /**
+     * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
+     * @param user the user
+     * @param fqdn the FQDN
+     */
+    public void deleteIssServerLocal(User user, String fqdn) {
+        ensureSatAdmin(user);
+        if (hubFactory.isISSPeripheral()) {
+            deleteHub(fqdn);
+        }
+        else {
+            deletePeripheral(fqdn);
+        }
+    }
+
+    /**
+     * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
+     * @param accessToken the token
+     * @param fqdn the FQDN
+     */
+    public void deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
+        ensureValidToken(accessToken);
+        if (hubFactory.isISSPeripheral()) {
+            deleteHub(fqdn);
+        }
+        else {
+            deletePeripheral(fqdn);
+        }
+    }
+
+    private void deletePeripheral(String peripheralFqdn) {
+        Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(peripheralFqdn);
+        if (issPeripheral.isEmpty()) {
+            LOG.info("Peripheral Server with name {} not found", peripheralFqdn);
+            return; // no error as the state is already as wanted.
+        }
+        IssPeripheral peripheral = issPeripheral.get();
+        CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        hubFactory.remove(peripheral);
+        hubFactory.removeAccessTokensFor(peripheralFqdn);
+    }
+
+    private void deleteHub(String hubFqdn) {
+        Optional<IssHub> issHub = hubFactory.lookupIssHubByFqdn(hubFqdn);
+        if (issHub.isEmpty()) {
+            LOG.info("Hub Server with name {} not found", hubFqdn);
+            return; // no error as the state is already as wanted.
+        }
+        IssHub hub = issHub.get();
+        CredentialsFactory.removeCredentials(hub.getMirrorCredentials());
+        hubFactory.remove(hub);
+        hubFactory.removeAccessTokensFor(hubFqdn);
+    }
+
+    /**
+     * Replace locally the current token with a new created one and return it.
+     * Store the provided new token for the remote server.
+     * @param currentAccessToken the old/current token
+     * @param newRemoteToken the new token
+     * @return the new generated local token for the calling side.
+     * @throws TokenBuildingException when an error occurs during generation
+     * @throws TokenParsingException when the generated token cannot be parsed
+     */
+    public String replaceTokens(IssAccessToken currentAccessToken, String newRemoteToken)
+            throws TokenBuildingException, TokenParsingException {
+        ensureValidToken(currentAccessToken);
+
+        // store the new token to access the remote side
+        parseAndSaveToken(currentAccessToken.getServerFqdn(), newRemoteToken);
+
+        // Generate a new token to access this server for the remote side
+        Token localToken = createAndSaveToken(currentAccessToken.getServerFqdn());
+        return localToken.getSerializedForm();
+    }
+
+    /**
+     * Replace the local Hub and remote Peripheral tokens for an ISS connection.
+     * A new local hub token is issued and send to the peripheral side. The peripheral
+     * side store this token and issue a new one for the calling hub server which store it.
+     *
+     * @param user the user
+     * @param remoteServer the remote peripheral server FQDN
+     * @throws CertificateException if the specified certificate is not parseable
+     * @throws TokenParsingException if the specified token is not parseable
+     * @throws TokenBuildingException if an error occurs while generating the token for the server
+     * @throws IOException when connecting to the server fails
+     */
+    public void replaceTokensHub(User user, String remoteServer)
+            throws CertificateException, IOException, TokenParsingException, TokenBuildingException {
+        ensureSatAdmin(user);
+
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(remoteServer).orElseThrow(() ->
+                new IllegalStateException("Server " + remoteServer + " is not registered as peripheral"));
+
+        // Generate a token for this server on the remote
+        String newLocalToken = issueAccessToken(user, remoteServer);
+
+        // Create a client to connect to the internal API of the remote server
+        IssAccessToken currentAccessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalApi = clientFactory.newInternalClient(issPeripheral.getFqdn(), currentAccessToken.getToken(),
+                issPeripheral.getRootCa());
+        String newRemoteToken = internalApi.replaceTokens(newLocalToken);
+        parseAndSaveToken(remoteServer, newRemoteToken);
     }
 
     /**
@@ -340,6 +446,64 @@ public class HubManager {
         return collectManagerInfo();
     }
 
+    /**
+     * Set server details
+     *
+     * @param token the access token
+     * @param fqdn the FQDN identifying the Hub or Peripheral Server
+     * @param role the role which should be changed
+     * @param data the new data
+     */
+    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data) {
+        ensureValidToken(token);
+        updateServerData(fqdn, role, data);
+    }
+
+    /**
+     * Set server details
+     *
+     * @param user The current user
+     * @param fqdn the FQDN identifying the Hub or Peripheral Server
+     * @param role the role which should be changed
+     * @param data the new data
+     */
+    public void updateServerData(User user, String fqdn, IssRole role, Map<String, String> data) {
+        ensureSatAdmin(user);
+        updateServerData(fqdn, role, data);
+    }
+
+    private void updateServerData(String fqdn, IssRole role, Map<String, String> data) {
+        switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(fqdn).ifPresentOrElse(issHub -> {
+                        if (data.containsKey("root_ca")) {
+                            issHub.setRootCa(data.get("root_ca"));
+                        }
+                        if (data.containsKey("gpg_key")) {
+                            issHub.setGpgKey(data.get("gpg_key"));
+                        }
+                        hubFactory.save(issHub);
+                    },
+                    () -> {
+                        LOG.error("Server {} not found with role {}", fqdn, role);
+                        throw new IllegalArgumentException("Server not found");
+                    });
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn).ifPresentOrElse(issPeripheral -> {
+                        if (data.containsKey("root_ca")) {
+                            issPeripheral.setRootCa(data.get("root_ca"));
+                        }
+                        hubFactory.save(issPeripheral);
+                    },
+                    ()-> {
+                        LOG.error("Server {} not found with role {}", fqdn, role);
+                        throw new IllegalArgumentException("Server not found");
+                    });
+            default -> {
+                LOG.error("Unknown role {}", role);
+                throw new IllegalArgumentException("Unknown role");
+            }
+        }
+    }
+
     private ManagerInfoJson collectManagerInfo() {
         String reportDbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
         // we need to provide the external hostname
@@ -372,29 +536,36 @@ public class HubManager {
 
         // Create a client to connect to the internal API of the remote server
         var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
+        try {
+            // Issue a token for granting access to the remote server
+            Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
+            // Send the local trusted root, if we needed a different certificate to connect
+            String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
+            // Send the local GPG key used to sign metadata, if configured.
+            // This force metadata checking on the peripheral server when mirroring from the Hub
+            String localGpgKey =
+                    (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : null;
 
-        // Issue a token for granting access to the remote server
-        Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
-        // Send the local trusted root, if we needed a different certificate to connect
-        String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
-        // Send the local GPG key used to sign metadata, if configured.
-        // This force metadata checking on the peripheral server when mirroring from the Hub
-        String localGpgKey = (ConfigDefaults.get().isMetadataSigningEnabled()) ? CertificateUtils.loadGpgKey() : null;
+            // Register this server on the remote with the hub role
+            internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey);
 
-        // Register this server on the remote with the hub role
-        internalApi.registerHub(localAccessToken.getSerializedForm(), localRootCA, localGpgKey);
+            // Generate the scc credentials and send them to the peripheral
+            HubSCCCredentials credentials = generateCredentials(peripheral);
+            internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
 
-        // Generate the scc credentials and send them to the peripheral
-        HubSCCCredentials credentials = generateCredentials(peripheral);
-        internalApi.storeCredentials(credentials.getUsername(), credentials.getPassword());
-
-        // Query Report DB connection values and set create a User
-        ManagerInfoJson managerInfo = internalApi.getManagerInfo();
-        Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
-                remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
-        boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
-        if (changed) {
-            setReportDbUser(user, peripheralServer, false);
+            // Query Report DB connection values and set create a User
+            ManagerInfoJson managerInfo = internalApi.getManagerInfo();
+            Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
+                    remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
+            boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
+            if (changed) {
+                setReportDbUser(user, peripheralServer, false);
+            }
+        }
+        catch (Exception ex) {
+            // cleanup the remote side
+            internalApi.deregister();
+            throw ex;
         }
     }
 
@@ -607,4 +778,5 @@ public class HubManager {
         ensureValidToken(accessToken);
         return ChannelFactory.listAllChannels();
     }
+
 }

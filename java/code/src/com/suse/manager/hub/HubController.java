@@ -13,6 +13,7 @@ package com.suse.manager.hub;
 
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyPeripheral;
+import static com.suse.manager.hub.HubSparkHelper.allowingOnlyRegistered;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
@@ -39,6 +40,7 @@ import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
@@ -86,8 +88,11 @@ public class HubController {
      */
     public void initRoutes() {
         post("/hub/ping", asJson(usingTokenAuthentication(this::ping)));
+        post("/hub/sync/deregister", asJson(usingTokenAuthentication(allowingOnlyRegistered(this::deregister))));
         post("/hub/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
+        post("/hub/sync/replaceTokens", asJson(usingTokenAuthentication(allowingOnlyHub(this::replaceTokens))));
         post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
+        post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(allowingOnlyHub(this::setHubDetails))));
         get("/hub/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
         post("/hub/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
@@ -97,6 +102,56 @@ public class HubController {
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
+    }
+
+    private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
+        Map<String, String> data = GSON.fromJson(request.body(), Map.class);
+
+        try {
+            hubManager.updateServerData(accessToken, accessToken.getServerFqdn(), IssRole.HUB, data);
+        }
+        catch (IllegalArgumentException ex) {
+            LOGGER.error("Invalid data provided: ", ex);
+            return badRequest(response, "Invalid data");
+        }
+        catch (Exception ex) {
+            LOGGER.error("Internal Server Error: ", ex);
+            return internalServerError(response, "Internal Server Error");
+        }
+        return success(response);
+    }
+
+    private String deregister(Request request, Response response, IssAccessToken accessToken) {
+        // request to delete the local access for the requesting server.
+        try {
+            hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
+        }
+        catch (Exception ex) {
+            LOGGER.error("Internal Server Error: ", ex);
+            return internalServerError(response, "Internal Server Error");
+        }
+        return success(response);
+    }
+
+    private String replaceTokens(Request request, Response response, IssAccessToken currentAccessToken) {
+        String newRemoteToken = GSON.fromJson(request.body(), String.class);
+        if (newRemoteToken.isBlank()) {
+            LOGGER.error("Bad Request: invalid data");
+            return badRequest(response, "Invalid data");
+        }
+        try {
+            String newLocalToken = hubManager.replaceTokens(currentAccessToken, newRemoteToken);
+            return success(response, newLocalToken);
+        }
+        catch (TokenParsingException ex) {
+            LOGGER.error("Unable to parse the received token for server {}", currentAccessToken.getServerFqdn());
+            return badRequest(response, "The specified token is not parseable");
+        }
+        catch (TokenBuildingException ex) {
+            LOGGER.error("Unable to build token");
+            return badRequest(response, "The token could not be build");
+        }
+
     }
 
     private String removeReportDbCredentials(Request request, Response response, IssAccessToken token) {
