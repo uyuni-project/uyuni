@@ -14,6 +14,7 @@ import { Toggler } from "components/toggler";
 import Network from "utils/network";
 
 import { DisplayHighstate } from "../state/display-highstate";
+import { PolicyPicker } from "manager/audit/scap/policy-picker";
 
 type Props = {
   schedule?: any;
@@ -95,6 +96,9 @@ class RecurringActionsEdit extends React.Component<Props, State> {
 
   matchUrl = (target?: string) => {
     const id = this.state.recurringActionId;
+    if (target === "policy") {
+      return "/rhn/manager/api/recurringactions/policies?";
+    }
     return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
   };
 
@@ -184,6 +188,13 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     return Promise.resolve(states);
   };
 
+  onSavePolicies = (policies) => {
+    let { details } = this.state;
+    details.policies = policies;
+    this.setState({ details });
+    return Promise.resolve(policies);
+  };
+
   toggleTestState = () => {
     let { details } = this.state;
     details.test = !this.state.details.test;
@@ -234,7 +245,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
             name="actionTypeDescription"
             label={t("Action Type")}
             disabled={this.isEdit()}
-            options={["Highstate", "Custom state"]}
+            options={["Highstate", "Custom state", "Scap Policy"]}
             labelClass="col-sm-3"
             divClass="col-sm-6"
           />
@@ -264,6 +275,20 @@ class RecurringActionsEdit extends React.Component<Props, State> {
               type={"state"}
               matchUrl={this.matchUrl}
               saveRequest={this.onSaveStates}
+              applyRequest={this.onClickExecute}
+            />
+          </span>
+        )}
+        {this.state.actionTypeDescription === "Scap Policy" && (
+          <span>
+            <h3>
+              {t("Scap Policies")}
+              &nbsp;
+            </h3>
+            <PolicyPicker
+              type={"policy"}
+              matchUrl={() => this.matchUrl("policy")}
+              saveRequest={this.onSavePolicies}
               applyRequest={this.onClickExecute}
             />
           </span>

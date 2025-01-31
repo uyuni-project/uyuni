@@ -38,7 +38,8 @@ public abstract class RecurringActionType {
 
     public enum ActionType {
         HIGHSTATE("Highstate"),
-        CUSTOMSTATE("Custom state");
+        CUSTOMSTATE("Custom state"),
+        SCAPPOLICY("Scap Policy");
         private final String description;
         ActionType(String descriptionIn) {
             this.description = descriptionIn;
