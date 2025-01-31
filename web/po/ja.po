@@ -9,15 +9,11 @@
 #: ../html/src/components/input/range/Range.tsx:60
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:51+0100\n"
+"POT-Creation-Date: 2025-01-23 15:55+0100\n"
 "PO-Revision-Date: 2025-01-15 02:50+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
@@ -66,9 +62,6 @@ msgstr "認証実行の確認"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
 msgstr "スケジュール"
 
@@ -187,7 +180,6 @@ msgstr "認証 #{identifier} は {date} {time} に実行されます"
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "システム"
 
@@ -198,7 +190,7 @@ msgid "Environment Type"
 msgstr "環境タイプ"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "作成日"
 
@@ -233,8 +225,6 @@ msgstr "認証時間"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:200
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "アクション"
 
@@ -265,7 +255,7 @@ msgid "Last modified on"
 msgstr "最終変更日"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 msgid "Action"
 msgstr "動作"
 
@@ -336,8 +326,6 @@ msgstr "スケジュールの選択"
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "該当なし"
 
@@ -395,8 +383,6 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
 msgstr "取り消し"
 
@@ -428,11 +414,6 @@ msgstr "取り消し"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "削除"
 
@@ -471,7 +452,6 @@ msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "リセット"
 
@@ -519,8 +499,6 @@ msgstr "必要"
 #: ../html/src/components/input/range/Range.stories.tsx:24
 #: ../html/src/components/input/select/simple.stories.tsx:32
 #: ../html/src/components/input/text/Text.stories.tsx:38
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "送信"
 
@@ -565,13 +543,6 @@ msgstr "ログイン"
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "名前"
 
@@ -583,7 +554,6 @@ msgstr "名前"
 #: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "パスワード"
 
@@ -832,8 +802,6 @@ msgstr "設定チャンネル: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "編集"
 
@@ -1134,10 +1102,6 @@ msgstr "ヘルプ"
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "読み込んでいます..."
 
@@ -1349,10 +1313,6 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "お使いの SUSE Manager サーバ監視を設定します。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:219
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
 msgid "General"
 msgstr "全般"
 
@@ -1365,7 +1325,6 @@ msgid "Organizations"
 msgstr "組織"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "再起動"
 
@@ -1410,9 +1369,6 @@ msgstr "PAYGのsshデータを追加"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
 msgid "Create"
 msgstr "作成"
 
@@ -1461,11 +1417,6 @@ msgstr "PAYGの接続を追加"
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -1554,8 +1505,7 @@ msgstr "SUSE カスタマーセンターから製品カタログを更新"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:435
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Refresh"
 msgstr "更新"
 
@@ -1663,7 +1613,6 @@ msgstr "製品説明"
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "アーキテクチャ"
 
@@ -1820,7 +1769,6 @@ msgstr " 秒"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "名前でフィルタ"
 
@@ -1855,7 +1803,7 @@ msgstr "現時点では、サーバ内で動作しているタスクはありま
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "セッションの期限が切れました。最新のデータを表示するには、ページを再読み込み"
@@ -1863,7 +1811,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:557
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "サーバエラーです。ログファイルをご確認ください。"
@@ -2682,7 +2630,6 @@ msgid "AppStream modules with defaults"
 msgstr "デフォルトのAppStreamモジュール"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "テンプレート"
 
@@ -3197,9 +3144,8 @@ msgstr "推奨を含める"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "タイプ"
 
@@ -3374,7 +3320,6 @@ msgid "Image Store"
 msgstr "イメージストア"
 
 #: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
 msgid "Path"
 msgstr "パス"
 
@@ -3487,9 +3432,6 @@ msgstr "追加の独自 info 鍵の作成"
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
 msgid "Update"
 msgstr "更新"
 
@@ -3569,7 +3511,6 @@ msgstr "資格情報の使用"
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
 msgid "Username"
 msgstr "ユーザ名"
 
@@ -3939,8 +3880,6 @@ msgid "Building"
 msgstr "構築しています"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "不明"
 
@@ -3965,7 +3904,6 @@ msgstr "(非推奨)"
 #: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "更新"
 
@@ -4592,9 +4530,6 @@ msgstr "パッケージの状態"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "都道府県"
 
@@ -4607,7 +4542,7 @@ msgid "Applying the packages states has been "
 msgstr "パッケージ状態の適用を "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 msgid "Summary"
 msgstr "概要"
 
@@ -4714,99 +4649,101 @@ msgstr "更新通知"
 msgid "PAYG instance is not compliant"
 msgstr "PAYGインスタンスは準拠していません"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.tsx:64
+msgid "SCC Data Sync Disabled"
+msgstr ""
+
+#: ../html/src/manager/notifications/notification-messages.tsx:245
+#: ../html/src/manager/notifications/notification-messages.tsx:246
 msgid "Info"
 msgstr "情報"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Warning"
 msgstr "警告"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Error"
 msgstr "エラー"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:320
+#: ../html/src/manager/notifications/notification-messages.tsx:324
 msgid "show details"
 msgstr "詳細の表示"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:369
+#: ../html/src/manager/notifications/notification-messages.tsx:373
 msgid "Retry onboarding"
 msgstr "オンボーディングの再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:379
+#: ../html/src/manager/notifications/notification-messages.tsx:383
 msgid "Retry repo sync"
 msgstr "リポジトリー同期の再試行"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:406
 msgid "Unread Messages"
 msgstr "未読メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "All Messages"
 msgstr "全てのメッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "Filter by type"
 msgstr "タイプでフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:439
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:443
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 msgid "Delete selected messages"
 msgstr "選択したメッセージの削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:447
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 msgid "Mark selected as read"
 msgstr "選択したものを読み込み済みとしてマーク"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:465
-#: ../html/src/manager/notifications/notification-messages.tsx:543
+#: ../html/src/manager/notifications/notification-messages.tsx:469
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Notification Messages"
 msgstr "通知メッセージ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
+#: ../html/src/manager/notifications/notification-messages.tsx:474
 msgid "The server has collected the following notification messages."
 msgstr "このサーバは下記のような通知メッセージを収集しました。"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:484
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 msgid "Filter by summary"
 msgstr "概要でフィルタ"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Severity"
 msgstr "重大度"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Read|Delete"
 msgstr "読み込み|削除"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Unread"
 msgstr "未読として設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Read"
 msgstr "読み込み済みとして設定"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:531
+#: ../html/src/manager/notifications/notification-messages.tsx:535
 msgid "Delete Notification"
 msgstr "通知の削除"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Websocket 接続が閉じられました。ページを更新してやり直してください。"
 
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr ""
 "サーバへの接続時にエラーが発生しました。ページを更新してやり直してください。"
@@ -5673,14 +5610,12 @@ msgstr "コンフィデンシャルコンピューティング機能"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "Yes"
 msgstr "はい"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
 msgid "No"
 msgstr "いいえ"
 
@@ -5976,7 +5911,6 @@ msgid "system(s) to subscribe"
 msgstr "サブスクライブするシステム"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(なし)"
 
@@ -6110,7 +6044,6 @@ msgid "No Virtual Systems."
 msgstr "仮想システムがありません。"
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "ベースソフトウェアチャンネル"
 
@@ -6217,840 +6150,6 @@ msgstr "仮想ホストマネージャ"
 msgid "Add a virtual host manager"
 msgstr "仮想ホストマネージャの追加"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "libvirt python モジュールをインストールしてください。"
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュール"
-"がロードされていることを確認してください。"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:161
-msgid "{name} selected"
-msgstr "{name}を選択しました"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:240
-msgid "Action Status"
-msgstr "動作の状態"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:225
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:246
-msgid "Can not contain the following characters: /\\"
-msgstr "下記の文字を含めることはできません: /\\"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:141
-msgid "Hypervisor"
-msgstr "ハイパーバイザ"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:152
-msgid "Virtual Machine Type"
-msgstr "仮想マシンのタイプ"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:56
-msgid "Maximum Memory (MiB)"
-msgstr "最大メモリ (MiB)"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:166
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:175
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:58
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:67
-msgid "A positive integer is required"
-msgstr "正の整数を指定する必要があります"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:65
-msgid "Virtual CPU Count"
-msgstr "仮想 CPU 数"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
-msgid "Enable UEFI"
-msgstr "UEFIの有効化"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
-msgid "UEFI firmware path"
-msgstr "UEFIファームウェアパス"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
-msgid "NVRAM template path"
-msgstr "NVRAMテンプレートパス"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
-msgid "Auto-installation Profile"
-msgstr "自動インストールプロファイル"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
-msgid "Kernel options"
-msgstr "カーネルオプション"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
-msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr ""
-"VirtualDomainリソースエージェント以降、クラスタのサポートは無効になっていま"
-"す "
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
-msgid "Define as a cluster resource"
-msgstr "クラスタリソースとして定義"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
-msgid "Path to the cluster shared folder for VM definitions"
-msgstr "VM定義用のクラスタ共有フォルダへのパス"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Graphics"
-msgstr "グラフィック"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "再試行"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "接続中..."
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "切断済み"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "接続に失敗しました"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "フルサイズの切り替え"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "ゲストは動作していません"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "不明ゲスト"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "何らかの問題が発生しています。接続が閉じられました"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "仮想マシンの作成"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
-msgid "Migrate"
-msgstr "移行"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "仮想ゲストの移行先を選択します。"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "ターゲットホスト"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
-msgid "Start / Resume"
-msgstr "開始／再開"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
-msgid "Stop"
-msgstr "停止"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
-msgid "Force off"
-msgstr "強制停止"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
-msgid "Suspend"
-msgstr "一時停止"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
-msgid "Synchronize Guests List"
-msgstr "ゲスト一覧の同期"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
-msgid "Synchronize"
-msgstr "同期"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
-msgid "Hosted Virtual Systems"
-msgstr "ホストされている仮想システム"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
-msgstr "これはこのホストで実行するよう設定されている仮想化ゲストの一覧です。"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
-msgid "Guest"
-msgstr "ゲスト"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
-msgid "Unregistered System"
-msgstr "未登録のシステム"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
-msgid "Current Memory"
-msgstr "現在のメモリ"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
-msgid "vCPUs"
-msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
-msgid "paused"
-msgstr "一時停止済み"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
-msgid "Graphical Console"
-msgstr "グラフィカルコンソール"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
-msgid "Device type"
-msgstr "デバイスのタイプ"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
-msgid "Disk"
-msgstr "ディスク"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:63
-msgid "CDROM"
-msgstr "CDROM"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:64
-msgid "Floppy"
-msgstr "フロッピィ"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:75
-msgid "Bus"
-msgstr "バス"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:26
-msgid "File"
-msgstr "ファイル"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:35
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:113
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:500
-msgid "Format"
-msgstr "フォーマット"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
-msgid "Source storage pool"
-msgstr "ソースストレージプール"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:82
-msgid "Source Volume"
-msgstr "ソースボリューム"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:95
-msgid "Disk size (GiB)"
-msgstr "ディスクサイズ (GiB)"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
-msgid "Source template image URL"
-msgstr "ソーステンプレートのイメージ URL"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "ディスク"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
-msgid "Network"
-msgstr "ネットワーク"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:90
-msgid "MAC address"
-msgstr "MAC アドレス"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
-msgid "Leave blank to generate a MAC address"
-msgstr "MAC アドレスを生成する場合は何も入力しないでください"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
-msgid "Networks"
-msgstr "ネットワーク"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
-msgid "Clear Fields"
-msgstr "項目の消去"
-
-#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
-msgid "Single virtual machine using almost all the host resources"
-msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
-msgid "Create Virtual Network"
-msgstr "仮想ネットワークの作成"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
-msgid "Start"
-msgstr "開始"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
-msgid "Virtual Networks"
-msgstr "仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
-msgstr "これはこのホスト内に設定されている仮想ネットワークの一覧です。"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
-msgstr ""
-"このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応していま"
-"せん"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
-msgid "Autostart"
-msgstr "自動起動"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
-msgid "Persistent"
-msgstr "恒久"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:264
-msgid "Bridge"
-msgstr "ブリッジ"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:216
-msgid "network properties"
-msgstr "ネットワークプロパティ"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:233
-msgid "Network type"
-msgstr "ネットワークの種類"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:245
-msgid "Macvtap mode"
-msgstr "Macvtap モード"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:254
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:266
-msgid "Start during virtual host boot"
-msgstr "仮想ホストの起動時に起動"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:260
-msgid "Connectivity"
-msgstr "接続性"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:273
-msgid "Maximum Transmission Unit (MTU)"
-msgstr "最大送信単位 (MTU)"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:277
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:179
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:188
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:197
-msgid "The value has to be a positive integer"
-msgstr "値は正の整数でなければなりません"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:285
-msgid "Virtual Port Type"
-msgstr "仮想ポートの種類"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:301
-msgid "Select interfaces"
-msgstr "インターフェイスの選択"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:307
-msgid "By physical function"
-msgstr "物理機能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:310
-msgid "By virtual functions"
-msgstr "仮想機能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:311
-msgid "By interfaces"
-msgstr "インターフェイス"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:322
-msgid "Interfaces"
-msgstr "インターフェイス"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:342
-msgid "Physical Function"
-msgstr "物理機能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:357
-msgid "Virtual Functions"
-msgstr "仮想機能"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:379
-msgid "VLAN tag"
-msgstr "VLAN タグ"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:383
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:57
-msgid "Integer between 0 and 4095"
-msgstr "0 から 4095 の範囲内の整数"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
-msgid "VLAN tags trunking"
-msgstr "VLAN タグトランキング"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
-msgid "NAT IPv4 range"
-msgstr "NAT IPv4 範囲"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-msgid "Both values has to be IPv4 addresses"
-msgstr "両方の値は IPv4 アドレスでなければなりません"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
-msgid "NAT port range"
-msgstr "NAT ポート範囲"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
-msgid "Both values has to be positive integers"
-msgstr "両方の値は正の整数でなければなりません"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
-msgid "Addressing"
-msgstr "アドレス"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-msgid "Enable IPv6"
-msgstr "IPv6 の有効化"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
-msgid "Domain name"
-msgstr "ドメイン名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:19
-msgid "DNS"
-msgstr "DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:24
-msgid "Forwarders"
-msgstr "フォワーダ"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:37
-msgid "Domain"
-msgstr "ドメイン"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:38
-msgid "DNS server address"
-msgstr "DNS サーバのアドレス"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:51
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:240
-msgid "Has to be a valid qualified host name"
-msgstr "正しい修飾ホスト名でなければなりません"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:59
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:100
-msgid "Has to be an IP address"
-msgstr "IP アドレスでなければなりません"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:66
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:282
-msgid "Hosts"
-msgstr "ホスト"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:80
-msgid "Address"
-msgstr "アドレス"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:84
-msgid "hostnames (comma-separated)"
-msgstr "ホスト名 (カンマ区切り)"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:112
-msgid "Has to be a comma-separated list of host names"
-msgstr "カンマ区切りのホスト名リストでなければなりません"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:119
-msgid "SRV records"
-msgstr "SRV レコード"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:139
-msgid "Service name"
-msgstr "サービス名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:147
-msgid "Protocol"
-msgstr "プロトコル"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:159
-msgid "Service domain name"
-msgstr "サービスドメイン名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:168
-msgid "Target hostname"
-msgstr "ターゲットホスト名"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:175
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:222
-msgid "Port"
-msgstr "ポート"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:184
-msgid "Target priority"
-msgstr "ターゲット優先順位"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:193
-msgid "Target weight"
-msgstr "ターゲットウエイト"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:206
-msgid "TXT records"
-msgstr "TXT レコード"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:224
-msgid "Value"
-msgstr "値"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
-msgid "Network address"
-msgstr "ネットワークアドレス"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:41
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:56
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:105
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:135
-msgid "v6"
-msgstr "v6"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:85
-msgid "IP address"
-msgstr "IP アドレス"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr "DHCP ユニーク識別子 (DUID)"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:119
-msgid "Needs to be a MAC address"
-msgstr "MAC アドレスである必要があります"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:144
-msgid "BOOTP image file"
-msgstr "BOOTP イメージファイル"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:145
-msgid "BOOTP server"
-msgstr "BOOTP サーバ"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:146
-msgid "TFTP root path"
-msgstr "TFTP ルートパス"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:23
-msgid "Parameters"
-msgstr "パラメータ"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:29
-msgid "By profile id"
-msgstr "プロファイル ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr "仮想ステーションインターフェイス (VSI) パラメータ"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:38
-msgid "Profile id"
-msgstr "プロファイル ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:48
-msgid "Interface id"
-msgstr "インターフェイス ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:56
-msgid "VSI manager id"
-msgstr "VSI マネージャ ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:57
-msgid "VSI type id"
-msgstr "VSI タイプ ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:60
-msgid "VSI type id version"
-msgstr "VSI タイプ ID バージョン"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:66
-msgid "VSI instance id"
-msgstr "VSI インスタンス ID"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:70
-msgid "Value needs to be a valid UUID"
-msgstr "値は正しい UUID である必要があります"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:19
-msgid "VLANs"
-msgstr "VLAN"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:40
-msgid "Tag"
-msgstr "タグ"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:43
-msgid "Native mode"
-msgstr "ネイティブモード"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
-msgid "Tagged"
-msgstr "タグ有り"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
-msgid "Untagged"
-msgstr "タグ無し"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルールや "
-"IP アドレス、 DHCP/DNS サービスは追加されません"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネットワー"
-"ク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使用し"
-"ない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"物理インターフェイスのプールを使用する macvtap ドライバベースのネットワー"
-"ク。 "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "SR-IOV プール"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
-msgid "Could not get network devices from the server. Please try again."
-msgstr "サーバからネットワークデバイスを取得できません。再試行してください。"
-
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:26
-msgid "Create Virtual Storage Pool"
-msgstr "仮想ストレージプールの作成"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Pool"
-msgstr "仮想ストレージプール"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Volume"
-msgstr "仮想ストレージボリューム"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
-msgid "Delete the pool, including the contained volumes. "
-msgstr "含まれているボリュームを含めてプールを削除します。 "
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
-msgid "Cannot be undone"
-msgstr "取り消しできません"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
-msgid "Edit Pool"
-msgstr "プールの編集"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
-msgid "Location"
-msgstr "場所"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
-msgid "Usage"
-msgstr "使用"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-msgid "Create Pool"
-msgstr "プールの作成"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
-msgid "Virtual Storage Pools and Volumes"
-msgstr "仮想ストレージプールとボリューム"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
-msgstr ""
-"これはこのホストにおいて仮想ゲストディスクを含んでいるストレージプールの一覧"
-"です。"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
-msgid "Filter by pool or volume name"
-msgstr "プールまたはボリューム名でフィルタ"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
-msgid "Partition separator"
-msgstr "パーティションの区切り"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
-msgid "Host name"
-msgstr "ホスト名"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:255
-msgid "Pool Type"
-msgstr "プールタイプ"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:272
-msgid "Source"
-msgstr "ソース"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:314
-msgid "Devices"
-msgstr "デバイス"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:355
-msgid "Initiator IQN"
-msgstr "イニシエータの IQN"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:365
-msgid "Adapter type"
-msgstr "アダプタのタイプ"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:389
-msgid "Adapter name"
-msgstr "アダプタ名"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:398
-msgid "Adapter parent PCI address"
-msgstr "アダプタの親 PCI アドレス"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:402
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:415
-msgid "PCI address formatted like 0000:00:00.0"
-msgstr "PCI アドレスは 0000:00:00.0 のような形式で指定します"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:411
-msgid "Adapter parent address unique ID"
-msgstr "アダプタの親アドレスのユニーク ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:422
-msgid "Adapter parent name"
-msgstr "アダプタの親の名前"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:430
-msgid "Adapter parent wwnn"
-msgstr "アダプタの親 wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:433
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:453
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:475
-msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr "16 文字の長さの 16 進数です。例: 500277a4100c4e21"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:440
-msgid "Adapter parent wwpn"
-msgstr "アダプタの親 wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:450
-msgid "Adapter parent fabric wwn"
-msgstr "アダプタの親ファブリック wwn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:460
-msgid "Adapter wwnn"
-msgstr "アダプタの wwnn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:471
-msgid "Adapter wwpn"
-msgstr "アダプタの wwpn"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:482
-msgid "Manage vHBA deletion"
-msgstr "管理している vHBA の削除"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:491
-msgid "Source name"
-msgstr "ソース名"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:517
-msgid "Passphrase"
-msgstr "パスフレーズ"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:527
-msgid "Target"
-msgstr "ターゲット"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:538
-msgid "Owner UID"
-msgstr "所有者 UID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:542
-msgid "UID is a numeric value"
-msgstr "UID は数値です"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:546
-msgid "Group ID"
-msgstr "グループ ID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:550
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:559
-msgid "GID is a numeric value"
-msgstr "GID は数値です"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
-msgid "Permission mode"
-msgstr "パーミッションモード"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:555
-msgid "target directory permissions in octal form, like 0775"
-msgstr "ターゲットディレクトリのパーミッション (8進数 (例: 0775))"
-
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:562
-msgid "SELinux label"
-msgstr "SELinux ラベル"
-
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
-msgstr ""
-"サーバからストレージプールの機能を取得できませんでした。再試行してください。"
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "セッションの有効期限が切れました。ページを再読み込みしてください。"
@@ -7069,6 +6168,611 @@ msgstr "リソースが見つかりませんでした。"
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "HTTP エラーコード "
+
+#~ msgid "Please install libvirt python module."
+#~ msgstr "libvirt python モジュールをインストールしてください。"
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVMもXenも実行されていません。KVMとXenがインストールされ、カーネルモジュー"
+#~ "ルがロードされていることを確認してください。"
+
+#~ msgid "{name} selected"
+#~ msgstr "{name}を選択しました"
+
+#~ msgid "Action Status"
+#~ msgstr "動作の状態"
+
+#~ msgid "Can not contain the following characters: /\\"
+#~ msgstr "下記の文字を含めることはできません: /\\"
+
+#~ msgid "Hypervisor"
+#~ msgstr "ハイパーバイザ"
+
+#~ msgid "Virtual Machine Type"
+#~ msgstr "仮想マシンのタイプ"
+
+#~ msgid "Maximum Memory (MiB)"
+#~ msgstr "最大メモリ (MiB)"
+
+#~ msgid "A positive integer is required"
+#~ msgstr "正の整数を指定する必要があります"
+
+#~ msgid "Virtual CPU Count"
+#~ msgstr "仮想 CPU 数"
+
+#~ msgid "Enable UEFI"
+#~ msgstr "UEFIの有効化"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "UEFIファームウェアパス"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "NVRAMテンプレートパス"
+
+#~ msgid "Auto-installation Profile"
+#~ msgstr "自動インストールプロファイル"
+
+#~ msgid "Kernel options"
+#~ msgstr "カーネルオプション"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "VirtualDomainリソースエージェント以降、クラスタのサポートは無効になってい"
+#~ "ます "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "クラスタリソースとして定義"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "VM定義用のクラスタ共有フォルダへのパス"
+
+#~ msgid "Graphics"
+#~ msgstr "グラフィック"
+
+#~ msgid "Retry"
+#~ msgstr "再試行"
+
+#~ msgid "Connecting..."
+#~ msgstr "接続中..."
+
+#~ msgid "Disconnected"
+#~ msgstr "切断済み"
+
+#~ msgid "Failed to connect"
+#~ msgstr "接続に失敗しました"
+
+#~ msgid "Toggle full size"
+#~ msgstr "フルサイズの切り替え"
+
+#~ msgid "Guest is not running"
+#~ msgstr "ゲストは動作していません"
+
+#~ msgid "Unknown guest"
+#~ msgstr "不明ゲスト"
+
+#~ msgid "Something went wrong, connection is closed"
+#~ msgstr "何らかの問題が発生しています。接続が閉じられました"
+
+#~ msgid "Create Virtual Machine"
+#~ msgstr "仮想マシンの作成"
+
+#~ msgid "Migrate"
+#~ msgstr "移行"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "仮想ゲストの移行先を選択します。"
+
+#~ msgid "Target Host"
+#~ msgstr "ターゲットホスト"
+
+#~ msgid "Start / Resume"
+#~ msgstr "開始／再開"
+
+#~ msgid "Stop"
+#~ msgstr "停止"
+
+#~ msgid "Force off"
+#~ msgstr "強制停止"
+
+#~ msgid "Suspend"
+#~ msgstr "一時停止"
+
+#~ msgid "Synchronize Guests List"
+#~ msgstr "ゲスト一覧の同期"
+
+#~ msgid "Synchronize"
+#~ msgstr "同期"
+
+#~ msgid "Hosted Virtual Systems"
+#~ msgstr "ホストされている仮想システム"
+
+#~ msgid ""
+#~ "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr ""
+#~ "これはこのホストで実行するよう設定されている仮想化ゲストの一覧です。"
+
+#~ msgid "Guest"
+#~ msgstr "ゲスト"
+
+#~ msgid "Unregistered System"
+#~ msgstr "未登録のシステム"
+
+#~ msgid "Current Memory"
+#~ msgstr "現在のメモリ"
+
+#~ msgid "vCPUs"
+#~ msgstr "vCPU"
+
+#~ msgid "paused"
+#~ msgstr "一時停止済み"
+
+#~ msgid "Graphical Console"
+#~ msgstr "グラフィカルコンソール"
+
+#~ msgid "Device type"
+#~ msgstr "デバイスのタイプ"
+
+#~ msgid "Disk"
+#~ msgstr "ディスク"
+
+#~ msgid "CDROM"
+#~ msgstr "CDROM"
+
+#~ msgid "Floppy"
+#~ msgstr "フロッピィ"
+
+#~ msgid "Bus"
+#~ msgstr "バス"
+
+#~ msgid "File"
+#~ msgstr "ファイル"
+
+#~ msgid "Format"
+#~ msgstr "フォーマット"
+
+#~ msgid "Source storage pool"
+#~ msgstr "ソースストレージプール"
+
+#~ msgid "Source Volume"
+#~ msgstr "ソースボリューム"
+
+#~ msgid "Disk size (GiB)"
+#~ msgstr "ディスクサイズ (GiB)"
+
+#~ msgid "Source template image URL"
+#~ msgstr "ソーステンプレートのイメージ URL"
+
+#~ msgid "Disks"
+#~ msgstr "ディスク"
+
+#~ msgid "Network"
+#~ msgstr "ネットワーク"
+
+#~ msgid "MAC address"
+#~ msgstr "MAC アドレス"
+
+#~ msgid "Leave blank to generate a MAC address"
+#~ msgstr "MAC アドレスを生成する場合は何も入力しないでください"
+
+#~ msgid "Networks"
+#~ msgstr "ネットワーク"
+
+#~ msgid "Clear Fields"
+#~ msgstr "項目の消去"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "ほぼすべてのホストリソースを使用する単一の仮想マシン"
+
+#~ msgid "Create Virtual Network"
+#~ msgstr "仮想ネットワークの作成"
+
+#~ msgid "Start"
+#~ msgstr "開始"
+
+#~ msgid "Virtual Networks"
+#~ msgstr "仮想ネットワーク"
+
+#~ msgid ""
+#~ "This is a list of virtual networks which are configured to run on this "
+#~ "host."
+#~ msgstr "これはこのホスト内に設定されている仮想ネットワークの一覧です。"
+
+#~ msgid ""
+#~ "The Salt version on this system does not support virtual network creating "
+#~ "and editing"
+#~ msgstr ""
+#~ "このシステムの Salt バージョンは、仮想ネットワークの作成や編集に対応してい"
+#~ "ません"
+
+#~ msgid "Autostart"
+#~ msgstr "自動起動"
+
+#~ msgid "Persistent"
+#~ msgstr "恒久"
+
+#~ msgid "Bridge"
+#~ msgstr "ブリッジ"
+
+#~ msgid "network properties"
+#~ msgstr "ネットワークプロパティ"
+
+#~ msgid "Network type"
+#~ msgstr "ネットワークの種類"
+
+#~ msgid "Macvtap mode"
+#~ msgstr "Macvtap モード"
+
+#~ msgid "Start during virtual host boot"
+#~ msgstr "仮想ホストの起動時に起動"
+
+#~ msgid "Connectivity"
+#~ msgstr "接続性"
+
+#~ msgid "Maximum Transmission Unit (MTU)"
+#~ msgstr "最大送信単位 (MTU)"
+
+#~ msgid "The value has to be a positive integer"
+#~ msgstr "値は正の整数でなければなりません"
+
+#~ msgid "Virtual Port Type"
+#~ msgstr "仮想ポートの種類"
+
+#~ msgid "Select interfaces"
+#~ msgstr "インターフェイスの選択"
+
+#~ msgid "By physical function"
+#~ msgstr "物理機能"
+
+#~ msgid "By virtual functions"
+#~ msgstr "仮想機能"
+
+#~ msgid "By interfaces"
+#~ msgstr "インターフェイス"
+
+#~ msgid "Interfaces"
+#~ msgstr "インターフェイス"
+
+#~ msgid "Physical Function"
+#~ msgstr "物理機能"
+
+#~ msgid "Virtual Functions"
+#~ msgstr "仮想機能"
+
+#~ msgid "VLAN tag"
+#~ msgstr "VLAN タグ"
+
+#~ msgid "Integer between 0 and 4095"
+#~ msgstr "0 から 4095 の範囲内の整数"
+
+#~ msgid "VLAN tags trunking"
+#~ msgstr "VLAN タグトランキング"
+
+#~ msgid "NAT IPv4 range"
+#~ msgstr "NAT IPv4 範囲"
+
+#~ msgid "Both values has to be IPv4 addresses"
+#~ msgstr "両方の値は IPv4 アドレスでなければなりません"
+
+#~ msgid "NAT port range"
+#~ msgstr "NAT ポート範囲"
+
+#~ msgid "Both values has to be positive integers"
+#~ msgstr "両方の値は正の整数でなければなりません"
+
+#~ msgid "Addressing"
+#~ msgstr "アドレス"
+
+#~ msgid "Enable IPv6"
+#~ msgstr "IPv6 の有効化"
+
+#~ msgid "Domain name"
+#~ msgstr "ドメイン名"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "Forwarders"
+#~ msgstr "フォワーダ"
+
+#~ msgid "Domain"
+#~ msgstr "ドメイン"
+
+#~ msgid "DNS server address"
+#~ msgstr "DNS サーバのアドレス"
+
+#~ msgid "Has to be a valid qualified host name"
+#~ msgstr "正しい修飾ホスト名でなければなりません"
+
+#~ msgid "Has to be an IP address"
+#~ msgstr "IP アドレスでなければなりません"
+
+#~ msgid "Hosts"
+#~ msgstr "ホスト"
+
+#~ msgid "Address"
+#~ msgstr "アドレス"
+
+#~ msgid "hostnames (comma-separated)"
+#~ msgstr "ホスト名 (カンマ区切り)"
+
+#~ msgid "Has to be a comma-separated list of host names"
+#~ msgstr "カンマ区切りのホスト名リストでなければなりません"
+
+#~ msgid "SRV records"
+#~ msgstr "SRV レコード"
+
+#~ msgid "Service name"
+#~ msgstr "サービス名"
+
+#~ msgid "Protocol"
+#~ msgstr "プロトコル"
+
+#~ msgid "Service domain name"
+#~ msgstr "サービスドメイン名"
+
+#~ msgid "Target hostname"
+#~ msgstr "ターゲットホスト名"
+
+#~ msgid "Port"
+#~ msgstr "ポート"
+
+#~ msgid "Target priority"
+#~ msgstr "ターゲット優先順位"
+
+#~ msgid "Target weight"
+#~ msgstr "ターゲットウエイト"
+
+#~ msgid "TXT records"
+#~ msgstr "TXT レコード"
+
+#~ msgid "Value"
+#~ msgstr "値"
+
+#~ msgid "Network address"
+#~ msgstr "ネットワークアドレス"
+
+#~ msgid "v6"
+#~ msgstr "v6"
+
+#~ msgid "IP address"
+#~ msgstr "IP アドレス"
+
+#~ msgid "DHCP Unique Identifier (DUID)"
+#~ msgstr "DHCP ユニーク識別子 (DUID)"
+
+#~ msgid "Needs to be a MAC address"
+#~ msgstr "MAC アドレスである必要があります"
+
+#~ msgid "BOOTP image file"
+#~ msgstr "BOOTP イメージファイル"
+
+#~ msgid "BOOTP server"
+#~ msgstr "BOOTP サーバ"
+
+#~ msgid "TFTP root path"
+#~ msgstr "TFTP ルートパス"
+
+#~ msgid "Parameters"
+#~ msgstr "パラメータ"
+
+#~ msgid "By profile id"
+#~ msgstr "プロファイル ID"
+
+#~ msgid "Virtual Station Interface (VSI) parameters"
+#~ msgstr "仮想ステーションインターフェイス (VSI) パラメータ"
+
+#~ msgid "Profile id"
+#~ msgstr "プロファイル ID"
+
+#~ msgid "Interface id"
+#~ msgstr "インターフェイス ID"
+
+#~ msgid "VSI manager id"
+#~ msgstr "VSI マネージャ ID"
+
+#~ msgid "VSI type id"
+#~ msgstr "VSI タイプ ID"
+
+#~ msgid "VSI type id version"
+#~ msgstr "VSI タイプ ID バージョン"
+
+#~ msgid "VSI instance id"
+#~ msgstr "VSI インスタンス ID"
+
+#~ msgid "Value needs to be a valid UUID"
+#~ msgstr "値は正しい UUID である必要があります"
+
+#~ msgid "VLANs"
+#~ msgstr "VLAN"
+
+#~ msgid "Tag"
+#~ msgstr "タグ"
+
+#~ msgid "Native mode"
+#~ msgstr "ネイティブモード"
+
+#~ msgid "Tagged"
+#~ msgstr "タグ有り"
+
+#~ msgid "Untagged"
+#~ msgstr "タグ無し"
+
+#~ msgid ""
+#~ "Use an existing and configured bridge device. No iptables rule, IP "
+#~ "address or DHCP/DNS service are added"
+#~ msgstr ""
+#~ "既存のもので設定済みのブリッジデバイスをお使いください。 iptables のルール"
+#~ "や IP アドレス、 DHCP/DNS サービスは追加されません"
+
+#~ msgid "Virtual network using the host IP routing stack and NAT"
+#~ msgstr "ホスト IP のルーティングスタックと NAT を使用する仮想ネットワーク"
+
+#~ msgid "Virtual network using the host IP routing stack, without NAT"
+#~ msgstr ""
+#~ "ホスト IP のルーティングスタックを使用するが、 NAT を使用しない仮想ネット"
+#~ "ワーク"
+
+#~ msgid ""
+#~ "Virtual network using the host IP routing stack, without firewall rules "
+#~ "and NAT"
+#~ msgstr ""
+#~ "ホスト IP のルーティングスタックを使用するが、ファイアウオールと NAT を使"
+#~ "用しない仮想ネットワーク"
+
+#~ msgid "Virtual network with no connection to other networks"
+#~ msgstr "他のネットワークへの接続を持たない仮想ネットワーク"
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr ""
+#~ "物理インターフェイスのプールを使用する macvtap ドライバベースのネットワー"
+#~ "ク。 "
+
+#~ msgid "SR-IOV pool"
+#~ msgstr "SR-IOV プール"
+
+#~ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+#~ msgstr "SR-IOV 仮想機能のプールによる特定デバイスへのパススルー"
+
+#~ msgid "Could not get network devices from the server. Please try again."
+#~ msgstr ""
+#~ "サーバからネットワークデバイスを取得できません。再試行してください。"
+
+#~ msgid "Create Virtual Storage Pool"
+#~ msgstr "仮想ストレージプールの作成"
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "仮想ストレージプール"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "仮想ストレージボリューム"
+
+#~ msgid "Delete the pool, including the contained volumes. "
+#~ msgstr "含まれているボリュームを含めてプールを削除します。 "
+
+#~ msgid "Cannot be undone"
+#~ msgstr "取り消しできません"
+
+#~ msgid "Edit Pool"
+#~ msgstr "プールの編集"
+
+#~ msgid "Location"
+#~ msgstr "場所"
+
+#~ msgid "Usage"
+#~ msgstr "使用"
+
+#~ msgid "Create Pool"
+#~ msgstr "プールの作成"
+
+#~ msgid "Virtual Storage Pools and Volumes"
+#~ msgstr "仮想ストレージプールとボリューム"
+
+#~ msgid ""
+#~ "This is the list of storage pools defined on this host containing virtual "
+#~ "guests disks."
+#~ msgstr ""
+#~ "これはこのホストにおいて仮想ゲストディスクを含んでいるストレージプールの一"
+#~ "覧です。"
+
+#~ msgid "Filter by pool or volume name"
+#~ msgstr "プールまたはボリューム名でフィルタ"
+
+#~ msgid "Partition separator"
+#~ msgstr "パーティションの区切り"
+
+#~ msgid "Host name"
+#~ msgstr "ホスト名"
+
+#~ msgid "Pool Type"
+#~ msgstr "プールタイプ"
+
+#~ msgid "Source"
+#~ msgstr "ソース"
+
+#~ msgid "Devices"
+#~ msgstr "デバイス"
+
+#~ msgid "Initiator IQN"
+#~ msgstr "イニシエータの IQN"
+
+#~ msgid "Adapter type"
+#~ msgstr "アダプタのタイプ"
+
+#~ msgid "Adapter name"
+#~ msgstr "アダプタ名"
+
+#~ msgid "Adapter parent PCI address"
+#~ msgstr "アダプタの親 PCI アドレス"
+
+#~ msgid "PCI address formatted like 0000:00:00.0"
+#~ msgstr "PCI アドレスは 0000:00:00.0 のような形式で指定します"
+
+#~ msgid "Adapter parent address unique ID"
+#~ msgstr "アダプタの親アドレスのユニーク ID"
+
+#~ msgid "Adapter parent name"
+#~ msgstr "アダプタの親の名前"
+
+#~ msgid "Adapter parent wwnn"
+#~ msgstr "アダプタの親 wwnn"
+
+#~ msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+#~ msgstr "16 文字の長さの 16 進数です。例: 500277a4100c4e21"
+
+#~ msgid "Adapter parent wwpn"
+#~ msgstr "アダプタの親 wwpn"
+
+#~ msgid "Adapter parent fabric wwn"
+#~ msgstr "アダプタの親ファブリック wwn"
+
+#~ msgid "Adapter wwnn"
+#~ msgstr "アダプタの wwnn"
+
+#~ msgid "Adapter wwpn"
+#~ msgstr "アダプタの wwpn"
+
+#~ msgid "Manage vHBA deletion"
+#~ msgstr "管理している vHBA の削除"
+
+#~ msgid "Source name"
+#~ msgstr "ソース名"
+
+#~ msgid "Passphrase"
+#~ msgstr "パスフレーズ"
+
+#~ msgid "Target"
+#~ msgstr "ターゲット"
+
+#~ msgid "Owner UID"
+#~ msgstr "所有者 UID"
+
+#~ msgid "UID is a numeric value"
+#~ msgstr "UID は数値です"
+
+#~ msgid "Group ID"
+#~ msgstr "グループ ID"
+
+#~ msgid "GID is a numeric value"
+#~ msgstr "GID は数値です"
+
+#~ msgid "Permission mode"
+#~ msgstr "パーミッションモード"
+
+#~ msgid "target directory permissions in octal form, like 0775"
+#~ msgstr "ターゲットディレクトリのパーミッション (8進数 (例: 0775))"
+
+#~ msgid "SELinux label"
+#~ msgstr "SELinux ラベル"
+
+#~ msgid ""
+#~ "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr ""
+#~ "サーバからストレージプールの機能を取得できませんでした。再試行してくださ"
+#~ "い。"
 
 #~ msgid "Learn more about"
 #~ msgstr "下記についてさらに詳しく"

@@ -18,7 +18,7 @@
 
 
 Name:           spacewalk-admin
-Version:        5.1.1
+Version:        5.1.2
 Release:        0
 Summary:        Various utility scripts and data files for Spacewalk installations
 License:        GPL-2.0-only
@@ -60,7 +60,6 @@ sed -i 's/apache2.service/httpd.service/g' uyuni-check-database.service
 make -f Makefile.admin install PREFIX=%{buildroot}
 
 mkdir -p %{buildroot}%{_mandir}/man8/
-%{_bindir}/pod2man --section=8 rhn-config-schema.pl > %{buildroot}%{_mandir}/man8/rhn-config-schema.pl.8
 %{_bindir}/pod2man --section=8 man/spacewalk-service.pod > %{buildroot}%{_mandir}/man8/spacewalk-service.8
 %{_bindir}/pod2man --section=8 man/rhn-sat-restart-silent.pod > %{buildroot}%{_mandir}/man8/rhn-sat-restart-silent.8
 %{_bindir}/pod2man --section=8 rhn-config-satellite.pl > %{buildroot}%{_mandir}/man8/rhn-config-satellite.pl.8
@@ -80,13 +79,11 @@ fi
 %{_sbindir}/uyuni-update-config
 %{_sbindir}/import-suma-build-keys
 %{_bindir}/rhn-config-satellite.pl
-%{_bindir}/rhn-config-schema.pl
 %{_bindir}/rhn-deploy-ca-cert.pl
 %{_bindir}/rhn-install-ssl-cert.pl
 %{_bindir}/salt-secrets-config.py
 %{_sbindir}/rhn-sat-restart-silent
 %{_sbindir}/mgr-monitoring-ctl
-%{_mandir}/man8/rhn-config-schema.pl.8*
 %{_mandir}/man8/spacewalk-service.8*
 %{_mandir}/man8/rhn-sat-restart-silent.8*
 %{_mandir}/man8/rhn-config-satellite.pl.8*

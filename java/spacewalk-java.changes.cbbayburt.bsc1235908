@@ -1,2 +1,0 @@
-- Fix internal server error in 'listSystemsByPatchStatus' API
-  endpoint (bsc#1235908)

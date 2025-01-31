@@ -53,6 +53,10 @@ Feature: Bootstrap a build host via the GUI
     Then I should see a "[Container Build Host]" text
     Then I should see a "[OS Image Build Host]" text
 
+# WORKAROUND
+# Remove the skip tag when this PR is merged:
+#   https://github.com/uyuni-project/uyuni/pull/9707
+@skip
   Scenario: Check events history for failures on SLES build host
     Given I am on the Systems overview page of this "build_host"
     Then I check for failed events on history event page

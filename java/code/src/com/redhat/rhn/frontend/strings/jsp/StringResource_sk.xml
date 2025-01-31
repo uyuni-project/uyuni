@@ -5261,28 +5261,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="packagesearch.jsp.relevant" xml:space="preserve">
         <source>Only channels relevant to your systems</source>
-        <target/>
+        <target state="translated">Len kanály týkajúce sa vašich systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificchannel" xml:space="preserve">
         <source>Specific channel you have access to</source>
-        <target/>
+        <target state="translated">Špecifický kanál, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.specificarch" xml:space="preserve">
         <source>Packages of a specific architecture in any channel you have access to</source>
-        <target/>
+        <target state="translated">Balíky so špecifickou architektúrou v ktoromkoľvek kanáli, ku ktorému máte prístup</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.searchwherelegend" xml:space="preserve">
         <source>* means one or more channel architectures are not synchronized.</source>
-        <target/>
+        <target state="translated">* znamená, že jedna alebo viacero architektúr kanálov nie je synchronizovaných.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
@@ -5290,168 +5290,168 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM Overview -->
       <trans-unit id="ssm.overview.header" xml:space="preserve">
         <source>Overview</source>
-        <target/>
+        <target state="translated">Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary" xml:space="preserve">
         <source>Manage multiple systems simultaneously with system set manager.</source>
-        <target/>
+        <target state="translated">Spravujte viacero systémov súčasne pomocou správcu sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.summary2" xml:space="preserve">
         <source>The navigation tabs above will assist you in executing the following actions.</source>
-        <target/>
+        <target state="translated">Vyššie uvedené navigačné karty vám pomôžu pri vykonávaní nasledujúcich činností.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.systems.list" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;List the systems&lt;/a&gt; you have selected to work with</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListSystems.do"&gt;Vypísať zoznam systémov&lt;/a&gt;, s ktorými ste si vybrali pracovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.errata.schedule" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Schedule patch updates&lt;/a&gt; relevant to selected systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/ListErrata.do"&gt;Naplánovať aktualizácie opráv&lt;/a&gt; týkajúcich sa vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.upgrade" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Upgrade&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageUpgrade.do"&gt;Zvýšiť verziu&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.install" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Install&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageInstall.do"&gt;Inštalovať&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.remove" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Remove&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageRemove.do"&gt;Odstrániť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.packages.verify" xml:space="preserve">
         <source>&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Verify&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/ssm/PackageVerify.do"&gt;Overiť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.groups" xml:space="preserve">
         <source>Groups</source>
-        <target/>
+        <target state="translated">Skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.groups.create" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Create&lt;/a&gt; and &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;manage&lt;/a&gt; groups</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/groups/Create.do"&gt;Vytvárať&lt;/a&gt; a &lt;a href="/rhn/systems/ssm/groups/Manage.do"&gt;spravovať&lt;/a&gt; skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.schedule.assign" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Assign&lt;/a&gt; a maintenance schedule to selected systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/maintenance"&gt;Priradiť&lt;/a&gt; plán údržby vybraným systémom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels" xml:space="preserve">
         <source>Channels</source>
-        <target/>
+        <target state="translated">Kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.memberships" xml:space="preserve">
         <source>Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;channel memberships&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Manage systems' &lt;a href="/rhn/channel/ssm/ChannelSubscriptions.do"&gt;členstvo v kanáloch&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.subscriptions" xml:space="preserve">
         <source>Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;config channel subscriptions&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Manage systems' &lt;a href="/rhn/systems/ssm/config/Subscribe.do"&gt;konfigurácia predplatného kanálov&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.channels.deploy" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;Deploy&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;Diff&lt;/a&gt; config channels</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/config/Deploy.do"&gt;Nasadenie&lt;/a&gt; / &lt;a href="/rhn/systems/ssm/config/Diff.do"&gt;Rozdiel&lt;/a&gt; konfiguračných kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning" xml:space="preserve">
         <source>Provisioning</source>
-        <target/>
+        <target state="translated">Poskytovanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.kickstart" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Autoinstall&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/kickstart/KickstartableSystems.do"&gt;Automaticky nainštalovať&lt;/a&gt; systems</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Označiť&lt;/a&gt; systémy pre &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;vrátenie snímok späť&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.remotecommands" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;remote commands&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Spustiť &lt;a href="/rhn/systems/ssm/provisioning/RemoteCommand.do"&gt;vzdialené príkazy&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.powermanagement.configure" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Configure power management&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/provisioning/PowerManagementConfiguration.do"&gt;Konfigurovať správu napájania&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5462,7 +5462,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.provisioning.powermanagement.operations" xml:space="preserve">
         <source>Run &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;power management operations&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Spustiť &lt;a href="/rhn/systems/ssm/provisioning/PowerManagementOperations.do"&gt;operácie správy napájania&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5473,7 +5473,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.ipmi_note" xml:space="preserve">
         <source>&lt;strong&gt;NOTE:&lt;/strong&gt; The power management types listed are tested and supported, but others may work. Check the documentation for more details.</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;strong&gt;POZNÁMKA:&lt;/strong&gt; Uvedené typy správy napájania sú testované a podporované, ale môžu fungovať aj iné. Ďalšie podrobnosti nájdete v dokumentácii.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5484,7 +5484,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.address_note" xml:space="preserve">
         <source>The hostname or IP address of the power management server.</source>
-        <target/>
+        <target state="translated">Názov hostiteľa alebo IP adresa servera správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5495,7 +5495,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.username_note" xml:space="preserve">
         <source>The username used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Používateľské meno používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5506,7 +5506,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.password_note" xml:space="preserve">
         <source>The password used to log in to the power management server.</source>
-        <target/>
+        <target state="translated">Heslo používané na prihlásenie k serveru správy napájania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5517,7 +5517,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.identifier_note" xml:space="preserve">
         <source>The identifier used to specify this system on the power management server. Optional because not all power managment types will need this field. This field can also be used to pass additional options to the "fence agent". For example, if you are using an IPMI server that requires the Lanplus protocol (and this system's identifier was "System") then you can set a System Identifier of "-P System" to instruct fence_ipmilan to use the Lanplus protocol for this system. See the fence agent's documentation for additional options.</source>
-        <target/>
+        <target state="translated">Identifikátor používaný na určenie tohto systému na serveri správy napájania. Nepovinné, pretože nie všetky typy správy napájania budú toto pole potrebovať. Toto pole sa môže použiť aj na odovzdanie ďalších možností pre "fence agent". Ak napríklad používate server IPMI, ktorý vyžaduje protokol Lanplus (a identifikátor tohto systému bol "System"), potom môžete nastaviť identifikátor systému "-P System", aby ste inštruovali fence_ipmilan používať protokol Lanplus pre tento systém. Ďalšie možnosti nájdete v dokumentácii k fence agent.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5528,7 +5528,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="provisioning.powermanagement.security_warning" xml:space="preserve">
         <source>&lt;strong&gt;SECURITY WARNING:&lt;/strong&gt; Information saved on this page is available to anyone on the network. See cobbler documentation for more information and mitigation strategies.</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;BEZPEČNOSTNÉ VAROVANIE:&lt;/strong&gt; Informácie uložené na tejto stránke sú dostupné komukoľvek na sieti. Ďalšie informácie a stratégie obmedzenia nájdete v dokumentácii pre cobbler.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement</context>
           <context context-type="sourcefile">/rhn/systems/ssm/provisioning/PowerManagementConfiguration</context>
@@ -5539,84 +5539,84 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.overview.misc" xml:space="preserve">
         <source>Misc</source>
-        <target/>
+        <target state="translated">Rôzne</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardvérové profily&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;profily balíkov&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
-        <target/>
+        <target state="translated">Aktualizovať &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;systémové predvoľby&lt;/a&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.customvalues" xml:space="preserve">
         <source>Set and remove &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;custom values&lt;/a&gt; for selected systems</source>
-        <target/>
+        <target state="translated">Nastaviť a odstrániť &lt;a href="/rhn/systems/ssm/misc/CustomValue.do"&gt;vlastné hodnoty&lt;/a&gt; pre vybrané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.delete" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Delete&lt;/a&gt; systems from @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/DeleteConfirm.do"&gt;Vymazať&lt;/a&gt; systémy z @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.reboot" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reboot&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/RebootSystem.do"&gt;Reštartovať&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.migrate" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Transfer&lt;/a&gt; systems to another organization</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/MigrateSystems.do"&gt;Preniesť&lt;/a&gt; systémy do inej organizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.lock" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Lock/unlock&lt;/a&gt; systems</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/misc/LockUnlockSystem.do"&gt;Zamknúť/odomknúť&lt;/a&gt; systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.overview.misc.scap" xml:space="preserve">
         <source>&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Audit&lt;/a&gt; systems with OpenSCAP</source>
-        <target/>
+        <target state="translated">&lt;a href="/rhn/systems/ssm/audit/ScheduleXccdf.do"&gt;Auditovať&lt;/a&gt; systémy s OpenSCAP</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.scheduled" xml:space="preserve">
         <source>Patch updates &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; at {0}.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv &lt;a href="/rhn/schedule/PendingActions.do"&gt;naplánované&lt;/a&gt; na {0}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.errata.message.queued" xml:space="preserve">
         <source>Patch updates have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizácie opráv boli pridané do reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5624,14 +5624,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM System List -->
       <trans-unit id="ssm.list.systems.header" xml:space="preserve">
         <source>Selected Systems List</source>
-        <target/>
+        <target state="translated">Zoznam vybraných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.list.systems.summary" xml:space="preserve">
         <source>&lt;p&gt;Below are your selected systems. All actions taken within this interface will apply only to the these systems.&lt;/p&gt;</source>
-        <target/>
+        <target state="translated">&lt;p&gt;Nižšie sú uvedené vaše vybrané systémy. Všetky akcie uskutočnené v rámci tohto rozhrania sa vzťahujú len na tieto systémy.&lt;/p&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/ListSystems.do</context>
         </context-group>
@@ -5639,7 +5639,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!-- SSM System Migration -->
       <trans-unit id="ssm.migrate.systems.header" xml:space="preserve">
         <source>Transfer Systems</source>
-        <target state="needs-adaptation"/>
+        <target state="translated">Preniesť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/MigrateSystems.do</context>
         </context-group>
@@ -28758,7 +28758,7 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="copyright.jsp.title" xml:space="preserve">
-        <source>Copyright (c) 2011 - 2024 SUSE LLC.</source>
+        <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
