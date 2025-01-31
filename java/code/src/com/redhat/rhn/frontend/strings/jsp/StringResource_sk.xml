@@ -4917,15 +4917,15 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="erratalist.jsp.cloneerrata" xml:space="preserve">
         <source>Clone Patches</source>
-        <target/>
+        <target state="translated">Klonovať opravy</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
       </trans-unit>
       <trans-unit id="deleteconfirm.jsp.pagesummary" xml:space="preserve">
         <source>Are you sure you wish to delete these patches?</source>
-        <target/>
+        <target state="translated">Ste si istí, že chcete tieto opravy vymazať?</target>
       </trans-unit>
       <trans-unit id="details.jsp.topic" xml:space="preserve">
         <source>Topic</source>
@@ -4943,21 +4943,21 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="details.jsp.description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target state="translated">Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.solution" xml:space="preserve">
         <source>Solution</source>
-        <target/>
+        <target state="translated">Riešenie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
       </trans-unit>
       <trans-unit id="details.jsp.affectedchannels" xml:space="preserve">
         <source>Affected Channels</source>
-        <target/>
+        <target state="translated">Ovplyvnené kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/details/Details</context>
         </context-group>
@@ -5423,7 +5423,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.overview.groups" xml:space="preserve">
         <source>Groups</source>
-        <target/>
+        <target state="translated">Skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
