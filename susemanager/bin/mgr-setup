@@ -157,12 +157,12 @@ setup_db_postgres() {
     local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
     host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" > /tmp/pg_hba.conf
-            cat ${DATADIR}/pg_hba.conf >> /tmp/pg_hba.conf
-            mv ${DATADIR}/pg_hba.conf ${DATADIR}/pg_hba.conf.bak
-            mv /tmp/pg_hba.conf ${DATADIR}/pg_hba.conf
-            chmod 600 ${DATADIR}/pg_hba.conf
-            chown postgres:postgres ${DATADIR}/pg_hba.conf
+    host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" > "${DATADIR}/pg_hba.conf.new"
+            cat "${DATADIR}/pg_hba.conf" >> "${DATADIR}/pg_hba.conf.new"
+            mv "${DATADIR}/pg_hba.conf" "${DATADIR}/pg_hba.conf.bak"
+            mv "${DATADIR}/pg_hba.conf.new" "${DATADIR}/pg_hba.conf"
+            chmod 600 "${DATADIR}/pg_hba.conf"
+            chown postgres:postgres "${DATADIR}/pg_hba.conf"
             su postgres -c "/usr/share/postgresql/postgresql-script reload"
         else
             echo "Database exists. Preparing for resetup. All data will be removed."
