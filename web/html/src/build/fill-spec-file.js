@@ -17,7 +17,7 @@ function fillSpecFile() {
     }
     return item;
   });
-  const mappedProcessedLicenses = Array.from(new Set(processedLicenses)).sort().join(" AND ");
+  const mappedProcessedLicenses = Array.from(new Set(processedLicenses)).sort().filter(Boolean).join(" AND ");
 
   const specFileLocation = "../../spacewalk-web.spec";
 

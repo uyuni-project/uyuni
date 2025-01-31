@@ -60,14 +60,6 @@ export const Storybook = () => {
               invalidate();
             }}
           />
-          <Button
-            text="toggle theme update"
-            className="btn-default"
-            handler={() => {
-              debugUtils.toggleUpdatedTheme();
-              invalidate();
-            }}
-          />
           <Button text="toggle code" className="btn-default" handler={() => setShowCode(!showCode)} />
         </StoryRow>
       </div>

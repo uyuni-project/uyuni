@@ -1,0 +1,14 @@
+include /templates/common.jade
+
+#proxy
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/setup/proxy')
+        .then(function(module) {
+            module.renderer('proxy', {
+                proxySettings: !{proxySettings}
+            });
+        });

@@ -1558,6 +1558,11 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
+"@etheryte/react-hooks@2.0.4":
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@etheryte/react-hooks/-/react-hooks-2.0.4.tgz#76c556855a7229715582cbedab14f1a5b1ff2396"
+  integrity sha512-2x5m4Uu4jY0UiReTjRFGTocENYkh0Rzg8uB0RLjrjSfwYRyIme7gviliOxHF+CyvRuUS7lwRmR+QR0LO/vPSuA==
+
 "@formatjs/ecma402-abstract@1.17.0":
   version "1.17.0"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.17.0.tgz#2ce191a3bde4c65c6684e03fa247062a4a294b9e"

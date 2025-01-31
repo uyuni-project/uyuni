@@ -46,17 +46,7 @@ function listenForGlobalNotificationChanges() {
 // On section#spacewalk-content scroll
 function scrollTopBehavior() {
   jQuery(scrollTarget).on("scroll", function () {
-    if(jQuery(this).scrollTop() > 100) {
-      jQuery('#scroll-top').show();
-    } else {
-      jQuery('#scroll-top').hide();
-    }
-
     sstScrollBehavior();
-  });
-
-  jQuery(document).on('click', '#scroll-top', function() {
-    jQuery(scrollTarget).scrollTo(0,0);
   });
 }
 
@@ -222,21 +212,6 @@ function showFatalError(message, exception) {
     window.showErrorToastr(message, { containerId: "global" });
   } else {
     alert(message);
-  }
-}
-
-/**
- * Checks if the provided string is a valid URL.
- *
- * @param {string} url - The URL string to validate.
- * @returns {boolean} - `true` if the string is a valid URL, otherwise `false`.
- */
-function isValidUrl(url) {
-  try {
-      new URL(url);
-      return true;
-  } catch (_) {
-      return false;
   }
 }
 
