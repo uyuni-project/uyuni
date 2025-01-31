@@ -21,6 +21,7 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -33,6 +34,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.Map;
 
 /**
  * HubHandler
@@ -98,7 +100,7 @@ public class HubHandler extends BaseHandler {
      * @param fqdn the FQDN of the peripheral/hub that generated this access token
      * @param token the access token
      * @return 1 on success, exception otherwise
-
+     *
      * @apidoc.doc Generate a new access token for ISS for accessing this system
      * @apidoc.param #session_key()
      * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the peripheral/hub that generated this access token")
@@ -127,7 +129,46 @@ public class HubHandler extends BaseHandler {
             LOGGER.error("Unable to store token, it already exists for {}", fqdn, ex);
             throw new TokenAlreadyExistsException();
         }
+        return 1;
+    }
 
+    /**
+     * Replace the auth tokens for connections between this hub and the given peripheral server
+     * @param loggedInUser the user logged in. It must have the sat admin role.
+     * @param fqdn the FQDN of the remote peripheral server which tokens should be changed
+     * @return 1 on success, otherwise exception
+     *
+     * @apidoc.doc Replace the auth tokens for connections between this hub and the given peripheral server
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote peripheral server to replace the tokens")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int replaceTokens(User loggedInUser, String fqdn) {
+        ensureSatAdmin(loggedInUser);
+
+        if (StringUtils.isEmpty(fqdn)) {
+            throw new InvalidParameterException("No FQDN specified");
+        }
+
+        try {
+            hubManager.replaceTokensHub(loggedInUser, fqdn);
+        }
+        catch (CertificateException ex) {
+            LOGGER.error("Unable to load the provided certificate", ex);
+            throw new InvalidCertificateException(ex);
+        }
+        catch (TokenBuildingException ex) {
+            LOGGER.error("Unable to create a token for {}", fqdn, ex);
+            throw new TokenExchangeFailedException(ex);
+        }
+        catch (IOException ex) {
+            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
+            throw new TokenExchangeFailedException(ex);
+        }
+        catch (TokenParsingException ex) {
+            LOGGER.error("Unable to parse the specified token", ex);
+            throw new TokenExchangeFailedException(ex);
+        }
         return 1;
     }
 
@@ -278,6 +319,61 @@ public class HubHandler extends BaseHandler {
             throw new TokenExchangeFailedException(ex);
         }
 
+        return 1;
+    }
+
+    /**
+     * De-register the server locally identified by the fqdn.
+     * @param loggedInUser the user
+     * @param fqdn the FQDN of the server to de-register
+     * @return 1 on success, exception otherwise
+     *
+     * @apidoc.doc De-register the server locally identified by the fqdn.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to de-register")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int deregister(User loggedInUser, String fqdn) {
+        ensureSatAdmin(loggedInUser);
+
+        if (StringUtils.isEmpty(fqdn)) {
+            throw new InvalidParameterException("No FQDN specified");
+        }
+
+        try {
+            hubManager.deleteIssServerLocal(loggedInUser, fqdn);
+        }
+        catch (Exception ex) {
+            LOGGER.error("De-registration failed for {} ", fqdn, ex);
+            throw ex;
+        }
+        return 1;
+    }
+
+    /**
+     * Set server details
+     *
+     * @param loggedInUser The current user
+     * @param fqdn the FQDN identifying the Hub or Peripheral Server
+     * @param role the role which should be changed
+     * @param data the new data
+     * @return 1 on success, exception otherwise
+     *
+     * @apidoc.doc Set server details. All arguments are optional and will only be modified
+     * if included in the struct.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "The FDN of Hub or Periperal server to lookup details for.")
+     * @apidoc.param #param_desc("string", "role", "The role which should be updated. Either 'HUB' or 'PERIPHERAL'.")
+     * @apidoc.param
+     *      #struct_begin("details")
+     *          #prop_desc("string", "root_ca", "The root ca")
+     *          #prop_desc("string", "gpg_key", "The root gpg key - only for role HUB")
+     *      #struct_end()
+     *  @apidoc.returntype #return_int_success()
+     */
+    public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
+        ensureSatAdmin(loggedInUser);
+        hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
         return 1;
     }
 }

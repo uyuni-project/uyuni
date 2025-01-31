@@ -123,6 +123,15 @@ public final class HubSparkHelper {
     }
 
     /**
+     * Use in ISS routes only accessible from a registered server
+     * @param route the route
+     * @return the route
+     */
+    public static RouteWithHubToken allowingOnlyRegistered(RouteWithHubToken route) {
+        return allowingOnly(List.of(IssRole.HUB, IssRole.PERIPHERAL), route);
+    }
+
+    /**
      * Use in ISS routes only accessible from an unregistered server
      * @param route the route
      * @return the route

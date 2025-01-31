@@ -85,6 +85,16 @@ public class DefaultHubInternalClient implements HubInternalClient {
                 Map.of("username", username, "password", password), Void.class);
     }
 
+    @Override
+    public String replaceTokens(String newHubToken) throws IOException {
+        return invokePostMethod("hub/sync", "replaceTokens", newHubToken, String.class);
+    }
+
+    @Override
+    public void deregister() throws IOException {
+        invokePostMethod("hub/sync", "deregister", null, Void.class);
+    }
+
     private <Res> Res invokeGetMethod(String namespace, String apiMethod, Class<Res> responseClass)
             throws IOException {
         HttpGet request = new HttpGet(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
