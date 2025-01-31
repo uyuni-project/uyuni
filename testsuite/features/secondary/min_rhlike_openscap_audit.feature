@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -16,7 +16,6 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   @skip_if_github_validation
   Scenario: Enable repositories for openSCAP on the Red Hat-like minion
     When I enable the repositories "Rocky-BaseOS Rocky-AppStream" on this "rhlike_minion"
-    And I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
     And I refresh the metadata for "rhlike_minion"
 
   @skip_if_github_validation
@@ -83,7 +82,6 @@ Feature: OpenSCAP audit of Red Hat-like Salt minion
   Scenario: Cleanup: remove the OpenSCAP packages from the Red Hat-like minion
     When I remove OpenSCAP dependencies from "rhlike_minion"
     And I disable repository "Rocky-BaseOS" on this "rhlike_minion"
-    And I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
 
   @skip_if_github_validation
   Scenario: Cleanup: restore the base channel for the Red Hat-like minion

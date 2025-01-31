@@ -584,11 +584,36 @@ def update_controller_ca
   certutil -d sql:/root/.pki/nssdb -A -t TC -n "susemanager" -i  /etc/pki/trust/anchors/#{server_name}.cert`
 end
 
+# This method checks if the synchronization for the given channel is completed
+#
+# @param channel_name [String] the channel to check
+# @return [Boolean] true if the synchronization is completed, false otherwise
+def channel_sync_completed?(channel_name)
+  log_tmp_file = '/tmp/reposync.log'
+  get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
+  raise ScriptError, 'The file with repository synchronization logs doesn\'t exist or is empty' if !File.exist?(log_tmp_file) || File.empty?(log_tmp_file)
+
+  log_content = File.readlines(log_tmp_file)
+  channel_found = false
+  log_content.each do |line|
+    if line.include?('Channel: ') && line.include?(channel_name)
+      channel_found = true
+    elsif line.include?('Channel: ') && !line.include?(channel_name)
+      channel_found = false
+    elsif line.include?('Sync of channel completed.') && channel_found
+      return true
+    end
+  end
+
+  false
+end
+
+# TODO: This method is not used anywhere, consider removing it
 # Determines whether a channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel is synchronized, false otherwise.
-def channel_is_synced(channel)
+def channel_is_synced?(channel)
   sync_status = false
   # solv is the last file to be written when the server synchronizes a channel, therefore we wait until it exist
   result, code = get_target('server').run("dumpsolv /var/cache/rhn/repodata/#{channel}/solv", verbose: false, check_errors: false)
@@ -736,9 +761,13 @@ end
 # @param channels [Array<String>] The list of channels to filter.
 # @param filters [Array<String>] The list of filters to apply.
 def filter_channels(channels, filters = [])
-  filtered_channels = channels.clone
-  filters.each do |filter|
-    filtered_channels.delete_if { |channel| channel.include? filter }
+  if channels.nil? || channels.empty?
+    puts 'Warning: No channels to filter'
+  else
+    filtered_channels = channels.clone
+    filters.each do |filter|
+      filtered_channels.delete_if { |channel| channel.include? filter }
+    end
   end
   filtered_channels
 end

@@ -73,6 +73,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
+@uyuni
+  Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_5" with arch "x86_64"
+    And I kill running spacewalk-repo-sync for "opensuse_leap15_5-x86_64" channel
+    And I use spacewalk-repo-sync to sync channel "opensuse_leap15_5-x86_64" including "python3-ply dmidecode libunwind" packages
+    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
+
+@containerized_server
+@proxy
+@uyuni
+Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+  # TODO: Refactor the scenarios in order to not require a full synchronization of Uyuni proxy product (OpenSUSE Micro 5.5)
+  When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
+  And I wait until all synchronized channels for "uyuni-proxy" have finished
+
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
