@@ -5825,11 +5825,11 @@ user before attempting to deactivate their account.</source>
         <target>પુનઃશરૂ કરો</target>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
-        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
+        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ સેવા માટે તમે તમારું પ્રથમ વપરાશકર્તા બનાવ્યું છે. વધારાનું રૂપરેખાંકન &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;અંહિ ક્લિક કરીને&lt;/strong&gt;&lt;/a&gt; પૂરું થવું જોઈએ</target>
+        <target state="needs-adaptation">@@PRODUCT_NAME@@ સેવા માટે તમે તમારું પ્રથમ વપરાશકર્તા બનાવ્યું છે. વધારાનું રૂપરેખાંકન &lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;અંહિ ક્લિક કરીને&lt;/strong&gt;&lt;/a&gt; પૂરું થવું જોઈએ</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
