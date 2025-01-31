@@ -232,6 +232,7 @@ class Channel(BaseChannelObject):
         "name",
         "summary",
         "description",
+        "status",
         "basedir",
         "org_id",
         "gpg_key_url",
@@ -656,6 +657,7 @@ def channel_info(channel):
         c.name,
         c.summary,
         c.description,
+        c.status,
         c.update_tag,
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
     from
@@ -687,6 +689,7 @@ def get_base_channel(server_id, none_ok=0):
         c.name,
         c.summary,
         c.description,
+        c.status,
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
     from rhnChannel c, rhnChannelArch ca, rhnServerChannel sc
     where sc.server_id = :server_id
@@ -735,6 +738,7 @@ def channels_for_server(server_id):
         c.name,
         c.summary,
         c.description,
+        c.status,
         c.gpg_key_url,
         case when c.gpg_check = 'Y' then 1 ELSE 0 end gpgcheck,
         :metadata_signed metadata_signed,
@@ -836,6 +840,7 @@ def base_channel_for_rel_arch(release, server_arch, org_id=-1, user_id=None):
                c.name,
                c.summary,
                c.description,
+               c.status,
                to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
           from rhnChannel c,
                rhnChannelArch ca
@@ -960,6 +965,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
                    c.name,
                    c.summary,
                    c.description,
+                   c.status,
                    to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
               from rhnDistChannelMap dcm,
                    rhnChannel c,
@@ -988,6 +994,7 @@ def get_channel_for_release_arch(release, server_arch, org_id=None):
                    c.name,
                    c.summary,
                    c.description,
+                   c.status,
                    to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified
               from rhnOrgDistChannelMap odcm,
                    rhnChannel c,
@@ -1030,6 +1037,7 @@ def applet_channels_for_uuid(uuid):
                c.name,
                c.summary,
                c.description,
+               c.status,
                to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
                to_char(s.channels_changed, 'YYYYMMDDHH24MISS') server_channels_changed
           from rhnChannelArch ca,
@@ -1087,6 +1095,7 @@ def channels_for_release_arch(release, server_arch, org_id=-1, user_id=None):
         c.name,
         c.summary,
         c.description,
+        c.status,
         to_char(c.last_modified, 'YYYYMMDDHH24MISS') last_modified,
         -- If user_id is null, then the channel is subscribable
         rhn_channel.loose_user_role_check(c.id, :user_id, 'subscribe')
@@ -1157,6 +1166,7 @@ def list_packages_source(channel_id):
                     new_evr["release"],
                     new_evr["epoch"],
                 ]
+            # pylint: disable-next=possibly-used-before-assignment  # TODO: Enhance
             ret.append(new_evr_list)
 
     return ret

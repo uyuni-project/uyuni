@@ -68,8 +68,6 @@ yarn-error.log
 # This should never be used since we use Yarn, but avoid anyone accidentally committing it
 package-lock.json
 
-rel-eng/custom/__pycache__
-
 # Intellij IDEA
 .idea/
 *.iml
@@ -89,6 +87,12 @@ python/.vscode
 # Python
 venv/
 .venv/
+*.egg-info/
+*.egg
+wheels/
+__pycache__/
+build/
+.pytest_cache/
 
 # Schema
 
