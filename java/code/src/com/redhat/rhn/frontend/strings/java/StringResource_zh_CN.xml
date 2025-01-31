@@ -5990,11 +5990,11 @@ user before attempting to deactivate their account.</source>
         <target state="translated">重启动</target>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
-        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Setup Wizard&lt;/a&gt;.</source>
+        <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;安装向导&lt;/a&gt;。</target>
+        <target state="needs-adaptation">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;安装向导&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
