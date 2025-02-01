@@ -18,10 +18,10 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 14:26+0100\n"
-"PO-Revision-Date: 2025-01-27 19:50+0000\n"
+"PO-Revision-Date: 2025-02-01 16:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -4098,10 +4098,8 @@ msgstr ""
 "prostredníctvom jedného rozhrania."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "<link>Zistite viac</link> o {product}."
+msgstr "<link>Zistite viac</link> o {productName}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -4113,11 +4111,11 @@ msgstr "Prihlásiť sa"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "Oznámenie o autorských právach"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} vydanie {versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -4138,18 +4136,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "<link>Zistite viac</link> o {product}."
+msgstr "Zistite viac {productName}:"
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "Zobraziť webové stránky"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "O aplikácii"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
