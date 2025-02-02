@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 # This feature depends on:
 # - features/secondary/srv_monitoring.feature : As this feature disable/re-enable monitoring capabilities
@@ -10,11 +10,6 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
   In order to monitor Uyuni server
   As an authorized user
   I want to enable Prometheus exporters
-
-@skip_if_github_validation
-  Scenario: Pre-requisite: enable Prometheus exporters repository on the minion
-    When I enable the necessary repositories before installing Prometheus exporters on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
 
   Scenario: Log in as org admin user
     Given I am authorized
@@ -56,7 +51,7 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled" is completed
 
-@skip_if_github_validation    
+@skip_if_github_validation
   Scenario: Wait for services
     When I wait until "prometheus" service is active on "sle_minion"
     And I wait until "node" exporter service is active on "sle_minion"
@@ -82,7 +77,3 @@ Feature: Monitor SUMA environment with Prometheus on a SLE Salt minion
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled" is completed
-
-@skip_if_github_validation    
-  Scenario: Cleanup: disable Prometheus exporters repository
-    When I disable the necessary repositories before installing Prometheus exporters on this "sle_minion" without error control
