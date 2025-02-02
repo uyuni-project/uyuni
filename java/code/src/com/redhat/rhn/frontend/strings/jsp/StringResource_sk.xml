@@ -5929,70 +5929,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.misc.sysprefconfirm.summary" xml:space="preserve">
         <source>You have chosen to alter the following preferences for your selected systems.</source>
-        <target/>
+        <target state="translated">Pre vybrané systémy ste sa rozhodli zmeniť nasledujúce predvoľby.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.reboot.header" xml:space="preserve">
         <source>Reboot Systems</source>
-        <target/>
+        <target state="translated">Reštartovať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.reboot.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
-        <target/>
+        <target state="translated">@@PRODUCT_NAME@@ umožňuje vzdialene reštartovať systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.header" xml:space="preserve">
         <source>Lock Systems</source>
-        <target/>
+        <target state="translated">Zamknúť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.summary" xml:space="preserve">
         <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
-        <target/>
+        <target state="translated">Systémy môžu byť uzamknuté alebo odomknuté.  Uzamknutie zabraňuje zmenám z webovej stránky @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.lock" xml:space="preserve">
         <source>Lock System Profiles</source>
-        <target/>
+        <target state="translated">Zamknúť systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.unlock" xml:space="preserve">
         <source>Unlock System Profiles</source>
-        <target/>
+        <target state="translated">Odomknúť systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.header" xml:space="preserve">
         <source>Delete Systems</source>
-        <target/>
+        <target state="translated">Vymazať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.summary" xml:space="preserve">
         <source>Deletes all selected system profiles.  All information about these systems will be removed.</source>
-        <target/>
+        <target state="translated">Vymaže všetky vybrané systémové profily.  Všetky informácie o týchto systémoch budú odstránené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.delete" xml:space="preserve">
         <source>Delete System Profiles</source>
-        <target/>
+        <target state="translated">Vymazať systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
