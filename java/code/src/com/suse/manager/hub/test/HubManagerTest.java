@@ -14,6 +14,7 @@ package com.suse.manager.hub.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
@@ -59,6 +61,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParser;
@@ -586,6 +589,56 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void canDeregisterHub() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        createHubRegistration(fqdn, null, null);
+        hubManager.deleteIssServerLocal(satAdmin, fqdn);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
+        assertEquals(0, CredentialsFactory.listSCCCredentials().size());
+    }
+
+    @Test
+    public void canDeregisterPeripheral() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        createPeripheralRegistration(fqdn, null);
+        hubManager.deleteIssServerLocal(satAdmin, fqdn);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
+        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+    }
+
+    @Test
+    public void canDeregisterHubWithToken() throws TokenBuildingException, TaskomaticApiException,
+            TokenParsingException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createHubRegistration(fqdn, null, null);
+        hubManager.deleteIssServerLocal(token, fqdn);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
+        assertEquals(0, CredentialsFactory.listSCCCredentials().size());
+    }
+
+    @Test
+    public void canDeregisterPeripheralWithToken() throws TokenBuildingException, TaskomaticApiException,
+            TokenParsingException {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createPeripheralRegistration(fqdn, null);
+        hubManager.deleteIssServerLocal(token, fqdn);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
+        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+    }
+
+    @Test
     public void canRegisterPeripheralWithUserNameAndPassword()
             throws TokenBuildingException, CertificateException, IOException, TokenParsingException,
             TaskomaticApiException {
@@ -658,6 +711,112 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+     @Test
+     public void canReplaceTokensLocal() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+         String hubFqdn = "hub.domain.top";
+
+         IssAccessToken currentToken = createHubRegistration(hubFqdn, null, null);
+         List<String> tokenList = hubFactory.listAccessTokensByFqdn(hubFqdn)
+                 .stream().map(IssAccessToken::getToken).toList();
+         assertEquals(2, tokenList.size());
+         assertTrue(tokenList.contains(currentToken.getToken()), "Expected token not found");
+
+         Token token = new IssTokenBuilder(hubFqdn)
+                 .usingServerSecret()
+                 .build();
+         IssAccessToken newHubToken = new IssAccessToken(TokenType.ISSUED, token.getSerializedForm(), hubFqdn,
+                 token.getExpirationTime());
+         assertNotEquals(currentToken.getToken(), newHubToken.getToken());
+
+         String newRemoteToken = hubManager.replaceTokens(currentToken, newHubToken.getToken());
+         HibernateFactory.getSession().flush();
+         HibernateFactory.getSession().clear();
+
+         assertNotNull(newRemoteToken);
+         assertTrue(tokenList.stream().noneMatch(t -> t.equals(newRemoteToken)));
+         assertNotEquals(currentToken.getToken(), newRemoteToken);
+
+         List<String> newTokenList = hubFactory.listAccessTokensByFqdn(hubFqdn)
+                 .stream().map(IssAccessToken::getToken).toList();
+         assertEquals(2, newTokenList.size());
+         assertNotEquals(tokenList, newTokenList);
+     }
+
+    @Test
+    public void canReplaceTokensOnHub() throws TokenBuildingException, TaskomaticApiException, TokenParsingException,
+            CertificateException, IOException {
+        String peripherlaFqdn = "peripheral.domain.top";
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        IssAccessToken currentToken = createPeripheralRegistration(peripherlaFqdn, null);
+        List<String> tokenList = hubFactory.listAccessTokensByFqdn(peripherlaFqdn)
+                .stream().map(IssAccessToken::getToken).toList();
+        assertEquals(2, tokenList.size());
+        assertTrue(tokenList.contains(currentToken.getToken()), "Expected token not found");
+
+        Token token = new IssTokenBuilder(peripherlaFqdn)
+                .usingServerSecret()
+                .build();
+        IssAccessToken newHubToken = new IssAccessToken(TokenType.ISSUED, token.getSerializedForm(), peripherlaFqdn,
+                token.getExpirationTime());
+        assertNotEquals(currentToken.getToken(), newHubToken.getToken());
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(peripherlaFqdn, currentToken.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient).replaceTokens(with(any(String.class)));
+            will(returnValue(newHubToken.getToken()));
+        }});
+
+        hubManager.replaceTokensHub(satAdmin, peripherlaFqdn);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        List<String> newTokenList = hubFactory.listAccessTokensByFqdn(peripherlaFqdn)
+                .stream().map(IssAccessToken::getToken).toList();
+        assertEquals(2, newTokenList.size());
+        assertNotEquals(tokenList, newTokenList);
+        assertTrue(newTokenList.contains(newHubToken.getToken()), "Expected new token not found");
+    }
+
+    @Test
+    public void canUpdateServerDetails() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+        createHubRegistration("hub.domain.com", "---- BEGIN ROOT CA ----", "---- BEGIN GPG PUB KEY -----");
+        IssHub hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
+        assertEquals("---- BEGIN ROOT CA ----", hub.getRootCa());
+        assertEquals("---- BEGIN GPG PUB KEY -----", hub.getGpgKey());
+
+        Map<String, String> data = Map.of("gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
+                "root_ca", "---- BEGIN NEW ROOT CA ----");
+        hubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
+        assertEquals("---- BEGIN NEW ROOT CA ----", hub.getRootCa());
+        assertEquals("---- BEGIN NEW GPG PUB KEY -----", hub.getGpgKey());
+        assertThrows(IllegalArgumentException.class,
+                () -> hubManager.updateServerData(satAdmin, "hub1.domain.com", IssRole.valueOf("HUB"), data));
+
+        // PERIPHERAL
+
+        createPeripheralRegistration("peripheral.domain.com", "---- BEGIN ROOT CA ----");
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn("peripheral.domain.com")
+                .orElseGet(() -> fail("Peripheral Server not found"));
+        assertEquals("---- BEGIN ROOT CA ----", peripheral.getRootCa());
+
+        hubManager.updateServerData(satAdmin, "peripheral.domain.com", IssRole.valueOf("PERIPHERAL"), data);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        peripheral = hubFactory.lookupIssPeripheralByFqdn("peripheral.domain.com")
+                .orElseGet(() -> fail("Peripheral Server not found"));
+        assertEquals("---- BEGIN NEW ROOT CA ----", peripheral.getRootCa());
+        assertThrows(IllegalArgumentException.class, () -> hubManager.updateServerData(satAdmin,
+                "peripheral1.domain.com", IssRole.valueOf("PERIPHERAL"), data));
+    }
+
     private static IssAccessToken getValidToken(String fdqn) {
         return new IssAccessToken(TokenType.ISSUED, "dummy-token", fdqn);
     }
@@ -689,5 +848,46 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }
 
         return null;
+    }
+
+    private IssAccessToken createPeripheralRegistration(String fqdn, String rootCA) throws TaskomaticApiException,
+            TokenBuildingException, TokenParsingException {
+        Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, fqdn);
+        String peripheralTokenStr = hubManager.issueAccessToken(satAdmin, fqdn);
+        hubManager.storeAccessToken(satAdmin, fqdn, peripheralTokenStr);
+        IssAccessToken peripheralToken = hubFactory.lookupIssuedToken(peripheralTokenStr);
+        var peripheral = (IssPeripheral) hubManager.saveNewServer(peripheralToken, IssRole.PERIPHERAL, rootCA, null);
+        var hubSCCCredentials = CredentialsFactory.createHubSCCCredentials("peripheral-dummy-username",
+                "peripheral-dummy-password", peripheral.getFqdn());
+        CredentialsFactory.storeCredentials(hubSCCCredentials);
+
+        peripheral.setMirrorCredentials(hubSCCCredentials);
+        hubFactory.save(peripheral);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        assertEquals(TokenType.CONSUMED, hubFactory.lookupAccessTokenFor(fqdn).getType());
+        assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isPresent(), "Failed to create Peripheral");
+        assertEquals(1, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+
+        return peripheralToken;
+    }
+
+    private IssAccessToken createHubRegistration(String fqdn, String rootCA, String gpgKey)
+            throws TaskomaticApiException, TokenBuildingException, TokenParsingException {
+        Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, fqdn);
+        String hubTokenStr = hubManager.issueAccessToken(satAdmin, fqdn);
+        hubManager.storeAccessToken(satAdmin, fqdn, hubTokenStr);
+        IssAccessToken hubToken = hubFactory.lookupIssuedToken(hubTokenStr);
+        hubManager.saveNewServer(hubToken, IssRole.HUB, rootCA, gpgKey);
+        hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+
+        assertEquals(TokenType.CONSUMED, hubFactory.lookupAccessTokenFor(fqdn).getType());
+        assertTrue(hubFactory.lookupIssHub().isPresent(), "Failed to create Hub");
+        assertEquals(1, CredentialsFactory.listSCCCredentials().size());
+
+        return hubToken;
     }
 }
