@@ -15,10 +15,13 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
@@ -575,5 +578,27 @@ public class HubManager {
         // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
         systemEntitlementManagerIn.setBaseEntitlement(server, EntitlementManager.FOREIGN);
         return server;
+    }
+
+    /**
+     * Collect data about all organizations
+     *
+     * @param accessToken the accesstoken
+     * @return return list of {@link Org}
+     */
+    public List<Org> collectAllOrgs(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return OrgFactory.lookupAllOrgs();
+    }
+
+    /**
+     * Collect data about all channels
+     *
+     * @param accessToken the accesstoken
+     * @return return list of {@link Channel}
+     */
+    public List<Channel> collectAllChannels(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ChannelFactory.listAllChannels();
     }
 }
