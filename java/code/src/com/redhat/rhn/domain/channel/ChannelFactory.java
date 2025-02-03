@@ -1220,6 +1220,15 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all channels
+     *
+     * @return list of all channels
+     */
+    public static List<Channel> listAllChannels() {
+        return getSession().createQuery("FROM Channel c", Channel.class).getResultList();
+    }
+
+    /**
      * List all vendor channels (org is null)
      * @return list of vendor channels
      */
