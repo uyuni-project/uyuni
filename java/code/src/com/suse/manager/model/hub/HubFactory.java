@@ -185,6 +185,18 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Returns a list of access tokens for specified FQDN
+     * @param fqdn the FQDN of the server
+     * @return return the access tokens associated with the given fqdn
+     */
+    public List<IssAccessToken> listAccessTokensByFqdn(String fqdn) {
+        return getSession()
+                .createQuery("FROM IssAccessToken k WHERE k.serverFqdn = :fqdn", IssAccessToken.class)
+                .setParameter("fqdn", fqdn)
+                .list();
+    }
+
+    /**
      * Delete all access tokens for the given server
      * @param serverFqdn the FQDN for the server
      * @return number of removed tokens
