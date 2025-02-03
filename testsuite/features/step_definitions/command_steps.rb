@@ -183,11 +183,6 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" p
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
 end
 
-When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
-  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel} #{append_includes}")
-end
-
 Then(/^I should get "([^"]*)"$/) do |value|
   raise ScriptError, "'#{value}' not found in output '#{$command_output}'" unless $command_output.include? value
 end
