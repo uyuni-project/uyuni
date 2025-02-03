@@ -73,13 +73,13 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
 
-@uyuni
-  Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
-    When I use spacewalk-common-channel to add channel "opensuse_leap15_5" with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "opensuse_leap15_5-x86_64" channel
-    And I use spacewalk-repo-sync to sync channel "opensuse_leap15_5-x86_64" including "python3-ply dmidecode libunwind" packages
-    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
+  @uyuni
+    Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
+      When I use spacewalk-common-channel to add channel "opensuse_leap15_5" with arch "x86_64"
+      And I kill running spacewalk-repo-sync for "opensuse_leap15_5-x86_64" channel
+      And I use spacewalk-repo-sync to sync channel "opensuse_leap15_5-x86_64" including "python3-ply dmidecode libunwind" packages
+      And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
+      And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
 
 @containerized_server
 @proxy
@@ -122,19 +122,6 @@ Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     And I wait until all synchronized channels for "sles15-sp4" have finished
     # TODO: Refactor the scenarios in order to not require a full synchronization of SLES 15 SP4 product in Uyuni
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
-
-@uyuni
-  Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
-    When I use spacewalk-repo-sync to sync channel "opensuse_leap15_5-x86_64" including "python3-ply dmidecode libunwind venv-salt-minion" packages
-    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
-
-@containerized_server
-@proxy
-@uyuni
-Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
-  When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
-  And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @proxy
 @susemanager
