@@ -1,16 +1,49 @@
 name: acceptance-tests-fast
 on:
-  workflow_run:
-    workflows: ['Suggested tests to cover this Pull Request']
-    types: [completed]
-#concurrency:
-#  group: ${{ github.workflow }}-${{ github.ref }}
-#  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+  pull_request_target:
+    types: [synchronize, opened, reopened]
+
 jobs:
+  wait-for-suggested-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for "Suggested tests to cover this Pull Request" to Complete
+        run: |
+          CHECK_NAME="Suggested tests to cover this Pull Request"
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          REPO="${{ github.repository }}"
+          
+          echo "Waiting for '$CHECK_NAME' to complete..."
+          
+          while true; do
+            STATUS=$(gh api repos/$REPO/commits/${{ github.event.pull_request.head.sha }}/check-runs \
+              --jq ".check_runs[] | select(.name == \"$CHECK_NAME\") | .status")
+          
+            if [[ "$STATUS" == "completed" ]]; then
+              echo "'$CHECK_NAME' is completed. Proceeding..."
+              exit 0
+            fi
+
+            echo "Still waiting..."
+            sleep 10
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  download-artifact:
+    needs: wait-for-suggested-tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download recommended tests artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: recommended-tests.xml
+          path: ./
+
   acceptance-tests-fast:
+    needs: download-artifact
     uses: "./.github/workflows/acceptance_tests_common.yml"
     with:
       secondary_tests: "19_run_secondary_fast.sh"
       server_id: "secondary_f"
-      recommended_tests: 'recommended-tests.xml'
-
+      recommended_tests: "./recommended-tests.xml"
