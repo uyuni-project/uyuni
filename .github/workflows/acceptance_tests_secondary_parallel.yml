@@ -5,6 +5,7 @@ on:
       - opened
       - reopened
       - synchronize
+
   schedule:
     - cron: '0 */12 * * *'
 concurrency:
