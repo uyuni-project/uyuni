@@ -12,6 +12,7 @@
 package com.suse.manager.hub;
 
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
+import static com.suse.manager.hub.HubSparkHelper.allowingOnlyPeripheral;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
@@ -30,9 +31,11 @@ import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -46,6 +49,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import spark.Request;
@@ -89,6 +93,10 @@ public class HubController {
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
         post("/hub/removeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
+        get("/hub/listAllPeripheralOrgs",
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralOrgs))));
+        get("/hub/listAllPeripheralChannels",
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
     }
 
     private String removeReportDbCredentials(Request request, Response response, IssAccessToken token) {
@@ -193,5 +201,25 @@ public class HubController {
             // This should never happen, fqdn guaranteed be a hub after calling allowingOnlyHub() on route init.
             return badRequest(response, "Specified FQDN is not a known hub");
         }
+    }
+
+    private String listAllPeripheralOrgs(Request request, Response response, IssAccessToken token) {
+        List<OrgInfoJson> allOrgsInfo = hubManager.collectAllOrgs(token)
+                .stream()
+                .map(org -> new OrgInfoJson(org.getId(), org.getName()))
+                .toList();
+
+        return success(response, allOrgsInfo);
+    }
+
+    private String listAllPeripheralChannels(Request request, Response response, IssAccessToken token) {
+        List<ChannelInfoJson> allChannelsInfo = hubManager.collectAllChannels(token)
+                .stream()
+                .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
+                        ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
+                        (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
+                .toList();
+
+        return success(response, allChannelsInfo);
     }
 }
