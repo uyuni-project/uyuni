@@ -197,7 +197,7 @@ public class IssAccessToken {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("IssAccessToken{");
+        final StringBuilder sb = new StringBuilder("IssAccessToken{id =").append(id);
         sb.append(", type=").append(type);
         sb.append(", serverFqdn='").append(serverFqdn).append('\'');
         sb.append('}');
