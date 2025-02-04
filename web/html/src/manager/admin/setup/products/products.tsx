@@ -387,7 +387,7 @@ class ProductsPageWrapper extends React.Component {
       pageContent = (
         <div className="alert alert-warning" role="alert">
           {t(
-            "This server is configured as an Inter-Server Synchronisation (ISS) slave. Products can only be managed on the ISS master."
+            "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
           )}
         </div>
       );
