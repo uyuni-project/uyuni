@@ -105,17 +105,5 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <return-scalar type="long" column="org_count"/>
         SELECT  count(wc.id) AS org_count FROM  WEB_CUSTOMER wc
     </sql-query>
-    <query name="Org.findOrgsWithSystemsInChannelFamily"><![CDATA[
-        select o from
-            com.redhat.rhn.domain.org.Org as o
-            where exists (
-                from com.redhat.rhn.domain.server.Server s where
-                    s.org = o and exists (
-                        from com.redhat.rhn.domain.channel.Channel c where
-                            c member of s.channels and
-                            :cf member of c.channelFamilies
-                    )
-            )
-    ]]></query>
 </hibernate-mapping>
 
