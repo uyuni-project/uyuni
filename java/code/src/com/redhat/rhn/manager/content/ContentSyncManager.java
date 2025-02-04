@@ -65,6 +65,7 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -2079,9 +2080,10 @@ public class ContentSyncManager {
     }
 
     private static boolean isChannelAccessible(ChannelTemplate template) {
+        HubFactory hubFactory = new HubFactory();
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
-        boolean isISSSlave = IssFactory.getCurrentMaster() != null;
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null || hubFactory.isISSPeripheral();
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = template.getRepository().isAccessible();
