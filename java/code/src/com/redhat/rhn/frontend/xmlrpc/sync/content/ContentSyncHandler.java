@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.model.hub.HubFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -197,6 +198,11 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer addChannel(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. " +
+                    "Managing channels is disabled and can only be done from the Hub Server.");
+        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(mirrorUrl)) {
             throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
@@ -223,6 +229,11 @@ public class ContentSyncHandler extends BaseHandler {
     public Object[] addChannels(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. " +
+                    "Managing channels is disabled and can only be done from the Hub Server.");
+        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(mirrorUrl)) {
             throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
@@ -268,6 +279,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer addCredentials(User loggedInUser, String username, String password,
             boolean primary) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. Managing credentials is disabled.");
+        }
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         long id = credsManager.storeMirrorCredentials(creds, null);
@@ -293,6 +308,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. Managing credentials is disabled.");
+        }
         for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 new MirrorCredentialsManager().deleteMirrorCredentials(c.getId(), null);
