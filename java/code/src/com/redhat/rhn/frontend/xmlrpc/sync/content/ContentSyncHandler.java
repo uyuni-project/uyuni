@@ -86,27 +86,6 @@ public class ContentSyncHandler extends BaseHandler {
     }
 
     /**
-     * @Deprecated
-     * Synchronize channels between the Customer Center and the #product() database.
-     * This method is one step of the whole refresh cycle.
-     *
-     * @param loggedInUser the currently logged in user
-     * @param mirrorUrl optional mirror URL
-     * @return Integer
-     * @throws ContentSyncException in case of an error
-     *
-     * @apidoc.doc (Deprecated) Synchronize channels between the Customer Center
-     *             and the #product() database.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
-     * @apidoc.returntype #return_int_success()
-     */
-    public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
-            throws ContentSyncException {
-        return 1;
-    }
-
-    /**
      * Synchronize channel families between the Customer Center
      * and the #product() database.
      * This method is one step of the whole refresh cycle.
