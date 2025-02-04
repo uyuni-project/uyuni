@@ -518,7 +518,10 @@ def sanitizeValue(value, datatype):
     if isinstance(datatype, DBdate):
         return str(value)[:10]
     if isinstance(datatype, DBint):
-        return int(value)
+        try:
+            return int(float(value))
+        except ValueError as e:
+            raise ValueError(f"Cannot convert {value} to int") from e
     return value
 
 
