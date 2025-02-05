@@ -100,6 +100,8 @@ public class HubController {
         get("/hub/listAllPeripheralOrgs",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
+        post("/hub/addVendorChannels",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralChannels))));
     }
 
@@ -264,5 +266,34 @@ public class HubController {
                 .toList();
 
         return success(response, allChannelsInfo);
+    }
+
+    private String addVendorChannels(Request request, Response response, IssAccessToken token) {
+        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
+
+        if ((null == requestList) || (!requestList.containsKey("vendorchannellabellist"))) {
+            return badRequest(response, "Invalid data: missing vendorchannellabellist entry");
+        }
+
+        List<String> vendorChannelLabelList = GSON.fromJson(requestList.get("vendorchannellabellist"), List.class);
+        if (vendorChannelLabelList == null || vendorChannelLabelList.isEmpty()) {
+            LOGGER.error("Bad Request: invalid invalid vendor channel label list");
+            return badRequest(response, "Invalid data: invalid vendor channel label list");
+        }
+
+        try {
+            List<ChannelInfoJson> createdVendorChannelInfoList =
+                    hubManager.addVendorChannels(token, vendorChannelLabelList)
+                    .stream()
+                    .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
+                            ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
+                            (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
+                    .toList();
+            return success(response, createdVendorChannelInfoList);
+        }
+        catch (Exception e) {
+            LOGGER.error("Bad Request: ", e);
+            return badRequest(response, e.getMessage());
+        }
     }
 }

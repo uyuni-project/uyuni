@@ -13,9 +13,14 @@ import Network from "utils/network";
 
 import { PeripheralListData } from "../iss_data_props";
 
+type DeletePeripheralProp = {
+  id: number;
+  fqdn: string;
+};
+
 const IssPeripheralsList = () => {
   const searchData = (row, criteria) => {
-    const keysToSearch = ["FQDN"];
+    const keysToSearch = ["fqdn"];
     if (criteria) {
       const needle = criteria.toLocaleLowerCase();
       return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
@@ -23,18 +28,17 @@ const IssPeripheralsList = () => {
     return true;
   };
 
-  const handlePeripheralDelete = (peripheral) => {
-    const request = ""
-    Network.post("/rhn/manager/api/admin/hub/peripheral/:id", request)
+  const handlePeripheralDelete = (event, peripheral: DeletePeripheralProp) => {
+    Network.del("/rhn/manager/api/admin/hub/peripheral/" + peripheral.id, null)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
       .then((response) => {
-        // On successfull sync to peripheral
-        
+        // On successfull deregister to peripheral
+        showSuccessToastr(peripheral.fqdn + ": " + t("peripheral deregistration successfull."));
       })
       .finally(() => {
-        showSuccessToastr(t("Channels synced correctly to peripheral!"));
+        //Reload peripherals table
       });
-  }
+  };
 
   let componentContent = (
     <Table
@@ -87,7 +91,17 @@ const IssPeripheralsList = () => {
       <Column
         columnKey="remove"
         header={t("Remove")}
-        cell={(row: PeripheralListData) => <i className="fa fa-trash" onClick={handlePeripheralDelete}></i>}
+        cell={(row: PeripheralListData) => (
+          <i
+            className="fa fa-trash"
+            onClick={(e) =>
+              handlePeripheralDelete(e, {
+                id: parseInt(row.id, 10),
+                fqdn: row.fqdn,
+              })
+            }
+          />
+        )}
       />
     </Table>
   );

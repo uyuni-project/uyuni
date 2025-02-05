@@ -11,11 +11,15 @@
 
 package com.suse.manager.hub.test;
 
+import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -23,7 +27,13 @@ import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 import com.redhat.rhn.testing.ChannelTestUtils;
@@ -33,6 +43,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubController;
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
@@ -59,11 +70,15 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import spark.Request;
+import spark.Response;
 import spark.route.HttpMethod;
 
 public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     private static final String DUMMY_SERVER_FQDN = "dummy-server.unit-test.local";
+
+    private static final String TEST_ERROR_MESSAGE = "test error message";
 
     @Override
     @BeforeEach
@@ -71,6 +86,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         HubController dummyHubController = new HubController();
         dummyHubController.initRoutes();
+        //add dummy route that throws
+        post("/hub/testThrowsRuntimeException", asJson(usingTokenAuthentication(this::testThrowsRuntimeException)));
+    }
+
+    private String testThrowsRuntimeException(Request request, Response response, IssAccessToken token) {
+        throw new NullPointerException(TEST_ERROR_MESSAGE);
     }
 
     private String createTestUserName() {
@@ -110,13 +131,17 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     private static Stream<Arguments> allApiEndpoints() {
         return Stream.of(Arguments.of(HttpMethod.post, "/hub/ping", null),
+                Arguments.of(HttpMethod.post, "/hub/sync/deregister", null),
                 Arguments.of(HttpMethod.post, "/hub/sync/registerHub", null),
+                Arguments.of(HttpMethod.post, "/hub/sync/replaceTokens", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/storeCredentials", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/setHubDetails", IssRole.HUB),
                 Arguments.of(HttpMethod.get, "/hub/managerinfo", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/storeReportDbCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/removeReportDbCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.get, "/hub/listAllPeripheralOrgs", IssRole.PERIPHERAL),
-                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.PERIPHERAL)
+                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.PERIPHERAL),
+                Arguments.of(HttpMethod.post, "/hub/addVendorChannels", IssRole.PERIPHERAL)
         );
     }
 
@@ -434,5 +459,145 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(testChildChannel.getLabel(), testChildChannelInfo.get().getLabel());
         assertEquals(user.getOrg().getId(), testChildChannelInfo.get().getOrgId());
         assertEquals(testBaseChannel.getId(), testChildChannelInfo.get().getParentChannelId());
+    }
+
+    @Test
+    public void checkApiThrowingRuntimeException() throws Exception {
+        String apiUnderTest = "/hub/testThrowsRuntimeException";
+
+        ControllerTestUtils utils = new ControllerTestUtils();
+        assertDoesNotThrow(() -> utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.PERIPHERAL)
+                .withBearerTokenInHeaders()
+                .simulateControllerApiCall());
+
+        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.PERIPHERAL)
+                .withBearerTokenInHeaders()
+                .simulateControllerApiCall();
+        JsonObject jsonObj = Json.GSON.fromJson(answer, JsonObject.class);
+
+        assertFalse(jsonObj.get("success").getAsBoolean(), apiUnderTest +
+                " API throwing a runtime exception should fail");
+        assertEquals("Internal Server Error", jsonObj.get("messages").getAsJsonArray().get(0).getAsString());
+        assertEquals(TEST_ERROR_MESSAGE, jsonObj.get("messages").getAsJsonArray().get(1).getAsString());
+    }
+
+    private Channel utilityCreateVendorBaseChannel(String name, String label) throws Exception {
+        Org nullOrg = null;
+        ChannelFamily cfam = ChannelFamilyFactoryTest.createNullOrgTestChannelFamily();
+        String query = "ChannelArch.findById";
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        return ChannelFactoryTest.createTestChannel(name, label, nullOrg, arch, cfam);
+    }
+
+    private void utilityCreateVendorChannel(String name, String label, Channel vendorBaseChannel) throws Exception {
+        Channel vendorChannel = utilityCreateVendorBaseChannel(name, label);
+        vendorChannel.setParentChannel(vendorBaseChannel);
+        ChannelFactory.save(vendorChannel);
+    }
+
+    private static Stream<Arguments> allBaseAndVendorChannelAlreadyPresentCombinations() {
+        return Stream.of(Arguments.of(false, false),
+                Arguments.of(true, false),
+                Arguments.of(true, true)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("allBaseAndVendorChannelAlreadyPresentCombinations")
+    public void checkApiAddVendorChannel(boolean baseChannelAlreadyPresentInPeripheral,
+                                         boolean channelAlreadyPresentInPeripheral) throws Exception {
+        String apiUnderTest = "/hub/addVendorChannels";
+
+        //SUSE Linux Enterprise Server 11 SP3 x86_64
+        String vendorBaseChannelTemplateName = "SLES11-SP3-Pool for x86_64";
+        String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64";
+
+        //SUSE Linux Enterprise Server 11 SP3 x86_64
+        String vendorChannelTemplateName = "SLES11-SP3-Updates for x86_64";
+        String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
+
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
+
+        int expectedNumOfPeripheralCreatedChannels = 2;
+        Channel vendorBaseChannel = null;
+        if (baseChannelAlreadyPresentInPeripheral) {
+            vendorBaseChannel = utilityCreateVendorBaseChannel(vendorBaseChannelTemplateName,
+                    vendorBaseChannelTemplateLabel);
+            expectedNumOfPeripheralCreatedChannels--;
+        }
+        if (channelAlreadyPresentInPeripheral) {
+            utilityCreateVendorChannel(vendorChannelTemplateName, vendorChannelTemplateLabel, vendorBaseChannel);
+            expectedNumOfPeripheralCreatedChannels--;
+        }
+
+        Map<String, String> bodyMap = new HashMap<>();
+        bodyMap.put("vendorchannellabellist", Json.GSON.toJson(List.of(vendorChannelTemplateLabel)));
+
+        ControllerTestUtils utils = new ControllerTestUtils();
+        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.PERIPHERAL)
+                .withBearerTokenInHeaders()
+                .withBody(bodyMap)
+                .simulateControllerApiCall();
+        List<ChannelInfoJson> peripheralVendorCreatedChannelsInfo =
+                Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
+
+        assertEquals(expectedNumOfPeripheralCreatedChannels, peripheralVendorCreatedChannelsInfo.size());
+
+        Optional<ChannelInfoJson> peripheralVendorBaseChannelInfo =
+                peripheralVendorCreatedChannelsInfo
+                        .stream()
+                        .filter(e -> e.getLabel().equals(vendorBaseChannelTemplateLabel))
+                        .findAny();
+        if (baseChannelAlreadyPresentInPeripheral) {
+            assertTrue(peripheralVendorBaseChannelInfo.isEmpty(),
+                    String.format("%s API call mistakenly creating base channel %s",
+                            apiUnderTest, vendorBaseChannelTemplateLabel));
+        }
+        else {
+            assertTrue(peripheralVendorBaseChannelInfo.isPresent(),
+                    String.format("%s API call mistakenly NOT creating base channel %s",
+                            apiUnderTest, vendorBaseChannelTemplateLabel));
+            assertEquals(vendorBaseChannelTemplateName, peripheralVendorBaseChannelInfo.get().getName());
+            assertEquals(vendorBaseChannelTemplateLabel, peripheralVendorBaseChannelInfo.get().getLabel());
+            assertNull(peripheralVendorBaseChannelInfo.get().getOrgId());
+            assertNull(peripheralVendorBaseChannelInfo.get().getParentChannelId());
+        }
+
+        Optional<ChannelInfoJson> testChildPeriphChInfo =
+                peripheralVendorCreatedChannelsInfo
+                        .stream()
+                        .filter(e -> e.getLabel().equals(vendorChannelTemplateLabel))
+                        .findAny();
+        if (channelAlreadyPresentInPeripheral) {
+            assertTrue(testChildPeriphChInfo.isEmpty(),
+                    String.format("%s API call mistakenly creating vendor channel %s",
+                            apiUnderTest, vendorChannelTemplateLabel));
+        }
+        else {
+            assertTrue(testChildPeriphChInfo.isPresent(),
+                    String.format("%s API call mistakenly NOT creating vendor channel %s",
+                            apiUnderTest, vendorChannelTemplateLabel));
+
+            assertEquals(vendorChannelTemplateName, testChildPeriphChInfo.get().getName());
+            assertEquals(vendorChannelTemplateLabel, testChildPeriphChInfo.get().getLabel());
+            assertNull(testChildPeriphChInfo.get().getOrgId());
+            if (baseChannelAlreadyPresentInPeripheral) {
+                assertTrue(testChildPeriphChInfo.get().getParentChannelId() > 0,
+                        "child channel not having valid parent channel id");
+            }
+            else {
+                assertEquals(peripheralVendorBaseChannelInfo.get().getId(),
+                        testChildPeriphChInfo.get().getParentChannelId());
+            }
+        }
     }
 }

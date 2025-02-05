@@ -3,7 +3,6 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
-import { SyncOrgsToPeripheralChannel, SyncPeripheralsProps } from "components/hub";
 
 export type PeripheralDetails = {
   fqdn: string;
