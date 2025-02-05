@@ -1858,10 +1858,10 @@ public class ErrataManager extends BaseManager {
         // 2.1- compute a system to errata map for minions
         // those get one Action per system, with all erratas in it
         Map<Long, List<Long>> minionErrataMap = minions.stream()
-            .collect(toMap(
-                sid -> sid,
-                sid -> new ArrayList<>(serverErrataMap.get(sid))
-            ));
+                .collect(toMap(
+                        sid -> sid,
+                        sid -> serverErrataMap.getOrDefault(sid, List.of())
+                ));
 
         // 2.2- compute two system to errata maps for others (traditional non-yum)
         // those get two Actions per system: one with update stack erratas, one with others

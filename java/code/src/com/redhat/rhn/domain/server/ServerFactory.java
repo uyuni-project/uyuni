@@ -607,7 +607,12 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
+        return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE id = :sid AND org_id = :orgId
+                """, Server.class)
+                .setParameter("sid", id , StandardBasicTypes.LONG)
+                .setParameter("orgId", orgIn.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
     }
 
     /**

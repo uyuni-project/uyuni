@@ -220,14 +220,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </joined-subclass>
     </class>
 
-    <query name="Server.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id = :sid and ORG_ID = :orgId]]>
-    </query>
-
-    <query name="Server.findByIdsAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where ORG_ID = :orgId and s.id in (:serverIds)]]>
-    </query>
-
     <query name="Server.findByIds">
         <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id in (:serverIds)]]>
     </query>
@@ -502,13 +494,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
     
-    <query name="Server.filterSystemsWithPendingMaintenanceOnlyActions">
-        <![CDATA[SELECT sa.server.id FROM ServerAction sa
-                        WHERE sa.server.id IN (:systemIds)
-                          AND sa.parentAction.actionType.maintenancemodeOnly = true
-                          AND status in ( 0, 1 )]]>
-    </query>
-
     <query name="Server.setMaintenanceScheduleToSystems">
         <![CDATA[UPDATE Server s
                     SET s.maintenanceSchedule = :schedule
