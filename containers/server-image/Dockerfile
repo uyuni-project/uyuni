@@ -9,6 +9,8 @@ ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
 
+ADD --chown=root:root root.tar.gz /
+
 # Main packages
 RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     zypper ref && zypper --non-interactive up && \
@@ -69,8 +71,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-tools && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd
-
-ADD root.tar.gz /
 
 # Initialize environments to sync configuration and package files to persistent volumes
 RUN systemctl enable timezone_alignment && \
