@@ -167,12 +167,12 @@ public final class HubSparkHelper {
         }
 
         // Only hub servers are allowed
-        if (allowedRoles.contains(IssRole.HUB) && !isHub) {
+        if (isHub && allowedRoles.stream().noneMatch(r -> r == IssRole.HUB)) {
             return true;
         }
 
         // Only peripheral servers are allowed
-        if (allowedRoles.contains(IssRole.PERIPHERAL) && !isPeripheral) {
+        if (isPeripheral && allowedRoles.stream().noneMatch(r -> r == IssRole.PERIPHERAL)) {
             return true;
         }
 
