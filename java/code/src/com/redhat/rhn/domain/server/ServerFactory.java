@@ -228,14 +228,16 @@ public class ServerFactory extends HibernateFactory {
                 """, Server.class)
                     .setParameter("hostname", srippedHostname, StandardBasicTypes.STRING).uniqueResultOptional();
         }
-        return HibernateFactory.getSession().createNativeQuery("""
-            SELECT *, 0 as clazz_
-            FROM rhnServer
-            WHERE id IN (SELECT server_id FROM rhnProxyInfo)
-            AND hostname LIKE :hostname
-            LIMIT 1;
-            """, Server.class)
-                .setParameter("hostname", name + ".%", StandardBasicTypes.STRING).uniqueResultOptional();
+        else {
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_
+                FROM rhnServer
+                WHERE id IN (SELECT server_id FROM rhnProxyInfo)
+                AND hostname LIKE :hostname
+                LIMIT 1;
+                """, Server.class)
+                    .setParameter("hostname", name + ".%", StandardBasicTypes.STRING).uniqueResultOptional();
+        }
     }
 
     /**
@@ -551,19 +553,8 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        if (serverIds.isEmpty()) {
-            return HibernateFactory.getSession().createNativeQuery("""
-                SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId
-                """, Server.class)
-                    .setParameter("orgId", org.getId())
-                    .getResultList();
-        }
-        return HibernateFactory.getSession().createNativeQuery("""
-            SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)
-            """, Server.class)
-                .setParameter("orgId", org.getId())
-                .setParameterList("serverIds",  serverIds.stream().toList())
-                .getResultList();
+        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId",
+                Map.of("orgId", org.getId()), serverIds, "serverIds");
     }
 
     /**
