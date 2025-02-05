@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -30,6 +32,9 @@ import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
+import com.redhat.rhn.manager.content.ContentSyncException;
+import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -64,6 +69,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -862,4 +868,66 @@ public class HubManager {
         return ChannelFactory.listAllChannels();
     }
 
+
+    /**
+     * add vendor channel to peripheral
+     *
+     * @param accessToken         the accesstoken
+     * @param vendorChannelLabelList the vendor channel label list
+     * @return returns a list of the vendor channel that have been added {@link Channel}
+     * the possible return cases are:
+     * 1) empty list: the vendor channel and its base channel were already present in the peripheral (nothing created)
+     * 2) one-channel list: if only the vendor channel was created while the base channel was already present
+     * 3) two-channel list: if both the vendor and the base channel were added to the peripheral
+     */
+    public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
+        ensureValidToken(accessToken);
+        return addVendorChannels(vendorChannelLabelList);
+    }
+
+    private List<Channel> addVendorChannels(List<String> vendorChannelLabelList) {
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> addedVendorChannelLabels = new ArrayList<>();
+        for (String vendorChannelLabel : vendorChannelLabelList) {
+            //retrieve vendor channel template
+            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
+                    .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
+
+            // get base channel of target channel
+            if (!vendorChannelTemplate.get().isRoot()) {
+                String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
+
+                // check if base channel is already added
+                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
+                    // if not, add base channel
+                    csm.addChannel(vendorBaseChannelLabel, mirrorUrl);
+                    addedVendorChannelLabels.add(vendorBaseChannelLabel);
+                }
+            }
+
+            // check if channel is already added
+            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
+                //add target channel
+                csm.addChannel(vendorChannelLabel, mirrorUrl);
+                addedVendorChannelLabels.add(vendorChannelLabel);
+            }
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
+                .toList();
+    }
 }
