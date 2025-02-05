@@ -9,7 +9,6 @@ class NamespaceChannel
   def initialize(api_test)
     @test = api_test
     @software = NamespaceChannelSoftware.new(api_test)
-    @appstreams = NamespaceChannelAppstreams.new(api_test)
   end
 
   attr_reader :software, :appstreams
