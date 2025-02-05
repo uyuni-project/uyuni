@@ -12,6 +12,7 @@ Code for building packages in SUSE that need generated code not tracked in git.
 import os
 import shutil
 import tarfile
+import subprocess
 
 from tito.builder import Builder
 from tito.common import  run_command, debug, info_out
@@ -141,11 +142,7 @@ def tar(src, dest):
     Create a dest tar.gz file from the files in the src folder.
     '''
     debug(f"Compressing {src} into {dest}")
-    with tarfile.open(dest, "w:gz") as tarball:
-        for name in os.listdir(src):
-            tarball.add(os.path.join(src, name), name)
-
-
+    subprocess.run(["tar", "cf", dest, "--gzip", "--owner", "root", "--group", "root", "--directory", src, "."], check=True)
 
 
 class ChartBuilder(ContainerBuilder):
