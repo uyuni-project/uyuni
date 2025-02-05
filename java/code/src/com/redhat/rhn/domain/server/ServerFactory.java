@@ -553,8 +553,20 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId",
-                Map.of("orgId", org.getId()), serverIds, "serverIds");
+        if (serverIds.isEmpty()) {
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId
+                """, Server.class)
+                    .setParameter("orgId", org.getId())
+                    .getResultList();
+        } else {
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)
+                """, Server.class)
+                    .setParameter("orgId", org.getId())
+                    .setParameterList("serverIds",  new ArrayList(serverIds))
+                    .getResultList();
+        }
     }
 
     /**
@@ -607,7 +619,12 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
+        return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE id = :sid AND org_id = :orgId
+                """, Server.class)
+                .setParameter("sid", id , StandardBasicTypes.LONG)
+                .setParameter("orgId", orgIn.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -1539,10 +1556,22 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
-        return new HashSet<>(HibernateFactory.getSession()
-                .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")
-                .setParameter("systemIds", systemIds)
-                .list());
+        return new HashSet<>(HibernateFactory.getSession().createNativeQuery(
+                //TODO
+                /* doesn't work, cannot understand why this is fine
+                * SELECT sa.server.id FROM ServerAction sa
+                * WHERE sa.server.id IN (:systemIds)
+                *          AND sa.parentAction.actionType.maintenancemodeOnly = true
+                *         AND status in ( 0, 1 )
+                 */
+                """
+                        SELECT sa.server_id FROM rhnServerAction sa
+                            JOIN rhnAction a ON sa.action_id = a.id JOIN rhnActionType at ON a.action_type = at.id
+                            WHERE sa.server_id IN (:systemIds) AND at.maintenance_mode_only = 'Y' AND sa.status IN (0, 1)
+                    """
+                )
+                .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
+                .getResultList());
     }
 
     /**
