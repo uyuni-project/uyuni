@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2016--2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -2666,5 +2667,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
      */
     public boolean hasAppStreamModuleEnabled(String module, String stream) {
         return getAppStreams().stream().anyMatch(it -> it.getName().equals(module) && it.getStream().equals(stream));
+    }
+
+    /**
+     * Checks if a server in convertible to a proxy.
+     * @return true if the server is convertible to a proxy, false otherwise
+     */
+    public boolean isConvertibleToProxy() {
+        return !isProxy() && (ConfigDefaults.get().isUyuni() || isSLEMicro5());
+    }
+
+    /**
+     * Checks if a server is a proxy.
+     * @return true if the server is a proxy, false otherwise
+     */
+    public boolean hasProxyEntitlement() {
+        return hasEntitlement(EntitlementManager.PROXY);
     }
 }
