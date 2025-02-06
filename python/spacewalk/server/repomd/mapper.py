@@ -35,7 +35,6 @@ CACHE_PREFIX = "/var/cache/rhn/"
 
 
 class ChannelMapper:
-
     """Data Mapper for Channels to the RHN db."""
 
     def __init__(self, pkg_mapper, erratum_mapper, repomd_mapper):
@@ -71,7 +70,7 @@ class ChannelMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnChannel
         where id = :channel_id
@@ -187,7 +186,6 @@ class ChannelMapper:
 
 
 class CachedPackageMapper:
-
     """Data Mapper for Packages to an on-disc cache."""
 
     def __init__(self, mapper):
@@ -225,7 +223,6 @@ class CachedPackageMapper:
 
 
 class SqlPackageMapper:
-
     """Data Mapper for Packages to the RHN db."""
 
     def __init__(self):
@@ -413,7 +410,7 @@ class SqlPackageMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnPackage
         where id = :package_id
@@ -598,7 +595,6 @@ class SqlPackageMapper:
 
 
 class CachedErratumMapper:
-
     """Data Mapper for Errata to an on-disc cache."""
 
     def __init__(self, mapper, package_mapper):
@@ -648,7 +644,7 @@ class SqlErratumMapper:
         self.last_modified_sql = rhnSQL.prepare(
             """
         select
-            to_char(last_modified, 'YYYYMMDDHH24MISS') as last_modified
+            TO_CHAR(last_modified at time zone 'UTC', 'YYYYMMDDHH24MISS') as last_modified
         from
             rhnErrata
         where id = :erratum_id
