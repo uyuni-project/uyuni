@@ -87,6 +87,12 @@ public class HubManager {
     private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
 
     /**
+     * A Hub deliver custom repositories via organization/repositories SCC endpoint.
+     * We need a fake repo ID for it.
+     */
+    public static final Long CUSTOM_REPO_FAKE_SCC_ID = Long.MIN_VALUE;
+
+    /**
      * Default constructor
      */
     public HubManager() {
