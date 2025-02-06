@@ -43,6 +43,9 @@ public class HwProfileUpdateSlsResult {
     @SerializedName("mgrcompat_|-cpuinfo_|-status.cpuinfo_|-module_run")
     private StateApplyResult<Ret<Map<String, Object>>> cpuInfo;
 
+    @SerializedName("mgrcompat_|-cpu_arch_specs_|-cpuinfo.arch_specs_|-module_run")
+    private StateApplyResult<Ret<Map<String, Object>>> cpuArchSpecs;
+
     @SerializedName(value = "mgrcompat_|-udev_|-udev.exportdb_|-module_run",
             alternate = {"mgrcompat_|-udevdb_|-udevdb.exportdb_|-module_run"})
     private StateApplyResult<Ret<List<Map<String, Object>>>> udevdb;
@@ -244,4 +247,14 @@ public class HwProfileUpdateSlsResult {
         )).orElseGet(Collections::emptyList);
     }
 
+    /**
+     * Get the CPU architecture specific information
+     * @return the specs Map
+     */
+    public Map<String, Object> getCpuArchSpecs() {
+        if (cpuArchSpecs == null) {
+            return Collections.emptyMap();
+        }
+        return cpuArchSpecs.getChanges().getRet();
+    }
 }
