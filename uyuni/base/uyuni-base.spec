@@ -95,7 +95,9 @@ Basic filesystem hierarchy for Uyuni proxy.
 mkdir -p %{buildroot}%{_sysconfdir}/rhn
 mkdir -p %{buildroot}%{_datadir}/rhn/proxy
 %if 0%{?suse_version} >= 1500 || 0%{?rhel} >= 9
-mkdir -p %{buildroot}%{_localstatedir}/spacewalk
+install -d -m 0775 %{buildroot}%{_localstatedir}/spacewalk
+install -d -m 0775 -o %{apache_user} -g %{apache_group} %{buildroot}/%{_localstatedir}/spacewalk/systems
+install -d -m 0775 -o %{apache_user} -g %{apache_group} %{buildroot}/%{_localstatedir}/spacewalk/packages
 %endif
 mkdir -p %{buildroot}%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/srv/www/distributions
