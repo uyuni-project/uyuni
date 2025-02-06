@@ -71,11 +71,6 @@ Feature: Bootstrap a Salt minion via the GUI with an activation key
     And I enter "20" as "usageLimit"
     And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Create Activation Key"
