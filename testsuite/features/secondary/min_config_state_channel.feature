@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024 SUSE LLC.
+# Copyright (c) 2018-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features when running in sequential:
@@ -123,33 +123,33 @@ Feature: Configuration state channels
     Then I should see a "My State Channel" text
     And I should see a "statechannel" text
     And I should see a "statechannel2" text
-    And I check "statechannel-cbox"
+    When I check "statechannel-cbox"
     And I check "statechannel2-cbox"
-    When I click on "Save Changes"
+    And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
-    And I should see a "My State Channel (statechannel)" link
+    Then I should see a "My State Channel (statechannel)" link
     And I should see a "My State Channel (statechannel2)" link
     When I click on "Confirm"
     Then I should see a "State assignments have been saved." text
 
   Scenario: Apply the Configuration channel state
-    And I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     And I click on "Search" in element "search-row"
     And I wait until I see "Execute States" text
-    When I click on "Execute States"
+    And I click on "Execute States"
     Then I should see a "Applying the config channels has been scheduled" text
-    When I wait until event "Apply states [custom] scheduled" is completed
+    And I wait until event "Apply states [custom] scheduled" is completed
     And I wait until file "/root/statechannel" exists on "sle_minion"
     And I wait until file "/root/statechannel2" exists on "sle_minion"
 
   Scenario: Subscribe a minion to the 3rd state channel
-    And I follow "States" in the content area
+    When I follow "States" in the content area
     And I follow "Configuration Channels" in the content area
     Then I should see a "My State Channel" text
     And I should see a "statechannel3" text
-    And I check "statechannel3-cbox"
-    When I click on "Save Changes"
+    When I check "statechannel3-cbox"
+    And I click on "Save Changes"
     And I wait until I see "Edit Channel Ranks" text
     And I should see a "My State Channel (statechannel)" link
     And I should see a "My State Channel (statechannel2)" link
@@ -168,7 +168,7 @@ Feature: Configuration state channels
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'My State Channel' has been deleted." text
-    And I remove "/root/statechannel" from "sle_minion"
+    When I remove "/root/statechannel" from "sle_minion"
 
   Scenario: Cleanup: remove the 2nd state channel and the deployed file
     When I follow the left menu "Configuration > Channels"
@@ -177,7 +177,7 @@ Feature: Configuration state channels
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'My State Channel' has been deleted." text
-    And I remove "/root/statechannel2" from "sle_minion"
+    When I remove "/root/statechannel2" from "sle_minion"
 
   Scenario: Cleanup: remove the 3rd state channel and the deployed file
     When I follow the left menu "Configuration > Channels"
@@ -186,4 +186,4 @@ Feature: Configuration state channels
     Then I should see a "Are you sure you want to delete this config channel?" text
     When I click on "Delete Config Channel"
     Then I should see a "Channel 'statechannel3' has been deleted." text
-    And I remove "/root/statechannel3" from "sle_minion"
+    When I remove "/root/statechannel3" from "sle_minion"
