@@ -1185,12 +1185,6 @@ When(/^I refresh the page$/) do
   end
 end
 
-When(/^I make a list of the existing systems$/) do
-  system_elements_list = find_all(:xpath, '//td[contains(@class, \'sortedCol\')]')
-  $systems_list = []
-  system_elements_list.each { |el| $systems_list << el.text }
-end
-
 Given(/^I have a property "([^"]*)" with value "([^"]*)" on "([^"]*)"$/) do |property_name, property_value, host|
   steps %(
     When I am on the Systems overview page of this "#{host}"

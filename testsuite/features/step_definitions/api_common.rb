@@ -126,6 +126,16 @@ When(/^I retrieve the relevant errata for (.+)$/) do |raw_hosts|
   sids.size == 1 ? $api_test.system.get_system_errata(sids[0]) : $api_test.system.get_systems_errata(sids)
 end
 
+When(/^I make a list of the existing systems' hostnames$/) do
+  @systems = $api_test.system.list_systems
+
+  hostnames_list = @systems.map do |system|
+    network_info = $api_test.system.get_network(system["id"])
+    network_info["hostname"]
+  end
+  add_context('hostnames_list', hostnames_list)
+end
+
 # user namespace
 
 When(/^I call user\.list_users\(\)$/) do
