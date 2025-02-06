@@ -26,7 +26,9 @@
     <ul class="nav navbar-nav navbar-controls">
       <li id="notifications">
         <script>
-          spaImportReactPage('notifications/notifications');
+          spaImportReactPage('notifications/notifications').then(function(module) {
+              module.renderer("notifications", {})
+            });
         </script>
       </li>
       <c:if test="${requestScope.legends != null}">
@@ -41,7 +43,9 @@
       </c:if>
       <li class="search" id="header-search">
         <script>
-          spaImportReactPage('header/search');
+          spaImportReactPage('header/search').then(function(module) {
+              module.renderer("header-search", {})
+            });
         </script>
       </li>
       <li id="ssm-box" class="ssm-box hide-overflow">

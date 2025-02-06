@@ -39,37 +39,67 @@ import ActivationKeys from "./systems/activation-key";
 const pages = {
   ...ActivationKeys,
   ...Admin,
-  ...Appstreams,
-  ...Audit,
-  ...ContentManagement,
-  ...Errors,
-  ...Groups,
-  ...Header,
-  ...Highstate,
-  ...Images,
-  ...Login,
-  ...MaintenanceWindows,
-  ...Minion,
-  ...Notifications,
-  ...Organizations,
-  ...Packages,
-  ...Proxy,
-  ...RecurringActions,
-  ...Salt,
-  ...ScheduleOptions,
-  ...Shared,
-  ...Systems,
-  ...Storybook,
+  // ...Appstreams,
+  // ...Audit,
+  // ...ContentManagement,
+  // ...Errors,
+  // ...Groups,
+  // ...Header,
+  // ...Highstate,
+  // ...Images,
+  // ...Login,
+  // ...MaintenanceWindows,
+  // ...Minion,
+  // ...Notifications,
+  // ...Organizations,
+  // ...Packages,
+  // ...Proxy,
+  // ...RecurringActions,
+  // ...Salt,
+  // ...ScheduleOptions,
+  // ...Shared,
+  // ...Systems,
+  // ...Storybook,
 };
 
-window.spaImportReactPage = function spaImportReactPage(pageName) {
-  SpaRenderer.addReactApp(pageName);
+type Pages = typeof pages;
+type PageName = keyof Pages;
+type Renderer<T extends PageName> = Awaited<ReturnType<Pages[T]>>["renderer"];
 
-  if (!pages[pageName]) {
-    throw new RangeError(
-      `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
-    );
+type PageTuple = {
+  [K in PageName]: [K, Pages[K]];
+}[PageName];
+
+type X = Pages[keyof Pages];
+
+const getPageRenderer = async <T extends PageName>(pageName: T): Promise<Renderer<T>> => {
+  const module = await pages[pageName]();
+  return module.renderer;
+};
+
+let idCounter = 0;
+const injectReactPage = async function injectReactPage<T extends PageTuple>(pageName: T[0], params: Parameters<T[1]>) {
+  const current = document.currentScript;
+  if (!current) {
+    throw new RangeError("Unable to identify `currentScript` in `injectReactPage`");
   }
 
-  return pages[pageName]();
+  const targetName = pageName.replace(/[^\w]/g, "_") + idCounter;
+  idCounter += 1;
+
+  const div = document.createElement("div");
+  div.setAttribute("id", targetName);
+  current.after(div);
+
+  const pagePromise: T[1] = pages[pageName];
+  const bar: Awaited<ReturnType<T[1]>> = await pagePromise();
+  const a = bar.renderer();
+  // (function (f: Awaited<ReturnType<T[1]>>) {
+  //   f.renderer(targetName, params);
+  // });
+  // const pagePromise = getPageRenderer(pageName);
+
+  // pagePromise.then(function (renderer) {
+  //   renderer(targetName, params);
+  // });
 };

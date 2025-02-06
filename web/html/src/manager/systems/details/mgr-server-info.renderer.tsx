@@ -18,7 +18,6 @@ type RendererProps = {
 
 export const renderer = (
   id: string,
-  docsLocale: string,
   {
     serverId,
     name,
@@ -42,7 +41,6 @@ export const renderer = (
       reportDbUser={reportDbUser}
       reportDbLastSynced={reportDbLastSynced}
       isAdmin={isAdmin}
-      docsLocale={docsLocale}
     />,
     document.getElementById(id)
   );

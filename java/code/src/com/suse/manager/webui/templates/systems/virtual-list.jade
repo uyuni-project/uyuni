@@ -10,7 +10,7 @@ script(type='text/javascript').
     spaImportReactPage('systems/list/virtual')
         .then(function(module) {
             module.renderer(
-                'systems-virtual-list', '#{docsLocale}',
+                'systems-virtual-list',
                 {
                     isAdmin: #{is_admin},
                     queryColumn: #{queryColumn},

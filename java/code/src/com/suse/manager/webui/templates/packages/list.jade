@@ -9,7 +9,7 @@ script(type='text/javascript').
 script(type='text/javascript').
     spaImportReactPage('packages/list')
         .then(function(module) {
-            module.renderer('packages-list', '#{docsLocale}', {
+            module.renderer('packages-list', {
                 selected: !{selected},
                 selectedChannel: "#{selectedChannel}"
             })

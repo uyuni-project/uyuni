@@ -18,8 +18,6 @@ type Props = {
   reportDbUser: string;
   reportDbLastSynced?: string;
   isAdmin: boolean;
-  /** Locale of the help links */
-  docsLocale: string;
 };
 
 type State = {

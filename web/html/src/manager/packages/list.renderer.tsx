@@ -11,11 +11,11 @@ type RendererProps = {
   selectedChannel: string | null;
 };
 
-export const renderer = (id: string, docsLocale: string, { selected, selectedChannel }: RendererProps) =>
+export const renderer = (id: string, { selected, selectedChannel }: RendererProps) =>
   SpaRenderer.renderNavigationReact(
     <>
       <MessagesContainer />
-      <PackageList docsLocale={docsLocale} selected={selected} selectedChannel={selectedChannel} />
+      <PackageList selected={selected} selectedChannel={selectedChannel} />
     </>,
     document.getElementById(id)
   );

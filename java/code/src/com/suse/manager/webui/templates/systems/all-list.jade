@@ -10,7 +10,7 @@ script(type='text/javascript').
     spaImportReactPage('systems/list/all')
         .then(function(module) {
             module.renderer(
-                'systems-all-list', '#{docsLocale}',
+                'systems-all-list',
                 {
                     isAdmin: #{is_admin},
                     queryColumn: #{queryColumn},

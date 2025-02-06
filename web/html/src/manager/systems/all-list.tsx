@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
@@ -12,8 +14,6 @@ import Network from "utils/network";
 import { SystemsListFilter } from "./list-filter";
 
 type Props = {
-  /** Locale of the help links */
-  docsLocale: string;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
@@ -36,11 +36,7 @@ export function AllSystems(props: Props) {
       <h1>
         <IconTag type="header-system" />
         {t(" Systems ")}
-        <a
-          href={`/docs/${props.docsLocale}/reference/systems/systems-list.html`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={`/docs/${docsLocale}/reference/systems/systems-list.html`} target="_blank" rel="noopener noreferrer">
           <IconTag type="header-help" />
         </a>
 

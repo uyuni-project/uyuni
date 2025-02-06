@@ -31,7 +31,7 @@ declare global {
         onSpaEndNavigation?: (callback: Function) => void;
       };
     };
-    spaImportReactPage: (pageName: string) => Promise<unknown>;
+    // spaImportReactPage: (pageName: string) => Promise<unknown>;
 
     userPrefPageSize?: number;
   }

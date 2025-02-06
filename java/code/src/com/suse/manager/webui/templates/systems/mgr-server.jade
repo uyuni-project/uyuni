@@ -10,7 +10,7 @@ script(type='text/javascript').
     spaImportReactPage('systems/details/mgr-server-info')
         .then(function(module) {
             module.renderer(
-                'systems-mgr-server', '#{docsLocale}',
+                'systems-mgr-server',
                 {
                   serverId: "#{server.id}",
                   name: "#{name}",

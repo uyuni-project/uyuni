@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useRef } from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import { AsyncButton } from "components/buttons";
 import { ActionConfirm } from "components/dialog/ActionConfirm";
 import { IconTag } from "components/icontag";
@@ -14,8 +16,6 @@ import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 type Props = {
-  /** Locale of the help links */
-  docsLocale: string;
   /** List of selected package ids */
   selected: Array<string>;
   /** The entry to select in the channel field */
@@ -88,7 +88,7 @@ export function PackageList(props: Props) {
         <IconTag type="header-package" />
         {t(" Package Management ")}
         <a
-          href={`/docs/${props.docsLocale}/reference/software/manage-packages.html`}
+          href={`/docs/${docsLocale}/reference/software/manage-packages.html`}
           target="_blank"
           rel="noopener noreferrer"
         >
