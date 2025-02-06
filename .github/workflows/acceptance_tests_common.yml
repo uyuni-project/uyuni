@@ -87,7 +87,7 @@ jobs:
         if: ${{ inputs.recommended_tests != '' }}
         run: |
           ./testsuite/podman_runner/19_generate_recommended_tests_yml.sh
-          TESTS_COUNT=$(wc -l < ./testsuite/run_sets/recommended_tests.yml)
+          ROW_COUNT=$(wc -l < ./testsuite/run_sets/recommended_tests.yml)
           if [ "$ROW_COUNT" -eq 0 ] || [ "$ROW_COUNT" -gt 30 ]; then
             echo "⚠️ WARNING: $ROW_COUNT recommended tests found. Look at the results of the full test suite instead."
             # gh pr edit ${{ github.event.pull_request.number }} --add-label "run-full-testsuite"
