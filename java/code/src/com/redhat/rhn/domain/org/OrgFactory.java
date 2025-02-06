@@ -345,7 +345,7 @@ public class OrgFactory extends HibernateFactory {
                             SELECT 1 FROM rhnServer s WHERE s.org_id = o.id AND EXISTS (
                             SELECT 1 FROM rhnChannel c JOIN rhnChannelFamilyMembers cfm ON c.id = cfm.channel_id
                             WHERE c.id IN (SELECT channel_id FROM rhnServerChannel WHERE server_id = s.id)
-                            AND cfm.channel_family_id = :cf 
+                            AND cfm.channel_family_id = :cf
                             ))
                 """, Org.class).setParameter("cf", channelFamily.getId(), StandardBasicTypes.LONG).getResultList();
     }
