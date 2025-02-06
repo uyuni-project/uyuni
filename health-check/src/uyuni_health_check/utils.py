@@ -1,3 +1,5 @@
+"""Utils module for various utility functions"""
+
 from datetime import datetime, timedelta
 import subprocess
 from typing import List
@@ -8,16 +10,17 @@ from rich.text import Text
 
 console = Console()
 
+
 def validate_date(ctx: click.Context, param: str, date: str | None) -> str | None:
     del ctx, param
     if not date:
         return
 
     try:
-        datetime.fromisoformat(date.replace('Z', '+00:00'))
+        datetime.fromisoformat(date.replace("Z", "+00:00"))
         return date
-    except ValueError:
-        raise click.BadParameter("Date must be in ISO8601 format")
+    except ValueError as e:
+        raise click.BadParameter("Date must be in ISO8601 format") from e
 
 
 def get_dates(since: int) -> tuple:
@@ -39,6 +42,7 @@ def run_command(cmd: List[str], verbose=False, raise_exc=True) -> List:
         stderr=subprocess.PIPE,
         stdin=subprocess.DEVNULL,
         universal_newlines=True,
+        check=False,
     )
 
     stdout, stderr, retcode = process.stdout, process.stderr, process.returncode
@@ -49,15 +53,19 @@ def run_command(cmd: List[str], verbose=False, raise_exc=True) -> List:
 
     return [stdout, stderr, retcode]
 
+
 def _handle_text_from_process(verbose: bool, *objs: str):
     if verbose:
         for obj in objs:
-           console.log(Text.from_ansi(obj.strip()))
+            console.log(Text.from_ansi(obj.strip()))
+
 
 def _check_retcode(retcode: int):
     match retcode:
-        case 0: ... # success
-        case 127: raise OSError("Command not found; podman is required")
+        case 0:
+            ...  # success
+        case 127:
+            raise OSError("Command not found; podman is required")
         case _:
             raise HealthException("An error happened while running Podman")
 
