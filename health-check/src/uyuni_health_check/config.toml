@@ -10,10 +10,6 @@ container_name = "health_check_loki"
 jobs = ["cobbler", "postgresql", "rhn", "apache"]
 image = "docker.io/grafana/loki"
 
-[logcli]
-logcli_container_name = "uyuni_health_check_logcli"
-logcli_image_name = "logcli"
-
 [exporter]
 container_name = "health_check_supportconfig_exporter"
 image = "localhost/supportconfig-exporter"

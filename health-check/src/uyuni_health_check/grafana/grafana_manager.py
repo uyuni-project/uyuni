@@ -1,13 +1,15 @@
+"""A module that manages the Grafana container"""
+
 import json
 from uyuni_health_check import config
 from uyuni_health_check.utils import console
 from uyuni_health_check.containers.manager import (
-    console,
     build_image,
     image_exists,
     container_is_running,
     podman,
 )
+
 
 def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
     name = config.load_prop("grafana.container_name")
@@ -20,9 +22,13 @@ def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
 
     build_grafana_image(image, verbose)
     grafana_cfg = config.get_config_dir_path("grafana")
-    console.log("GRAFANA CFG DIR: ",grafana_cfg)
-    grafana_dasthboard_template = config.get_json_template_filepath("grafana_dashboard/supportconfig_with_logs.template.json")
-    render_grafana_dashboard_cfg(grafana_dasthboard_template, from_datetime, to_datetime)
+    console.log("GRAFANA CFG DIR: ", grafana_cfg)
+    grafana_dasthboard_template = config.get_json_template_filepath(
+        "grafana_dashboard/supportconfig_with_logs.template.json"
+    )
+    render_grafana_dashboard_cfg(
+        grafana_dasthboard_template, from_datetime, to_datetime
+    )
 
     podman(
         [
@@ -45,8 +51,9 @@ def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
             name,
             image,
         ],
-        verbose
+        verbose,
     )
+
 
 def build_grafana_image(image: str, verbose: bool):
     if image_exists(image):
@@ -57,13 +64,18 @@ def build_grafana_image(image: str, verbose: bool):
     build_image(image, image_path, verbose=verbose)
     console.log(f"[green]The {image} image was built successfully")
 
-def render_grafana_dashboard_cfg(grafana_dashboard_template, from_datetime, to_datetime):
+
+def render_grafana_dashboard_cfg(
+    grafana_dashboard_template, from_datetime, to_datetime
+):
     """
     Render grafana dashboard file
     """
 
-    with open(grafana_dashboard_template, 'r') as f:
+    with open(grafana_dashboard_template, "r", encoding="UTF-8") as f:
         data = json.load(f)
         data["time"]["from"] = from_datetime
         data["time"]["to"] = to_datetime
-        config.write_config("grafana", "dashboards/supportconfig_with_logs.json", data, is_json=True)
+        config.write_config(
+            "grafana", "dashboards/supportconfig_with_logs.json", data, is_json=True
+        )

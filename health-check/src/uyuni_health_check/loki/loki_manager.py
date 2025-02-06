@@ -1,3 +1,5 @@
+"""Module that controls the Loki and Promtail containers"""
+
 import io
 import os
 import requests
@@ -20,7 +22,7 @@ PROMTAIL_TARGETS = 6
 LOKI_WAIT_TIMEOUT = 120
 
 
-def download_component_build_image(image:str, verbose=False):
+def download_component_build_image(image: str, verbose=False):
     if image_exists(image):
         return
 
@@ -130,23 +132,32 @@ def render_promtail_cfg(supportconfig_path=None, promtail_template=None):
     config.write_config("promtail", "config.yaml", promtail_template.render(**opts))
 
 
-
-def check_series_in_loki(loki_url, job_name="promtail-complete-job", flag="complete", message="Promtail finished!d"):
+def check_series_in_loki(
+    loki_url,
+    job_name="promtail-complete-job",
+    flag="complete",
+    message="Promtail finished!d",
+):
     query = f'{{job="{job_name}", flag="{flag}"}} |= "{message}"'
     end = int(time.time())
     start = end - 60 * 60
 
     response = requests.get(
         f"{loki_url}/loki/api/v1/query",
-        params={"query": query, "start": start * 1_000_000_000, "end": end * 1_000_000_000}
+        params={
+            "query": query,
+            "start": start * 1_000_000_000,
+            "end": end * 1_000_000_000,
+        },
     )
 
     if response.status_code == 200:
         data = response.json()
-        return len(data['data']['result']) > 0
+        return len(data["data"]["result"]) > 0
     else:
         print("Failed to query Loki:", response.text)
         return False
+
 
 def wait_promtail_init():
     loki_url = "http://localhost:3100"
@@ -162,6 +173,7 @@ def wait_promtail_init():
         time.sleep(10)
     console.log("Promtail finished processing logs")
 
+
 def wait_loki_init(verbose=False):
     """
     Try to figure out when loki is ready to answer our requests.
@@ -169,7 +181,7 @@ def wait_loki_init(verbose=False):
       - loki to be up
       - promtail to have read the logs and the loki ingester having handled them
     """
-    metrics = None
+    metrics = {}
     timeout = False
     request_message_bytes_sum = 0
     loki_ingester_chunk_entries_count = 0
@@ -206,13 +218,13 @@ def wait_loki_init(verbose=False):
         if response.status_code == 200:
             content = response.content.decode()
             request_message_bytes_sum = re.findall(
-                'loki_request_message_bytes_sum{.*"loki_api_v1_push"} (\d+)', content
+                r'loki_request_message_bytes_sum{.*"loki_api_v1_push"} (\d+)', content
             )
             request_message_bytes_sum = (
                 int(request_message_bytes_sum[0]) if request_message_bytes_sum else 0
             )
             loki_ingester_chunk_entries_count = re.findall(
-                "loki_ingester_chunk_entries_count (\d+)", content
+                r"loki_ingester_chunk_entries_count (\d+)", content
             )
             loki_ingester_chunk_entries_count = (
                 int(loki_ingester_chunk_entries_count[0])
@@ -225,14 +237,14 @@ def wait_loki_init(verbose=False):
             console.log("promtail metrics 9081 status code", response.status_code)
         if response.status_code == 200:
             content = response.content.decode()
-            active = re.findall("promtail_targets_active_total (\d+)", content)
+            active = re.findall(r"promtail_targets_active_total (\d+)", content)
             encoded_bytes_total = re.findall(
-                "promtail_encoded_bytes_total{.*} (\d+)", content
+                r"promtail_encoded_bytes_total{.*} (\d+)", content
             )
             sent_bytes_total = re.findall(
-                "promtail_sent_bytes_total{.*} (\d+)", content
+                r"promtail_sent_bytes_total{.*} (\d+)", content
             )
-            active_files = re.findall("promtail_files_active_total (\d+)", content)
+            active_files = re.findall(r"promtail_files_active_total (\d+)", content)
             lags = re.findall(
                 'promtail_stream_lag_seconds{filename="([^"]+)".*} ([0-9.]+)', content
             )
@@ -260,7 +272,7 @@ def wait_loki_init(verbose=False):
         # check if promtail is ready
         if verbose:
             console.log("Waiting for promtail to be ready")
-        response = requests.get(f"http://localhost:9081/ready")
+        response = requests.get("http://localhost:9081/ready")
         if verbose:
             console.log("promtail ready 9081 status code", response.status_code)
         if response.status_code == 200:
@@ -270,7 +282,6 @@ def wait_loki_init(verbose=False):
             else:
                 ready = False
 
-        
         # check timeout
         if (time.time() - start_time) > LOKI_WAIT_TIMEOUT:
             timeout = True
@@ -283,6 +294,3 @@ def wait_loki_init(verbose=False):
         console.print(loki_ingester_chunk_entries_count)
         console.print(request_message_bytes_sum)
         console.log("[bold]Loki and promtail are now ready to receive requests")
-
-        
-    
