@@ -1,4 +1,5 @@
 [![OpenSSF Best Practices](https://bestpractices.coreinfrastructure.org/projects/6593/badge)](https://bestpractices.coreinfrastructure.org/projects/6593)
+[![Cucumber Reports: Uyuni](https://messages.cucumber.io/api/report-collections/12371450-2212-43dc-a514-90677777824a/badge)](https://reports.cucumber.io/report-collections/12371450-2212-43dc-a514-90677777824a)
 
 Uyuni
 =====
