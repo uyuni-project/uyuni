@@ -559,7 +559,8 @@ public class ServerFactory extends HibernateFactory {
                 """, Server.class)
                     .setParameter("orgId", org.getId())
                     .getResultList();
-        } else {
+        }
+        else {
             return HibernateFactory.getSession().createNativeQuery("""
                 SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)
                 """, Server.class)
@@ -1557,17 +1558,11 @@ public class ServerFactory extends HibernateFactory {
             return new HashSet<>();
         }
         return new HashSet<>(HibernateFactory.getSession().createNativeQuery(
-                //TODO
-                /* doesn't work, cannot understand why this is fine
-                * SELECT sa.server.id FROM ServerAction sa
-                * WHERE sa.server.id IN (:systemIds)
-                *          AND sa.parentAction.actionType.maintenancemodeOnly = true
-                *         AND status in ( 0, 1 )
-                 */
                 """
                         SELECT sa.server_id FROM rhnServerAction sa
                             JOIN rhnAction a ON sa.action_id = a.id JOIN rhnActionType at ON a.action_type = at.id
-                            WHERE sa.server_id IN (:systemIds) AND at.maintenance_mode_only = 'Y' AND sa.status IN (0, 1)
+                            WHERE sa.server_id IN (:systemIds) AND at.maintenance_mode_only = 'Y'
+                            AND sa.status IN (0, 1)
                     """
                 )
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
