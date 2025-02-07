@@ -5998,7 +5998,7 @@ používateľa predtým, ako sa pokúsite deaktivovať jeho účet.</target>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
-        <target state="needs-adaptation">Práve ste vytvorili svojho prvého používateľa @@PRODUCT_NAME@@. Na dokončenie svojej inštalácie, prosím, použite &lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;Sprievodcu inštaláciou&lt;/a&gt;.</target>
+        <target state="translated">Práve ste vytvorili svojho prvého používateľa @@PRODUCT_NAME@@. Na dokončenie svojej inštalácie, prosím, použite &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Sprievodcu inštaláciou&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
