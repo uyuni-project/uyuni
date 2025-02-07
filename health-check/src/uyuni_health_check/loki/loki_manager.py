@@ -143,7 +143,7 @@ def check_series_in_loki(
     start = end - 60 * 60
 
     response = requests.get(
-        f"{loki_url}/loki/api/v1/query",
+        f"{loki_url}/loki/api/v1/query_range",
         params={
             "query": query,
             "start": start * 1_000_000_000,
@@ -161,17 +161,8 @@ def check_series_in_loki(
 
 def wait_promtail_init():
     loki_url = "http://localhost:3100"
-    start_time = time.time()
-    timeout = 60
-    console.log("[bold]Waiting for Promtail to process logs")
-
-    while not check_series_in_loki(loki_url):
-        elapsed_time = time.time() - start_time
-        if elapsed_time >= timeout:
-            console.log("Timeout waiting for promtail to finish!")
-            break
-        time.sleep(10)
-    console.log("Promtail finished processing logs")
+    check_series_in_loki(loki_url)
+    console.log("Promtail finished processing logs!")
 
 
 def wait_loki_init(verbose=False):
