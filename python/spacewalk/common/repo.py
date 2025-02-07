@@ -43,6 +43,7 @@ class DpkgRepo:
     PKG_GZ = "Packages.gz"
     PKG_XZ = "Packages.xz"
     PKG_RW = "Packages"
+    GPG_VERIFICATION_FAILED = "GPG verification failed"
 
     class ReleaseEntry:  # pylint: disable=W0612,R0903
         """
@@ -426,12 +427,11 @@ class DpkgRepo:
         # Repo format is not flat
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
-                # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                logger.error("GPG verification failed: {}".format(release_file))
+                # pylint: disable-next=logging-fstring-interpolation
+                logger.error(f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}")
                 logger.error("Raising GeneralRepoException!")
                 raise GeneralRepoException(
-                    # pylint: disable-next=consider-using-f-string
-                    "GPG verification failed: {}".format(release_file)
+                    f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}"
                 )
             try:
                 with open(release_file, "rb") as f:
@@ -477,16 +477,12 @@ class DpkgRepo:
                     if self.gpg_verify and not self._has_valid_gpg_signature(
                         local_path
                     ):
+                        # pylint: disable-next=logging-fstring-interpolation
                         logger.error(
-                            # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-                            "GPG verification failed: '{}'. \
-                                           Raising GeneralRepoException.".format(
-                                release_file
-                            )
+                            f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}. Raising GeneralRepoException."
                         )
                         raise GeneralRepoException(
-                            # pylint: disable-next=consider-using-f-string
-                            "GPG verification failed: {}".format(release_file)
+                            f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}"
                         )
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
@@ -556,8 +552,7 @@ class DpkgRepo:
                     "Repo has no valid GPG signature. Raising GeneralRepoException."
                 )
                 raise GeneralRepoException(
-                    # pylint: disable-next=consider-using-f-string
-                    "GPG verification failed: {}".format(resp.url)
+                    f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {resp.url}"
                 )
 
             self._release = self._parse_release_index(resp.content.decode("utf-8"))
@@ -583,8 +578,7 @@ class DpkgRepo:
                             "Repo has no valid GPG signature. GeneralRepoException will be raised!"
                         )
                         raise GeneralRepoException(
-                            # pylint: disable-next=consider-using-f-string
-                            "GPG verification failed: {}".format(resp.url)
+                            f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {resp.url}"
                         )
                     self._release = self._parse_release_index(
                         resp.content.decode("utf-8")

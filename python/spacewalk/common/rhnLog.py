@@ -309,7 +309,7 @@ def _exit():
 atexit.register(_exit)
 
 
-def log_level_to_logging_constant(rhnLog_log_level: int):
+def log_level_to_logging_constant(rhnlog_log_level: int):
     mapping = {
         0: logging.ERROR,
         1: logging.WARNING,
@@ -317,7 +317,7 @@ def log_level_to_logging_constant(rhnLog_log_level: int):
         3: logging.DEBUG,
     }
     # 4+: logging.DEBUG
-    return mapping.get(rhnLog_log_level, logging.DEBUG)
+    return mapping.get(rhnlog_log_level, logging.DEBUG)
 
 
 def align_root_logger():
