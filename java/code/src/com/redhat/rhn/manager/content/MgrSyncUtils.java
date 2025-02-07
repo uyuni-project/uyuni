@@ -166,16 +166,28 @@ public class MgrSyncUtils {
 
     /**
      * Find a {@link ChannelProduct} or create it if necessary and return it.
+     *
      * @param product product to find or create
      * @return channel product
      */
     public static ChannelProduct findOrCreateChannelProduct(SUSEProduct product) {
+        return findOrCreateChannelProduct(product.getName(), product.getVersion());
+    }
+
+    /**
+     * Find a {@link ChannelProduct} or create it if necessary and return it.
+     *
+     * @param productName    name of the product to find or create
+     * @param productVersion version of the product to find or create
+     * @return channel product
+     */
+    public static ChannelProduct findOrCreateChannelProduct(String productName, String productVersion) {
         ChannelProduct p = ChannelFactory.findChannelProduct(
-                product.getName(), product.getVersion());
+                productName, productVersion);
         if (p == null) {
             p = new ChannelProduct();
-            p.setProduct(product.getName());
-            p.setVersion(product.getVersion());
+            p.setProduct(productName);
+            p.setVersion(productVersion);
             p.setBeta(false);
             ChannelFactory.save(p);
         }

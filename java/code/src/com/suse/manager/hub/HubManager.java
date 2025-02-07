@@ -45,6 +45,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
+import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -869,11 +870,10 @@ public class HubManager {
         return ChannelFactory.listAllChannels();
     }
 
-
     /**
      * add vendor channel to peripheral
      *
-     * @param accessToken         the accesstoken
+     * @param accessToken            the access token
      * @param vendorChannelLabelList the vendor channel label list
      * @return returns a list of the vendor channel that have been added {@link Channel}
      * the possible return cases are:
@@ -883,10 +883,8 @@ public class HubManager {
      */
     public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
         ensureValidToken(accessToken);
-        return addVendorChannels(vendorChannelLabelList);
-    }
+        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
 
-    private List<Channel> addVendorChannels(List<String> vendorChannelLabelList) {
         String mirrorUrl = null;
 
         ContentSyncManager csm = new ContentSyncManager();
@@ -913,7 +911,6 @@ public class HubManager {
                 // check if base channel is already added
                 if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
                     // if not, add base channel
-                    csm.addChannel(vendorBaseChannelLabel, mirrorUrl);
                     addedVendorChannelLabels.add(vendorBaseChannelLabel);
                 }
             }
@@ -921,14 +918,51 @@ public class HubManager {
             // check if channel is already added
             if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
                 //add target channel
-                csm.addChannel(vendorChannelLabel, mirrorUrl);
                 addedVendorChannelLabels.add(vendorChannelLabel);
             }
         }
 
+        //add target channels
+        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
+
         return ChannelFactory.listAllChannels()
                 .stream()
                 .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
+                .toList();
+    }
+
+
+    /**
+     * add custom channels to peripheral
+     *
+     * @param accessToken               the access token
+     * @param customChannelInfoJsonList the list of custom channel info to add
+     * @return returns a list of the custom channels {@link Channel} that have been added
+     */
+    public List<Channel> addCustomChannels(IssAccessToken accessToken,
+                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> addedChannelsLabelList = new ArrayList<>();
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            // Create the channel
+            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
+            ChannelFactory.save(customChannel);
+
+            addedChannelsLabelList.add(customChannel.getLabel());
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
                 .toList();
     }
 }
