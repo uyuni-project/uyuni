@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -98,7 +99,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
     @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true)
@@ -554,8 +555,24 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * Returns the default registration token for this organization.
      * @return default token, null if none exists.
      */
+    public RegTokenOrgDefault getRegTokenOrgDefault() {
+        return this.regTokenOrgDefault;
+    }
+
+    /**
+     * Returns the default registration token for this organization.
+     * @return default token, null if none exists.
+     */
     public Token getToken() {
-        return this.token;
+        return (regTokenOrgDefault != null) ? regTokenOrgDefault.getToken() : null;
+    }
+
+    /**
+     * Sets the default registration token for this organization.
+     * @param tokenIn Default token.
+     */
+    public void setRegTokenOrgDefault(RegTokenOrgDefault tokenIn) {
+        this.regTokenOrgDefault = tokenIn;
     }
 
     /**
@@ -563,7 +580,12 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @param tokenIn Default token.
      */
     public void setToken(Token tokenIn) {
-        this.token = tokenIn;
+        if (regTokenOrgDefault == null) {
+            regTokenOrgDefault = new RegTokenOrgDefault();
+            regTokenOrgDefault.setOrg(this);
+        }
+
+        regTokenOrgDefault.setToken(tokenIn);
     }
 
     /**

@@ -146,6 +146,7 @@ import com.redhat.rhn.domain.state.ServerGroupStateRevision;
 import com.redhat.rhn.domain.state.ServerStateRevision;
 import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
@@ -286,6 +287,7 @@ public class AnnotationRegistry {
             RecurringInternalState.class,
             RecurringState.class,
             RegistryCredentials.class,
+            RegTokenOrgDefault.class,
             ReportDBCredentials.class,
             RHUICredentials.class,
             RoleImpl.class,
