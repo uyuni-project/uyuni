@@ -138,6 +138,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private boolean payg;
     private MaintenanceSchedule maintenanceSchedule;
     private Boolean hasConfigFeature;
+    private Set<SAPWorkload> sapWorkloads = new HashSet<>();
 
     public static final String VALID_CNAMES = "valid_cnames_";
 
@@ -2507,4 +2508,21 @@ public class Server extends BaseDomainHelper implements Identifiable {
         this.osFamily = osFamilyIn;
     }
 
+    /**
+     * Getter for SAPWorkloads
+     *
+     * @return Set of SAPWorkload
+     */
+    public Set<SAPWorkload> getSapWorkloads() {
+        return sapWorkloads;
+    }
+
+    /**
+     * Setter for SAPWorkloads
+     *
+     * @param sapWorkloadsIn to set
+     */
+    public void setSapWorkloads(Set<SAPWorkload> sapWorkloadsIn) {
+        sapWorkloads = sapWorkloadsIn;
+    }
 }

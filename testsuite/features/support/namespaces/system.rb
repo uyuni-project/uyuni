@@ -202,6 +202,17 @@ class NamespaceSystem
   def get_event_details(system_id, event_id)
     @test.call('system.getEventDetails', sessionKey: @test.token, sid: system_id, eid: event_id)
   end
+
+  # Returns the addresses and hostname for a given system.
+  #
+  # @param system_id [String] The ID of the system.
+  # @return ip [String] IPv4 address of system
+  # @return ip6 [String] IPv6 address of system
+  # @return hostname [String] Hostname of system
+  def get_network(system_id)
+    @test.call('system.getNetwork', sessionKey: @test.token, sid: system_id)
+  end
+
 end
 
 # System Configuration namespace

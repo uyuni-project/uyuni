@@ -72,6 +72,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
@@ -1774,6 +1775,20 @@ public class SaltUtils {
                 ).distinct().collect(Collectors.toList())
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
+        server.setContainerRuntime(result.getContainerRuntime());
+        server.setUname(result.getUname());
+
+        var sapWorkloads = result.getSAPWorkloads()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(workload -> new SAPWorkload(
+                        server, workload.get("system_id"), workload.get("instance_type")
+                ))
+                .collect(Collectors.toSet());
+
+        server.getSapWorkloads().retainAll(sapWorkloads);
+        server.getSapWorkloads().addAll(sapWorkloads);
 
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {

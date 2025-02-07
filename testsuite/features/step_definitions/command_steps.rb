@@ -1462,10 +1462,11 @@ Then(/^I should be able to query the ReportDB$/) do
   raise SystemCallError, 'ReportDB System table is unexpectedly empty after query' unless query_result.ntuples.positive?
 end
 
-Then(/^I should find the systems from the UI in the ReportDB$/) do
+Then(/^I should find the systems' hostnames from the API in the ReportDB$/) do
   reportdb_listed_systems = $reportdb_ro_conn.exec('select hostname from system;').values.flatten
-  match = $systems_list.all? { |ui_system| reportdb_listed_systems.include? ui_system }
-  raise ScriptError, "Listed systems from the UI #{$systems_list} don't match the ones from the ReportDB System table #{reportdb_listed_systems}" unless match
+  hostnames_list = get_context("hostnames_list")
+  match = hostnames_list.all? { |ui_system| reportdb_listed_systems.include? ui_system }
+  raise ScriptError, "Listed systems from the UI #{hostnames_list} don't match the ones from the ReportDB System table #{reportdb_listed_systems}" unless match
 end
 
 Then(/^I should not be able to "([^"]*)" data in a ReportDB "([^"]*)" as a read-only user$/) do |db_action, table_type|

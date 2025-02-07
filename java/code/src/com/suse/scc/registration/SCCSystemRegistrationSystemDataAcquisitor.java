@@ -21,10 +21,12 @@ import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.scc.SCCRegCacheItem;
 import com.redhat.rhn.domain.server.CPU;
+import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 
+import com.suse.scc.model.SAPJson;
 import com.suse.scc.model.SCCHwInfoJson;
 import com.suse.scc.model.SCCMinProductJson;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -112,6 +114,25 @@ public class SCCSystemRegistrationSystemDataAcquisitor implements SCCSystemRegis
             else {
                 hwInfo.setMemTotal((int) srv.getRam());
             }
+
+            hwInfo.setSap(
+                srv.getSapWorkloads().stream()
+                    .collect(Collectors.groupingBy(
+                            SAPWorkload::getSystemIdSAP,
+                            Collectors.mapping(SAPWorkload::getInstanceType, Collectors.toList())
+                    ))
+                    .entrySet()
+                    .stream()
+                    .map(entry -> new SAPJson(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toSet())
+            );
+
+            srv.asMinionServer().ifPresent(
+                minionServer -> {
+                    hwInfo.setContainerRuntime(minionServer.getContainerRuntime());
+                    hwInfo.setUname(minionServer.getUname());
+                }
+            );
 
             String login = rci.getOptSccLogin().orElseGet(() -> {
                 String l = String.format("%s-%s", ContentSyncManager.getUUID(), srv.getId().toString());
