@@ -5929,140 +5929,140 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.misc.sysprefconfirm.summary" xml:space="preserve">
         <source>You have chosen to alter the following preferences for your selected systems.</source>
-        <target/>
+        <target state="translated">Pre vybrané systémy ste sa rozhodli zmeniť nasledujúce predvoľby.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.reboot.header" xml:space="preserve">
         <source>Reboot Systems</source>
-        <target/>
+        <target state="translated">Reštartovať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.reboot.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ allows you to remotely reboot your systems.</source>
-        <target/>
+        <target state="translated">@@PRODUCT_NAME@@ umožňuje vzdialene reštartovať systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.header" xml:space="preserve">
         <source>Lock Systems</source>
-        <target/>
+        <target state="translated">Zamknúť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.summary" xml:space="preserve">
         <source>Systems may be locked or unlocked.  Locking prevents changes from the @@PRODUCT_NAME@@ website.</source>
-        <target/>
+        <target state="translated">Systémy môžu byť uzamknuté alebo odomknuté.  Uzamknutie zabraňuje zmenám z webovej stránky @@PRODUCT_NAME@@.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.lock" xml:space="preserve">
         <source>Lock System Profiles</source>
-        <target/>
+        <target state="translated">Zamknúť systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.lock.unlock" xml:space="preserve">
         <source>Unlock System Profiles</source>
-        <target/>
+        <target state="translated">Odomknúť systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.header" xml:space="preserve">
         <source>Delete Systems</source>
-        <target/>
+        <target state="translated">Vymazať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.summary" xml:space="preserve">
         <source>Deletes all selected system profiles.  All information about these systems will be removed.</source>
-        <target/>
+        <target state="translated">Vymaže všetky vybrané systémové profily.  Všetky informácie o týchto systémoch budú odstránené.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.delete.delete" xml:space="preserve">
         <source>Delete System Profiles</source>
-        <target/>
+        <target state="translated">Vymazať systémové profily</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.entitle.header" xml:space="preserve">
         <source>Add Or Remove Add-On System Types</source>
-        <target/>
+        <target state="translated">Pridať alebo odstrániť prídavné systémové typy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.entitle.summary" xml:space="preserve">
         <source>Please use the &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;System Types Page&lt;/a&gt; to manage your system types.</source>
-        <target/>
+        <target state="translated">Prosím, použite &lt;a href="/rhn/systems/SystemEntitlements.do"&gt;Stránku systémových typov&lt;/a&gt; na správu systémových typov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.header" xml:space="preserve">
         <source>System Preferences</source>
-        <target/>
+        <target state="translated">Systémové predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.summary" xml:space="preserve">
         <source>You may edit the preferences for all your selected systems here.</source>
-        <target/>
+        <target state="translated">Tu môžete upraviť predvoľby pre všetky vami vybrané systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.notify" xml:space="preserve">
         <source>Receive Notifications of Updates/Patches</source>
-        <target/>
+        <target state="translated">Prijímať oznámenia o aktualizáciách/opravách</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.dailysummary" xml:space="preserve">
         <source>Include system in Daily Summary</source>
-        <target/>
+        <target state="translated">Zahrnúť systém do denného prehľadu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.update" xml:space="preserve">
         <source>Automatic application of relevant patches</source>
-        <target/>
+        <target state="translated">Automatická aplikácia príslušných opráv</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.changepreferences" xml:space="preserve">
         <source>Change Preferences</source>
-        <target/>
+        <target state="translated">Zmeniť predvoľby</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.nochange" xml:space="preserve">
         <source>No Change</source>
-        <target/>
+        <target state="translated">Žiadna zmena</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.index.syspref.preference" xml:space="preserve">
         <source>Preference</source>
-        <target/>
+        <target state="translated">Predvoľba</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
