@@ -19,11 +19,10 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
 import com.suse.manager.api.ReadOnly;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -51,7 +50,7 @@ public class TestHandler extends BaseHandler {
     public Map<String, Object> basicTypes(Integer myInteger, String myString, Boolean myBoolean) {
         return Map.of(
                 "myInteger", myInteger,
-                "myString", StringUtils.defaultString(myString, "-empty-"),
+                "myString", Objects.toString(myString, "-empty-"),
                 "myBoolean", myBoolean);
     }
 
