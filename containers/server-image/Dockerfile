@@ -17,7 +17,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
-        ${PRODUCT_PATTERN_PREFIX}_retail \
         spacewalk-backend-sql-postgresql \
         spacewalk-java-postgresql \
         postgresql16-contrib \
@@ -68,7 +67,17 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-ad \
         sssd-ipa \
         sssd-krb5 \
-        sssd-tools && \
+        sssd-tools \
+        bind-formula \
+        dhcpd-formula \
+        python3-susemanager-retail \
+        susemanager-retail-tools \
+        vsftpd-formula \
+        tftpd-formula \
+        branch-network-formula \
+        image-sync-formula \
+        pxe-formula \
+        saltboot-formula && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd
 
