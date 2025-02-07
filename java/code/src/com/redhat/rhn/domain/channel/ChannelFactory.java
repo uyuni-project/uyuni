@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -24,13 +25,25 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
+import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.scc.SCCEndpoints;
+import com.suse.scc.model.SCCRepositoryJson;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -1453,5 +1466,181 @@ public class ChannelFactory extends HibernateFactory {
             }
             to.getModules().setRelativeFilename(from.getModules().getRelativeFilename());
         }
+    }
+
+    /**
+     * Converts a custom channel to a custom channel info structure
+     *
+     * @param customChannel the custom channel to be converted
+     * @param peripheralOrgId the peripheral org id this channel will be assigned to in the peripheral
+     * @return CustomChannelInfoJson the converted info of the custom channel
+     */
+    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel,
+                                                            Long peripheralOrgId) throws TokenBuildingException {
+        CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson();
+
+        customChannelInfo.setPeripheralOrgId(peripheralOrgId);
+
+        String parentChannelLabel = (null == customChannel.getParentChannel()) ? null :
+                customChannel.getParentChannel().getLabel();
+        customChannelInfo.setParentChannelLabel(parentChannelLabel);
+
+        String channelArchLabel = (null == customChannel.getChannelArch()) ? null :
+                customChannel.getChannelArch().getLabel();
+        customChannelInfo.setChannelArchLabel(channelArchLabel);
+
+        customChannelInfo.setLabel(customChannel.getLabel());
+        customChannelInfo.setBaseDir(customChannel.getBaseDir());
+        customChannelInfo.setName(customChannel.getName());
+        customChannelInfo.setSummary(customChannel.getSummary());
+        customChannelInfo.setDescription(customChannel.getDescription());
+
+        String productNameLabel = (null == customChannel.getProductName()) ? null :
+                customChannel.getProductName().getLabel();
+        customChannelInfo.setProductNameLabel(productNameLabel);
+
+        customChannelInfo.setGpgCheck(customChannel.isGPGCheck());
+        customChannelInfo.setGpgKeyUrl(customChannel.getGPGKeyUrl());
+        customChannelInfo.setGpgKeyId(customChannel.getGPGKeyId());
+        customChannelInfo.setGpgKeyFp(customChannel.getGPGKeyFp());
+
+        customChannelInfo.setEndOfLifeDate(customChannel.getEndOfLife());
+        customChannelInfo.setChecksumTypeLabel(customChannel.getChecksumTypeLabel());
+
+        customChannelInfo.setLastSyncedDate(customChannel.getLastSynced());
+
+        String channelProductProduct = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getProduct();
+        customChannelInfo.setChannelProductProduct(channelProductProduct);
+        String channelProductVersion = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getVersion();
+        customChannelInfo.setChannelProductVersion(channelProductVersion);
+
+        customChannelInfo.setChannelAccess(customChannel.getAccess());
+        customChannelInfo.setMaintainerName(customChannel.getMaintainerName());
+        customChannelInfo.setMaintainerEmail(customChannel.getMaintainerEmail());
+        customChannelInfo.setMaintainerPhone(customChannel.getMaintainerPhone());
+        customChannelInfo.setSupportPolicy(customChannel.getSupportPolicy());
+        customChannelInfo.setUpdateTag(customChannel.getUpdateTag());
+        customChannelInfo.setInstallerUpdates(customChannel.isInstallerUpdates());
+
+        Optional<ClonedChannel> clonedChannel = customChannel.asCloned();
+        if (clonedChannel.isPresent()) {
+            customChannelInfo.setOriginalChannelLabel(clonedChannel.get().getOriginal().getLabel());
+        }
+        else {
+            customChannelInfo.setOriginalChannelLabel(null);
+        }
+
+        customChannelInfo.setRepositoryInfo(obtainRepositoryInfo(customChannel));
+
+        return customChannelInfo;
+    }
+
+    private static SCCRepositoryJson obtainRepositoryInfo(Channel customChannel) throws TokenBuildingException {
+        String hostname = ConfigDefaults.get().getJavaHostname();
+        String customChannelLabel = customChannel.getLabel();
+
+        Token token = new DownloadTokenBuilder(0)
+                .usingServerSecret()
+                .allowingOnlyChannels(Set.of(customChannelLabel))
+                .build();
+
+        return SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname, token.getSerializedForm());
+    }
+
+    /**
+     * Converts a custom channel info structure to a custom channel
+     *
+     * @param customChannelInfo the custom channel info to be converted
+     * @return customChannel the converted custom channel
+     */
+    public static Channel toCustomChannel(CustomChannelInfoJson customChannelInfo) {
+
+        Org org = OrgFactory.lookupById(customChannelInfo.getPeripheralOrgId());
+        if ((null != customChannelInfo.getPeripheralOrgId()) && (null == org)) {
+            throw new IllegalArgumentException("No org id [" +
+                    customChannelInfo.getPeripheralOrgId() +
+                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
+        }
+
+        Channel parentChannel = ChannelFactory.lookupByLabel(customChannelInfo.getParentChannelLabel());
+        if (StringUtils.isNotEmpty(customChannelInfo.getParentChannelLabel()) && (null == parentChannel)) {
+            throw new IllegalArgumentException("No parent channel with label [" +
+                    customChannelInfo.getParentChannelLabel() +
+                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
+        }
+
+        ChannelArch channelArch = ChannelFactory.findArchByLabel(customChannelInfo.getChannelArchLabel());
+        if (StringUtils.isNotEmpty(customChannelInfo.getChannelArchLabel()) && (null == channelArch)) {
+            throw new IllegalArgumentException("No channel arch [" +
+                    customChannelInfo.getChannelArchLabel() +
+                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
+        }
+
+        ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(customChannelInfo.getChecksumTypeLabel());
+        if (StringUtils.isNotEmpty(customChannelInfo.getChecksumTypeLabel()) && (null == checksumType)) {
+            throw new IllegalArgumentException("No checksum type [" +
+                    customChannelInfo.getChecksumTypeLabel() +
+                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
+        }
+
+        Channel customChannel = new Channel();
+        if (StringUtils.isNotEmpty(customChannelInfo.getOriginalChannelLabel())) {
+            Channel originalChannel = ChannelFactory.lookupByLabel(customChannelInfo.getOriginalChannelLabel());
+
+            if (null == originalChannel) {
+                throw new IllegalArgumentException("No original channel [" +
+                        customChannelInfo.getOriginalChannelLabel() +
+                        "] for cloned channel [" + customChannelInfo.getLabel() + "]");
+            }
+
+            ClonedChannel temp = new ClonedChannel();
+            temp.setOriginal(originalChannel);
+            customChannel = temp;
+        }
+
+        customChannel.setOrg(org);
+        customChannel.setParentChannel(parentChannel);
+        customChannel.setChannelArch(channelArch);
+
+        customChannel.setLabel(customChannelInfo.getLabel());
+        customChannel.setBaseDir(customChannelInfo.getBaseDir());
+        customChannel.setName(customChannelInfo.getName());
+        customChannel.setSummary(customChannelInfo.getSummary());
+        customChannel.setDescription(customChannelInfo.getDescription());
+
+        customChannel.setProductName(MgrSyncUtils.findOrCreateProductName(customChannelInfo.getProductNameLabel()));
+
+        customChannel.setGPGCheck(customChannelInfo.isGpgCheck());
+        customChannel.setGPGKeyUrl(customChannelInfo.getGpgKeyUrl());
+        customChannel.setGPGKeyId(customChannelInfo.getGpgKeyId());
+        customChannel.setGPGKeyFp(customChannelInfo.getGpgKeyFp());
+
+        customChannel.setEndOfLife(customChannelInfo.getEndOfLifeDate());
+        customChannel.setChecksumType(checksumType);
+
+        customChannel.setLastSynced(customChannelInfo.getLastSyncedDate());
+
+        customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                customChannelInfo.getChannelProductProduct(), customChannelInfo.getChannelProductVersion()));
+
+        customChannel.setAccess(customChannelInfo.getChannelAccess());
+        customChannel.setMaintainerName(customChannelInfo.getMaintainerName());
+        customChannel.setMaintainerEmail(customChannelInfo.getMaintainerEmail());
+        customChannel.setMaintainerPhone(customChannelInfo.getMaintainerPhone());
+        customChannel.setSupportPolicy(customChannelInfo.getSupportPolicy());
+        customChannel.setUpdateTag(customChannelInfo.getUpdateTag());
+        customChannel.setInstallerUpdates(customChannelInfo.isInstallerUpdates());
+
+        rebuildRepository(customChannelInfo.getRepositoryInfo());
+
+        return customChannel;
+    }
+
+    private static void rebuildRepository(SCCRepositoryJson repositoryJsonIn) {
+        ContentSyncManager csm = new ContentSyncManager();
+        HubFactory hubFactory = new HubFactory();
+        csm.refreshCustomRepo(List.of(repositoryJsonIn), hubFactory.lookupIssHub().orElse(null));
     }
 }

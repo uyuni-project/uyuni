@@ -11,7 +11,6 @@
 
 package com.suse.manager.hub.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.SparkTestUtils;
 
@@ -97,13 +96,20 @@ public class ControllerTestUtils {
     public Object simulateControllerApiCall() throws Exception {
         HubFactory hubFactory = new HubFactory();
         hubFactory.saveToken(serverFqdn, authBearerToken, TokenType.ISSUED, authBearerTokenExpiration);
+
         if (null != role) {
             switch (role) {
                 case HUB:
-                    hubFactory.save(new IssHub(serverFqdn, ""));
+                    Optional<IssHub> hub = hubFactory.lookupIssHubByFqdn(serverFqdn);
+                    if (hub.isEmpty()) {
+                        hubFactory.save(new IssHub(serverFqdn, ""));
+                    }
                     break;
                 case PERIPHERAL:
-                    hubFactory.save(new IssPeripheral(serverFqdn, ""));
+                    Optional<IssPeripheral> peripheral = hubFactory.lookupIssPeripheralByFqdn(serverFqdn);
+                    if (peripheral.isEmpty()) {
+                        hubFactory.save(new IssPeripheral(serverFqdn, ""));
+                    }
                     break;
                 default:
                     throw new IllegalArgumentException("unsupported role " + role.getLabel());
@@ -140,8 +146,6 @@ public class ControllerTestUtils {
                 SparkTestUtils.createMockRequestWithBody(apiEndpoint, httpHeaders, body);
 
         Response dummyTestResponse = RequestResponseFactory.create(new RhnMockHttpServletResponse());
-        Object returnObject = routeImpl.handle(dummyTestRequest, dummyTestResponse);
-        HibernateFactory.rollbackTransaction();
-        return returnObject;
+        return routeImpl.handle(dummyTestRequest, dummyTestResponse);
     }
 }

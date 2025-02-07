@@ -43,6 +43,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -792,7 +793,6 @@ public class HubManager {
         return ChannelFactory.listAllChannels();
     }
 
-
     /**
      * add vendor channel to peripheral
      *
@@ -852,6 +852,56 @@ public class HubManager {
         return ChannelFactory.listAllChannels()
                 .stream()
                 .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
+                .toList();
+    }
+
+    /**
+     * add custom channel to peripheral
+     *
+     * @param accessToken       the accesstoken
+     * @param customChannelList the custom channel label list
+     * @return returns a list of the custom channel that have been added {@link Channel}
+     */
+    public List<Channel> addCustomChannels(IssAccessToken accessToken, List<CustomChannelInfoJson> customChannelList) {
+        ensureValidToken(accessToken);
+        return addCustomChannels(customChannelList);
+    }
+
+    private List<String> addCustomChannel(CustomChannelInfoJson customChannelInfo) throws ContentSyncException {
+        List<String> addedChannelsLabelList = new ArrayList<>();
+
+        // Return immediately if the channel is already there
+        if (ChannelFactory.doesChannelLabelExist(customChannelInfo.getLabel())) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Channel exists ({}), returning...", customChannelInfo.getLabel());
+            }
+            return addedChannelsLabelList;
+        }
+
+        // Create the channel
+        Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
+        ChannelFactory.save(customChannel);
+
+        addedChannelsLabelList.add(customChannel.getLabel());
+        return addedChannelsLabelList;
+    }
+
+    private List<Channel> addCustomChannels(List<CustomChannelInfoJson> customChannelList) {
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> addedChannelsLabelList = new ArrayList<>();
+        for (CustomChannelInfoJson customChannelInfo : customChannelList) {
+            addedChannelsLabelList.addAll(addCustomChannel(customChannelInfo));
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
                 .toList();
     }
 }

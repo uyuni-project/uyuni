@@ -152,7 +152,7 @@ public class SCCEndpoints {
      * @param token the token
      * @return return {@link SCCRepositoryJson} object for a Hub custom repository
      */
-    public SCCRepositoryJson buildCustomRepoJson(String label, String hostname, String token) {
+    public static SCCRepositoryJson buildCustomRepoJson(String label, String hostname, String token) {
         SCCRepositoryJson json = new SCCRepositoryJson();
         json.setSCCId(CUSTOM_REPO_FAKE_SCC_ID);
         json.setEnabled(true);

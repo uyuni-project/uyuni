@@ -33,6 +33,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
@@ -50,6 +51,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +106,8 @@ public class HubController {
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
         post("/hub/addVendorChannels",
                 asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::addVendorChannels))));
+        post("/hub/addCustomChannels",
+                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::addCustomChannels))));
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
@@ -293,19 +297,39 @@ public class HubController {
             return badRequest(response, "Invalid data: invalid vendor channel label list");
         }
 
-        try {
-            List<ChannelInfoJson> createdVendorChannelInfoList =
-                    hubManager.addVendorChannels(token, vendorChannelLabelList)
-                    .stream()
-                    .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
-                            ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
-                            (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
-                    .toList();
-            return success(response, createdVendorChannelInfoList);
+        List<ChannelInfoJson> createdVendorChannelInfoList =
+                hubManager.addVendorChannels(token, vendorChannelLabelList)
+                        .stream()
+                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
+                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
+                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
+                        .toList();
+        return success(response, createdVendorChannelInfoList);
+    }
+
+
+    private String addCustomChannels(Request request, Response response, IssAccessToken token) {
+        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
+
+        if ((null == requestList) || (!requestList.containsKey("customchannellist"))) {
+            return badRequest(response, "Invalid data: missing customchannellist entry");
         }
-        catch (Exception e) {
-            LOGGER.error("Bad Request: ", e);
-            return badRequest(response, e.getMessage());
+
+        List<CustomChannelInfoJson> customChannelInfoList = Arrays.asList(
+                GSON.fromJson(requestList.get("customchannellist"), CustomChannelInfoJson[].class));
+
+        if (customChannelInfoList.isEmpty()) {
+            LOGGER.error("Bad Request: invalid custom channels list");
+            return badRequest(response, "Invalid data: invalid custom channels list");
         }
+
+        List<ChannelInfoJson> createdCustomChannelsInfoList =
+                hubManager.addCustomChannels(token, customChannelInfoList)
+                        .stream()
+                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
+                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
+                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
+                        .toList();
+        return success(response, createdCustomChannelsInfoList);
     }
 }
