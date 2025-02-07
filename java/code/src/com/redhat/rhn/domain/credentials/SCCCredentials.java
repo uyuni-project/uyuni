@@ -66,6 +66,23 @@ public class SCCCredentials extends RemoteCredentials {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof SCCCredentials)) {
+            return false;
+        }
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
     public String toString() {
         return new ToStringBuilder(this)
             .append("id", getId())
