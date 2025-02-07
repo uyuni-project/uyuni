@@ -565,7 +565,7 @@ public class ServerFactory extends HibernateFactory {
                 SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)
                 """, Server.class)
                     .setParameter("orgId", org.getId())
-                    .setParameterList("serverIds",  new ArrayList(serverIds))
+                    .setParameterList("serverIds",  serverIds.stream().toList())
                     .getResultList();
         }
     }
