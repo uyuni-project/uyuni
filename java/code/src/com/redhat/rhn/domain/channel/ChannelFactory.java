@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
- * Copyright (c) 2011--2021 SUSE LLC
+ * Copyright (c) 2011--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -24,13 +25,25 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
+import com.redhat.rhn.manager.content.ContentSyncManager;
+import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
+import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.scc.SCCEndpoints;
+import com.suse.scc.model.SCCRepositoryJson;
+
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
@@ -43,6 +56,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -707,9 +721,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of modular channels
      */
     public static List<Channel> listModularChannels(User user) {
-        List<Channel> channels = singleton.listObjectsByNamedQuery("Channel.findModularChannels",
-                Map.of("org_id", user.getOrg().getId()));
-        return channels;
+        return singleton.listObjectsByNamedQuery("Channel.findModularChannels",
+                Map.of(ORG_ID, user.getOrg().getId()));
     }
 
     /**
@@ -1461,6 +1474,272 @@ public class ChannelFactory extends HibernateFactory {
                 to.setModules(modules);
             }
             to.getModules().setRelativeFilename(from.getModules().getRelativeFilename());
+        }
+    }
+
+    /**
+     * Converts a custom channel to a custom channel info structure
+     *
+     * @param customChannel              the custom channel to be converted
+     * @param peripheralOrgId            the peripheral org id this channel will be assigned to in the peripheral
+     * @param forcedOriginalChannelLabel an optional string setting the original of a cloned channel,
+     *                                   instead of the pristine one
+     * @return CustomChannelInfoJson the converted info of the custom channel
+     */
+    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, long peripheralOrgId,
+                                                            Optional<String> forcedOriginalChannelLabel) {
+
+        if (!customChannel.isCustom()) {
+            throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
+        }
+
+        CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson(customChannel.getLabel());
+
+        customChannelInfo.setPeripheralOrgId(peripheralOrgId);
+
+        String parentChannelLabel = (null == customChannel.getParentChannel()) ? null :
+                customChannel.getParentChannel().getLabel();
+        customChannelInfo.setParentChannelLabel(parentChannelLabel);
+
+        String channelArchLabel = (null == customChannel.getChannelArch()) ? null :
+                customChannel.getChannelArch().getLabel();
+        customChannelInfo.setChannelArchLabel(channelArchLabel);
+
+        customChannelInfo.setBaseDir(customChannel.getBaseDir());
+        customChannelInfo.setName(customChannel.getName());
+        customChannelInfo.setSummary(customChannel.getSummary());
+        customChannelInfo.setDescription(customChannel.getDescription());
+
+        String productNameLabel = (null == customChannel.getProductName()) ? null :
+                customChannel.getProductName().getLabel();
+        customChannelInfo.setProductNameLabel(productNameLabel);
+
+        customChannelInfo.setGpgCheck(customChannel.isGPGCheck());
+        customChannelInfo.setGpgKeyUrl(customChannel.getGPGKeyUrl());
+        customChannelInfo.setGpgKeyId(customChannel.getGPGKeyId());
+        customChannelInfo.setGpgKeyFp(customChannel.getGPGKeyFp());
+
+        customChannelInfo.setEndOfLifeDate(customChannel.getEndOfLife());
+        customChannelInfo.setChecksumTypeLabel(customChannel.getChecksumTypeLabel());
+
+        String channelProductProduct = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getProduct();
+        customChannelInfo.setChannelProductProduct(channelProductProduct);
+        String channelProductVersion = (null == customChannel.getProduct()) ? null :
+                customChannel.getProduct().getVersion();
+        customChannelInfo.setChannelProductVersion(channelProductVersion);
+
+        customChannelInfo.setChannelAccess(customChannel.getAccess());
+        customChannelInfo.setMaintainerName(customChannel.getMaintainerName());
+        customChannelInfo.setMaintainerEmail(customChannel.getMaintainerEmail());
+        customChannelInfo.setMaintainerPhone(customChannel.getMaintainerPhone());
+        customChannelInfo.setSupportPolicy(customChannel.getSupportPolicy());
+        customChannelInfo.setUpdateTag(customChannel.getUpdateTag());
+        customChannelInfo.setInstallerUpdates(customChannel.isInstallerUpdates());
+
+        Optional<ClonedChannel> clonedChannel = customChannel.asCloned();
+        if (clonedChannel.isPresent()) {
+            if (forcedOriginalChannelLabel.isPresent()) {
+                customChannelInfo.setOriginalChannelLabel(forcedOriginalChannelLabel.get());
+            }
+            else {
+                customChannelInfo.setOriginalChannelLabel(clonedChannel.get().getOriginal().getLabel());
+            }
+        }
+        else {
+            customChannelInfo.setOriginalChannelLabel(null);
+        }
+
+        // obtain repository info
+        String hostname = ConfigDefaults.get().getJavaHostname();
+        String customChannelLabel = customChannel.getLabel();
+
+        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(customChannelLabel);
+        if (tokenString.isPresent()) {
+            SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
+                    tokenString.get());
+            customChannelInfo.setRepositoryInfo(repositoryInfo);
+        }
+
+        return customChannelInfo;
+    }
+
+    /**
+     * Converts a custom channel info structure to a custom channel
+     *
+     * @param customChannelInfo the custom channel info to be converted
+     * @return customChannel the converted custom channel
+     */
+    public static Channel toCustomChannel(CustomChannelInfoJson customChannelInfo) {
+        Org org = OrgFactory.lookupById(customChannelInfo.getPeripheralOrgId());
+        Channel parentChannel = ChannelFactory.lookupByLabel(customChannelInfo.getParentChannelLabel());
+        ChannelArch channelArch = ChannelFactory.findArchByLabel(customChannelInfo.getChannelArchLabel());
+        ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(customChannelInfo.getChecksumTypeLabel());
+
+        Channel customChannel = new Channel();
+        if (StringUtils.isNotEmpty(customChannelInfo.getOriginalChannelLabel())) {
+            Channel originalChannel = ChannelFactory.lookupByLabel(customChannelInfo.getOriginalChannelLabel());
+
+            ClonedChannel temp = new ClonedChannel();
+            temp.setOriginal(originalChannel);
+            customChannel = temp;
+        }
+
+        customChannel.setOrg(org);
+        customChannel.setParentChannel(parentChannel);
+        customChannel.setChannelArch(channelArch);
+
+        customChannel.setLabel(customChannelInfo.getLabel());
+        customChannel.setBaseDir(customChannelInfo.getBaseDir());
+        customChannel.setName(customChannelInfo.getName());
+        customChannel.setSummary(customChannelInfo.getSummary());
+        customChannel.setDescription(customChannelInfo.getDescription());
+
+        customChannel.setProductName(MgrSyncUtils.findOrCreateProductName(customChannelInfo.getProductNameLabel()));
+
+        customChannel.setGPGCheck(customChannelInfo.isGpgCheck());
+        customChannel.setGPGKeyUrl(customChannelInfo.getGpgKeyUrl());
+        customChannel.setGPGKeyId(customChannelInfo.getGpgKeyId());
+        customChannel.setGPGKeyFp(customChannelInfo.getGpgKeyFp());
+
+        customChannel.setEndOfLife(customChannelInfo.getEndOfLifeDate());
+        customChannel.setChecksumType(checksumType);
+
+        customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                customChannelInfo.getChannelProductProduct(), customChannelInfo.getChannelProductVersion()));
+
+        customChannel.setAccess(customChannelInfo.getChannelAccess());
+        customChannel.setMaintainerName(customChannelInfo.getMaintainerName());
+        customChannel.setMaintainerEmail(customChannelInfo.getMaintainerEmail());
+        customChannel.setMaintainerPhone(customChannelInfo.getMaintainerPhone());
+        customChannel.setSupportPolicy(customChannelInfo.getSupportPolicy());
+        customChannel.setUpdateTag(customChannelInfo.getUpdateTag());
+        customChannel.setInstallerUpdates(customChannelInfo.isInstallerUpdates());
+
+        // rebuild repository
+        ContentSyncManager csm = new ContentSyncManager();
+        HubFactory hubFactory = new HubFactory();
+        csm.refreshCustomRepo(List.of(customChannelInfo.getRepositoryInfo()), hubFactory.lookupIssHub().orElse(null));
+
+        return customChannel;
+    }
+
+    /**
+     * Ensures that the vendor channels json info structure is valid, as well as all consequent data
+     *
+     * @param vendorChannelLabelList list of vendor channel labels to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidVendorChannels(List<String> vendorChannelLabelList) {
+        for (String vendorChannelLabel : vendorChannelLabelList) {
+            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
+                    .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
+        }
+    }
+
+    /**
+     * Ensures that the custom channels json info structure is valid, as well as all consequent data
+     *
+     * @param customChannelInfoJsonList list of custom channel info structures to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidCustomChannels(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+
+            if (ChannelFactory.doesChannelLabelExist(customChannelInfo.getLabel())) {
+                throw new IllegalArgumentException("Channel already found with the same label " +
+                        "for custom channel [" + customChannelInfo.getLabel() + "]");
+            }
+
+            ensureValidOrgIds(customChannelInfoJsonList);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "channel arch",
+                    CustomChannelInfoJson::getChannelArchLabel, ChannelFactory::findArchByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "checksum type",
+                    CustomChannelInfoJson::getChecksumTypeLabel, ChannelFactory::findChecksumTypeByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "parent channel",
+                    CustomChannelInfoJson::getParentChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "original channel",
+                    CustomChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+        }
+    }
+
+    @FunctionalInterface
+    private interface SearchLabelMethod {
+        String getSearchLabel(CustomChannelInfoJson arg);
+    }
+
+    @FunctionalInterface
+    private interface LookupLabelMethod {
+        Object lookupWithLabel(String label);
+    }
+
+    @FunctionalInterface
+    private interface AccumulateFollowingMethod {
+        String accumulateFollowing(CustomChannelInfoJson arg);
+    }
+
+    private static void ensureExistingOrAboutToCreate(List<CustomChannelInfoJson> customChannelInfoJsonList,
+                                                      boolean emptyIsAllowed, String informationTypeString,
+                                                      SearchLabelMethod searchLabelMethod,
+                                                      LookupLabelMethod lookupLabelMethod,
+                                                      AccumulateFollowingMethod accumulateFollowingMethod) {
+        Set<String> accumulationSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String searchLabel = searchLabelMethod.getSearchLabel(customChannelInfo);
+            boolean isEmptySearchLabel = StringUtils.isEmpty(searchLabel);
+
+            if (isEmptySearchLabel && (!emptyIsAllowed)) {
+                throw new IllegalArgumentException(String.format("Custom channel searchLabel [%s] must have valid %s",
+                        customChannelInfo.getLabel(), informationTypeString));
+            }
+
+            if ((!isEmptySearchLabel) && (!accumulationSet.contains(searchLabel))) {
+                if (null == lookupLabelMethod.lookupWithLabel(searchLabel)) {
+                    throw new IllegalArgumentException(String.format("No %s named [%s] for custom channel [%s]",
+                            informationTypeString, searchLabel, customChannelInfo.getLabel()));
+                }
+                accumulationSet.add(searchLabel);
+            }
+
+            //when looking to a parent or original channel, this channel can be a parent/original of the following ones
+            if (null != accumulateFollowingMethod) {
+                accumulationSet.add(accumulateFollowingMethod.accumulateFollowing(customChannelInfo));
+            }
+        }
+    }
+
+    private static void ensureValidOrgIds(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<Long> orgSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            Long orgId = customChannelInfo.getPeripheralOrgId();
+
+            if (null == orgId) {
+                throw new IllegalArgumentException("Custom channel info [" +
+                        customChannelInfo.getLabel() + "] must have a defined OrgId");
+            }
+
+            if (!orgSet.contains(orgId)) {
+                Org org = OrgFactory.lookupById(orgId);
+                if (null == org) {
+                    throw new IllegalArgumentException("No org id found [" + orgId +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                orgSet.add(orgId);
+            }
         }
     }
 }

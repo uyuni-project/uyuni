@@ -114,10 +114,11 @@ public class HubManager {
 
     /**
      * Builds an instance with the given dependencies
-     * @param hubFactoryIn the hub factory
-     * @param clientFactoryIn the ISS client factory
+     *
+     * @param hubFactoryIn               the hub factory
+     * @param clientFactoryIn            the ISS client factory
      * @param mirrorCredentialsManagerIn the mirror credentials manager
-     * @param taskomaticApiIn the TaskomaticApi object
+     * @param taskomaticApiIn            the TaskomaticApi object
      * @param systemEntitlementManagerIn the system entitlement manager
      */
     public HubManager(HubFactory hubFactoryIn, HubClientFactory clientFactoryIn,
@@ -132,11 +133,12 @@ public class HubManager {
 
     /**
      * Create a new access token for the given FQDN and store it in the database
+     *
      * @param user the user performing the operation
      * @param fqdn the FQDN of the peripheral/hub
      * @return the serialized form of the token
      * @throws TokenBuildingException when an error occurs during generation
-     * @throws TokenParsingException when the generated token cannot be parsed
+     * @throws TokenParsingException  when the generated token cannot be parsed
      */
     public String issueAccessToken(User user, String fqdn) throws TokenBuildingException, TokenParsingException {
         ensureSatAdmin(user);
@@ -147,8 +149,9 @@ public class HubManager {
 
     /**
      * Stores in the database the access token of the given FQDN
-     * @param user the user performing the operation
-     * @param fqdn the FQDN of the peripheral/hub that generated this token
+     *
+     * @param user  the user performing the operation
+     * @param fqdn  the FQDN of the peripheral/hub that generated this token
      * @param token the token
      * @throws TokenParsingException when it's not possible to process the token
      */
@@ -160,7 +163,8 @@ public class HubManager {
 
     /**
      * Deletes the access token with the specified id
-     * @param user the user performing the operation
+     *
+     * @param user    the user performing the operation
      * @param tokenId the id of the access token to delete
      * @return true if the token was deleted, false otherwise
      */
@@ -172,7 +176,8 @@ public class HubManager {
 
     /**
      * Stores in the database the access token of the given FQDN
-     * @param accessToken the access token granting access and identifying the caller
+     *
+     * @param accessToken  the access token granting access and identifying the caller
      * @param tokenToStore the token
      * @throws TokenParsingException when it's not possible to process the token
      */
@@ -184,8 +189,9 @@ public class HubManager {
 
     /**
      * Returns the ISS of the specified role, if present
+     *
      * @param accessToken the access token granting access and identifying the caller
-     * @param role the role of the server
+     * @param role        the role of the server
      * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
      */
     public IssServer findServer(IssAccessToken accessToken, IssRole role) {
@@ -196,9 +202,10 @@ public class HubManager {
 
     /**
      * Returns the ISS of the specified role, if present
-     * @param user the user performing the operation
+     *
+     * @param user       the user performing the operation
      * @param serverFqdn the fqdn of the server
-     * @param role the role of the server
+     * @param role       the role of the server
      * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
      */
     public IssServer findServer(User user, String serverFqdn, IssRole role) {
@@ -209,10 +216,11 @@ public class HubManager {
 
     /**
      * Save the given remote server as hub or peripheral depending on the specified role
+     *
      * @param accessToken the access token granting access and identifying the caller
-     * @param role the role of the server
-     * @param rootCA the root certificate, if needed
-     * @param gpgKey the gpg key, if needed
+     * @param role        the role of the server
+     * @param rootCA      the root certificate, if needed
+     * @param gpgKey      the gpg key, if needed
      * @return the persisted remote server
      */
     public IssServer saveNewServer(IssAccessToken accessToken, IssRole role, String rootCA, String gpgKey)
@@ -224,6 +232,7 @@ public class HubManager {
 
     /**
      * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
+     *
      * @param user the user
      * @param fqdn the FQDN
      */
@@ -239,8 +248,9 @@ public class HubManager {
 
     /**
      * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
+     *
      * @param accessToken the token
-     * @param fqdn the FQDN
+     * @param fqdn        the FQDN
      */
     public void deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
         ensureValidToken(accessToken);
@@ -279,11 +289,12 @@ public class HubManager {
     /**
      * Replace locally the current token with a new created one and return it.
      * Store the provided new token for the remote server.
+     *
      * @param currentAccessToken the old/current token
-     * @param newRemoteToken the new token
+     * @param newRemoteToken     the new token
      * @return the new generated local token for the calling side.
      * @throws TokenBuildingException when an error occurs during generation
-     * @throws TokenParsingException when the generated token cannot be parsed
+     * @throws TokenParsingException  when the generated token cannot be parsed
      */
     public String replaceTokens(IssAccessToken currentAccessToken, String newRemoteToken)
             throws TokenBuildingException, TokenParsingException {
@@ -302,12 +313,12 @@ public class HubManager {
      * A new local hub token is issued and send to the peripheral side. The peripheral
      * side store this token and issue a new one for the calling hub server which store it.
      *
-     * @param user the user
+     * @param user         the user
      * @param remoteServer the remote peripheral server FQDN
-     * @throws CertificateException if the specified certificate is not parseable
-     * @throws TokenParsingException if the specified token is not parseable
+     * @throws CertificateException   if the specified certificate is not parseable
+     * @throws TokenParsingException  if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the server
-     * @throws IOException when connecting to the server fails
+     * @throws IOException            when connecting to the server fails
      */
     public void replaceTokensHub(User user, String remoteServer)
             throws CertificateException, IOException, TokenParsingException, TokenBuildingException {
@@ -330,19 +341,18 @@ public class HubManager {
     /**
      * Register a remote PERIPHERAL server
      *
-     * @param user the user performing the operation
+     * @param user         the user performing the operation
      * @param remoteServer the peripheral server FQDN
-     * @param username the username of a {@link RoleFactory#SAT_ADMIN} of the remote server
-     * @param password the password of the specified user
-     * @param rootCA the optional root CA of the remote server. can be null
-     *
-     * @throws CertificateException if the specified certificate is not parseable
-     * @throws TokenParsingException if the specified token is not parseable
+     * @param username     the username of a {@link RoleFactory#SAT_ADMIN} of the remote server
+     * @param password     the password of the specified user
+     * @param rootCA       the optional root CA of the remote server. can be null
+     * @throws CertificateException   if the specified certificate is not parseable
+     * @throws TokenParsingException  if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the server
-     * @throws IOException when connecting to the server fails
+     * @throws IOException            when connecting to the server fails
      */
     public void register(User user, String remoteServer, String username, String password, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
 
@@ -361,18 +371,17 @@ public class HubManager {
     /**
      * Register a remote PERIPHERAL server
      *
-     * @param user the user performing the operation
+     * @param user         the user performing the operation
      * @param remoteServer the peripheral server FQDN
-     * @param remoteToken the token used to connect to the peripheral server
-     * @param rootCA the optional root CA of the peripheral server
-     *
-     * @throws CertificateException if the specified certificate is not parseable
-     * @throws TokenParsingException if the specified token is not parseable
+     * @param remoteToken  the token used to connect to the peripheral server
+     * @param rootCA       the optional root CA of the peripheral server
+     * @throws CertificateException   if the specified certificate is not parseable
+     * @throws TokenParsingException  if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the peripheral server
-     * @throws IOException when connecting to the peripheral server fails
+     * @throws IOException            when connecting to the peripheral server fails
      */
     public void register(User user, String remoteServer, String remoteToken, String rootCA)
-        throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
+            throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
 
@@ -384,9 +393,9 @@ public class HubManager {
 
     /**
      * Remove a registered Peripheral server
-     * @param user the user performing the operation
-     * @param peripheralId the peripheral entity id
      *
+     * @param user         the user performing the operation
+     * @param peripheralId the peripheral entity id
      * @throws CertificateException if the specified certificate is not parseable
      */
     public void deregister(User user, Long peripheralId) throws CertificateException {
@@ -411,6 +420,7 @@ public class HubManager {
 
     /**
      * Generate SCC credentials for the specified peripheral
+     *
      * @param accessToken the access token granting access and identifying the caller
      * @return the generated {@link HubSCCCredentials}
      */
@@ -418,23 +428,24 @@ public class HubManager {
         ensureValidToken(accessToken);
 
         IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(accessToken.getServerFqdn())
-            .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a peripheral server"));
+                .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a peripheral server"));
 
         return generateCredentials(peripheral);
     }
 
     /**
      * Store the given SCC credentials into the credentials database
+     *
      * @param accessToken the access token granting access and identifying the caller
-     * @param username the username
-     * @param password the password
+     * @param username    the username
+     * @param password    the password
      * @return the stored {@link SCCCredentials}
      */
     public SCCCredentials storeSCCCredentials(IssAccessToken accessToken, String username, String password) {
         ensureValidToken(accessToken);
 
         IssHub hub = hubFactory.lookupIssHubByFqdn(accessToken.getServerFqdn())
-            .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a hub server"));
+                .orElseThrow(() -> new IllegalArgumentException("Access token does not identify a hub server"));
 
         return saveCredentials(hub, username, password);
     }
@@ -443,8 +454,8 @@ public class HubManager {
      * Set the User and Password for the report database in MgrServerInfo.
      * That trigger also a state apply to set this user in the report database.
      *
-     * @param user the user
-     * @param server the Mgr Server
+     * @param user          the user
+     * @param server        the Mgr Server
      * @param forcePwChange force a password change
      */
     public void setReportDbUser(User user, Server server, boolean forcePwChange)
@@ -496,15 +507,16 @@ public class HubManager {
             internalApi.storeReportDbCredentials(credentials.getUsername(), credentials.getPassword());
             String summary = "Report Database credentials changed by " + user.getLogin();
             String details = MessageFormat.format("""
-            The Report Database credentials were changed by {0}.
-            Report Database User: {1}
-            """, user.getLogin(), credentials.getUsername());
+                    The Report Database credentials were changed by {0}.
+                    Report Database User: {1}
+                    """, user.getLogin(), credentials.getUsername());
             SystemManager.addHistoryEvent(server, summary, details);
         }
     }
 
     /**
      * Collect data about a Manager Server
+     *
      * @param accessToken the accesstoken
      * @return return {@link ManagerInfoJson}
      */
@@ -517,9 +529,9 @@ public class HubManager {
      * Set server details
      *
      * @param token the access token
-     * @param fqdn the FQDN identifying the Hub or Peripheral Server
-     * @param role the role which should be changed
-     * @param data the new data
+     * @param fqdn  the FQDN identifying the Hub or Peripheral Server
+     * @param role  the role which should be changed
+     * @param data  the new data
      */
     public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data) {
         ensureValidToken(token);
@@ -560,7 +572,7 @@ public class HubManager {
                         }
                         hubFactory.save(issPeripheral);
                     },
-                    ()-> {
+                    () -> {
                         LOG.error("Server {} not found with role {}", fqdn, role);
                         throw new IllegalArgumentException("Server not found");
                     });
@@ -573,6 +585,7 @@ public class HubManager {
 
     /**
      * Count currently issued and consumed access tokens
+     *
      * @param user the user performing the operation
      * @return the number of token existing in the database
      */
@@ -584,8 +597,9 @@ public class HubManager {
 
     /**
      * List the currently issued and consumed access tokens
+     *
      * @param user the user performing the operation
-     * @param pc the pagination settings
+     * @param pc   the pagination settings
      * @return the existing tokens retrieved from the database using the specified pagination settings
      */
     public List<AccessTokenDTO> listAccessToken(User user, PageControl pc) {
@@ -596,7 +610,8 @@ public class HubManager {
 
     /**
      * Retrieve the access token with the specied id
-     * @param user the user performing the operation
+     *
+     * @param user    the user performing the operation
      * @param tokenId the id of the token
      * @return the access token, if present
      */
@@ -608,7 +623,8 @@ public class HubManager {
 
     /**
      * Updates the give token in the database
-     * @param user the user performing the operation
+     *
+     * @param user           the user performing the operation
      * @param issAccessToken the token
      */
     public void updateToken(User user, IssAccessToken issAccessToken) {
@@ -631,7 +647,7 @@ public class HubManager {
     }
 
     private void registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
-        throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
+            throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
@@ -710,7 +726,7 @@ public class HubManager {
     private SCCCredentials saveCredentials(IssHub hub, String username, String password) {
         // Delete any existing SCC Credentials
         CredentialsFactory.listSCCCredentials()
-            .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
+                .forEach(creds -> mirrorCredentialsManager.deleteMirrorCredentials(creds.getId(), null));
 
         // Create the new credentials for the hub
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials(username, password);
@@ -727,8 +743,8 @@ public class HubManager {
 
     private Token createAndSaveToken(String fqdn) throws TokenBuildingException, TokenParsingException {
         Token token = new IssTokenBuilder(fqdn)
-            .usingServerSecret()
-            .build();
+                .usingServerSecret()
+                .build();
 
         hubFactory.saveToken(fqdn, token.getSerializedForm(), TokenType.ISSUED, token.getExpirationTime());
         return token;
@@ -738,10 +754,10 @@ public class HubManager {
         // We do not need to verify the signature as this token is for accessing another system.
         // That system will take care of ensuring its authenticity
         Token parsedToken = new TokenParser()
-            .skippingSignatureVerification()
-            .verifyingExpiration()
-            .verifyingNotBefore()
-            .parse(token);
+                .skippingSignatureVerification()
+                .verifyingExpiration()
+                .verifyingNotBefore()
+                .parse(token);
 
         // Verify if this token is for this system
         String targetFqdn = parsedToken.getClaim("fqdn", String.class);
@@ -808,7 +824,7 @@ public class HubManager {
         // Actual verification of the JWT signature is not done: since the token was stored in the database we can
         // consider it already verified
         if (accessToken == null || accessToken.getType() != TokenType.ISSUED ||
-            !accessToken.isValid() || accessToken.isExpired()) {
+                !accessToken.isValid() || accessToken.isExpired()) {
             throw new PermissionException("You do not have permissions to perform this action. Invalid token provided");
         }
     }
@@ -817,8 +833,8 @@ public class HubManager {
      * Retrieves or create a server system
      *
      * @param systemEntitlementManagerIn the system entitlement manager
-     * @param creator                  the user creating the server system
-     * @param serverName               the FQDN of the proxy system
+     * @param creator                    the user creating the server system
+     * @param serverName                 the FQDN of the proxy system
      * @return the proxy system
      */
     private Server getOrCreateManagerSystem(
@@ -918,7 +934,7 @@ public class HubManager {
     /**
      * add vendor channel to peripheral
      *
-     * @param accessToken         the accesstoken
+     * @param accessToken            the access token
      * @param vendorChannelLabelList the vendor channel label list
      * @return returns a list of the vendor channel that have been added {@link Channel}
      * the possible return cases are:
@@ -928,10 +944,8 @@ public class HubManager {
      */
     public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
         ensureValidToken(accessToken);
-        return addVendorChannels(vendorChannelLabelList);
-    }
+        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
 
-    private List<Channel> addVendorChannels(List<String> vendorChannelLabelList) {
         String mirrorUrl = null;
 
         ContentSyncManager csm = new ContentSyncManager();
@@ -958,7 +972,6 @@ public class HubManager {
                 // check if base channel is already added
                 if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
                     // if not, add base channel
-                    csm.addChannel(vendorBaseChannelLabel, mirrorUrl);
                     addedVendorChannelLabels.add(vendorBaseChannelLabel);
                 }
             }
@@ -966,16 +979,54 @@ public class HubManager {
             // check if channel is already added
             if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
                 //add target channel
-                csm.addChannel(vendorChannelLabel, mirrorUrl);
                 addedVendorChannelLabels.add(vendorChannelLabel);
             }
         }
+
+        //add target channels
+        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
 
         return ChannelFactory.listAllChannels()
                 .stream()
                 .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
                 .toList();
     }
+
+
+    /**
+     * add custom channels to peripheral
+     *
+     * @param accessToken               the access token
+     * @param customChannelInfoJsonList the list of custom channel info to add
+     * @return returns a list of the custom channels {@link Channel} that have been added
+     */
+    public List<Channel> addCustomChannels(IssAccessToken accessToken,
+                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> addedChannelsLabelList = new ArrayList<>();
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            // Create the channel
+            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
+            ChannelFactory.save(customChannel);
+
+            addedChannelsLabelList.add(customChannel.getLabel());
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
+                .toList();
+    }
+
 
     public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
             throws CertificateException, IOException, TokenParsingException {
@@ -1023,5 +1074,4 @@ public class HubManager {
                         ch.getId(), ch.getName(), ch.getLabel(), ch.getChannelArch().getName(), null
                 )).collect(Collectors.toSet());
     }
-
 }
