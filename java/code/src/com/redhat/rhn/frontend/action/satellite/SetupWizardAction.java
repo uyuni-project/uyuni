@@ -63,9 +63,8 @@ public class SetupWizardAction extends RhnAction {
     /**
      * @param mapping the Action mapping object
      * @param request current request object
-     * @throws Exception if parsing of navigation XML fails
      */
-    private void setAttributes(ActionMapping mapping, HttpServletRequest request) throws Exception {
+    private void setAttributes(ActionMapping mapping, HttpServletRequest request) {
         HubFactory hubFactory = new HubFactory();
         request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null && !hubFactory.isISSPeripheral());
         ContentSyncManager csm = new ContentSyncManager();
