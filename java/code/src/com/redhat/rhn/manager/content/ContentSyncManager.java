@@ -1330,7 +1330,7 @@ public class ContentSyncManager {
             relFiles.add("/repodata/repomd.xml");
         }
         for (String relFile : relFiles) {
-            Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+            Path urlPath = new File(Objects.toString(uri.getRawPath(), "/"), relFile).toPath();
             urls.add(new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
                     uri.getQuery(), null).toString());
         }
@@ -2606,7 +2606,7 @@ public class ContentSyncManager {
             URI uri = new URI(url);
 
             // SMT doesn't do dir listings, so we try to get the metadata
-            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
+            Path testUrlPath = new File(Objects.toString(uri.getRawPath(), "/")).toPath();
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
