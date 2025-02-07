@@ -57,7 +57,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
         }
     }
 
-    private void loadHttpsCertificates(List<CloudRmtHost> hostToUpdate) throws JobExecutionException {
+    private void loadHttpsCertificates(List<CloudRmtHost> hostToUpdate) {
         Map<String, String> filenameToRootCaCertMap = new HashMap<>();
         for (CloudRmtHost host : hostToUpdate) {
             String caFileName = String.format(CA_FILENAME_TEMPLATE_WITH_IP, host.getIp());

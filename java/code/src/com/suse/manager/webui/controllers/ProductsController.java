@@ -47,6 +47,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.products.ChannelJson;
 import com.suse.manager.model.products.Extension;
 import com.suse.manager.model.products.Product;
@@ -138,9 +139,10 @@ public class ProductsController {
     private static ProductsPageMetadataJson getMetadataJson() {
         TaskoRun latestRun = TaskoFactory.getLatestRun("mgr-sync-refresh-bunch");
         ContentSyncManager csm = new ContentSyncManager();
+        HubFactory hubFactory = new HubFactory();
 
         return new ProductsPageMetadataJson(
-                IssFactory.getCurrentMaster() == null,
+                IssFactory.getCurrentMaster() == null && !hubFactory.isISSPeripheral(),
                 csm.isRefreshNeeded(null),
                 latestRun != null && latestRun.getEndTime() == null,
                 FileLocks.SCC_REFRESH_LOCK.isLocked(),

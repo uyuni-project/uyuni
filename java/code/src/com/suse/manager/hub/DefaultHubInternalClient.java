@@ -95,7 +95,7 @@ public class DefaultHubInternalClient implements HubInternalClient {
         invokePostMethod("hub/sync", "deregister", null, Void.class);
     }
 
-    private <Res> Res invokeGetMethod(String namespace, String apiMethod, Class<Res> responseClass)
+    private <R> R invokeGetMethod(String namespace, String apiMethod, Class<R> responseClass)
             throws IOException {
         HttpGet request = new HttpGet(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
         request.setHeader("Authorization", "Bearer " + accessToken);
@@ -117,8 +117,8 @@ public class DefaultHubInternalClient implements HubInternalClient {
         return null;
     }
 
-    private <Req, Res> Res invokePostMethod(String namespace, String apiMethod, Req requestObject,
-                                            Class<Res> responseClass) throws IOException {
+    private <Q, R> R invokePostMethod(String namespace, String apiMethod, Q requestObject,
+                                      Class<R> responseClass) throws IOException {
         HttpPost request = new HttpPost(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
         request.setHeader("Authorization", "Bearer " + accessToken);
 

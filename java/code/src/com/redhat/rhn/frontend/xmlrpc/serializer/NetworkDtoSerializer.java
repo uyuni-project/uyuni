@@ -20,7 +20,7 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
-import org.apache.commons.lang3.StringUtils;
+import java.util.Objects;
 
 
 /**
@@ -45,7 +45,7 @@ public class NetworkDtoSerializer extends ApiResponseSerializer<NetworkDto> {
     public SerializedApiResponse serialize(NetworkDto src) {
         return new SerializationBuilder()
                 .add("systemId", src.getId())
-                .add("systemName", StringUtils.defaultString(src.getName(), "unknown"))
+                .add("systemName", Objects.toString(src.getName(), "unknown"))
                 .add("last_checkin", src.getLastCheckin())
                 .build();
     }

@@ -575,7 +575,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canStoreSCCCredentials() throws TaskomaticApiException {
         IssAccessToken hubToken = getValidToken("dummy.hub.fqdn");
-        var hub = (IssHub) hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
+        hubManager.saveNewServer(hubToken, IssRole.HUB, null, null);
 
         // Ensure no credentials exists
         assertEquals(0, CredentialsFactory.listSCCCredentials().stream()

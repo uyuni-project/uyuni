@@ -65,6 +65,7 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
@@ -1329,7 +1330,7 @@ public class ContentSyncManager {
             relFiles.add("/repodata/repomd.xml");
         }
         for (String relFile : relFiles) {
-            Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+            Path urlPath = new File(Objects.toString(uri.getRawPath(), "/"), relFile).toPath();
             urls.add(new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
                     uri.getQuery(), null).toString());
         }
@@ -2079,9 +2080,10 @@ public class ContentSyncManager {
     }
 
     private static boolean isChannelAccessible(ChannelTemplate template) {
+        HubFactory hubFactory = new HubFactory();
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
-        boolean isISSSlave = IssFactory.getCurrentMaster() != null;
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null || hubFactory.isISSPeripheral();
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = template.getRepository().isAccessible();
@@ -2604,7 +2606,7 @@ public class ContentSyncManager {
             URI uri = new URI(url);
 
             // SMT doesn't do dir listings, so we try to get the metadata
-            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
+            Path testUrlPath = new File(Objects.toString(uri.getRawPath(), "/")).toPath();
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {

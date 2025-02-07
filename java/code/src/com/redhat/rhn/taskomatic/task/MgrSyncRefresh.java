@@ -75,6 +75,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
         }
 
         // Use mgr-inter-sync if this server is an ISS slave
+        // This is exclusively for ISSv1. Hub online Sync is using standard SCC like sync.
         if (IssFactory.getCurrentMaster() != null) {
             log.info("This server is an ISS slave, refresh using mgr-inter-sync");
             List<String> cmd = new ArrayList<>();

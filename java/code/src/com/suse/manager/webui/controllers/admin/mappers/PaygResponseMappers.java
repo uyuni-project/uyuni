@@ -33,8 +33,8 @@ public class PaygResponseMappers {
     private PaygResponseMappers() { }
 
     /**
-     * map a list of ssh connection data objets fro database to UI objects containing only the sumary data
-     * @param paygSshDataDB list of payg ssh connection data from the databse
+     * map a list of ssh connection data objets from database to UI objects containing only the summary data
+     * @param paygSshDataDB list of payg ssh connection data from the database
      * @return a list of PaygResumeResponse
      */
     public static List<PaygResumeResponse> mapPaygPropertiesResumeFromDB(List<PaygSshData> paygSshDataDB) {
@@ -53,7 +53,7 @@ public class PaygResponseMappers {
     }
 
     /**
-     * map all properties of a payg ss connection data from database objects to UI objects
+     * map all properties of a payg ssh connection data from database objects to UI objects
      * @param paygSshData payg ssh connection data from database
      * @return PaygFullResponse to be returned in the UI
      */

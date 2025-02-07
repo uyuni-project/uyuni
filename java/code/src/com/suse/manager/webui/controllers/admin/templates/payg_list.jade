@@ -12,7 +12,8 @@ script(type='text/javascript').
                 'list-payg',
                 {
                     payg_instances: document.getElementById('init_data_payg_instances').textContent,
-                    flashMessage: "#{flashMessage}"
+                    flashMessage: "#{flashMessage}",
+                    isIssPeripheral: JSON.parse("#{isIssPeripheral}")
                 }
             );
         });
