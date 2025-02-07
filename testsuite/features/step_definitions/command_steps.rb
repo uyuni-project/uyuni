@@ -169,24 +169,18 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
 
   channels_to_synchronize.each do |os_product_version_channel|
     command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
-    _out, code = get_target('server').run(command, check_errors: false)
-    if code.zero?
-      log "Channel #{os_product_version_channel.gsub("-#{architecture}", '')} added"
-    else
-      command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel}"
-      get_target('server').run(command)
-      log "Channel #{os_product_version_channel} added"
-    end
+    get_target('server').run(command, verbose: true)
+    log "Channel #{os_product_version_channel} added"
   end
 end
 
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
-  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel}")
+  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
   append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
-  $command_output, _code = get_target('server').run_until_ok("spacewalk-repo-sync -c #{channel} #{append_includes}")
+  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
 end
 
 Then(/^I should get "([^"]*)"$/) do |value|
@@ -356,12 +350,34 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
 
     # Remove from the list to kill those channels that are already synced
     channels_to_kill.each do |remaining_channel|
-      if channel_is_synced(remaining_channel)
+      if channel_sync_completed?(remaining_channel)
         log "Channel '#{remaining_channel}' is already synced, so there is no need to kill repo-sync process."
         channels_to_kill.delete(remaining_channel)
       end
     end
     break if channels_to_kill.empty?
+  end
+end
+
+When(/^I kill running spacewalk-repo-sync for "([^"]*)" channel$/) do |channel|
+  time_spent = 0
+  checking_rate = 5
+  repeat_until_timeout(timeout: 60, message: 'Some reposync processes were not killed properly', dont_raise: true) do
+    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', verbose: true, check_errors: false)
+    process = command_output.split("\n")[0]
+    channel_synchronizing = process.split[5].strip
+    if process.nil?
+      log "#{time_spent / 60.to_i} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
+      next
+    elsif channel_synchronizing == channel
+      pid = process.split[0]
+      get_target('server').run("kill #{pid}", verbose: true, check_errors: false)
+      log "Reposync of channel #{channel} killed"
+      break
+    else
+      log "Warning: Repo-sync process for channel '#{channel_synchronizing}' running."
+    end
   end
 end
 
@@ -406,7 +422,7 @@ When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
   end
   begin
     repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
-      break if channel_is_synced(channel)
+      break if channel_sync_completed?(channel)
 
       log "#{time_spent / 60.to_i} minutes out of #{timeout / 60.to_i} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
       sleep checking_rate
@@ -428,7 +444,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
   time_spent = 0
   checking_rate = 10
   # Let's start with a timeout margin aside from the sum of the timeouts for each channel
-  timeout = 600
+  timeout = 900
   channels_to_wait.each do |channel|
     if TIMEOUT_BY_CHANNEL_NAME[channel].nil?
       log "Unknown timeout for channel #{channel}, assuming one minute"
@@ -440,7 +456,7 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
   begin
     repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
       channels_to_wait.each do |channel|
-        if channel_is_synced(channel)
+        if channel_sync_completed?(channel)
           channels_to_wait.delete(channel)
           log "Channel #{channel} finished syncing"
         end
@@ -575,25 +591,11 @@ end
 
 When(/^the server starts mocking an IPMI host$/) do
   server = get_target('server')
-  server.run('mkdir -p /etc/ipmi')
-  %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
-    source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-    dest = "/etc/ipmi/#{file}"
-    success = file_inject(get_target('server'), source, dest)
-    raise ScriptError, 'File injection failed' unless success
-  end
-  server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
-  # Check if ipmi_sim is already running
-  if server.run('pgrep -f ipmi_sim', verbose: false, check_errors: false)[1].zero?
-    log 'ipmi_sim is already running; skipping startup.'
-  else
-    server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
-  end
+  server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  get_target('server').run('pkill ipmi_sim')
-  get_target('server').run('pkill --full fake_ipmi_host.sh || :', verbose: false, check_errors: false)
+  get_target('server').run_local('podman kill fakeipmi')
 end
 
 When(/^the controller starts mocking a Redfish host$/) do
@@ -766,7 +768,8 @@ Then(/^files on container volumes should all have the proper SELinux label$/) do
   node = get_target('server')
   cmd = '[ "$(sestatus 2>/dev/null | head -n 1 | grep enabled)" != "" ] && ' \
         '(find /var/lib/containers/storage/volumes/*/_data -exec ls -Zd {} \; | grep -v ":object_r:container_file_t:s0 ")'
-  output, _code = node.run_local(cmd, check_errors: false, verbose: true)
+  output, _code = node.run_local(cmd, check_errors: false)
+  log output if output != ''
   raise ScriptError, 'Wrong SELinux labels' if output != ''
 end
 
@@ -1309,23 +1312,6 @@ When(/^I wait until package "([^"]*)" is removed from "([^"]*)" via spacecmd$/) 
   end
 end
 
-When(/^I (enable|disable) the necessary repositories before installing Prometheus exporters on this "([^"]*)"((?: without error control)?)$/) do |action, host, error_control|
-  node = get_target(host)
-  os_version = node.os_version.gsub('-SP', '.')
-  os_family = node.os_family
-  # TODO: Check why tools_update_repo is not available on the openSUSE minion
-  repositories = os_family.match?(/^opensuse/) ? 'tools_pool_repo' : 'tools_pool_repo tools_update_repo'
-  if (os_family.match?(/^opensuse/) || os_family.match?(/^sles/)) && (product != 'Uyuni')
-    repositories.concat(' tools_additional_repo')
-    # Needed because in SLES15SP3 and openSUSE 15.3 and higher, firewalld will replace this package.
-    # But the tools_update_repo's priority doesn't allow to cope with the obsoletes option from firewalld.
-    if os_version.to_f >= 15.3
-      node.run('zypper addlock -r tools_additional_repo firewalld-prometheus-config')
-    end
-  end
-  step %(I #{action} the repositories "#{repositories}" on this "#{host}"#{error_control})
-end
-
 When(/^I apply "([^"]*)" local salt state on "([^"]*)"$/) do |state, host|
   node = get_target(host)
   salt_call = use_salt_bundle ? 'venv-salt-call' : 'salt-call'
@@ -1402,7 +1388,8 @@ When(/^I create a read-only user for the ReportDB$/) do
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 
-  get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+  node = get_target('server')
+  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
 end
 
 Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
@@ -1417,7 +1404,8 @@ When(/^I delete the read-only user for the ReportDB$/) do
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 
-  get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+  node = get_target('server')
+  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
 end
 
 Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/) do

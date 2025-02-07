@@ -46,6 +46,16 @@ As part of the Salt states configuring the systems, we have a state that injects
 Those repositories are not directly handled by our server, so during the reposync stage we create custom channels with new custom repositories that will parse and include the repositories injected by Sumaform.
 These custom channels will be part of the activation keys that we use to bootstrap the different clients.
 
+#### How do we speed up the workflow to onboard the clients?
+
+Normally a customer will trigger a full synchronization of a product, including all the mandatory and recommended channels. This process can take a long time, depending on the number of packages and the network speed.
+In our CI Test Suite we want to speed up this workflow by synchronizing only the necessary packages to generate the bootstrap repository for the clients.
+
+For now, this only applies to our Leap Minion in our Uyuni flavor, but the plan is to extend this to the MLM and other clients as well:
+We first need to trigger a synchronization of the channel through `spacewalk-common-channel`, but then we immediately kill that repo-sync process, we need this as otherwise the following command will fail, warning about a non-existing custom channel.
+After that, we run the command `spacewalk-repo-sync -c <channel> --include <package> --include <package> ...` for each of the packages that define as part of our bootstrap repository.
+This way we can speed up the synchronization process, and we can bootstrap the clients immediately after that. The rest of the product channels will automatically be synchronized by the scheduled tasks when it reaches the time to do so.
+
 #### Overview of Channels and Repositories
 
 The current overview of channels and repositories is as follows:

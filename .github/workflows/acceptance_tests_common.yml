@@ -8,6 +8,10 @@ on:
       server_id:
         required: true
         type: string
+      recommended_tests:
+        required: false
+        type: string
+
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
@@ -16,7 +20,7 @@ env:
   AUTH_REGISTRY: "auth_registry"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 jobs:
-  paths-filter-1:
+  filter-paths:
     runs-on: ubuntu-latest
     outputs:
       require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
@@ -25,7 +29,6 @@ jobs:
       - uses: dorny/paths-filter@v3
         id: filter
         with:
-          predicate-quantifier: 'every'
           filters: |
             java:
               - 'java/**'
@@ -34,101 +37,115 @@ jobs:
             testsuite:
               - 'testsuite/**'
               - '!testsuite/features/build_validation/**'
-  test-uyuni:
+  tests:
     runs-on: ubuntu-22.04
-    needs: paths-filter-1
-    if: ${{ needs.paths-filter-1.outputs.require_acceptance_tests == 'true' }}
+    needs: filter-paths
+    if: ${{ needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
     steps:
-      - name: fix podman
+      - name: Install Podman
         run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
-      - name: welcome_message
+      - name: Install Python dependencies
+        run: pip install pyyaml
+      - name: Welcome message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
       - uses: actions/checkout@v4
-      - name: Cache-jar-files
+      - name: Cache jar files
         uses: actions/cache@v4
         with:
           path: java/buildconf/ivy/repository/
           key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-jars-
-
-      - name: Cache-obs-to-maven files
+      - name: Cache obs-to-maven files
         uses: actions/cache@v4
         with:
           path: java/.obs-to-maven-cache
           key: ${{ runner.os }}-build-cache-uyuni-obs-to-maven-${{ hashFiles('**/java/buildconf/ivy/obs-maven-config.yaml') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-obs-to-maven-
-      - name: Cache-nodejs
+      - name: Cache NodeJS modules
         uses: actions/cache@v4
         with:
           path: web/html/src/node_modules
           key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-cache-uyuni-nodejs-
-      - name: create_tmp
+      - name: Create temporary directories
         run: ./testsuite/podman_runner/01_setup_tmp_dirs.sh
-      - name: create-podman-network
+      - name: Create Podman network
         run: ./testsuite/podman_runner/02_setup_network.sh
-      - name: start_controller_and_registry_and_buildhost
+      - name: Start controller, registry and build host
         run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh 
-      - name: create_ssh_conf
+      - name: Create SSH configuration in controller
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh 
-      - name: install_gems_in_controller
+      - name: Install gems in controller
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
-      - name: collect_and_tag_flaky_tests_in_controller
+      - name: Parse recommended tests coming from the input as XML
+        if: ${{ inputs.recommended_tests != '' }}
+        run: python .github/scripts/get_tests.py '${{ inputs.recommended_tests }}' > testsuite/run_sets/filter.yml
+      - name: Generate recommended tests as YAML
+        if: ${{ inputs.recommended_tests != '' }}
+        run: |
+          ./testsuite/podman_runner/19_generate_recommended_tests_yml.sh
+          ROW_COUNT=$(wc -l < ./testsuite/run_sets/recommended_tests.yml)
+          if [ "$ROW_COUNT" -eq 0 ] || [ "$ROW_COUNT" -gt 30 ]; then
+            echo "⚠️ WARNING: $ROW_COUNT recommended tests found. Look at the results of the full test suite instead."
+            # gh pr edit ${{ github.event.pull_request.number }} --add-label "run-full-testsuite"
+            exit 1 # Exit with error to stop the workflow
+          fi
+      - name: Collect and tag flaky tests in controller
         # Until we refactor the usage of the secret, it only runs on uyuni-project/uyuni repository branches
         if: github.repository == 'uyuni-project/uyuni'
         run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
-      - name: setup-server-container
+      - name: Setup server container
         run: ./testsuite/podman_runner/07_server_setup.sh
-      - name: start-server-container
+      - name: Start server container
         run: ./testsuite/podman_runner/08_start_server.sh
-      - name: build_code
+      - name: Build server code
         run: ./testsuite/podman_runner/09_build_server_code.sh
 #     - name: copy_ca
 #     run: podman exec server bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
 #     - name: update_ca_in_controller
 #       run: podman exec controller bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
-      - name: sle-sshminion
+      - name: Run SSH minion container
         run: ./testsuite/podman_runner/10_run_sshminion.sh
-      - name: test_from_host
+      - name: Test access to server from controller
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
-      - name: test_from_container
+      - name: Test access to server from SSH minion
         run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
-      - name: setup_sshd
+      - name: Configure SSHD in controller, server, build host and SSH minion
         run: ./testsuite/podman_runner/11_setup_sshd.sh
-      - name: run_cucumber_core
+      - name: Run Core tests
         run: ./testsuite/podman_runner/12_run_core_tests.sh
-      - name: sle-salt-minion
+      - name: Run and configure Salt Minion container
         run: ./testsuite/podman_runner/13_run_salt_sle_minion.sh
-      - name: rhlike-minion
+      - name: Run and configure RH-Like Minion container
         run: ./testsuite/podman_runner/14_run_salt_rhlike_minion.sh
-      - name: deblike-minion
+      - name: Run and configure Deb-Like Minion container
         run: ./testsuite/podman_runner/15_run_salt_deblike_minion.sh
-      - name: accept_keys
+      - name: Accept all keys
         run: ./testsuite/podman_runner/16_accept_all_keys.sh
-      - name: run_cucumber_clients
+      - name: Run init clients
         run: ./testsuite/podman_runner/17_run_init_clients_tests.sh
-      - name: split_secondary
+      - name: Split tests into multiple YAML files
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
-      - name: run_secondary_tests
-        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }} 
-      - name: get_server_logs
+      - name: Run acceptance tests
+        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
+      - name: Get server logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
-      - name: get_client_logs
+      - name: Get client logs
         if: ${{ failure() }}
         run: ./testsuite/podman_runner/21_get_client_logs.sh ${{ inputs.server_id }}
-      - name: upload_server_log_artifacts
+      - name: Upload server log artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/testing/server-logs/${{ inputs.server_id }}
-      - name: upload_client_log_artifacts
+      - name: Upload client log artifacts
         if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:

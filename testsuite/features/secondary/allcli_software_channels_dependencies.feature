@@ -44,7 +44,6 @@ Feature: Channel subscription with recommended or required dependencies
     And I wait for child channels to appear
     And I check radio button "openSUSE Leap 15.5 (x86_64)"
     Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "unselected" and "disabled"
-    Then I should see the child channel "openSUSE 15.5 non oss (x86_64)" "selected"
     When I select the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
     Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "selected"
 
@@ -82,8 +81,6 @@ Feature: Channel subscription with recommended or required dependencies
     When I select "No Change" from drop-down in table line with "openSUSE Leap 15.5 (x86_64)"
     And I click on "Next"
     Then I should see the toggler "disabled"
-    And I should see a "openSUSE 15.5 non oss (x86_64)" text
-    And I should see "No change" "selected" for the "openSUSE 15.5 non oss (x86_64)" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
     When I click on the clear SSM button

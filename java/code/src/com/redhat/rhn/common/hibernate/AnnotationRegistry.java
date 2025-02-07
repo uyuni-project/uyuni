@@ -118,6 +118,7 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerGroup;
@@ -261,6 +262,7 @@ public class AnnotationRegistry {
             ReportDBCredentials.class,
             RHUICredentials.class,
             RoleImpl.class,
+            SAPWorkload.class,
             SCCCredentials.class,
             SCCOrderItem.class,
             SCCRegCacheItem.class,
