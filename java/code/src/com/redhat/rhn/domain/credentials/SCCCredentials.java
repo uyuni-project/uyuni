@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.credentials;
 
 import com.suse.manager.model.hub.IssHub;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.persistence.DiscriminatorValue;
@@ -63,6 +65,29 @@ public class SCCCredentials extends RemoteCredentials {
     @Transient
     public boolean isPrimary() {
         return getUrl() != null;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof SCCCredentials that)) {
+            return false;
+        }
+        return new EqualsBuilder()
+                .appendSuper(super.equals(o))
+                .append(getIssHub(), that.getIssHub())
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(issHub)
+                .toHashCode();
     }
 
     @Override
