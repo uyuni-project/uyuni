@@ -100,7 +100,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
-    When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
+    When I select or deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" beta client tools
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
