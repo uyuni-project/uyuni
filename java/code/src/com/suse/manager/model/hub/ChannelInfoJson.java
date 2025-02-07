@@ -11,6 +11,8 @@
 
 package com.suse.manager.model.hub;
 
+import java.util.Objects;
+
 public class ChannelInfoJson {
 
     private final Long id;
@@ -81,4 +83,36 @@ public class ChannelInfoJson {
     public Long getParentChannelId() {
         return parentChannelId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ChannelInfoJson that)) {
+            return false;
+        }
+        return Objects.equals(getId(), that.getId()) &&
+                Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getLabel(), that.getLabel()) &&
+                Objects.equals(getSummary(), that.getSummary()) &&
+                Objects.equals(getOrgId(), that.getOrgId()) &&
+                Objects.equals(getParentChannelId(), that.getParentChannelId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getLabel(), getSummary(), getOrgId(), getParentChannelId());
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ChannelInfoJson{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", label='").append(label).append('\'');
+        sb.append(", summary='").append(summary).append('\'');
+        sb.append(", orgId=").append(orgId);
+        sb.append(", parentChannelId=").append(parentChannelId);
+        sb.append('}');
+        return sb.toString();
+    }
 }
+
