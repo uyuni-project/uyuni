@@ -154,7 +154,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     private Boolean wasOrgAdmin;
 
     @Transient
-    private EnterpriseUser euser;
+    private transient EnterpriseUser euser;
 
     /**
      * Gets the current value of id
