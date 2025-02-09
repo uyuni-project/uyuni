@@ -804,10 +804,16 @@ Then(/^I should see a "([^"]*)" button in "([^"]*)" form$/) do |arg1, arg2|
 end
 
 Then(/^I should only see success signs in the product list$/) do
-  raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
-  raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
-  raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
-  raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
+  begin
+    raise ScriptError, 'No product synchronized' if page.has_no_xpath?('//*[contains(@class, \'fa-check-circle\')]')
+    raise ScriptError, 'At least one product is not fully synchronized' if page.has_xpath?('//*[contains(@class, \'fa-spinner\')]')
+    raise ScriptError, 'Warning detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-triangle\')]')
+    raise ScriptError, 'Error detected' if page.has_xpath?('//*[contains(@class, \'fa-exclamation-circle\')]')
+  rescue ScriptError
+    get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', verbose: true, check_errors: false, buffer_size: 1_000_000)
+    get_target('server').run('pgrep -af spacewalk-repo-sync', verbose: true, check_errors: false, buffer_size: 1_000_000)
+    raise
+  end
 end
 
 Then(/^I select the "([^"]*)" repo$/) do |repo|
