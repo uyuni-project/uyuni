@@ -2509,6 +2509,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
     boolean isLeap15() {
         return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("15");
     }
+    boolean isLeap16() {
+        return ServerConstants.LEAP.equalsIgnoreCase(getOs()) && getRelease().startsWith("16");
+    }
 
     /**
      * @return true if the installer type is of openSUSE Leap Micro
