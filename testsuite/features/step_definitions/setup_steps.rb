@@ -360,7 +360,7 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath, match: :first)['for']
 
   raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
 
