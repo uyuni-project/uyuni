@@ -85,7 +85,7 @@
         <package name="kernel-default"/>
         <package name="python-base"/>
         <package name="rsync"/>
-	<package name="salt-minion"/>
+	    <package name="venv-salt-minion"/>
         <package name="suse-build-key"/>
         <package name="pkg-config"/>
         <package name="sg3_utils"/>
@@ -94,7 +94,6 @@
         <package name="dialog"/>
         <package name="grub2-snapper-plugin"/>
         <package name="snapper-zypp-plugin"/>
-
         <package name="mdadm"/>
         <package name="cryptsetup"/>
         <package name="kernel-firmware"/>

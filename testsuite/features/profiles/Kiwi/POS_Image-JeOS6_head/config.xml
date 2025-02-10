@@ -85,7 +85,6 @@
         <package name="kernel-default"/>
         <package name="python-base"/>
         <package name="rsync"/>
-	    <package name="salt-minion"/>
         <package name="venv-salt-minion"/>
         <package name="suse-build-key"/>
         <package name="pkg-config"/>
