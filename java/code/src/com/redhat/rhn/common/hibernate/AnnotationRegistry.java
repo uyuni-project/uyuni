@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.access.Namespace;
+import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
@@ -164,7 +166,7 @@ public class AnnotationRegistry {
     }
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
-            // do not add class at the endi, but keep the alphabetical order
+            // do not add class at the end, but keep the alphabetical order
             AccessToken.class,
             AddressImpl.class,
             AnsiblePath.class,
@@ -223,6 +225,7 @@ public class AnnotationRegistry {
             MinionServerFactory.class,
             MinionSummary.class,
             ModuleFilter.class,
+            Namespace.class,
             NetworkInterface.class,
             NotificationMessage.class,
             OrgAdminManagement.class,
@@ -298,7 +301,8 @@ public class AnnotationRegistry {
             UserInfo.class,
             UserNotification.class,
             VHMCredentials.class,
-            VirtualHostManagerNodeInfo.class
+            VirtualHostManagerNodeInfo.class,
+            WebEndpoint.class
     );
 
     /**

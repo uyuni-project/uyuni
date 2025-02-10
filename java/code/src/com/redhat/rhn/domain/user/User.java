@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.domain.user;
 
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
@@ -117,6 +118,10 @@ public interface User extends Serializable {
      * @return Set of Roles that this user has
      */
     Set<Role> getRoles();
+
+    Set<Namespace> getNamespaces();
+
+    void setNamespaces(Set<Namespace> namespaceIn);
 
     /**
      * Gets the permanent roles assigned to this user.

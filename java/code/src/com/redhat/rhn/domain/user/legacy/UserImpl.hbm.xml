@@ -71,6 +71,10 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <key column="user_id"/>
             <many-to-many class="com.redhat.rhn.domain.server.Server" column="server_id"/>
         </set>
+        <set name="namespaces" table="access.userNamespace">
+            <key column="user_id"/>
+            <many-to-many class="com.redhat.rhn.domain.access.Namespace" column="namespace_id"/>
+        </set>
 
     </class>
 
