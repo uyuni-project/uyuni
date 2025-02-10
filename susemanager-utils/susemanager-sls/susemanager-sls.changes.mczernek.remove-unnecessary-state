@@ -1,0 +1,1 @@
+- Remove unnecessary salt minion upgrade cleanup from highstate
