@@ -15,6 +15,7 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
@@ -210,7 +211,8 @@ public class AnnotationRegistry {
         PaygDimensionResult.class,
         TailoringFile.class,
         ScapPolicy.class,
-        RecurringScapPolicy.class
+        RecurringScapPolicy.class,
+        XccdfRuleFix.class
     );
 
     /**
