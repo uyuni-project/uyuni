@@ -1,0 +1,14 @@
+include /templates/common.jade
+
+#add-iss-peripheral
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+
+script(type='text/javascript').
+    spaImportReactPage('admin/iss/add/peripheral')
+        .then(function (module) {
+            module.renderer(
+                'add-iss-peripheral', !{hubs}
+            )
+        });

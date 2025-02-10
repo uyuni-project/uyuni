@@ -10,10 +10,11 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-import { PeripheralListData } from "./iss-list-data-props";
+import { PeripheralsList } from "../iss_data_props";
+import { Check, Radio } from "components/input";
 
-const IssHubsList = (peripheralsList: PeripheralListData) => {
-  const [peripherals] = useState(peripheralsList);
+const IssHubsList = (peripheralsList: PeripheralsList) => {
+  const [peripherals] = useState(peripheralsList.peripherals);
 
   const searchData = (row, criteria) => {
     const keysToSearch = ["fqdn"];
@@ -26,7 +27,7 @@ const IssHubsList = (peripheralsList: PeripheralListData) => {
 
   let componentContent = (
     <Table
-      data={peripherals.peripherals}
+      data={peripherals}
       identifier={(row) => row.fqdn}
       selectable={false}
       initialSortColumnKey="fqdn"
@@ -42,13 +43,18 @@ const IssHubsList = (peripheralsList: PeripheralListData) => {
           </a>
         )}
       />
-      <Column columnKey="allowSync" header={t("Allow Peripheral to Sync?")} cell={(row) => row.allowSync} />
-      <Column columnKey="syncOrgs" header={t("Sync all Orgs to Peripheral?")} cell={(row) => row.syncOrgs} />
       <Column
-        columnKey="numberOfOrgs"
+        columnKey="defaultHub"
+        header={t("Is Default Hub?")}
+        cell={(row) => <Radio items={[{ label: "is", value: row.defaultHub }]} />}
+      />
+
+      <Column columnKey="knownOrgs" header={t("Know Orgs")} cell={(row) => row.knownOrgs} />
+      <Column
+        columnKey="unmappedOrgs"
         comparator={Utils.sortByText}
-        header={t("Number of Orgs Exported")}
-        cell={(row) => row.numberOfOrgs}
+        header={t("UnmappedOrgs")}
+        cell={(row) => row.unmappedOrgs}
       />
     </Table>
   );

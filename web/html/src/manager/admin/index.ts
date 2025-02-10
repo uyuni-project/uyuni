@@ -10,4 +10,6 @@ export default {
   "admin/iss/peripheral": () => import("./iss/peripheral.renderer"),
   "admin/iss/list/hub": () => import("./iss/list/iss-hubs-list.renderer"),
   "admin/iss/list/peripheral": () => import("./iss/list/iss-peripherals-list.renderer"),
+  "admin/iss/hub": () => import("./iss/iss-hubs.renderer"),
+  "admin/iss/peripheral": () => import("./iss/iss-peripherals.renderer"),
 };

@@ -10,10 +10,10 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-import { HubListData } from "./iss-list-data-props";
+import { HubsList } from "../iss_data_props";
 
-const IssHubsList = (hubsList: HubListData) => {
-  const [hubs] = useState(hubsList);
+const IssHubsList = (hubsList: HubsList) => {
+  const [hubs] = useState(hubsList.hubs);
 
   const searchData = (row, criteria) => {
     const keysToSearch = ["fqdn"];
@@ -26,7 +26,7 @@ const IssHubsList = (hubsList: HubListData) => {
 
   let componentContent = (
     <Table
-      data={hubs.hubs}
+      data={hubs}
       identifier={(row) => row.fqdn}
       selectable={false}
       initialSortColumnKey="fqdn"
@@ -35,7 +35,7 @@ const IssHubsList = (hubsList: HubListData) => {
       <Column
         columnKey="fqdn"
         comparator={Utils.sortByText}
-        header={t("Peripherals FQDN")}
+        header={t("Hubs FQDN")}
         cell={(row) => (
           <a className="js-spa" href={`/rhn/manager/admin/iss/hub/${row.id}`}>
             {row.fqdn}
