@@ -15,7 +15,7 @@
 package com.redhat.rhn.frontend.servlets.test;
 
 import com.redhat.rhn.frontend.security.AuthenticationService;
-import com.redhat.rhn.frontend.servlets.AuthFilter;
+import com.redhat.rhn.frontend.servlets.AuthenticationFilter;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.Expectations;
@@ -32,16 +32,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * AuthFilterTest
  */
-public class AuthFilterTest extends MockObjectTestCase {
+public class AuthenticationFilterTest extends MockObjectTestCase {
 
-    private class AuthFilterStub extends AuthFilter {
+    private class AuthenticationFilterStub extends AuthenticationFilter {
         @Override
         public void setAuthenticationService(AuthenticationService service) {
             super.setAuthenticationService(service);
         }
     }
 
-    private AuthFilterStub filter;
+    private AuthenticationFilterStub filter;
 
     private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;
@@ -52,7 +52,7 @@ public class AuthFilterTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() {
-        filter = new AuthFilterStub();
+        filter = new AuthenticationFilterStub();
 
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
