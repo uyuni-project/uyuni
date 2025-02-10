@@ -1,3 +1,5 @@
+import "./schedule-scap-scan.css";
+
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import { Messages, Utils } from "components/messages/messages";
@@ -124,8 +126,8 @@ class ScheduelAuditScan extends React.Component<PropsType, StateType> {
         key="create-btn"
         id="create-btn"
         className="btn-success"
-        icon="fa-plus"
-        text={t("Create")}
+        icon="fa-clock-o"
+        text={t("Schedule")}
         disabled={this.state.isInvalid}
       />,
     ];
@@ -248,16 +250,7 @@ class ScheduelAuditScan extends React.Component<PropsType, StateType> {
       </InnerPanel>,
     ];
 
-    const css = `
-    .my-checkbox-tmp {
-           margin-top: 10px !important;
-           margin-left: 14px !important;
-           margin-right: 12px !important;
-         }
-         .my-checkbox-tip {
-                    color: #425074;
-                  }
-`
+
     const { dataStreamName, xccdfProfileId, tailoringFile, tailoringProfileID, selectedScapPolicy, tailoringFileProfiles } = this.state;
     return (
       <div>
@@ -270,94 +263,107 @@ class ScheduelAuditScan extends React.Component<PropsType, StateType> {
         <Panel headingLevel="h3" title="Schedule New XCCDF Scan" >
           <Form
             model={this.state.model}
-            className="image-profile-form"
+            className="schedule-scap-scan-form"
             onChange={this.onFormChange}
             onSubmit={(e) => (this.onCreate(e))}
             onValidate={this.onValidate}
           >
 
-            <Select
-              key="scapPolicy"
-              name="scapPolicy"
-              label={t("Scap Policy")}
-              placeholder={t("No Policy Selected")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              isClearable
-              onChange={this.handleScapPolicyChange}
-              options={this.state.scapPolicies.map((k) => ({ value: k.id, label: k.policyName }))}
-            />
+            <FormGroup>
+              <Label name={t("Scap Policy")} className="col-md-3" />
+              <div className="col-md-6">
+                <Select
+                  key="scapPolicy"
+                  name="scapPolicy"
+                  placeholder={t("No Policy Selected")}
+                  isClearable
+                  onChange={this.handleScapPolicyChange}
+                  options={this.state.scapPolicies.map((k) => ({ value: k.id, label: k.policyName }))}
+                />
+              </div>
+            </FormGroup>
 
-            <Select
-              key="dataStreamName"
-              name="dataStreamName"
-              label={t("Scap content")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-              isClearable
-              defaultValue={dataStreamName}
-              disabled={!!dataStreamName} // Disable if dataStreamName is set
-              onChange={this.handleDataStreamChange}
-              options={window.scapDataStreams.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-                .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-xccdf.xml")).toUpperCase() }))}
-            />
+            <FormGroup>
+              <Label name={t("Scap content")} className="col-md-3" required />
+              <div className="col-md-6">
+                <Select
+                  key="dataStreamName"
+                  name="dataStreamName"
+                  isClearable
+                  defaultValue={dataStreamName}
+                  disabled={!!dataStreamName}
+                  onChange={this.handleDataStreamChange}
+                  options={window.scapDataStreams.sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
+                    .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-xccdf.xml")).toUpperCase() }))}
+                />
+              </div>
+            </FormGroup>
 
 
-            <Select
-              key="xccdfProfileId"
-              name="xccdfProfileId"
-              label={t("XCCDF Profile")}
-              placeholder={t("Select xccdf profile...")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              required
-              defaultValue={xccdfProfileId}
-              disabled={!!xccdfProfileId}
-              isClearable
-              onChange={this.handleImageTypeChange}
-              options={this.state.imageTypes.map((k) => ({ value: k.id, label: k.title }))}
-            />
-            <Select
-              key="tailoringFile"
-              name="tailoringFile"
-              label={t("Tailoring File")}
-              placeholder={t("Select Tailoring file...")}
-              onChange={this.handleTailoringFileChange}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              isClearable
-              defaultValue={tailoringFile}
-              disabled={!!tailoringFile}
-              options={this.state.tailoringFiles.map((k) => ({ value: k.fileName, label: k.name }))}
-            />
+            <FormGroup>
+              <Label name={t("XCCDF Profile")} className="col-md-3" required />
+              <div className="col-md-6">
+                <Select
+                  key="xccdfProfileId"
+                  name="xccdfProfileId"
+                  placeholder={t("Select xccdf profile...")}
+                  defaultValue={xccdfProfileId}
+                  disabled={!!xccdfProfileId}
+                  isClearable
+                  onChange={this.handleImageTypeChange}
+                  options={this.state.imageTypes.map((k) => ({ value: k.id, label: k.title }))}
+                />
+              </div>
+            </FormGroup>
+            <FormGroup>
+              <Label name={t("Tailoring File")} className="col-md-3" />
+              <div className="col-md-6">
+                <Select
+                  key="tailoringFile"
+                  name="tailoringFile"
+                  placeholder={t("Select Tailoring file...")}
+                  onChange={this.handleTailoringFileChange}
+                  isClearable
+                  defaultValue={tailoringFile}
+                  disabled={!!tailoringFile}
+                  options={this.state.tailoringFiles.map((k) => ({ value: k.fileName, label: k.name }))}
+                />
+              </div>
+            </FormGroup>
 
-            <Select
-              key="tailoringProfileID"
-              name="tailoringProfileID"
-              label={t("Profile from Tailoring File")}
-              placeholder={t("Select profile...")}
-              onChange={this.handleTokenChange}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              isClearable
-              defaultValue={tailoringProfileID}
-              disabled={!!tailoringProfileID}
-              options={this.state.tailoringFileProfiles.map((k) => ({ value: k.id, label: k.title }))}
-            />
-            {/*<div className="form-group">
-              <label className="control-label col-md-3" >Fetch Remote Content:</label>
-              <style>{css}</style>
-              <input
-                type="checkbox"
-                id={"checkbox-for-"}
-                value="billa"
-                onChange={this.handleTokenChange}
-                title={t("This product is mirrored.")}
-                className="my-checkbox-tmp"
-              />
-              <span className="my-checkbox-tip">This requires a lot of memory, make sure this minion has enough memory available!</span>
-            </div>*/}
+            <FormGroup>
+              <Label name={t("Profile from Tailoring File")} className="col-md-3" />
+              <div className="col-md-6">
+                <Select
+                  key="tailoringProfileID"
+                  name="tailoringProfileID"
+                  placeholder={t("Select profile...")}
+                  onChange={this.handleTokenChange}
+                  isClearable
+                  defaultValue={tailoringProfileID}
+                  disabled={!!tailoringProfileID}
+                  options={this.state.tailoringFileProfiles.map((k) => ({ value: k.id, label: k.title }))}
+                />
+              </div>
+            </FormGroup>
+
+            <FormGroup>
+              <Label name={t("Fetch Remote Content")} className="col-md-3" />
+              <div className="col-md-6">
+                <div className="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      className="fetch-remote-checkbox"
+                      onChange={this.handleTokenChange}
+                    />
+                    <span className="fetch-remote-help">
+                      {t("This requires a lot of memory, make sure this minion has enough memory available!")}
+                    </span>
+                  </label>
+                </div>
+              </div>
+            </FormGroup>
 
             <div className="panel-body">
               <ActionSchedule

@@ -101,11 +101,13 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.audit.ScapContent;
+import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfIdentSystem;
 import com.redhat.rhn.domain.audit.XccdfProfile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfRuleResult;
 import com.redhat.rhn.domain.audit.XccdfRuleResultType;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -777,12 +779,14 @@ public class AnnotationRegistry {
             XccdfIdent.class,
             XccdfIdentSystem.class,
             XccdfProfile.class,
+            XccdfRuleFix.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
             WebSessionImpl.class,
             XccdfTestResult.class,
             WebEndpoint.class,
             ScapContent.class,
+            ScapPolicy.class,
             TailoringFile.class
     );
 

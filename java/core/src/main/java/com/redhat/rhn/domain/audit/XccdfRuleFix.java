@@ -1,30 +1,16 @@
 package com.redhat.rhn.domain.audit;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.suse.manager.webui.utils.gson.ScapPolicyDetailJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import javax.persistence.*;
 
+/**
+ * XccdfRuleFix entity representing remediation information for XCCDF rules.
+ * Contains the fix/remediation script or instructions for a specific XCCDF rule.
+ */
 @Entity
 @Table(name = "suseXccdfRuleFix")
-@SqlResultSetMapping(
-        name = "ScapPolicyDetailMapping",
-        classes = @ConstructorResult(
-                targetClass = ScapPolicyDetailJson.class,
-                columns = {
-                        @ColumnResult(name = "scapActionId", type = Long.class),
-                        @ColumnResult(name = "scapPolicyId", type = Long.class),
-                        @ColumnResult(name = "serverId", type = Long.class),
-                        @ColumnResult(name = "serverName", type = String.class),
-                        @ColumnResult(name = "pickupTime", type = java.time.LocalDateTime.class),  // pickup_time as LocalDateTime
-                        @ColumnResult(name = "Passed", type = Long.class),
-                        @ColumnResult(name = "Failed", type = Long.class),
-                        @ColumnResult(name = "Other", type = Long.class)
-                }
-        )
-)
 public class XccdfRuleFix {
     private Long id;
     private String identifier;

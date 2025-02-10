@@ -15,13 +15,12 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import com.redhat.rhn.domain.audit.ScapContent;
-import com.redhat.rhn.domain.audit.ScapFactory;
-import com.redhat.rhn.domain.audit.ScapPolicy;
-import com.redhat.rhn.domain.audit.TailoringFile;
+import com.redhat.rhn.domain.audit.*;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
+import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
+import com.redhat.rhn.manager.audit.ScapManager;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.utils.Json;
@@ -31,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,6 +58,9 @@ import static spark.Spark.post;
 public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
     private static final Gson GSON = Json.GSON;
+    private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
+    private static final String SCAP_CONTENT_STANDARD_DIR = "/srv/susemanager/scap/ssg/content";
+
 
     /**
      * Invoked from Router. Initialize routes for SCAP audit Views.
@@ -100,6 +103,12 @@ public class ScapAuditController {
           withCsrfToken(withDocsLocale(withUserAndServer(this::scheduleAuditScanView))),
           jade);
         //post("manager/api/audit/schedule/create", withUser(ScapAuditController::scheduleAuditScan));
+
+        //rules
+
+        get("/manager/audit/scap/scan/rule-result-details/:sid/:rrid",
+          withCsrfToken(withDocsLocale(withUserAndServer(ScapAuditController::createRuleResultView))), jade);
+
 
     }
     /**
@@ -150,9 +159,6 @@ public class ScapAuditController {
         Map<String, Object> data = new HashMap<>();
         return new ModelAndView(data, "templates/audit/create-tailoring-file.jade");
     }
-
-    private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
-    private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/scap-content";
 
     /**
      * Create a new Tailoring file
@@ -485,7 +491,7 @@ public class ScapAuditController {
         
         scapContentList.forEach(content -> {
             try {
-                Path filePath = Paths.get(SCAP_CONTENT_DIR, content.getFileName());
+                Path filePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getFileName());
                 Files.deleteIfExists(filePath);
             } catch (IOException e) {
                 LOG.error("Error deleting SCAP content file: {}", content.getFileName(), e);
@@ -523,8 +529,8 @@ public class ScapAuditController {
             if (existingContent == null) {
                 scapContent.setOrg(user.getOrg());
             }
-            ensureDirectoryExists(SCAP_CONTENT_DIR);
-            saveFileToDirectory(tailoringFileParam, SCAP_CONTENT_DIR);
+            ensureDirectoryExists(SCAP_CONTENT_STANDARD_DIR);
+            saveFileToDirectory(tailoringFileParam, SCAP_CONTENT_STANDARD_DIR);
             scapContent.setFileName(tailoringFileParam.getName());
 
             ScapFactory.saveScapContent(scapContent);
@@ -548,8 +554,6 @@ public class ScapAuditController {
     private ModelAndView scheduleAuditScanView(Request request, Response response, User user, Server server) {
         List<String> imageTypesDataFromTheServer = new ArrayList<>();
         imageTypesDataFromTheServer.add("dockerfile");
-
-        final String SCAP_CONTENT_STANDARD_DIR = "/srv/www/htdocs/pub/scap/ssg/content";
         File scapContentDir = new File(SCAP_CONTENT_STANDARD_DIR);
         List<String> collect1 = Arrays.stream(scapContentDir.listFiles((dir, name) -> name.endsWith("-ds.xml")))
           .map(s -> s.getName().toUpperCase().split("-DS.XML")[0]).collect(Collectors.toList());
@@ -586,6 +590,41 @@ public class ScapAuditController {
 
         return new ModelAndView(data, "templates/minion/schedule-scap-scan.jade");
     }
+
+    /**
+     * Returns a view to display create form
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView createRuleResultView(Request req, Response res, User user, Server server) {
+
+        String serverId = req.params("sid");
+        Long ruleResultId = Long.parseLong(req.params("rrid"));
+        XccdfRuleResultDto ruleResult = ScapManager.ruleResultById(ruleResultId);
+        /*Optional<XccdfRuleFix> xccdfRuleFix =
+                ScapFactory.lookupRuleRemediation(ruleResult.getTestResult().getIdentifier(),
+                        ruleResult.getDocumentIdref());*/
+        Optional<XccdfRuleFix> xccdfRuleFix = ScapFactory.lookupRuleRemediation(ruleResult.getDocumentIdref());
+        String remediation = xccdfRuleFix.map(fix -> fix.getRemediation())
+          .orElse("No remediation available");
+
+
+        List<String> imageTypesDataFromTheServer = new ArrayList<>();
+        imageTypesDataFromTheServer.add("dockerfile");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("identifier",ruleResult.getDocumentIdref());
+        data.put("result", ruleResult.getLabel());
+        data.put("parentScanUrl","/rhn/systems/details/audit/XccdfDetails.do?sid="+serverId+ "&xid="+ruleResultId );
+        data.put("parentScanProfile",ruleResult.getTestResult().getIdentifier());
+        data.put("remediation", StringEscapeUtils.escapeJson(remediation));
+        data.put("profileId", "----");
+        return new ModelAndView(data, "templates/minion/rule-result-detail.jade");
+    }
+
     /**
      * Creates a JSON object for an {@link TailoringFile} instance
      *

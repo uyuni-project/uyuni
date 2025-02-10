@@ -357,34 +357,42 @@ public class ScapFactory extends HibernateFactory {
 
     /**
      * Save the XccdfRuleFix object
-     * @param xccdfRuleFix
+     * @param xccdfRuleFix the XccdfRuleFix to save
      */
-    public static void  saveXccfRuleFix(XccdfRuleFix xccdfRuleFix) {
+    public static void saveXccfRuleFix(XccdfRuleFix xccdfRuleFix) {
         singleton.saveObject(xccdfRuleFix, true);
     }
+
     /**
-     * Find a {@link XccdfRuleFix} by identified and benchmark id.
-     * @param benchmarkId benchmarkId
+     * Find a {@link XccdfRuleFix} by identifier and benchmark id.
+     * @param benchmarkId benchmark id
      * @param identifier identifier
-     * @return the {@link XccdfRuleResultType} if any
+     * @return the {@link XccdfRuleFix} if any
      */
     public static Optional<XccdfRuleFix> lookupRuleRemediation(String benchmarkId, String identifier) {
-        return getSession().createCriteria(XccdfRuleFix.class)
-                .add(Restrictions.eq("benchMarkId", benchmarkId))
-                .add(Restrictions.eq("identifier", identifier))
-                .list()
-                .stream().findFirst();
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
+        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
+        criteria.where(
+            builder.and(
+                builder.equal(root.get("benchMarkId"), benchmarkId),
+                builder.equal(root.get("identifier"), identifier)
+            )
+        );
+        return getSession().createQuery(criteria).getResultStream().findFirst();
     }
+
     /**
-     * Find a {@link XccdfRuleFix} by identified.
+     * Find a {@link XccdfRuleFix} by identifier.
      * @param identifier identifier
-     * @return the {@link XccdfRuleResultType} if any
+     * @return the {@link XccdfRuleFix} if any
      */
     public static Optional<XccdfRuleFix> lookupRuleRemediation(String identifier) {
-        return getSession().createCriteria(XccdfRuleFix.class)
-                .add(Restrictions.eq("identifier", identifier))
-                .list()
-                .stream().findFirst();
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
+        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
+        criteria.where(builder.equal(root.get("identifier"), identifier));
+        return getSession().createQuery(criteria).getResultStream().findFirst();
     }
 
 

@@ -4,6 +4,7 @@ package com.redhat.rhn.domain.audit;
 import com.google.gson.annotations.Expose;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.org.Org;
+import com.suse.manager.webui.utils.gson.ScapPolicyDetailJson;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -12,6 +13,22 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "suseScapPolicy")
+@SqlResultSetMapping(
+        name = "ScapPolicyDetailMapping",
+        classes = @ConstructorResult(
+                targetClass = ScapPolicyDetailJson.class,
+                columns = {
+                        @ColumnResult(name = "scapActionId", type = Long.class),
+                        @ColumnResult(name = "scapPolicyId", type = Long.class),
+                        @ColumnResult(name = "serverId", type = Long.class),
+                        @ColumnResult(name = "serverName", type = String.class),
+                        @ColumnResult(name = "pickupTime", type = java.time.LocalDateTime.class),
+                        @ColumnResult(name = "Passed", type = Long.class),
+                        @ColumnResult(name = "Failed", type = Long.class),
+                        @ColumnResult(name = "Other", type = Long.class)
+                }
+        )
+)
 public class ScapPolicy extends BaseDomainHelper {
 
     // Unique identifier for the SCAP policy
