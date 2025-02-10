@@ -26,9 +26,6 @@ import com.redhat.rhn.manager.session.SessionManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.struts.Globals;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
 
 import java.io.IOException;
 import java.util.Date;
@@ -43,12 +40,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * AuthFilter - a servlet filter to ensure authenticated user info is put at
- * request scope properly
+ * A servlet filter to ensure authenticated user info is put at request scope properly
  */
-public class AuthFilter implements Filter {
+public class AuthenticationFilter implements Filter {
 
-    private static Logger log = LogManager.getLogger(AuthFilter.class);
+    private static final Logger LOG = LogManager.getLogger(AuthenticationFilter.class);
 
     private AuthenticationService authenticationService;
 
@@ -67,20 +63,19 @@ public class AuthFilter implements Filter {
 
     /** {@inheritDoc} */
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response,
-                         FilterChain chain) throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-        if (log.isDebugEnabled()) {
-            log.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("ENTER AuthFilter.doFilter: {} [{}] ({})", request.getRemoteAddr(), new Date(),
                     ((HttpServletRequest) (request)).getRequestURI());
         }
 
-        if (authenticationService.validate((HttpServletRequest)request,
-                (HttpServletResponse)response)) {
+        if (authenticationService.validate((HttpServletRequest) request, (HttpServletResponse) response)) {
 
-            HttpServletRequest hreq = new
-                    RhnHttpServletRequest((HttpServletRequest)request);
+            HttpServletRequest hreq = new RhnHttpServletRequest((HttpServletRequest) request);
 
+            // TODO: Not required anymore
             // Prevent read-only API users from using the web UI
             RequestContext requestContext = new RequestContext(hreq);
             User user = requestContext.getCurrentUser();
@@ -100,27 +95,29 @@ public class AuthFilter implements Filter {
                         CSRFTokenValidator.validate(hreq);
                     }
                     catch (CSRFTokenException e) {
-                        // send HTTP 403 if security token validation failed
+                        // send HTTP 401 if security token validation failed
                         HttpServletResponse hres = (HttpServletResponse) response;
-                        hres.sendError(HttpServletResponse.SC_FORBIDDEN,
-                                e.getMessage());
+                        hres.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
                         return;
                     }
                 }
             }
+
+            // TODO: Review try-catch
             try {
                 chain.doFilter(request, response);
             }
             catch (PermissionException e) {
                 HttpServletResponse httpResponse = (HttpServletResponse) response;
-                httpResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 //forward to permissions error page
+                // TODO: API response returns HTML
+                // TODO: Use <error-page> in web.xml
                 request.setAttribute("error", e);
                 request.getRequestDispatcher("/WEB-INF/pages/common/errors/permission.jsp")
                         .forward(request, response);
             }
-            authenticationService.refresh((HttpServletRequest) request,
-                    (HttpServletResponse) response);
+            authenticationService.refresh((HttpServletRequest) request, (HttpServletResponse) response);
         }
         else {
             HttpServletRequest servletRequest = (HttpServletRequest) request;
@@ -141,19 +138,6 @@ public class AuthFilter implements Filter {
                 authenticationService.redirectToLogin(servletRequest, servletResponse);
             }
         }
-    }
-
-    private void addErrorMessage(HttpServletRequest hreq, String msgKey, String[] args) {
-        ActionMessages ams = new ActionMessages();
-        ams.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
-        hreq.getSession().setAttribute(Globals.ERROR_KEY, ams);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void destroy() {
     }
 
     /**

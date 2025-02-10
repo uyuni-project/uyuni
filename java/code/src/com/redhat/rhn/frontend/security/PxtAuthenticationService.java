@@ -26,9 +26,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -47,45 +46,39 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
 
     static {
         // Login routes
-        TreeSet<String> set = new TreeSet<>();
-        set.add("/rhn/newlogin/");
-        set.add("/rhn/manager/login");
-
-        LOGIN_URIS = Collections.unmodifiableSet(set);
+        Set<String> routes = new HashSet<>();
+        routes.add("/rhn/newlogin/");
+        routes.add("/rhn/manager/login");
+        LOGIN_URIS = Set.copyOf(routes);
 
         // Unauthenticated routes
-        set = new TreeSet<>(set);
-        set.add("/rhn/rpc/api");
-        set.add("/rhn/help/");
-        set.add("/rhn/apidoc");
-        set.add("/rhn/errors");
-        set.add("/rhn/kickstart/DownloadFile");
-        set.add("/rhn/ty/TinyUrl");
-        set.add("/css");
-        set.add("/img");
-        set.add("/img/favicon.ico");
-        set.add("/rhn/common/DownloadFile");
-        set.add("/rhn/manager/sso");
+        routes.add("/rhn/rpc/api");
+        routes.add("/rhn/help/");
+        routes.add("/rhn/apidoc");
+        routes.add("/rhn/errors");
+        routes.add("/rhn/kickstart/DownloadFile");
+        routes.add("/rhn/ty/TinyUrl");
+        routes.add("/css");
+        routes.add("/img");
+        routes.add("/img/favicon.ico");
+        routes.add("/rhn/common/DownloadFile");
+        routes.add("/rhn/manager/sso");
         // password-reset-link destination
-        set.add("/rhn/ResetLink");
-        set.add("/rhn/ResetPasswordSubmit");
-        set.add("/rhn/saltboot");
-        set.add("/rhn/hub");
-
+        routes.add("/rhn/ResetLink");
+        routes.add("/rhn/ResetPasswordSubmit");
+        routes.add("/rhn/saltboot");
+        routes.add("/rhn/hub");
         // HTTP API public endpoints
-        set.addAll(HttpApiRegistry.getUnautenticatedRoutes());
-
-        UNPROTECTED_URIS = Collections.unmodifiableSet(set);
+        routes.addAll(HttpApiRegistry.getUnautenticatedRoutes());
+        UNPROTECTED_URIS = Set.copyOf(routes);
 
         // CSRF whitelist
-        set = new TreeSet<>(set);
-        set.add("/rhn/common/DownloadFile");
-        // search (safe to be unprotected, since it has no modifying side-effects)
-        set.add("/rhn/Search.do");
-        set.add("/rhn/manager/api/");
-        set.add("/rhn/manager/upload/image");
-
-        POST_UNPROTECTED_URIS = Collections.unmodifiableSet(set);
+        routes.add("/rhn/common/DownloadFile");
+        // Search (safe to be unprotected, since it has no modifying side-effects)
+        routes.add("/rhn/Search.do");
+        routes.add("/rhn/manager/api/");
+        routes.add("/rhn/manager/upload/image");
+        POST_UNPROTECTED_URIS = Set.copyOf(routes);
     }
 
     private PxtSessionDelegate pxtDelegate;
