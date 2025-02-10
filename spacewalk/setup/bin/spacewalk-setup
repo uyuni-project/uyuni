@@ -600,7 +600,7 @@ sub generate_server_cert {
 
   $params{'cert-expiration'} *= 365;
 
-  my @opts = ("--gen-server", "--no-rpm");
+  my @opts = ("--gen-server");
 
   foreach my $name (keys %params) {
     next unless ($params{$name});
