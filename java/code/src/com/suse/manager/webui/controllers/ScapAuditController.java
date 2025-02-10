@@ -100,6 +100,12 @@ public class ScapAuditController {
                 withCsrfToken(withDocsLocale(withUserAndServer(this::scheduleAuditScanView))),
                 jade);
         post("manager/api/audit/schedule/create", withUser(ScapAuditController::scheduleAuditScan));
+
+        //rules
+
+        get("/manager/audit/scap/scan/rule-result-details/:sid/:rrid",
+                withCsrfToken(withDocsLocale(withUserAndServer(ScapAuditController::createRuleResultView))), jade);
+
     }
 
 
@@ -505,6 +511,39 @@ public class ScapAuditController {
         //data.put("tailoringFiles", Json.GSON.toJson(tailoringFiles.));
         data.put("scapPolicies", scapPoliciesJson);
         return json(res, scapPoliciesJson, new TypeToken<>() { });
+    }
+    /**
+     * Returns a view to display create form
+     *
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return the model and view
+     */
+    public static ModelAndView createRuleResultView(Request req, Response res, User user, Server server) {
+
+        String serverId = req.params("sid");
+        Long ruleResultId = Long.parseLong(req.params("rrid"));
+        XccdfRuleResultDto ruleResult = ScapManager.ruleResultById(ruleResultId);
+        /*Optional<XccdfRuleFix> xccdfRuleFix =
+                ScapFactory.lookupRuleRemediation(ruleResult.getTestResult().getIdentifier(),
+                        ruleResult.getDocumentIdref());*/
+        Optional<XccdfRuleFix> xccdfRuleFix = ScapFactory.lookupRuleRemediation(ruleResult.getDocumentIdref());
+        String remediation = xccdfRuleFix.map(fix -> fix.getRemediation())
+                .orElse("No remediation available");
+
+
+        List<String> imageTypesDataFromTheServer = new ArrayList<>();
+        imageTypesDataFromTheServer.add("dockerfile");
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("identifier",ruleResult.getDocumentIdref());
+        data.put("result", ruleResult.getLabel());
+        data.put("parentScanUrl","/rhn/systems/details/audit/XccdfDetails.do?sid="+serverId+ "&xid="+ruleResultId );
+        data.put("parentScanProfile",ruleResult.getTestResult().getIdentifier());
+        data.put("remediation", StringEscapeUtils.escapeJson(remediation));
+        data.put("profileId", "----");
+        return new ModelAndView(data, "templates/minion/rule-result-detail.jade");
     }
 
 }
