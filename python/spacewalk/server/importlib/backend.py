@@ -26,7 +26,7 @@ import sys
 
 from uyuni.common.usix import raise_with_tb
 from uyuni.common import rhn_rpm
-from spacewalk.common.rhnConfig import CFG
+from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.common.rhnException import rhnFault
 from spacewalk.common.rhnLog import log_debug
 from spacewalk.satellite_tools import syncLib
@@ -170,11 +170,9 @@ class Backend:
 
     # pylint: disable-next=invalid-name
     def processChangeLog(self, changelogHash):
-        if (
-            CFG.has_key("package_import_skip_changelog")
-            and CFG.package_import_skip_changelog
-        ):
-            return
+        with cfg_component(None) as cfg:
+            if cfg.get("package_import_skip_changelog"):
+                return None
 
         if not changelogHash:
             return
@@ -1122,12 +1120,9 @@ class Backend:
             "susePackageEula": "package_id",
             "rhnPackageExtraTag": "package_id",
         }
-
-        if (
-            CFG.has_key("package_import_skip_changelog")
-            and CFG.package_import_skip_changelog
-        ):
-            del childTables["rhnPackageChangeLogRec"]
+        with cfg_component(None) as cfg:
+            if cfg.get("package_import_skip_changelog"):
+                del childTables["rhnPackageChangeLogRec"]
 
         for package in packages:
             if not isinstance(package, Package):
@@ -3292,10 +3287,11 @@ class Backend:
     def validate_pks(self):
         # If nevra is enabled use checksum as primary key
         tbs = self.tables["rhnPackage"]
-        if not CFG.ENABLE_NVREA:
-            # remove checksum from a primary key if nevra is disabled.
-            if "checksum_id" in tbs.pk:
-                tbs.pk.remove("checksum_id")
+        with cfg_component("server") as cfg:
+            if not cfg.ENABLE_NVREA:
+                # remove checksum from a primary key if nevra is disabled.
+                if "checksum_id" in tbs.pk:
+                    tbs.pk.remove("checksum_id")
 
 
 # Returns a tuple for the hash's values

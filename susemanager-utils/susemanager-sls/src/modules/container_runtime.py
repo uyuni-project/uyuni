@@ -23,8 +23,7 @@ import os
 import re
 try:
     from salt.utils import fopen
-# pylint: disable-next=bare-except
-except:
+except ImportError:
     from salt.utils.files import fopen
 
 RUNTIME_DOCKER = 'docker'

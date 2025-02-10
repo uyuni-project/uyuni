@@ -85,6 +85,12 @@ When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
 end
 
+When(/^I select or deselect "([^"]*)" beta client tools$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  product = find(:xpath, xpath)
+  product.set($beta_enabled) if product
+end
+
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
   repeat_until_timeout(timeout: timeout.to_i, message: "could still find a sub list for tree item #{item}") do
     xpath = "//span[contains(text(), '#{item}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/i[contains(@class, 'fa-angle-')]"
@@ -355,6 +361,7 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
   channel_checkbox_id = find(:xpath, xpath, match: :prefer_exact)['for']
+
 
   raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
 

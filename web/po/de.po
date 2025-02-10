@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 14:15+0100\n"
-"PO-Revision-Date: 2025-01-18 12:50+0000\n"
+"PO-Revision-Date: 2025-02-02 16:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -1708,10 +1708,8 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "Proxy"
+msgstr "HTTP-Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
@@ -1743,10 +1741,8 @@ msgid "Products"
 msgstr ""
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Actions"
 msgid "PAYG Connections"
-msgstr "Aktionen"
+msgstr "PAYG-Verbindungen"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
