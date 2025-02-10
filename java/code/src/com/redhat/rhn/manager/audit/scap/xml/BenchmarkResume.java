@@ -16,12 +16,15 @@ package com.redhat.rhn.manager.audit.scap.xml;
 
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
 import org.simpleframework.xml.Root;
+
+import java.util.List;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
-@Root(name = "benchmark-resume", strict = false)
+@Root(name = "/", strict = false)
 public class BenchmarkResume {
 
     @Attribute
@@ -36,6 +39,8 @@ public class BenchmarkResume {
     @Element(name = "TestResult")
     private TestResult testResult;
 
+    @ElementList(name = "rule", inline=true, required = false)
+    private List<Rule> rules;
     /**
      * @return id to get
      */
@@ -90,6 +95,14 @@ public class BenchmarkResume {
      */
     public void setTestResult(TestResult testResultIn) {
         this.testResult = testResultIn;
+    }
+
+    public List<Rule> getRules() {
+        return rules;
+    }
+
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
     }
 }
 
