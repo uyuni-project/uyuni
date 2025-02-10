@@ -14,6 +14,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.access.Namespace;
+import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
@@ -179,6 +181,8 @@ public class AnnotationRegistry {
         CloudRmtHost.class,
         PaygSshData.class,
         PaygCredentialsProduct.class,
+        WebEndpoint.class,
+        Namespace.class,
         Task.class,
         RecurringHighstate.class,
         RecurringState.class,
