@@ -1,0 +1,1 @@
+- Handle pkg metadata containing float instead of an int (GH#9613)
