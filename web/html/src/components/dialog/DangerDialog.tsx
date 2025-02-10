@@ -7,7 +7,7 @@ type Props = DialogProps & {
   /** Text of the submit button */
   submitText: string;
   /** Icon of the submit button */
-  submitIcon: string;
+  submitIcon?: string;
   /** Submit button class name */
   btnClass?: string;
   /** Data related to the dialog. This is passed as parameter to 'onConfirm*' handlers */
