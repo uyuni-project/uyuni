@@ -10,12 +10,12 @@ type RendererProps = {
   serverId?: any;
 };
 
-export const renderer = (id: string, { serverId }: RendererProps = {}) => {
+export const renderer = (parent: Element, { serverId }: RendererProps = {}) => {
   SpaRenderer.renderNavigationReact(
     <>
       <MessagesContainer />
       <PackageStates serverId={serverId} />
     </>,
-    document.getElementById(id)
+    parent
   );
 };

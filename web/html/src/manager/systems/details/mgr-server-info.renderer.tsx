@@ -17,7 +17,7 @@ type RendererProps = {
 };
 
 export const renderer = (
-  id: string,
+  parent: Element,
   {
     serverId,
     name,
@@ -42,6 +42,6 @@ export const renderer = (
       reportDbLastSynced={reportDbLastSynced}
       isAdmin={isAdmin}
     />,
-    document.getElementById(id)
+    parent
   );
 };

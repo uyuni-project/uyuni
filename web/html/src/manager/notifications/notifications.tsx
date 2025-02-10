@@ -95,4 +95,4 @@ class Notifications extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) => SpaRenderer.renderGlobalReact(<Notifications />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderGlobalReact(<Notifications />, parent);

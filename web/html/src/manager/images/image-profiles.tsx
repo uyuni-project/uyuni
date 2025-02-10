@@ -253,5 +253,4 @@ class ImageProfiles extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<ImageProfiles />, document.getElementById("image-profiles"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<ImageProfiles />, parent);

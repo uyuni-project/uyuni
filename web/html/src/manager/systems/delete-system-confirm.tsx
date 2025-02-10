@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export const renderer = (id: string) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <DeleteSystem
       serverId={window.getServerIdToDelete()}
@@ -21,5 +21,5 @@ export const renderer = (id: string) =>
       buttonText={t("Delete Profile")}
       buttonClass="btn-danger"
     />,
-    document.getElementById(id)
+    parent
   );

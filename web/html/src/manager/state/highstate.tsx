@@ -173,4 +173,4 @@ class Highstate extends React.Component<HighstateProps, HighstateState> {
   }
 }
 
-export const renderer = () => SpaRenderer.renderNavigationReact(<Highstate />, document.getElementById("highstate"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<Highstate />, parent);

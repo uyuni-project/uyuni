@@ -825,8 +825,5 @@ class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(
-    <ImageView runtimeInfoEnabled={window.isRuntimeInfoEnabled} />,
-    document.getElementById("image-view")
-  );
+export const renderer = (parent: Element) =>
+  SpaRenderer.renderNavigationReact(<ImageView runtimeInfoEnabled={window.isRuntimeInfoEnabled} />, parent);

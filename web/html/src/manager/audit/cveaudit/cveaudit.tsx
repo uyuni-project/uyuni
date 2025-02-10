@@ -540,4 +540,4 @@ class CVEAudit extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () => SpaRenderer.renderNavigationReact(<CVEAudit />, document.getElementById("cveaudit"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<CVEAudit />, parent);

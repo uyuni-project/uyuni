@@ -6,7 +6,7 @@ type Props = {
   actionChains: string;
 };
 
-export const renderer = (id: string, props: Props) => {
+export const renderer = (parent: Element, props: Props) => {
   let actionChains = [] as any[];
   try {
     actionChains = JSON.parse((props.actionChains || "").replace(/&quot;/g, '"'));
@@ -14,5 +14,5 @@ export const renderer = (id: string, props: Props) => {
     Loggerhead.error(error);
   }
 
-  SpaRenderer.renderNavigationReact(<ActionChainPicker actionChains={actionChains} />, document.getElementById(id));
+  SpaRenderer.renderNavigationReact(<ActionChainPicker actionChains={actionChains} />, parent);
 };

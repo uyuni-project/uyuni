@@ -64,6 +64,7 @@ const pages = {
 
 type PageName = keyof typeof pages;
 type Page<T extends PageName> = typeof pages[T];
+type Awaited<T> = T extends Promise<infer Type> ? Type : never;
 type PageRendererParams<T extends PageName> = Parameters<Awaited<ReturnType<Page<T>>>["renderer"]>;
 
 // Drop first item of tuple type, e.g. [foo, bar, tea] -> [bar, tea]

@@ -12,11 +12,11 @@ type RendererProps = {
   query?: string;
 };
 
-export const renderer = (id: string, { isAdmin, queryColumn, query }: RendererProps) =>
+export const renderer = (parent: Element, { isAdmin, queryColumn, query }: RendererProps) =>
   SpaRenderer.renderNavigationReact(
     <>
       <MessagesContainer />
       <AllSystems isAdmin={isAdmin} queryColumn={queryColumn} query={query} />
     </>,
-    document.getElementById(id)
+    parent
   );

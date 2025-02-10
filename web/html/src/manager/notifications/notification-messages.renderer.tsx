@@ -4,5 +4,4 @@ import SpaRenderer from "core/spa/spa-renderer";
 
 import { NotificationMessages } from "./notification-messages";
 
-export const renderer = (id) =>
-  SpaRenderer.renderNavigationReact(<NotificationMessages />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<NotificationMessages />, parent);

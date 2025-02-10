@@ -7,12 +7,12 @@ import { MessagesContainer } from "components/toastr";
 
 import CreateProject from "./create-project";
 
-export const renderer = (id: string) => {
+export const renderer = (parent: Element) => {
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
       <CreateProject />
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

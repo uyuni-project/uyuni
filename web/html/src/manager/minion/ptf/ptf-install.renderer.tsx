@@ -14,7 +14,7 @@ declare global {
   }
 }
 
-export const renderer = (id) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <PackageListActionScheduler
       serverId={window.serverId}
@@ -35,5 +35,5 @@ export const renderer = (id) =>
       listColumns={[PTF_COLUMN_SUMMARY, PTF_COLUMN_ARCH]}
       confirmTitle={t("Confirm Program Temporary Fixes (PTFs) Installation")}
     />,
-    document.getElementById(id)
+    parent
   );

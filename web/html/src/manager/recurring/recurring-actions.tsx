@@ -192,5 +192,4 @@ class RecurringActions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<RecurringActions />, document.getElementById("recurring-actions"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<RecurringActions />, parent);

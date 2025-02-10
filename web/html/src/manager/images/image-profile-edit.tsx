@@ -554,5 +554,4 @@ class CreateImageProfile extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<CreateImageProfile />, document.getElementById("image-profile-edit"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<CreateImageProfile />, parent);

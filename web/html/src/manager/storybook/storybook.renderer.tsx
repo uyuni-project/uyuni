@@ -6,11 +6,11 @@ import { MessagesContainer } from "components/toastr";
 
 import { Storybook } from "./storybook";
 
-export const renderer = (id: string) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <>
       <MessagesContainer />
       <Storybook />
     </>,
-    document.getElementById(id)
+    parent
   );

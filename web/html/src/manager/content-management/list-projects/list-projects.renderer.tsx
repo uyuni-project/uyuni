@@ -13,7 +13,7 @@ type RendererProps = {
   flashMessage?: ServerMessageType;
 };
 
-export const renderer = (id: string, { projects, flashMessage }: RendererProps = {}) => {
+export const renderer = (parent: Element, { projects, flashMessage }: RendererProps = {}) => {
   let projectsJson: any[] = [];
   try {
     projectsJson = JSON.parse(projects || "");
@@ -26,6 +26,6 @@ export const renderer = (id: string, { projects, flashMessage }: RendererProps =
       <MessagesContainer />
       <ListProjects projects={projectsJson} flashMessage={flashMessage} />
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

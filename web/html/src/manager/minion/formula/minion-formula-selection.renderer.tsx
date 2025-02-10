@@ -9,7 +9,7 @@ import Network from "utils/network";
 
 const capitalize = Utils.capitalize;
 
-export const renderer = (renderId, { serverId, warningMessage }) => {
+export const renderer = (parent: Element, { serverId, warningMessage }) => {
   const messageMap = {
     formulas_saved: t(
       "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect.",
@@ -84,6 +84,6 @@ export const renderer = (renderId, { serverId, warningMessage }) => {
       addFormulaNavBar={addFormulaNavBar}
       warningMessage={warningMessage}
     />,
-    document.getElementById(renderId)
+    parent
   );
 };

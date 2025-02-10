@@ -24,7 +24,7 @@ function postForm(serverId) {
   form.submit();
 }
 
-export const renderer = (_: string) => {
+export const renderer = (_: Element) => {
   window.getServerIdsToDelete().forEach((serverId) => {
     SpaRenderer.renderNavigationReact(
       <DeleteSystem

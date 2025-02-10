@@ -89,4 +89,4 @@ class FormulaDetail extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) => SpaRenderer.renderNavigationReact(<FormulaDetail />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<FormulaDetail />, parent);

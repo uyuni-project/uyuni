@@ -1151,5 +1151,4 @@ const ChannelList = (props) => {
   ) : null;
 };
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<ProductsPageWrapper />, document.getElementById("products"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<ProductsPageWrapper />, parent);

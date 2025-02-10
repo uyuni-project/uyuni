@@ -235,5 +235,5 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
   }
 }
 
-export const renderer = (renderId: string, { id }) =>
-  SpaRenderer.renderNavigationReact(<AnsibleControlNode minionServerId={id} />, document.getElementById(renderId));
+export const renderer = (parent: Element, { id }) =>
+  SpaRenderer.renderNavigationReact(<AnsibleControlNode minionServerId={id} />, parent);

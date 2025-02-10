@@ -13,7 +13,7 @@ type RendererProps = {
   readOnly?: boolean;
 };
 
-export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly }: RendererProps = {}) => {
+export const renderer = (parent: Element, { payg, wasFreshlyCreatedMessage, readOnly }: RendererProps = {}) => {
   let paygJson: any = {};
   try {
     paygJson = JSON.parse(payg || "");
@@ -30,6 +30,6 @@ export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly 
         readOnly={paygJson.properties.host === "localhost"}
       />
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

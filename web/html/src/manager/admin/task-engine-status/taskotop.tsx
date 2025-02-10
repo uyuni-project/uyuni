@@ -266,5 +266,5 @@ const ErrorMessage = (props) => (
   />
 );
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 1000} />, document.getElementById("taskotop"));
+export const renderer = (parent: Element) =>
+  SpaRenderer.renderNavigationReact(<TaskoTop refreshInterval={5 * 1000} />, parent);
