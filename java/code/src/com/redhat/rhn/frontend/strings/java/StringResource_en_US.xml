@@ -9480,9 +9480,6 @@ For a detailed analysis, please refer to the log files.</source>
         <source>Generating salt-ssh public key failed: {0}.</source>
       </trans-unit>
       <trans-unit id="notification.subscriptionwarning.summary">
-        <source>You have subscriptions that need attention.</source>
-      </trans-unit>
-      <trans-unit id="notification.subscriptionwarning.detail">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
       </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.summary">
