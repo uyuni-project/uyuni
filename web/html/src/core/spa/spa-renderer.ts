@@ -36,21 +36,32 @@ function renderGlobalReact(element: JSX.Element, container: Element | null | und
   ReactDOM.render(elementWithRef, container);
 }
 
-function renderNavigationReact(element: JSX.Element, container: Element | null | undefined) {
+function renderNavigationReact(element: JSX.Element, container: Element | null | undefined, replace = false) {
   if (container == null) {
     throw new Error("The DOM element is not present.");
   }
 
-  window.pageRenderers?.spa?.reactRenderers?.push({
-    element,
-    container,
-    clean: () => {
-      ReactDOM.unmountComponentAtNode(container);
-    },
-  });
-  ReactDOM.render(element, container, () => {
-    onDocumentReadyInitOldJS();
-  });
+  if (replace) {
+    const portal = ReactDOM.createPortal(element, container);
+    const portalTarget = document.createElement("div");
+    window.pageRenderers?.spa?.reactRenderers?.push({
+      clean: () => {
+        console.log("remove 1", portalTarget);
+        ReactDOM.unmountComponentAtNode(portalTarget);
+      },
+    });
+    ReactDOM.render(portal, portalTarget);
+  } else {
+    window.pageRenderers?.spa?.reactRenderers?.push({
+      clean: () => {
+        console.log("remove 2", container);
+        ReactDOM.unmountComponentAtNode(container);
+      },
+    });
+    ReactDOM.render(element, container, () => {
+      window.onDocumentReadyInitOldJS?.();
+    });
+  }
 }
 
 function beforeNavigation() {
@@ -64,7 +75,7 @@ function beforeNavigation() {
 function afterNavigationTransition() {
   window.pageRenderers?.spa?.previousReactRenderers?.forEach((navigationRenderer) => {
     try {
-      (navigationRenderer as any).clean();
+      navigationRenderer.clean();
     } catch (error) {
       Loggerhead.error(error);
     }

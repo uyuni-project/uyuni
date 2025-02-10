@@ -39,67 +39,71 @@ import ActivationKeys from "./systems/activation-key";
 const pages = {
   ...ActivationKeys,
   ...Admin,
-  // ...Appstreams,
-  // ...Audit,
-  // ...ContentManagement,
-  // ...Errors,
-  // ...Groups,
-  // ...Header,
-  // ...Highstate,
-  // ...Images,
-  // ...Login,
-  // ...MaintenanceWindows,
-  // ...Minion,
-  // ...Notifications,
-  // ...Organizations,
-  // ...Packages,
-  // ...Proxy,
-  // ...RecurringActions,
-  // ...Salt,
-  // ...ScheduleOptions,
-  // ...Shared,
-  // ...Systems,
-  // ...Storybook,
+  ...Appstreams,
+  ...Audit,
+  ...ContentManagement,
+  ...Errors,
+  ...Groups,
+  ...Header,
+  ...Highstate,
+  ...Images,
+  ...Login,
+  ...MaintenanceWindows,
+  ...Minion,
+  ...Notifications,
+  ...Organizations,
+  ...Packages,
+  ...Proxy,
+  ...RecurringActions,
+  ...Salt,
+  ...ScheduleOptions,
+  ...Shared,
+  ...Systems,
+  ...Storybook,
 };
 
-type Pages = typeof pages;
-type PageName = keyof Pages;
-type Renderer<T extends PageName> = Awaited<ReturnType<Pages[T]>>["renderer"];
+type PageName = keyof typeof pages;
+type Page<T extends PageName> = typeof pages[T];
+type PageRendererParams<T extends PageName> = Parameters<Awaited<ReturnType<Page<T>>>["renderer"]>;
 
-type PageTuple = {
-  [K in PageName]: [K, Pages[K]];
-}[PageName];
-
-type X = Pages[keyof Pages];
-
-const getPageRenderer = async <T extends PageName>(pageName: T): Promise<Renderer<T>> => {
-  const module = await pages[pageName]();
-  return module.renderer;
-};
+// Drop first item of tuple type, e.g. [foo, bar, tea] -> [bar, tea]
+type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never;
 
 let idCounter = 0;
-const injectReactPage = async function injectReactPage<T extends PageTuple>(pageName: T[0], params: Parameters<T[1]>) {
+const injectReactPage = async <T extends PageName>(pageName: T, ...params: Tail<PageRendererParams<T>>) => {
+  if (!pages[pageName]) {
+    throw new RangeError(
+      `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
+    );
+  }
+  SpaRenderer.addReactApp(pageName);
+
   const current = document.currentScript;
   if (!current) {
     throw new RangeError("Unable to identify `currentScript` in `injectReactPage`");
   }
 
-  const targetName = pageName.replace(/[^\w]/g, "_") + idCounter;
+  const divId = pageName.replace(/[^\w]/g, "_") + idCounter;
   idCounter += 1;
 
   const div = document.createElement("div");
-  div.setAttribute("id", targetName);
+  div.setAttribute("id", divId);
   current.after(div);
 
-  const pagePromise: T[1] = pages[pageName];
-  const bar: Awaited<ReturnType<T[1]>> = await pagePromise();
-  const a = bar.renderer();
-  // (function (f: Awaited<ReturnType<T[1]>>) {
-  //   f.renderer(targetName, params);
-  // });
-  // const pagePromise = getPageRenderer(pageName);
-
-  // pagePromise.then(function (renderer) {
-  //   renderer(targetName, params);
-  // });
+  const page = await pages[pageName]();
+  console.log(params);
+  /**
+   * Typescript doesn't currently support partial type inference for generics, so we need to cast to the lowest
+   * common denominator which is `never`.
+   * See https://github.com/Microsoft/TypeScript/pull/23696
+   */
+  page.renderer(divId, ...(params ?? {}));
 };
+
+declare global {
+  interface Window {
+    injectReactPage: typeof injectReactPage;
+  }
+}
+
+window.injectReactPage = injectReactPage;

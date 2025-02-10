@@ -1,5 +1,6 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
+
+import SpaRenderer from "core/spa/spa-renderer";
 
 import Login from "./login";
 
@@ -22,26 +23,24 @@ export const renderer = (
     sccForwardWarning,
   }
 ) => {
-  const elementToRender = document.getElementById(id);
-  if (elementToRender) {
-    ReactDOM.render(
-      <Login
-        isUyuni={isUyuni}
-        theme={theme}
-        bounce={urlBounce}
-        validationErrors={validationErrors}
-        schemaUpgradeRequired={schemaUpgradeRequired}
-        webVersion={webVersion}
-        productName={productName}
-        customHeader={customHeader}
-        customFooter={customFooter}
-        legalNote={legalNote}
-        loginLength={loginLength}
-        passwordLength={passwordLength}
-        diskspaceSeverity={diskspaceSeverity}
-        sccForwardWarning={sccForwardWarning}
-      />,
-      elementToRender
-    );
-  }
+  SpaRenderer.renderNavigationReact(
+    <Login
+      isUyuni={isUyuni}
+      theme={theme}
+      bounce={urlBounce}
+      validationErrors={validationErrors}
+      schemaUpgradeRequired={schemaUpgradeRequired}
+      webVersion={webVersion}
+      productName={productName}
+      customHeader={customHeader}
+      customFooter={customFooter}
+      legalNote={legalNote}
+      loginLength={loginLength}
+      passwordLength={passwordLength}
+      diskspaceSeverity={diskspaceSeverity}
+      sccForwardWarning={sccForwardWarning}
+    />,
+    document.getElementById(id),
+    true
+  );
 };

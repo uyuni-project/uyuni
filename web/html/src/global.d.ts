@@ -21,8 +21,8 @@ declare global {
           onSPAEndNavigation?: Function;
         }>;
         reactAppsName?: string[];
-        reactRenderers?: unknown[];
-        previousReactRenderers?: unknown[];
+        reactRenderers?: { clean: () => void }[];
+        previousReactRenderers?: { clean: () => void }[];
       };
       spaengine?: {
         init?: Function;
@@ -45,7 +45,7 @@ declare global {
 
   var t: tType;
 
-  var onDocumentReadyInitOldJS: Function;
+  var onDocumentReadyInitOldJS: Function | undefined;
   var ace: any;
   var d3: d3;
 
