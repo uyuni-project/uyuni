@@ -10,6 +10,9 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.Namespace;
+import com.redhat.rhn.domain.access.WebEndpoint;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
@@ -186,7 +189,8 @@ public class AnnotationRegistry {
     }
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
-            // do not add class at the endi, but keep the alphabetical order
+            // do not add class at the end, but keep the alphabetical order
+            AccessGroup.class,
             AccessToken.class,
             ActionChain.class,
             ActionChainEntry.class,
@@ -257,6 +261,7 @@ public class AnnotationRegistry {
             MinionServerFactory.class,
             MinionSummary.class,
             ModuleFilter.class,
+            Namespace.class,
             NetworkInterface.class,
             NotificationMessage.class,
             OrgAdminManagement.class,
@@ -347,7 +352,8 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
-            XccdfTestResult.class
+            XccdfTestResult.class,
+            WebEndpoint.class
     );
 
     /**

@@ -21,6 +21,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
@@ -149,6 +151,22 @@ public class UserImpl extends BaseDomainHelper implements User {
             inverseJoinColumns = @JoinColumn(name = "server_id")
     )
     private Set<Server> servers = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "access.userNamespace",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "namespace_id")
+    )
+    private Set<Namespace> namespaces;
+
+    @ManyToMany
+    @JoinTable(
+            name = "access.userAccessGroup",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "group_id")
+    )
+    private Set<AccessGroup> accessGroups;
 
     @Transient
     private Boolean wasOrgAdmin;
@@ -1463,6 +1481,26 @@ public class UserImpl extends BaseDomainHelper implements User {
     @Override
     public void  setWebTheme(String webThemeIn) {
         this.userInfo.setWebTheme(webThemeIn);
+    }
+
+    @Override
+    public Set<Namespace> getNamespaces() {
+        return this.namespaces;
+    }
+
+    @Override
+    public void setNamespaces(Set<Namespace> namespaceIn) {
+        this.namespaces = namespaceIn;
+    }
+
+    @Override
+    public Set<AccessGroup> getAccessGroups() {
+        return accessGroups;
+    }
+
+    @Override
+    public void setAccessGroups(Set<AccessGroup> accessGroupsIn) {
+        accessGroups = accessGroupsIn;
     }
 }
 
