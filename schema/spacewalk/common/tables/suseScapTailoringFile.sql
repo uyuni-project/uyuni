@@ -20,11 +20,10 @@ CREATE TABLE suseScapTailoringFile
                          CONSTRAINT suse_trailingf_oid_fk
                            REFERENCES web_customer (id)
                            ON DELETE CASCADE,
+    susescappolicy_id   INT REFERENCES public.susescappolicy (id) ON DELETE SET NULL,
     created              TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
     modified             TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL
 );
 
-CREATE UNIQUE INDEX suse_trailingf__oid_name_uq
-    ON suseScapTailoringFile (org_id, name)
-        ;
-CREATE SEQUENCE suseScapTailoringFil_id_seq;
+CREATE UNIQUE INDEX suseScapTailoringFile_org_id_name_uq
+ON suseScapTailoringFile (org_id, name);

@@ -23,13 +23,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.util.DateFormatTransformer;
 import com.redhat.rhn.domain.action.scap.ScapAction;
-import com.redhat.rhn.domain.audit.ScapFactory;
-import com.redhat.rhn.domain.audit.XccdfBenchmark;
-import com.redhat.rhn.domain.audit.XccdfIdent;
-import com.redhat.rhn.domain.audit.XccdfProfile;
-import com.redhat.rhn.domain.audit.XccdfRuleResult;
-import com.redhat.rhn.domain.audit.XccdfRuleResultType;
-import com.redhat.rhn.domain.audit.XccdfTestResult;
+import com.redhat.rhn.domain.audit.*;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.BaseDto;
@@ -59,6 +53,7 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.Types;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
@@ -616,7 +611,7 @@ public class ScapManager extends BaseManager {
             processRuleResult(result, testResults.getNotapplicable(),
                     "notapplicable", truncated);
             processRuleResult(result, testResults.getNotchecked(),
-                    "notchecked", truncated);
+                    "notchecked", truncated);   
             processRuleResult(result, testResults.getNotselected(),
                     "notselected", truncated);
             processRuleResult(result, testResults.getInformational(),
@@ -633,6 +628,24 @@ public class ScapManager extends BaseManager {
             }
             result.setErrors(HibernateFactory.stringToByteArray(errs));
             ScapFactory.save(result);
+
+            // get rules with remediations
+
+            List<Rule> remediations = resume.getRules().stream()
+
+                    .filter(s -> Objects.nonNull(s.getRemediation())).collect(Collectors.toList());
+
+            remediations.stream().forEach(s-> {
+
+                XccdfRuleFix xccdfRuleFix = ScapFactory.lookupRuleRemediation(resume.getId(), s.getId())
+
+                        .orElse(new XccdfRuleFix(resume.getId(), s.getId(), s.getRemediation()));
+
+                xccdfRuleFix.setRemediation(s.getRemediation());
+
+                ScapFactory.saveXccfRuleFix(xccdfRuleFix);
+
+            });
 
             return result;
         }

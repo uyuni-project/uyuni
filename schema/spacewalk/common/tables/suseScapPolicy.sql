@@ -30,20 +30,5 @@ CREATE TABLE suseScapPolicy
     modified             TIMESTAMPTZ DEFAULT current_timestamp NOT NULL
 );
 
-CREATE UNIQUE INDEX idx_org_id_policy_name
-    ON suseScapPolicy (org_id, policy_name); -- Ensures unique policy names within an organization
-
--- Trigger to automatically update 'modified' column
-CREATE OR REPLACE FUNCTION update_modified_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.modified = current_timestamp; -- Set the `modified` column to the current timestamp
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Trigger that runs before any update
-CREATE TRIGGER trg_update_modified
-BEFORE UPDATE ON suse_scap_policy
-FOR EACH ROW
-EXECUTE FUNCTION update_modified_column();
+CREATE UNIQUE INDEX suseScapPolicy_org_id_name_uq
+ON suseScapPolicy (org_id, policy_name);

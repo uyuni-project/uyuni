@@ -354,6 +354,40 @@ public class ScapFactory extends HibernateFactory {
         scapContent.setModified(new Date());
         singleton.saveObject(scapContent);
     }
+
+    /**
+     * Save the XccdfRuleFix object
+     * @param xccdfRuleFix
+     */
+    public static void  saveXccfRuleFix(XccdfRuleFix xccdfRuleFix) {
+        singleton.saveObject(xccdfRuleFix, true);
+    }
+    /**
+     * Find a {@link XccdfRuleFix} by identified and benchmark id.
+     * @param benchmarkId benchmarkId
+     * @param identifier identifier
+     * @return the {@link XccdfRuleResultType} if any
+     */
+    public static Optional<XccdfRuleFix> lookupRuleRemediation(String benchmarkId, String identifier) {
+        return getSession().createCriteria(XccdfRuleFix.class)
+                .add(Restrictions.eq("benchMarkId", benchmarkId))
+                .add(Restrictions.eq("identifier", identifier))
+                .list()
+                .stream().findFirst();
+    }
+    /**
+     * Find a {@link XccdfRuleFix} by identified.
+     * @param identifier identifier
+     * @return the {@link XccdfRuleResultType} if any
+     */
+    public static Optional<XccdfRuleFix> lookupRuleRemediation(String identifier) {
+        return getSession().createCriteria(XccdfRuleFix.class)
+                .add(Restrictions.eq("identifier", identifier))
+                .list()
+                .stream().findFirst();
+    }
+
+
     /**
      * Get the Logger for the derived class so log messages
      * show up on the correct class.
