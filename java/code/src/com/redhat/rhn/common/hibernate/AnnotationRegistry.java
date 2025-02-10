@@ -14,6 +14,14 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.action.ActionChain;
+import com.redhat.rhn.domain.action.ActionChainEntry;
+import com.redhat.rhn.domain.action.ActionChild;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
+import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptResult;
+import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.AppStreamApi;
@@ -62,6 +70,7 @@ import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.image.ImageStoreType;
 import com.redhat.rhn.domain.image.KiwiProfile;
 import com.redhat.rhn.domain.image.ProfileCustomDataValue;
+import com.redhat.rhn.domain.iss.IssMaster;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
@@ -73,7 +82,9 @@ import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.org.TemplateString;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
 import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembersId;
 import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
 import com.redhat.rhn.domain.recurringactions.OrgRecurringAction;
@@ -129,7 +140,12 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerNodeInfo;
+import com.redhat.rhn.domain.state.OrgStateRevision;
+import com.redhat.rhn.domain.state.ServerGroupStateRevision;
+import com.redhat.rhn.domain.state.ServerStateRevision;
+import com.redhat.rhn.domain.state.StateRevision;
 import com.redhat.rhn.domain.task.Task;
+import com.redhat.rhn.domain.token.RegTokenOrgDefault;
 import com.redhat.rhn.domain.token.Token;
 import com.redhat.rhn.domain.token.TokenChannelAppStream;
 import com.redhat.rhn.domain.user.AddressImpl;
@@ -138,6 +154,9 @@ import com.redhat.rhn.domain.user.legacy.PersonalInfo;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.domain.user.legacy.UserInfo;
 import com.redhat.rhn.manager.system.ServerGroupManager;
+import com.redhat.rhn.taskomatic.domain.TaskoBunch;
+import com.redhat.rhn.taskomatic.domain.TaskoTask;
+import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionResult;
@@ -163,8 +182,10 @@ public class AnnotationRegistry {
     }
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
-            // do not add class at the endi, but keep the alphabetical order
             AccessToken.class,
+            ActionChain.class,
+            ActionChainEntry.class,
+            ActionChild.class,
             AddressImpl.class,
             AnsiblePath.class,
             AppStreamApi.class,
@@ -213,6 +234,7 @@ public class AnnotationRegistry {
             InstalledPackage.class,
             InternalState.class,
             InventoryPath.class,
+            IssMaster.class,
             KiwiProfile.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
@@ -228,6 +250,9 @@ public class AnnotationRegistry {
             Org.class,
             OrgConfig.class,
             OrgRecurringAction.class,
+            OrgStateRevision.class,
+            PackageActionDetails.class,
+            PackageActionResult.class,
             PackageArch.class,
             PackageBreaks.class,
             PackageCapability.class,
@@ -259,6 +284,7 @@ public class AnnotationRegistry {
             RecurringInternalState.class,
             RecurringState.class,
             RegistryCredentials.class,
+            RegTokenOrgDefault.class,
             ReportDBCredentials.class,
             RHUICredentials.class,
             RoleImpl.class,
@@ -273,30 +299,41 @@ public class AnnotationRegistry {
             SCCRepositoryNoAuth.class,
             SCCRepositoryTokenAuth.class,
             SCCSubscription.class,
+            ScriptActionDetails.class,
+            ScriptResult.class,
             ServerAppStream.class,
             Server.class,
             ServerCoCoAttestationConfig.class,
             ServerCoCoAttestationReport.class,
             ServerGroup.class,
             ServerGroupManager.class,
+            ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerPath.class,
             ServerPathId.class,
+            ServerStateRevision.class,
             SoftwareEnvironmentTarget.class,
             SoftwareProjectSource.class,
             SslCryptoKey.class,
             StateChange.class,
+            StateRevision.class,
+            SUSEProduct.class,
             Task.class,
+            TaskoBunch.class,
+            TaskoTask.class,
+            TaskoTemplate.class,
             TemplateString.class,
             TokenChannelAppStream.class,
             Token.class,
             UserGroupImpl.class,
             UserGroupMembers.class,
+            UserGroupMembersId.class,
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,
             VHMCredentials.class,
-            VirtualHostManagerNodeInfo.class
+            VirtualHostManagerNodeInfo.class,
+            XccdfTestResult.class
     );
 
     /**

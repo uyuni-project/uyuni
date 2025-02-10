@@ -18,8 +18,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,7 +57,7 @@ public class UserGroupFactory extends HibernateFactory {
      * @param role the Role to base this new UserGroup on.
      * @return the UserGroup created
      */
-    public static UserGroup createUserGroup(Org org, Role role) {
+    public static UserGroup createUserGroup(Org org, RoleImpl role) {
         UserGroup retval = new UserGroupImpl();
         LocalizationService ls = LocalizationService.getInstance();
         // Concat the Role name with the letter s to form the UserGroup name
@@ -66,7 +66,7 @@ public class UserGroupFactory extends HibernateFactory {
         retval.setName(ls.getMessage(key));
         String desc = retval.getName() + ls.getMessage("for Org") + org.getName() + " (" + org.getId() + ")";
         retval.setDescription(desc);
-        retval.setOrgId(org.getId());
+        retval.setOrg(org);
         retval.setRole(role);
         return retval;
     }
@@ -166,7 +166,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static int deleteTemporaryRoles() {
         return HibernateFactory.getSession()
-        .getNamedQuery("UserGroupMembers.deleteTemporary")
+        .getNamedNativeQuery("UserGroupMembers.deleteTemporary")
         .executeUpdate();
     }
 

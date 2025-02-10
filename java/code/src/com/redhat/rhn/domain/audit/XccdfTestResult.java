@@ -21,36 +21,76 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.org.OrgConfig;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.manager.audit.ScapManager;
-import com.redhat.rhn.manager.audit.scap.RuleResultDiffer;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
 import com.redhat.rhn.manager.audit.scap.file.ScapResultFile;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * XccdfTestResult - Class representation of the table rhnXccdfTestResult.
  */
-public class XccdfTestResult {
+@Entity
+@Table(name = "rhnXccdfTestresult")
+@Cacheable
+@org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)
+public class XccdfTestResult implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "xccdf_test_result_seq")
+    @SequenceGenerator(name = "xccdf_test_result_seq", sequenceName = "rhn_xccdf_tresult_id_seq", allocationSize = 1)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_scap_id", nullable = false)
     private ScapActionDetails scapActionDetails;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "benchmark_id", nullable = false)
     private XccdfBenchmark benchmark;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "profile_id", nullable = false)
     private XccdfProfile profile;
-    private String identifier;
-    private Date startTime;
-    private Date endTime;
-    private byte[] errors;
 
-    private Long comparableId = null;
-    private String diffIcon = null;
-
+    @OneToMany(mappedBy = "testResult", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @org.hibernate.annotations.Cache(usage = org.hibernate.annotations.CacheConcurrencyStrategy.READ_ONLY)
     private Set<XccdfRuleResult> results = new HashSet<>();
+
+    @Column(name = "identifier", length = 120)
+    private String identifier;
+
+    @Column(name = "start_time")
+    private Date startTime;
+
+    @Column(name = "end_time")
+    private Date endTime;
+
+    @Column(name = "errors", columnDefinition = "bytea")
+    private byte[] errors = {};
 
     /**
      * Getter for id
@@ -218,29 +258,6 @@ public class XccdfTestResult {
      */
     public String getErrrosContents() {
         return HibernateFactory.getByteArrayContents(this.errors);
-    }
-
-    /**
-     * Return the TestResult with metadata similar to the this one
-     * @return id of testresult
-     */
-    public Long getComparableId() {
-        if (comparableId == null) {
-            comparableId = ScapManager.previousComparableTestResult(id);
-        }
-        return comparableId;
-    }
-
-    /**
-     * Return name of the list icon, which best refers to the state of diff.
-     * The diff between current TestResult and previous comparable TestResult.
-     * @return the result
-     */
-    public String getDiffIcon() {
-        if (diffIcon == null) {
-            diffIcon = new RuleResultDiffer(getComparableId(), id).overallComparison();
-        }
-        return diffIcon;
     }
 
     /**

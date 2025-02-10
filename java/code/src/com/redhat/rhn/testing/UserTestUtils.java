@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.Address;
@@ -231,7 +232,7 @@ public class UserTestUtils  {
      */
     public static void addUserRole(User user, Role r) {
         Org o = user.getOrg();
-        o.addRole(r);
+        o.addRole((RoleImpl) r);
         user.addPermanentRole(r);
     }
 

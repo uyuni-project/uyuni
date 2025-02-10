@@ -17,34 +17,57 @@ package com.redhat.rhn.domain.action;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.Type;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * POJO for a rhnActionChain row.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
+@Entity
+@Table(name = "rhnActionChain")
 public class ActionChain extends BaseDomainHelper {
 
-    /** The id. */
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actionchain_seq")
+    @SequenceGenerator(name = "actionchain_seq", sequenceName = "rhn_actionchain_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
 
-    /** The label. */
+    @Column(name = "label", nullable = false)
     private String label;
 
-    /** The user. */
-    private User user;
-
-    /** The entries. */
-    private Set<ActionChainEntry> entries;
-
+    @Column(name = "dispatched", nullable = false)
+    @Type(type = "yes_no")
     private boolean dispatched;
+
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserImpl user;
+
+    @OneToMany(mappedBy = "actionChain", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ActionChainEntry> entries;
 
     /**
      * Default constructor.
@@ -98,7 +121,7 @@ public class ActionChain extends BaseDomainHelper {
      * @param userIn the new user
      */
     public void setUser(User userIn) {
-        user = userIn;
+        user = (UserImpl) userIn;
     }
 
     /**

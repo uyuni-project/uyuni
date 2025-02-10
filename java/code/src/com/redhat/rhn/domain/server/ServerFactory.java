@@ -38,6 +38,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ChannelSubscriptionException;
@@ -552,8 +553,21 @@ public class ServerFactory extends HibernateFactory {
      * @return the list of servers
      */
     public static List<Server> lookupByIdsAndOrg(Set<Long> serverIds, Org org) {
-        return SINGLETON.listObjectsByNamedQuery("Server.findByIdsAndOrgId",
-                Map.of("orgId", org.getId()), serverIds, "serverIds");
+        if (serverIds.isEmpty()) {
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId
+                """, Server.class)
+                    .setParameter("orgId", org.getId())
+                    .getResultList();
+        }
+        else {
+            return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)
+                """, Server.class)
+                    .setParameter("orgId", org.getId())
+                    .setParameterList("serverIds",  serverIds.stream().toList())
+                    .getResultList();
+        }
     }
 
     /**
@@ -606,7 +620,12 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
+        return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE id = :sid AND org_id = :orgId
+                """, Server.class)
+                .setParameter("sid", id , StandardBasicTypes.LONG)
+                .setParameter("orgId", orgIn.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -940,7 +959,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server the server to find the admins of
      * @return list of User objects that can administer the system
      */
-    public static List<User> listAdministrators(Server server) {
+    public static List<UserImpl> listAdministrators(Server server) {
         return SINGLETON.listObjectsByNamedQuery("Server.lookupAdministrators",
                 Map.of("sid", server.getId(), "org_id", server.getOrg().getId()));
     }
@@ -1538,10 +1557,16 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
-        return new HashSet<>(HibernateFactory.getSession()
-                .getNamedQuery("Server.filterSystemsWithPendingMaintenanceOnlyActions")
-                .setParameter("systemIds", systemIds)
-                .list());
+        return new HashSet<>(HibernateFactory.getSession().createNativeQuery(
+                """
+                        SELECT sa.server_id FROM rhnServerAction sa
+                            JOIN rhnAction a ON sa.action_id = a.id JOIN rhnActionType at ON a.action_type = at.id
+                            WHERE sa.server_id IN (:systemIds) AND at.maintenance_mode_only = 'Y'
+                            AND sa.status IN (0, 1)
+                    """
+                )
+                .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
+                .getResultList());
     }
 
     /**

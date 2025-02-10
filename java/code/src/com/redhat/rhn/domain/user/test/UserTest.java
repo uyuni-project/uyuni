@@ -24,8 +24,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
@@ -227,7 +227,7 @@ public class UserTest extends RhnBaseTestCase {
         Org org = usr.getOrg();
 
         for (int i = 0; i < 4; i++) {
-            Role role = RoleFactory.createRole();
+            RoleImpl role = RoleFactory.createRole();
             role.setLabel("Role" + i);
             role.setName("Role " + i);
 

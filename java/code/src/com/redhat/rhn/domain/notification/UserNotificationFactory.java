@@ -24,8 +24,10 @@ import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import com.suse.manager.utils.MailHelper;
 import com.suse.manager.webui.websocket.Notification;
@@ -35,13 +37,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -99,7 +100,7 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param messageIn the message
      * @return new UserNotification
      */
-    public static UserNotification create(User userIn, NotificationMessage messageIn) {
+    public static UserNotification create(UserImpl userIn, NotificationMessage messageIn) {
         return new UserNotification(userIn, messageIn);
     }
 
@@ -191,21 +192,28 @@ public class UserNotificationFactory extends HibernateFactory {
      * @param org org users need to be in to see the notification.
      */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
-        Set<Role> rolesIn, Optional<Org> org) {
+                                                   Set<RoleImpl> rolesIn, Optional<Org> org) {
         // only users in the current Org
         // do not create notifications for non active users
         // only users with one role in the roles
-        Stream<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
-                .filter(user -> !user.isDisabled());
+        Set<User> allUsers = UserFactory.getInstance().findAllUsers(org).stream()
+                .filter(user -> !user.isDisabled()).collect(Collectors.toSet());
 
         if (rolesIn.isEmpty()) {
-            storeForUsers(notificationMessageIn, allUsers.collect(Collectors.toSet()));
+            storeForUsers(notificationMessageIn, allUsers);
         }
         else {
-            storeForUsers(
-                    notificationMessageIn,
-                    allUsers.filter(user -> !Collections.disjoint(user.getRoles(), rolesIn)).collect(Collectors.toSet())
-            );
+            Set<User> validUsers = new HashSet<>();
+            for (User user : allUsers) {
+                Set<Role> userRoles = user.getRoles();
+                for (Role role : userRoles) {
+                    if (rolesIn.contains(role)) {
+                        validUsers.add(user);
+                        break;
+                    }
+                }
+            }
+            storeForUsers(notificationMessageIn, validUsers);
         }
 
         // Update Notification WebSocket Sessions right now

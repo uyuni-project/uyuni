@@ -83,6 +83,7 @@ import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.UndefinedCustomDataKeyException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
@@ -881,7 +882,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         UserFactory.save(nonGroupAdminUser);
         nonGroupAdminUser = reload(nonGroupAdminUser);
 
-        List<User> users = ServerFactory.listAdministrators(serverToSearch);
+        List<UserImpl> users = ServerFactory.listAdministrators(serverToSearch);
         System.out.println(users);
         System.out.println("regular->" + regular);
         System.out.println("Admins->" + admins);
@@ -889,7 +890,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         boolean containsRegular = false;
         boolean containsNonGroupAdmin = false;  //we want this to be false to pass
 
-        for (User user : users) {
+        for (UserImpl user : users) {
               if (user.getLogin().equals(admin.getLogin())) {
                   containsAdmin = true;
               }

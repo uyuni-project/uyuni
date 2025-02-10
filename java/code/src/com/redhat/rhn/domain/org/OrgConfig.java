@@ -19,23 +19,76 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * Class OrgConfig that reflects the DB representation of rhnOrgConfiguration DB table:
  * rhnOrgConfiguration
  */
+@Entity
+@Table(name = "rhnOrgConfiguration")
 public class OrgConfig extends BaseDomainHelper {
 
     protected static Logger log = LogManager.getLogger(OrgConfig.class);
 
+    @Id
+    @Column(name = "org_id", nullable = false)
     private Long orgId;
+
+    @OneToOne
+    @MapsId // This maps the primary key of OrgConfig to the primary key of Org
+    @JoinColumn(name = "org_id") // References the primary key column in Org
+    private Org org;
+
+    @Column(name = "staging_content_enabled", nullable = false)
+    @Type(type = "yes_no")
     private boolean stagingContentEnabled;
+
+    @Column(name = "errata_emails_enabled", nullable = false)
+    @Type(type = "yes_no")
     private boolean errataEmailsEnabled;
+
+    @Column(name = "scapfile_upload_enabled", nullable = false)
+    @Type(type = "yes_no")
     private boolean scapfileUploadEnabled;
+
+    @Column(name = "scap_file_sizelimit", nullable = false)
     private Long scapFileSizelimit;
+
+    @Column(name = "scap_retention_period_days")
     private Long scapRetentionPeriodDays;
+
+    @Column(name = "create_default_sg", nullable = false)
+    @Type(type = "yes_no")
     private boolean createDefaultSg;
+
+    @Column(name = "clm_sync_patches", nullable = false)
+    @Type(type = "yes_no")
     private boolean clmSyncPatches;
+
+    /**
+     * Gets the current value of org
+     * @return Returns the value of org
+     */
+    public Org getOrg() {
+        return org;
+    }
+
+    /**
+     * Sets the value of org to new value
+     * @param orgIn New value for org
+     */
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
 
     /**
      * Gets the current value of org_id

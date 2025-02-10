@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -64,12 +65,12 @@ public  class UserFactory extends HibernateFactory {
 
     private static List<RhnTimeZone> timeZoneList;
 
-    private static final Role[] IMPLIEDROLESARRAY = { RoleFactory.CHANNEL_ADMIN,
+    private static final RoleImpl[] IMPLIEDROLESARRAY = { RoleFactory.CHANNEL_ADMIN,
             RoleFactory.CONFIG_ADMIN, RoleFactory.SYSTEM_GROUP_ADMIN,
             RoleFactory.ACTIVATION_KEY_ADMIN, RoleFactory.IMAGE_ADMIN };
 
     /** List of Role objects that are applied if you are an Org_admin */
-    public static final List<Role> IMPLIEDROLES = Arrays.asList(IMPLIEDROLESARRAY);
+    public static final List<RoleImpl> IMPLIEDROLES = Arrays.asList(IMPLIEDROLESARRAY);
 
     public static final State ENABLED = loadState("enabled");
     public static final State DISABLED = loadState("disabled");
@@ -177,7 +178,7 @@ public  class UserFactory extends HibernateFactory {
      * @param id the id to search for
      * @return the user found
      */
-    public static User lookupById(Long id) {
+    public static UserImpl lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return session.get(UserImpl.class, id);
     }
@@ -670,7 +671,7 @@ public  class UserFactory extends HibernateFactory {
      * @param inOrg Optional Org to find users for.
      * @return list of users.
      */
-    public List<User> findAllUsers(Optional<Org> inOrg) {
+    public List<UserImpl> findAllUsers(Optional<Org> inOrg) {
         return Opt.fold(inOrg,
             () -> listObjectsByNamedQuery("User.getAllUsers", Map.of()),
             org -> listObjectsByNamedQuery("User.findAllUsersByOrg", Map.of("org_id", org.getId())));
@@ -682,8 +683,26 @@ public  class UserFactory extends HibernateFactory {
      * @param inOrg Org to find administrators for.
      * @return list of users.
      */
-    public List<User> findAllOrgAdmins(Org inOrg) {
-        return listObjectsByNamedQuery("User.findAllOrgAdmins", Map.of("org_id", inOrg.getId()));
+    public List<UserImpl> findAllOrgAdmins(Org inOrg) {
+        String sql = """
+                SELECT u.*
+                FROM web_contact u
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM rhnUserGroupMembers ugm
+                    JOIN rhnUserGroup ug ON ugm.user_group_id = ug.id
+                    JOIN rhnUserGroupType r ON ug.group_type = r.id
+                    WHERE ug.org_id = :org_id
+                      AND r.label = 'org_admin'
+                      AND ugm.user_id = u.id
+                )
+                """;
+
+        Query<UserImpl> query = HibernateFactory.getSession().createNativeQuery(sql, UserImpl.class);
+        query.setParameter("org_id", inOrg.getId());
+
+        // Execute the query and return the result
+        return query.getResultList();
     }
 
     /**
