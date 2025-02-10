@@ -28,21 +28,23 @@
     <rhn:csrf />
     <rhn:submitted />
     <c:if test="${requestScope.showApplyErrata == 'true'}">
-        <div class="spacewalk-section-toolbar">
-            <div class="action-button-wrapper">
-                <html:submit styleClass="btn btn-default" property="dispatch">
-                    <bean:message key="errata.jsp.apply"/>
-                </html:submit>
+        <rhn:require acl="authorized_for(systems.software.patches, W)">
+            <div class="spacewalk-section-toolbar">
+                <div class="action-button-wrapper">
+                    <html:submit styleClass="btn btn-default" property="dispatch">
+                        <bean:message key="errata.jsp.apply"/>
+                    </html:submit>
+                </div>
+                <div class="action-button-wrapper btn-group">
+                    <c:if test="${supported}" >
+                    <label>
+                        <bean:message key="spmigration.jsp.allow.vendor.change" />
+                    </label>
+                    <input  name="allowVendorChange" type="checkbox" />
+                    </c:if>
+                </div>
             </div>
-            <div class="action-button-wrapper btn-group">
-                <c:if test="${supported}" >
-                <label>
-                    <bean:message key="spmigration.jsp.allow.vendor.change" />
-                </label>
-                <input  name="allowVendorChange" type="checkbox" />
-                </c:if>
-            </div>
-        </div>
+        </rhn:require>
     </c:if>
     <br/>
     <select name="type">

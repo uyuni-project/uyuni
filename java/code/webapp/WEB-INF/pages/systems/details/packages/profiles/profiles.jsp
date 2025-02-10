@@ -59,15 +59,17 @@
 
     <hr />
 
-    <div class="form-horizontal">
-        <div class="form-group">
-            <div class="col-md-12">
-                <html:submit property="createBtn" styleClass="btn btn-default">
-                    <bean:message key="profile.jsp.createsystemprofile"/>
-                </html:submit>
+    <rhn:require acl="authorized_for(systems.software.packages.profiles, W);">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <html:submit property="createBtn" styleClass="btn btn-default">
+                        <bean:message key="profile.jsp.createsystemprofile"/>
+                    </html:submit>
+                </div>
             </div>
         </div>
-    </div>
+    </rhn:require>
 
     <html:hidden property="sid" value="${param.sid}" />
     <html:hidden property="submitted" value="true" />

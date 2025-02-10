@@ -41,6 +41,7 @@
              miscAcl="system_feature(ftr_system_grouping)"
              helpUrl="/docs/${rhn:getDocsLocale(pageContext)}/reference/systems/systems-menu.html"
              deletionUrl="/rhn/systems/details/DeleteConfirm.do?sid=${system.id}"
+             deletionAcl="authorized_for(systems.details.delete);"
              deletionType="system">
     <c:if test="${empty system}">
         <decorator:getProperty property="meta.name" />

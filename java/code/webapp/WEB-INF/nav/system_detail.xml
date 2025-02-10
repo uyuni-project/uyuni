@@ -1,52 +1,52 @@
 <?xml version="1.0"?>
 <rhn-navi-tree label="system_detail" invisible="1" formvar="sid ss_id" title-depth="1"
     acl_mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
-  <rhn-tab name="Details" url="/rhn/systems/details/Overview.do">
-    <rhn-tab name="Overview">
+  <rhn-tab name="Details" url="/rhn/systems/details/Overview.do" acl="authorized_for(systems.details.overview)">
+    <rhn-tab name="Overview" acl="authorized_for(systems.details.overview)">
       <rhn-tab-url>/rhn/systems/details/Overview.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/RebootSystem.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Properties" url="/rhn/systems/details/Edit.do" />
-    <rhn-tab name="Remote Command" acl="system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
+    <rhn-tab name="Properties" url="/rhn/systems/details/Edit.do" acl="authorized_for(systems.details.overview, W)"/>
+    <rhn-tab name="Remote Command" acl="authorized_for(systems.details.remote_commands); system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
     <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()">
     </rhn-tab>
     <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
-    <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="system_feature(ftr_agent_smith)"/>
-    <rhn-tab name="Hardware" acl="not system_has_foreign_entitlement() or not system_is_proxy()">
+    <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="authorized_for(systems.details.activation); system_feature(ftr_agent_smith)"/>
+    <rhn-tab name="Hardware" acl="authorized_for(systems.details.hardware); not system_has_foreign_entitlement() or not system_is_proxy()">
       <rhn-tab-url>/rhn/systems/details/SystemHardware.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Transfer" acl="user_role(org_admin)" url="/rhn/systems/details/SystemMigrate.do" />
-    <rhn-tab name="Notes">
+    <rhn-tab name="Transfer" acl="authorized_for(systems.details.transfer); user_role(org_admin)" url="/rhn/systems/details/SystemMigrate.do" />
+    <rhn-tab name="Notes" acl="authorized_for(systems.details.overview)">
       <rhn-tab-url>/rhn/systems/details/Notes.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/EditNote.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Custom Info" acl="system_feature(ftr_custom_info)">
+    <rhn-tab name="Custom Info" acl="authorized_for(systems.details.custom_data); system_feature(ftr_custom_info)">
       <rhn-tab-url>/rhn/systems/details/ListCustomData.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Software" acl="system_has_management_entitlement() or system_has_salt_entitlement()"  url="/rhn/systems/details/packages/Packages.do">
-    <rhn-tab name="Patches" acl="system_feature(ftr_errata_updates)">
+  <rhn-tab name="Software" acl="authorized_for(systems.software); system_has_management_entitlement() or system_has_salt_entitlement()"  url="/rhn/systems/details/packages/Packages.do">
+    <rhn-tab name="Patches" acl="authorized_for(systems.software.patches); system_feature(ftr_errata_updates)">
       <rhn-tab-url>/rhn/systems/details/ErrataList.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/ErrataConfirm.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="Packages">
+    <rhn-tab name="Packages" acl="authorized_for(systems.software.packages);">
       <rhn-tab-url>/rhn/systems/details/packages/Packages.do</rhn-tab-url>
-      <rhn-tab name="system.detail.nav.remove" acl="system_feature(ftr_package_remove)">
+      <rhn-tab name="system.detail.nav.remove" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_remove)">
         <rhn-tab-url>/rhn/systems/details/packages/PackageList.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/RemoveConfirm.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="system.detail.nav.list" acl="not system_feature(ftr_package_remove)">
+      <rhn-tab name="system.detail.nav.list" acl="authorized_for(systems.software.packages, R); not authorized_for(systems.software.packages, W)">
         <rhn-tab-url>/rhn/systems/details/packages/PackageList.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Upgrade" acl="system_feature(ftr_package_updates)">
+      <rhn-tab name="Upgrade" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_updates)">
         <rhn-tab-url>/rhn/systems/details/packages/UpgradableList.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Install" acl="system_feature(ftr_package_updates)">
+      <rhn-tab name="Install" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_updates)">
         <rhn-tab-url>/rhn/systems/details/packages/InstallPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/InstallConfirm.do</rhn-tab-url>
       </rhn-tab>
@@ -54,16 +54,16 @@
         <rhn-tab-url>/rhn/systems/details/packages/VerifyPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/VerifyConfirm.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="pkg.lock.menu" acl="system_feature(ftr_package_lock)">
+      <rhn-tab name="pkg.lock.menu" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_lock)">
         <rhn-tab-url>/rhn/systems/details/packages/LockPackages.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Profiles" acl="system_feature(ftr_profile_compare)">
+      <rhn-tab name="Profiles" acl="authorized_for(systems.software.packages.profiles); system_feature(ftr_profile_compare)">
         <rhn-tab-url>/rhn/systems/details/packages/profiles/ShowProfiles.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/Create.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/CompareSystems.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/profiles/CompareProfiles.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Extra Packages" acl="system_feature(ftr_package_remove)">
+      <rhn-tab name="Extra Packages" acl="authorized_for(systems.software.packages); system_feature(ftr_package_remove)">
         <rhn-tab-url>/rhn/systems/details/packages/ExtraPackagesList.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/RemoveConfirm.do</rhn-tab-url>
       </rhn-tab>
@@ -81,24 +81,24 @@
       </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="Software Channels" acl="system_feature(ftr_package_updates)">
+    <rhn-tab name="Software Channels" acl="authorized_for(systems.software.channels); system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SystemChannels.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="Product Migration" acl="system_feature(ftr_package_updates)">
+    <rhn-tab name="Product Migration" acl="authorized_for(systems.software.migration); system_feature(ftr_package_updates)">
       <rhn-tab-url>/rhn/systems/details/SPMigration.do</rhn-tab-url>
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Configuration" acl="system_feature(ftr_config)" url="/rhn/systems/details/configuration/Overview.do">
+  <rhn-tab name="Configuration" acl="authorized_for(systems.config); system_feature(ftr_config)" url="/rhn/systems/details/configuration/Overview.do">
     <rhn-tab-directory>/rhn/systems/details/configuration</rhn-tab-directory>
-    <rhn-tab name="nav.sdc.config.overview" url="/rhn/systems/details/configuration/Overview.do"/>
-    <rhn-tab name="nav.sdc.config.view_modify_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do" acl="system_has_management_entitlement()">
+    <rhn-tab name="nav.sdc.config.overview" acl="authorized_for(systems.config.overview)" url="/rhn/systems/details/configuration/Overview.do"/>
+    <rhn-tab name="nav.sdc.config.view_modify_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do" acl="authorized_for(systems.config.files); system_has_management_entitlement()">
       <rhn-tab name="nav.sdc.config.centrally_managed_files" url="/rhn/systems/details/configuration/ViewModifyCentralPaths.do" />
       <rhn-tab name="nav.sdc.config.locally_managed_files" url="/rhn/systems/details/configuration/ViewModifyLocalPaths.do"/>
       <rhn-tab name="nav.sdc.config.sandbox_managed_files" url="/rhn/systems/details/configuration/ViewModifySandboxPaths.do"/>
     </rhn-tab>
-    <rhn-tab name="nav.sdc.config.view_files" url="/rhn/systems/details/configuration/ViewCentralPaths.do" acl="system_has_salt_entitlement()">
+    <rhn-tab name="nav.sdc.config.view_files" url="/rhn/systems/details/configuration/ViewCentralPaths.do" acl="authorized_for(systems.config.files); system_has_salt_entitlement()">
       <rhn-tab name="nav.sdc.config.centrally_managed_files" url="/rhn/systems/details/configuration/ViewCentralPaths.do" />
     </rhn-tab>
     <rhn-tab name="configchannel.nav.add" url="/rhn/systems/details/configuration/addfiles/UploadFile.do" acl="system_has_management_entitlement()">
@@ -111,31 +111,31 @@
          <rhn-tab name="configchannel.nav.add.create" url="/rhn/systems/details/configuration/addfiles/CreateFile.do"/>
     </rhn-tab>
 
-    <rhn-tab name="configchannel.nav.deploy" acl ="client_capable(configfiles.deploy)" url="/rhn/systems/details/configuration/DeployFile.do">
+    <rhn-tab name="configchannel.nav.deploy" acl ="authorized_for(systems.config.files, W); client_capable(configfiles.deploy)" url="/rhn/systems/details/configuration/DeployFile.do">
          <rhn-tab-url>/rhn/systems/details/configuration/DeployFileSubmit.do</rhn-tab-url>
          <rhn-tab-url>/rhn/systems/details/configuration/DeployFileConfirm.do</rhn-tab-url>
          <rhn-tab-url>/rhn/systems/details/configuration/DeployFileConfirmSubmit.do</rhn-tab-url>
     </rhn-tab>
 
-    <rhn-tab name="nav.sdc.config.compare_files" acl ="client_capable(configfiles.diff)" url="/rhn/systems/details/configuration/DiffFile.do">
+    <rhn-tab name="nav.sdc.config.compare_files" acl ="authorized_for(systems.config.files, W); client_capable(configfiles.diff)" url="/rhn/systems/details/configuration/DiffFile.do">
          <rhn-tab-url>/rhn/systems/details/configuration/DiffFileSubmit.do</rhn-tab-url>
          <rhn-tab-url>/rhn/systems/details/configuration/DiffFileConfirm.do</rhn-tab-url>
          <rhn-tab-url>/rhn/systems/details/configuration/DiffFileConfirmSubmit.do</rhn-tab-url>
     </rhn-tab>
 
 
-    <rhn-tab name="nav.sdc.config.manage_channels" url="/rhn/systems/details/configuration/ConfigChannelList.do">
-        <rhn-tab name="nav.sdc.config.list_unsubscribe_channels" url="/rhn/systems/details/configuration/ConfigChannelList.do">
+    <rhn-tab name="nav.sdc.config.manage_channels" url="/rhn/systems/details/configuration/ConfigChannelList.do" acl="authorized_for(systems.config.channels);">
+        <rhn-tab name="nav.sdc.config.list_unsubscribe_channels" url="/rhn/systems/details/configuration/ConfigChannelList.do" acl="authorized_for(systems.config.channels, W);">
             <rhn-tab-url>/rhn/systems/details/configuration/ConfigChannelListUnsubscribeSubmit.do</rhn-tab-url>
         </rhn-tab>
-        <rhn-tab name="nav.sdc.config.subscribe_channels" url="/rhn/systems/details/configuration/SubscriptionsSetup.do">
+        <rhn-tab name="nav.sdc.config.subscribe_channels" url="/rhn/systems/details/configuration/SubscriptionsSetup.do" acl="authorized_for(systems.config.channels, W);">
             <rhn-tab-url>/rhn/systems/details/configuration/SubscriptionsSubmit.do</rhn-tab-url>
         </rhn-tab>
-        <rhn-tab name="nav.sdc.config.rank_channels" url="/rhn/systems/details/configuration/RankChannels.do"/>
+        <rhn-tab name="nav.sdc.config.rank_channels" url="/rhn/systems/details/configuration/RankChannels.do" acl="authorized_for(systems.config.channels);"/>
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Provisioning" acl="system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)" url="/rhn/systems/details/kickstart/ScheduleWizard.do">
+  <rhn-tab name="Provisioning" acl="authorized_for(systems.details.provisioning); system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)" url="/rhn/systems/details/kickstart/ScheduleWizard.do">
 
     <rhn-tab name="Kickstart" url="/rhn/systems/details/kickstart/ScheduleWizard.do" acl="system_feature(ftr_kickstart)">
       <rhn-tab-directory>/rhn/systems/details/kickstart</rhn-tab-directory>
@@ -167,12 +167,12 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Groups" acl="system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)" url="/rhn/systems/details/groups/ListRemove.do">
-    <rhn-tab name="List / Leave" url="/rhn/systems/details/groups/ListRemove.do"/>
-    <rhn-tab name="Join" url="/rhn/systems/details/groups/Add.do"/>
+  <rhn-tab name="Groups" acl="authorized_for(systems.groups); system_feature(ftr_system_grouping); user_role(org_admin) or user_role(system_group_admin)" url="/rhn/systems/details/groups/ListRemove.do">
+    <rhn-tab name="List / Leave" acl="authorized_for(systems.groups.list);" url="/rhn/systems/details/groups/ListRemove.do"/>
+    <rhn-tab name="Join" acl="authorized_for(systems.groups.join);" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
 
-  <rhn-tab name="Audit" acl="system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
+  <rhn-tab name="Audit" acl="authorized_for(systems.details.audit); system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
     <rhn-tab name="OpenSCAP" url="/rhn/systems/details/audit/ListScap.do">
       <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
       <rhn-tab name="nav.system.audit.list_scans">
@@ -196,20 +196,20 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="States" acl="system_has_salt_entitlement()">
+  <rhn-tab name="States" acl="authorized_for(systems.states); system_has_salt_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/highstate</rhn-tab-url>
-    <rhn-tab name="Highstate">
+    <rhn-tab name="Highstate" acl="authorized_for(systems.states.highstate);">
       <rhn-tab-url>/rhn/manager/systems/details/highstate</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Packages">
+    <rhn-tab name="Packages" acl="authorized_for(systems.states.packages)">
       <rhn-tab-url>/rhn/manager/systems/details/packages</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Configuration Channels">
+    <rhn-tab name="Configuration Channels" acl="authorized_for(systems.states.config)">
       <rhn-tab-url>/rhn/manager/systems/details/custom</rhn-tab-url>
      </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Formulas" acl="system_has_salt_entitlement() or system_is_bootstrap_minion_server()">
+  <rhn-tab name="Formulas" acl="authorized_for(systems.formulas); system_has_salt_entitlement() or system_is_bootstrap_minion_server()">
     <rhn-tab-url>/rhn/manager/systems/details/formulas</rhn-tab-url>
   </rhn-tab>
 
@@ -220,11 +220,11 @@
     <rhn-tab name="Inventories" url="/rhn/manager/systems/details/ansible/inventories" acl="system_has_ansible_control_node_entitlement()"/>
   </rhn-tab>
 
-  <rhn-tab name="Recurring Actions" acl="system_has_salt_entitlement()">
+  <rhn-tab name="Recurring Actions" acl="authorized_for(systems.recurring); system_has_salt_entitlement()">
     <rhn-tab-url>/rhn/manager/systems/details/recurring-actions</rhn-tab-url>
   </rhn-tab>
 
-  <rhn-tab name="Events" acl="system_has_management_entitlement() or system_has_salt_entitlement()">
+  <rhn-tab name="Events" acl="authorized_for(systems.events); system_has_management_entitlement() or system_has_salt_entitlement()">
     <rhn-tab-url>/rhn/systems/details/history/Pending.do</rhn-tab-url>
     <rhn-tab-url>/rhn/systems/details/history/Event.do</rhn-tab-url>
     <rhn-tab name="Pending">
