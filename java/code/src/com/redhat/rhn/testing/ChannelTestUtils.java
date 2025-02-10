@@ -23,9 +23,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 /**
  * ChannelTestUtils
@@ -45,7 +42,7 @@ public class ChannelTestUtils {
      */
     public static Channel createBaseChannel(User creator) throws Exception {
         Channel retval = ChannelFactoryTest.createBaseChannel(creator);
-        retval = (Channel) TestUtils.reload(retval);
+        retval = TestUtils.reload(retval);
         return retval;
     }
 
@@ -129,11 +126,9 @@ public class ChannelTestUtils {
         dcm.setChannelArch(c.getChannelArch());
         dcm.setOs(os);
         dcm.setRelease(release);
-        Set maps = new HashSet<>();
-        maps.add(dcm);
-        c.setDistChannelMaps(maps);
-        ChannelFactory.save(c);
-        TestUtils.saveAndFlush(dcm);
+        ChannelFactory.save(dcm);
+
+        c.getDistChannelMaps().add(dcm);
     }
 
     /**

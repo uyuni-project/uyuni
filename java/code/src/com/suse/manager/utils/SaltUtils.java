@@ -42,9 +42,6 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationNetworkAction;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationPoolAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.image.ImageFile;
@@ -70,6 +67,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -122,7 +120,6 @@ import com.suse.manager.webui.utils.salt.custom.OSImageInspectSlsResult;
 import com.suse.manager.webui.utils.salt.custom.PkgProfileUpdateSlsResult;
 import com.suse.manager.webui.utils.salt.custom.RetOpt;
 import com.suse.manager.webui.utils.salt.custom.SystemInfo;
-import com.suse.manager.webui.websocket.VirtNotifications;
 import com.suse.salt.netapi.calls.modules.Openscap;
 import com.suse.salt.netapi.calls.modules.Pkg;
 import com.suse.salt.netapi.calls.modules.Pkg.Info;
@@ -712,14 +709,6 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS)) {
             handleSubscribeChannels(serverAction, jsonResult, action);
-        }
-        else if (action instanceof BaseVirtualizationGuestAction ||
-                action instanceof BaseVirtualizationPoolAction ||
-                action instanceof BaseVirtualizationNetworkAction) {
-            // Tell VirtNotifications that we got an action change, passing action
-            VirtNotifications.spreadActionUpdate(action);
-            // Intentionally don't get only the comment since the changes value could be interesting
-            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
@@ -1870,6 +1859,20 @@ public class SaltUtils {
                 ).distinct().toList()
         );
         server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
+        server.setContainerRuntime(result.getContainerRuntime());
+        server.setUname(result.getUname());
+
+        var sapWorkloads = result.getSAPWorkloads()
+                .map(m -> m.getChanges().getRet())
+                .orElse(Collections.emptySet())
+                .stream()
+                .map(workload -> new SAPWorkload(
+                        server, workload.get("system_id"), workload.get("instance_type")
+                ))
+                .collect(Collectors.toSet());
+
+        server.getSapWorkloads().retainAll(sapWorkloads);
+        server.getSapWorkloads().addAll(sapWorkloads);
 
         // Let the action fail in case there is error messages
         if (!hwMapper.getErrors().isEmpty()) {

@@ -25,6 +25,8 @@ import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.manager.setup.ProxySettingsDto;
+import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
@@ -75,6 +77,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createPayg))), jade);
         get("/manager/admin/setup/payg/:id",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
+        get("/manager/admin/setup/proxy",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
     }
 
     /**
@@ -154,5 +158,19 @@ public class AdminViewsController {
             data.put("paygInstance", GSON.toJson(null));
         }
         return new ModelAndView(data, "controllers/admin/templates/payg.jade");
+    }
+
+    /**
+     * Show proxy tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showProxy(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        ProxySettingsDto proxySettings = ProxySettingsManager.getProxySettings();
+        data.put("proxySettings", GSON.toJson(proxySettings));
+        return new ModelAndView(data, "controllers/admin/templates/proxy.jade");
     }
 }

@@ -3,22 +3,18 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: ../html/src/components/input/range/Range.tsx:46
 #: ../html/src/components/input/range/Range.tsx:47
-#: ../html/src/components/input/range/Range.tsx:59
+#: ../html/src/components/input/range/Range.tsx:48
 #: ../html/src/components/input/range/Range.tsx:60
+#: ../html/src/components/input/range/Range.tsx:61
 #: ../html/src/core/intl/index.test.tsx:11
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:200
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:79
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:80
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:91
-#: ../html/src/manager/virtualization/nets/properties/NetworkAddress.tsx:92
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 14:51+0100\n"
-"PO-Revision-Date: 2024-12-02 16:48+0000\n"
+"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"PO-Revision-Date: 2025-02-01 17:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -26,13 +22,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.8.4\n"
+"X-Generator: Weblate 5.9.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:461
+#: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
 msgstr "zostávajúce"
 
-#: ../html/javascript/spacewalk-essentials.js:481
+#: ../html/javascript/spacewalk-essentials.js:466
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -66,9 +62,6 @@ msgstr "Potvrdiť vykonanie atestácie"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:99
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:208
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:94
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:102
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:447
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:566
 msgid "Schedule"
 msgstr "Plán"
 
@@ -186,7 +179,6 @@ msgstr "Atestácia #{identifier} vykonaná dňa {date} o {time}"
 #: ../html/src/manager/systems/list-filter.tsx:41
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:81
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:775
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:125
 msgid "System"
 msgstr "Systém"
 
@@ -197,7 +189,7 @@ msgid "Environment Type"
 msgstr "Typ prostredia"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
-#: ../html/src/manager/notifications/notification-messages.tsx:508
+#: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "Vytvorené"
 
@@ -206,7 +198,7 @@ msgid "Last modified"
 msgstr "Naposledy zmenené"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:132
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:80
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
@@ -232,8 +224,6 @@ msgstr "Čas atestácie"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:200
 #: ../html/src/manager/salt/keys/key-management.tsx:195
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:70
-#: ../html/src/manager/virtualization/ListTab.tsx:258
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:355
 msgid "Actions"
 msgstr "Akcie"
 
@@ -264,7 +254,7 @@ msgid "Last modified on"
 msgstr "Naposledy zmenené dňa"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:84
-#: ../html/src/manager/notifications/notification-messages.tsx:513
+#: ../html/src/manager/notifications/notification-messages.tsx:517
 msgid "Action"
 msgstr "Akcia"
 
@@ -335,8 +325,6 @@ msgstr "Vybrať plán"
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:98
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:104
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:161
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:168
 msgid "N/A"
 msgstr "N/A"
 
@@ -382,6 +370,7 @@ msgstr ""
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
 #: ../html/src/components/panels/CreatorPanel.tsx:114
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:186
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:129
@@ -394,8 +383,6 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:20
 #: ../html/src/manager/systems/delete-system.tsx:80
 #: ../html/src/manager/systems/delete-system.tsx:81
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:62
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:63
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -427,11 +414,6 @@ msgstr "Zrušiť"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:132
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:134
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:92
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:65
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:37
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:115
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:270
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:308
 msgid "Delete"
 msgstr "Vymazať"
 
@@ -471,7 +453,6 @@ msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
 msgstr "Resetovať"
 
@@ -501,7 +482,7 @@ msgstr "Prepnúť viditeľnosť sekcie"
 msgid "Minimum 2 characters"
 msgstr "Minimálne 2 znaky"
 
-#: ../html/src/components/input/InputBase.tsx:276
+#: ../html/src/components/input/InputBase.tsx:278
 msgid "required"
 msgstr "požadované"
 
@@ -519,8 +500,6 @@ msgstr "požadované"
 #: ../html/src/components/input/range/Range.stories.tsx:24
 #: ../html/src/components/input/select/simple.stories.tsx:32
 #: ../html/src/components/input/text/Text.stories.tsx:38
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
-#: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "Odoslať"
 
@@ -565,25 +544,18 @@ msgstr "Prihlasovacie meno"
 #: ../html/src/manager/salt/keys/key-management.tsx:160
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:129
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:69
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:223
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:220
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:95
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:336
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:244
 msgid "Name"
 msgstr "Názov"
 
 #: ../html/src/components/input/password/Password.stories.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:99
 #: ../html/src/manager/login/uyuni/login.tsx:90
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
 msgstr "Heslo"
 
@@ -661,7 +633,7 @@ msgstr "Nie je možné vykonať akciu."
 #: ../html/src/components/package/PackageListActionScheduler.tsx:180
 #: ../html/src/components/states-picker.tsx:369
 #: ../html/src/components/states-picker.tsx:559
-#: ../html/src/manager/admin/setup/products/products.tsx:1135
+#: ../html/src/manager/admin/setup/products/products.tsx:1081
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:38
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:191
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:16
@@ -820,6 +792,7 @@ msgid "Configuration Channel: {name}"
 msgstr "Konfiguračný kanál: {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
 #: ../html/src/manager/images/image-profiles.tsx:204
 #: ../html/src/manager/images/image-stores.tsx:198
 #: ../html/src/manager/images/image-view-overview.tsx:324
@@ -834,8 +807,6 @@ msgstr "Konfiguračný kanál: {name}"
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:229
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:119
 msgid "Edit"
 msgstr "Upraviť"
 
@@ -958,7 +929,7 @@ msgstr "Označenie kanála"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:126
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:74
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
@@ -1089,7 +1060,7 @@ msgid "({selectedCount} selected)"
 msgstr "({selectedCount} vybraných)"
 
 #: ../html/src/components/table/SearchPanel.tsx:66
-#: ../html/src/manager/admin/setup/products/products.tsx:382
+#: ../html/src/manager/admin/setup/products/products.tsx:329
 msgid "Clear"
 msgstr "Vyčistiť"
 
@@ -1130,17 +1101,13 @@ msgstr "Text, ktorý sa má zobraziť pri prejdení myšou"
 msgid "Help"
 msgstr "Pomocník"
 
-#: ../html/src/components/utils/loading/Loading.tsx:16
+#: ../html/src/components/utils/loading/Loading.tsx:20
 #: ../html/src/manager/appstreams/appstream-packages.tsx:32
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:70
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:99
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:327
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:95
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:468
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:587
 msgid "Loading..."
 msgstr "Načítava sa..."
 
@@ -1350,10 +1317,6 @@ msgid "Setup your SUSE Manager server monitoring."
 msgstr "Nastavte monitorovanie svojho servera SUSE Manager."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:125
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:219
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
 msgid "General"
 msgstr "Všeobecné"
 
@@ -1366,7 +1329,6 @@ msgid "Organizations"
 msgstr "Organizácie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:367
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:49
 msgid "Restart"
 msgstr "Reštart"
 
@@ -1412,9 +1374,6 @@ msgstr "Pridať dáta ssh PAYG"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:104
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:207
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:166
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:86
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:31
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:29
 msgid "Create"
 msgstr "Vytvoriť"
 
@@ -1430,44 +1389,34 @@ msgstr "Dáta pripojenia inštancie SSH"
 msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:84
-#: ../html/src/manager/admin/setup/products/products.tsx:312
-msgid "Setup Wizard"
-msgstr "Sprievodca nastavením"
-
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:111
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:59
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
 msgid "Filter by any value"
 msgstr "Filtrovať podľa ľubovoľnej hodnoty"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:116
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:64
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "Hostiteľ"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:140
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:88
 msgid "Last Update Status"
 msgstr "Stav poslednej aktualizácie"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:141
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:89
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
 msgid "never"
 msgstr "nikdy"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:160
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "Pridať pripojenie PAYG"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
-#: ../html/src/manager/virtualization/ActionApi.tsx:53
-#: ../html/src/manager/virtualization/guests/virtualization-domains-caps-api.ts:43
-#: ../html/src/manager/virtualization/guests/virtualization-guest-definition-api.ts:39
-#: ../html/src/manager/virtualization/nets/virtualization-network-definition-api.tsx:33
-#: ../html/src/manager/virtualization/pools/virtualization-pool-definition-api.tsx:33
 msgid ""
 "Request interrupted or invalid response received from the server. Please try "
 "again."
@@ -1557,8 +1506,7 @@ msgstr "Obnoviť katalóg produktov zo Zákazníckeho centra SUSE"
 #: ../html/src/manager/images/image-profiles.tsx:141
 #: ../html/src/manager/images/image-stores.tsx:141
 #: ../html/src/manager/images/image-view.tsx:375
-#: ../html/src/manager/notifications/notification-messages.tsx:435
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:241
+#: ../html/src/manager/notifications/notification-messages.tsx:439
 msgid "Refresh"
 msgstr "Obnoviť"
 
@@ -1575,7 +1523,7 @@ msgstr "Dokončené"
 msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:159
+#: ../html/src/manager/admin/setup/products/products.tsx:132
 msgid ""
 "No SUSE Manager Server Subscription available. Products requiring Client "
 "Tools Channel will not be shown."
@@ -1583,21 +1531,21 @@ msgstr ""
 "Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
 "kanál nástrojov klienta sa nebudú zobrazovať."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:206
+#: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
 msgstr "Obnovovanie katalógu produktov prebieha..."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:232
+#: ../html/src/manager/admin/setup/products/products.tsx:205
 msgid "The following product installations failed. Please check log files."
 msgstr ""
 "Nasledujúce inštalácie produktov zlyhali. Skontrolujte, prosím, súbory "
 "záznamov."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:277
+#: ../html/src/manager/admin/setup/products/products.tsx:250
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Synchronizácia vybraných kanálov bola úspešne naplánovaná."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:337
+#: ../html/src/manager/admin/setup/products/products.tsx:284
 msgid ""
 "A refresh of the product data is currently running in the background. Please "
 "try again later."
@@ -1605,28 +1553,28 @@ msgstr ""
 "Obnovovanie produktových údajov momentálne beží na pozadí. Skúste znova "
 "neskôr, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:342
+#: ../html/src/manager/admin/setup/products/products.tsx:289
 msgid "The product catalog is still refreshing, please wait."
 msgstr "Katalóg produktov sa stále obnovuje, čakajte, prosím."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:344
+#: ../html/src/manager/admin/setup/products/products.tsx:291
 msgid "Select some product first."
 msgstr "Najskôr vyberte nejaký produkt."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:353
-#: ../html/src/manager/admin/setup/products/products.tsx:362
+#: ../html/src/manager/admin/setup/products/products.tsx:300
+#: ../html/src/manager/admin/setup/products/products.tsx:309
 msgid "Add products"
 msgstr "Pridať produkty"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:381
+#: ../html/src/manager/admin/setup/products/products.tsx:328
 msgid "Clear products selection"
 msgstr "Vymazať výber produktov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:425
+#: ../html/src/manager/admin/setup/products/products.tsx:372
 msgid "Why aren't all products displayed in the list?"
 msgstr "Prečo nie sú v zozname zobrazené všetky produkty?"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:428
+#: ../html/src/manager/admin/setup/products/products.tsx:375
 msgid ""
 "The products displayed on this list are directly linked to your Organization "
 "credentials (Mirror credentials) as well as your SUSE subscriptions."
@@ -1635,7 +1583,7 @@ msgstr ""
 "vašej organizácie (prihlasovacími údajmi zrkadla) ako aj s vašimi "
 "predplatnými SUSE."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:433
+#: ../html/src/manager/admin/setup/products/products.tsx:380
 msgid ""
 "If you believe there are products missing, make sure you have added the "
 "correct Organization credentials in the previous wizard step."
@@ -1643,7 +1591,7 @@ msgstr ""
 "Ak sa domnievate, že niektoré produkty chýbajú, uistite sa, že ste pridali "
 "správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:443
+#: ../html/src/manager/admin/setup/products/products.tsx:390
 msgid ""
 "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
 "Products can only be managed on the ISS master."
@@ -1651,67 +1599,66 @@ msgstr ""
 "Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
 "(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:541
+#: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
 msgstr "Filtrovať podľa architektúry"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:559
+#: ../html/src/manager/admin/setup/products/products.tsx:505
 msgid "Filter by product Description"
 msgstr "Filtrovať podľa popisu produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:635
+#: ../html/src/manager/admin/setup/products/products.tsx:581
 msgid "Product Description"
 msgstr "Popis produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:641
-#: ../html/src/manager/admin/setup/products/products.tsx:1022
+#: ../html/src/manager/admin/setup/products/products.tsx:587
+#: ../html/src/manager/admin/setup/products/products.tsx:968
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:159
 #: ../html/src/manager/images/image-view-packages.tsx:50
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:32
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:184
 msgid "Architecture"
 msgstr "Architektúra"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:643
+#: ../html/src/manager/admin/setup/products/products.tsx:589
 msgid "Arch"
 msgstr "Arch"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:650
+#: ../html/src/manager/admin/setup/products/products.tsx:596
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
 msgstr "Kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:657
+#: ../html/src/manager/admin/setup/products/products.tsx:603
 msgid "Recommended"
 msgstr "Odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:828
+#: ../html/src/manager/admin/setup/products/products.tsx:774
 msgid " channels sync failed"
 msgstr " synchronizácia kanálov zlyhala"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:836
+#: ../html/src/manager/admin/setup/products/products.tsx:782
 msgid " channels sync in progress"
 msgstr " prebieha synchronizácia kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:844
+#: ../html/src/manager/admin/setup/products/products.tsx:790
 msgid " channels synced"
 msgstr " kanály synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:869
+#: ../html/src/manager/admin/setup/products/products.tsx:815
 msgid "To enable this product, the parent product should be selected first"
 msgstr ""
 "Ak chcete povoliť tento produkt, najskôr by mal byť vybraný rodičovský "
 "produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:870
+#: ../html/src/manager/admin/setup/products/products.tsx:816
 msgid "Select this product"
 msgstr "Vybrať tento produkt"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:882
+#: ../html/src/manager/admin/setup/products/products.tsx:828
 msgid "This product is mirrored."
 msgstr "Tento produkt je zrkadlený."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:911
+#: ../html/src/manager/admin/setup/products/products.tsx:857
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:71
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:497
@@ -1719,57 +1666,138 @@ msgstr "Tento produkt je zrkadlený."
 msgid "recommended"
 msgstr "odporúčané"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:967
+#: ../html/src/manager/admin/setup/products/products.tsx:913
 msgid "SCC product catalog refresh in progress"
 msgstr "Prebieha obnovovanie katalógu výrobkov SCC"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:970
+#: ../html/src/manager/admin/setup/products/products.tsx:916
 msgid "Scheduling channels product resync"
 msgstr "Plánovanie opätovnej synchronizácie produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:973
+#: ../html/src/manager/admin/setup/products/products.tsx:919
 msgid "Channels product resync scheduled"
 msgstr "Opätovná synchronizácia produktov kanálov naplánovaná"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:976
+#: ../html/src/manager/admin/setup/products/products.tsx:922
 msgid "Schedule channels product resync"
 msgstr "Naplánovať opätovnú synchronizáciu produktov kanálov"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1036
+#: ../html/src/manager/admin/setup/products/products.tsx:982
 msgid "Show product's channels"
 msgstr "Zobraziť kanály produktu"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1108
+#: ../html/src/manager/admin/setup/products/products.tsx:1054
 msgid "Product Channels - "
 msgstr "Kanály produktov - "
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1113
+#: ../html/src/manager/admin/setup/products/products.tsx:1059
 msgid "Select the optional channels you wish to add and confirm."
 msgstr "Vyberte voliteľné kanály, ktoré chcete pridať, a potvrďte."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1117
+#: ../html/src/manager/admin/setup/products/products.tsx:1063
 msgid "Mandatory Channels"
 msgstr "Povinné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1119
+#: ../html/src/manager/admin/setup/products/products.tsx:1065
 msgid "Optional Channels"
 msgstr "Voliteľné kanály"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1155
+#: ../html/src/manager/admin/setup/products/products.tsx:1101
 msgid "not synced"
 msgstr "nesynchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1158
+#: ../html/src/manager/admin/setup/products/products.tsx:1104
 msgid "sync in progress"
 msgstr "prebieha synchronizácia"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1161
+#: ../html/src/manager/admin/setup/products/products.tsx:1107
 msgid "synced"
 msgstr "synchronizované"
 
-#: ../html/src/manager/admin/setup/products/products.tsx:1164
+#: ../html/src/manager/admin/setup/products/products.tsx:1110
 msgid "sync failed"
 msgstr "synchronizácia zlyhala"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
+msgid "Save and Verify"
+msgstr "Uložiť a overiť"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
+msgid "HTTP Proxy Hostname"
+msgstr "Názov hostiteľa HTTP Proxy"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
+msgid "hostname:port"
+msgstr "názov_hostiteľa:port"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
+msgid ""
+"For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
+msgstr ""
+"Napríklad: <code>example.com:8080</code> alebo <code>192.0.2.0:8080</code>"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
+msgid "HTTP Proxy Username"
+msgstr "Používateľské meno HTTP Proxy"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
+#: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
+msgid "Username"
+msgstr "Používateľské meno"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
+msgid "HTTP Proxy Password"
+msgstr "Heslo HTTP Proxy"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
+msgid "Illustration of a proxy server"
+msgstr "Ilustrácia proxy servera"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
+#: ../html/src/manager/admin/setup/setup-header.tsx:7
+msgid "HTTP Proxy"
+msgstr "HTTP Proxy"
+
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
+msgid ""
+"If this server uses an HTTP proxy to access the outside network, you can use "
+"this form to configure it. If that is not the case, move on to "
+"<link>Organization Credentials</link>."
+msgstr ""
+"Ak tento server používa na prístup k vonkajšej sieti HTTP proxy, môžete ho "
+"pomocou tohto formulára nakonfigurovať. Ak to nie je tento prípad, prejdite "
+"na <link>Prihlasovacie údaje organizácie</link>."
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:59
+msgid "Verifying proxy settings"
+msgstr "Overovanie nastavení proxy"
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:62
+msgid "Successfully verified proxy settings"
+msgstr "Úspešne overené nastavenia proxy"
+
+#: ../html/src/manager/admin/setup/proxy/verification.tsx:65
+msgid "Proxy settings are not valid"
+msgstr "Nastavenia proxy nie sú platné"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:12
+msgid "Organization Credentials"
+msgstr "Prihlasovacie údaje organizácie"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:17
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
+msgid "Products"
+msgstr "Produkty"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:22
+msgid "PAYG Connections"
+msgstr "Pripojenia PAYG"
+
+#: ../html/src/manager/admin/setup/setup-header.tsx:31
+msgid "Setup Wizard"
+msgstr "Sprievodca nastavením"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:97
 msgid " running"
@@ -1827,7 +1855,6 @@ msgstr " sekúnd"
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:363
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:280
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:140
-#: ../html/src/manager/virtualization/ListTab.tsx:235
 msgid "Filter by name"
 msgstr "Filtrovať podľa názvu"
 
@@ -1862,7 +1889,7 @@ msgstr "Momentálne na serveri nie sú spustené žiadne úlohy."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:261
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
-#: ../html/src/manager/notifications/notification-messages.tsx:555
+#: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
 msgstr ""
 "Sedenie vypršalo, prosím, znovu načítajte stránku, aby ste zobrazili "
@@ -1870,7 +1897,7 @@ msgstr ""
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
-#: ../html/src/manager/notifications/notification-messages.tsx:557
+#: ../html/src/manager/notifications/notification-messages.tsx:561
 #: ../html/src/utils/network.ts:103
 msgid "Server error, please check log files."
 msgstr "Chyba servera, prosím, skontrolujte súbory záznamov."
@@ -2328,10 +2355,6 @@ msgstr "Krok 1/2: z tabuľky nižšie vyberte systém, ktorý chcete pripnúť."
 msgid "Socket/IFL count"
 msgstr "Počet Soket/IFL"
 
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
-msgid "Products"
-msgstr "Produkty"
-
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:306
 msgid "Select"
 msgstr "Vybrať"
@@ -2695,7 +2718,6 @@ msgid "AppStream modules with defaults"
 msgstr "Moduly AppStream s predvolenými nastaveniami"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:277
 msgid "Template"
 msgstr "Šablóna"
 
@@ -3207,9 +3229,8 @@ msgstr "zahrnúť odporúčané"
 #: ../html/src/manager/images/image-view-patches.tsx:79
 #: ../html/src/manager/images/image-view.tsx:642
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:105
-#: ../html/src/manager/notifications/notification-messages.tsx:496
+#: ../html/src/manager/notifications/notification-messages.tsx:500
 #: ../html/src/manager/state/highstate-summary.tsx:73
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:300
 msgid "Type"
 msgstr "Typ"
 
@@ -3383,7 +3404,6 @@ msgid "Image Store"
 msgstr "Úložisko obrazov"
 
 #: ../html/src/manager/images/image-build.tsx:270
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:530
 msgid "Path"
 msgstr "Cesta"
 
@@ -3494,9 +3514,6 @@ msgstr "Vytvoriť ďalšie vlastné informačné kľúče"
 #: ../html/src/manager/images/image-store-edit.tsx:214
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:197
-#: ../html/src/manager/virtualization/guests/edit/guests-edit.tsx:111
-#: ../html/src/manager/virtualization/nets/edit/nets-edit.tsx:40
-#: ../html/src/manager/virtualization/pools/edit/pools-edit.tsx:38
 msgid "Update"
 msgstr "Aktualizácia"
 
@@ -3570,13 +3587,6 @@ msgstr "Naozaj chcete vymazať vybrané profily? ({count} vybraných profilov)"
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Použiť prihlasovanie údaje"
-
-#: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:88
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:511
-msgid "Username"
-msgstr "Používateľské meno"
 
 #: ../html/src/manager/images/image-store-edit.tsx:237
 msgid "Edit Image Store: '"
@@ -3940,8 +3950,6 @@ msgid "Building"
 msgstr "Zostavovanie"
 
 #: ../html/src/manager/images/image-view.tsx:511
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:231
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:299
 msgid "Unknown"
 msgstr "Neznáme"
 
@@ -3966,7 +3974,6 @@ msgstr "(zastarané)"
 #: ../html/src/manager/systems/all-list.tsx:79
 #: ../html/src/manager/systems/list-filter.tsx:43
 #: ../html/src/manager/systems/virtual-list.tsx:88
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:141
 msgid "Updates"
 msgstr "Aktualizácie"
 
@@ -4054,10 +4061,8 @@ msgstr ""
 "prostredníctvom jedného rozhrania."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "<link>Zistite viac</link> o {product}."
+msgstr "<link>Zistite viac</link> o {productName}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -4069,11 +4074,11 @@ msgstr "Prihlásiť sa"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "Oznámenie o autorských právach"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} vydanie {versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -4094,18 +4099,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Naozaj chcete zavrieť túto stránku počas prihlasovania?"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "<link>Zistite viac</link> o {product}."
+msgstr "Zistite viac o {productName}:"
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "Zobraziť webové stránky"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "O _aplikacii"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4591,9 +4594,6 @@ msgstr "Stavy balíkov"
 #: ../html/src/manager/minion/packages/package-states.tsx:344
 #: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/salt/keys/key-management.tsx:188
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:152
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:75
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:339
 msgid "State"
 msgstr "Štát"
 
@@ -4606,7 +4606,7 @@ msgid "Applying the packages states has been "
 msgstr "Použitie stavov balíkov bolo "
 
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:22
-#: ../html/src/manager/notifications/notification-messages.tsx:502
+#: ../html/src/manager/notifications/notification-messages.tsx:506
 msgid "Summary"
 msgstr "Súhrn"
 
@@ -4714,99 +4714,101 @@ msgstr "Upozornenie na aktualizáciu"
 msgid "PAYG instance is not compliant"
 msgstr "Inštancia PAYG nie je vyhovujúca"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:241
-#: ../html/src/manager/notifications/notification-messages.tsx:242
+#: ../html/src/manager/notifications/notification-messages.tsx:64
+msgid "SCC Data Sync Disabled"
+msgstr "Zakázaná synchronizácia dát SCC"
+
+#: ../html/src/manager/notifications/notification-messages.tsx:245
+#: ../html/src/manager/notifications/notification-messages.tsx:246
 msgid "Info"
 msgstr "Informácie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:249
-#: ../html/src/manager/notifications/notification-messages.tsx:250
+#: ../html/src/manager/notifications/notification-messages.tsx:253
+#: ../html/src/manager/notifications/notification-messages.tsx:254
 msgid "Warning"
 msgstr "Varovanie"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:257
-#: ../html/src/manager/notifications/notification-messages.tsx:258
+#: ../html/src/manager/notifications/notification-messages.tsx:261
+#: ../html/src/manager/notifications/notification-messages.tsx:262
 msgid "Error"
 msgstr "Chyba"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:320
+#: ../html/src/manager/notifications/notification-messages.tsx:324
 msgid "show details"
 msgstr "zobraziť podrobnosti"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:369
+#: ../html/src/manager/notifications/notification-messages.tsx:373
 msgid "Retry onboarding"
 msgstr "Skúste znova začlenenie sa"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:379
+#: ../html/src/manager/notifications/notification-messages.tsx:383
 msgid "Retry repo sync"
 msgstr "Zopakovať synchronizáciu repozitárov"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:402
+#: ../html/src/manager/notifications/notification-messages.tsx:406
 msgid "Unread Messages"
 msgstr "Neprečítané správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:407
+#: ../html/src/manager/notifications/notification-messages.tsx:411
 msgid "All Messages"
 msgstr "Všetky správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:420
+#: ../html/src/manager/notifications/notification-messages.tsx:424
 msgid "Filter by type"
 msgstr "Filtrovať podľa typu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:439
-#: ../html/src/manager/notifications/notification-messages.tsx:440
+#: ../html/src/manager/notifications/notification-messages.tsx:443
+#: ../html/src/manager/notifications/notification-messages.tsx:444
 msgid "Delete selected messages"
 msgstr "Vymazať vybraté správy"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:447
-#: ../html/src/manager/notifications/notification-messages.tsx:448
+#: ../html/src/manager/notifications/notification-messages.tsx:451
+#: ../html/src/manager/notifications/notification-messages.tsx:452
 msgid "Mark selected as read"
 msgstr "Označiť vybrané ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:465
-#: ../html/src/manager/notifications/notification-messages.tsx:543
+#: ../html/src/manager/notifications/notification-messages.tsx:469
+#: ../html/src/manager/notifications/notification-messages.tsx:547
 msgid "Notification Messages"
 msgstr "Správy s upozorneniami"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:470
+#: ../html/src/manager/notifications/notification-messages.tsx:474
 msgid "The server has collected the following notification messages."
 msgstr "Server zhromaždil nasledujúce správy s upozorneniami."
 
-#: ../html/src/manager/notifications/notification-messages.tsx:484
+#: ../html/src/manager/notifications/notification-messages.tsx:488
 msgid "Filter by summary"
 msgstr "Filtrovať podľa súhrnu"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:490
+#: ../html/src/manager/notifications/notification-messages.tsx:494
 msgid "Severity"
 msgstr "Závažnosť"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:519
+#: ../html/src/manager/notifications/notification-messages.tsx:523
 msgid "Read|Delete"
 msgstr "Čítať|Vymazať"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Unread"
 msgstr "Označiť ako neprečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:525
+#: ../html/src/manager/notifications/notification-messages.tsx:529
 msgid "Flag as Read"
 msgstr "Označiť ako prečítané"
 
-#: ../html/src/manager/notifications/notification-messages.tsx:531
+#: ../html/src/manager/notifications/notification-messages.tsx:535
 msgid "Delete Notification"
 msgstr "Vymazať oznámenie"
 
 #: ../html/src/manager/notifications/notifications.tsx:42
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:339
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
-#: ../html/src/manager/virtualization/useVirtNotification.ts:48
 msgid "Websocket connection closed. Refresh the page to try again."
 msgstr "Pripojenie Websocket je zatvorené. Obnovte stránku a skúste to znova."
 
 #: ../html/src/manager/notifications/notifications.tsx:55
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:359
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
-#: ../html/src/manager/virtualization/useVirtNotification.ts:54
 msgid "Error connecting to server. Refresh the page to try again."
 msgstr "Chyba pri pripájaní k serveru. Obnovte stránku a skúste to znova."
 
@@ -5673,14 +5675,12 @@ msgstr "Funkcia dôveryhodného používania počítača"
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:36
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:187
 msgid "Yes"
 msgstr "Áno"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:74
 #: ../html/src/manager/systems/list-filter.tsx:37
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:188
 msgid "No"
 msgstr "Nie"
 
@@ -5969,7 +5969,6 @@ msgid "system(s) to subscribe"
 msgstr "systém(y) na prihlásenie"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:464
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:177
 msgid "(none)"
 msgstr "(žiadne)"
 
@@ -6102,7 +6101,6 @@ msgid "No Virtual Systems."
 msgstr "Žiadne virtuálne systémy."
 
 #: ../html/src/manager/systems/virtual-list.tsx:99
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:174
 msgid "Base Software Channel"
 msgstr "Základný softvérový kanál"
 
@@ -6209,840 +6207,6 @@ msgstr "Správcovia virtuálnych hostiteľov"
 msgid "Add a virtual host manager"
 msgstr "Pridať správcu virtuálnych hostiteľov"
 
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:18
-msgid "Please install libvirt python module."
-msgstr "Prosím, nainštalujte modul libvirt python."
-
-#: ../html/src/manager/virtualization/HypervisorCheck.tsx:24
-msgid ""
-"Neither KVM nor Xen is running. Ensure they are installed and the kernel "
-"modules are loaded."
-msgstr ""
-"KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly jadra "
-"sú načítané."
-
-#: ../html/src/manager/virtualization/ListTab.tsx:161
-msgid "{name} selected"
-msgstr "Vybrané {name}"
-
-#: ../html/src/manager/virtualization/ListTab.tsx:240
-msgid "Action Status"
-msgstr "Stav akcie"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:131
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:225
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:246
-msgid "Can not contain the following characters: /\\"
-msgstr "Nemôže obsahovať nasledujúce znaky: /\\"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:141
-msgid "Hypervisor"
-msgstr "Hypervizor"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:152
-msgid "Virtual Machine Type"
-msgstr "Typ virtuálneho stroja"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:164
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:56
-msgid "Maximum Memory (MiB)"
-msgstr "Maximálna pamäť (MiB)"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:166
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:175
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:58
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:67
-msgid "A positive integer is required"
-msgstr "Vyžaduje sa kladné celé číslo"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:173
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:65
-msgid "Virtual CPU Count"
-msgstr "Počet virtuálnych CPU"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:195
-msgid "Enable UEFI"
-msgstr "Povoliť UEFI"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:202
-msgid "UEFI firmware path"
-msgstr "Cesta k firmvéru UEFI"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:209
-msgid "NVRAM template path"
-msgstr "Cesta k šablóne NVRAM"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:221
-msgid "Auto-installation Profile"
-msgstr "Profil automatickej inštalácie"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:237
-msgid "Kernel options"
-msgstr "Voľby jadra"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:250
-msgid "Cluster support is disabled since VirtualDomain resource agent "
-msgstr "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:258
-msgid "Define as a cluster resource"
-msgstr "Definovať ako prostriedok klastra"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:264
-msgid "Path to the cluster shared folder for VM definitions"
-msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
-
-#: ../html/src/manager/virtualization/guests/GuestProperties.tsx:296
-msgid "Graphics"
-msgstr "Grafika"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:27
-msgid "Retry"
-msgstr "Znovu"
-
-#: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:33
-msgid "Connecting..."
-msgstr "Pripájanie..."
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Disconnected"
-msgstr "Odpojené"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:183
-msgid "Failed to connect"
-msgstr "Nepodarilo sa pripojiť"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:344
-msgid "Toggle full size"
-msgstr "Prepnúť plnú veľkosť"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:364
-msgid "Guest is not running"
-msgstr "Hosť nie je spustený"
-
-#: ../html/src/manager/virtualization/guests/console/guests-console.tsx:366
-msgid "Unknown guest"
-msgstr "Neznámy hosť"
-
-#: ../html/src/manager/virtualization/guests/console/vnc-client.ts:14
-msgid "Something went wrong, connection is closed"
-msgstr "Niečo sa pokazilo, pripojenie je ukončené"
-
-#: ../html/src/manager/virtualization/guests/create/guests-create.tsx:83
-msgid "Create Virtual Machine"
-msgstr "Vytvoriť virtuálny stroj"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:42
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:221
-msgid "Migrate"
-msgstr "Migrovať"
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:60
-msgid "Select where to migrate the virtual guest to."
-msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
-
-#: ../html/src/manager/virtualization/guests/list/MigrateDialog.tsx:63
-msgid "Target Host"
-msgstr "Cieľový hostiteľ"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:33
-msgid "Start / Resume"
-msgstr "Spustiť / Pokračovať"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:40
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:30
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:257
-msgid "Stop"
-msgstr "Zastaviť"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:45
-msgid "Force off"
-msgstr "Zakončiť"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:58
-msgid "Suspend"
-msgstr "Pozastaviť"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:78
-msgid "Synchronize Guests List"
-msgstr "Synchronizovať zoznam hostí"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:79
-msgid "Synchronize"
-msgstr "Synchronizovať"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:102
-msgid "Hosted Virtual Systems"
-msgstr "Hosťované virtuálne systémy"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:103
-msgid ""
-"This is a list of virtual guests which are configured to run on this host."
-msgstr ""
-"Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na "
-"tomto hostiteľovi."
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:118
-msgid "Guest"
-msgstr "Hosť"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:128
-msgid "Unregistered System"
-msgstr "Neregistrovaný systém"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:160
-msgid "Current Memory"
-msgstr "Aktuálna pamäť"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:167
-msgid "vCPUs"
-msgstr "vCPU"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:198
-msgid "paused"
-msgstr "pozastavené"
-
-#: ../html/src/manager/virtualization/guests/list/guests-list.tsx:211
-msgid "Graphical Console"
-msgstr "Grafická konzola"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:55
-msgid "Device type"
-msgstr "Typ zariadenia"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:62
-msgid "Disk"
-msgstr "Disk"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:63
-msgid "CDROM"
-msgstr "CDROM"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:64
-msgid "Floppy"
-msgstr "Disketa"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFields.tsx:75
-msgid "Bus"
-msgstr "Zbernica"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:26
-msgid "File"
-msgstr "Súbor"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskFileFields.tsx:35
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:113
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:500
-msgid "Format"
-msgstr "Formát"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:70
-msgid "Source storage pool"
-msgstr "Zdrojový úložný fond"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:82
-msgid "Source Volume"
-msgstr "Zdrojový zväzok"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:95
-msgid "Disk size (GiB)"
-msgstr "Veľkosť disku (GiB)"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDiskVolumeFields.tsx:103
-msgid "Source template image URL"
-msgstr "URL zdrojového dočasného obrazu"
-
-#: ../html/src/manager/virtualization/guests/properties/GuestDisksPanel.tsx:81
-msgid "Disks"
-msgstr "Disky"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:40
-msgid "Network"
-msgstr "Sieť"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:52
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:90
-msgid "MAC address"
-msgstr "MAC adresa"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:53
-msgid "Leave blank to generate a MAC address"
-msgstr "Ak chcete vygenerovať adresu MAC, nechajte pole prázdne"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-nics-panel.tsx:86
-msgid "Networks"
-msgstr "Siete"
-
-#: ../html/src/manager/virtualization/guests/properties/guest-properties-form.tsx:121
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:461
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:580
-msgid "Clear Fields"
-msgstr "Vymazať polia"
-
-#: ../html/src/manager/virtualization/guests/properties/templates.ts:2
-msgid "Single virtual machine using almost all the host resources"
-msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
-
-#: ../html/src/manager/virtualization/nets/create/nets-create.tsx:28
-msgid "Create Virtual Network"
-msgstr "Vytvoriť virtuálnu sieť"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:23
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:111
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:249
-msgid "Start"
-msgstr "Začiatok"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:50
-msgid "Virtual Networks"
-msgstr "Virtuálne siete"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:51
-msgid ""
-"This is a list of virtual networks which are configured to run on this host."
-msgstr ""
-"Toto je zoznam virtuálnych sietí, ktoré sú nakonfigurované, aby bežali na "
-"tomto hostiteľovi."
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:59
-msgid ""
-"The Salt version on this system does not support virtual network creating "
-"and editing"
-msgstr ""
-"Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych sietí"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:82
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:342
-msgid "Autostart"
-msgstr "Automatické spustenie"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:92
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:345
-msgid "Persistent"
-msgstr "Trvalé"
-
-#: ../html/src/manager/virtualization/nets/list/nets-list.tsx:101
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:264
-msgid "Bridge"
-msgstr "Most"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:216
-msgid "network properties"
-msgstr "vlastnosti siete"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:233
-msgid "Network type"
-msgstr "Typ siete"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:245
-msgid "Macvtap mode"
-msgstr "Režim Macvtap"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:254
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:266
-msgid "Start during virtual host boot"
-msgstr "Spustiť pri štarte virtuálneho hostiteľa"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:260
-msgid "Connectivity"
-msgstr "Pripojenie"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:273
-msgid "Maximum Transmission Unit (MTU)"
-msgstr "Maximálna prenosová jednotka (MTU)"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:277
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:179
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:188
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:197
-msgid "The value has to be a positive integer"
-msgstr "Hodnota musí byť kladné celé číslo"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:285
-msgid "Virtual Port Type"
-msgstr "Typ virtuálneho portu"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:301
-msgid "Select interfaces"
-msgstr "Vybrané rozhrania"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:307
-msgid "By physical function"
-msgstr "Podľa fyzickej funkcie"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:310
-msgid "By virtual functions"
-msgstr "Podľa virtuálnych funkcií"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:311
-msgid "By interfaces"
-msgstr "Podľa rozhraní"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:322
-msgid "Interfaces"
-msgstr "Rozhrania"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:342
-msgid "Physical Function"
-msgstr "Fyzická funkcia"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:357
-msgid "Virtual Functions"
-msgstr "Virtuálne funkcie"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:379
-msgid "VLAN tag"
-msgstr "Značka VLAN"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:383
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:57
-msgid "Integer between 0 and 4095"
-msgstr "Celé číslo medzi 0 a 4095"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:390
-msgid "VLAN tags trunking"
-msgstr "Trunking značiek VLAN"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:400
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:401
-msgid "NAT IPv4 range"
-msgstr "Rozsah IPv4 NAT"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:412
-msgid "Both values has to be IPv4 addresses"
-msgstr "Obe hodnoty musia byť IPv4 adresy"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:416
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:417
-msgid "NAT port range"
-msgstr "Rozsah portov NAT"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:430
-msgid "Both values has to be positive integers"
-msgstr "Obe hodnoty musia byť kladné celé čísla"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:438
-msgid "Addressing"
-msgstr "Adresovanie"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:440
-msgid "Enable IPv6"
-msgstr "Povoliť IPv6"
-
-#: ../html/src/manager/virtualization/nets/network-properties.tsx:442
-msgid "Domain name"
-msgstr "Názov domény"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:19
-msgid "DNS"
-msgstr "DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:24
-msgid "Forwarders"
-msgstr "Forwardery"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:37
-msgid "Domain"
-msgstr "Doména"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:38
-msgid "DNS server address"
-msgstr "Adresa DNS servera"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:51
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:165
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:240
-msgid "Has to be a valid qualified host name"
-msgstr "Musí byť platný kvalifikovaný názov hostiteľa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:59
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:100
-msgid "Has to be an IP address"
-msgstr "Musí byť IP adresa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:66
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:282
-msgid "Hosts"
-msgstr "Hostitelia"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:80
-msgid "Address"
-msgstr "Adresa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:84
-msgid "hostnames (comma-separated)"
-msgstr "názvy hostiteľov (oddelené čiarkami)"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:112
-msgid "Has to be a comma-separated list of host names"
-msgstr "Musí byť zoznam názvov hostiteľov oddelený čiarkami"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:119
-msgid "SRV records"
-msgstr "Záznamy SRV"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:139
-msgid "Service name"
-msgstr "Názov služby"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:147
-msgid "Protocol"
-msgstr "Protokol"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:159
-msgid "Service domain name"
-msgstr "Názov domény služby"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:168
-msgid "Target hostname"
-msgstr "Názov cieľového hostiteľa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:175
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:222
-msgid "Port"
-msgstr "Port"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:184
-msgid "Target priority"
-msgstr "Priorita cieľa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:193
-msgid "Target weight"
-msgstr "Váha cieľa"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:206
-msgid "TXT records"
-msgstr "Záznamy TXT"
-
-#: ../html/src/manager/virtualization/nets/properties/DnsConfig.tsx:224
-msgid "Value"
-msgstr "Hodnota"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:30
-msgid "Network address"
-msgstr "Sieťová adresa"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:41
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:56
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:72
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:105
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:135
-msgid "v6"
-msgstr "v6"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:85
-msgid "IP address"
-msgstr "IP adresa"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:94
-msgid "DHCP Unique Identifier (DUID)"
-msgstr "Jedinečný identifikátor DHCP (DUID)"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:119
-msgid "Needs to be a MAC address"
-msgstr "Musí byť adresa MAC"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:144
-msgid "BOOTP image file"
-msgstr "Súbor obrazu BOOTP"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:145
-msgid "BOOTP server"
-msgstr "Server BOOTP"
-
-#: ../html/src/manager/virtualization/nets/properties/IpConfig.tsx:146
-msgid "TFTP root path"
-msgstr "Koreňová cesta TFTP"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:23
-msgid "Parameters"
-msgstr "Parametre"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:29
-msgid "By profile id"
-msgstr "Podľa id profilu"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:30
-msgid "Virtual Station Interface (VSI) parameters"
-msgstr "Parametre rozhrania virtuálnej stanice (VSI)"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:38
-msgid "Profile id"
-msgstr "id profilu"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:48
-msgid "Interface id"
-msgstr "id rozhrania"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:56
-msgid "VSI manager id"
-msgstr "id správcu VSI"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:57
-msgid "VSI type id"
-msgstr "id typu VSI"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:60
-msgid "VSI type id version"
-msgstr "Verzia id typu VSI"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:66
-msgid "VSI instance id"
-msgstr "id inštancie VSI"
-
-#: ../html/src/manager/virtualization/nets/properties/VirtualPortFields.tsx:70
-msgid "Value needs to be a valid UUID"
-msgstr "Hodnota musí byť platný UUID"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:19
-msgid "VLANs"
-msgstr "Siete VLAN"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:40
-msgid "Tag"
-msgstr "Značka"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:43
-msgid "Native mode"
-msgstr "Natívny režim"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:63
-msgid "Tagged"
-msgstr "Označené"
-
-#: ../html/src/manager/virtualization/nets/properties/Vlans.tsx:64
-msgid "Untagged"
-msgstr "Neoznačené"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:6
-msgid ""
-"Use an existing and configured bridge device. No iptables rule, IP address "
-"or DHCP/DNS service are added"
-msgstr ""
-"Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané žiadne "
-"pravidlo iptables, IP adresa alebo služba DHCP/DNS"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:14
-msgid "Virtual network using the host IP routing stack and NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:19
-msgid "Virtual network using the host IP routing stack, without NAT"
-msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:24
-msgid ""
-"Virtual network using the host IP routing stack, without firewall rules and "
-"NAT"
-msgstr ""
-"Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
-"pre firewall a NAT"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:29
-msgid "Virtual network with no connection to other networks"
-msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:35
-msgid "Network based on macvtap driver to use a pool of physical interfaces. "
-msgstr ""
-"Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:46
-msgid "SR-IOV pool"
-msgstr "fond SR-IOV"
-
-#: ../html/src/manager/virtualization/nets/properties/fields-data.ts:47
-msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
-msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
-
-#: ../html/src/manager/virtualization/nets/virtualization-network-devs-api.ts:27
-msgid "Could not get network devices from the server. Please try again."
-msgstr ""
-"Zo servera sa nepodarilo získať sieťové zariadenia. Prosím, skúste to znova."
-
-#: ../html/src/manager/virtualization/pools/create/pools-create.tsx:26
-msgid "Create Virtual Storage Pool"
-msgstr "Vytvoriť virtuálny úložný fond"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Pool"
-msgstr "Virtuálny úložný fond"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:116
-msgid "Virtual Storage Volume"
-msgstr "Virtuálny úložný zväzok"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:142
-msgid "Delete the pool, including the contained volumes. "
-msgstr "Vymazať fond vrátane obsiahnutých zväzkov. "
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:143
-msgid "Cannot be undone"
-msgstr "Nie je možné vrátiť späť"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:263
-msgid "Edit Pool"
-msgstr "Upraviť fond"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:348
-msgid "Location"
-msgstr "Umiestnenie"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:351
-msgid "Usage"
-msgstr "Použitie"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:364
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:365
-msgid "Create Pool"
-msgstr "Vytvoriť fond"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:371
-msgid "Virtual Storage Pools and Volumes"
-msgstr "Virtuálne úložné fondy a zväzky"
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:372
-msgid ""
-"This is the list of storage pools defined on this host containing virtual "
-"guests disks."
-msgstr ""
-"Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré "
-"obsahujú disky virtuálnych hostí."
-
-#: ../html/src/manager/virtualization/pools/list/pools-list.tsx:384
-msgid "Filter by pool or volume name"
-msgstr "Filtrovať podľa názvu zväzku alebo fondu"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:182
-msgid "Partition separator"
-msgstr "Oddeľovač oddielov"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:213
-msgid "Host name"
-msgstr "Názov hostiteľa"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:255
-msgid "Pool Type"
-msgstr "Typ fondu"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:272
-msgid "Source"
-msgstr "Zdroj"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:314
-msgid "Devices"
-msgstr "Zariadenia"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:355
-msgid "Initiator IQN"
-msgstr "IQN iniciátor"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:365
-msgid "Adapter type"
-msgstr "Typ adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:389
-msgid "Adapter name"
-msgstr "Názov adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:398
-msgid "Adapter parent PCI address"
-msgstr "Rodičovská PCI adresa adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:402
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:415
-msgid "PCI address formatted like 0000:00:00.0"
-msgstr "PCI adresa formátovaná ako 0000:00:00.0"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:411
-msgid "Adapter parent address unique ID"
-msgstr "Jedinečné ID rodičovskej adresy adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:422
-msgid "Adapter parent name"
-msgstr "Rodičovský názov adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:430
-msgid "Adapter parent wwnn"
-msgstr "Rodičovský wwnn adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:433
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:443
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:453
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:464
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:475
-msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
-msgstr "16 znakov dlhá hexadecimálna hodnota. Príklad: 500277a4100c4e21"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:440
-msgid "Adapter parent wwpn"
-msgstr "Rodičovský wwpn adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:450
-msgid "Adapter parent fabric wwn"
-msgstr "Rodičovský fabric wwn adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:460
-msgid "Adapter wwnn"
-msgstr "wwnn adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:471
-msgid "Adapter wwpn"
-msgstr "wwpn adaptéra"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:482
-msgid "Manage vHBA deletion"
-msgstr "Spravovať vymazanie vHBA"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:491
-msgid "Source name"
-msgstr "Názov zdroja"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:517
-msgid "Passphrase"
-msgstr "Heslo"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:527
-msgid "Target"
-msgstr "Cieľ"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:538
-msgid "Owner UID"
-msgstr "Vlastník UID"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:542
-msgid "UID is a numeric value"
-msgstr "UID je číselná hodnota"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:546
-msgid "Group ID"
-msgstr "ID skupiny"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:550
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:559
-msgid "GID is a numeric value"
-msgstr "GID je číselná hodnota"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:554
-msgid "Permission mode"
-msgstr "Režim oprávnení"
-
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:555
-msgid "target directory permissions in octal form, like 0775"
-msgstr "oprávnenia cieľového adresára v osmičkovej forme, napríklad 0775"
-
-#. TODO Add Link to the UI Reference
-#: ../html/src/manager/virtualization/pools/pool-properties.tsx:562
-msgid "SELinux label"
-msgstr "Označenie SELinux"
-
-#: ../html/src/manager/virtualization/pools/virtualization-pools-capabilities-api.ts:27
-msgid ""
-"Could not get storage pool capabilities from the server. Please try again."
-msgstr ""
-"Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, skúste "
-"to znova."
-
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
 msgstr "Sedenie vypršalo, prosím, znovu načítajte stránku."
@@ -7061,6 +6225,608 @@ msgstr "Zdroj sa nenašiel."
 #: ../html/src/utils/network.ts:105
 msgid "HTTP Error code "
 msgstr "Kód chyby HTTP "
+
+#~ msgid "Please install libvirt python module."
+#~ msgstr "Prosím, nainštalujte modul libvirt python."
+
+#~ msgid ""
+#~ "Neither KVM nor Xen is running. Ensure they are installed and the kernel "
+#~ "modules are loaded."
+#~ msgstr ""
+#~ "KVM ani Xen nie sú spustené. Uistite sa, že sú nainštalované a moduly "
+#~ "jadra sú načítané."
+
+#~ msgid "{name} selected"
+#~ msgstr "Vybrané {name}"
+
+#~ msgid "Action Status"
+#~ msgstr "Stav akcie"
+
+#~ msgid "Can not contain the following characters: /\\"
+#~ msgstr "Nemôže obsahovať nasledujúce znaky: /\\"
+
+#~ msgid "Hypervisor"
+#~ msgstr "Hypervizor"
+
+#~ msgid "Virtual Machine Type"
+#~ msgstr "Typ virtuálneho stroja"
+
+#~ msgid "Maximum Memory (MiB)"
+#~ msgstr "Maximálna pamäť (MiB)"
+
+#~ msgid "A positive integer is required"
+#~ msgstr "Vyžaduje sa kladné celé číslo"
+
+#~ msgid "Virtual CPU Count"
+#~ msgstr "Počet virtuálnych CPU"
+
+#~ msgid "Enable UEFI"
+#~ msgstr "Povoliť UEFI"
+
+#~ msgid "UEFI firmware path"
+#~ msgstr "Cesta k firmvéru UEFI"
+
+#~ msgid "NVRAM template path"
+#~ msgstr "Cesta k šablóne NVRAM"
+
+#~ msgid "Auto-installation Profile"
+#~ msgstr "Profil automatickej inštalácie"
+
+#~ msgid "Kernel options"
+#~ msgstr "Voľby jadra"
+
+#~ msgid "Cluster support is disabled since VirtualDomain resource agent "
+#~ msgstr ""
+#~ "Podpora klastra je vypnutá, pretože agent prostriedkov VirtualDomain "
+
+#~ msgid "Define as a cluster resource"
+#~ msgstr "Definovať ako prostriedok klastra"
+
+#~ msgid "Path to the cluster shared folder for VM definitions"
+#~ msgstr "Cesta k zdieľanému priečinku klastra pre definície VM"
+
+#~ msgid "Graphics"
+#~ msgstr "Grafika"
+
+#~ msgid "Retry"
+#~ msgstr "Znovu"
+
+#~ msgid "Connecting..."
+#~ msgstr "Pripájanie..."
+
+#~ msgid "Disconnected"
+#~ msgstr "Odpojené"
+
+#~ msgid "Failed to connect"
+#~ msgstr "Nepodarilo sa pripojiť"
+
+#~ msgid "Toggle full size"
+#~ msgstr "Prepnúť plnú veľkosť"
+
+#~ msgid "Guest is not running"
+#~ msgstr "Hosť nie je spustený"
+
+#~ msgid "Unknown guest"
+#~ msgstr "Neznámy hosť"
+
+#~ msgid "Something went wrong, connection is closed"
+#~ msgstr "Niečo sa pokazilo, pripojenie je ukončené"
+
+#~ msgid "Create Virtual Machine"
+#~ msgstr "Vytvoriť virtuálny stroj"
+
+#~ msgid "Migrate"
+#~ msgstr "Migrovať"
+
+#~ msgid "Select where to migrate the virtual guest to."
+#~ msgstr "Vyberte, kam sa má virtuálny hosť migrovať."
+
+#~ msgid "Target Host"
+#~ msgstr "Cieľový hostiteľ"
+
+#~ msgid "Start / Resume"
+#~ msgstr "Spustiť / Pokračovať"
+
+#~ msgid "Stop"
+#~ msgstr "Zastaviť"
+
+#~ msgid "Force off"
+#~ msgstr "Zakončiť"
+
+#~ msgid "Suspend"
+#~ msgstr "Pozastaviť"
+
+#~ msgid "Synchronize Guests List"
+#~ msgstr "Synchronizovať zoznam hostí"
+
+#~ msgid "Synchronize"
+#~ msgstr "Synchronizovať"
+
+#~ msgid "Hosted Virtual Systems"
+#~ msgstr "Hosťované virtuálne systémy"
+
+#~ msgid ""
+#~ "This is a list of virtual guests which are configured to run on this host."
+#~ msgstr ""
+#~ "Toto je zoznam virtuálnych hostí, ktorí sú nakonfigurovaní, aby bežali na "
+#~ "tomto hostiteľovi."
+
+#~ msgid "Guest"
+#~ msgstr "Hosť"
+
+#~ msgid "Unregistered System"
+#~ msgstr "Neregistrovaný systém"
+
+#~ msgid "Current Memory"
+#~ msgstr "Aktuálna pamäť"
+
+#~ msgid "vCPUs"
+#~ msgstr "vCPU"
+
+#~ msgid "paused"
+#~ msgstr "pozastavené"
+
+#~ msgid "Graphical Console"
+#~ msgstr "Grafická konzola"
+
+#~ msgid "Device type"
+#~ msgstr "Typ zariadenia"
+
+#~ msgid "Disk"
+#~ msgstr "Disk"
+
+#~ msgid "CDROM"
+#~ msgstr "CDROM"
+
+#~ msgid "Floppy"
+#~ msgstr "Disketa"
+
+#~ msgid "Bus"
+#~ msgstr "Zbernica"
+
+#~ msgid "File"
+#~ msgstr "Súbor"
+
+#~ msgid "Format"
+#~ msgstr "Formát"
+
+#~ msgid "Source storage pool"
+#~ msgstr "Zdrojový úložný fond"
+
+#~ msgid "Source Volume"
+#~ msgstr "Zdrojový zväzok"
+
+#~ msgid "Disk size (GiB)"
+#~ msgstr "Veľkosť disku (GiB)"
+
+#~ msgid "Source template image URL"
+#~ msgstr "URL zdrojového dočasného obrazu"
+
+#~ msgid "Disks"
+#~ msgstr "Disky"
+
+#~ msgid "Network"
+#~ msgstr "Sieť"
+
+#~ msgid "MAC address"
+#~ msgstr "MAC adresa"
+
+#~ msgid "Leave blank to generate a MAC address"
+#~ msgstr "Ak chcete vygenerovať adresu MAC, nechajte pole prázdne"
+
+#~ msgid "Networks"
+#~ msgstr "Siete"
+
+#~ msgid "Clear Fields"
+#~ msgstr "Vymazať polia"
+
+#~ msgid "Single virtual machine using almost all the host resources"
+#~ msgstr "Jediný virtuálny stroj využívajúci takmer všetky zdroje hostiteľa"
+
+#~ msgid "Create Virtual Network"
+#~ msgstr "Vytvoriť virtuálnu sieť"
+
+#~ msgid "Start"
+#~ msgstr "Začiatok"
+
+#~ msgid "Virtual Networks"
+#~ msgstr "Virtuálne siete"
+
+#~ msgid ""
+#~ "This is a list of virtual networks which are configured to run on this "
+#~ "host."
+#~ msgstr ""
+#~ "Toto je zoznam virtuálnych sietí, ktoré sú nakonfigurované, aby bežali na "
+#~ "tomto hostiteľovi."
+
+#~ msgid ""
+#~ "The Salt version on this system does not support virtual network creating "
+#~ "and editing"
+#~ msgstr ""
+#~ "Verzia Salt v tomto systéme nepodporuje vytváranie a úpravy virtuálnych "
+#~ "sietí"
+
+#~ msgid "Autostart"
+#~ msgstr "Automatické spustenie"
+
+#~ msgid "Persistent"
+#~ msgstr "Trvalé"
+
+#~ msgid "Bridge"
+#~ msgstr "Most"
+
+#~ msgid "network properties"
+#~ msgstr "vlastnosti siete"
+
+#~ msgid "Network type"
+#~ msgstr "Typ siete"
+
+#~ msgid "Macvtap mode"
+#~ msgstr "Režim Macvtap"
+
+#~ msgid "Start during virtual host boot"
+#~ msgstr "Spustiť pri štarte virtuálneho hostiteľa"
+
+#~ msgid "Connectivity"
+#~ msgstr "Pripojenie"
+
+#~ msgid "Maximum Transmission Unit (MTU)"
+#~ msgstr "Maximálna prenosová jednotka (MTU)"
+
+#~ msgid "The value has to be a positive integer"
+#~ msgstr "Hodnota musí byť kladné celé číslo"
+
+#~ msgid "Virtual Port Type"
+#~ msgstr "Typ virtuálneho portu"
+
+#~ msgid "Select interfaces"
+#~ msgstr "Vybrané rozhrania"
+
+#~ msgid "By physical function"
+#~ msgstr "Podľa fyzickej funkcie"
+
+#~ msgid "By virtual functions"
+#~ msgstr "Podľa virtuálnych funkcií"
+
+#~ msgid "By interfaces"
+#~ msgstr "Podľa rozhraní"
+
+#~ msgid "Interfaces"
+#~ msgstr "Rozhrania"
+
+#~ msgid "Physical Function"
+#~ msgstr "Fyzická funkcia"
+
+#~ msgid "Virtual Functions"
+#~ msgstr "Virtuálne funkcie"
+
+#~ msgid "VLAN tag"
+#~ msgstr "Značka VLAN"
+
+#~ msgid "Integer between 0 and 4095"
+#~ msgstr "Celé číslo medzi 0 a 4095"
+
+#~ msgid "VLAN tags trunking"
+#~ msgstr "Trunking značiek VLAN"
+
+#~ msgid "NAT IPv4 range"
+#~ msgstr "Rozsah IPv4 NAT"
+
+#~ msgid "Both values has to be IPv4 addresses"
+#~ msgstr "Obe hodnoty musia byť IPv4 adresy"
+
+#~ msgid "NAT port range"
+#~ msgstr "Rozsah portov NAT"
+
+#~ msgid "Both values has to be positive integers"
+#~ msgstr "Obe hodnoty musia byť kladné celé čísla"
+
+#~ msgid "Addressing"
+#~ msgstr "Adresovanie"
+
+#~ msgid "Enable IPv6"
+#~ msgstr "Povoliť IPv6"
+
+#~ msgid "Domain name"
+#~ msgstr "Názov domény"
+
+#~ msgid "DNS"
+#~ msgstr "DNS"
+
+#~ msgid "Forwarders"
+#~ msgstr "Forwardery"
+
+#~ msgid "Domain"
+#~ msgstr "Doména"
+
+#~ msgid "DNS server address"
+#~ msgstr "Adresa DNS servera"
+
+#~ msgid "Has to be a valid qualified host name"
+#~ msgstr "Musí byť platný kvalifikovaný názov hostiteľa"
+
+#~ msgid "Has to be an IP address"
+#~ msgstr "Musí byť IP adresa"
+
+#~ msgid "Hosts"
+#~ msgstr "Hostitelia"
+
+#~ msgid "Address"
+#~ msgstr "Adresa"
+
+#~ msgid "hostnames (comma-separated)"
+#~ msgstr "názvy hostiteľov (oddelené čiarkami)"
+
+#~ msgid "Has to be a comma-separated list of host names"
+#~ msgstr "Musí byť zoznam názvov hostiteľov oddelený čiarkami"
+
+#~ msgid "SRV records"
+#~ msgstr "Záznamy SRV"
+
+#~ msgid "Service name"
+#~ msgstr "Názov služby"
+
+#~ msgid "Protocol"
+#~ msgstr "Protokol"
+
+#~ msgid "Service domain name"
+#~ msgstr "Názov domény služby"
+
+#~ msgid "Target hostname"
+#~ msgstr "Názov cieľového hostiteľa"
+
+#~ msgid "Port"
+#~ msgstr "Port"
+
+#~ msgid "Target priority"
+#~ msgstr "Priorita cieľa"
+
+#~ msgid "Target weight"
+#~ msgstr "Váha cieľa"
+
+#~ msgid "TXT records"
+#~ msgstr "Záznamy TXT"
+
+#~ msgid "Value"
+#~ msgstr "Hodnota"
+
+#~ msgid "Network address"
+#~ msgstr "Sieťová adresa"
+
+#~ msgid "v6"
+#~ msgstr "v6"
+
+#~ msgid "IP address"
+#~ msgstr "IP adresa"
+
+#~ msgid "DHCP Unique Identifier (DUID)"
+#~ msgstr "Jedinečný identifikátor DHCP (DUID)"
+
+#~ msgid "Needs to be a MAC address"
+#~ msgstr "Musí byť adresa MAC"
+
+#~ msgid "BOOTP image file"
+#~ msgstr "Súbor obrazu BOOTP"
+
+#~ msgid "BOOTP server"
+#~ msgstr "Server BOOTP"
+
+#~ msgid "TFTP root path"
+#~ msgstr "Koreňová cesta TFTP"
+
+#~ msgid "Parameters"
+#~ msgstr "Parametre"
+
+#~ msgid "By profile id"
+#~ msgstr "Podľa id profilu"
+
+#~ msgid "Virtual Station Interface (VSI) parameters"
+#~ msgstr "Parametre rozhrania virtuálnej stanice (VSI)"
+
+#~ msgid "Profile id"
+#~ msgstr "id profilu"
+
+#~ msgid "Interface id"
+#~ msgstr "id rozhrania"
+
+#~ msgid "VSI manager id"
+#~ msgstr "id správcu VSI"
+
+#~ msgid "VSI type id"
+#~ msgstr "id typu VSI"
+
+#~ msgid "VSI type id version"
+#~ msgstr "Verzia id typu VSI"
+
+#~ msgid "VSI instance id"
+#~ msgstr "id inštancie VSI"
+
+#~ msgid "Value needs to be a valid UUID"
+#~ msgstr "Hodnota musí byť platný UUID"
+
+#~ msgid "VLANs"
+#~ msgstr "Siete VLAN"
+
+#~ msgid "Tag"
+#~ msgstr "Značka"
+
+#~ msgid "Native mode"
+#~ msgstr "Natívny režim"
+
+#~ msgid "Tagged"
+#~ msgstr "Označené"
+
+#~ msgid "Untagged"
+#~ msgstr "Neoznačené"
+
+#~ msgid ""
+#~ "Use an existing and configured bridge device. No iptables rule, IP "
+#~ "address or DHCP/DNS service are added"
+#~ msgstr ""
+#~ "Použiť existujúce a nakonfigurované zariadenie mosta. Nie je pridané "
+#~ "žiadne pravidlo iptables, IP adresa alebo služba DHCP/DNS"
+
+#~ msgid "Virtual network using the host IP routing stack and NAT"
+#~ msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP a NAT"
+
+#~ msgid "Virtual network using the host IP routing stack, without NAT"
+#~ msgstr "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez NAT"
+
+#~ msgid ""
+#~ "Virtual network using the host IP routing stack, without firewall rules "
+#~ "and NAT"
+#~ msgstr ""
+#~ "Virtuálna sieť používajúca smerovací zásobník hostiteľa IP, bez pravidiel "
+#~ "pre firewall a NAT"
+
+#~ msgid "Virtual network with no connection to other networks"
+#~ msgstr "Virtuálna sieť bez pripojenia k iným sieťam"
+
+#~ msgid ""
+#~ "Network based on macvtap driver to use a pool of physical interfaces. "
+#~ msgstr ""
+#~ "Sieť založená na ovládači macvtap na použitie fondu fyzických rozhraní. "
+
+#~ msgid "SR-IOV pool"
+#~ msgstr "fond SR-IOV"
+
+#~ msgid "Pass through one device of a pool of SR-IOV Virtual Functions"
+#~ msgstr "Prejsť cez jedno zariadenie fondu virtuálnych funkcií SR-IOV"
+
+#~ msgid "Could not get network devices from the server. Please try again."
+#~ msgstr ""
+#~ "Zo servera sa nepodarilo získať sieťové zariadenia. Prosím, skúste to "
+#~ "znova."
+
+#~ msgid "Create Virtual Storage Pool"
+#~ msgstr "Vytvoriť virtuálny úložný fond"
+
+#~ msgid "Virtual Storage Pool"
+#~ msgstr "Virtuálny úložný fond"
+
+#~ msgid "Virtual Storage Volume"
+#~ msgstr "Virtuálny úložný zväzok"
+
+#~ msgid "Delete the pool, including the contained volumes. "
+#~ msgstr "Vymazať fond vrátane obsiahnutých zväzkov. "
+
+#~ msgid "Cannot be undone"
+#~ msgstr "Nie je možné vrátiť späť"
+
+#~ msgid "Edit Pool"
+#~ msgstr "Upraviť fond"
+
+#~ msgid "Location"
+#~ msgstr "Umiestnenie"
+
+#~ msgid "Usage"
+#~ msgstr "Použitie"
+
+#~ msgid "Create Pool"
+#~ msgstr "Vytvoriť fond"
+
+#~ msgid "Virtual Storage Pools and Volumes"
+#~ msgstr "Virtuálne úložné fondy a zväzky"
+
+#~ msgid ""
+#~ "This is the list of storage pools defined on this host containing virtual "
+#~ "guests disks."
+#~ msgstr ""
+#~ "Toto je zoznam úložných fondov definovaných na tomto hostiteľovi, ktoré "
+#~ "obsahujú disky virtuálnych hostí."
+
+#~ msgid "Filter by pool or volume name"
+#~ msgstr "Filtrovať podľa názvu zväzku alebo fondu"
+
+#~ msgid "Partition separator"
+#~ msgstr "Oddeľovač oddielov"
+
+#~ msgid "Pool Type"
+#~ msgstr "Typ fondu"
+
+#~ msgid "Source"
+#~ msgstr "Zdroj"
+
+#~ msgid "Devices"
+#~ msgstr "Zariadenia"
+
+#~ msgid "Initiator IQN"
+#~ msgstr "IQN iniciátor"
+
+#~ msgid "Adapter type"
+#~ msgstr "Typ adaptéra"
+
+#~ msgid "Adapter name"
+#~ msgstr "Názov adaptéra"
+
+#~ msgid "Adapter parent PCI address"
+#~ msgstr "Rodičovská PCI adresa adaptéra"
+
+#~ msgid "PCI address formatted like 0000:00:00.0"
+#~ msgstr "PCI adresa formátovaná ako 0000:00:00.0"
+
+#~ msgid "Adapter parent address unique ID"
+#~ msgstr "Jedinečné ID rodičovskej adresy adaptéra"
+
+#~ msgid "Adapter parent name"
+#~ msgstr "Rodičovský názov adaptéra"
+
+#~ msgid "Adapter parent wwnn"
+#~ msgstr "Rodičovský wwnn adaptéra"
+
+#~ msgid "16 characters long hexadecimal value. Example: 500277a4100c4e21"
+#~ msgstr "16 znakov dlhá hexadecimálna hodnota. Príklad: 500277a4100c4e21"
+
+#~ msgid "Adapter parent wwpn"
+#~ msgstr "Rodičovský wwpn adaptéra"
+
+#~ msgid "Adapter parent fabric wwn"
+#~ msgstr "Rodičovský fabric wwn adaptéra"
+
+#~ msgid "Adapter wwnn"
+#~ msgstr "wwnn adaptéra"
+
+#~ msgid "Adapter wwpn"
+#~ msgstr "wwpn adaptéra"
+
+#~ msgid "Manage vHBA deletion"
+#~ msgstr "Spravovať vymazanie vHBA"
+
+#~ msgid "Source name"
+#~ msgstr "Názov zdroja"
+
+#~ msgid "Passphrase"
+#~ msgstr "Heslo"
+
+#~ msgid "Target"
+#~ msgstr "Cieľ"
+
+#~ msgid "Owner UID"
+#~ msgstr "Vlastník UID"
+
+#~ msgid "UID is a numeric value"
+#~ msgstr "UID je číselná hodnota"
+
+#~ msgid "Group ID"
+#~ msgstr "ID skupiny"
+
+#~ msgid "GID is a numeric value"
+#~ msgstr "GID je číselná hodnota"
+
+#~ msgid "Permission mode"
+#~ msgstr "Režim oprávnení"
+
+#~ msgid "target directory permissions in octal form, like 0775"
+#~ msgstr "oprávnenia cieľového adresára v osmičkovej forme, napríklad 0775"
+
+#~ msgid "SELinux label"
+#~ msgstr "Označenie SELinux"
+
+#~ msgid ""
+#~ "Could not get storage pool capabilities from the server. Please try again."
+#~ msgstr ""
+#~ "Zo servera sa nepodarilo získať spôsobilosti úložných fondov. Prosím, "
+#~ "skúste to znova."
 
 #~ msgid "Learn more about"
 #~ msgstr "Zistiť viac o"
@@ -7341,9 +7107,6 @@ msgstr "Kód chyby HTTP "
 
 #~ msgid "System group"
 #~ msgstr "Systémová skupina"
-
-#~ msgid "Node Hostname"
-#~ msgstr "Názov hostiteľa uzla"
 
 #~ msgid " successfully."
 #~ msgstr " úspešne."

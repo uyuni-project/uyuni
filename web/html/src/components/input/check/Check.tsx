@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 
@@ -28,7 +29,7 @@ export function Check(props: Props) {
         return (
           <div className="checkbox">
             <label htmlFor={props.name}>
-              <input
+              <ControlledInput
                 id={props.name}
                 className={inputClass}
                 name={props.name}

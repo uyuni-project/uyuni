@@ -136,11 +136,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
-import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
@@ -156,7 +154,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
-import org.hibernate.type.IntegerType;
+import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -221,12 +219,11 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             }
         });
         SaltApi saltApi = new TestSaltApi();
-        VirtManager virtManager = new TestVirtManager();
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         createMetadataFiles();
@@ -288,7 +285,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         return (Integer) session.createSQLQuery("Select count(*) as cnt " +
                                                          "  from rhnSnapshot " +
                                                          " where server_id = " + sid)
-                                         .addScalar("cnt", IntegerType.INSTANCE)
+                                         .addScalar("cnt", StandardBasicTypes.INTEGER)
                                          .uniqueResult();
     }
 

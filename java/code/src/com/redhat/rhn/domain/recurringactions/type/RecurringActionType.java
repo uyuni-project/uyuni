@@ -17,6 +17,8 @@ package com.redhat.rhn.domain.recurringactions.type;
 
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -31,7 +33,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class RecurringActionType {
+public abstract class RecurringActionType implements Serializable {
 
     private long id;
     private RecurringAction recurringAction;

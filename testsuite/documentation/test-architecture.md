@@ -20,6 +20,24 @@ The CI Test Suite is composed by the following stages:
 - **Secondary**: This stage has all the different server features that we want to cover. We have this stage split in two, because there are some tests that in theory can run in parallel, but in practice we still have issues that way, so we have to run them sequentially.
 - **Finishing**: This stage collects some logs and metrics from the system, so we can debug and analyze the results of the tests. It also includes a test that must run at the end, to validate the database backup and restore feature.
 
+### Test Infrastructure
+
+In this test environment, we configure all the components required to run the server features. The components are:
+
+- **Server**: The main component of the system. It is containerized and serves as the central server responsible for managing clients, repositories, channels, activation keys, images, and more.
+- **Proxy**: A containerized component that redirects actions from the server to the clients.
+- **Retail Branch Server**: This component manages the retail environment, a specialized setup that handles terminals, also known as points of sale.
+- **Monitoring Server**: This component monitors the server and clients. It consists of two key subcomponents:
+    - **Prometheus Server**: Responsible for storing metrics.
+    - **Grafana Server**: Displays metrics in a graphical format.
+- **Prometheus Exporter**: Installed on the server and clients, this component exports their metrics to the Monitoring Server.
+- **Build Host**: This component builds the images deployed on the terminals in the retail environment.
+- **DHCP/DNS Server**: Provides IP addresses and DNS resolution for the terminals in the retail environment.
+- **Debian-like Minion**: Acts as a Debian-based client. Currently, an Ubuntu distribution is used.
+- **RedHat-like Minion**: Acts as a RedHat-based client. Currently, a Rocky distribution is used.
+- **SUSE Minion**: Acts as a SUSE client. A SLES distribution is used for MLM, while a Leap distribution is used for Uyuni.
+- **SUSE SSH Minion**: Similar to the SUSE Minion but uses Salt-SSH instead of Salt.
+
 #### How do we include the code changes that we want to test?
 
 We rely on [Sumaform](https://github.com/uyuni-project/sumaform) to deploy our VM instances for each of our components. Sumaform not only deploys the VM, but also configures all what we need inside each system, it leverages Salt for that purpose.
@@ -27,6 +45,54 @@ As part of the Salt states configuring the systems, we have a state that injects
 
 Those repositories are not directly handled by our server, so during the reposync stage we create custom channels with new custom repositories that will parse and include the repositories injected by Sumaform.
 These custom channels will be part of the activation keys that we use to bootstrap the different clients.
+
+#### How do we speed up the workflow to onboard the clients?
+
+Normally a customer will trigger a full synchronization of a product, including all the mandatory and recommended channels. This process can take a long time, depending on the number of packages and the network speed.
+In our CI Test Suite we want to speed up this workflow by synchronizing only the necessary packages to generate the bootstrap repository for the clients.
+
+For now, this only applies to our Leap Minion in our Uyuni flavor, but the plan is to extend this to the MLM and other clients as well:
+We first need to trigger a synchronization of the channel through `spacewalk-common-channel`, but then we immediately kill that repo-sync process, we need this as otherwise the following command will fail, warning about a non-existing custom channel.
+After that, we run the command `spacewalk-repo-sync -c <channel> --include <package> --include <package> ...` for each of the packages that define as part of our bootstrap repository.
+This way we can speed up the synchronization process, and we can bootstrap the clients immediately after that. The rest of the product channels will automatically be synchronized by the scheduled tasks when it reaches the time to do so.
+
+#### Overview of Channels and Repositories
+
+The current overview of channels and repositories is as follows:
+
+- **Proxy**:
+  - **On MLM**: SLE Micro product channels are fully synchronized by the server, along with sub-channels related to the Proxy extension.
+  - **On Uyuni**:
+    - **On Cloud**: openSUSE Leap product channels are partially synchronized by the server, along with Uyuni Proxy Devel and Uyuni Client Tools sub-channels.
+    - **On KVM Host**: openSUSE Leap Micro product channels are partially synchronized by the server, along with Uyuni Proxy Devel and Uyuni Client Tools sub-channels.
+
+- **Build Host**:
+  - SLES product channels are fully synchronized by the server.
+
+- **Terminals**:
+  - SLES product channels are fully synchronized by the server.
+  - **As child channels**:
+    - A fake channel with a repository containing fake packages and patches.
+
+- **SUSE Minions**:
+  - **On MLM**: SLES product channels are fully synchronized by the server.
+  - **On Uyuni**: Leap product channels are partially synchronized by the server, meaning only the minimal dependencies required to generate the bootstrap repository are included.
+  - **As child channels**:
+    - A fake channel with a repository containing fake packages and patches.
+    - A development channel with development repositories injected by Sumaform.
+  - Additional repositories injected by Sumaform may also be included, but they are not directly handled by the server.
+
+- **Debian-like Minion**:
+  - A fake channel with a repository containing fake packages and patches.
+  - **As child channels**:
+    - A development channel with development repositories injected by Sumaform.
+  - Additional repositories injected by Sumaform may also be included, but they are not directly handled by the server, for instance the Ubuntu Universe repository.
+
+- **RedHat-like Minion**:
+  - A fake channel with a repository containing fake packages and patches.
+  - **As child channels**:
+    - A development channel with development repositories injected by Sumaform.
+  - Additional repositories injected by Sumaform may also be included, but they are not directly handled by the server.
 
 ### Build Validation Test Suite
 

@@ -2,7 +2,7 @@
 SCRIPT=$(basename ${0})
 
 TARGET="test-pr"
-EXECUTOR="docker"
+EXECUTOR="${EXECUTOR:=docker}"
 
 if [ -z ${PRODUCT+x} ];then
     VPRODUCT="VERSION.Uyuni"

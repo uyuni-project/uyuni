@@ -60,14 +60,12 @@ import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
@@ -134,12 +132,11 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         systemQuery = systemQueryIn;
         cloudPaygManager = paygMgrIn;
         attestationManager = attMgrIn;
-        VirtManager virtManager = new VirtManagerSalt(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, groupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, groupManager)
+                new SystemUnentitler(monitoringManager, groupManager),
+                new SystemEntitler(saltApi, monitoringManager, groupManager)
         );
     }
 

@@ -21,10 +21,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
+
 /**
  * PackageEvr
  */
-public class PackageEvr implements Comparable<PackageEvr> {
+public class PackageEvr implements Comparable<PackageEvr>, Serializable {
 
     private static final RpmVersionComparator RPMVERCMP = new RpmVersionComparator();
     private static final DebVersionComparator DEBVERCMP = new DebVersionComparator();

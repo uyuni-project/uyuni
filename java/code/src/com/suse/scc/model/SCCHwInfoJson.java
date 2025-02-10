@@ -16,6 +16,8 @@ package com.suse.scc.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Set;
+
 /**
  * This is a System Item send to SCC for registration.
  */
@@ -31,8 +33,15 @@ public class SCCHwInfoJson {
     private String uuid;
     private String hypervisor;
 
+    private String uname;
+
+    @SerializedName("container_runtime")
+    private String containerRuntime;
+
     @SerializedName("cloud_provider")
     private String cloudProvider;
+
+    private Set<SAPJson> sap;
 
     public int getCpus() {
         return cpus;
@@ -88,5 +97,29 @@ public class SCCHwInfoJson {
 
     public void setMemTotal(int memTotalIn) {
         memTotal = memTotalIn;
+    }
+
+    public Set<SAPJson> getSap() {
+        return sap;
+    }
+
+    public void setSap(Set<SAPJson> sapIn) {
+        sap = sapIn;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String unameIn) {
+        uname = unameIn;
+    }
+
+    public String getContainerRuntime() {
+        return containerRuntime;
+    }
+
+    public void setContainerRuntime(String containerRuntimeIn) {
+        containerRuntime = containerRuntimeIn;
     }
 }

@@ -52,13 +52,11 @@ import com.redhat.rhn.testing.TestUtils;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
@@ -91,11 +89,10 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 sshMinionBootstrapper
         );
         private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-        private final VirtManager virtManager = new VirtManagerSalt(saltApi);
         private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
         private final SystemManager systemManager =
                 new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);

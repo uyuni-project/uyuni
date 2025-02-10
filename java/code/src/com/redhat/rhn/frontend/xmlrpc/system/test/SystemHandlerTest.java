@@ -46,8 +46,6 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetMemoryGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationSetVcpusGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -92,10 +90,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
-import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.test.CPUTest;
-import com.redhat.rhn.domain.server.test.GuestBuilder;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
@@ -108,7 +103,6 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.test.ActivationKeyTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
 import com.redhat.rhn.frontend.dto.OperationDetailsDto;
@@ -168,14 +162,12 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.pillar.MinionCustomInfoPillarGenerator;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
@@ -206,7 +198,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -227,11 +218,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             sshMinionBootstrapper
     );
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private final VirtManager virtManager = new VirtManagerSalt(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+            new SystemUnentitler(monitoringManager, serverGroupManager),
+            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
     );
     private SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -2647,90 +2637,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertTrue(systemInList(srv1.getId(), list));
 
 
-    }
-
-    @Test
-    public void testScheduleGuestAction() throws Exception {
-        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
-        Server host = ServerFactoryTest.createTestServer(admin, true);
-        GuestBuilder build = new GuestBuilder(admin);
-        VirtualInstance guest = build.createGuest().withVirtHost().build();
-        guest.setHostSystem(host);
-
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(guest);
-
-        int id = handler.scheduleGuestAction(admin,
-                guest.getGuestSystem().getId().intValue(), "restart");
-
-        List<Action> actions = ActionFactory.listActionsForServer(admin, host);
-
-        boolean contains = false;
-        for (Action act : actions) {
-            if (act.getId() == id) {
-                contains = true;
-                assertEquals(act.getActionType(), ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
-            }
-        }
-        assertTrue(contains);
-    }
-
-    @Test
-    public void testSetGuestMemory() throws Exception {
-        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
-        Server host = ServerFactoryTest.createTestServer(admin, true);
-        GuestBuilder build = new GuestBuilder(admin);
-        VirtualInstance guest = build.createGuest().withVirtHost().build();
-        guest.setHostSystem(host);
-
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(guest);
-
-        int id = handler.setGuestMemory(admin,
-                guest.getGuestSystem().getId().intValue(), 512);
-
-        List<Action> actions = ActionFactory.listActionsForServer(admin, host);
-
-        boolean contains = false;
-        for (Action act : actions) {
-            if (act.getId() == id) {
-                contains = true;
-                assertEquals(act.getActionType(),
-                        ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY);
-                VirtualizationSetMemoryGuestAction action = HibernateFactory.getSession().load(
-                        VirtualizationSetMemoryGuestAction.class,  (long) id);
-                assertEquals(action.getMemory(), Integer.valueOf(512 * 1024));
-            }
-        }
-        assertTrue(contains);
-    }
-
-
-    @Test
-    public void testSetGuestCpus() throws Exception {
-        Context.getCurrentContext().setTimezone(TimeZone.getTimeZone("UTC"));
-        Server host = ServerFactoryTest.createTestServer(admin, true);
-        GuestBuilder build = new GuestBuilder(admin);
-        VirtualInstance guest = build.createGuest().withVirtHost().build();
-        guest.setHostSystem(host);
-
-        VirtualInstanceFactory.getInstance().saveVirtualInstance(guest);
-
-        int id = handler.setGuestCpus(admin,
-                guest.getGuestSystem().getId().intValue(), 3);
-
-        List<Action> actions = ActionFactory.listActionsForServer(admin, host);
-
-        boolean contains = false;
-        for (Action act : actions) {
-            if (act.getId() == id) {
-                contains = true;
-                assertEquals(act.getActionType(),
-                        ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS);
-                VirtualizationSetVcpusGuestAction action = HibernateFactory.getSession().load(
-                        VirtualizationSetVcpusGuestAction.class,  (long) id);
-                assertEquals(action.getVcpu(), Integer.valueOf(3));
-            }
-        }
-        assertTrue(contains);
     }
 
     @Test

@@ -14,8 +14,10 @@
  */
 package com.redhat.rhn.taskomatic;
 
+import static org.quartz.TriggerKey.triggerKey;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.taskomatic.core.SchedulerKernel;
 import com.redhat.rhn.taskomatic.domain.TaskoBunch;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.domain.TaskoSchedule;
@@ -24,11 +26,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.Subqueries;
+import org.hibernate.query.Query;
 import org.quartz.SchedulerException;
 
 import java.util.Date;
@@ -36,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.NoResultException;
 
 /**
  * TaskoFactory
@@ -430,28 +429,30 @@ public class TaskoFactory extends HibernateFactory {
      * @return the latest run or null if none exists
      */
     public static TaskoRun getLatestRun(String bunchName) {
-        DetachedCriteria bunchIds = DetachedCriteria.forClass(TaskoBunch.class)
-                .add(Restrictions.eq("name", bunchName))
-                .setProjection(Projections.id());
+        String sql = """
+            SELECT tr.* FROM rhnTaskoRun tr WHERE tr.template_id IN
+            (SELECT tt.id FROM rhnTaskoTemplate tt WHERE tt.bunch_id =
+            (SELECT tb.id FROM rhnTaskoBunch tb WHERE tb.name = :bunchName))
+            AND tr.status IN (:status1, :status2, :status3) ORDER BY tr.start_time DESC, tr.id DESC LIMIT 1
+            """;
 
-        DetachedCriteria templateIds = DetachedCriteria.forClass(TaskoTemplate.class)
-                .add(Subqueries.propertyIn("bunch", bunchIds))
-                .setProjection(Projections.id());
+        // Create the native query
+        Query<TaskoRun> query = getSession().createNativeQuery(sql, TaskoRun.class);
 
-        return (TaskoRun) getSession()
-            .createCriteria(TaskoRun.class)
-            .add(Subqueries.propertyIn("template.id", templateIds))
-            .add(Restrictions.in("status",
-                    new Object[] {
-                            TaskoRun.STATUS_RUNNING,
-                            TaskoRun.STATUS_FINISHED,
-                            TaskoRun.STATUS_INTERRUPTED
-            }))
-            .addOrder(Order.desc("startTime"))
-            .addOrder(Order.desc("id"))
-            .setFirstResult(0)
-            .setMaxResults(1)
-            .uniqueResult();
+        // Set the parameters for bunchName and status
+        query.setParameter("bunchName", bunchName);
+        query.setParameter("status1", TaskoRun.STATUS_RUNNING);
+        query.setParameter("status2", TaskoRun.STATUS_FINISHED);
+        query.setParameter("status3", TaskoRun.STATUS_INTERRUPTED);
+
+        // Execute the query and return the result (or null if no result is found)
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            // Handle the case where no result is found
+            return null;
+        }
     }
 
     /**
@@ -502,5 +503,76 @@ public class TaskoFactory extends HibernateFactory {
         }
         return singleton.listObjectsByNamedQuery("TaskoSchedule.listNewerThanByBunch",
                 Map.of("bunch_id", bunch.getId(), "date", date));
+    }
+
+    protected static TaskoBunch checkBunchName(Integer orgId, String bunchName) throws NoSuchBunchTaskException {
+        TaskoBunch bunch;
+        if (orgId == null) {
+            bunch = TaskoFactory.lookupSatBunchByName(bunchName);
+        }
+        else {
+            bunch = TaskoFactory.lookupOrgBunchByName(bunchName);
+        }
+        if (bunch == null) {
+            throw new NoSuchBunchTaskException(bunchName);
+        }
+        return bunch;
+    }
+
+    /**
+     * Get a unique label single job.
+     *
+     * @param orgId the organisation ID for the job
+     * @param bunchName the bunch name
+     * @return the unique job label
+     *
+     * @throws SchedulerException in case of internal scheduler error
+     * * *
+     * @throws SchedulerException in case of internal scheduler error
+     */
+    protected static String getUniqueSingleJobLabel(Integer orgId, String bunchName) throws SchedulerException {
+        String jobLabel = "single-" + bunchName + "-";
+        int count = 0;
+        while (!TaskoFactory.listSchedulesByOrgAndLabel(orgId, jobLabel + count).isEmpty() ||
+                (SchedulerKernel.getScheduler() != null && SchedulerKernel.getScheduler()
+                        .getTrigger(triggerKey(jobLabel + count, TaskoQuartzHelper.getGroupName(orgId))) != null)) {
+            count++;
+        }
+        return jobLabel + count;
+    }
+
+    /**
+     * Create a new single bunch run in the database.
+     *
+     * @param orgId the organization ID
+     * @param bunchName the bunch name
+     * @param params the job parameters
+     * @param start the start date of the job
+     * @throws NoSuchBunchTaskException if the bunchName doesn't refer to an existing bunch
+     * @throws SchedulerException for internal scheduler errors
+     */
+    public static void addSingleBunchRun(Integer orgId, String bunchName, Map<String, Object> params, Date start)
+            throws NoSuchBunchTaskException, SchedulerException {
+        TaskoBunch bunch = checkBunchName(orgId, bunchName);
+        String jobLabel = getUniqueSingleJobLabel(null, bunchName);
+        List<TaskoSchedule> taskoSchedules = TaskoFactory.listScheduleByLabel(jobLabel);
+
+        TaskoSchedule schedule;
+        if (taskoSchedules.isEmpty()) {
+            // create schedule
+            schedule = new TaskoSchedule(orgId, bunch, jobLabel, params, start, null, null);
+        }
+        else {
+            // update existing schedule
+            schedule = taskoSchedules.get(0);
+            schedule.setBunch(bunch);
+            schedule.setDataMap(params);
+            schedule.setActiveFrom(start);
+        }
+        // Don't set active till until the job it actually runs.
+        schedule.setActiveTill(null);
+        TaskoFactory.save(schedule);
+        HibernateFactory.commitTransaction();
+        log.info("Schedule created for {}.", jobLabel);
     }
 }

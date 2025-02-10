@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2022 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -25,6 +25,7 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
+    And files on container volumes should all have the proper SELinux label
 
 @proxy
   Scenario: The proxy is healthy
@@ -67,13 +68,6 @@ Feature: Sanity checks
     And reverse resolution should work for "deblike_minion"
     And "deblike_minion" should communicate with the server using public interface
     And the clock from "deblike_minion" should be exact
-
-@virthost_kvm
-  Scenario: The KVM host is healthy
-    Then "kvm_server" should have a FQDN
-    And reverse resolution should work for "kvm_server"
-    And "kvm_server" should communicate with the server using public interface
-    And the clock from "kvm_server" should be exact
 
 @skip_if_cloud
   Scenario: The external resources can be reached

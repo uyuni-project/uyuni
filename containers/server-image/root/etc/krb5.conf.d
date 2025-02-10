@@ -1,0 +1,1 @@
+/etc/rhn/krb5.conf.d

@@ -35,7 +35,6 @@ import Highstate from "./state";
 import Storybook from "./storybook";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
-import Virtualization from "./virtualization";
 
 const pages = {
   ...ActivationKeys,
@@ -61,14 +60,15 @@ const pages = {
   ...Shared,
   ...Systems,
   ...Storybook,
-  ...Virtualization,
 };
 
 window.spaImportReactPage = function spaImportReactPage(pageName) {
   SpaRenderer.addReactApp(pageName);
 
   if (!pages[pageName]) {
-    throw new RangeError(`Found no page with name "${pageName}", did you bind the renderer in \`pages\`?`);
+    throw new RangeError(
+      `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
+    );
   }
 
   return pages[pageName]();

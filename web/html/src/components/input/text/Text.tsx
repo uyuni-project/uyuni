@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 
@@ -31,7 +32,7 @@ export const Text = (props: Props) => {
         };
         const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
         return (
-          <input
+          <ControlledInput
             className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
             type={type || "text"}
             name={props.name}
@@ -43,6 +44,7 @@ export const Text = (props: Props) => {
             placeholder={placeholder}
             maxLength={maxLength}
             title={props.title}
+            autoComplete={props.autoComplete}
           />
         );
       }}

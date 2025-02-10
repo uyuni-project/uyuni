@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
-import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -39,9 +38,6 @@ import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
-import com.redhat.rhn.domain.action.virtualization.BaseVirtualizationGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationRebootGuestAction;
-import com.redhat.rhn.domain.action.virtualization.VirtualizationShutdownGuestAction;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -60,29 +56,20 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
-import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
@@ -127,7 +114,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private MinionServer minion;
     private SaltServerActionService saltServerActionService;
-    private SystemEntitlementManager systemEntitlementManager;
     private TaskomaticApi taskomaticMock;
 
     @Override
@@ -136,11 +122,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        VirtManager virtManager = new TestVirtManager() {
-            @Override
-            public void updateLibvirtEngine(MinionServer minionIn) {
-            }
-        };
         SaltService saltService = new SaltService() {
             @Override
             public Optional<Result<JsonElement>> rawJsonCall(LocalCall<?> call, String minionId) {
@@ -153,12 +134,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         minion = MinionServerFactoryTest.createTestMinionServer(user);
         saltServerActionService = createSaltServerActionService(saltService, saltService);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltService);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltService);
-        systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltService, virtManager, monitoringManager, serverGroupManager)
-        );
 
         taskomaticMock = mock(TaskomaticApi.class);
         saltServerActionService.setTaskomaticApi(taskomaticMock);
@@ -251,7 +226,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         ActionFactory.addServerToAction(testMinionServer, action);
 
-        //ActionManager.addPackageActionDetails(Arrays.asList(action), packageMaps);
         TestUtils.flushAndEvict(action);
         Action updateAction = ActionFactory.lookupById(action.getId());
 
@@ -481,7 +455,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testDeployFiles() throws Exception {
+    public void testDeployFiles() {
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(user);
@@ -517,70 +491,6 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Map<LocalCall<?>, List<MinionSummary>> result =
                 saltServerActionService.callsForAction(configAction);
         assertEquals(result.size(), 3);
-    }
-
-    @Test
-    public void testVirtActions() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
-                user, 1, true, systemEntitlementManager);
-        List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
-
-        List<ActionType> actionTypes = Arrays.asList(ActionFactory.TYPE_VIRTUALIZATION_DELETE,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_REBOOT,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_RESUME,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_SET_MEMORY,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_SET_VCPUS,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_START,
-                                                     ActionFactory.TYPE_VIRTUALIZATION_SUSPEND);
-
-        for (ActionType type : actionTypes) {
-            Action action = ActionFactoryTest.createAction(user, type);
-            BaseVirtualizationGuestAction va = (BaseVirtualizationGuestAction)action;
-            va.setUuid(minionHost.getGuests().iterator().next().getUuid());
-            ActionFactory.addServerToAction(minionHost, action);
-
-            Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
-            assertEquals(1, result.size());
-        }
-    }
-
-    @Test
-    public void testVirtForceoff() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
-                user, 1, true, systemEntitlementManager);
-        List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
-
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_SHUTDOWN);
-        VirtualizationShutdownGuestAction va = (VirtualizationShutdownGuestAction)action;
-        va.setUuid(minionHost.getGuests().iterator().next().getUuid());
-        va.setForce(true);
-        ActionFactory.addServerToAction(minionHost, action);
-
-        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
-        LocalCall<?> saltCall = result.keySet().iterator().next();
-        assertStateApplyWithPillar("virt.statechange", "domain_state", "powered_off", saltCall);
-    }
-
-    @Test
-    public void testVirtReset() throws Exception {
-        MinionServer minionHost = (MinionServer)ServerTestUtils.createVirtHostWithGuests(
-                user, 1, true, systemEntitlementManager);
-        List<MinionSummary> minions = Arrays.asList(new MinionSummary(minionHost));
-
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_VIRTUALIZATION_REBOOT);
-        VirtualizationRebootGuestAction va = (VirtualizationRebootGuestAction)action;
-        va.setUuid(minionHost.getGuests().iterator().next().getUuid());
-        va.setForce(true);
-        ActionFactory.addServerToAction(minionHost, action);
-
-        Map<LocalCall<?>, List<MinionSummary>> result = saltServerActionService.callsForAction(action, minions);
-        LocalCall<?> saltCall = result.keySet().iterator().next();
-        assertStateApply("virt.reset", saltCall);
-    }
-
-    private void assertStateApply(String expectedState, LocalCall<?> call) {
-        assertStateApplyWithPillar(expectedState, null, null, call);
     }
 
     @SuppressWarnings("unchecked")

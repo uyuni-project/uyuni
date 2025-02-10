@@ -35,21 +35,21 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.virtualization.test.TestVirtManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.persistence.NoResultException;
 
 /**
  * VirtualInstanceFactoryTest
@@ -70,11 +70,10 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         builder = new GuestBuilder(user);
         SaltApi saltApi = new TestSaltApi();
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-        VirtManager virtManager = new TestVirtManager();
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(virtManager, monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, virtManager, monitoringManager, serverGroupManager)
+                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
     }
 
@@ -299,12 +298,19 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
-        VirtualInstance fromDb = (VirtualInstance) HibernateFactory.getSession()
-                .createCriteria(VirtualInstance.class)
-                .add(Restrictions.eq("hostSystem", host))
-                .add(Restrictions.eq("guestSystem", null))
-                .uniqueResult();
-
+        VirtualInstance fromDb;
+        try {
+            fromDb = HibernateFactory.getSession().createNativeQuery("""
+                                      SELECT * from rhnVirtualInstance
+                                      WHERE host_system_id = :host
+                                      AND  virtual_system_id IS NULL
+                                      """, VirtualInstance.class)
+                .setParameter("host", host.getId(), StandardBasicTypes.LONG)
+                .getSingleResult();
+        }
+        catch (NoResultException e) {
+            fromDb = null;
+        }
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
 

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 import styles from "./Radio.module.scss";
@@ -44,7 +45,7 @@ export function Radio(props: Props) {
           <span className={styles.radio}>
             {props.items.map(({ label, value }) => (
               <label className={radioClass} key={`${props.name}_${value}`}>
-                <input
+                <ControlledInput
                   type="radio"
                   name={props.name}
                   title={`${props.title} ${value}`}
@@ -61,7 +62,7 @@ export function Radio(props: Props) {
             {props.openOption && (
               <div className={`radio ${styles["open_option_wrapper"]}`}>
                 <label className={`radio-inline ${styles.open_option_wrapper_align_wrapper}`}>
-                  <input
+                  <ControlledInput
                     className={styles.open_option_wrapper_align_content}
                     type="radio"
                     name={props.name}
@@ -70,7 +71,7 @@ export function Radio(props: Props) {
                   />
                   {"Other keyword: "}
                 </label>
-                <input
+                <ControlledInput
                   name={props.name}
                   type="text"
                   disabled={!isOpenOption}
