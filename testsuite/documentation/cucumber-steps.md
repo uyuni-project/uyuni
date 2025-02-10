@@ -16,7 +16,6 @@
   - [Events](#events)
   - [Salt](#salt)
   - [XML-RPC or HTTP API](#xml-rpc-or-http-api)
-  - [Virtualization](#virtualization)
 - [Writing new steps](#writing-new-steps)
   - [Running remote commands](#running-remote-commands)
   - [Getting the FQDN of a host](#getting-the-fqdn-of-a-host)
@@ -41,7 +40,6 @@ Possible values are currently:
 | Red Hat-like Salt minion        | ```$rhlike_minion```     | ```$RHLIKE_MINION```                                     | ```"rhlike_minion"```    | ```"minion"```             |
 | Debian-like Salt minion         | ```$deblike_minion```    | ```$DEBLIKE_MINION```                                    | ```"deblike_minion"```   | ```"minion"```             |
 | PXE-boot minion                 | None                     | ```$PXEBOOT_MAC```                                       | ```"pxeboot_minion"```   | ```"pxeboot"```            |
-| KVM virtual host minion         | ```$kvm_server```        | ```$VIRTHOST_KVM_URL``` and ```$VIRTHOST_KVM_PASSWORD``` | ```"kvm_server"```       | ```"virthost"```           |
 
 These names are such for historical reasons and might be made better in the future.
 
@@ -598,94 +596,6 @@ For example:
 
 ```gherkin
   When I call actionchain.add_package_install()
-```
-
-### Virtualization
-
-* Create a test virtual machine on a given host
-
-The virtual machine is created without Uyuni, directly on the virtual host
-using `qemu-img` and `virt-install`
-
-```gherkin
-  When I create a leap virtual machine named "test-vm" without cloudinit on "virt-server"
-  When I create a sles virtual machine named "test-vm" with cloudinit on "virt-server"
-  When I create empty "/path/to/disk.qcow2" qcow2 disk file on "virt-server"
-```
-
-* Checking the state of a virtual machine
-
-```gherkin
-  Then I should see "test-vm" virtual machine shut off on "virt-server"
-  Then I should see "test-vm" virtual machine running on "virt-server"
-  Then I should see "test-vm" virtual machine paused on "virt-server"
-  Then I should not see a "test-vm" virtual machine on "virt-server"
-```
-
-The previous steps are just checking the virtual machine state in libvirt.
-To make sure the virtual machine is completely booted:
-
-```gherkin
-  When I wait until virtual machine "test-vm" on "virt-server" is started
-```
-
-* Check the definition of a virtual machine
-
-```gherkin
-Then "test-vm" virtual machine on "virt-server" should have 1024MB memory and 2 vcpus
-Then "test-vm" virtual machine on "virt-server" should have spice graphics device
-Then "test-vm" virtual machine on "virt-server" should have 2 NIC using "default" network
-Then "test-vm" virtual machine on "virt-server" should have a NIC with 02:34:56:78:9a:bc MAC address
-Then "test-vm" virtual machine on "virt-server" should have a "disk.qcow2" scsi disk
-Then "test-vm" virtual machine on "virt-server" should have a virtio cdrom
-Then "test-vm" virtual machine on "virt-server" should have no cdrom
-Then "test-vm" virtual machine on "virt-server" should have a "myvolume" virtio disk from pool "test-pool"
-Then "test-vm" virtual machine on "virt-server" should have "/path/to/image.iso" attached to a cdrom
-Then "test-vm" virtual machine on "virt-server" should boot using autoyast
-Then "test-vm" virtual machine on "virt-server" should boot on hard disk at next start
-Then "test-vm" virtual machine on "virt-server" should stop on reboot
-Then "test-vm" virtual machine on "virt-server" should not stop on reboot at next start
-```
-
-* Stop a virtual machine
-
-```gherkin
-  When I stop the virtual machine named "test-vm" on "kvm_server"
-```
-
-* Delete a virtual machine
-
-```gherkin
-  When I delete the virtual machine named "test-vm" on "kvm_server"
-```
-
-* Remove disk images from a storage pool
-
-```gherkin
-When I delete all "test-vm.*" volumes from "default" pool on "kvm_server" without error control
-```
-
-* Add or remove virtual network or storage pools
-
-```gherkin
-When I create test-net1 virtual network on "kvm_server"
-When I create test-pool1 virtual storage pool on "kvm_server"
-When I delete test-net1 virtual network on "kvm_server"
-When I delete test-pool1 virtual storage pool on "kvm_server"
-```
-
-* Managing storage pools
-
-```gherkin
-When I refresh the "test-pool0" storage pool of this "kvm-server"
-```
-
-* Managing virtual networks
-
-```gherkin
-When I should not see a "test-net1" virtual network on "kvm-server"
-When I should see a "test-net2" virtual network on "kvm_server"
-When "test-net2" on "kvm_server" should have "192.168.128.1" IPv4 address with 24 prefix
 ```
 
 ## Writing new steps

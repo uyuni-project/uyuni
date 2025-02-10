@@ -20,10 +20,11 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 
+import javax.persistence.TypedQuery;
 
 /**
  * A factory for creating PinnedSubscription objects.
@@ -69,7 +70,11 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<PinnedSubscription> listPinnedSubscriptions() {
-        return getSession().createCriteria(PinnedSubscription.class).list();
+        String sql = "SELECT * FROM susePinnedSubscription";
+
+        TypedQuery<PinnedSubscription> query
+                = getSession().createNativeQuery(sql, PinnedSubscription.class);
+        return query.getResultList();
     }
 
     /**
@@ -96,7 +101,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
     public void cleanStalePins() {
         getSession()
             .getNamedQuery("PinnedSubscription.cleanStalePins")
-            .setLong("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, StandardBasicTypes.LONG)
             .executeUpdate();
     }
 
@@ -106,10 +111,10 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @return PinnedSubscription object
      */
     public PinnedSubscription lookupById(Long id) {
-        return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
-                .add(Restrictions.eq("id", id))
-                .uniqueResult();
+        String sql = "SELECT * FROM susePinnedSubscription WHERE id = :id";
+        return getSession()
+                .createNativeQuery(sql, PinnedSubscription.class).setParameter("id", id)
+                .getSingleResult();
     }
 
     /**
@@ -120,10 +125,13 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
             Long subscriptionId) {
-        return (PinnedSubscription) getSession()
-                .createCriteria(PinnedSubscription.class)
-                .add(Restrictions.eq("systemId", systemId))
-                .add(Restrictions.eq("subscriptionId", subscriptionId))
-                .uniqueResult();
+
+        String sql = "SELECT * FROM susePinnedSubscription " +
+                "WHERE system_id = :systemId AND subscription_id = :subscriptionId";
+        return getSession()
+                .createNativeQuery(sql, PinnedSubscription.class)
+                .setParameter("systemId", systemId, StandardBasicTypes.LONG)
+                .setParameter("subscriptionId", subscriptionId, StandardBasicTypes.LONG)
+                .getSingleResult();
     }
 }

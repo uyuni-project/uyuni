@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
 
@@ -34,7 +35,7 @@ export const Range = (props: Props) => {
         const endValue = (formContext.model || {})[`${props.prefix}_end`] || props.defaultEnd || "";
         return (
           <div className="input-group">
-            <input
+            <ControlledInput
               className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
               type={"text"}
               name={`${props.prefix}_start`}
@@ -47,7 +48,7 @@ export const Range = (props: Props) => {
               title={t(`${props.title || ""} start`)}
             />
             <span className="input-group-addon input-group-text">-</span>
-            <input
+            <ControlledInput
               className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
               type={"text"}
               name={`${props.prefix}_end`}

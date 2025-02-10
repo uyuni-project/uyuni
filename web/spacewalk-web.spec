@@ -31,7 +31,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.1.5
+Version:        5.1.6
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
@@ -63,7 +63,7 @@ but it does generate a number of sub-packages.
 
 %package -n spacewalk-html
 Summary:        HTML document files for Spacewalk
-License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND LGPL-3.0-or-later AND MIT AND MPL-2.0
+License:        (MPL-2.0 OR Apache-2.0) AND 0BSD AND BSD-3-Clause AND GPL-2.0-only AND ISC AND MIT
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       httpd
@@ -113,11 +113,9 @@ Requires:       susemanager-frontend-libs
 %if 0%{?suse_version} >= 1500
 Requires:       python3-PyJWT
 Requires:       python3-numpy
-Requires:       python3-websockify
 %else
 Requires:       python-PyJWT
 Requires:       python-numpy
-Requires:       python-websockify
 %endif
 %endif
 

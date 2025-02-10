@@ -1,9 +1,9 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
 
-  @scc_credentials
+@scc_credentials
   Scenario: Refresh SCC
     When I refresh SCC
 
@@ -66,12 +66,29 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should see the "Development Tools Module 15 SP4 x86_64" selected
     When I select "Containers Module 15 SP4 x86_64" as a product
     Then I should see the "Containers Module 15 SP4 x86_64" selected
-    When I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
+    When I select or deselect "SUSE Manager Client Tools Beta for SLE 15 x86_64 (BETA)" beta client tools
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP4 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
     When I wait until all synchronized channels for "sles15-sp4" have finished
+
+@uyuni
+  Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
+    When I use spacewalk-common-channel to add channel "opensuse_leap15_5" with arch "x86_64"
+    And I kill running spacewalk-repo-sync for "opensuse_leap15_5-x86_64" channel
+    And I use spacewalk-repo-sync to sync channel "opensuse_leap15_5-x86_64" including "python3-ply dmidecode libunwind" packages
+    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
+
+@containerized_server
+@proxy
+@uyuni
+  Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+    # TODO: Refactor the scenarios in order to not require a full synchronization of Uyuni proxy product (OpenSUSE Micro 5.5)
+    When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
+    And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @scc_credentials
 @uyuni
@@ -107,20 +124,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     # TODO: Refactor the scenarios in order to not require a full synchronization of SLES 15 SP4 product in Uyuni
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
-@uyuni
-  Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
-    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
-
-@containerized_server
-@proxy
-@uyuni
-Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
-  When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
-  And I wait until all synchronized channels for "uyuni-proxy" have finished
-
 @proxy
 @susemanager
   Scenario: Add SLE Micro 5.5
@@ -131,7 +134,10 @@ Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
-    When I click the Add Product button
+    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
+    And I open the sub-list of the product "SUSE Manager Client Tools for SLE Micro 5 x86_64" if present
+    And I select or deselect "SUSE Manager Client Tools Beta for SLE Micro 5 x86_64 (BETA)" beta client tools
+    And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
     And I wait until all synchronized channels for "sle-micro-5.5" have finished

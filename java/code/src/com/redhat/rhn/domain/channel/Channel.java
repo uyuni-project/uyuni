@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -986,7 +987,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return stream of channels
      */
     public Stream<Channel> originChain() {
-        return Stream.iterate(this, c -> c != null, c -> c.isCloned() ? c.getOriginal() : null);
+        return Stream.iterate(this, Objects::nonNull, c -> c.asCloned().map(ClonedChannel::getOriginal).orElse(null));
     }
 
     /**

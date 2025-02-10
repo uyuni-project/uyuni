@@ -35,9 +35,7 @@ import com.suse.utils.Opt;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -49,19 +47,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import javax.persistence.NoResultException;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
- */
-public class SCCCachingFactory extends HibernateFactory {
+ */public class SCCCachingFactory extends HibernateFactory {
 
     private static Logger log = LogManager.getLogger(SCCCachingFactory.class);
     private static SCCCachingFactory singleton = new SCCCachingFactory();
@@ -107,13 +103,8 @@ public class SCCCachingFactory extends HibernateFactory {
      * Clear all repositories from the database.
      */
     public static void clearRepositories() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaDelete<SCCRepository> delete = builder.createCriteriaDelete(SCCRepository.class);
-        CriteriaDelete<SCCRepositoryAuth> deleteAuth = builder.createCriteriaDelete(SCCRepositoryAuth.class);
-        delete.from(SCCRepository.class);
-        deleteAuth.from(SCCRepositoryAuth.class);
-        getSession().createQuery(deleteAuth).executeUpdate();
-        getSession().createQuery(delete).executeUpdate();
+        getSession().createNativeQuery("DELETE FROM suseSCCRepositoryAuth").executeUpdate();
+        getSession().createNativeQuery("DELETE FROM suseSCCRepository").executeUpdate();
     }
 
     /**
@@ -176,9 +167,8 @@ public class SCCCachingFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SCCSubscription> lookupSubscriptions() {
         log.debug("Retrieving subscriptions from cache");
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
-        return c.list();
+        return getSession().createNativeQuery("SELECT * from suseSCCSubscription", SCCSubscription.class)
+                .getResultList();
     }
 
     /**
@@ -190,20 +180,22 @@ public class SCCCachingFactory extends HibernateFactory {
         if (id == null) {
             return null;
         }
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCSubscription.class);
-        c.add(Restrictions.eq("sccId", id));
-        return (SCCSubscription) c.uniqueResult();
+        try {
+            return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
+                            SCCSubscription.class)
+                    .setParameter("scc", id , StandardBasicTypes.LONG)
+                    .getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
+
     /**
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaDelete<SCCSubscription> delete = builder.createCriteriaDelete(SCCSubscription.class);
-        delete.from(SCCSubscription.class);
-        getSession().createQuery(delete).executeUpdate();
-
+        getSession().createNativeQuery("DELETE FROM suseSCCSubscription");
     }
 
     /**
@@ -213,9 +205,8 @@ public class SCCCachingFactory extends HibernateFactory {
     @SuppressWarnings("unchecked")
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
-        Session session = getSession();
-        Criteria c = session.createCriteria(SCCOrderItem.class);
-        return c.list();
+        return getSession().createNativeQuery("SELECT * from suseSCCOrderItem", SCCOrderItem.class)
+                .getResultList();
     }
 
     /**
@@ -225,14 +216,13 @@ public class SCCCachingFactory extends HibernateFactory {
      */
     public static List<SCCOrderItem> listOrderItemsByCredentials(ContentSyncSource source) {
         return source.getCredentials()
-            .map(credentials -> {
-                CriteriaBuilder builder = getSession().getCriteriaBuilder();
-                CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
-                Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
-                query.where(builder.equal(root.get("credentials"), credentials));
-                return getSession().createQuery(query).getResultList();
-            })
-            .orElse(Collections.emptyList());
+                .map(credentials -> getSession().createNativeQuery("""
+                                    SELECT * from suseSCCOrderItem
+                                    WHERE credentials_id = :credentials
+                                    """, SCCOrderItem.class)
+                            .setParameter("credentials", credentials, StandardBasicTypes.LONG)
+                            .getResultList())
+                .orElse(Collections.emptyList());
     }
 
     /**
@@ -241,12 +231,10 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return the OrderItem
      */
     public static Optional<SCCOrderItem> lookupOrderItemBySccId(Long sccId) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCOrderItem> query = builder.createQuery(SCCOrderItem.class);
-        Root<SCCOrderItem> root = query.from(SCCOrderItem.class);
-        query.where(
-                builder.equal(root.get("sccId"), sccId));
-        return getSession().createQuery(query).uniqueResultOptional();
+        return  getSession().createNativeQuery("SELECT * from suseSCCOrderItem WHERE scc_id = :scc",
+                        SCCOrderItem.class)
+                .setParameter("scc", sccId, StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**
@@ -345,15 +333,19 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return list of scc subscription ids
      */
     public static List<Long> listSubscriptionsIdsByCredentials(RemoteCredentials c) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCSubscription> query = builder.createQuery(SCCSubscription.class);
-        Root<SCCSubscription> root = query.from(SCCSubscription.class);
-        query.where(builder.equal(root.get("credentials"), c));
-        List<Long> result = new ArrayList<>();
-        for (SCCSubscription sub : getSession().createQuery(query).getResultList()) {
-            result.add(sub.getSccId());
+        if (c == null || c.getId() == null) {
+            return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE credentials_id IS NULL",
+                            SCCSubscription.class)
+                    .getResultList().stream().map(SCCSubscription::getSccId).collect(Collectors.toList());
         }
-        return result;
+        else {
+            return getSession().createNativeQuery("""
+                                      SELECT * from suseSCCSubscription
+                                      WHERE credentials_id = :credentials
+                                      """, SCCSubscription.class)
+                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
+                    .getResultList().stream().map(SCCSubscription::getSccId).collect(Collectors.toList());
+        }
     }
 
     /**
@@ -373,11 +365,15 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return a SCCRepository
      */
     public static Optional<SCCRepository> lookupRepositoryBySccId(Long sccId) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepository> select = builder.createQuery(SCCRepository.class);
-        Root<SCCRepository> root = select.from(SCCRepository.class);
-        select.where(builder.equal(root.get("sccId"), sccId));
-        return getSession().createQuery(select).uniqueResultOptional();
+        try {
+            return getSession().createNativeQuery("SELECT * from suseSCCRepository WHERE scc_id = :scc",
+                            SCCRepository.class)
+                    .setParameter("scc", sccId, StandardBasicTypes.LONG)
+                    .uniqueResultOptional();
+        }
+        catch (NoSuchElementException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -386,11 +382,16 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return the repository if found
      */
     public static Optional<SCCRepository> lookupRepositoryByName(String name) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepository> select = builder.createQuery(SCCRepository.class);
-        Root<SCCRepository> root = select.from(SCCRepository.class);
-        select.where(builder.equal(root.get("name"), name));
-        return getSession().createQuery(select).uniqueResultOptional();
+        try {
+
+            return getSession().createNativeQuery("SELECT * from suseSCCRepository WHERE name = :name",
+                            SCCRepository.class)
+                .setParameter("name", name, StandardBasicTypes.STRING)
+                .uniqueResultOptional();
+        }
+        catch (NoSuchElementException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -399,16 +400,9 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return a list of SCCRepositoriesAuth
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuthByCredential(ContentSyncSource source) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
-        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
-
-        source.getCredentials().ifPresentOrElse(
-            remoteCredentials -> select.where(builder.equal(root.get("credentials"), remoteCredentials)),
-            () -> select.where(builder.isNull(root.get("credentials")))
-        );
-
-        return getSession().createQuery(select).getResultList();
+        return source.getCredentials()
+                .map(SCCCachingFactory::lookupRepositoryAuthByCredential)
+                .orElseGet(List::of);
     }
 
     /**
@@ -417,37 +411,35 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return a list of SCCRepositoriesAuth
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuthByCredential(Credentials c) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
-        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
         if (c != null) {
-            select.where(builder.equal(root.get("credentials"), c));
+            return getSession().createNativeQuery("""
+                                      SELECT * from suseSCCRepositoryAuth
+                                      WHERE credentials_id = :credentials
+                                      """, SCCRepositoryAuth.class)
+                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
+                    .getResultList();
         }
         else {
-            select.where(builder.isNull(root.get("credentials")));
+            return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth WHERE credentials_id IS null",
+                            SCCRepositoryAuth.class)
+                    .getResultList();
         }
-        return getSession().createQuery(select).getResultList();
     }
 
     /**
      * @return return a list of all {@link SCCRepositoryAuth} objects
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuth() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
-        select.from(SCCRepositoryAuth.class);
-        return getSession().createQuery(select).getResultList();
+        return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth", SCCRepositoryAuth.class)
+                .getResultList();
     }
 
     /**
      * @return a list of repository auth objects which are linked to a {@link ContentSource}
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuthWithContentSource() {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRepositoryAuth> select = builder.createQuery(SCCRepositoryAuth.class);
-        Root<SCCRepositoryAuth> root = select.from(SCCRepositoryAuth.class);
-        select.where(builder.isNotNull(root.get("contentSource")));
-        return getSession().createQuery(select).getResultList();
+        return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth WHERE source_id IS NOT null",
+                SCCRepositoryAuth.class).getResultList();
     }
 
     /**
@@ -631,12 +623,10 @@ public class SCCCachingFactory extends HibernateFactory {
      * @return optional SCCRegCacheItem
      */
     public static Optional<SCCRegCacheItem> lookupCacheItemByServer(Server srv) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<SCCRegCacheItem> select = builder.createQuery(SCCRegCacheItem.class);
-        Root<SCCRegCacheItem> root = select.from(SCCRegCacheItem.class);
-        select.where(builder.equal(root.get("server"), srv));
-        return getSession().createQuery(select).uniqueResultOptional();
-
+        return  getSession().createNativeQuery("SELECT * from suseSCCRegCache WHERE server_id = :server",
+                        SCCRegCacheItem.class)
+                .setParameter("server", srv.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**

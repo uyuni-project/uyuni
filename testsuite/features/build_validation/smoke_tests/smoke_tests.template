@@ -236,8 +236,6 @@ Feature: Smoke tests for <client>
   Scenario: The data from <client> appear on Grafana dashboard
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
-    And I wait until I see "General" text
-    And I check radio button "View as list", if not checked
     When I follow "Client Systems"
     Then I should see "<client>" hostname
     When I enter "<client>" hostname on grafana's host field

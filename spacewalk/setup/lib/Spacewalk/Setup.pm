@@ -8,7 +8,7 @@ use English;
 
 use Exporter 'import';
 use vars '@EXPORT_OK';
-@EXPORT_OK = qw(loc system_debug system_or_exit postgresql_clear_db);
+@EXPORT_OK = qw(loc system_debug system_or_exit);
 
 use Getopt::Long qw(GetOptions);
 use Symbol qw(gensym);
@@ -46,15 +46,6 @@ our $VERSION = '1.1';
 
 use constant SHARED_DIR => "/usr/share/spacewalk/setup";
 
-use constant POSTGRESQL_SCHEMA_FILE => File::Spec->catfile("/usr", "share",
-    'susemanager', 'db', 'postgres', 'main.sql');
-
-use constant POSTGRESQL_DEPLOY_FILE => File::Spec->catfile("/usr", "share",
-    'susemanager', 'db', 'postgres', 'deploy.sql');
-
-use constant DEFAULT_ANSWER_FILE_GLOB =>
-  SHARED_DIR . '/defaults.d/*.conf';
-
 use constant DEFAULT_RHN_CONF_LOCATION =>
   '/etc/rhn/rhn.conf';
 
@@ -63,12 +54,6 @@ use constant DEFAULT_PROXY_CONF_LOCATION =>
 
 use constant DEFAULT_PROXYAUTH_CONF_LOCATION =>
   '/root/.curlrc';
-
-use constant DEFAULT_UP2DATE_LOCATION =>
-  '/etc/sysconfig/rhn/up2date';
-
-use constant DEFAULT_RHN_ETC_DIR =>
-  '/etc/sysconfig/rhn';
 
 use constant DEFAULT_SATCON_DICT =>
   '/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf';
@@ -85,27 +70,13 @@ use constant INSTALL_LOG_FILE =>
 use constant DB_INSTALL_LOG_FILE =>
   '/var/log/rhn/install_db.log';
 
-use constant DB_POP_LOG_FILE =>
-  '/var/log/rhn/populate_db.log';
-
 use constant PG_POP_LOG_SIZE => 156503;
-use constant ORA_POP_LOG_SIZE => 132243;
 
 use constant RHN_LOG_DIR =>
   '/var/log/rhn';
 
-use constant DB_UPGRADE_LOG_FILE =>
-  '/var/log/rhn/upgrade_db.log';
-
-use constant DB_UPGRADE_LOG_SIZE => 22000000;
-
 use constant DB_INSTALL_LOG_SIZE => 11416;
 
-use constant DB_MIGRATION_LOG_FILE =>
-  '/var/log/rhn/rhn_db_migration.log';
-
-use constant EMBEDDED_DB_ANSWERS =>
-  '/usr/share/spacewalk/setup/defaults.d/embedded-postgresql.conf';
 our $DEFAULT_DOC_ROOT = "/var/www/html";
 our $SUSE_DOC_ROOT = "/usr/share/susemanager/www/htdocs";
 
@@ -130,43 +101,21 @@ sub parse_options {
   my @valid_opts = (
             "help",
             "skip-initial-configuration",
-            "skip-system-version-test",
-            "skip-selinux-test",
             "skip-fqdn-test",
-            "skip-python-test",
-            "skip-updates-install",
-            "skip-db-install",
-            "skip-db-diskspace-check",
-            "skip-db-population",
-            "skip-reportdb-setup",
             "skip-ssl-cert-generation",
             "skip-ssl-ca-generation",
             "skip-ssl-vhost-setup",
             "skip-services-check",
-            "skip-services-restart",
-            "skip-logfile-init",
             "clear-db",
-            "re-register",
             "answer-file=s",
-            "non-interactive",
-            "upgrade",
-            "run-updater:s",
-            "run-cobbler",
-            "enable-tftp:s",
-            "external-postgresql",
-            "external-postgresql-over-ssl",
             "db-only",
-            "rhn-http-proxy:s",
-            "rhn-http-proxy-username:s",
-            "rhn-http-proxy-password:s",
-            "managed-db",
             "scc",
             "disconnected"
                    );
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --non-interactive ] [ --skip-initial-configuration ] [ --skip-system-version-test ] [ --skip-selinux-test ] [ --skip-fqdn-test ] [ --skip-db-install ] [ --skip-db-diskspace-check ] [ --skip-db-population ] [--skip-reportdb-setup ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --skip-services-restart ] [ --clear-db ] [ --re-register ] [ --upgrade ] [ --run-updater=<yes|no>] [--run-cobbler] [ --enable-tftp=<yes|no>] [ --external-postgresql [ --external-postgresql-over-ssl ] ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc] [--disconnected]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -238,9 +187,6 @@ sub load_answer_file {
   my (@skip) = @{(shift)};
 
   my @files = ();
-  foreach my $afile (glob(DEFAULT_ANSWER_FILE_GLOB)) {
-      push @files, $afile if not grep $_ eq $afile, @skip;
-  }
   push @files, $options->{'answer-file'} if $options->{'answer-file'};
 
   for my $file (@files) {
@@ -269,13 +215,6 @@ sub load_answer_file {
     $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
   }
   return;
-}
-
-# Check if we're installing with an embedded database.
-sub is_embedded_db {
-  my $opts = shift;
-  return not (defined($opts->{'external-postgresql'})
-           or defined($opts->{'managed-db'}));
 }
 
 sub system_debug {
@@ -360,28 +299,6 @@ sub system_or_exit {
   return 1;
 }
 
-sub upgrade_stop_services {
-  my $opts = shift;
-  if ($opts->{'upgrade'} && not $opts->{'skip-services-check'}) {
-    print "* Upgrade flag passed.  Stopping necessary services.\n";
-    if (-e "/usr/sbin/spacewalk-service") {
-      system_or_exit(['/usr/sbin/spacewalk-service', 'stop'], 16,
-                      'Could not stop the rhn-satellite service.');
-    } else {
-      # shutdown pre 3.6 services proerly
-      system_or_exit(['/sbin/service', 'apache2', 'stop'], 25,
-                      'Could not stop the http service.');
-      system_or_exit(['/sbin/service', 'taskomatic', 'stop'], 27,
-                      'Could not stop the taskomatic service.');
-      if (is_embedded_db($opts)) {
-        system_or_exit(['/sbin/service', 'rhn-database', 'stop'], 31,
-                        'Could not stop the rhn-database service.');
-      }
-    }
-  }
-  return 1;
-}
-
 my $spinning_callback_count;
 my @spinning_pattern = split /\n/, <<EOF;
  (°-  ·  ·  ·  ·  ·
@@ -432,12 +349,7 @@ sub init_log_files {
   }
 
   log_rotate(INSTALL_LOG_FILE);
-  if (have_selinux()) {
-    local *X; open X, '>', INSTALL_LOG_FILE and close X;
-    system('/sbin/restorecon', INSTALL_LOG_FILE);
-  }
   log_rotate(DB_INSTALL_LOG_FILE);
-  log_rotate(DB_POP_LOG_FILE);
 
   local * FH;
   open(FH, ">", INSTALL_LOG_FILE)
@@ -550,66 +462,23 @@ EOQ
 # as other routines on account of usage of $opts:
 sub ask {
     my %params = validate(@_, {
-            noninteractive => 1,
             question => 1,
             test => 0,
             answer => 1,
-            password => 0,
             default => 0,
-            completion => 0,
         });
 
     if (${$params{answer}} and not $params{default}) {
         $params{default} = ${$params{answer}};
     }
 
-    while (not defined ${$params{answer}} or
-        not answered($params{test}, ${$params{answer}})) {
-        if ($params{noninteractive}) {
-            if (defined ${$params{answer}}) {
-                die "The answer '" . ${$params{answer}} . "' provided for '" . $params{question} . "' is invalid.\n";
-            }
-            else {
-                die "No answer provided for '" . $params{question} . "'\n";
-            }
-        }
-
-        my $default_string = "";
-        if ($params{default}) {
-            if ($params{password}) {
-                $default_string = " [******]";
-            }
-            else {
-                $default_string = " [" . $params{default} . "]";
-            }
-        }
-
-        print loc("%s%s? ",
-            $params{question},
-            $default_string);
-
-        if ($params{password}) {
-            my $stty_orig_val = `stty -g`;
-            system('stty', '-echo');
-            ${$params{answer}} = <STDIN>;
-            system("stty $stty_orig_val");
-            print "\n";
+    if (not defined ${$params{answer}} or not answered($params{test}, ${$params{answer}})) {
+        if (defined ${$params{answer}}) {
+            die "The answer '" . ${$params{answer}} . "' provided for '" . $params{question} . "' is invalid.\n";
         }
         else {
-            if ($params{completion}) {
-                require Term::Completion::Path;
-                my $tc = Term::Completion::Path->new();
-                ${$params{answer}} = $tc->complete();
-            }
-            else {
-                ${$params{answer}} = <STDIN>;
-            }
+            die "No answer provided for '" . $params{question} . "'\n";
         }
-
-        chomp ${$params{answer}};
-        ${$params{answer}} =~ s/^\s+|\s+$//g;
-
-        ${$params{answer}} ||= $params{default} || '';
     }
 
     ${$params{answer}} ||= $params{default} || '';
@@ -663,56 +532,6 @@ EOQ
     return %nls_database_parameters;
 }
 
-
-sub print_progress {
-        my %params = validate(@_, { init_message => 1,
-                log_file_name => 1,
-                log_file_size => 1,
-                err_message => 1,
-                err_code => 1,
-                system_opts => 1,
-        });
-        print "Running " . join(" ", @{$params{system_opts}}) . "\n";
-
-        local *LOGFILE;
-        open(LOGFILE, ">>", $params{log_file_name}) or do {
-                print "Error writing log file '$params{log_file_name}': $!\n";
-                print STDERR "Error writing log file '$params{log_file_name}': $!\n";
-                exit $params{err_code};
-        };
-
-        $| = 1;
-        my $orig_stdout = select LOGFILE;
-        $| = 1;
-        select $orig_stdout;
-        print loc($params{init_message});
-        local *PROCESS_OUT;
-        my $progress_hashes_done = 0;
-        my $progress_callback_length = 0;
-        my $pid = open3(gensym, \*PROCESS_OUT, \*PROCESS_OUT, @{$params{system_opts}});
-        while (<PROCESS_OUT>) {
-                print LOGFILE $_;
-                $progress_callback_length += length;
-                if (-t STDOUT and $params{log_file_size}) {
-                        my $target_hashes = int(60 * $progress_callback_length / $params{log_file_size});
-                        if ($target_hashes > $progress_hashes_done) {
-                                print "#" x ($target_hashes - $progress_hashes_done);
-                                $progress_hashes_done = $target_hashes;
-                        }
-                }
-        }
-        close PROCESS_OUT;
-        waitpid($pid, 0);
-        my $ret = $?;
-        close LOGFILE;
-        print "\n";
-
-        if ($ret) {
-                print loc($params{err_message});
-                exit $params{err_code};
-        }
-}
-
 sub postgresql_get_database_answers {
     my $opts = shift;
     my $answers = shift;
@@ -721,7 +540,6 @@ sub postgresql_get_database_answers {
     read_config(DEFAULT_RHN_CONF_LOCATION, \%config);
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Hostname (leave empty for local)",
         -test => sub { 1 },
         -answer => \$answers->{'db-host'});
@@ -729,7 +547,6 @@ sub postgresql_get_database_answers {
     if ($answers->{'db-host'} ne '') {
         $answers->{'db-host'} = idn_to_ascii($answers->{'db-host'}, "utf8");
         ask(
-            -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
             -test => qr/\d+/,
             -default => 5432,
@@ -739,36 +556,22 @@ sub postgresql_get_database_answers {
     }
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Database",
         -test => qr/\S+/,
         -default => $config{'db_name'},
         -answer => \$answers->{'db-name'});
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Username",
         -test => qr/\S+/,
         -default => $config{'db_user'},
         -answer => \$answers->{'db-user'});
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Password",
         -test => qr/\S+/,
         -default => $config{'db_password'},
-        -answer => \$answers->{'db-password'},
-        -password => 1);
-
-    if ($opts->{'external-postgresql-over-ssl'}) {
-      $answers->{'db-ssl-enabled'} = '1';
-      ask(
-         -noninteractive => $opts->{"non-interactive"},
-         -question => "Path to CA certificate for connection to database",
-         -test => sub { return (-f shift) },
-         -default => $ENV{HOME} . "/.postgresql/root.crt",
-         -answer => \$answers->{'db-ca-cert'});
-    }
+        -answer => \$answers->{'db-password'});
 
     return;
 }
@@ -781,7 +584,6 @@ sub postgresql_get_reportdb_answers {
     read_config(DEFAULT_RHN_CONF_LOCATION, \%config);
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Hostname (leave empty for local)",
         -test => sub { 1 },
         -answer => \$answers->{'report-db-host'});
@@ -789,7 +591,6 @@ sub postgresql_get_reportdb_answers {
     if ($answers->{'report-db-host'} ne '') {
         $answers->{'report-db-host'} = idn_to_ascii($answers->{'report-db-host'}, "utf8");
         ask(
-            -noninteractive => $opts->{"non-interactive"},
             -question => "Port",
             -test => qr/\d+/,
             -default => 5432,
@@ -799,28 +600,23 @@ sub postgresql_get_reportdb_answers {
     }
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Database",
         -test => qr/\S+/,
         -default => $config{'report_db_name'},
         -answer => \$answers->{'report-db-name'});
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Username",
         -test => qr/\S+/,
         -default => $config{'report_db_user'},
         -answer => \$answers->{'report-db-user'});
 
     ask(
-        -noninteractive => $opts->{"non-interactive"},
         -question => "Password (leave empty for autogenerated password)",
         -test => sub { 1 },
-        -answer => \$answers->{'report-db-password'},
-        -password => 1);
+        -answer => \$answers->{'report-db-password'});
 
     ask(
-       -noninteractive => $opts->{"non-interactive"},
        -question => "Path to CA certificate to connect to the reporting database",
        -test => sub { return (-f shift) },
        -default => "/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT",
@@ -841,18 +637,8 @@ sub postgresql_setup_db {
     print Spacewalk::Setup::loc("** Database: Setting up database connection for PostgreSQL backend.\n");
     my $connected;
 
-    if (is_embedded_db($opts)) {
-      postgresql_start();
-    }
-    postgresql_setup_embedded_db($opts, $answers);
-
     while (not $connected) {
         postgresql_get_database_answers($opts, $answers);
-
-        if ($opts->{'external-postgresql-over-ssl'}) {
-            $ENV{PGSSLROOTCERT} = $answers->{'db-ca-cert'};
-            $ENV{PGSSLMODE} = "verify-full";
-        }
 
         my $dbh;
 
@@ -870,12 +656,8 @@ sub postgresql_setup_db {
         }
     }
 
-    my $populate_db = 0;
-
     set_hibernate_conf($answers);
     write_rhn_conf($answers, 'db-backend', 'db-host', 'db-port', 'db-name', 'db-user', 'db-password', 'db-ssl-enabled');
-
-    postgresql_populate_db($opts, $answers, $populate_db);
     return 1;
 }
 
@@ -923,13 +705,8 @@ sub postgresql_reportdb_setup {
         push @cmd, "--autogenpw";
     }
 
-    print_progress(-init_message => "*** Progress: #",
-                      -log_file_name => DB_INSTALL_LOG_FILE,
-                      -log_file_size => DB_INSTALL_LOG_SIZE,
-                      -err_message => "Could not install report database.\n",
-                      -err_code => 15,
-                      -system_opts => \@cmd);
-    
+    system(@cmd) == 0 or die "Could not install report database";
+
     if (-e Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION) {
         my %dbOptions = ();
         ### uyuni-setup-reportdb writes param in rhn.conf. We need to read them and persists them in satellite-local-rules.conf
@@ -947,203 +724,6 @@ sub postgresql_start {
     system("service $pgservice status >&/dev/null");
     system("service $pgservice start >&/dev/null") if ($? >> 8);
     return ($? >> 8);
-}
-
-sub postgresql_setup_embedded_db {
-    my $opts = shift;
-    my $answers = shift;
-
-    if (not is_embedded_db($opts)) {
-        return 0;
-    }
-
-    if ($opts->{"skip-db-install"} or $opts->{"upgrade"}) {
-        print loc("** Database: Embedded database installation SKIPPED.\n");
-        return 0;
-    }
-
-    if (not -x '/usr/bin/spacewalk-setup-postgresql') {
-        print loc(<<EOQ);
-The spacewalk-setup-postgresql does not seem to be available.
-You might want to use --external-postgresql command line option.
-EOQ
-        exit 24;
-    }
-
-    my $pgdata=`runuser -l postgres -c env | grep PGDATA | cut -f2- -d=`;
-
-    if (-d "$pgdata/base" and
-        ! system(qq{/usr/bin/spacewalk-setup-postgresql check --db $answers->{'db-name'}})) {
-        my $shared_dir = SHARED_DIR;
-        print loc(<<EOQ);
-The embedded database appears to be already installed. Either rerun
-this script with the --skip-db-install option, or use the
-'/usr/bin/spacewalk-setup-postgresql remove --db $answers->{'db-name'} --user $answers->{'db-user'}'
-script to remove the embedded database and try again.
-EOQ
-
-        exit 13;
-    }
-
-    if (not $opts->{"skip-db-diskspace-check"}) {
-        system_or_exit(['python3', SHARED_DIR .
-            '/embedded_diskspace_check.py', '$pgdata', '12288'], 14,
-            'There is not enough space available for the embedded database.');
-    }
-    else {
-        print loc("** Database: Embedded database diskspace check SKIPPED!\n");
-    }
-
-    printf loc(<<EOQ, DB_INSTALL_LOG_FILE);
-** Database: Installing the database:
-** Database: This is a long process that is logged in:
-** Database:   %s
-EOQ
-
-    if (have_selinux()) {
-      local *X; open X, '>', DB_INSTALL_LOG_FILE and close X;
-      system('/sbin/restorecon', DB_INSTALL_LOG_FILE);
-    }
-    print_progress(-init_message => "*** Progress: #",
-        -log_file_name => DB_INSTALL_LOG_FILE,
-                -log_file_size => DB_INSTALL_LOG_SIZE,
-                -err_message => "Could not install database.\n",
-                -err_code => 15,
-                -system_opts => [ "/usr/bin/spacewalk-setup-postgresql",
-                                  "create",
-                                  "--db", $answers->{'db-name'},
-                                  "--user", $answers->{'db-user'},
-                                  "--password", $answers->{'db-password'}]);
-
-    print loc("** Database: Installation complete.\n");
-
-    return 1;
-}
-
-sub postgresql_populate_db {
-    my $opts = shift;
-    my $answers = shift;
-    my $populate_db = shift;
-
-    print Spacewalk::Setup::loc("** Database: Populating database.\n");
-
-    if ($opts->{"skip-db-population"} or ($opts->{'upgrade'} and not $populate_db)) {
-        print Spacewalk::Setup::loc("** Database: Skipping database population.\n");
-        return 1;
-    }
-
-    if ($opts->{"clear-db"}) {
-        print Spacewalk::Setup::loc("** Database: --clear-db option used.  Clearing database.\n");
-        my $dbh = get_dbh($answers);
-        postgresql_clear_db($dbh, $answers);
-    }
-
-    if (postgresql_test_db_schema($answers)) {
-        ask(
-            -noninteractive => $opts->{"non-interactive"},
-            -question => "The Database has schema.  Would you like to clear the database",
-            -test => qr/(Y|N)/i,
-            -answer => \$answers->{'clear-db'},
-            -default => 'Y',
-        );
-
-        if ($answers->{"clear-db"} =~ /Y/i) {
-            print Spacewalk::Setup::loc("** Database: Clearing database.\n");
-            my $dbh = get_dbh($answers);
-            postgresql_clear_db($dbh, $answers);
-            print Spacewalk::Setup::loc("** Database: Re-populating database.\n");
-        }
-        else {
-            print Spacewalk::Setup::loc("** Database: The database already has schema.  Skipping database population.\n");
-            return 1;
-        }
-    }
-
-    my $sat_schema = POSTGRESQL_SCHEMA_FILE;
-    my $sat_schema_deploy = POSTGRESQL_DEPLOY_FILE;
-
-    system_or_exit([ "/usr/bin/rhn-config-schema.pl",
-                   "--source=" . $sat_schema,
-                   "--target=" . $sat_schema_deploy,
-                   "--tablespace-name=None" ],
-                   22,
-                   'There was a problem populating the deploy.sql file.',
-                   );
-
-    my $logfile = DB_POP_LOG_FILE;
-
-    my @opts = ('spacewalk-sql', '--select-mode-direct', $sat_schema_deploy);
-
-    print_progress(-init_message => "*** Progress: #",
-        -log_file_name => Spacewalk::Setup::DB_POP_LOG_FILE,
-        -log_file_size => Spacewalk::Setup::PG_POP_LOG_SIZE,
-        -err_message => "Could not populate database.\n",
-        -err_code => 23,
-        -system_opts => [@opts]);
-
-    return 1;
-}
-
-# Check if the database appears to already have schema loaded:
-sub postgresql_test_db_schema {
-    my $answers = shift;
-    my $dbh = get_dbh($answers);
-
-    # Assumption, if web_customer table exists then schema exists:
-    my $sth = $dbh->prepare("SELECT tablename from pg_tables where schemaname='public' and tablename='web_customer'");
-
-    $sth->execute;
-    my ($row) = $sth->fetchrow;
-    $sth->finish;
-    $dbh->disconnect();
-    return $row ? 1 : 0;
-}
-
-# Clear the PostgreSQL schema by deleting the 'public' schema with cascade,
-# then re-creating it. Also delete all the other known schemas that
-# Spacewalk might have created.
-
-my @POSTGRESQL_CLEAR_SCHEMA = (
-        'drop schema if exists rpm cascade ;',
-        'drop schema if exists rhn_exception cascade ;',
-        'drop schema if exists rhn_config cascade ;',
-        'drop schema if exists rhn_server cascade ;',
-        'drop schema if exists rhn_entitlements cascade ;',
-        'drop schema if exists rhn_bel cascade ;',
-        'drop schema if exists rhn_cache cascade ;',
-        'drop schema if exists rhn_channel cascade ;',
-        'drop schema if exists rhn_config_channel cascade ;',
-        'drop schema if exists rhn_org cascade ;',
-        'drop schema if exists rhn_user cascade ;',
-        'drop schema if exists logging cascade ;',
-);
-
-sub postgresql_clear_db {
-        my $dbh = shift;
-        my $answers = shift;
-        my $do_shutdown = (defined($_[0]) ? shift : 1);
-
-        if ($do_shutdown) {
-            print loc("** Database: Shutting down spacewalk services that may be using DB.\n");
-
-            # The --exclude=postgresql is needed for embedded database Satellites.
-            system_debug('/usr/sbin/spacewalk-service', '--exclude=postgresql', 'stop');
-            print loc("** Database: Services stopped.  Clearing DB.\n");
-        }
-
-        local $dbh->{RaiseError} = 0;
-        local $dbh->{PrintError} = 1;
-        local $dbh->{PrintWarn} = 0;
-        local $dbh->{AutoCommit} = 1;
-        if (lc $answers->{'externaldb-provider'} ne 'aws') {
-                push @POSTGRESQL_CLEAR_SCHEMA, "drop schema if exists public cascade ;", 
-                "create schema public authorization postgres ;";
-        }
-        foreach my $c (@POSTGRESQL_CLEAR_SCHEMA) {
-                $dbh->do($c);
-        }
-        $dbh->disconnect;
-        return 1;
 }
 
 sub postgresql_drop_reportdb {
@@ -1170,43 +750,22 @@ sub get_dbh {
                 AutoCommit => 0,
         };
 
-        my $backend = $reportdb ? $answers->{'report-db-backend'} : $answers->{'db-backend'};
-
-        if ($backend eq 'postgresql') {
-                my $dsn = "dbi:Pg:dbname=";
-                $dsn .= $reportdb ? $answers->{'report-db-name'} : $answers->{'db-name'};
-                my $dbhost = $reportdb ? $answers->{'report-db-host'} : $answers->{'db-host'};
-                my $dbport = $reportdb ? $answers->{'report-db-port'} : $answers->{'db-port'};
-                if ($dbhost ne '' && $dbhost ne 'localhost') {
-                        $dsn .= ";host=$dbhost";
-                        if ($dbport ne '') {
-                                $dsn .= ";port=$dbport";
-                        }
+        my $dsn = "dbi:Pg:dbname=";
+        $dsn .= $reportdb ? $answers->{'report-db-name'} : $answers->{'db-name'};
+        my $dbhost = $reportdb ? $answers->{'report-db-host'} : $answers->{'db-host'};
+        my $dbport = $reportdb ? $answers->{'report-db-port'} : $answers->{'db-port'};
+        if ($dbhost ne '' && $dbhost ne 'localhost') {
+                $dsn .= ";host=$dbhost";
+                if ($dbport ne '') {
+                        $dsn .= ";port=$dbport";
                 }
-                my $dbh = DBI->connect($dsn,
-                        $reportdb ? $answers->{'report-db-user'} : $answers->{'db-user'},
-                        $reportdb ? $answers->{'report-db-password'} : $answers->{'db-password'},
-                        $dbh_attributes);
-
-                return $dbh;
         }
+        my $dbh = DBI->connect($dsn,
+                $reportdb ? $answers->{'report-db-user'} : $answers->{'db-user'},
+                $reportdb ? $answers->{'report-db-password'} : $answers->{'db-password'},
+                $dbh_attributes);
 
-        die "Unknown db-backend [$backend]\n";
-}
-
-# Function to check that we have SELinux, in the sense that we are on
-# system with modular SELinux (> RHEL 4), and the module spacewalk is loaded.
-my $have_selinux;
-sub have_selinux {
-        return $have_selinux if defined $have_selinux;
-        if( not -x "/usr/sbin/selinuxenabled") {
-                $have_selinux = 0;
-        } elsif (system(q!/usr/sbin/selinuxenabled && /usr/sbin/semodule -l 2> /dev/null | grep '^spacewalk\b' 2>&1 > /dev/null!)) {
-                $have_selinux = 0;
-        } else {
-                $have_selinux = 1;
-        }
-        return $have_selinux;
+        return $dbh;
 }
 
 sub generate_satcon_dict {
@@ -1304,32 +863,13 @@ Indicates the location of an answer file to be use for answering
 questions asked during the installation process.
 See answers.txt for an example.
 
-=item B<--non-interactive>
-
-For use only with --answer-file.  If the --answer-file doesn't provide
-a required response, exit instead of prompting the user.
-
 # todo @
-=item B<--re-register>
-
-Register the system with RHN, even if it is already registered.
 
 =item B<--clear-db>
 
 Clear any pre-existing database schema before installing.
 This will destroy any data in the Satellite database and re-create
-empty Satellite schema. This option implies B<--skip-db-install>.
-
-=item B<--skip-system-version-test>
-
-Do not test the Red Hat Enterprise Linux version before installing.
-
-=item B<--skip-selinux-test>
-
-For the installation and setup to proceed properly, SELinux should
-be in Permissive or Enforcing mode. If you are certain that
-you are not in Disabled mode or you want to install in
-Disabled anyway, re-run the installer with the flag --skip-selinux-test.
+empty Satellite schema.
 
 =item B<--skip-fqdn-test>
 
@@ -1337,20 +877,6 @@ Do not verify that the system has a valid hostname.  Red Hat Satellite
 requires that the hostname be properly set during installation.
 Using this option may result in a Satellite server that is not fully
 functional.
-
-=item B<--skip-db-install>
-
-Do not install the embedded database.  This option may be useful if you
-are re-installing the satellite, and do not want to clear the database.
-
-=item B<--skip-db-diskspace-check>
-
-Do not check to make sure there is enough free disk space to install
-the embedded database.
-
-=item B<--skip-db-population>
-
-Do not populate the database schema.
 
 =item B<--skip-ssl-cert-generation>
 
@@ -1372,42 +898,9 @@ RewriteEngine on
 RewriteOptions inherit
 SSLProxyEngine on
 
-=item B<--upgrade>
-
-Only runs necessary steps for a Satellite upgrade.
-
 =item B<--skip-services-check>
 
 Proceed with upgrade if services are already stopped.
-
-=item B<--skip-services-restart>
-
-Do not restart services at the end of installation.
-
-=item B<--run-updater=<yes|no>>
-
-Set to 'yes' to automatically install needed packages from RHSM, provided the system is registered. Set to 'no' to terminate the installer if any needed packages are missing.
-
-=item B<--run-cobbler>
-
-Only runs the necessary steps to setup cobbler
-
-=item B<--enable-tftp=<yes|no>>
-
-Set to 'yes' to automatically enable tftp and xinetd services needed for Cobbler PXE provisioning functionality. Set to 'no' if you do not want the installer to enable these services.
-
-=item B<--external-postgresql>
-
-Assume the Red Hat Satellite installation uses an external PostgreSQL database (Red Hat Satellite only).
-
-=item B<--external-postgresql-over-ssl>
-
-When used, installation will assume that external PostgreSQL server allows only connections over SSL.
-This option is supposed to be used only in conjuction with B<--external-postgresql>.
-
-=item B<--managed-db>
-
-Setup PostgreSQL database for multi-server installation (database and Spacewalk / Red Hat Satellite on different machines).
 
 =back
 

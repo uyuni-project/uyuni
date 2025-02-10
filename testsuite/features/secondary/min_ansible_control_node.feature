@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_ansible
@@ -9,17 +9,12 @@ Feature: Operate an Ansible control node in a normal minion
 
   Scenario: Pre-requisite: Deploy test playbooks and inventory file
     When I deploy testing playbooks and inventory files to "sle_minion"
-@skip_if_github_validation	
-@susemanager
-  Scenario: Pre-requisite: Enable client tools repositories
-    When I enable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
 
-    # TODO: Check why tools_update_repo is not available on the openSUSE minion
+# TODO: Check why tools_update_repo is not available on the openSUSE minion
 @skip_if_github_validation
 @uyuni
-  Scenario: Pre-requisite: Enable client tools repositories
-    When I enable the repositories "tools_pool_repo os_pool_repo" on this "sle_minion"
+  Scenario: Pre-requisite: Enable OS pool repository
+    When I enable repository "os_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
 
   Scenario: Enable "Ansible control node" system type
@@ -91,15 +86,8 @@ Feature: Operate an Ansible control node in a normal minion
     And I remove "/tmp/file.txt" from "sle_minion"
 
 @skip_if_github_validation
-@susemanager
-  Scenario: Cleanup: Disable client tools repositories
-    Given I am on the Systems overview page of this "sle_minion"
-    When I disable the repositories "tools_update_repo tools_pool_repo" on this "sle_minion"
-    And I refresh the metadata for "sle_minion"
-
-@skip_if_github_validation
 @uyuni
-  Scenario: Cleanup: Disable client tools repositories
+  Scenario: Cleanup: Disable OS pool repository
     Given I am on the Systems overview page of this "sle_minion"
-    When I disable the repositories "tools_pool_repo os_pool_repo" on this "sle_minion"
+    When I disable repository "os_pool_repo" on this "sle_minion"
     And I refresh the metadata for "sle_minion"

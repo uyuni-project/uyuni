@@ -18,10 +18,10 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
+import org.hibernate.query.Query;
+import org.hibernate.type.StandardBasicTypes;
 
+import javax.persistence.NoResultException;
 
 /**
  * RhnException
@@ -43,12 +43,18 @@ public class ExceptionMessage {
      * @return the associated exception object / null if not found otherwise
      */
     public static ExceptionMessage lookup(long exceptionId) {
-        Session session = HibernateFactory.getSession();
-        Criteria criteria = session.createCriteria(ExceptionMessage.class);
-        criteria.add(Restrictions.or(
-                Restrictions.eq("id", -1 * exceptionId),
-                Restrictions.eq("id", exceptionId)));
-        return (ExceptionMessage) criteria.uniqueResult();
+        String sql = "SELECT * FROM exception_message WHERE id = :id OR id = :negId";
+
+        Query<ExceptionMessage> query = HibernateFactory.getSession()
+                .createNativeQuery(sql, ExceptionMessage.class);
+        query.setParameter("id", exceptionId, StandardBasicTypes.LONG);
+        query.setParameter("negId", -1 * exceptionId, StandardBasicTypes.LONG);
+        try {
+            return query.getSingleResult();
+        }
+        catch (NoResultException e) {
+            return null;
+        }
     }
 
     /**

@@ -16,6 +16,7 @@ package com.suse.manager.webui.utils.salt.custom;
 
 import com.suse.salt.netapi.calls.modules.Network;
 import com.suse.salt.netapi.calls.modules.Smbios;
+import com.suse.salt.netapi.results.CmdResult;
 import com.suse.salt.netapi.results.Ret;
 import com.suse.salt.netapi.results.StateApplyResult;
 
@@ -28,6 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -85,6 +87,15 @@ public class HwProfileUpdateSlsResult {
 
     @SerializedName("mgrcompat_|-mainframe-sysinfo_|-mainframesysinfo.read_values_|-module_run")
     private Optional<StateApplyResult<Ret<String>>> mainframeSysinfo = Optional.empty();
+
+    @SerializedName("mgrcompat_|-sap_workloads_|-sap.get_workloads_|-module_run")
+    private Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> sapWorkloads = Optional.empty();
+
+    @SerializedName("mgrcompat_|-container_runtime_|-container_runtime.get_container_runtime_|-module_run")
+    private Optional<StateApplyResult<Ret<String>>> containerRuntime = Optional.empty();
+
+    @SerializedName("cmd_|-uname_|-uname -r -v_|-run")
+    private Optional<StateApplyResult<CmdResult>> uname = Optional.empty();
 
     /**
      * @return the grains
@@ -244,4 +255,27 @@ public class HwProfileUpdateSlsResult {
         )).orElseGet(Collections::emptyList);
     }
 
+    /**
+     * Get system SAP workloads
+     * @return the list of system SAP workloads
+     */
+    public Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> getSAPWorkloads() {
+        return sapWorkloads;
+    }
+
+    /**
+     * Get the container runtime.
+     * @return the container runtime
+     */
+    public String getContainerRuntime() {
+        return containerRuntime.map(retStateApplyResultIn -> retStateApplyResultIn.getChanges().getRet()).orElse(null);
+    }
+
+    /**
+     * Get the uname result
+     * @return the uname
+     */
+    public String getUname() {
+        return uname.map(ret -> ret.getChanges().getStdout()).orElse(null);
+    }
 }

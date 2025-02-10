@@ -1,0 +1,2 @@
+- Use StandardBasicTypes for queries paramaters
+- Remove Hibernate Query Language

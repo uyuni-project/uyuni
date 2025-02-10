@@ -107,12 +107,10 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
-import com.suse.manager.virtualization.VirtManagerSalt;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
-import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -154,11 +152,10 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             SALT_UTILS,
             SALT_KEY_UTILS
     );
-    private static final VirtManager VIRT_MANAGER = new VirtManagerSalt(SALT_API);
     private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
-            new SystemEntitler(SALT_API, VIRT_MANAGER, MONITORING_MANAGER, SERVER_GROUP_MANAGER)
+            new SystemUnentitler(MONITORING_MANAGER, SERVER_GROUP_MANAGER),
+            new SystemEntitler(SALT_API, MONITORING_MANAGER, SERVER_GROUP_MANAGER)
     );
 
     @Override
@@ -1433,10 +1430,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // FQDN: precise lookup
-        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).get());
+        assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
+
         // plain hostname: imprecise lookup
         String simpleHostname = HOSTNAME.split("\\.")[0];
-        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).get());
+
+        assertEquals(s, ServerFactory.lookupProxyServer(simpleHostname).orElseThrow());
     }
 
     /**

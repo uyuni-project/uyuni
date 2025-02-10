@@ -1,9 +1,10 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
 @scope_deblike
 @deblike_minion
+@skip_if_github_validation
 Feature: OpenSCAP audit of Debian-like Salt minion
   In order to audit a Debian-like Salt minion
   As an authorized user
@@ -15,7 +16,6 @@ Feature: OpenSCAP audit of Debian-like Salt minion
   @skip_if_github_validation
   Scenario: Enable all the necessary repositories for OpenSCAP on Debian-like minion
     When I enable Debian-like "universe" repository on "deblike_minion"
-    And I enable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
 
   @skip_if_github_validation
   Scenario: Install the OpenSCAP packages on the Debian-like minion
@@ -83,5 +83,4 @@ Feature: OpenSCAP audit of Debian-like Salt minion
 
   @skip_if_github_validation
   Scenario: Cleanup: remove all the necessary repositories for OpenSCAP on Debian-like minion
-    When I disable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion"
     And I disable Debian-like "universe" repository on "deblike_minion"

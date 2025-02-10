@@ -7,7 +7,7 @@
 # setup wizard
 
 Then(/^HTTP proxy verification should have succeeded$/) do
-  raise ScriptError, 'Success icon not found' unless find('i.text-success', wait: DEFAULT_TIMEOUT)
+  raise ScriptError, 'Success icon not found' unless find('div.alert-success', wait: DEFAULT_TIMEOUT)
 end
 
 When(/^I enter the address of the HTTP proxy as "([^"]*)"$/) do |hostname|
@@ -83,6 +83,12 @@ When(/^I (deselect|select) "([^"]*)" as a product$/) do |select, product|
   # click on the checkbox to select the product
   xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
   raise ScriptError, "xpath: #{xpath} not found" unless find(:xpath, xpath).set(select == 'select')
+end
+
+When(/^I select or deselect "([^"]*)" beta client tools$/) do |product|
+  xpath = "//span[contains(text(), '#{product}')]/ancestor::div[contains(@class, 'product-details-wrapper')]/div/input[@type='checkbox']"
+  product = find(:xpath, xpath)
+  product.set($beta_enabled) if product
 end
 
 When(/^I wait at most (\d+) seconds until the tree item "([^"]+)" has no sub-list$/) do |timeout, item|
@@ -354,7 +360,7 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath, match: :first)['for']
 
   raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
 

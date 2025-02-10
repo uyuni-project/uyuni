@@ -48,7 +48,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.1.2
+Version:        5.1.3
 Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
@@ -110,7 +110,6 @@ Requires:       rsync
 Requires:       spacewalk-schema
 Requires:       susemanager-tools
 # migration.sh need either sqlplus or psql
-Requires:       spacewalk-db-virtual
 Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
