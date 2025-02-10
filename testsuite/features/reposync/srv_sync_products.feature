@@ -27,8 +27,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see a "RHEL and Liberty 8 Base" text
 
 @scc_credentials
-@susemanager
-  Scenario: View the channels list in the products page
+  Scenario: View the mandatory channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
@@ -36,12 +35,23 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
     Then I should see a "Product Channels" text
     And I should see a "Mandatory Channels" text
+    When I close the modal dialog
+
+@scc_credentials
+@susemanager
+  Scenario: View the optional channels list in the products page
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server for SAP Applications 15 x86_64" as the filtered product description
+    And I click the channel list of product "SUSE Linux Enterprise Server for SAP Applications 15 x86_64"
+    Then I should see a "Product Channels" text
     And I should see a "Optional Channels" text
     When I close the modal dialog
 
 @scc_credentials
 @susemanager
-  Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
+  Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, excluding SUMA Client Tools
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -51,15 +61,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
     And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
-    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" if present
     Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
     And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
-    And I should see that the "SUSE Manager Client Tools for SLE 15 x86_64" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
     And I should see the "Server Applications Module 15 SP4 x86_64" selected
-    And I should see the "SUSE Manager Client Tools for SLE 15 x86_64" selected
     When I select "Desktop Applications Module 15 SP4 x86_64" as a product
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
@@ -72,7 +79,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I click the Add Product button
     And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" product has been added
     Then the SLE15 SP4 product should be added
-    When I wait until all synchronized channels for "sles15-sp4" have finished
+    When I use spacewalk-common-channel to add channel "sles15-sp4-devel-uyuni-client" with arch "x86_64"
+    And I wait until all synchronized channels for "sles15-sp4" have finished
 
 @uyuni
   Scenario: Partially add openSUSE Leap 15.5 product, only including the required packages to generate the bootstrap repository
@@ -90,6 +98,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
+# Fake SCC in gh does not contain SUMA client tools
+@skip_if_github_validation
+@scc_credentials
+@susemanager
+  Scenario: Check SLES 15 SP4 product with recommended sub-products, including SUMA Client Tools
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP4" as the filtered product description
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP4 x86_64" text
+    And I open the sub-list of the product "SUSE Manager Client Tools for SLE 15 x86_64" if present
+    Then I should see that the "SUSE Manager Client Tools for SLE 15 x86_64" product is "recommended"
+
+# in github validation, the retail feature is not tested
+@skip_if_github_validation
 @scc_credentials
 @uyuni
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products for Retail feature
@@ -176,7 +200,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 
 @scc_credentials
-@susemanager
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"

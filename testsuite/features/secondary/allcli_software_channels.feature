@@ -80,7 +80,7 @@ Feature: Channel subscription via SSM
     And I wait until I do not see "Loading..." text
     Then radio button "openSUSE Leap 15.5 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" as unchecked
+    And I should see "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)" as unchecked
 
 @sle_minion
 @susemanager
@@ -94,7 +94,7 @@ Feature: Channel subscription via SSM
   Scenario: Check via API old channels are still the same on openSUSE minion before channel change completes
     When I refresh the metadata for "sle_minion"
     Then channel "openSUSE Leap 15.5 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development))" should be disabled on "sle_minion"
+    And channel "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)" should be disabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -234,7 +234,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" should be disabled on "sle_minion"
+    Then channel "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)" should be disabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I click on the clear SSM button

@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_cobbler
 Feature: Run Cobbler Sync via WebUI
 
