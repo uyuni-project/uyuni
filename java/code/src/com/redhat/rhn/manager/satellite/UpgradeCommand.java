@@ -19,7 +19,8 @@ import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigRevision;
@@ -387,7 +388,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     private void convertSystemThresholdFromConfig() {
         log.warn("Converting web.system_checkin_threshold to DB config");
-        SatConfigFactory.setSatConfigValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD,
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.system_checkin_threshold,
                 Config.get().getString("web.system_checkin_threshold", "1"));
     }
 

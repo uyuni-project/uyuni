@@ -375,6 +375,9 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
           <li className="active js-spa">
             <a href="/rhn/manager/admin/config/monitoring?">{t("Monitoring")}</a>
           </li>
+          <li className="js-spa">
+            <a href="/rhn/manager/admin/config/password-policy?">{t("Password Policy")}</a>
+          </li>
         </ul>
       </div>
       <Panel

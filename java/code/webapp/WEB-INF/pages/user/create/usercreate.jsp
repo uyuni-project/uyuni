@@ -51,12 +51,10 @@
                   </div>
                 </div>
               </div>
-              <script type="text/javascript" src="/javascript/legacy/pwstrength-bootstrap-1.0.2.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
-              <script type="text/javascript" src="/javascript/spacewalk-pwstrength-handler.js?cb=${rhn:getConfig('web.buildtimestamp')}"></script>
               <script type="text/javascript">
-function toggleAsterisk() {
-  jQuery("[name='password-asterisk']").toggle()
-}
+                    function toggleAsterisk() {
+                      jQuery("[name='password-asterisk']").toggle()
+                    }
               </script>
               <div class="form-group">
                 <label class="col-sm-3 control-label"><bean:message key="help.credentials.jsp.passwordstrength"/>:</label>
