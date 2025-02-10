@@ -601,14 +601,16 @@ def channel_sync_completed?(channel_name)
     elsif line.include?('Channel: ') && !line.include?(channel_name)
       channel_found = false
     elsif line.include?('Sync of channel completed.') && channel_found
-      return true
+      return true if channel_is_synced?(channel_name)
+
+      log "WARN: Repository metadata for #{channel_name} seems not synchronized. Even if the reposync log says it is."
+      return false
     end
   end
 
   false
 end
 
-# TODO: This method is not used anywhere, consider removing it
 # Determines whether a channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
