@@ -20,6 +20,7 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -96,6 +97,23 @@ public class Access extends BaseHandler {
             LOG.debug("{} aclUserRole | B returning false ..", params[0]);
         }
         return false;
+    }
+
+    public boolean aclAuthorizedFor(Map<String, Object> ctx, String[] params) {
+        // TODO: Log
+        User user = (User) ctx.get("user");
+        if (user == null) {
+            return false;
+        }
+
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            return true;
+        }
+
+        return user.getNamespaces().stream().filter(ns ->
+            params[0].equals(ns.getNamespace()) || ns.getNamespace().startsWith(params[0] + '.')
+        ).anyMatch(ns -> params.length < 2 ||
+                ns.getAccessMode().equals(Namespace.AccessMode.valueOf(params[1])));
     }
 
     /**
