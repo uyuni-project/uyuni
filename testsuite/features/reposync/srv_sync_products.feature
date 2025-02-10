@@ -50,6 +50,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I close the modal dialog
 
 @scc_credentials
+@susemanager
   Scenario: Synchronize SLES 15 SP4 product with recommended sub-products, excluding SUMA Client Tools
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
