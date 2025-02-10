@@ -65,6 +65,7 @@
         <package name="acl"/>
         <package name="chrony"/>
         <package name="curl"/>
+        <package name="procps"/>
         <package name="dracut"/>
         <package name="fipscheck"/>
         <package name="group(mail)"/>

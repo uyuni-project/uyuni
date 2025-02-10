@@ -55,6 +55,7 @@
         <package name="btrfsmaintenance"/>
         <package name="cron"/>
         <package name="curl"/>
+        <package name="procps"/>
         <package name="dracut"/>
         <package name="fipscheck"/>
         <package name="grub2-branding-SLE" bootinclude="true"/>
