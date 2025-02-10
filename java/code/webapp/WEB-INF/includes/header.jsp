@@ -23,12 +23,13 @@
   </div>
 
   <rhn:require acl="user_authenticated()">
+    <script type="text/javascript">
+      window.csrfToken = '<c:out value="${csrf_token}" />';
+    </script>
     <ul class="nav navbar-nav navbar-controls">
       <li id="notifications">
-        <script>
-          spaImportReactPage('notifications/notifications').then(function(module) {
-              module.renderer("notifications", {})
-            });
+        <script type="text/javascript">
+          injectReactPage('notifications/notifications');
         </script>
       </li>
       <c:if test="${requestScope.legends != null}">
@@ -42,21 +43,16 @@
         </li>
       </c:if>
       <li class="search" id="header-search">
-        <script>
-          spaImportReactPage('header/search').then(function(module) {
-              module.renderer("header-search", {})
-            });
+        <script type="text/javascript">
+          injectReactPage('header/search');
         </script>
       </li>
       <li id="ssm-box" class="ssm-box hide-overflow">
-        <div id="ssm-counter"></div>
-        <script type="text/javascript">
-          window.csrfToken = '<c:out value="${csrf_token}" />';
-          spaImportReactPage('systems/ssm/ssm-counter')
-            .then(function(module) {
-              module.renderer("ssm-counter", {})
-            });
-        </script>
+        <div id="ssm-counter">
+          <script type="text/javascript">
+            injectReactPage('systems/ssm/ssm-counter');
+          </script>
+        </div>
       </li>
       <li>
         <a href="/rhn/account/UserDetails.do"

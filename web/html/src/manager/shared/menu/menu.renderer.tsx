@@ -6,7 +6,7 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 import { Breadcrumb, Nav } from "./menu";
 
-export const renderer = (id) => {
+export const renderer = (_: string) => {
   SpaRenderer.renderGlobalReact(<Nav />, document.getElementById("nav"));
 
   SpaRenderer.renderGlobalReact(<Breadcrumb />, document.getElementById("breadcrumb"));

@@ -69,7 +69,6 @@ type PageRendererParams<T extends PageName> = Parameters<Awaited<ReturnType<Page
 // Drop first item of tuple type, e.g. [foo, bar, tea] -> [bar, tea]
 type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never;
 
-let idCounter = 0;
 const injectReactPage = async <T extends PageName>(pageName: T, ...params: Tail<PageRendererParams<T>>) => {
   if (!pages[pageName]) {
     throw new RangeError(
@@ -83,21 +82,22 @@ const injectReactPage = async <T extends PageName>(pageName: T, ...params: Tail<
     throw new RangeError("Unable to identify `currentScript` in `injectReactPage`");
   }
 
-  const divId = pageName.replace(/[^\w]/g, "_") + idCounter;
-  idCounter += 1;
+  const injectTarget = current.parentElement;
+  if (!injectTarget) {
+    throw new RangeError("Unable to find `injectTarget` in `injectReactPage`");
+  }
 
-  const div = document.createElement("div");
-  div.setAttribute("id", divId);
-  current.after(div);
+  // For debug purposes only
+  injectTarget.setAttribute("data-page-name", pageName);
 
   const page = await pages[pageName]();
-  console.log(params);
+
   /**
-   * Typescript doesn't currently support partial type inference for generics, so we need to cast to the lowest
-   * common denominator which is `never`.
+   * Typescript doesn't currently support partial type inference for generics, so we cannot infer both of the correct types here
    * See https://github.com/Microsoft/TypeScript/pull/23696
    */
-  page.renderer(divId, ...(params ?? {}));
+  // @ts-expect-error
+  page.renderer(injectTarget, ...(params ?? {}));
 };
 
 declare global {

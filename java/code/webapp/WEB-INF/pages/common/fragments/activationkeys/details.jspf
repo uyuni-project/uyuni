@@ -68,15 +68,16 @@
         </div>
 
         <!-- Channels selection implementation in ReactJS -->
-        <div id="activation-key-channels"></div>
         <script type="text/javascript">
             window.csrfToken = '<c:out value="${csrf_token}" />';
-            spaImportReactPage('systems/activation-key/activation-key-channels')
-                .then(function(module) {
-                    module.renderer('activation-key-channels', {activationKeyId: '${param.tid}'})
-                }
-            );
         </script>
+        <div id="activation-key-channels">
+            <script type="text/javascript">
+                injectReactPage('systems/activation-key/activation-key-channels', {
+                    activationKeyId: '${param.tid}'
+                });
+            </script>
+        </div>
 
         <div class="form-group">
             <label class="col-lg-3 control-label">

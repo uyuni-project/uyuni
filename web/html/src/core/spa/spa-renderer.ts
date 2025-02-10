@@ -36,32 +36,20 @@ function renderGlobalReact(element: JSX.Element, container: Element | null | und
   ReactDOM.render(elementWithRef, container);
 }
 
-function renderNavigationReact(element: JSX.Element, container: Element | null | undefined, replace = false) {
+function renderNavigationReact(element: JSX.Element, container: Element | null | undefined) {
   if (container == null) {
     throw new Error("The DOM element is not present.");
   }
 
-  if (replace) {
-    const portal = ReactDOM.createPortal(element, container);
-    const portalTarget = document.createElement("div");
-    window.pageRenderers?.spa?.reactRenderers?.push({
-      clean: () => {
-        console.log("remove 1", portalTarget);
-        ReactDOM.unmountComponentAtNode(portalTarget);
-      },
-    });
-    ReactDOM.render(portal, portalTarget);
-  } else {
-    window.pageRenderers?.spa?.reactRenderers?.push({
-      clean: () => {
-        console.log("remove 2", container);
-        ReactDOM.unmountComponentAtNode(container);
-      },
-    });
-    ReactDOM.render(element, container, () => {
-      window.onDocumentReadyInitOldJS?.();
-    });
-  }
+  window.pageRenderers?.spa?.reactRenderers?.push({
+    clean: () => {
+      console.log("remove 2", container);
+      ReactDOM.unmountComponentAtNode(container);
+    },
+  });
+  ReactDOM.render(element, container, () => {
+    window.onDocumentReadyInitOldJS?.();
+  });
 }
 
 function beforeNavigation() {

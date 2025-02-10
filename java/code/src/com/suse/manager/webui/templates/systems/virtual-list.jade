@@ -1,20 +1,14 @@
 include ../common.jade
-#systems-virtual-list
 
 script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('systems/list/virtual')
-        .then(function(module) {
-            module.renderer(
-                'systems-virtual-list',
-                {
-                    isAdmin: #{is_admin},
-                    queryColumn: #{queryColumn},
-                    query: !{query}
-                }
-            )
+#systems-virtual-list
+    script(type='text/javascript').
+        injectReactPage('systems/list/virtual', {
+            isAdmin: #{is_admin},
+            queryColumn: #{queryColumn},
+            query: !{query}
         });

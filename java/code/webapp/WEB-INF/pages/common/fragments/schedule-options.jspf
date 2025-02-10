@@ -57,10 +57,8 @@
             </div>
             <div class="col-sm-6" id="action-chain-picker">
                 <script type="text/javascript">
-                    spaImportReactPage('schedule-options/action-chain-picker').then(function(module) {
-                        module.renderer('action-chain-picker', {
-                            actionChains: '${existingActionChains}'
-                        });
+                    injectReactPage('schedule-options/action-chain-picker', {
+                        actionChains: '${existingActionChains}'
                     });
                 </script>
             </div>

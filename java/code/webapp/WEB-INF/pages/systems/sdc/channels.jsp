@@ -8,16 +8,17 @@
 <body>
   <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
-    <div id="subscribe-channels-div"></div>
     <script type="text/javascript">
         var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
         var timezone = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderTimezone() %>";
         var localTime = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderLocalTime() %>";
         var actionChains = ${actionChainsJson};
 
-      spaImportReactPage('systems/subscribe-channels/subscribe-channels')
-        .then(function(module) { module.renderer('subscribe-channels-div', {systemId: '${system.id}'}) });
     </script>
-
+    <div id="subscribe-channels-div">
+      <script type="text/javascript">
+        injectReactPage('systems/subscribe-channels/subscribe-channels', {systemId: '${system.id}'});
+      </script>
+    </div>
 </body>
 </html:html>

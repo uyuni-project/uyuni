@@ -1,8 +1,6 @@
-#remote-commands
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('salt/cmd/remote-commands')
-        .then(function(module) { module.renderer('remote-commands') });
+#remote-commands
+    script(type='text/javascript').
+        injectReactPage('salt/cmd/remote-commands');

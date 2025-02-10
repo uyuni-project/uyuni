@@ -5,7 +5,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import Login from "./login";
 
 export const renderer = (
-  id: string,
+  parent: Element,
   {
     isUyuni,
     theme,
@@ -40,7 +40,6 @@ export const renderer = (
       diskspaceSeverity={diskspaceSeverity}
       sccForwardWarning={sccForwardWarning}
     />,
-    document.getElementById(id),
-    true
+    parent
   );
 };

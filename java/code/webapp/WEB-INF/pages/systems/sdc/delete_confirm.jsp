@@ -14,7 +14,6 @@
     </c:if>
     <hr/>
 
-    <div id="delete_system_button"></div>
     <script>
         var csrfToken="<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
 
@@ -22,9 +21,10 @@
             return ${sid};
         }
     </script>
-    <script>
-        spaImportReactPage('systems/delete-system-confirm')
-            .then(function(module) { module.renderer('delete_system_button') });
-    </script>
+    <div id="delete_system_button">
+        <script type="text/javascript">
+            injectReactPage('systems/delete-system-confirm');
+        </script>
+    </div>
 </body>
 </html:html>

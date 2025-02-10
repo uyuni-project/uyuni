@@ -6,8 +6,6 @@
     a(href="/docs/#{docsLocale}/reference/home/my-organization-menu.html" target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
 
-#config-channels
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.orgId = "#{orgId}";
@@ -16,6 +14,6 @@ script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/jquery-ui.js?cb=#{webBuildtimestamp}')
 
-script(type='text/javascript').
-    spaImportReactPage('organizations/config-channels/org-config-channels')
-        .then(function(module) { module.renderer('config-channels') });
+#config-channels
+  script(type='text/javascript').
+    injectReactPage('organizations/config-channels/org-config-channels');

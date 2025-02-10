@@ -1,7 +1,5 @@
 include ../common.jade
 
-#image-build
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.profileId = #{profileId ? profileId : "null"};
@@ -11,6 +9,6 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
-script(type='text/javascript').
-    spaImportReactPage('images/image-build')
-        .then(function(module) { module.renderer('image-build') });
+#image-build
+    script(type='text/javascript').
+        injectReactPage('images/image-build');

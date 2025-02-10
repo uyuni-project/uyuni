@@ -12,7 +12,6 @@
     | #{" " + groupName + " "}
 
 !{tabs}
-#recurring-actions
 
 script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
@@ -27,6 +26,6 @@ script(type='text/javascript').
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
 
-script(type='text/javascript').
-    spaImportReactPage('recurring/recurring-actions')
-        .then(function(module) { module.renderer('recurring-actions') });
+#recurring-actions
+    script(type='text/javascript').
+        injectReactPage('recurring/recurring-actions');

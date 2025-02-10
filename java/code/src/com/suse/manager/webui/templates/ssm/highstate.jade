@@ -6,7 +6,6 @@
       i.fa.fa-question-circle.spacewalk-help-link
 
 !{tabs}
-#highstate
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -16,6 +15,6 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
-script(type='text/javascript').
-    spaImportReactPage('state/highstate')
-        .then(function(module) { module.renderer('highstate') });
+#highstate
+  script(type='text/javascript').
+      injectReactPage('state/highstate');

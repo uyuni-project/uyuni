@@ -1,12 +1,9 @@
 include ../common.jade
 
-#image-stores
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.isAdmin = #{is_admin};
 
-script(type='text/javascript').
-    spaImportReactPage('images/image-stores')
-        .then(function(module) { module.renderer('image-stores') });
-
+#image-stores
+    script(type='text/javascript').
+        injectReactPage('images/image-stores');

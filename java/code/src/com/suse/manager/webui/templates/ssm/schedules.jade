@@ -6,11 +6,10 @@
       i.fa.fa-question-circle.spacewalk-help-link
 
 !{tabs}
-#maintenance-schedules
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('maintenance/system-assignment')
-        .then(function(module) { module.renderer('maintenance-schedules', !{systems}) });
+#maintenance-schedules
+  script(type='text/javascript').
+      injectReactPage('maintenance/system-assignment', !{systems});

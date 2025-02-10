@@ -1,7 +1,5 @@
 include ../common.jade
 
-#image-view
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.imageId = "#{id}";
@@ -11,6 +9,6 @@ script(type='text/javascript').
     window.isRuntimeInfoEnabled = #{isRuntimeInfoEnabled};
     window.osImageStoreUrl = "#{osImageStoreUrl}";
 
-script(type='text/javascript').
-    spaImportReactPage('images/image-view')
-        .then(function(module) { module.renderer('image-view') });
+#image-view
+    script(type='text/javascript').
+        injectReactPage('images/image-view');

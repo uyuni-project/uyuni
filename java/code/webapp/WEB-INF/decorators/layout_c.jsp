@@ -22,7 +22,11 @@
     </header>
     <div class="spacewalk-main-column-layout">
       <aside id="spacewalk-aside" class="navbar-collapse in">
-        <div id="nav"></div>
+        <div id="nav">
+          <script type="text/javascript">
+            injectReactPage('shared/menu');
+          </script>
+        </div>
         <jsp:include page="/WEB-INF/includes/leftnav.jsp" />
         <footer>
           <jsp:include page="/WEB-INF/includes/footer.jsp" />
@@ -57,9 +61,6 @@
         </section>
       </div>
       <script type="text/javascript">
-        spaImportReactPage('shared/menu').then(function(module) {
-            module.renderer();
-        });
         <c:if test="${rhn:getConfig('web.spa.enable')}">
           <c:set var="spaTimeout" value="${rhn:getConfig('web.spa.timeout')}"/>
           window.pageRenderers && window.pageRenderers.spaengine.init && window.pageRenderers.spaengine.init(${spaTimeout});

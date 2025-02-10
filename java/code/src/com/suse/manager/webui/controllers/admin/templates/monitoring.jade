@@ -1,13 +1,10 @@
 include /templates/common.jade
 
-#monitoring
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('admin/config/monitoring')
-        .then(function (module) { module.renderer('monitoring', {
+#monitoring
+    script(type='text/javascript').
+        injectReactPage('admin/config/monitoring', {
             isUyuni: JSON.parse("#{isUyuni}"),
         });
-    });

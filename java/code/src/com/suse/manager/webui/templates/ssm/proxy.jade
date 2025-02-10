@@ -6,13 +6,12 @@
       i.fa.fa-question-circle.spacewalk-help-link
 
 !{tabs}
-#proxy
 
 script(type="text/javascript").
     window.csrfToken = "#{csrf_token}";
     window.minions = !{minions};
     window.proxies = !{proxies};
 
-script(type='text/javascript').
-    spaImportReactPage('systems/proxy')
-        .then(function(module) { module.renderer('proxy') });
+#proxy
+  script(type='text/javascript').
+      injectReactPage('systems/proxy');
