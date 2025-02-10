@@ -95,7 +95,7 @@
         <package name="rsync"/>
         <package name="plymouth-plugin-label-ft"/>
         <package name="kernel-default"/>
-	    <package name="venv-salt-minion"/>
+        <package name="venv-salt-minion"/>
         <package name="hostname"/>
 	    <package name="dracut-saltboot"/>
         <package name="mdadm"/>
