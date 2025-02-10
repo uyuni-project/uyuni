@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AppStream;
@@ -360,6 +361,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualHostManagerNodeInfo.class,
+            XccdfRuleFix.class
             XccdfTestResult.class,
             WebEndpoint.class
     );
