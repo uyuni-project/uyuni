@@ -25,6 +25,8 @@ import com.redhat.rhn.common.translation.TranslationException;
 import com.redhat.rhn.common.translation.Translator;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.WebEndpoint;
+import com.redhat.rhn.domain.access.WebEndpointFactory;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -61,6 +63,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -103,7 +106,8 @@ public class BaseHandler implements XmlRpcInvocationHandler {
                 .toArray(Method[]::new);
 
         String[] byNamespace = methodCalled.split("\\.");
-        String beanifiedMethod = StringUtil.beanify(byNamespace[byNamespace.length - 1]);
+        String namespace = byNamespace[byNamespace.length - 1];
+        String beanifiedMethod = StringUtil.beanify(namespace);
         WebSession session = null;
         User user = null;
 
@@ -133,6 +137,23 @@ public class BaseHandler implements XmlRpcInvocationHandler {
         if (user != null && user.isReadOnly()) {
             if (!foundMethod.isAnnotationPresent(ReadOnly.class)) {
                 throw new SecurityException("The " + beanifiedMethod + " API is not available to read-only API users");
+            }
+        }
+        String apiEndpoint = myClass.getCanonicalName() + "." + beanifiedMethod;
+
+        if (user == null) {
+            if (!WebEndpointFactory.getUnauthorizedApiMethods().contains(apiEndpoint)) {
+                throw new SecurityException("The " + beanifiedMethod +
+                        " API is not available for unauthenticated users.");
+            }
+        } else {
+            if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
+                Optional<WebEndpoint> endpoinOpts = WebEndpointFactory.lookupByUserIdClassMethodScope(user.getId(),
+                        apiEndpoint, WebEndpoint.Scope.A);
+                if (endpoinOpts.isEmpty()) {
+                    throw new SecurityException("The " + apiEndpoint + " API is not available to user " +
+                            user.getLogin());
+                }
             }
         }
 

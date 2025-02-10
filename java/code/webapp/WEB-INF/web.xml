@@ -55,19 +55,25 @@
   <!-- Authorization filter -->
   <filter>
     <filter-name>AuthFilterStruts</filter-name>
-    <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <filter-class>com.redhat.rhn.frontend.servlets.AuthenticationFilter</filter-class>
     <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>AuthFilterJsp</filter-name>
-    <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <filter-class>com.redhat.rhn.frontend.servlets.AuthenticationFilter</filter-class>
     <async-supported>true</async-supported>
   </filter>
 
   <filter>
     <filter-name>AuthFilterSpark</filter-name>
-    <filter-class>com.redhat.rhn.frontend.servlets.AuthFilter</filter-class>
+    <filter-class>com.redhat.rhn.frontend.servlets.AuthenticationFilter</filter-class>
+    <async-supported>true</async-supported>
+  </filter>
+
+  <filter>
+    <filter-name>AuthorizationFilter</filter-name>
+    <filter-class>com.redhat.rhn.frontend.servlets.AuthorizationFilter</filter-class>
     <async-supported>true</async-supported>
   </filter>
 
@@ -166,6 +172,17 @@
   <filter-mapping>
     <filter-name>AuthFilterSpark</filter-name>
     <url-pattern>/manager/*</url-pattern>
+    <url-pattern>/saltboot/*</url-pattern>
+  </filter-mapping>
+
+  <!-- FIXME add access filter in here, and control all the pages -->
+
+  <filter-mapping>
+    <filter-name>AuthorizationFilter</filter-name>
+    <url-pattern>*.do</url-pattern>
+    <url-pattern>*.jsp</url-pattern>
+    <url-pattern>/manager/*</url-pattern>
+    <url-pattern>/ajax/*</url-pattern>
     <url-pattern>/saltboot/*</url-pattern>
   </filter-mapping>
 

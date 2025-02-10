@@ -98,6 +98,7 @@ public class AjaxHandlerServlet extends HttpServlet {
                 throws ServletException, IOException;
     }
 
+    // TODO: Review all endpoints
     static {
         // The following 7 handlers are used only in the Your RHN page.
         HANDLERS.put("systems-groups", systemGroupsRenderer::renderAsync);
