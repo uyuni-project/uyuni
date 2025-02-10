@@ -55,6 +55,7 @@ public class MgrServerInfo {
      */
     public MgrServerInfo() {
         super();
+        reportDbPort = 5432;
     }
 
     /**

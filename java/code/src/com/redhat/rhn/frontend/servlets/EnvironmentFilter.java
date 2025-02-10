@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,6 +27,7 @@ import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -41,27 +43,23 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EnvironmentFilter implements Filter {
 
-    private static Logger log = LogManager.getLogger(EnvironmentFilter.class);
+    private static final Logger LOGGER = LogManager.getLogger(EnvironmentFilter.class);
 
-    private static String[] nosslurls = {"/rhn/kickstart/DownloadFile",
-                                         "/rhn/common/DownloadFile",
-                                         "/rhn/rpc/api",
-                                         "/rhn/errors",
-                                         "/rhn/ty/TinyUrl",
-                                         "/rhn/websocket",
-                                         "/rhn/metrics"};
+    private static final List<String> NO_SSL_URL = List.of(
+        "/rhn/kickstart/DownloadFile",
+        "/rhn/common/DownloadFile",
+        "/rhn/rpc/api",
+        "/rhn/errors",
+        "/rhn/ty/TinyUrl",
+        "/rhn/websocket",
+        "/rhn/metrics"
+    );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void init(FilterConfig arg0) {
         // Not needed in this filter
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doFilter(ServletRequest request,
                          ServletResponse response,
@@ -80,8 +78,8 @@ public class EnvironmentFilter implements Filter {
         // Have to make this decision here, because once we pass the request
         // off to the next filter, that filter can do work that sends data to
         // the client, meaning that we can't redirect.
-        if (ConfigDefaults.get().isSsl() && RhnHelper.pathNeedsSecurity(nosslurls, path) && !hreq.isSecure()) {
-            log.debug("redirecting to secure: {}", path);
+        if (ConfigDefaults.get().isSsl() && RhnHelper.pathNeedsSecurity(NO_SSL_URL, path) && !hreq.isSecure()) {
+            LOGGER.debug("redirecting to secure: {}", path);
             redirectToSecure(hreq, hres);
             return;
         }
@@ -90,7 +88,7 @@ public class EnvironmentFilter implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         request.setAttribute(RequestContext.REQUESTED_URI, req.getRequestURI());
 
-        log.debug("set REQUESTED_URI: {}", req.getRequestURI());
+        LOGGER.debug("set REQUESTED_URI: {}", req.getRequestURI());
 
         // add messages that were put on the request path.
         addParameterizedMessages(req);
@@ -117,9 +115,6 @@ public class EnvironmentFilter implements Filter {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void destroy() {
       // Nothing to do here

@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.taskomatic.task.RhnJavaJob;
 
+import com.suse.utils.CertificateUtils;
+
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
@@ -28,7 +30,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PaygUpdateHostsTask extends RhnJavaJob {
     private static final String HOSTS = "/etc/hosts";
@@ -36,7 +40,7 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
     private static final String HOST_COMMENT_START = "# Added by Suma - Start";
     private static final String HOST_COMMENT_END = "# Added by Suma - End";
 
-    private static final String CA_LOCATION_TEMPLATE = "/etc/pki/trust/anchors/registration_server_%s.pem";
+    private static final String CA_FILENAME_TEMPLATE_WITH_IP = "registration_server_%s.pem";
 
     @Override
     public String getConfigNamespace() {
@@ -54,30 +58,13 @@ public class PaygUpdateHostsTask extends RhnJavaJob {
     }
 
     private void loadHttpsCertificates(List<CloudRmtHost> hostToUpdate) throws JobExecutionException {
-        try {
-            for (CloudRmtHost host : hostToUpdate) {
-                String caFileName = String.format(CA_LOCATION_TEMPLATE, host.getIp());
-                try (FileWriter fw = new FileWriter(caFileName, false)) {
-                    fw.write(host.getSslCert());
-                }
-            }
+        Map<String, String> filenameToRootCaCertMap = new HashMap<>();
+        for (CloudRmtHost host : hostToUpdate) {
+            String caFileName = String.format(CA_FILENAME_TEMPLATE_WITH_IP, host.getIp());
+            filenameToRootCaCertMap.put(caFileName, host.getSslCert());
         }
-        catch (IOException e) {
-            log.error("error when writing the hosts file", e);
-        }
-        finally {
-            if (!hostToUpdate.isEmpty()) {
-                try {
-                    String[] cmd = {"systemctl", "is-active", "--quiet", "ca-certificates.path"};
-                    executeExtCmd(cmd);
-                }
-                catch (Exception e) {
-                    log.debug("ca-certificates.path service is not active, we will call 'update-ca-certificates' tool");
-                    String[] cmd = {"/usr/share/rhn/certs/update-ca-cert-trust.sh"};
-                    executeExtCmd(cmd);
-                }
-            }
-        }
+
+        CertificateUtils.saveAndUpdateCertificates(filenameToRootCaCertMap);
     }
 
     private void updateHost(List<CloudRmtHost> hostToUpdate) {
