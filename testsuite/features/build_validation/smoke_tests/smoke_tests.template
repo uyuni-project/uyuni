@@ -71,7 +71,7 @@ Feature: Smoke tests for <client>
     Then I should see a "1 patch update has been scheduled for" text
     When I force picking pending events on "<client>" if necessary
     And I wait until event "Patch Update:" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
 @skip_for_sl_micro
@@ -89,7 +89,7 @@ Feature: Smoke tests for <client>
     Then I should see a "1 package install has been scheduled for" text
     When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro_ssh_minion
   Scenario: Remove package from <client>
@@ -105,7 +105,7 @@ Feature: Smoke tests for <client>
     Then I should see a "1 package removal has been scheduled" text
     When I force picking pending events on "<client>" if necessary
     And I wait until event "Package Removal scheduled by <client>" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_traditional
   Scenario: Run a remote command on <client> minion
@@ -148,7 +148,7 @@ Feature: Smoke tests for <client>
     And I click on "Continue"
     And I click on "Update Channel Rankings"
     Then I should see a "Channel Subscriptions successfully changed for" text
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_sle_micro
   Scenario: Reboot the <client> and wait until reboot is completed
@@ -246,7 +246,7 @@ Feature: Smoke tests for <client>
     And I click on "Apply Highstate"
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled by <client>" is completed
-    And I reboot the "<client>" if it is a SLE Micro
+    And I reboot the "<client>" if it is a transactional system
 
 @skip_for_traditional
 @skip_for_sle_micro_ssh_minion
