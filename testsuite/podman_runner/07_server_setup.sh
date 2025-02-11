@@ -4,6 +4,8 @@ set -xe
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 setup_pm_path=`sudo -i podman run --rm -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
+certs_py_path=`sudo -i podman run --rm -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
+python_path=${certs_py_path%%certs*}
 
 sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --tmpfs /run \
@@ -53,16 +55,9 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb:/usr/bin/uyuni-setup-reportdb \
     -v ${src_dir}/spacewalk/setup/bin/spacewalk-setup:/usr/bin/spacewalk-setup \
     -v ${src_dir}/spacewalk/setup/lib/Spacewalk/Setup.pm:${setup_pm_path} \
+    -v ${src_dir}/spacewalk/certs-tools/mgr_ssl_cert_setup.py:${python_path}/certs/mgr_ssl_cert_setup.py \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
-    -e CERT_O="test_org"  \
-    -e CERT_OU="test_ou"  \
-    -e CERT_CITY="test_city"  \
-    -e CERT_STATE="test_state"  \
-    -e CERT_COUNTRY="DE"  \
-    -e CERT_EMAIL="a@b.com"  \
-    -e CERT_CNAMES="server"  \
-    -e CERT_PASS="spacewalk"  \
     -e UYUNI_FQDN="server"  \
     -e MANAGER_USER="admin"  \
     -e MANAGER_PASS="spacewalk"  \
@@ -90,7 +85,8 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --name=server-setup \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
-    bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \
+    bash -xc "/testsuite/podman_runner/generate_certificates.sh && \
+             /testsuite/podman_runner/provide-db-schema.sh && \
              /usr/lib/susemanager/bin/mgr-setup && \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
