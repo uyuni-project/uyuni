@@ -416,6 +416,10 @@ def main():
         logging.error("Invalid configuration file passed, missing %s", str(err))
         exit(1)
 
+    if not isinstance(args.replace_fqdns, list):
+        logging.error("Invalid configuration file passed, replace_fqdns is not a list")
+        exit(1)
+
     logging.info("Starting TFTP proxy:")
     logging.info("HTTP endpoint: %s", args.http_host)
     logging.info("Server FQDN: %s", args.server_fqdn)
