@@ -121,8 +121,8 @@ public class ActionChain extends BaseDomainHelper {
      * @param userIn the new user
      */
     public void setUser(User userIn) {
-        if (userIn instanceof UserImpl) {
-            user = (UserImpl) userIn;
+        if (userIn instanceof UserImpl userImpl) {
+            user = userImpl;
         }
         else {
             user = null;

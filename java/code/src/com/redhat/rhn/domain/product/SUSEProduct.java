@@ -112,7 +112,7 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<SUSEProductChannel> suseProductChannels = new HashSet<>();
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Set<ChannelTemplate> channelTemplates = new HashSet<>();
 
     /**

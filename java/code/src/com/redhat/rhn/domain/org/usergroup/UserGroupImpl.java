@@ -148,8 +148,8 @@ public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
      */
     @Override
     public void setRole(Role roleIn) {
-        if (roleIn instanceof RoleImpl) {
-            role = (RoleImpl) roleIn;
+        if (roleIn instanceof RoleImpl roleImpl) {
+            role = roleImpl;
         }
         else {
             role = null;

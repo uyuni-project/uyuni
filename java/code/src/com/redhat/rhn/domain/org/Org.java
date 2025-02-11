@@ -255,8 +255,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             // Create a new UserGroup based on the Role specified
             UserGroup newGroup = UserGroupFactory
             .createUserGroup(this, newRole);
-            if (newGroup instanceof UserGroupImpl) {
-                userGroups.add((UserGroupImpl) newGroup);
+            if (newGroup instanceof UserGroupImpl userGroupImpl) {
+                userGroups.add(userGroupImpl);
             }
         }
     }
