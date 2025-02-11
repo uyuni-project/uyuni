@@ -1,4 +1,5 @@
-INSERT INTO rhnConfiguration (key, description) VALUES ('extauth_default_orgid', 'Organization id, where externally authenticated users will be created.');
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('extauth_default_orgid', 'Organization id, where externally authenticated users will be created.', null, null);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('extauth_use_orgunit', 'Use Org. Unit IPA setting as organization name to create externally authenticated users in.', 'false', 'false');
 INSERT INTO rhnConfiguration (key, description, value, default_value)
@@ -24,4 +25,4 @@ VALUES ('psw_check_restricted_occurrence_flag', 'Password has to have no repeati
 INSERT INTO rhnConfiguration (key, description, value, default_value)
 VALUES ('psw_check_max_occurrence', 'Maximum number of valid occurrence of a character', 2, 2);
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('psw_check_special_characters', 'List of special characters to check in a password', '!$%&()*+,./:;<=>?[\\]^_{|}~', '!$%&()*+,./:;<=>?[\\]^_{|}~');
+VALUES ('psw_check_special_characters', 'List of special characters to check in a password', '!$%&()*+,./:;<=>?[]^_{|}~', '!$%&()*+,./:;<=>?[]^_{|}~');
