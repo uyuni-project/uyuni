@@ -186,6 +186,19 @@ Feature: Update activation keys
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 
 @scc_credentials
+@uyuni
+  Scenario: Update build host key with Uyuni client tools
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Build host Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "buildhost" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
+    And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Build host Key x86_64 has been modified" text
+
+@scc_credentials
   Scenario: Update terminal key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Terminal Key x86_64" in the content area
