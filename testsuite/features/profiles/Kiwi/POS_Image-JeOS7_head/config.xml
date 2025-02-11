@@ -98,7 +98,7 @@
         <package name="kernel-default"/>
         <package name="venv-salt-minion"/>
         <package name="hostname"/>
-	    <package name="dracut-saltboot"/>
+        <package name="dracut-saltboot"/>
         <package name="mdadm"/>
         <package name="cryptsetup"/>
         <package name="kernel-firmware"/>
