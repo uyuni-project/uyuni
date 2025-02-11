@@ -19,6 +19,8 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChild;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
+import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionResult;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -227,6 +229,9 @@ public class AnnotationRegistry {
             ImageFile.class,
             ImageInfo.class,
             ImageInfoCustomDataValue.class,
+            ImageInspectActionDetails.class,
+            ImageInspectActionResult.class,
+            ImageInspectActionResult.ImageInspectActionResultId.class,
             ImageOverview.class,
             ImagePackage.class,
             ImageProfile.class,
