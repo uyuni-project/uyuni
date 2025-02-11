@@ -39,6 +39,8 @@ import java.util.Optional;
 public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateApplySaltState.class);
 
+    public static final String FAIL_APPLY_MESSAGE = "Failed to apply proxy configuration salt state.";
+
     @Override
     public void handle(ProxyConfigUpdateContext context) {
         ProxyConfigurationApplyAction action =
@@ -50,29 +52,30 @@ public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContext
         Map<LocalCall<?>, Optional<JsonElement>> applySaltStateResponse =
                 GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, context.getProxyMinion());
 
-        if (isAbsent(applySaltStateResponse) || applySaltStateResponse.size() != 1) {
-            context.getErrorReport().register("Failed to apply proxy configuration salt state.");
-            LOG.debug("Failed to apply proxy configuration salt state.");
+        if (isAbsent(applySaltStateResponse)) {
+            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+            LOG.error("Failed to apply proxy configuration salt state. No response.");
+            return;
+        }
+        else if (applySaltStateResponse.size() != 1) {
+            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+            LOG.error("Failed to apply proxy configuration salt state. Unexpected response size. {}", applySaltStateResponse);
             return;
         }
 
-        Optional<JsonElement> singleEntry = applySaltStateResponse.values().iterator().next();
-        singleEntry.ifPresentOrElse(
-                jsonElement -> {
-                    JsonObject jsonObject = jsonElement.getAsJsonObject();
-                    for (String key : jsonObject.keySet()) {
-                        if (!jsonObject.get(key).getAsJsonObject().get("result").getAsBoolean()) {
-                            context.getErrorReport().register("Failed to apply proxy configuration salt state.");
-                            LOG.debug("Failed to apply proxy configuration salt state. %s at key %s", singleEntry, key);
-                        }
-                    }
-                },
-                () -> {
-                    context.getErrorReport().register(
-                            "Failed to apply proxy configuration salt state. Unexpected response."
-                    );
-                    LOG.debug("Failed to apply proxy configuration salt state. Unexpected response. %s", singleEntry);
-                }
-        );
+        JsonElement jsonElement = applySaltStateResponse.values().iterator().next().orElse(null);
+        if (jsonElement == null || !jsonElement.isJsonObject()) {
+            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+            LOG.error("Failed to apply proxy configuration salt state. Unexpected response format. {}", jsonElement);
+            return;
+        }
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        for (String key : jsonObject.keySet()) {
+            if (!jsonObject.get(key).getAsJsonObject().get("result").getAsBoolean()) {
+                context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+                LOG.error("Failed to apply proxy configuration salt state. Failing entry: {}", jsonElement);
+            }
+        }
+
     }
 }

@@ -42,7 +42,7 @@ public class ProxyConfigUpdateRegistryPreConditions implements ProxyConfigUpdate
         for (ProxyContainerImagesEnum proxyImage : ProxyContainerImagesEnum.values()) {
             if (!context.getRegistryUrls().containsKey(proxyImage)) {
                 String noRegistryUrlMessage = format("No registry URL provided for image %s", proxyImage);
-                LOG.debug(noRegistryUrlMessage);
+                LOG.error(noRegistryUrlMessage);
                 context.getErrorReport().register(noRegistryUrlMessage);
                 continue;
             }
@@ -51,7 +51,7 @@ public class ProxyConfigUpdateRegistryPreConditions implements ProxyConfigUpdate
                 ProxyRegistryUtils.getTags(context.getRegistryUrls().get(proxyImage));
             }
             catch (ParseException parseException) {
-                LOG.debug("Failed to get tags from registry URL: {}", context.getRegistryUrls().get(proxyImage));
+                LOG.error("Failed to get tags from registry URL: {}", context.getRegistryUrls().get(proxyImage));
                 context.getErrorReport().register(
                         "Failed to get tags from registry URL: " + context.getRegistryUrls().get(proxyImage)
                 );
