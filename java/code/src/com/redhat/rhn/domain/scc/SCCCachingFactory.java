@@ -220,7 +220,7 @@ import javax.persistence.NoResultException;
                                     SELECT * from suseSCCOrderItem
                                     WHERE credentials_id = :credentials
                                     """, SCCOrderItem.class)
-                            .setParameter("credentials", credentials, StandardBasicTypes.LONG)
+                            .setParameter("credentials", credentials.getId(), StandardBasicTypes.LONG)
                             .getResultList())
                 .orElse(Collections.emptyList());
     }
