@@ -263,7 +263,6 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Get all available migration targets from the installed products
      * on the system
-     *
      * Please note that ruby syntax comments in the code are referred
      * to the private project source at:
      * - https://github.com/SUSE/happy-customer/blob/
@@ -289,27 +288,6 @@ public class DistUpgradeManager extends BaseManager {
                     final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
                     currentCombination.add(baseProduct);
                     currentCombination.addAll(installedExtensions);
-                    // Liberty Migration should always add the Liberty Products
-                    for (SUSEProduct successorProduct : baseSuccessors) {
-                        if (successorProduct.getName().equals("rhel-base") &&
-                                successorProduct.getVersion().equals("8")) {
-                            Set<SUSEProduct> liberties = SUSEProductFactory
-                                    .findAllExtensionsOfRootProduct(successorProduct)
-                                    .stream()
-                                    .filter(e -> e.getName().equals("res"))
-                                    .collect(Collectors.toSet());
-                            installedExtensions.addAll(liberties);
-                        }
-                        else if (successorProduct.getName().equals("el-base") &&
-                                successorProduct.getVersion().equals("9")) {
-                            Set<SUSEProduct> liberties = SUSEProductFactory
-                                    .findAllExtensionsOfRootProduct(successorProduct)
-                                    .stream()
-                                    .filter(e -> e.getName().equals("sll"))
-                                    .collect(Collectors.toSet());
-                            installedExtensions.addAll(liberties);
-                        }
-                    }
                     final List<List<SUSEProduct>> extSuccessors = getExtSuccessorsForInstalledExt(installedExtensions);
                     List<List<SUSEProduct>> combinations = baseSuccessors.stream()
                             .flatMap(baseSucc -> combineCompatibleExtensionSuccessor(extSuccessors, baseSucc).stream())
@@ -329,7 +307,7 @@ public class DistUpgradeManager extends BaseManager {
         }
         if (LOG.isDebugEnabled()) {
             LOG.debug("Found '{}' successors for the base product.", baseSuccessors.size());
-            baseSuccessors.stream().forEach(bp -> LOG.debug(bp.getFriendlyName()));
+            baseSuccessors.forEach(bp -> LOG.debug(bp.getFriendlyName()));
         }
         return baseSuccessors;
     }
@@ -372,7 +350,7 @@ public class DistUpgradeManager extends BaseManager {
             // let's print out list of list with friendly names
             compatibleExtensionSuccessors.stream()
                     .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
-                    .forEach(css -> LOG.debug(css));
+                    .forEach(LOG::debug);
             LOG.debug("-----------------------");
         }
         // the base successor will be always on the 1st position in the combinations below
@@ -748,7 +726,7 @@ public class DistUpgradeManager extends BaseManager {
                 details.addChannelTask(task);
             }
         }
-        // Subscribe to all of the remaining channels
+        // Subscribe to all the remaining channels
         for (Long cid : channelIDs) {
             DistUpgradeChannelTask task = new DistUpgradeChannelTask();
             task.setChannel(ChannelFactory.lookupById(cid));
@@ -793,7 +771,7 @@ public class DistUpgradeManager extends BaseManager {
               - from OpenSUSE Leap 15.4 to SLES 15 SP4
             is not allowed.
             Only SP migrations should be possible.
-            Also individual assigning channels to perform a migration is forbidden
+            Also, individual assigning channels to perform a migration is forbidden
             */
             SUSEProduct installedBaseProduct = server.getInstalledProductSet()
                     .map(SUSEProductSet::getBaseProduct)
