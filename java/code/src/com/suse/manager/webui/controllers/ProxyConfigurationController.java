@@ -332,11 +332,11 @@ public class ProxyConfigurationController {
             return result(response, ResultJson.success("Proxy configuration applied"));
         }
         catch (RhnRuntimeException e) {
-            LOG.error("Failed to apply proxy configuration to  minion", e);
+            LOG.error("Failed to apply proxy configuration to minion", e);
             return internalServerError(response, e.getMessage());
         }
         catch (RhnGeneralException e) {
-            LOG.error("Failed to apply proxy configuration to  minion", e);
+            LOG.error("Failed to apply proxy configuration to minion", e);
             return badRequest(response, e.getErrorMessages());
         }
 
