@@ -68,7 +68,7 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
 
             if (isAbsent(context.getProxyConfigFiles())) {
                 context.getErrorReport().register("proxy container configuration files were not created");
-                LOG.debug("proxy container configuration files were not created");
+                LOG.error("proxy container configuration files were not created");
                 return;
             }
 
@@ -80,7 +80,7 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
                             firstLevelEntry
                     );
                     context.getErrorReport().register(format);
-                    LOG.debug(format);
+                    LOG.error(format);
                     continue;
                 }
 
@@ -95,7 +95,7 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
                                     firstLevelEntry, secondLevelEntry
                             );
                             context.getErrorReport().register(format);
-                            LOG.debug(format);
+                            LOG.error(format);
                         }
                     }
                 }

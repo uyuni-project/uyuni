@@ -158,7 +158,7 @@ public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHand
             }
         }
         catch (URISyntaxException e) {
-            LOG.debug("Invalid creating Registry URL {}", context);
+            LOG.error("Invalid creating Registry URL {}", context);
             context.getErrorReport().register("Invalid Registry URL");
         }
     }

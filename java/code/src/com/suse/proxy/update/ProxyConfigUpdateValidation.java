@@ -69,7 +69,7 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
 
         if (!registerIfMissing(request.getServerId(), SERVER_ID_FIELD) && isAbsent(context.getProxyFqdn())) {
             errorReport.register("proxyFQDN for the server was not resolved");
-            LOG.debug("Proxy FQDN for the server {} was not resolved", request.getServerId());
+            LOG.error("Proxy FQDN for the server {} was not resolved", request.getServerId());
         }
 
         String parentFqdn = request.getParentFqdn();
