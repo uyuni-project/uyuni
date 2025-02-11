@@ -121,6 +121,15 @@ const imageNames = [
   "registryTftpdURL",
 ];
 
+const tagMapping = {
+  registryBaseURL: "registryBaseTag",
+  registryHttpdURL: "registryHttpdTag",
+  registrySaltbrokerURL: "registrySaltbrokerTag",
+  registrySquidURL: "registrySquidTag",
+  registrySshURL: "registrySshTag",
+  registryTftpdURL: "registryTftpdTag",
+};
+
 export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFailMessage }: ProxyConfigProps) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
@@ -150,11 +159,16 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
   });
 
   useEffect(() => {
-    imageNames.forEach((url) => {
-      if (currentConfig[url]) {
-        retrieveRegistryTags(currentConfig, url);
-      }
-    });
+    if (currentConfig.sourceMode === SourceMode.RPM) {
+      //work-around to trigger validation for filled forms using RPM
+      retrieveRegistryTags(currentConfig, null);
+    } else {
+      imageNames.forEach((url) => {
+        if (currentConfig[url]) {
+          retrieveRegistryTags(currentConfig, url);
+        }
+      });
+    }
     if (initFailMessage) {
       setSuccess(false);
       setMessages([initFailMessage]);
@@ -352,18 +366,23 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
 
       if (response?.success) {
         setErrors((prev) => ({ ...prev, [name]: [] }));
-        setTagOptions((prev) => ({
-          ...prev,
-          [name]: response.data || [],
-        }));
+        setTagOptions((prev) => ({ ...prev, [name]: response.data || [] }));
+
+        // Check if the current tag is still in the new options
+        const currentTag = newModel[tagMapping[name]];
+        if (currentTag && !response.data.includes(currentTag)) {
+          setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
+        }
       } else {
         const errorMessage = response?.messages?.join(", ") || "Validation Failed";
         setErrors((prev) => ({ ...prev, [name]: errorMessage }));
         setTagOptions((prev) => ({ ...prev, [name]: [] }));
+        setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
       }
     } catch (error) {
       setErrors((prev) => ({ ...prev, [name]: "Error during validation" }));
       setTagOptions((prev) => ({ ...prev, [name]: [] }));
+      setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
     }
   };
 
