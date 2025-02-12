@@ -16,7 +16,8 @@ package com.redhat.rhn.frontend.action.multiorg;
 
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.user.User;
@@ -53,31 +54,26 @@ public class ExtAuthenticationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
 
         if (ctx.isSubmitted()) {
-            Boolean useOu = (Boolean) daForm.get("use_ou");
             // store the value
-            SatConfigFactory.setSatConfigBooleanValue(
-                    SatConfigFactory.EXT_AUTH_USE_ORGUNIT, useOu);
-
+            RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
             String toOrgString = daForm.getString("to_org");
             if (!StringUtils.isEmpty(toOrgString)) {
                 // just check the org id is valid
                 OrgFactory.lookupById(Long.parseLong(toOrgString));
             }
             // store the value
-            SatConfigFactory.setSatConfigValue(SatConfigFactory.EXT_AUTH_DEFAULT_ORGID,
-                    toOrgString);
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT, toOrgString);
 
             Boolean keepRoles = (Boolean) daForm.get("keep_roles");
-            if (SatConfigFactory.getSatConfigBooleanValue(
-                    SatConfigFactory.EXT_AUTH_KEEP_ROLES) &&
-                    !BooleanUtils.toBoolean(keepRoles)) {
+            boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
+                    .getValue();
+            if (keepTempRoles && !BooleanUtils.toBoolean(keepRoles)) {
                 // if the option was turned off, delete temporary roles
                 // across the whole satellite
                 UserGroupFactory.deleteTemporaryRoles();
             }
             // store the value
-            SatConfigFactory.setSatConfigBooleanValue(
-                    SatConfigFactory.EXT_AUTH_KEEP_ROLES, keepRoles);
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
 
             createSuccessMessage(request, "message.ext_auth_updated", null);
             return mapping.findForward("success");
@@ -91,9 +87,8 @@ public class ExtAuthenticationAction extends RhnAction {
     private void setupForm(HttpServletRequest request, DynaActionForm form) {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
-
-        Boolean useOrgUnit = SatConfigFactory.getSatConfigBooleanValue(
-                SatConfigFactory.EXT_AUTH_USE_ORGUNIT);
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        Boolean useOrgUnit = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
         form.set("use_ou", useOrgUnit);
 
         DataList<OrgDto> dr = OrgManager.activeOrgs(user);
@@ -107,8 +102,7 @@ public class ExtAuthenticationAction extends RhnAction {
         }
         request.setAttribute("orgs", orgs);
 
-        Long actOrgId = SatConfigFactory.getSatConfigLongValue(
-                SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, 1L);
+        Long actOrgId = factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
         if (actOrgId != null) {
             form.set("to_org", actOrgId.toString());
         }
@@ -116,8 +110,7 @@ public class ExtAuthenticationAction extends RhnAction {
             form.set("to_org", null);
         }
 
-        Boolean keepRoles = SatConfigFactory.getSatConfigBooleanValue(
-                SatConfigFactory.EXT_AUTH_KEEP_ROLES);
+        Boolean keepRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES).getValue();
         form.set("keep_roles", keepRoles);
     }
 }
