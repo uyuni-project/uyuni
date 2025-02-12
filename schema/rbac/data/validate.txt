@@ -1,0 +1,6 @@
+- Inspect endpoints with no namespace
+- Inspect endpoints with multiple namespaces
+- grep namespaces in acl in code and match
+- Log instead of 403 in the initial phase?
+- No Modify without View: API endpoints are mostly registered in 'View', but they might be
+  used for Modify too

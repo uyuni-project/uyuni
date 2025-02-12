@@ -1,0 +1,109 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# Image list
+
+,/manager/cm/images,GET,W,t,cm.image.list,R
+,/manager/api/cm/images,GET,W,t,cm.image.list,R
+,/manager/api/cm/images/delete,POST,W,t,cm.image.list,W
+
+# Image details
+
+,/manager/api/cm/build/:id,POST,W,t,cm.image.overview,W
+,/manager/api/cm/images/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/patches/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/packages/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/buildlog/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/inspect/:id,POST,W,t,cm.image.overview,W
+,/manager/api/cm/images/delete,POST,W,t,cm.image.overview,W
+,/manager/api/cm/images/patches/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/packages/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/buildlog/:id,GET,W,t,cm.image.overview,R
+,/manager/api/cm/images/inspect/:id,POST,W,t,cm.image.overview,W
+,/manager/api/cm/images/delete,POST,W,t,cm.image.overview,W
+
+# Image import
+
+,/manager/cm/import,GET,W,t,cm.image.import,W
+,/manager/api/cm/images/import,POST,W,t,cm.image.import,W
+,/manager/upload/image,POST,W,t,cm.image.import,W
+,/manager/api/cm/imagestores/type/:type,GET,W,t,cm.image.import,W
+,/manager/api/cm/build/hosts/:type,GET,W,t,cm.image.import,W
+,/manager/api/cm/activationkeys,GET,W,t,cm.image.import,W
+
+# Image profile list
+
+,/manager/cm/imageprofiles,GET,W,t,cm.profile.list,R
+,/manager/api/cm/imageprofiles,GET,W,t,cm.profile.list,R
+,/manager/api/cm/imageprofiles/delete,POST,W,t,cm.profile.list,W
+
+# Image profile details
+
+,/manager/cm/imageprofiles/create,GET,W,t,cm.profile.details,W
+,/manager/cm/imageprofiles/edit/:id,GET,W,t,cm.profile.details,R
+,/manager/api/cm/imageprofiles/:id,GET,W,t,cm.profile.details,R
+,/manager/api/cm/imageprofiles/find/:label,GET,W,t,cm.profile.details,W
+,/manager/api/cm/imageprofiles/channels/:token,GET,W,t,cm.profile.details,R
+,/manager/api/cm/imageprofiles/create,POST,W,t,cm.profile.details,W
+,/manager/api/cm/imageprofiles/update/:id,POST,W,t,cm.profile.details,W
+,/manager/api/cm/imagestores/type/:type,GET,W,t,cm.profile.details,R
+,/manager/api/cm/imagestores/find/:label,GET,W,t,cm.profile.details,W
+
+# Image store list
+
+,/manager/cm/imagestores,GET,W,t,cm.store.list,R
+,/manager/api/cm/imagestores,GET,W,t,cm.store.list,R
+,/manager/api/cm/imagestores/delete,POST,W,t,cm.store.list,W
+
+# Image store details
+
+,/manager/cm/imagestores/create,GET,W,t,cm.store.details,W
+,/manager/api/cm/imagestores/create,POST,W,t,cm.store.details,W
+,/manager/cm/imagestores/edit/:id,GET,W,t,cm.store.details,R
+,/manager/api/cm/imagestores/:id,GET,W,t,cm.store.details,R
+,/manager/api/cm/imagestores/find/:label,GET,W,t,cm.store.details,W
+,/manager/api/cm/imagestores/update/:id,POST,W,t,cm.store.details,W
+
+# Image build
+
+,/manager/api/cm/imageprofiles,GET,W,t,cm.build,W
+,/manager/api/cm/imageprofiles/:id,GET,W,t,cm.build,W
+,/manager/cm/build,GET,W,t,cm.build,W
+,/manager/api/cm/build/hosts/:type,GET,W,t,cm.build,W
+,/manager/api/cm/build/:id,POST,W,t,cm.build,W
+
+# TODO: k8s integration
+
+# API
+
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.create,/manager/api/image/store/create,POST,A,t,api.image.store.create,W
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.delete,/manager/api/image/store/delete,POST,A,t,api.image.store.delete,W
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.getDetails,/manager/api/image/store/getDetails,GET,A,t,api.image.store.getDetails,R
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.listImageStores,/manager/api/image/store/listImageStores,GET,A,t,api.image.store.listImageStores,R
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.listImageStoreTypes,/manager/api/image/store/listImageStoreTypes,GET,A,t,api.image.store.listImageStoreTypes,R
+com.redhat.rhn.frontend.xmlrpc.image.store.ImageStoreHandler.setDetails,/manager/api/image/store/setDetails,POST,A,t,api.image.store.setDetails,W
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.create,/manager/api/image/profile/create,POST,A,t,api.image.profile.create,W
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.delete,/manager/api/image/profile/delete,POST,A,t,api.image.profile.delete,W
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.deleteCustomValues,/manager/api/image/profile/deleteCustomValues,POST,A,t,api.image.profile.deleteCustomValues,W
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.getCustomValues,/manager/api/image/profile/getCustomValues,GET,A,t,api.image.profile.getCustomValues,R
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.getDetails,/manager/api/image/profile/getDetails,GET,A,t,api.image.profile.getDetails,R
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.listImageProfiles,/manager/api/image/profile/listImageProfiles,GET,A,t,api.image.profile.listImageProfiles,R
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.listImageProfileTypes,/manager/api/image/profile/listImageProfileTypes,GET,A,t,api.image.profile.listImageProfileTypes,R
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.setCustomValues,/manager/api/image/profile/setCustomValues,POST,A,t,api.image.profile.setCustomValues,W
+com.redhat.rhn.frontend.xmlrpc.image.profile.ImageProfileHandler.setDetails,/manager/api/image/profile/setDetails,POST,A,t,api.image.profile.setDetails,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.addImageFile,/manager/api/image/addImageFile,POST,A,t,api.image.addImageFile,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.delete,/manager/api/image/delete,POST,A,t,api.image.delete,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.deleteImageFile,/manager/api/image/deleteImageFile,POST,A,t,api.image.deleteImageFile,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.getCustomValues,/manager/api/image/getCustomValues,GET,A,t,api.image.getCustomValues,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.getDetails,/manager/api/image/getDetails,GET,A,t,api.image.getDetails,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.getPillar,/manager/api/image/getPillar,GET,A,t,api.image.getPillar,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.getRelevantErrata,/manager/api/image/getRelevantErrata,GET,A,t,api.image.getRelevantErrata,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.importContainerImage,/manager/api/image/importContainerImage,POST,A,t,api.image.importContainerImage,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.importImage,/manager/api/image/importImage,POST,A,t,api.image.importImage,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.importOSImage,/manager/api/image/importOSImage,POST,A,t,api.image.importOSImage,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.listImages,/manager/api/image/listImages,GET,A,t,api.image.listImages,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.listPackages,/manager/api/image/listPackages,GET,A,t,api.image.listPackages,R
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.scheduleImageBuild,/manager/api/image/scheduleImageBuild,POST,A,t,api.image.scheduleImageBuild,W
+com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.setPillar,/manager/api/image/setPillar,POST,A,t,api.image.setPillar,W
+com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler.createDeltaImage,/manager/api/image/delta/createDeltaImage,POST,A,t,api.image.delta.createDeltaImage,W
+com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler.getDetails,/manager/api/image/delta/getDetails,GET,A,t,api.image.delta.getDetails,R
+com.redhat.rhn.frontend.xmlrpc.image.DeltaImageInfoHandler.listDeltas,/manager/api/image/delta/listDeltas,GET,A,t,api.image.delta.listDeltas,R
