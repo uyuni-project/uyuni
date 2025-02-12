@@ -1,0 +1,19 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# Keys
+
+,/manager/systems/keys,GET,W,t,salt.keys,R
+,/manager/api/systems/keys,GET,W,t,salt.keys,R
+,/manager/api/systems/keys/:target/accept,POST,W,t,salt.keys,W
+,/manager/api/systems/keys/:target/reject,POST,W,t,salt.keys,W
+,/manager/api/systems/keys/:target/delete,POST,W,t,salt.keys,W
+
+# Remote commands
+,/manager/systems/cmd,GET,W,t,salt.keys,W
+# TODO: Handle websocket
+
+# Formulas
+,/manager/formula-catalog,GET,W,t,salt.formulas,R
+,/manager/api/formula-catalog/data,GET,W,t,salt.formulas,R
+,/manager/formula-catalog/formula/:name,GET,W,t,salt.formulas,R
+,/manager/api/formula-catalog/formula/:name/data,GET,W,t,salt.formulas,R
