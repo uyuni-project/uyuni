@@ -5989,12 +5989,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">重启动</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve">
+      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-adaptation">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;安装向导&lt;/a&gt;。</target>
+        <target state="final">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/manager/admin/setup/proxy"&gt;安装向导&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -11503,26 +11503,30 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">生成所需的 OVAL 数据，以提高 CVE 审计查询的准确度</target>
       </trans-unit>
-    <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+        <target state="final">已成功启用 SCC 数据转发功能。</target>
+      </trans-unit>
+      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+        <target state="final">SCC 数据转发功能已启用。</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+        <target state="final">数据未与 SCC 保持同步</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">
+          &lt;p&gt;禁用与 SCC 的数据同步将导致 RMT、SMT、@@PRODUCT_NAME@@ 和 SCC 直接注册的客户端之间托管客户端的可见性降低。
+          通过同步数据，您可以确保所有注册客户端具有统一的视图。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;单击此处启用数据转发功能&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;告知我们您选择停用的原因，从而帮助改进我们的服务&lt;/a&gt;
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
