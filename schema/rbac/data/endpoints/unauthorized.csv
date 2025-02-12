@@ -1,0 +1,22 @@
+class_method,endpoint,http_method,scope,authorized,namespace,access_mode
+
+# Routes that don't require authorization
+# These endpoints don't reference any namespace
+
+,/manager/login,GET,W,f,,
+,/Logout.do,GET,W,f,,
+com.suse.manager.webui.controllers.login.LoginController,/manager/api/login,POST,A,f,,
+com.suse.manager.webui.controllers.login.LoginController,/manager/api/logout,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.login,/manager/api/auth/login,POST,A,f,,
+com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.logout,/manager/api/auth/logout,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.isSessionKeyValid,/manager/api/auth/isSessionKeyValid,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.checkAuthToken,/manager/api/auth/checkAuthToken,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.getDuration,/manager/api/auth/getDuration,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getVersion,/manager/api/api/getVersion,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getApiCallList,/manager/api/api/getApiCallList,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.systemVersion,/manager/api/api/systemVersion,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getApiNamespaces,/manager/api/api/getApiNamespaces,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.productName,/manager/api/api/productName,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler.hasMaster,/manager/api/sync/master/hasMaster,GET,A,f,,
+,/ajax/item-selector,POST,W,f,,
+,/manager/frontend-log,POST,W,f,,
