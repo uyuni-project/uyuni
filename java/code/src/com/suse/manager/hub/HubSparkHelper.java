@@ -11,6 +11,7 @@
 
 package com.suse.manager.hub;
 
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
@@ -96,6 +97,10 @@ public final class HubSparkHelper {
                 LOGGER.error("Invalid token provided - parsing error");
                 response.status(HttpServletResponse.SC_UNAUTHORIZED);
                 return json(response, ResultJson.error("Invalid token provided"), new TypeToken<>() { });
+            }
+            catch (Exception e) {
+                LOGGER.error("Internal Server Error", e);
+                return internalServerError(response, "Internal Server Error", e.getMessage());
             }
             finally {
                 var authenticationService = AuthenticationServiceFactory.getInstance().getAuthenticationService();

@@ -11,11 +11,15 @@
 
 package com.suse.manager.hub.test;
 
+import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -33,6 +37,7 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubController;
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
@@ -59,11 +64,15 @@ import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletResponse;
 
+import spark.Request;
+import spark.Response;
 import spark.route.HttpMethod;
 
 public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     private static final String DUMMY_SERVER_FQDN = "dummy-server.unit-test.local";
+
+    private static final String TEST_ERROR_MESSAGE = "test error message";
 
     @Override
     @BeforeEach
@@ -71,6 +80,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         super.setUp();
         HubController dummyHubController = new HubController();
         dummyHubController.initRoutes();
+        //add dummy route that throws
+        post("/hub/testThrowsRuntimeException", asJson(usingTokenAuthentication(this::testThrowsRuntimeException)));
+    }
+
+    private String testThrowsRuntimeException(Request request, Response response, IssAccessToken token) {
+        throw new NullPointerException(TEST_ERROR_MESSAGE);
     }
 
     private String createTestUserName() {
@@ -434,5 +449,31 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(testChildChannel.getLabel(), testChildChannelInfo.get().getLabel());
         assertEquals(user.getOrg().getId(), testChildChannelInfo.get().getOrgId());
         assertEquals(testBaseChannel.getId(), testChildChannelInfo.get().getParentChannelId());
+    }
+
+    @Test
+    public void checkApiThrowingRuntimeException() throws Exception {
+        String apiUnderTest = "/hub/testThrowsRuntimeException";
+
+        ControllerTestUtils utils = new ControllerTestUtils();
+        assertDoesNotThrow(() -> utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.PERIPHERAL)
+                .withBearerTokenInHeaders()
+                .simulateControllerApiCall());
+
+        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.PERIPHERAL)
+                .withBearerTokenInHeaders()
+                .simulateControllerApiCall();
+        JsonObject jsonObj = Json.GSON.fromJson(answer, JsonObject.class);
+
+        assertFalse(jsonObj.get("success").getAsBoolean(), apiUnderTest +
+                " API throwing a runtime exception should fail");
+        assertEquals("Internal Server Error", jsonObj.get("messages").getAsJsonArray().get(0).getAsString());
+        assertEquals(TEST_ERROR_MESSAGE, jsonObj.get("messages").getAsJsonArray().get(1).getAsString());
     }
 }
