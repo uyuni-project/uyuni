@@ -1,0 +1,100 @@
+namespace,access_mode,description
+cm.image.list,R,List all images
+cm.image.list,W,Delete images
+cm.image.overview,R,"View image details, patches, packages, build log and cluster information"
+cm.image.overview,W,"Inspect, rebuild, delete images"
+cm.image.import,W,Import container images from a registered image store
+cm.profile.list,R,List all image profiles
+cm.profile.list,W,Delete image profiles
+cm.profile.details,R,View details of an image profile
+cm.profile.details,W,"Create image profiles, edit profile details"
+cm.store.list,R,List all image stores
+cm.store.list,W,Delete image stores
+cm.store.details,R,View details of an image store
+cm.store.details,W,"Create image stores, edit store details"
+cm.build,W,Build container or Kiwi images
+api.image.store.create,W,Create image stores
+api.image.store.delete,W,Delete image stores
+api.image.store.getDetails,R,Get details of an image store
+api.image.store.listImageStores,R,List image stores
+api.image.store.listImageStoreTypes,R,List available image store types
+api.image.store.setDetails,W,Set image store details
+api.image.profile.create,W,Create image profiles
+api.image.profile.delete,W,Delete image profiles
+api.image.profile.deleteCustomValues,W,Delete custom values for image profiles
+api.image.profile.getCustomValues,R,Get custom values for image profiles
+api.image.profile.getDetails,R,Get image profile details
+api.image.profile.listImageProfiles,R,List image profiles
+api.image.profile.listImageProfileTypes,R,List available image profile types
+api.image.profile.setCustomValues,W,Set custom values for image profiles
+api.image.profile.setDetails,W,Set image profile details
+api.image.addImageFile,W,Add image files to OS images
+api.image.delete,W,Delete images
+api.image.deleteImageFile,W,Delete image files
+api.image.getCustomValues,R,Get custom values for images
+api.image.getDetails,R,Get details of images
+api.image.getPillar,R,Get image pillars
+api.image.getRelevantErrata,R,Get errata relevant to images
+api.image.importContainerImage,W,Import container images
+api.image.importImage,W,Import images
+api.image.importOSImage,W,Import OS images
+api.image.listImages,R,List images
+api.image.listPackages,R,List packages in images
+api.image.scheduleImageBuild,W,Schedule image builds
+api.image.setPillar,W,Set image pillars
+api.image.delta.createDeltaImage,W,Create delta images
+api.image.delta.getDetails,R,Get delta image details
+api.image.delta.listDeltas,R,List delta images
+home.overview.main,R,View home page
+home.overview.panels.tasks,R,View tasks panel
+home.overview.panels.inactive_systems,R,View inactive systems panel
+home.overview.panels.critical_systems,R,View critical systems panel
+home.overview.panels.pending_actions,R,View pending actions panel
+home.overview.panels.latest_errata,R,View latest errata panel
+home.overview.panels.system_groups,R,View system groups panel
+home.overview.panels.recent_systems,R,View recent systems panel
+home.notifications,R,View notification messages
+home.notifications,W,"Set notification read status, delete notifications"
+home.account.details,R,View user account details
+home.account.details,W,Modify user account details
+home.account.address,R,View user addresses
+home.account.address,W,Add/remove user addresses
+home.account.email,W,Change user email
+home.account.deactivate,W,Deactivate user account
+home.account.preferences,R,View user preferences
+home.account.preferences,W,Modify user preferences
+systems.list,R,View list of systems
+systems.list,W,"Delete duplicate systems, add/remove system entitlements"
+systems.list.csv,R,Download list of systems as CSV
+systems.groups.list,R,List system groups
+systems.groups.details,R,View system group details
+systems.groups.details,W,"Create system groups, edit system group properties"
+systems.groups.details.delete,W,Delete system groups
+systems.groups.systems,R,List systems in system groups
+systems.groups.systems,W,Remove systems from system groups
+systems.groups.target_systems,W,Add systems to system groups
+systems.groups.patches,R,Show patches relevant to system groups
+systems.groups.admins,R,List system group administrators
+systems.groups.admins,W,Update system group administrators
+systems.details.overview,R,View system details and notes
+systems.details.overview,W,Edit system properties and notes
+systems.details.reboot,W,Reboot systems
+systems.details.delete,W,Delete systems
+systems.details.custom_data,R,View custom data values
+systems.details.custom_data,W,"Create, update, delete custom data values"
+systems.details.remote_commands,W,Run remote commands on systems
+systems.details.activation,R,View reactivation keys
+systems.details.activation,R,Generate/remove reactivation keys
+systems.details.hardware,R,View system hardware information
+systems.details.hardware,W,"Modify system hardware details, schedule hardware profile refresh"
+systems.details.transfer,W,Transfer systems to a different organization
+systems.software.refresh,W,Schedule software profile refresh on systems
+systems.software.packages,R,View system packages
+systems.software.packages,W,"Install, list, remove, upgrade, lock and unlock system packages"
+systems.software.packages.profiles,R,View and compare package profiles
+systems.software.packages.profiles,W,Create and remove package profiles
+systems.software.patches,R,View available patches for systems
+systems.software.patches,W,Apply patches to systems
+systems.software.channels,R,View subscribed channels of systems
+systems.software.channels,W,Subscribe systems to channels
+systems.software.migration,W,Migrate systems across distributions

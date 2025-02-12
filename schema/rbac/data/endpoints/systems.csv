@@ -1,0 +1,287 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# Systems list
+# TODO: List pages do a POST to SSM, ignore the 403 (or not?)
+,/manager/systems/list/all,GET,W,t,systems.list,R
+,/manager/systems/list/virtual,GET,W,t,systems.list,R
+,/manager/api/systems/list/all,GET,W,t,systems.list,R
+,/manager/api/systems/list/virtual,GET,W,t,systems.list,R
+,/systems/BootstrapSystemList.do,GET,W,t,systems.list,R
+# TODO: 'Delete selected' is also handled by the same POST pathts
+,/systems/DuplicateIPList.do,GET,W,t,systems.list,R
+,/systems/DuplicateIPList.do,POST,W,t,systems.list,W
+,/systems/DuplicateIPv6List.do,GET,W,t,systems.list,R
+,/systems/DuplicateIPv6List.do,POST,W,t,systems.list,W
+,/systems/DuplicateHostName.do,GET,W,t,systems.list,R
+,/systems/DuplicateHostName.do,POST,W,t,systems.list,W
+,/systems/DuplicateMacAddress.do,GET,W,t,systems.list,R
+,/systems/DuplicateMacAddress.do,POST,W,t,systems.list,W
+,/systems/SystemCurrency.do,GET,W,t,systems.list,R
+,/systems/SystemCurrency.do,POST,W,t,systems.list,R
+# TODO: 'Add/remove system type' is also handled by the same POST path
+,/systems/SystemEntitlements.do,GET,W,t,systems.list,R
+,/systems/SystemEntitlementsSubmit.do,POST,W,t,systems.list,W
+,/manager/systems/csv/all,GET,W,t,systems.list,R
+,/manager/systems/csv/virtualSystems,GET,W,t,systems.list,R
+# TODO: POST path also handles SSM
+,/systems/SystemGroupList.do,GET,W,t,systems.groups.list,R
+,/systems/SystemGroupList.do,POST,W,t,systems.groups.list,R
+
+# System groups
+,/groups/GroupDetail.do,GET,W,t,systems.groups.details,R
+,/groups/EditGroup.do,GET,W,t,systems.groups.details,W
+,/groups/EditGroup.do,POST,W,t,systems.groups.details,W
+,/groups/Delete.do,GET,W,t,systems.groups.details.delete,W
+,/groups/Delete.do,POST,W,t,systems.groups.details.delete,W
+# TODO: POST path also handles SSM and Remove
+,/groups/ListRemoveSystems.do,GET,W,t,systems.groups.systems,R
+,/groups/ListRemoveSystems.do,POST,W,t,systems.groups.systems,W
+# TODO: POST path also handles SSM and Add
+,/groups/AddSystems.do,GET,W,t,systems.groups.target_systems,W
+,/groups/AddSystems.do,POST,W,t,systems.groups.target_systems,W
+# TODO: Move to system.details.software.errata ..etc
+,/groups/ListErrata.do,GET,W,t,systems.groups.patches,R
+,/groups/ListErrata.do,POST,W,t,systems.groups.patches,R
+# TODO: POST path also handles SSM and patch apply
+# TODO: Move to system.details.software.errata ..etc
+,/groups/SystemsAffected.do,GET,W,t,systems.groups.patches,R
+,/groups/SystemsAffected.do,POST,W,t,systems.groups.patches,R
+# TODO: POST path also handles Update
+,/groups/AdminList.do,GET,W,t,systems.groups.admins,R
+,/groups/AdminList.do,POST,W,t,systems.groups.admins,W
+
+# System details
+# TODO: systems/details/Connection.do
+# TODO: systems/details/ProxyClients.do
+# TODO: systems/details/mgr-server-info
+# TODO: systems/details/packages/VerifyPackages.do
+# TODO: systems/details/appstreams
+# TODO: systems/details/ptf/...
+# TODO: systems/details/ansible
+
+,/manager/systems/:id,GET,W,t,systems.details.overview,R
+,/systems/details/Overview.do,GET,W,t,systems.details.overview,R
+,/systems/details/Edit.do,GET,W,t,systems.details.overview,W
+,/systems/details/Edit.do,POST,W,t,systems.details.overview,W
+,/systems/details/Notes.do,GET,W,t,systems.details.overview,R
+,/systems/details/EditNote.do,GET,W,t,systems.details.overview,W
+,/systems/details/EditNote.do,POST,W,t,systems.details.overview,W
+,/systems/details/RebootSystem.do,GET,W,t,systems.details.reboot,W
+,/systems/details/RebootSystem.do,POST,W,t,systems.details.reboot,W
+,/systems/details/DeleteConfirm.do,GET,W,t,systems.details.delete,W
+,/systems/details/DeleteConfirm.do,POST,W,t,systems.details.delete,W
+,/manager/api/systems/:sid/delete,POST,W,t,systems.details.delete,W
+,/systems/details/ListCustomData.do,GET,W,t,systems.details.custom_data,R
+,/systems/details/CreateCustomData.do,GET,W,t,systems.details.custom_data,W
+,/systems/details/UpdateCustomData.do,GET,W,t,systems.details.custom_data,W
+,/systems/details/UpdateCustomData.do,POST,W,t,systems.details.custom_data,W
+,/systems/details/DeleteCustomData.do,GET,W,t,systems.details.custom_data,W
+,/systems/details/DeleteCustomData.do,POST,W,t,systems.details.custom_data,W
+,/systems/details/SystemRemoteCommand.do,GET,W,t,systems.details.remote_commands,W
+,/systems/details/SystemRemoteCommand.do,POST,W,t,systems.details.remote_commands,W
+,/systems/details/Activation.do,GET,W,t,systems.details.activation,R
+,/systems/details/Activation.do,POST,W,t,systems.details.activation,R
+,/systems/details/SystemHardware.do,GET,W,t,systems.details.hardware,R
+,/systems/details/SystemHardware.do,POST,W,t,systems.details.hardware,W
+,/systems/details/SystemMigrate.do,GET,W,t,systems.details.transfer,W
+,/systems/details/SystemMigrate.do,POST,W,t,systems.details.transfer,W
+
+# System software
+,/systems/details/packages/Packages.do,GET,W,t,systems.software.packages,R
+,/systems/details/packages/Packages.do,POST,W,t,systems.software.refresh,W
+,/systems/details/packages/PackageList.do,GET,W,t,systems.software.packages,R
+,/systems/details/packages/PackageList.do,POST,W,t,systems.software.packages,R
+,/systems/details/packages/RemoveConfirm.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/RemoveConfirm.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/UpgradableList.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/UpgradableList.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/UpgradeConfirm.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/UpgradeConfirm.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/InstallPackages.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/InstallPackages.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/InstallConfirm.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/InstallConfirm.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/LockPackages.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/LockPackages.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/ExtraPackagesList.do,GET,W,t,systems.software.packages,R
+,/systems/details/packages/ExtraPackagesList.do,POST,W,t,systems.software.packages,R
+,/systems/details/packages/RemoveExtraConfirm.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/RemoveExtraConfirm.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/profiles/ShowProfiles.do,GET,W,t,systems.software.packages.profiles,R
+,/systems/details/packages/profiles/ShowProfiles.do,POST,W,t,systems.software.packages.profiles,R
+,/systems/details/packages/profiles/CompareProfiles.do,GET,W,t,systems.software.packages.profiles,R
+,/systems/details/packages/profiles/Create.do,GET,W,t,systems.software.packages.profiles,W
+,/systems/details/packages/profiles/Create.do,POST,W,t,systems.software.packages.profiles,W
+,/systems/details/packages/profiles/DeleteProfile.do,GET,W,t,systems.software.packages.profiles,W
+,/systems/details/packages/profiles/DeleteProfile.do,POST,W,t,systems.software.packages.profiles,W
+,/systems/details/ErrataList.do,GET,W,t,systems.software.patches,R
+,/systems/details/ErrataList.do,POST,W,t,systems.software.patches,R
+,/systems/details/ErrataConfirm.do,GET,W,t,systems.software.patches,W
+,/systems/details/ErrataConfirm.do,POST,W,t,systems.software.patches,W
+,/systems/details/SystemChannels.do,GET,W,t,systems.software.channels,R
+,/manager/api/systems/:sid/channels,GET,W,t,systems.software.channels,R
+,/manager/api/systems/:sid/channels-available-base,GET,W,t,systems.software.channels,R
+,/manager/api/systems/:sid/channels/:channelId/accessible-children,GET,W,t,systems.software.channels,R
+,/manager/api/admin/mandatoryChannels,POST,W,t,systems.software.channels,R
+,/manager/api/systems/:sid/channels,POST,W,t,systems.software.channels,W
+,/systems/details/SPMigration.do,GET,W,t,systems.software.migration,W
+,/systems/details/SPMigration.do,POST,W,t,systems.software.migration,W
+
+# TODO: Add/Remove to/from SSM endpoints
+
+# TODO: SSM (maybe always allow?)
+# ,/systems/WorkWithGroup.do,GET,W,t,?,?
+
+# TODO: CSV download should be split and grouped together with the list namespaces(OR always allow CSV via list page)
+# ,/CSVDownloadAction.do,GET,W,t,?,?
+
+# System configuration
+,/systems/details/configuration/Overview.do,GET,W,t,systems.config.overview,R
+,/systems/details/configuration/ViewCentralPaths.do,GET,W,t,systems.config.files,R
+,/systems/details/configuration/ViewCentralPaths.do,POST,W,t,systems.config.files,R
+,/systems/details/configuration/DeployFile.do,GET,W,t,systems.config.files,W
+# TODO: Select All POST
+,/systems/details/configuration/DeployFileSubmit.do,POST,W,t,systems.config.files,W
+,/systems/details/configuration/DeployFileConfirm.do,GET,W,t,systems.config.files,W
+,/systems/details/configuration/DeployFileConfirmSubmit.do,POST,W,t,systems.config.files,W
+,/systems/details/configuration/DiffFile.do,GET,W,t,systems.config.files,W
+,/systems/details/configuration/DiffFileSubmit.do,POST,W,t,systems.config.files,W
+,/systems/details/configuration/DiffFileConfirm.do,GET,W,t,systems.config.files,W
+,/systems/details/configuration/DiffFileConfirmSubmit.do,POST,W,t,systems.config.files,W
+,/systems/details/configuration/ConfigChannelList.do,GET,W,t,systems.config.channels,R
+# TODO: Select All POST
+,/systems/details/configuration/ConfigChannelListUnsubscribeSubmit.do,POST,W,t,systems.config.channels,W
+,/systems/details/configuration/SubscriptionsSetup.do,GET,W,t,systems.config.channels,W
+# TODO: Select All POST
+,/systems/details/configuration/SubscriptionsSubmit.do,POST,W,t,systems.config.channels,W
+,/systems/details/configuration/RankChannels.do,GET,W,t,systems.config.channels,R
+,/systems/details/configuration/RankChannels.do,POST,W,t,systems.config.channels,W
+
+# System groups
+# TODO: Select All POST
+,/systems/details/groups/ListRemove.do,GET,W,t,systems.groups.list,R
+,/systems/details/groups/ListRemove.do,POST,W,t,systems.groups.list,R
+,/systems/details/groups/Add.do,GET,W,t,systems.groups.join,W
+,/systems/details/groups/Add.do,POST,W,t,systems.groups.join,W
+
+# TODO: System audit (openSCAP, coco)
+
+# System states
+,/manager/systems/details/highstate,GET,W,t,systems.states.highstate,R
+,/manager/api/states/summary,GET,W,t,systems.states.highstate,R
+,/manager/api/states/highstate,GET,W,t,systems.states.highstate,R
+,/manager/api/states/applyall,POST,W,t,systems.states.highstate,W
+,/manager/systems/details/packages,GET,W,t,systems.states.packages,R
+,/manager/api/states/packages,GET,W,t,systems.states.packages,R
+,/manager/api/states/packages/match,GET,W,t,systems.states.packages,R
+,/manager/api/states/packages/save,POST,W,t,systems.states.packages,W
+,/manager/api/states/apply,POST,W,t,systems.states.packages,W
+,/manager/systems/details/custom,GET,W,t,systems.states.config,R
+,/manager/api/states/match,GET,W,t,systems.states.config,R
+,/manager/api/states/save,POST,W,t,systems.states.config,W
+,/manager/api/states/apply,POST,W,t,systems.states.config,W
+
+# Formulas
+,/manager/systems/details/formulas,GET,W,t,systems.formulas,R
+,/manager/api/formulas/list/:targetType/:id,GET,W,t,systems.formulas,R
+,/manager/systems/details/formula/:formula_id,GET,W,t,systems.formulas,R
+,/manager/api/formulas/form/:targetType/:id/:formula_id,GET,W,t,systems.formulas,R
+,/manager/api/formulas/select,POST,W,t,systems.formulas,W
+,/manager/api/formulas/save,POST,W,t,systems.formulas,W
+
+# Recurring actions
+,/manager/systems/details/recurring-actions,GET,W,t,systems.recurring,R
+,/manager/api/recurringactions/:type/:id,GET,W,t,systems.recurring,R
+,/manager/api/states/summary,GET,W,t,systems.recurring,W
+,/manager/api/recurringactions/states,GET,W,t,systems.recurring,W
+,/manager/api/recurringactions/save,POST,W,t,systems.recurring,W
+,/manager/api/states/highstate,GET,W,t,systems.recurring,W
+,/manager/api/recurringactions/custom/execute,POST,W,t,systems.recurring,W
+,/manager/api/recurringactions/:id/details,GET,W,t,systems.recurring,W
+,/manager/api/recurringactions/:id/delete,DELETE,W,t,systems.recurring,W
+
+# System Events
+# TODO: Pagination POST
+,/systems/details/history/Pending.do,GET,W,t,systems.events,R
+,/systems/details/history/Pending.do,POST,W,t,systems.events,W
+,/systems/details/history/History.do,GET,W,t,systems.events,R
+,/systems/details/history/History.do,POST,W,t,systems.events,R
+,/systems/details/history/Event.do,GET,W,t,systems.events,R
+,/systems/details/history/Event.do,POST,W,t,systems.events,W
+
+# Bootstrapping
+,/manager/systems/bootstrap,GET,W,t,systems.bootstrap,W
+,/manager/api/systems/bootstrap,POST,W,t,systems.bootstrap,W
+
+# Proxy configuration
+,/manager/proxy/container-config,GET,W,t,systems.proxy,W
+,/manager/api/proxy/container-config,POST,W,t,systems.proxy,W
+,/manager/api/proxy/container-config/:filename,GET,W,t,systems.proxy,W
+
+# Advanced search
+,/systems/Search.do,GET,W,t,systems.search,R
+,/systems/Search.do,POST,W,t,systems.search,R
+
+# Activation keys
+# TODO: Pagination POST
+,/activationkeys/List.do,GET,W,t,systems.activation_keys.list,R
+,/activationkeys/List.do,POST,W,t,systems.activation_keys.list,W
+,/activationkeys/Create.do,GET,W,t,systems.activation_keys.details,W
+,/activationkeys/Create.do,POST,W,t,systems.activation_keys.details,W
+,/activationkeys/Edit.do,GET,W,t,systems.activation_keys.details,R
+,/manager/api/activation-keys/:tid/channels,GET,W,t,systems.activation_keys.details,R
+,/manager/api/activation-keys/base-channels,GET,W,t,systems.activation_keys.details,R
+,/manager/api/activation-keys/base-channels/:cid/child-channels,GET,W,t,systems.activation_keys.details,R
+,/manager/api/admin/mandatoryChannels,POST,W,t,systems.activation_keys.details,R
+,/activationkeys/Edit.do,POST,W,t,systems.activation_keys.details,W
+,/activationkeys/packages/Packages.do,GET,W,t,systems.activation_keys.packages,R
+,/activationkeys/packages/Packages.do,POST,W,t,systems.activation_keys.packages,W
+# TODO: Pagination POST
+,/activationkeys/configuration/List.do,GET,W,t,systems.activation_keys.config,R
+,/activationkeys/configuration/List.do,POST,W,t,systems.activation_keys.config,W
+# TODO: Pagination POST
+,/activationkeys/configuration/Subscribe.do,GET,W,t,systems.activation_keys.config,W
+,/activationkeys/configuration/Subscribe.do,POST,W,t,systems.activation_keys.config,W
+,/activationkeys/configuration/Rank.do,GET,W,t,systems.activation_keys.config,W
+,/activationkeys/configuration/Rank.do,POST,W,t,systems.activation_keys.config,W
+
+# TODO: Pagination POST
+,/activationkeys/groups/List.do,GET,W,t,systems.activation_keys.groups,W
+,/activationkeys/groups/List.do,POST,W,t,systems.activation_keys.groups,W
+# TODO: Pagination POST
+,/activationkeys/groups/Add.do,GET,W,t,systems.activation_keys.groups,W
+,/activationkeys/groups/Add.do,POST,W,t,systems.activation_keys.groups,W
+
+# TODO: Onboard a client with AK and test this page
+,/activationkeys/systems/List.do,GET,W,t,systems.activation_keys.details,R
+
+,/activationkeys/Clone.do,GET,W,t,systems.activation_keys.details,W
+,/activationkeys/Clone.do,POST,W,t,systems.activation_keys.details,W
+,/activationkeys/Delete.do,GET,W,t,systems.activation_keys.delete,W
+,/activationkeys/Delete.do,POST,W,t,systems.activation_keys.delete,W
+
+# Profiles
+,/profiles/List.do,GET,W,t,systems.profiles,R
+,/profiles/Details.do,GET,W,t,systems.profiles,R
+,/profiles/Details.do,POST,W,t,systems.profiles,W
+# TODO: Pagination POST
+,/profiles/PackageList.do,GET,W,t,systems.profiles,R
+,/profiles/PackageList.do,POST,W,t,systems.profiles,R
+,/profiles/Delete.do,GET,W,t,systems.profiles,W
+,/profiles/Delete.do,POST,W,t,systems.profiles,W
+
+# Custom keys
+# TODO: Download CSV action
+# TODO: Post pagination
+,/systems/customdata/CustomDataList.do,GET,W,t,systems.custom_data,R
+,/systems/customdata/CustomDataList.do,POST,W,t,systems.custom_data,R
+,/systems/customdata/CreateCustomKey.do,GET,W,t,systems.custom_data,W
+,/systems/customdata/CreateCustomKey.do,POST,W,t,systems.custom_data,W
+,/systems/customdata/UpdateCustomKey.do,GET,W,t,systems.custom_data,W
+,/systems/customdata/UpdateCustomKey.do,POST,W,t,systems.custom_data,W
+
+# TODO: Autoinstallation
+# TODO: Virtual host managers
+
+# TODO: Systems API
+# TODO: upcoming-windows in datetimepicker (should require permission for maintenance windows) (maybe also for action chains?) ADD TO EVERY NEEDED NAMESPACE
