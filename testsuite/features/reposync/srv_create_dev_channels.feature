@@ -26,6 +26,25 @@ Feature: Create custom channels with development repositories
   Scenario: Create custom repositories inside the SUSE custom channel
     When I prepare the development repositories of "sle_minion" as part of "dev-suse-channel" channel
 
+@uyuni
+@buildhost
+  Scenario: Create a custom channel for Build Host
+    When I follow the left menu "Software > Manage > Channels"
+    And I follow "Create Channel"
+    And I enter "Dev-Build-Host-Channel" as "Channel Name"
+    And I enter "dev-build-host-channel" as "Channel Label"
+    And I select the parent channel for the "buildhost" from "Parent Channel"
+    And I select "x86_64" from "Architecture:"
+    And I enter "Dev-Build-Host-Channel for development repositories" as "Channel Summary"
+    And I enter "Channel containing development repositories" as "Channel Description"
+    And I click on "Create Channel"
+    Then I should see a "Channel Dev-Build-Host-Channel created." text
+
+@uyuni
+@buildhost
+  Scenario: Create custom repositories inside the Build Host custom channel
+    When I prepare the development repositories of "buildhost" as part of "dev-build-host-channel" channel
+
 @deblike_minion
   Scenario: Create a custom channel for Debian-like minions
     When I follow the left menu "Software > Manage > Channels"
