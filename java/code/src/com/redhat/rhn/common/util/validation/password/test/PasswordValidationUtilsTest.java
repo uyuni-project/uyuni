@@ -150,6 +150,7 @@ public class PasswordValidationUtilsTest {
         assertTrue(errors.isEmpty(), "Default valid password");
     }
 
+    @Test
     public void testPasswordUsingDefaults() {
         String password = "Abc123!er}{hjxc";
         List<PasswordPolicyCheckFail> errors =
