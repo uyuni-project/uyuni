@@ -99,11 +99,24 @@ def application(environ, start_response):
             if file_type == 'pxe' or file_type == 'grub':
                 tf = open(tfname, 'wb')
                 file_content = form.getvalue('file')
-                file_content = file_content.replace(CFG.SERVER_IP.encode(), CFG.PROXY_IP.encode())
-                file_content = file_content.replace(CFG.SERVER_FQDN.encode(), CFG.PROXY_FQDN.encode())
+                file_content = file_content.decode()
+                file_content = re.sub(
+                    r"\b" + re.escape(CFG.SERVER_IP) + r"\b",
+                    CFG.PROXY_IP,
+                    file_content,
+                )
+                file_content = re.sub(
+                    r"\b" + re.escape(CFG.SERVER_FQDN) + r"\b",
+                    CFG.PROXY_FQDN,
+                    file_content,
+                )
                 if CFG.SERVER_IP6 and CFG.PROXY_IP6:
-                    file_content = file_content.replace(CFG.SERVER_IP6.encode(), CFG.PROXY_IP6.encode())
-                tf.write(file_content)
+                    file_content = re.sub(
+                        r"\b" + re.escape(CFG.SERVER_IP6) + r"\b",
+                        CFG.PROXY_IP6,
+                        file_content,
+                    )
+                tf.write(file_content.encode())
                 tf.close()
                 os.rename(tfname, rfname)
             elif isinstance(tfpointer, OutputType) or isinstance(tfpointer, BytesIO):
