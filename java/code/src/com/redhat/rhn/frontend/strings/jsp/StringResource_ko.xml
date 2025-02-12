@@ -28925,9 +28925,9 @@ given channel.</source>
         <source>Credentials with this username already exist</source>
         <target>이름이 동일한 인증서 이미 있음</target>
       </trans-unit>
-      <trans-unit approved="no" id="copyright.jsp.title" xml:space="preserve">
+      <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-translation">Copyright (c) 2011 - 2025 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2025 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
