@@ -23,6 +23,10 @@ td {
   overflow: hidden;
 }
 
+th {
+  font-weight: 600;
+}
+
 .table-framed td,
 .table-framed th {
   border: 2px solid $gray-lighter;
