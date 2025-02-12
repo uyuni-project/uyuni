@@ -114,22 +114,12 @@ public class HubController {
             LOGGER.error("Invalid data provided: ", ex);
             return badRequest(response, "Invalid data");
         }
-        catch (Exception ex) {
-            LOGGER.error("Internal Server Error: ", ex);
-            return internalServerError(response, "Internal Server Error");
-        }
         return success(response);
     }
 
     private String deregister(Request request, Response response, IssAccessToken accessToken) {
         // request to delete the local access for the requesting server.
-        try {
-            hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
-        }
-        catch (Exception ex) {
-            LOGGER.error("Internal Server Error: ", ex);
-            return internalServerError(response, "Internal Server Error");
-        }
+        hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
         return success(response);
     }
 
@@ -151,7 +141,6 @@ public class HubController {
             LOGGER.error("Unable to build token");
             return badRequest(response, "The token could not be build");
         }
-
     }
 
     private String removeReportDbCredentials(Request request, Response response, IssAccessToken token) {
