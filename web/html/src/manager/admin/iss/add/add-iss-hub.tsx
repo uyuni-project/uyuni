@@ -5,11 +5,30 @@ import { useState } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 
+const addHubAPI = (hubData) => {
+  return fetch("/rhn/manager/api/iss/add/hub", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(hubData),
+  }).then((response) => {
+    if (!response.ok) {
+      return response.json().then((errorData) => {
+        throw errorData;
+      });
+    }
+    return response.json();
+  });
+};
+
 const AddIssHub = () => {
   const [hub] = useState();
 
   let componentContent = (
-    <div></div>
+    <span>
+      <h1>Add an Hub</h1>
+    </span>
   );
 
   return componentContent;

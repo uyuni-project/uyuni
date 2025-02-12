@@ -27,7 +27,7 @@ const IssPeripheral = (hubsList: HubsList) => {
   );
 
   const addHub = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/iss/peripheral/create`);
+    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/iss/add/hub`);
   };
 
   let pageContent = <IssHubsList hubs={hubs} />;
@@ -42,6 +42,9 @@ const IssPeripheral = (hubsList: HubsList) => {
           </div>
         </div>
       </SectionToolbar>
+      <span>
+        <h1>Known Hubs instances</h1>
+      </span>
       {pageContent}
     </div>
   );
