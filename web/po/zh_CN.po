@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 14:15+0100\n"
-"PO-Revision-Date: 2025-01-16 03:50+0000\n"
+"PO-Revision-Date: 2025-02-12 09:25+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -1673,28 +1673,24 @@ msgstr "同步失败"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "保存并校验"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
-#, fuzzy
-#| msgid "Node Hostname"
 msgid "HTTP Proxy Hostname"
-msgstr "节点主机名"
+msgstr "HTTP 代理主机名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
-#, fuzzy
-#| msgid "Host name"
 msgid "hostname:port"
-msgstr "主机名"
+msgstr "主机名:端口"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid ""
 "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
+msgstr "例如：<code>example.com:8080</code> 或 <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "HTTP 代理用户名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1705,43 +1701,41 @@ msgstr "用户名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "HTTP 代理口令"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "安装代理服务器"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "代理"
+msgstr "HTTP 代理"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
 "If this server uses an HTTP proxy to access the outside network, you can use "
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
-msgstr ""
+msgstr "如果此服务器通过 HTTP "
+"代理访问网络外部，您可以使用此表单进行配置，否则，请转到<link>组身份凭证织</l"
+"ink>。"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "校验代理设置"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "成功校验代理设置"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "代理设置无效"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
-#, fuzzy
-#| msgid "Organization Unit"
 msgid "Organization Credentials"
-msgstr "组织单位"
+msgstr "组织身份凭证"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
@@ -1749,10 +1743,8 @@ msgid "Products"
 msgstr "产品"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Add PAYG Connection"
 msgid "PAYG Connections"
-msgstr "添加 PAYG 连接"
+msgstr "PAYG 连接"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
@@ -2625,11 +2617,11 @@ msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
-msgstr "根据特定系统在线增补"
+msgstr "根据特定系统实时修补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:36
 msgid "Live patching based on a SUSE product"
-msgstr "根据 SUSE 产品在线增补"
+msgstr "根据 SUSE 产品实时修补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
@@ -3946,10 +3938,8 @@ msgid ""
 msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的新方式。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "了解 {product} 的<link>详细信息</link>。"
+msgstr "了解 {productName} 的<link>详细信息</link>。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -3961,11 +3951,11 @@ msgstr "登录"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "版权声明"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} 版本：{versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -3984,18 +3974,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "了解 {product} 的<link>详细信息</link>。"
+msgstr "了解 {productName} 的详细信息："
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "查看网站"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "关于"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4586,7 +4574,7 @@ msgstr "PAYG 实例不合规"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:64
 msgid "SCC Data Sync Disabled"
-msgstr ""
+msgstr "SCC 数据同步功能已禁用"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:245
 #: ../html/src/manager/notifications/notification-messages.tsx:246
