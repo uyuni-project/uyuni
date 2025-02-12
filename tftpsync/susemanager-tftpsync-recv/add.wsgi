@@ -1,3 +1,4 @@
+#  pylint: disable=missing-module-docstring
 #
 # Copyright (c) 2013 Novell, Inc
 #
@@ -16,11 +17,14 @@ import os
 import re
 import logging
 import logging.handlers
+
+# pylint: disable=deprecated-module
 import cgi
 import tempfile
+
 try:
     from cStringIO import OutputType
-except:
+except ImportError:
     from io import StringIO as OutputType
 from io import BytesIO
 from spacewalk.common.rhnConfig import CFG, initCFG
@@ -28,16 +32,17 @@ from spacewalk.common.rhnConfig import CFG, initCFG
 initCFG("tftpsync")
 
 # create logger
-logger = logging.getLogger('tftpsync_add')
+logger = logging.getLogger("tftpsync_add")
 logger.setLevel(logging.INFO)
 
 # create RotatingFileHandler handler and set level to INFO
-ch = logging.handlers.RotatingFileHandler("/var/log/tftpsync/tftpsync.log",
-                                          mode='a', maxBytes=1048576, backupCount=10)
+ch = logging.handlers.RotatingFileHandler(
+    "/var/log/tftpsync/tftpsync.log", mode="a", maxBytes=1048576, backupCount=10
+)
 ch.setLevel(logging.INFO)
 
 # create formatter
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
 # add formatter to ch
 ch.setFormatter(formatter)
@@ -45,45 +50,61 @@ ch.setFormatter(formatter)
 # add ch to logger
 logger.addHandler(ch)
 
+
 class TftpFieldStorage(cgi.FieldStorage):
 
     def make_file(self, binary=None):
+        del binary
         tmpdir = os.path.join(CFG.TFTPBOOT, "tmp")
         if not os.path.exists(tmpdir):
-                os.makedirs(tmpdir)
+            os.makedirs(tmpdir)
 
-        return tempfile.NamedTemporaryFile(mode="w+b", suffix='', prefix='tmp',
-                                           dir=tmpdir, delete=False)
+        return tempfile.NamedTemporaryFile(
+            mode="w+b", suffix="", prefix="tmp", dir=tmpdir, delete=False
+        )
+
 
 def application(environ, start_response):
-    status = '500 Server Error'
-    content = ''
+    status = "500 Server Error"
+    content = ""
     tfpointer = None
-    if CFG.TFTPBOOT and re.match('^/[\w]+.*$', CFG.TFTPBOOT) and os.path.exists(CFG.TFTPBOOT):
-        form = TftpFieldStorage(fp=environ['wsgi.input'], environ=environ, keep_blank_values=1)
-        file_name = form.getvalue('file_name')
-        file_type = form.getvalue('file_type')
-        directory = form.getvalue('directory')
-        tfpointer = form['file'].file
+    file_name = file_type = directory = None
+    if (
+        CFG.TFTPBOOT
+        and re.match(r"^/[\w]+.*$", CFG.TFTPBOOT)
+        and os.path.exists(CFG.TFTPBOOT)
+    ):
+        form = TftpFieldStorage(
+            fp=environ["wsgi.input"], environ=environ, keep_blank_values=1
+        )
+        file_name = form.getvalue("file_name")
+        file_type = form.getvalue("file_type")
+        directory = form.getvalue("directory")
+        tfpointer = form["file"].file
 
-    if not (CFG.TFTPBOOT and re.match('^/[\w]+.*$', CFG.TFTPBOOT) and
-            os.path.exists(CFG.TFTPBOOT)):
+    if not (
+        CFG.TFTPBOOT
+        and re.match(r"^/[\w]+.*$", CFG.TFTPBOOT)
+        and os.path.exists(CFG.TFTPBOOT)
+    ):
         logger.error("Invalid tftp directory configuration")
-        content = 'Invalid tftp directory configuration'
+        content = "Invalid tftp directory configuration"
     elif not (file_name and file_type and directory):
         logger.error("'file_name', 'directory' or 'file_type' not specified")
-        content = "please provide the parameters 'file_name', 'directory' and 'file_type'"
-    elif ".." in directory or not re.match('^[/\:a-zA-Z0-9._-]+$', directory):
+        content = (
+            "please provide the parameters 'file_name', 'directory' and 'file_type'"
+        )
+    elif ".." in directory or not re.match(r"^[/\:a-zA-Z0-9._-]+$", directory):
         # don't print the parameter because of security concerns
         logger.error("Insecure directory parameter given")
-        content = 'Insecure directory'
-    elif ".." in file_name or not re.match('^[\:a-zA-Z0-9._-]+$', file_name):
+        content = "Insecure directory"
+    elif ".." in file_name or not re.match(r"^[\:a-zA-Z0-9._-]+$", file_name):
         # don't print the parameter because of security concerns
         logger.error("Insecure file_name parameter given")
-        content = 'Insecure file_name'
+        content = "Insecure file_name"
     elif not (CFG.SERVER_IP and CFG.PROXY_IP and CFG.SERVER_FQDN and CFG.PROXY_FQDN):
         logger.error("Incomplete configuration")
-        content = 'Incomplete configuration'
+        content = "Incomplete configuration"
     elif form.length == 0:
         logger.error("No file content")
         content = "No file content"
@@ -95,10 +116,10 @@ def application(environ, start_response):
                 os.makedirs(path, exist_ok=True)
 
             rfname = os.path.join(path, file_name)
-            tfname = "%s.tmp" % (rfname)
-            if file_type == 'pxe' or file_type == 'grub':
-                tf = open(tfname, 'wb')
-                file_content = form.getvalue('file')
+            tfname = f"{rfname}.tmp"
+            if file_type == "pxe" or file_type == "grub":
+                tf = open(tfname, "wb")
+                file_content = form.getvalue("file")
                 file_content = file_content.decode()
                 file_content = re.sub(
                     r"\b" + re.escape(CFG.SERVER_IP) + r"\b",
@@ -120,20 +141,21 @@ def application(environ, start_response):
                 tf.close()
                 os.rename(tfname, rfname)
             elif isinstance(tfpointer, OutputType) or isinstance(tfpointer, BytesIO):
-                tf = open(tfname, 'wb')
-                tf.write(form.getvalue('file'))
+                tf = open(tfname, "wb")
+                tf.write(form.getvalue("file"))
                 tf.close()
                 os.rename(tfname, rfname)
             else:
-                if (tfpointer and os.path.exists(tfpointer.name)):
+                if tfpointer and os.path.exists(tfpointer.name):
                     os.chmod(tfpointer.name, 0o644)
                     os.rename(tfpointer.name, rfname)
                 else:
-                    raise IOError("Source file not found");
+                    raise IOError("Source file not found")
 
             status = "200 OK"
-            content = "setting file '%s' (%s), status: %s" % (rfname, file_type, status)
+            content = f"setting file '{rfname}' ({file_type}), status: {status}"
             logger.info(content)
+        # pylint: disable-next=broad-exception-caught
         except Exception as e:
             # remove tmp file if exists
             if tfname and os.path.exists(tfname):
@@ -142,14 +164,18 @@ def application(environ, start_response):
             content = "Writing file failed"
 
     # remove tmp file if exists
-    if (tfpointer and not isinstance(tfpointer, OutputType) and
-        hasattr(tfpointer, "name") and os.path.exists(tfpointer.name)):
+    if (
+        tfpointer
+        and not isinstance(tfpointer, OutputType)
+        and hasattr(tfpointer, "name")
+        and os.path.exists(tfpointer.name)
+    ):
         os.unlink(tfpointer.name)
 
-    response_headers = [('Content-type', 'text/plain;charset=utf-8'),
-                        ('Content-Length', str(len(content)))]
+    response_headers = [
+        ("Content-type", "text/plain;charset=utf-8"),
+        ("Content-Length", str(len(content))),
+    ]
     start_response(status, response_headers)
 
     return [content.encode()]
-
-
