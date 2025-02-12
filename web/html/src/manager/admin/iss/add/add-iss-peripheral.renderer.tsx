@@ -1,7 +1,7 @@
 import SpaRenderer from "core/spa/spa-renderer";
 
-import AddIssHub from "./add-iss-hub";
+import AddIssPeripheral from "./add-iss-peripheral";
 
 export const renderer = (id: string) => {
-  SpaRenderer.renderNavigationReact(<AddIssHub />, document.getElementById(id));
+  SpaRenderer.renderNavigationReact(<AddIssPeripheral />, document.getElementById(id));
 };
