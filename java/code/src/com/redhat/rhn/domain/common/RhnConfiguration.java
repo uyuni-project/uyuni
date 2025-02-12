@@ -33,20 +33,20 @@ import javax.persistence.TemporalType;
 public class RhnConfiguration extends BaseDomainHelper {
 
     public enum KEYS {
-        extauth_default_orgid,
-        extauth_use_orgunit,
-        extauth_keep_temproles,
-        system_checkin_threshold,
-        psw_check_length_min,
-        psw_check_length_max,
-        psw_check_lower_char_flag,
-        psw_check_upper_char_flag,
-        psw_check_digit_flag,
-        psw_check_consecutive_char_flag,
-        psw_check_special_char_flag,
-        psw_check_restricted_occurrence_flag,
-        psw_check_max_occurrence,
-        psw_check_special_characters;
+        EXTAUTH_DEFAULT_ORGID,
+        EXTAUTH_USE_ORGUNIT,
+        EXTAUTH_KEEP_TEMPROLES,
+        SYSTEM_CHECKIN_THRESHOLD,
+        PSW_CHECK_LENGTH_MIN,
+        PSW_CHECK_LENGTH_MAX,
+        PSW_CHECK_LOWER_CHAR_FLAG,
+        PSW_CHECK_UPPER_CHAR_FLAG,
+        PSW_CHECK_DIGIT_FLAG,
+        PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
+        PSW_CHECK_SPECIAL_CHAR_FLAG,
+        PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
+        PSW_CHECK_MAX_OCCURRENCE,
+        PSW_CHECK_SPECIAL_CHARACTERS;
     }
 
     @Id

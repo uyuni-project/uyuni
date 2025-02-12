@@ -135,7 +135,7 @@ public class LoginHelper {
                 Org newUserOrg = null;
                 RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
                 Boolean useOrgUnit =
-                        factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_use_orgunit).getValue();
+                        factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
                 if (useOrgUnit) {
                     String orgUnitString =
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
@@ -146,7 +146,7 @@ public class LoginHelper {
                 }
                 if (newUserOrg == null) {
                     Long defaultOrgId =
-                            factory.getLongConfiguration(RhnConfiguration.KEYS.extauth_default_orgid).getValue();
+                            factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {

@@ -389,7 +389,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private void convertSystemThresholdFromConfig() {
         log.warn("Converting web.system_checkin_threshold to DB config");
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        factory.updateConfigurationValue(RhnConfiguration.KEYS.system_checkin_threshold,
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD,
                 Config.get().getString("web.system_checkin_threshold", "1"));
     }
 

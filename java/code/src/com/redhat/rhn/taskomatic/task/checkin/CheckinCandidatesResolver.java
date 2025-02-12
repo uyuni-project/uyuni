@@ -53,7 +53,7 @@ public class CheckinCandidatesResolver {
     public CheckinCandidatesResolver(String findCheckinCandidatesQueryIn) {
         this.findCheckinCandidatesQuery = findCheckinCandidatesQueryIn;
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue() *
+        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue() *
                 86400;
         this.thresholdMin = (int) (this.thresholdMax / 2);
         this.mean = this.thresholdMax;

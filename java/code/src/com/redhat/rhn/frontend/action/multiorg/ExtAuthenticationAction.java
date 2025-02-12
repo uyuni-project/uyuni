@@ -54,7 +54,6 @@ public class ExtAuthenticationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
 
         if (ctx.isSubmitted()) {
-            Boolean useOu = (Boolean) daForm.get("use_ou");
             // store the value
             RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
             String toOrgString = daForm.getString("to_org");
@@ -63,17 +62,18 @@ public class ExtAuthenticationAction extends RhnAction {
                 OrgFactory.lookupById(Long.parseLong(toOrgString));
             }
             // store the value
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_use_orgunit, toOrgString);
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT, toOrgString);
 
             Boolean keepRoles = (Boolean) daForm.get("keep_roles");
-            if (factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_keep_temproles).getValue() &&
-                    !BooleanUtils.toBoolean(keepRoles)) {
+            boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
+                    .getValue();
+            if (keepTempRoles && !BooleanUtils.toBoolean(keepRoles)) {
                 // if the option was turned off, delete temporary roles
                 // across the whole satellite
                 UserGroupFactory.deleteTemporaryRoles();
             }
             // store the value
-            factory.updateConfigurationValue(RhnConfiguration.KEYS.extauth_keep_temproles, keepRoles);
+            factory.updateConfigurationValue(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES, keepRoles);
 
             createSuccessMessage(request, "message.ext_auth_updated", null);
             return mapping.findForward("success");
@@ -88,7 +88,7 @@ public class ExtAuthenticationAction extends RhnAction {
         RequestContext ctx = new RequestContext(request);
         User user = ctx.getCurrentUser();
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        Boolean useOrgUnit = factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_use_orgunit).getValue();
+        Boolean useOrgUnit = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_USE_ORGUNIT).getValue();
         form.set("use_ou", useOrgUnit);
 
         DataList<OrgDto> dr = OrgManager.activeOrgs(user);
@@ -102,7 +102,7 @@ public class ExtAuthenticationAction extends RhnAction {
         }
         request.setAttribute("orgs", orgs);
 
-        Long actOrgId = factory.getLongConfiguration(RhnConfiguration.KEYS.extauth_default_orgid).getValue();
+        Long actOrgId = factory.getLongConfiguration(RhnConfiguration.KEYS.EXTAUTH_DEFAULT_ORGID).getValue();
         if (actOrgId != null) {
             form.set("to_org", actOrgId.toString());
         }
@@ -110,7 +110,7 @@ public class ExtAuthenticationAction extends RhnAction {
             form.set("to_org", null);
         }
 
-        Boolean keepRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_keep_temproles).getValue();
+        Boolean keepRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES).getValue();
         form.set("keep_roles", keepRoles);
     }
 }

@@ -136,11 +136,11 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         // = minlen
         assertPassword(StringUtils.repeat(
-                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_min).getValue()), command
+                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN).getValue()), command
         );
         // = maxlen
         assertPassword(StringUtils.repeat(
-                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue()), command
+                "a", factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue()), command
         );
 
         // random string

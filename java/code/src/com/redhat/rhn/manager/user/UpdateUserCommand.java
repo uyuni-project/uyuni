@@ -188,10 +188,6 @@ public class UpdateUserCommand {
         }
     }
 
-    private String getUnencryptedPassword() {
-        return unencryptedPassword;
-    }
-
     /**
      * @param emailIn The email to set
      */

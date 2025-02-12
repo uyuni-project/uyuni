@@ -941,7 +941,7 @@ public class SystemManager extends BaseManager {
             PageControl pc) {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return systemListShortInactive(user,
-                factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue(), pc);
+                factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue(), pc);
     }
 
     /**
