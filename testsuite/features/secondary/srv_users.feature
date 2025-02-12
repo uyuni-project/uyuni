@@ -31,9 +31,9 @@ Feature: Manage users
     And I select "Mr." from "prefix"
     And I enter "Test" as "firstNames"
     And I enter "User" as "lastName"
-    And I enter "galaxy-noise@suse.de" as "email"
+    And I enter "galaxy-noise@localhost" as "email"
     And I click on "Create Login"
-    Then I should see a "Account user1 created, login information sent to galaxy-noise@suse.de" text
+    Then I should see a "Account user1 created, login information sent to galaxy-noise@localhost" text
     And I should see a "user1" link
     And I should see a "normal user" text
 
@@ -58,7 +58,7 @@ Feature: Manage users
     And option "Mr." is selected as "prefix"
     And I should see "Test" in field identified by "firstNames"
     And I should see "User" in field identified by "lastName"
-    And I should see a "galaxy-noise@suse.de" link
+    And I should see a "galaxy-noise@localhost" link
     And I should see a "Administrative Roles" text
     And I should see a "Roles:" text
     And I should see a "Created:" text
