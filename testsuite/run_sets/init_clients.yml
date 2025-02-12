@@ -5,15 +5,6 @@
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
 ## Core - Initialize clients BEGIN ##
-
-# Proxy
-  # one of: proxy_traditional.feature
-  #         proxy_register_as_minion_with_gui.feature
-  #         proxy_register_as_pod.feature
-- features/init_clients/proxy_traditional.feature
-- features/init_clients/proxy_traditional_branch_network.feature
-# Retail on top of containerized proxy is untested in 4.3
-
 - features/init_clients/sle_client.feature
 - features/init_clients/sle_minion.feature
 - features/init_clients/sle_ssh_minion.feature
