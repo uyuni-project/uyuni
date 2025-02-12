@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
+import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -201,7 +202,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * with {@link ConfigFile} with path='/init.sls', single {@link ConfigRevision} pointing to
      * {@link ConfigContent} with empty content.
      *
-     * This method is responsible of populating that {@link ConfigContent} based on the contents
+     * This method is responsible for populating that {@link ConfigContent} based on the contents
      * of the state file on the disk.
      *
      * Before the import, the files corresponding to the legacy states are backed up to a separate directory.

@@ -74,9 +74,9 @@ public class UserExternalHandler extends BaseHandler {
         // Make sure we're logged in and a Sat Admin
         ensureSatAdmin(loggedInUser);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        boolean keep_temp_roles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
+        boolean keepTempRoles = factory.getBooleanConfiguration(RhnConfiguration.KEYS.EXTAUTH_KEEP_TEMPROLES)
                 .getValue();
-        if (keep_temp_roles && !BooleanUtils.toBoolean(keepRoles)) {
+        if (keepTempRoles && !BooleanUtils.toBoolean(keepRoles)) {
             // if the option was turned off, delete temporary roles
             // across the whole satellite
             UserGroupFactory.deleteTemporaryRoles();
