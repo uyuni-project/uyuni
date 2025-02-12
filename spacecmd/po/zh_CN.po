@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 15:55+0100\n"
-"PO-Revision-Date: 2025-02-12 09:25+0000\n"
+"PO-Revision-Date: 2025-02-12 11:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacecmd/zh_CN/>\n"
@@ -8441,7 +8441,7 @@ msgstr "用法：user_setpassword USER PASSWORD"
 #: ../src/spacecmd/utils.py:142
 #, python-format
 msgid "Loading cache file %s failed"
-msgstr "装载缓存文件 %s 失败"
+msgstr "加载缓存文件 %s 失败"
 
 #: ../src/spacecmd/utils.py:143
 #, python-format
@@ -8451,7 +8451,7 @@ msgstr "缓存生成可能已中断，正在去除损坏的 %s"
 #: ../src/spacecmd/utils.py:148
 #, python-format
 msgid "Couldn't load cache from %s"
-msgstr "无法从 %s 装载缓存"
+msgstr "无法从 %s 加载缓存"
 
 #: ../src/spacecmd/utils.py:169
 #, python-format
