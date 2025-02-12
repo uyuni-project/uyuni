@@ -765,7 +765,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">监视</target>
+        <target state="translated">监控</target>
       </trans-unit>
       <trans-unit id="name" xml:space="preserve">
         <source>name</source>
@@ -2799,7 +2799,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">监视管理员</target>
+        <target state="translated">监控管理员</target>
       </trans-unit>
       <trans-unit id="system_group_admin" xml:space="preserve">
         <source>System Group Administrator</source>
@@ -4132,7 +4132,7 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
       <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
         <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-        <target state="translated">日期 "{0}" 无效，已重设置为默认值。请检查所选的月份有正确的天数。</target>
+        <target state="translated">日期 "{0}" 无效，已重置为默认值。请检查所选的月份有正确的天数。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
@@ -4149,7 +4149,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">配置已更新，监视服务已重启动。</target>
+        <target state="translated">配置已更新，监控服务已重启动。</target>
       </trans-unit>
       <trans-unit id="monitoring.services.novalueschanged" xml:space="preserve">
         <source>No changes made.</source>
@@ -6121,7 +6121,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 监视侦察</target>
+        <target state="translated">@@PRODUCT_NAME@@ 监控侦察</target>
       </trans-unit>
       <trans-unit id="Panic Destination" xml:space="preserve">
         <source>Panic Destination</source>
@@ -6331,7 +6331,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
-        <target state="translated">此 kickstart 配置文件默认使用与目前所用 root 口令不同的加密类型。您必须重设置 root 口令以使用新方法对其进行加密。</target>
+        <target state="translated">此 kickstart 配置文件默认使用与目前所用 root 口令不同的加密类型。您必须重置 root 口令以使用新方法对其进行加密。</target>
       </trans-unit>
       <trans-unit id="gpgssl_keys.added" xml:space="preserve">
         <source>{0} Key(s) added.</source>
@@ -8780,7 +8780,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="Monitoring Administrators" xml:space="preserve">
         <source>Monitoring Administrators</source>
-        <target state="translated">监视管理员</target>
+        <target state="translated">监控管理员</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators" xml:space="preserve">
         <source>Configuration Administrators</source>
@@ -8896,7 +8896,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="monitoringStatus" xml:space="preserve">
         <source>Monitor Status</source>
-        <target state="translated">监视状态</target>
+        <target state="translated">监控状态</target>
       </trans-unit>
       <trans-unit id="userLogin" xml:space="preserve">
         <source>User Login</source>
@@ -9868,7 +9868,7 @@ tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
-        <target state="final">已将口令重设置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
+        <target state="final">已将口令重置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
