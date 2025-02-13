@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-23 15:55+0100\n"
-"PO-Revision-Date: 2024-10-15 09:48+0000\n"
+"PO-Revision-Date: 2025-02-13 07:37+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/"
 "ja/>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -7434,13 +7434,11 @@ msgstr "使用方法: system_rename 変更前の名前 変更後の名前"
 
 #: ../src/spacecmd/system.py:2061
 msgid "system_refreshpillar: Refresh pillar data of system(s) "
-msgstr ""
+msgstr "system_refreshpillar: システムのpillarデータの更新 "
 
 #: ../src/spacecmd/system.py:2062
-#, fuzzy
-#| msgid "usage: system_details <SYSTEMS>"
 msgid "usage: system_refreshpillar [<SYSTEMS>]"
-msgstr "使用方法: system_details <システム>"
+msgstr "使用方法: system_refreshpillar [<システム>]"
 
 #: ../src/spacecmd/system.py:2100
 msgid "system_listcustomvalues: List the custom values for a system"
