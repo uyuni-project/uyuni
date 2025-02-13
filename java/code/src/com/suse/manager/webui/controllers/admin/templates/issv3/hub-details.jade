@@ -1,14 +1,14 @@
 include /templates/common.jade
 
-#add-iss-hub
+#hub-details
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('admin/iss/add/hub')
+    spaImportReactPage('admin/hub/hub-details')
         .then(function (module) {
             module.renderer(
-                'add-iss-hub', !{peripherals}
+                'hub-details', !{hub}
             )
         });

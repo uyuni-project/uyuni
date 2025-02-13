@@ -31,7 +31,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.HubResponse;
-import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
@@ -76,14 +75,14 @@ public class AdminViewsController {
      * Invoked from Router. Init routes for Admin Views.
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/admin/iss/hub",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSHub))), jade);
-        get("/manager/admin/iss/peripheral",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSPeripheral))), jade);
-        get("/manager/admin/iss/hub/create",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createISSHub))), jade);
-        get("/manager/admin/iss/peripheral/create",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createISSPeripheral))), jade);
+        get("/manager/admin/hub/hub-details",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
+        get("/manager/admin/hub/peripherals",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
+        get("/manager/admin/hub/peripherals/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createISSv3Peripheral))), jade);
+        get("/manager/admin/hub/peripherals/update",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/setup/payg",
@@ -106,7 +105,7 @@ public class AdminViewsController {
     public static ModelAndView showMonitoring(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("isUyuni", ConfigDefaults.get().isUyuni());
-        return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
+        return new ModelAndView(data, "controllers/admin/templates/issv3/monitoring.jade");
     }
 
     /**
@@ -116,16 +115,11 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSHub(Request request, Response response, User user) {
+    public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        List<PeripheralResponse> resp = new ArrayList<>() {{
-            PeripheralResponse peripheral = new PeripheralResponse("testfqdn", true, false, "All");
-            this.add(peripheral);
-            this.add(peripheral);
-        }};
-        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
-        data.put("peripherals", GSON.toJson(resp, listType));
-        return new ModelAndView(data, "controllers/admin/templates/list-iss-hub.jade");
+        //TODO: request hub details
+        data.put("hub", null);
+        return new ModelAndView(data, "controllers/admin/templates/issv3/hub-details.jade");
     }
 
     /**
@@ -135,8 +129,9 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView showISSPeripheral(Request request, Response response, User user) {
+    public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
+        //TODO: get from issperipherals
         List<HubResponse> resp = new ArrayList<>() {{
             HubResponse hub = new HubResponse("testfqdn", true, 1, 4);
             this.add(hub);
@@ -144,26 +139,7 @@ public class AdminViewsController {
         }};
         Type listType = new TypeToken<List<HubResponse>>() { }.getType();
         data.put("hubs", GSON.toJson(resp, listType));
-        return new ModelAndView(data, "controllers/admin/templates/list-iss-peripheral.jade");
-    }
-
-    /**
-     * Show iss hub tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView createISSHub(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        List<PeripheralResponse> resp = new ArrayList<>() {{
-            PeripheralResponse peripheral = new PeripheralResponse("testfqdn", true, false, "All");
-            this.add(peripheral);
-            this.add(peripheral);
-        }};
-        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
-        data.put("peripherals", GSON.toJson(resp, listType));
-        return new ModelAndView(data, "controllers/admin/templates/add-list-iss-hub.jade");
+        return new ModelAndView(data, "controllers/admin/templates/issv3/list-peripherals.jade");
     }
 
     /**
@@ -173,17 +149,25 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to show
      */
-    public static ModelAndView createISSPeripheral(Request request, Response response, User user) {
+    public static ModelAndView createISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        List<HubResponse> resp = new ArrayList<>() {{
-            HubResponse hub = new HubResponse("testfqdn", true, 1, 4);
-            this.add(hub);
-            this.add(hub);
-        }};
-        Type listType = new TypeToken<List<HubResponse>>() { }.getType();
-        data.put("hubs", GSON.toJson(resp, listType));
-        return new ModelAndView(data, "controllers/admin/templates/add-list-iss-peripheral.jade");
+        return new ModelAndView(data, "controllers/admin/templates/issv3/create-peripheral.jade");
     }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        //TODO: get peripheral data
+        data.put("peripheral", null);
+        return new ModelAndView(data, "controllers/admin/templates/issv3/update-peripheral.jade");
+    }
+
 
     /**
      * show list of saved payg ssh connection data
