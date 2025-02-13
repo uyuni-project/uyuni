@@ -1,3 +1,0 @@
-- rename SUSEProductSCCRepository to the more meaningful name ChannelTemplate
-- various improvements for ContentSyncManager in regard of hibernate schema
-  and performance (bsc#1236212)
