@@ -22,16 +22,35 @@ import static java.lang.String.format;
 import com.suse.manager.api.ParseException;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.ProxyRegistryUtils;
+import com.suse.proxy.ProxyRegistryUtilsImpl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Verifies registry sources exist and are reachable
+ * Preforms additional validations required for the proxy configuration update process.
+ * In case of updating a proxy configuration means checking if the registry URLs provided are valid.
  */
 public class ProxyConfigUpdateRegistryPreConditions implements ProxyConfigUpdateContextHandler {
 
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateRegistryPreConditions.class);
+    private final ProxyRegistryUtils registryUtils;
+
+    /**
+     * Default constructor
+     */
+    public ProxyConfigUpdateRegistryPreConditions() {
+        registryUtils = new ProxyRegistryUtilsImpl();
+    }
+
+    /**
+     * Constructor with ProxyRegistryUtils
+     *
+     * @param registryUtilsIn the registry utils
+     */
+    public ProxyConfigUpdateRegistryPreConditions(ProxyRegistryUtils registryUtilsIn) {
+        registryUtils = registryUtilsIn;
+    }
 
     @Override
     public void handle(ProxyConfigUpdateContext context) {
@@ -48,12 +67,12 @@ public class ProxyConfigUpdateRegistryPreConditions implements ProxyConfigUpdate
             }
             try {
                 // Testing access by retrieving the tags
-                ProxyRegistryUtils.getTags(context.getRegistryUrls().get(proxyImage));
+                registryUtils.getTags(context.getRegistryUrls().get(proxyImage));
             }
             catch (ParseException parseException) {
-                LOG.error("Failed to get tags from registry URL: {}", context.getRegistryUrls().get(proxyImage));
+                LOG.error("Failed to get tags for: {} {}", proxyImage.getImageName(), context.getRegistryUrls().get(proxyImage));
                 context.getErrorReport().register(
-                        "Failed to get tags from registry URL: " + context.getRegistryUrls().get(proxyImage)
+                        "Failed to get tags for: " + proxyImage.getImageName()
                 );
             }
         }

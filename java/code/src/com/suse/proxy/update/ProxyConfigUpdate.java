@@ -26,6 +26,13 @@ import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class is responsible for dealing with updates within the proxy configuration scope.
+ * The update process is following the Chain of Responsibility pattern, where the process is divided into several steps,
+ * each one with a specific responsibility.
+ * These steps have a specific order and are executed in sequence.
+ * If an error occurs in any of these steps, the process halts and the errors are be reported.
+ */
 public class ProxyConfigUpdate {
     private final List<ProxyConfigUpdateContextHandler> contextHandlerChain = new ArrayList<>();
 
@@ -44,7 +51,7 @@ public class ProxyConfigUpdate {
     }
 
     /**
-     * Update the proxy configuration
+     * Update the proxy configuration, following the chain of responsibility pattern defined in the constructor.
      *
      * @param request       the proxy configuration update JSON with the new values
      * @param systemManager the system manager
