@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.HubResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
@@ -177,10 +178,12 @@ public class AdminViewsController {
      * @return list of payg ssh connection data
      */
     public static ModelAndView listPayg(Request request, Response response, User user) {
+        HubFactory hubFactory = new HubFactory();
         Map<String, Object> data = new HashMap<>();
         List<PaygSshData> payg = PAYG_ADMIN_MANAGER.list();
         data.put("flashMessage", FlashScopeHelper.flash(request));
         data.put("contentPaygInstances", GSON.toJson(PaygResponseMappers.mapPaygPropertiesResumeFromDB(payg)));
+        data.put("isIssPeripheral", hubFactory.isISSPeripheral());
         return new ModelAndView(data, "controllers/admin/templates/payg_list.jade");
     }
 
