@@ -53,7 +53,7 @@ public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHand
     }
 
     /**
-     * Acquires the proxy minion and its configuration if already exists
+     * Acquires the proxy minion and its configuration if it already exists
      *
      * @param context the context
      */

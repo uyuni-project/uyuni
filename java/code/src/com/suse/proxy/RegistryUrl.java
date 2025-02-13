@@ -117,4 +117,12 @@ public class RegistryUrl {
     public void setTag(String tagIn) {
         tag = tagIn;
     }
+
+    @Override
+    public String toString() {
+        return "RegistryUrl{" +
+                "url=" + url +
+                ", tag='" + tag + '\'' +
+                '}';
+    }
 }
