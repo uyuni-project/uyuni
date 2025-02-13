@@ -419,6 +419,7 @@ fi
 %{python3rhnroot}/server/apacheRequest.py*
 %{python3rhnroot}/server/apacheServer.py*
 %{python3rhnroot}/server/apacheUploadServer.py*
+%{python3rhnroot}/server/db_config.py*
 %{python3rhnroot}/server/rhnAction.py*
 %{python3rhnroot}/server/rhnAuthPAM.py*
 %{python3rhnroot}/server/rhnCapability.py*
