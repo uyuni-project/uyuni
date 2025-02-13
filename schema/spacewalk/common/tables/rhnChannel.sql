@@ -13,7 +13,6 @@
 -- in this software or its documentation.
 --
 
-
 CREATE TABLE rhnChannel
 (
     id                  NUMERIC NOT NULL
@@ -32,6 +31,7 @@ CREATE TABLE rhnChannel
     basedir             VARCHAR(256) NOT NULL,
     name                VARCHAR(256) NOT NULL,
     summary             VARCHAR(500) NOT NULL,
+    status 		        VARCHAR(25) NOT NULL,
     description         VARCHAR(4000),
     product_name_id     NUMERIC
                             CONSTRAINT rhn_channel_product_name_ch_fk
