@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.action;
 
 
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Pillar;
 
@@ -42,11 +43,13 @@ public class ProxyConfigurationApplyAction extends Action {
      * Default constructor
      * @param pillarIn the pillar
      * @param proxyConfigFilesIn the proxy configuration files
+     * @param orgIn the organization
      */
-    public ProxyConfigurationApplyAction(Pillar pillarIn, Map<String, Object> proxyConfigFilesIn) {
+    public ProxyConfigurationApplyAction(Pillar pillarIn, Map<String, Object> proxyConfigFilesIn, Org orgIn) {
         this.setActionType(ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY);
         this.pillar = pillarIn;
         this.proxyConfigFiles = proxyConfigFilesIn;
+        this.setOrg(orgIn);
     }
 
     public Pillar getPillar() {
