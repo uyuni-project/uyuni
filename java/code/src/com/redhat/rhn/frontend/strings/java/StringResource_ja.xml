@@ -5987,12 +5987,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>再起動</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve">
+      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-adaptation">@@PRODUCT_NAME@@ Service の最初のユーザーが作成されました。追加の設定は、&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;ここをクリック&lt;/strong&gt;&lt;/a&gt; して完了してください。</target>
+        <target state="final">@@PRODUCT_NAME@@の最初のユーザーが作成されました。インストールを終了するには、&lt;a href="/rhn/manager/admin/setup/proxy"&gt;セットアップウィザード&lt;/a&gt;を使用してください。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -11499,26 +11499,30 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">CVE監査クエリの精度を高めるために必要なOVALデータを生成する</target>
       </trans-unit>
-    <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+        <target state="final">SCCデータ転送が正常に有効化されました。</target>
+      </trans-unit>
+      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+        <target state="final">SCCデータ転送はすでに有効になっています。</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+        <target state="final">データがSCCと同期されていません</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">
+          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。
+          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;オプトアウトの理由を共有して、サービス向上にご協力ください&lt;/a&gt;
+        </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
