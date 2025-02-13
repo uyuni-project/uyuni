@@ -17,8 +17,8 @@
 
 
 Name:           supportutils-plugin-susemanager-proxy
-Version:        4.3.3
-Release:        1
+Version:        4.3.4
+Release:        0
 Source:         %{name}-%{version}.tar.gz
 Summary:        Supportconfig Plugin for SUSE Manager Proxy
 License:        GPL-2.0-only
