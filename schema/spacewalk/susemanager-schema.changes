@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:32:53 CET 2025 - rosuna@suse.com
+
+- version 4.3.28-0
+  * Execute the cobbler-sync-default task every 5 minutes by default
+    (bsc#1219450)
+  * Ensure reporting database uses lowercase usernames (bsc#1220494)
+  * Rename table suseProductSCCRepository to the more meaningful
+    name suseChannelTemplate
+  * Add table and columns to store additional telemetry data
+    (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Mon Sep 02 15:07:01 CEST 2024 - rosuna@suse.com
 
 - version 4.3.27-0
