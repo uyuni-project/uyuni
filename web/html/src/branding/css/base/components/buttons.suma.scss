@@ -9,7 +9,7 @@
   transition: none;
   text-decoration: none;
   box-shadow: none;
-  min-height: 37px;
+  min-height: $input-height;
 
   &:hover {
     text-decoration: none;
@@ -19,10 +19,6 @@
     padding: 4px 10px;
     font-size: 12px;
     min-height: 30px;
-  }
-
-  .input-group-btn & {
-    padding: 5px 10px;
   }
 
   &,
