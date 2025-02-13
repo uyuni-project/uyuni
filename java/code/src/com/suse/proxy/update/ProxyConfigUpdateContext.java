@@ -28,26 +28,31 @@ import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.RegistryUrl;
 import com.suse.proxy.model.ProxyConfig;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class the context that is passed through the chain of responsibility pattern.
+ * Its main purpose is to hold the relevant data through the steps of the proxy config update process.
+ */
 public class ProxyConfigUpdateContext {
 
+    // Provided data
     private final ProxyConfigUpdateJson request;
     private final RhnErrorReport errorReport = new RhnErrorReport();
     private final Map<ProxyContainerImagesEnum, RegistryUrl> registryUrls =
-            new HashMap<>(ProxyContainerImagesEnum.values().length);
+            new EnumMap<>(ProxyContainerImagesEnum.class);
     private final SystemManager systemManager;
     private final User user;
     private final SaltApi saltApi;
 
+    // Acquired/computed data
     private String proxyFqdn;
     private String rootCA;
     private List<String> intermediateCAs;
     private String proxyCert;
     private String proxyKey;
-
 
     private MinionServer proxyMinion;
     private Server parentServer;

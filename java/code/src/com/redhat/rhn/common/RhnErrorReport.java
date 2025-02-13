@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents a collection of errors that can be reported.
+ */
 public class RhnErrorReport {
     private final List<RhnError> errors = Collections.synchronizedList(new ArrayList<>());
 

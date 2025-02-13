@@ -43,7 +43,6 @@ import static java.lang.String.format;
 import com.redhat.rhn.common.RhnErrorReport;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
-import com.suse.proxy.model.ProxyConfig;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -51,8 +50,8 @@ import org.apache.logging.log4j.Logger;
 import java.util.regex.Pattern;
 
 /**
- * Executes basic validation over the request inputs.
- * Checks if the required fields are present and if the values are valid.
+ * Validates data acquired from {@link ProxyConfigUpdateJson} and retrieved from {@link ProxyConfigUpdateAcquisitor}
+ * that is required for the rest of the process.
  */
 public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateValidation.class);
@@ -89,8 +88,7 @@ public class ProxyConfigUpdateValidation implements ProxyConfigUpdateContextHand
     private void validateCertificates(ProxyConfigUpdateContext context) {
         ProxyConfigUpdateJson request = context.getRequest();
         if (USE_CERTS_MODE_KEEP.equals(request.getUseCertsMode())) {
-            ProxyConfig proxyConfig = context.getProxyConfig();
-            if (isAbsent(proxyConfig)) {
+            if (isAbsent(context.getProxyConfig())) {
                 errorReport.register("No current proxy configuration found to keep certificates");
                 return;
             }

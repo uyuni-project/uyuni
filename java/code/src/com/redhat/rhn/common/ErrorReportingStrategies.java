@@ -25,6 +25,10 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
+/**
+ * This class provides various strategies for error reporting and logging.
+ * Base validation reporting strategy throws a {@link RhnGeneralException} if there are errors.
+ */
 public class ErrorReportingStrategies {
 
     private ErrorReportingStrategies() {

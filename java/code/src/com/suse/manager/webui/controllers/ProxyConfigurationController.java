@@ -52,6 +52,7 @@ import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.ProxyRegistryUtils;
+import com.suse.proxy.ProxyRegistryUtilsImpl;
 import com.suse.proxy.RegistryUrl;
 import com.suse.proxy.get.ProxyConfigGet;
 import com.suse.proxy.update.ProxyConfigUpdate;
@@ -95,6 +96,7 @@ public class ProxyConfigurationController {
     private final SystemManager systemManager;
     private final SaltApi saltApi;
     private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private ProxyRegistryUtils proxyRegistryUtils = new ProxyRegistryUtilsImpl();
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -240,7 +242,7 @@ public class ProxyConfigurationController {
     public Object getTagsFromRegistry(Response response, String registryUrlAsString) {
         try {
             RegistryUrl registryUrl = new RegistryUrl(registryUrlAsString);
-            List<String> tags = ProxyRegistryUtils.getTags(registryUrl);
+            List<String> tags = proxyRegistryUtils.getTags(registryUrl);
             if (tags == null) {
                 LOG.debug("No tags found on registry {}", registryUrlAsString);
                 return result(response, ResultJson.error("No tags found on registry"));
@@ -264,7 +266,7 @@ public class ProxyConfigurationController {
             throws URISyntaxException, RhnRuntimeException, ParseException {
         RegistryUrl registryUrl = new RegistryUrl(baseRegistryUrl);
 
-        List<String> repositories = ProxyRegistryUtils.getRepositories(registryUrl);
+        List<String> repositories = proxyRegistryUtils.getRepositories(registryUrl);
         if (repositories.isEmpty()) {
             LOG.debug("No repositories found on registry {}", baseRegistryUrl);
             return result(response, ResultJson.error("No repositories found on registry"));
@@ -286,7 +288,7 @@ public class ProxyConfigurationController {
         Set<String> commonTags = null;
         for (ProxyContainerImagesEnum proxyImage : ProxyContainerImagesEnum.values()) {
             RegistryUrl imageRegistryUrl = new RegistryUrl(registryUrl.getUrl() + "/" + proxyImage.getImageName());
-            List<String> tags = ProxyRegistryUtils.getTags(imageRegistryUrl);
+            List<String> tags = proxyRegistryUtils.getTags(imageRegistryUrl);
 
             if (tags == null || tags.isEmpty()) {
                 LOG.debug("No tags found on registry {}", imageRegistryUrl);
