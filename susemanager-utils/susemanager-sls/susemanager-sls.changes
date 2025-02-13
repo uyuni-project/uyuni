@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:34:04 CET 2025 - rosuna@suse.com
+
+- version 4.3.46-0
+  * suma_minion: prevent issues when calling Salt runners (bsc#1228232)
+  * Prevent a crash on "reboot_info" module for Liberty 6,
+    RHEL 6 & clones (bsc#1231404)
+  * Require spacewalk-config installed before this package to have
+    the CA certificate moved to the correct place (bsc#1227660)
+  * Prevent warning message for unsigned Debian repositories
+    when using new deb822 format (bsc#1234251)
+  * Do not set "Trusted" for Debian repositories when the repo
+    should be signed
+  * Remove unnecessary Salt minion upgrade cleanup from highstate
+  * Collect uname, SAP workloads and container runtime data
+    on hardware profile update (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Fri Oct 04 14:58:37 CEST 2024 - rosuna@suse.com
 
 - version 4.3.45-0
