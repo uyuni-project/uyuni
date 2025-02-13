@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:29:50 CET 2025 - rosuna@suse.com
+
+- version 4.3.43-0
+  * Fixed misleading error while waiting for SCC credentials
+    synchronisation (bsc#1227374)
+  * Allow translation to wrap strings as weblate forces it
+  * Show Source String change for translations
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+  * Bump the WebUI version to 4.3.15
+
+-------------------------------------------------------------------
 Tue Oct 29 16:55:34 CET 2024 - marina.latini@suse.com
 
 - version 4.3.42-0
