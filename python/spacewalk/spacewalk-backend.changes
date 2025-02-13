@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:24:20 CET 2025 - rosuna@suse.com
+
+- version 4.3.31-0
+  * Make spacewalk-data-fsck aware of orphaned RPMs (bsc#1227882)
+  * Detect and update errata when not all repository packages are
+    linked (bsc#1227644)
+  * Rename table suseProductSCCRepository to the more meaningful
+    name suseChannelTemplate (bsc#1234994)
+  * Add dependency to libzypp to support new token style
+  * Fix mgr-sign-metadata-ctl check-channels when checking for
+    signatures in repomd metadata (bsc#1233884)
+  * Allow translation to wrap strings as weblate forces it
+  * Show Source String change for translations
+  * Set default RPM package summary if it's missing (bsc#1232530)
+  * Allow spacewalk-repo-sync filtering using NEVRA
+    instead of package name only (bsc#1234226)
+  * Fix wrong timestamp when importing packages
+    with rhnpush (bsc#1235970)
+
+-------------------------------------------------------------------
 Mon Sep 02 15:14:43 CEST 2024 - rosuna@suse.com
 
 - version 4.3.30-0
