@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-31 14:15+0100\n"
-"PO-Revision-Date: 2025-01-15 02:50+0000\n"
+"PO-Revision-Date: 2025-02-13 07:37+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1713,28 +1713,24 @@ msgstr "同期が失敗しました"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "保存して確認"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
-#, fuzzy
-#| msgid "Node Hostname"
 msgid "HTTP Proxy Hostname"
-msgstr "ノードのホスト名"
+msgstr "HTTPプロキシのホスト名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
-#, fuzzy
-#| msgid "Host name"
 msgid "hostname:port"
-msgstr "ホスト名"
+msgstr "ホスト名:ポート"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid ""
 "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
+msgstr "例: <code>example.com:8080</code>または<code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "HTTPプロキシユーザ名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1745,18 +1741,16 @@ msgstr "ユーザ名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "HTTPプロキシパスワード"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "プロキシサーバの図"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "プロキシ"
+msgstr "HTTPプロキシ"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
@@ -1764,24 +1758,25 @@ msgid ""
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
 msgstr ""
+"このサーバがHTTPプロキシを使用して外部ネットワークにアクセスする場合は、この"
+"フォームを使用して設定できます。そうでない場合は、<link>組織の資格情報</link>"
+"に進みます。"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "プロキシ設定の確認"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "プロキシ設定が正常に確認されました"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "プロキシ設定が有効ではありません"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
-#, fuzzy
-#| msgid "Organization Unit"
 msgid "Organization Credentials"
-msgstr "組織単位"
+msgstr "組織の資格情報"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
@@ -1789,10 +1784,8 @@ msgid "Products"
 msgstr "製品"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Add PAYG Connection"
 msgid "PAYG Connections"
-msgstr "PAYGの接続を追加"
+msgstr "PAYGの接続"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
@@ -4067,10 +4060,8 @@ msgstr ""
 "きる新しい方式です。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "{product}については、<link>こちら</link>をご覧ください。"
+msgstr "{productName}については、<link>こちら</link>をご覧ください。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -4082,11 +4073,11 @@ msgstr "サインイン"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "著作権通知"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName}リリース{versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -4107,18 +4098,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "ログイン処理が動作中ですが、このページを閉じてしまってよろしいですか？"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "{product}については、<link>こちら</link>をご覧ください。"
+msgstr "{productName}に関する詳細:"
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "Webサイトを表示"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "概要"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4726,7 +4715,7 @@ msgstr "PAYGインスタンスは準拠していません"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:64
 msgid "SCC Data Sync Disabled"
-msgstr ""
+msgstr "SCC データ同期が無効"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:245
 #: ../html/src/manager/notifications/notification-messages.tsx:246
@@ -5458,8 +5447,7 @@ msgstr "開発デバッグページ"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
-"これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
+msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
