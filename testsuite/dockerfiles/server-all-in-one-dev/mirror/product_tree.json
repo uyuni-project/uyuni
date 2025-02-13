@@ -922,18 +922,18 @@
         "url": "https://updates.suse.com/SUSE/Products/RES/8-CLIENT-TOOLS/x86_64/product/"
     },
     {
-        "channel_label": "ubuntu-2204-amd64-main-amd64",
-        "channel_name": "ubuntu-2204-amd64-main for amd64",
+        "channel_label": "ubuntu-2404-amd64-main-amd64",
+        "channel_name": "ubuntu-2404-amd64-main for amd64",
         "gpg_info": [],
         "mandatory": true,
         "parent_channel_label": null,
         "parent_product_id": null,
-        "product_id": -33,
+        "product_id": -44,
         "product_type": "base",
         "recommended": false,
         "release_stage": "beta",
-        "repository_id": -385,
-        "root_product_id": -33,
+        "repository_id": -558,
+        "root_product_id": -44,
         "signed": false,
         "tags": [
             "Beta",
@@ -942,21 +942,21 @@
             "SUMA5.0"
         ],
         "update_tag": null,
-        "url": "http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/"
+        "url": "http://archive.ubuntu.com/ubuntu/dists/noble/main/binary-amd64/"
     },
     {
-        "channel_label": "ubuntu-2204-amd64-main-updates-amd64",
-        "channel_name": "ubuntu-2204-amd64-main-updates for amd64",
+        "channel_label": "ubuntu-2404-amd64-main-updates-amd64",
+        "channel_name": "ubuntu-2404-amd64-main-updates for amd64",
         "gpg_info": [],
         "mandatory": true,
-        "parent_channel_label": "ubuntu-2204-amd64-main-amd64",
+        "parent_channel_label": "ubuntu-2404-amd64-main-amd64",
         "parent_product_id": null,
-        "product_id": -33,
+        "product_id": -44,
         "product_type": "base",
         "recommended": false,
         "release_stage": "beta",
-        "repository_id": -397,
-        "root_product_id": -33,
+        "repository_id": -570,
+        "root_product_id": -44,
         "signed": false,
         "tags": [
             "Beta",
@@ -965,21 +965,21 @@
             "SUMA5.0"
         ],
         "update_tag": null,
-        "url": "http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/binary-amd64/"
+        "url": "http://archive.ubuntu.com/ubuntu/dists/noble-updates/main/binary-amd64/"
     },
     {
-        "channel_label": "ubuntu-2204-amd64-main-security-amd64",
-        "channel_name": "ubuntu-2204-amd64-main-security for amd64",
+        "channel_label": "ubuntu-2404-amd64-main-security-amd64",
+        "channel_name": "ubuntu-2404-amd64-main-security for amd64",
         "gpg_info": [],
         "mandatory": true,
-        "parent_channel_label": "ubuntu-2204-amd64-main-amd64",
+        "parent_channel_label": "ubuntu-2404-amd64-main-amd64",
         "parent_product_id": null,
-        "product_id": -33,
+        "product_id": -44,
         "product_type": "base",
         "recommended": false,
         "release_stage": "beta",
-        "repository_id": -393,
-        "root_product_id": -33,
+        "repository_id": -566,
+        "root_product_id": -44,
         "signed": false,
         "tags": [
             "Beta",
@@ -988,21 +988,21 @@
             "SUMA5.0"
         ],
         "update_tag": null,
-        "url": "http://security.ubuntu.com/ubuntu/dists/jammy-security/main/binary-amd64/"
+        "url": "http://security.ubuntu.com/ubuntu/dists/noble-security/main/binary-amd64/"
     },
     {
-        "channel_label": "ubuntu-22.04-suse-manager-tools-amd64",
-        "channel_name": "Ubuntu-22.04-SUSE-Manager-Tools for amd64",
+        "channel_label": "ubuntu-2404-suse-manager-tools-amd64",
+        "channel_name": "Ubuntu-2404-SUSE-Manager-Tools for amd64",
         "gpg_info": [],
         "mandatory": true,
-        "parent_channel_label": "ubuntu-2204-amd64-main-amd64",
-        "parent_product_id": -33,
-        "product_id": 2531,
+        "parent_channel_label": "ubuntu-2404-amd64-main-amd64",
+        "parent_product_id": -44,
+        "product_id": 2886,
         "product_type": "extension",
         "recommended": true,
         "release_stage": "released",
-        "repository_id": 5940,
-        "root_product_id": -33,
+        "repository_id": 7404,
+        "root_product_id": -44,
         "signed": false,
         "tags": [
             "Beta",
@@ -1012,7 +1012,7 @@
             "SUMA5.0"
         ],
         "update_tag": null,
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/22.04-CLIENT-TOOLS/x86_64/update/"
+        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/24.04-CLIENT-TOOLS/x86_64/update/"
     },
     {
         "channel_label": "rhel8-pool-x86_64",
