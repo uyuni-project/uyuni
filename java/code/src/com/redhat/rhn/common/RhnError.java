@@ -18,7 +18,7 @@ package com.redhat.rhn.common;
 import java.io.Serializable;
 
 /**
- * Represents a base error
+ * Represents a generic error in scope of RHN
  */
 public class RhnError implements Serializable {
     private final String message;

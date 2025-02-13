@@ -12,19 +12,8 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.common;
 
-import java.util.List;
+package com.suse.proxy.test;
 
-/**
- * Interface for strategy reporting errors
- * @param <E> the type of errors
- */
-public interface RhnReportStrategy<E> {
-
-    /**
-     * Report a list of errors
-     * @param errors the list of errors
-     */
-    void report(List<E> errors);
+public class ProxyConfigUpdateAcquisitorTest {
 }
