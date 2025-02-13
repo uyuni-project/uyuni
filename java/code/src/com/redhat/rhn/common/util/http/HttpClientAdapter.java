@@ -220,7 +220,7 @@ public class HttpClientAdapter {
             keystore.load(in, null);
 
             // Add any additional certificate to the store, if specified
-            if (!additionalCertificates.isEmpty()) {
+            if (!(additionalCertificates == null || additionalCertificates.isEmpty())) {
                 int customCert = 0;
                 for (Certificate certificate : additionalCertificates) {
                     keystore.setCertificateEntry("additional_certificate_" + customCert++, certificate);
