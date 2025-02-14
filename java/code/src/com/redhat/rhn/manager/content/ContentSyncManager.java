@@ -160,6 +160,8 @@ public class ContentSyncManager {
 
     private CloudPaygManager cloudPaygManager;
 
+    private static final HubFactory hubFactory = new HubFactory();
+
     private final Path tmpLoggingDir;
 
     /**
@@ -1743,6 +1745,10 @@ public class ContentSyncManager {
 
         Map<Long, ReleaseStage> releaseStageById = productAttributeOverride(
                 tree, ProductTreeEntry::getReleaseStage);
+
+        Optional<IssHub> optIssHub = hubFactory.lookupIssHub();
+        String hubFqdn = optIssHub.map(IssHub::getFqdn).orElse("invalid.hub.internal");
+
         return jsonProducts.stream().map(product -> {
             ProductType productType = Optional.ofNullable(productTypeById.get(product.getId()))
                     .flatMap(Function.identity())
@@ -1750,7 +1756,10 @@ public class ContentSyncManager {
 
             ReleaseStage releaseStage = Optional.ofNullable(releaseStageById.get(product.getId()))
                     .orElseGet(product::getReleaseStage);
-
+            if (optIssHub.isPresent()) {
+                product.getRepositories().forEach(r ->
+                        r.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/".formatted(hubFqdn, r.getSCCId())));
+            }
             return product.copy()
                     .setProductType(productType)
                     .setReleaseStage(releaseStage)
@@ -1760,7 +1769,7 @@ public class ContentSyncManager {
 
 
     /**
-     * Update Products, Repositories and relation ship table in DB.
+     * Update Products, Repositories and relationship table in DB.
      * @param productsById map of scc products by id
      * @param reposById map of scc repositories by id
      * @param tree the static suse product tree
@@ -2079,7 +2088,6 @@ public class ContentSyncManager {
     }
 
     private static boolean isChannelAccessible(ChannelTemplate template) {
-        HubFactory hubFactory = new HubFactory();
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
         boolean isISSSlave = IssFactory.getCurrentMaster() != null || hubFactory.isISSPeripheral();
