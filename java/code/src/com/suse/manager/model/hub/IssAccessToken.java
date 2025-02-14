@@ -11,6 +11,8 @@
 
 package com.suse.manager.model.hub;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -34,7 +36,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSAccessToken")
-public class IssAccessToken {
+public class IssAccessToken extends BaseDomainHelper {
 
     private long id;
 
