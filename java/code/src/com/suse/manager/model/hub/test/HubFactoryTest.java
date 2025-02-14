@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -44,6 +45,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
 public class HubFactoryTest extends BaseTestCaseWithUser {
 
@@ -210,7 +212,7 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         Instant shortExpiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(7, ChronoUnit.DAYS);
         Instant longExpiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(60, ChronoUnit.DAYS);
 
-        String fqdn = "dummy.random.%s.fqdn".formatted(RandomStringUtils.randomAlphabetic(8));
+        String fqdn = getRandomFqdn();
         // Ensure no token exists with this fqdn
         assertEquals(0, countCurrentTokens(fqdn));
 
@@ -244,6 +246,47 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         assertEquals("updated-issued-token", issued.getToken());
         assertEquals(TokenType.ISSUED, issued.getType());
         assertEquals(Date.from(shortExpiration), issued.getExpirationDate());
+    }
+
+    @Test
+    public void canCountAndListTokens() throws Exception {
+        Instant expiration = Instant.now().truncatedTo(ChronoUnit.MINUTES).plus(7, ChronoUnit.DAYS);
+
+        Long initialTokenCount = countCurrentTokens();
+
+        // Store the first token
+        IssAccessToken tokenZero = hubFactory.saveToken(getRandomFqdn(), "zero", TokenType.ISSUED, expiration);
+        assertEquals(initialTokenCount + 1, hubFactory.countAccessToken());
+        Thread.sleep(1_000);
+
+        // Store multiple tokens
+        List<Long> generatedTokenIds = Stream.of("one", "two", "three", "four")
+            .map(value -> hubFactory.saveToken(getRandomFqdn(), value, TokenType.ISSUED, expiration))
+            .map(IssAccessToken::getId)
+            .toList();
+
+        // Check if the count is correct
+        assertEquals(initialTokenCount + generatedTokenIds.size() + 1, hubFactory.countAccessToken());
+
+        // Ensure we can extract all items
+        List<AccessTokenDTO> tokens = hubFactory.listAccessToken(0, 1_000);
+        assertEquals(initialTokenCount + generatedTokenIds.size() + 1, tokens.size());
+
+        // Ensure the list is sorted by creation date
+        tokens = hubFactory.listAccessToken(0, generatedTokenIds.size());
+        assertEquals(generatedTokenIds.size(), tokens.size());
+
+        assertTrue(tokens.stream()
+            .allMatch(token -> generatedTokenIds.contains(token.getId())));
+
+        // Ensure we can skip items
+        tokens = hubFactory.listAccessToken(4, 1);
+        assertEquals(1, tokens.size());
+        assertEquals(tokenZero.getId(), tokens.get(0).getId());
+    }
+
+    private static String getRandomFqdn() {
+        return "dummy.random.%s.fqdn".formatted(RandomStringUtils.randomAlphabetic(8));
     }
 
     private static Long countCurrentTokens() {

@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -38,6 +39,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -518,6 +520,29 @@ public class HubManager {
                 throw new IllegalArgumentException("Unknown role");
             }
         }
+    }
+
+    /**
+     * Count currently issued and consumed access tokens
+     * @param user the user performing the operation
+     * @return the number of token existing in the database
+     */
+    public long countAccessToken(User user) {
+        ensureSatAdmin(user);
+
+        return hubFactory.countAccessToken();
+    }
+
+    /**
+     * List the currently issued and consumed access tokens
+     * @param user the user performing the operation
+     * @param pc the pagination settings
+     * @return the existing tokens retrieved from the database using the specified pagination settings
+     */
+    public List<AccessTokenDTO> listAccessToken(User user, PageControl pc) {
+        ensureSatAdmin(user);
+
+        return hubFactory.listAccessToken(pc.getStart() - 1, pc.getPageSize());
     }
 
     private ManagerInfoJson collectManagerInfo() {
