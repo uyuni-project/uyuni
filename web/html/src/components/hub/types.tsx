@@ -23,3 +23,7 @@ export type HubRegisterRequest = {
   password?: string;
   rootCA?: string;
 };
+
+export type ValidityRequest = {
+  valid: boolean;
+};

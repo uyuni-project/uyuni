@@ -13,7 +13,7 @@ export class TokenList extends React.Component<Props> {
   public render(): React.ReactNode {
     return (
       <TopPanel title={t("Access Tokens")} icon="fa fa-shield">
-        <TokenTable />
+        <TokenTable allowToggleValidity={true} allowDeletion={true} />
       </TopPanel>
     );
   }

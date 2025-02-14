@@ -151,6 +151,14 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Updates an existing access token
+     * @param accessToken the access token to update
+     */
+    public void updateToken(IssAccessToken accessToken) {
+        getSession().update(accessToken);
+    }
+
+    /**
      * Returns the issued access token information matching the given token
      * @param token the string representation of the token
      * @return the issued token, if present
@@ -191,6 +199,18 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Retrieves the access token with the given id
+     * @param id the id of the token
+     * @return the access token instance, if present
+     */
+    public Optional<IssAccessToken> lookupAccessTokenById(long id) {
+        return getSession()
+            .createQuery("FROM IssAccessToken k WHERE k.id = :id", IssAccessToken.class)
+            .setParameter("id", id)
+            .uniqueResultOptional();
+    }
+
+    /**
      * Returns a list of access tokens for specified FQDN
      * @param fqdn the FQDN of the server
      * @return return the access tokens associated with the given fqdn
@@ -214,6 +234,19 @@ public class HubFactory extends HibernateFactory {
                 .executeUpdate();
     }
 
+    /**
+     * Delete the access tokens with the given id
+     * @param id the id of the token
+     * @return true if the token was deleted, false otherwise
+     */
+    public boolean removeAccessTokenById(long id) {
+        int tokenRemoved = getSession()
+            .createNativeQuery("DELETE FROM suseISSAccessToken WHERE id = :id")
+            .setParameter("id", id)
+            .executeUpdate();
+
+        return tokenRemoved != 0;
+    }
     /**
      * Count the existing access tokens
      * @return the current number of access tokens
