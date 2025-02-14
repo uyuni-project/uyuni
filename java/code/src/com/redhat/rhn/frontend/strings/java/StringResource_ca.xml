@@ -11519,6 +11519,14 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Ajudeu-nos a millorar els nostres serveis compartint el motiu pel qual els heu desactivat&lt;/a&gt;
         </target>
       </trans-unit>
-    </body>
+    <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+        <source>Sync OVAL Data</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
+        <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
