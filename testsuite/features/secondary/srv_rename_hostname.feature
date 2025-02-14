@@ -52,7 +52,7 @@ Feature: Reconfigure the server's hostname
   Scenario: Apply high state on the Debian-like Minion to populate new server CA
     When I apply highstate on "deblike_minion"
 
-@buildhost
+@build_host
   Scenario: Apply high state on the build host to populate new server CA
     When I apply highstate on "build_host"
 
@@ -109,7 +109,7 @@ Feature: Reconfigure the server's hostname
   Scenario: Apply high state on the Debian-like Minion to populate new server CA
     When I apply highstate on "deblike_minion"
 
-@buildhost
+@build_host
   Scenario: Apply high state on the build host to populate new server CA
     When I apply highstate on "build_host"
 

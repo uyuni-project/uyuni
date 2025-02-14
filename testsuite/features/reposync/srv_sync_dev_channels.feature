@@ -42,7 +42,7 @@ Feature: Synchronize development channels
     Then I should see a "Repository sync scheduled for Dev-RH-like-Channel." text
     And I wait until the channel "dev-rh-like-channel" has been synced
 
-@buildhost
+@build_host
 @uyuni
   Scenario: Synchronize Dev-Build-Host-Channel channel
     Given I am authorized for the "Admin" section
