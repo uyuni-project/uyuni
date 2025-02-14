@@ -149,6 +149,18 @@ public class HubManager {
     }
 
     /**
+     * Deletes the access token with the specified id
+     * @param user the user performing the operation
+     * @param tokenId the id of the access token to delete
+     * @return true if the token was deleted, false otherwise
+     */
+    public boolean deleteAccessToken(User user, long tokenId) {
+        ensureSatAdmin(user);
+
+        return hubFactory.removeAccessTokenById(tokenId);
+    }
+
+    /**
      * Stores in the database the access token of the given FQDN
      * @param accessToken the access token granting access and identifying the caller
      * @param tokenToStore the token
@@ -543,6 +555,29 @@ public class HubManager {
         ensureSatAdmin(user);
 
         return hubFactory.listAccessToken(pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
+     * Retrieve the access token with the specied id
+     * @param user the user performing the operation
+     * @param tokenId the id of the token
+     * @return the access token, if present
+     */
+    public Optional<IssAccessToken> lookupAccessTokenById(User user, long tokenId) {
+        ensureSatAdmin(user);
+
+        return hubFactory.lookupAccessTokenById(tokenId);
+    }
+
+    /**
+     * Updates the give token in the database
+     * @param user the user performing the operation
+     * @param issAccessToken the token
+     */
+    public void updateToken(User user, IssAccessToken issAccessToken) {
+        ensureSatAdmin(user);
+
+        hubFactory.updateToken(issAccessToken);
     }
 
     private ManagerInfoJson collectManagerInfo() {
