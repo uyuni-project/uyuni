@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2020-11-20 20:26+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/backend/cs/>\n"
@@ -272,62 +272,62 @@ msgstr "Nesouhlasí session kickstartu"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Sčítání re-registračních tokenů není podporováno"
 
-#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
+#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
 msgstr "Neplatná kombinace uživatelského jména a hesla"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:526
+#: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Uživatelské jméno `%s' nebylo rezerováno"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:532
+#: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
 msgstr "Nebyla udána e-mailová adresa"
 
-#: ../server/rhnUser.py:574
+#: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "uživatelské jméno musí mít minimálně %d znaků"
 
-#: ../server/rhnUser.py:578
+#: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "uživatelské jméno musí být kratší, než %d znaků"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "uživatelské jméno = `%s' obsahuje neplatný znak `%s'"
 
-#: ../server/rhnUser.py:613
+#: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Prosím, omezte e-mail adresu na znaky %s"
 
-#: ../server/rhnUser.py:701
+#: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "heslo musí mít nejméně %d znaků"
 
-#: ../server/rhnUser.py:705
+#: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Heslo musí být kratší, než %d znaků"
 
-#: ../server/rhnUser.py:721
+#: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
 msgstr "heslo obsahuje znak `%s'"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "uživatelské jméno by mělo mít alespoň %d znaků"
 
-#: ../server/rhnUser.py:741
+#: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Nelze registrovat uživatelská jména končící na %s"
@@ -432,8 +432,8 @@ msgstr ""
 "\n"
 "     Znovu se zaregistrujte jako superuživatel root příkazem mgr_register.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě "
-"\"Přehled\" (Overview),\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview),\n"
 "     zvolte \"Správu předplatných\" (Subscription Management)\n"
 "     pro aktivaci služby pro tento systém.\n"
 "     "
@@ -460,8 +460,8 @@ msgstr ""
 "\n"
 "     Tento systém nemá platné oprávnění pro Správce SUSE.\n"
 "     Navštivte https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-"     nebo se přihlaste na https://%(hostname)s a na kartě "
-"\"Přehled\" (Overview)\n"
+"     nebo se přihlaste na https://%(hostname)s a na kartě \"Přehled\" "
+"(Overview)\n"
 "     zvolte \"Správu předplatných\" (Subscription Management),\n"
 "     abyste si aktivovali službu pro tento systém.\n"
 "     "

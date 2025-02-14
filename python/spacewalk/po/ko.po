@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2021-03-31 12:58+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/"
@@ -270,62 +270,62 @@ msgstr "킥스타트 세션 불일치"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "재등록 토큰 스택은 지원되지 않습니다."
 
-#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
+#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
 msgstr "잘못된 사용자 이름/비밀번호 조합"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:526
+#: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "'%s' 사용자 이름은 예약되지 않았습니다."
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:532
+#: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
 msgstr "이메일 주소가 지정되지 않았습니다."
 
-#: ../server/rhnUser.py:574
+#: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "사용자 이름은 %d자 이상이어야 합니다."
 
-#: ../server/rhnUser.py:578
+#: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "사용자 이름은 %d자 미만이어야 합니다."
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "사용자 이름 = `%s', 유효하지 않은 문자 `%s'"
 
-#: ../server/rhnUser.py:613
+#: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "이메일 주소는 %s자 이하여야 합니다."
 
-#: ../server/rhnUser.py:701
+#: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "비밀번호는 %d자 이상이어야 합니다."
 
-#: ../server/rhnUser.py:705
+#: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "비밀번호는 %d자 미만이어야 합니다."
 
-#: ../server/rhnUser.py:721
+#: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
 msgstr "비밀번호에 '%s' 문자가 포함되었습니다."
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
 
-#: ../server/rhnUser.py:741
+#: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."

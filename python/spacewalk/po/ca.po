@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2022-04-01 18:12+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
@@ -274,62 +274,62 @@ msgstr "La sessió de Kickstart no coincideix"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "No s'admet l'apilament de testimonis de reregistre."
 
-#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
+#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
 msgstr "Combinació de nom d'usuari i contrasenya no vàlida"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:526
+#: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "El nom d'usuari %s no s'ha reservat."
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:532
+#: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
 msgstr "Adreça de correu electrònic no especificada"
 
-#: ../server/rhnUser.py:574
+#: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
-#: ../server/rhnUser.py:578
+#: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "El nom d'usuari ha de tenir menys de %d caràcters."
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "nom d'usuari = %s, caràcter no vàlid: %s"
 
-#: ../server/rhnUser.py:613
+#: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Limiteu l'adreça de correu electrònic a %s caràcters."
 
-#: ../server/rhnUser.py:701
+#: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "la contrasenya ha de tenir com a mínim %d caràcters"
 
-#: ../server/rhnUser.py:705
+#: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "La contrasenya ha de tenir menys de %d caràcters."
 
-#: ../server/rhnUser.py:721
+#: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
 msgstr "la contrasenya conté el caràcter %s"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "El nom d'usuari ha de tenir com a mínim %d caràcters."
 
-#: ../server/rhnUser.py:741
+#: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "No es poden registrar els noms d'usuari que acaben en %s."
