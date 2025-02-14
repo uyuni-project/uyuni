@@ -12,10 +12,14 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
+
 package com.redhat.rhn.manager.user;
 
 import com.redhat.rhn.common.conf.UserDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicyCheckFail;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationException;
+import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
@@ -25,7 +29,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -54,6 +57,7 @@ public class UpdateUserCommand {
 
     /**
      * Constructor
+     *
      * @param userToUpdate User that will get updated.
      */
     public UpdateUserCommand(User userToUpdate) {
@@ -81,6 +85,7 @@ public class UpdateUserCommand {
 
     /**
      * Updates the user's password, email, prefix, first and last names.
+     *
      * @return The user updated.
      */
     public User updateUser() {
@@ -89,7 +94,6 @@ public class UpdateUserCommand {
             validatePassword();
             validatePrefix();
             safePopulateUser();
-
             // ok update it
             UserManager.storeUser(user);
         }
@@ -122,33 +126,21 @@ public class UpdateUserCommand {
         }
     }
 
-    /**
-     * Private helper method to validate the password. This happens when the setPassword
-     * method of this class is called. Puts errors into the passwordErrors list.
-     */
+
     private void validatePassword() {
         if (!unencryptedPasswordChanged) {
-            return; // nothing to verify
+            return;
         }
-
-        String password = getUnencryptedPassword();
-        if (password == null || password.length() <
-                                    UserDefaults.get().getMinPasswordLength()) {
-            throw new IllegalArgumentException(LocalizationService.getInstance().
-                    getMessage("error.minpassword",
-                                    UserDefaults.get().getMinPasswordLength()));
+        if (unencryptedPassword == null) {
+            throw new IllegalArgumentException("Invalid password: can't be null");
         }
-        else if (password.length() > UserDefaults.get().getMaxPasswordLength()) {
-            throw new IllegalArgumentException(LocalizationService.getInstance().
-                    getMessage("error.maxpassword"));
+        else {
+            List<PasswordPolicyCheckFail> errors =
+                    PasswordValidationUtils.validatePasswordFromConfiguration(unencryptedPassword);
+            if (!errors.isEmpty()) {
+                throw new PasswordValidationException(errors);
+            }
         }
-
-        // Newlines and tab characters can slip through the API much easier than the UI:
-        if (Pattern.compile("[\\t\\n]").matcher(password).find()) {
-            throw new IllegalArgumentException(
-                "Password contains tab or newline characters.");
-        }
-
     }
 
     private void validatePrefix() {
@@ -194,10 +186,6 @@ public class UpdateUserCommand {
             needsUpdate = true;
             unencryptedPassword = passwordIn;
         }
-    }
-
-    private String getUnencryptedPassword() {
-        return unencryptedPassword;
     }
 
     /**

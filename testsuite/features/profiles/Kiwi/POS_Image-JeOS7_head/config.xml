@@ -68,6 +68,7 @@
         <package name="acl"/>
         <package name="chrony"/>
         <package name="curl"/>
+        <package name="procps"/>
         <package name="dracut"/>
         <package name="fipscheck"/>
         <package name="group(mail)"/>
@@ -94,12 +95,10 @@
         <package name="openssh"/>
         <package name="rsync"/>
         <package name="plymouth-plugin-label-ft"/>
-
         <package name="kernel-default"/>
-	<package name="salt-minion"/>
+        <package name="venv-salt-minion"/>
         <package name="hostname"/>
-
-	<package name="dracut-saltboot"/>
+        <package name="dracut-saltboot"/>
         <package name="mdadm"/>
         <package name="cryptsetup"/>
         <package name="kernel-firmware"/>

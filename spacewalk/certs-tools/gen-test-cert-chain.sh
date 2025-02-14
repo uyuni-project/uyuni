@@ -80,8 +80,15 @@ keyUsage = digitalSignature, keyEncipherment, keyCertSign
 extendedKeyUsage = serverAuth, clientAuth
 # PKIX recommendations harmless if included in all certificates.
 nsComment               = "SSL Generated Certificate"
-subjectKeyIdentifier    = hash
-authorityKeyIdentifier  = keyid, issuer:always
+
+[ req_server_csr_x509_extensions ]
+basicConstraints = CA:false
+keyUsage = digitalSignature, keyEncipherment
+extendedKeyUsage = serverAuth, clientAuth
+nsCertType = server
+# PKIX recommendations harmless if included in all certificates.
+nsComment               = "SSL Generated Certificate"
+subjectAltName          = \${ENV::subaltname}
 
 [ req_server_x509_extensions ]
 basicConstraints = CA:false
@@ -144,7 +151,7 @@ else
   openssl ecparam -genkey -name $PKEYALGO | openssl ec -aes256 -passout pass:$PASSWORD -out $DIR/private/$commonname.key
 fi
 
-openssl req -config $DIR/openssl.cnf -extensions req_server_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
+openssl req -config $DIR/openssl.cnf -extensions req_server_csr_x509_extensions -new -key $DIR/private/$commonname.key -out $DIR/requests/$commonname.csr -passin pass:$PASSWORD
 
 openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_server_x509_extensions -in $DIR/requests/$commonname.csr -keyfile $DIR/private/$TEAMCA.key \
         -cert $DIR/certs/$TEAMCA.crt -passin pass:$PASSWORD -out $DIR/certs/$commonname.crt -days 365 -batch

@@ -1,7 +1,7 @@
 [Unit]
 Description=Notify SUSE Manager about newly deployed image
-Requires=salt-minion.service
-After=salt-minion.service
+Requires=venv-salt-minion.service
+After=venv-salt-minion.service
 
 # only if there are no susemanager channels configured
 ConditionPathExists=!/etc/zypp/repos.d/susemanager:channels.repo

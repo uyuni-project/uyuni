@@ -17,7 +17,8 @@ package com.redhat.rhn.taskomatic.task.checkin;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 
 import org.apache.logging.log4j.LogManager;
@@ -51,7 +52,8 @@ public class CheckinCandidatesResolver {
      */
     public CheckinCandidatesResolver(String findCheckinCandidatesQueryIn) {
         this.findCheckinCandidatesQuery = findCheckinCandidatesQueryIn;
-        this.thresholdMax = SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L) *
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue() *
                 86400;
         this.thresholdMin = (int) (this.thresholdMax / 2);
         this.mean = this.thresholdMax;

@@ -22,7 +22,7 @@
 test -f /.kconfig && . /.kconfig
 test -f /.profile && . /.profile
 
-systemctl enable salt-minion.service
+systemctl enable venv-salt-minion.service
 
 # notify Uyuni about newly deployed image
 systemctl enable image-deployed.service

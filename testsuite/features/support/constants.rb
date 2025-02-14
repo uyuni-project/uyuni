@@ -977,6 +977,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-micro-5.5-updates-x86_64
         sle-manager-tools-for-micro5-pool-x86_64-5.5
         sle-manager-tools-for-micro5-updates-x86_64-5.5
+        sle-manager-tools-beta-for-micro5-pool-x86_64-5.5
+        sle-manager-tools-beta-for-micro5-updates-x86_64-5.5
       ],
     'sl-micro-6.0' =>
       %w[
@@ -1502,6 +1504,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-manager-tools15-updates-x86_64-sp6' => 120,
   'sle-manager-tools15-pool-aarch64-opensuse-15.6' => 120,
   'sle-manager-tools15-updates-aarch64-opensuse-15.6' => 120,
+  'sle-manager-tools-beta-for-micro5-pool-x86_64-5.5' => 60,
+  'sle-manager-tools-beta-for-micro5-updates-x86_64-5.5' => 60,
   'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 120,
   'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 120,
   'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 120,

@@ -205,25 +205,25 @@ fi
 }
 
 setup_spacewalk() {
-    CERT_COUNTRY=`echo -n $CERT_COUNTRY|tr '[:lower:]' '[:upper:]'`
+    # Deploy the SSL certificates
+    ssl_args=""
+    for intermediate in /ssl/intermediate*.crt; do
+        if test -f "$intermediate"; then
+            ssl_args="$ssl_args --intermediate-ca-file $intermediate"
+        fi
+    done
+    /usr/bin/mgr-ssl-cert-setup --skip-db --root-ca-file /ssl/ca.crt \
+        --server-cert-file /ssl/server.crt \
+        --server-key-file /ssl/server.key $ssl_args
 
-    [ -d "/etc/pki/trust/anchors" ] && CA_PATH=/etc/pki/trust/anchors || CA_PATH=/etc/pki/ca-trust/source/anchors
-    if [ -z "$REPORT_DB_CA_CERT" ]; then
-        REPORT_DB_CA_CERT="$CA_PATH/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
+        /usr/sbin/mgr-package-rpm-certificate-osimage
     fi
 
+    REPORT_DB_CA_CERT="/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
+
     echo "admin-email = $MANAGER_ADMIN_EMAIL
-ssl-set-org = $CERT_O
-ssl-set-org-unit = $CERT_OU
-ssl-set-city = $CERT_CITY
-ssl-set-state = $CERT_STATE
-ssl-set-country = $CERT_COUNTRY
-ssl-set-cnames = $CERT_CNAMES
-ssl-password = $CERT_PASS
-ssl-set-email = $CERT_EMAIL
 ssl-config-sslvhost = Y
-ssl-ca-cert-expiration = 10
-ssl-server-cert-expiration = 10
 db-backend=postgresql
 db-user=$MANAGER_USER
 db-password=$MANAGER_PASS
@@ -260,18 +260,9 @@ scc-pass = $SCC_PASS
     if [ "$NO_SSL" == "Y" ]; then
         echo "no-ssl = Y
 " >>/root/spacewalk-answers
-        PARAM_CC="$PARAM_CC --skip-ssl-cert-generation"
-
         sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
         echo "server.no_ssl = 1" >>/etc/rhn/rhn.conf
         sed '/<IfDefine SSL/,/<\/IfDefine SSL/d' -i /etc/apache2/listen.conf
-    else
-        echo "ssl-use-existing-certs = N" >> /root/spacewalk-answers
-
-        # check if CA Cert and Key exists and try to use it to generate the server certs
-        if [ -e /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT -a -e /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY ]; then
-                PARAM_CC="$PARAM_CC --skip-ssl-ca-generation"
-        fi
     fi
 
     /usr/bin/spacewalk-setup --clear-db $PARAM_CC --answer-file=/root/spacewalk-answers
@@ -283,9 +274,8 @@ scc-pass = $SCC_PASS
         echo "web.default_mail_from = $MANAGER_MAIL_FROM" >> /etc/rhn/rhn.conf
     fi
 
-    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-        /usr/sbin/mgr-package-rpm-certificate-osimage
-    fi
+    # The CA needs to be added to the database for Kickstart use.
+    /usr/bin/rhn-ssl-dbstore --ca-cert /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 
     # rm /root/spacewalk-answers
     if [ "$SWRET" != "0" ]; then
@@ -302,14 +292,6 @@ do_setup() {
         ask_input MANAGER_USER
         ask_input MANAGER_PASS
         ask_input MANAGER_ADMIN_EMAIL
-        ask_input CERT_CNAMES
-        ask_input CERT_O
-        ask_input CERT_OU
-        ask_input CERT_CITY
-        ask_input CERT_STATE
-        ask_input CERT_COUNTRY
-        ask_input CERT_EMAIL
-        ask_input CERT_PASS
         ask_input LOCAL_DB
         ask_input MANAGER_DB_NAME
         ask_input MANAGER_DB_HOST
@@ -409,12 +391,6 @@ do
     -h)
         help
        ;;
-    -s)
-        # Keep until removed from mgradm
-       ;;
-    -n)
-        # Keep until removed from mgradm
-        ;;
     *)
        echo
        echo "Option \"$p\" is not recognized. Type \"$PROGRAM -h\" for help."
