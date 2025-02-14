@@ -9151,6 +9151,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
       </trans-unit>
+      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
+        <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
+        <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
+        <source>Unable to store the token. Please check the server logs.</source>
+      </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>

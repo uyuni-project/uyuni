@@ -27,3 +27,9 @@ export type HubRegisterRequest = {
 export type ValidityRequest = {
   valid: boolean;
 };
+
+export type CreateTokenRequest = {
+  type: TokenType;
+  fqdn?: string;
+  token?: string;
+};
