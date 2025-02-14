@@ -1,59 +1,48 @@
 import { hot } from "react-hot-loader/root";
 
-import * as React from "react";
 import { useState } from "react";
 
-import { Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
-import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { HelpLink } from "components/utils";
 
-import { PeripheralsList } from "./iss_data_props";
-import IssPeripheralsList from "./list/iss-peripherals-list";
+import { HubDetailData } from "./iss_data_props";
 
-const IssHub = (peripheralsData: PeripheralsList) => {
-  const [peripherals] = useState(peripheralsData.peripherals);
+export type HubDetailsProps = {
+  hub: HubDetailData;
+};
+
+const HubDetails = (prop: HubDetailsProps) => {
+  const [hub] = useState(prop.hub);
 
   const title = (
     <div className="spacewalk-toolbar-h1">
       <h1>
         <i className="fa fa-cogs"></i>
         &nbsp;
-        {t("ISS - Hub Configuration")}
+        {t("Hub Details")}
         &nbsp;
-        <HelpLink url="reference/admin/iss-peripheral.html" />
+        <HelpLink url="reference/admin/hub/hub-details.html" />
       </h1>
     </div>
   );
-
-  const addPeripheral = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/iss/add/peripheral`);
-  };
-
-  let pageContent = <IssPeripheralsList peripherals={peripherals} />;
-
+  let pageContent = (
+    <>
+      <span>{t("Noo Hub is currently configured for this server.")}</span>
+      <span>{t("Refresh this page after configuring this server as a Peripheral to see the Hub details")}</span>
+    </>
+  );
+  if (hub != null) {
+    pageContent = <div>Hub FQDN: {hub.fqdn}</div>;
+  }
   return (
     <div className="responsive-wizard">
       {title}
-      <SectionToolbar>
-        <div className="action-button-wrapper">
-          <div className="btn-group">
-            <Button
-              id="addPeripheral"
-              icon="fa-plus"
-              className={"btn-success"}
-              text={t("Add Peripheral")}
-              handler={addPeripheral}
-            />
-          </div>
-        </div>
-      </SectionToolbar>
       <span>
-        <h1>Known Peripherals instances</h1>
+        <h1>Known Hub Instance</h1>
       </span>
       {pageContent}
     </div>
   );
 };
 
-export default hot(withPageWrapper(IssHub));
+export default hot(withPageWrapper(HubDetails));

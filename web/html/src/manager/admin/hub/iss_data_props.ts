@@ -1,21 +1,22 @@
-export type HubsList = {
-  hubs: HubData[];
+export type PeripheralsListProp = {
+  peripherals: PeripheralListData[];
 };
 
-export type PeripheralsList = {
-  peripherals: PeripheralData[];
-};
-
-export type HubData = {
-  fqdn: String;
-  defaultHub: boolean;
-  knownOrgs: number;
-  unmappedOrgs: number;
-};
-
-export type PeripheralData = {
+export type PeripheralListData = {
+  id: string;
   fqdn: string;
-  allowSync: boolean;
-  allowAllOrgs: boolean;
-  nOfOrgsExported: String;
+  nChannelsSync: number;
+  nAllChannels: number;
+  nOrgs: number;
 };
+
+export type HubDetailData = {
+  id: string;
+  fqdn: string;
+};
+
+export type PeripheralDetailData = {
+  id: string;
+  fqdn: string;
+};
+

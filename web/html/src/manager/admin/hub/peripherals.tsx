@@ -8,11 +8,11 @@ import withPageWrapper from "components/general/with-page-wrapper";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { HelpLink } from "components/utils";
 
-import { HubsList } from "./iss_data_props";
-import IssHubsList from "./list/iss-hubs-list";
+import { PeripheralsListProp } from "./iss_data_props";
+import PeripheralsList from "./list/peripherals-list";
 
-const IssPeripheral = (hubsList: HubsList) => {
-  const [hubs] = useState(hubsList.hubs);
+const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
+  const [peripherals] = useState(peripheralsList.peripherals);
 
   const title = (
     <div className="spacewalk-toolbar-h1">
@@ -26,11 +26,11 @@ const IssPeripheral = (hubsList: HubsList) => {
     </div>
   );
 
-  const addHub = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/iss/add/hub`);
+  const addPeripheral = () => {
+    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripheral/create`);
   };
 
-  let pageContent = <IssHubsList hubs={hubs} />;
+  let pageContent = <PeripheralsList peripherals={peripherals} />;
 
   return (
     <div className="responsive-wizard">
@@ -38,12 +38,18 @@ const IssPeripheral = (hubsList: HubsList) => {
       <SectionToolbar>
         <div className="action-button-wrapper">
           <div className="btn-group">
-            <Button id="addHub" icon="fa-plus" className={"btn-success"} text={t("Add Hub")} handler={addHub} />
+            <Button
+              id="addPeripheral"
+              icon="fa-plus"
+              className={"btn-success"}
+              text={t("Add Peripheral")}
+              handler={addPeripheral}
+            />
           </div>
         </div>
       </SectionToolbar>
       <span>
-        <h1>Known Hubs instances</h1>
+        <h1>Known Peripherals instances</h1>
       </span>
       {pageContent}
     </div>

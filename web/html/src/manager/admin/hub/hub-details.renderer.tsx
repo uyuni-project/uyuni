@@ -1,8 +1,8 @@
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { PeripheralData } from "./iss_data_props";
-import IssHub from "./iss-hubs";
+import HubDetails from "./hub-details";
+import { HubDetailData } from "./iss_data_props";
 
-export const renderer = (id: string, peripherals: PeripheralData[]) => {
-  SpaRenderer.renderNavigationReact(<IssHub peripherals={peripherals} />, document.getElementById(id));
+export const renderer = (id: string, hubDetailsData: HubDetailData) => {
+  SpaRenderer.renderNavigationReact(<HubDetails hub={hubDetailsData} />, document.getElementById(id));
 };

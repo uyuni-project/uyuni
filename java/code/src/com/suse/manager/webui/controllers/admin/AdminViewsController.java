@@ -30,6 +30,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.HubResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
@@ -38,9 +39,6 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -59,15 +57,12 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class AdminViewsController {
 
-    private static final Logger LOG = LogManager.getLogger(AdminViewsController.class);
-
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .serializeNulls()
             .create();
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
-
 
     private AdminViewsController() { }
 
@@ -118,8 +113,8 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        //TODO: request hub details
-        data.put("hub", null);
+        HubFactory hubFactory = new HubFactory();
+        data.put("hub", hubFactory.lookupIssHub().orElse(null));
         return new ModelAndView(data, "controllers/admin/templates/issv3/hub-details.jade");
     }
 
@@ -132,14 +127,9 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        //TODO: get from issperipherals
-        List<HubResponse> resp = new ArrayList<>() {{
-            HubResponse hub = new HubResponse("testfqdn", true, 1, 4);
-            this.add(hub);
-            this.add(hub);
-        }};
-        Type listType = new TypeToken<List<HubResponse>>() { }.getType();
-        data.put("hubs", GSON.toJson(resp, listType));
+        HubFactory hubFactory = new HubFactory();
+        Type listType = new TypeToken<List<IssPeripheral>>() { }.getType();
+        data.put("hubs", GSON.toJson(hubFactory.listPeripherals(), listType));
         return new ModelAndView(data, "controllers/admin/templates/issv3/list-peripherals.jade");
     }
 

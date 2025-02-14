@@ -6,8 +6,8 @@ export default {
   "admin/setup/payg": () => import("./payg/payg.renderer"),
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
-  "admin/iss/hub": () => import("./hub/iss-hubs.renderer"),
-  "admin/iss/peripheral": () => import("./hub/iss-peripherals.renderer"),
-  "admin/iss/add/hub": () => import("./hub/add/add-iss-hub.renderer"),
-  "admin/iss/add/peripheral": () => import("./hub/add/add-iss-peripheral.renderer"),
+  "admin/hub/hub-details": () => import("./hub/hub-details.renderer"),
+  "admin/hub/peripherals": () => import("./hub/peripherals.renderer"),
+  "admin/hub/peripheral/create": () => import("./hub/add/add-peripheral.renderer"),
+  "admin/hub/peripheral/update": () => import("./hub/details/peripheral-details.renderer"),
 };

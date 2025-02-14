@@ -10,10 +10,9 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-import { PeripheralsList } from "../iss_data_props";
-import { Check, Radio } from "components/input";
+import { PeripheralListData, PeripheralsListProp } from "../iss_data_props";
 
-const IssHubsList = (peripheralsList: PeripheralsList) => {
+const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
   const [peripherals] = useState(peripheralsList.peripherals);
 
   const searchData = (row, criteria) => {
@@ -38,23 +37,37 @@ const IssHubsList = (peripheralsList: PeripheralsList) => {
         comparator={Utils.sortByText}
         header={t("Peripherals FQDN")}
         cell={(row) => (
-          <a className="js-spa" href={`/rhn/manager/admin/iss/peripheral/${row.id}`}>
+          <a className="js-spa" href={`/rhn/manager/admin/hub/peripheral/${row.id}`}>
             {row.fqdn}
           </a>
         )}
       />
       <Column
-        columnKey="defaultHub"
-        header={t("Is Default Hub?")}
-        cell={(row) => <Radio items={[{ label: "is", value: row.defaultHub }]} />}
+        columnKey="nChannelsSync"
+        comparator={Utils.sortByNumber}
+        header={t("N. of Sync Channels")}
+        cell={(row: PeripheralListData) => <span>{row.nChannelsSync}</span>}
       />
-
-      <Column columnKey="knownOrgs" header={t("Know Orgs")} cell={(row) => row.knownOrgs} />
       <Column
-        columnKey="unmappedOrgs"
-        comparator={Utils.sortByText}
-        header={t("UnmappedOrgs")}
-        cell={(row) => row.unmappedOrgs}
+        columnKey="nAllChannels"
+        comparator={Utils.sortByNumber}
+        header={t("N. of All Channels")}
+        cell={(row: PeripheralListData) => <span>{row.nAllChannels}</span>}
+      />
+      <Column
+        columnKey="nOrgs"
+        comparator={Utils.sortByNumber}
+        header={t("N. of All Organizzation")}
+        cell={(row: PeripheralListData) => <span>{row.nOrgs}</span>}
+      />
+      <Column
+        columnKey="id"
+        header={t("Download CA")}
+        cell={(row) => (
+          <a className="js-spa" href="_blank">
+            DL by {row.id}
+          </a>
+        )}
       />
     </Table>
   );
@@ -62,4 +75,4 @@ const IssHubsList = (peripheralsList: PeripheralsList) => {
   return componentContent;
 };
 
-export default hot(withPageWrapper(IssHubsList));
+export default hot(withPageWrapper(IssPeripheralsList));
