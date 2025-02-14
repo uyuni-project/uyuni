@@ -8,4 +8,5 @@ export default {
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
   "admin/hub/register-peripheral": () => import("./hub/register-peripheral.renderer"),
+  "admin/hub/list-tokens": () => import("./hub/list-tokens.renderer"),
 };
