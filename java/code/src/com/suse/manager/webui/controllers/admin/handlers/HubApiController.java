@@ -14,8 +14,10 @@ package com.suse.manager.webui.controllers.admin.handlers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -27,10 +29,12 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.InvalidResponseException;
 import com.suse.manager.model.hub.AccessTokenDTO;
+import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
@@ -91,6 +95,8 @@ public class HubApiController {
     public void initRoutes() {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
+        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -169,6 +175,36 @@ public class HubApiController {
         List<AccessTokenDTO> accessTokens = hubManager.listAccessToken(user, pc);
         TypeToken<PagedDataResultJson<AccessTokenDTO, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(accessTokens, totalSize, Collections.emptySet()), type);
+    }
+
+    private String setAccessTokenValidity(Request request, Response response, User user) {
+        ValidityRequest validityRequest = GSON.fromJson(request.body(), ValidityRequest.class);
+        long tokenId = Long.parseLong(request.params("id"));
+
+        IssAccessToken issAccessToken = hubManager.lookupAccessTokenById(user, tokenId).orElse(null);
+        if (issAccessToken == null) {
+            return notFound(response, LOC.getMessage("hub.invalid_token_id"));
+        }
+
+        if (issAccessToken.isValid() == validityRequest.isValid()) {
+            return badRequest(response, LOC.getMessage("hub.invalid_token_state"));
+        }
+
+        issAccessToken.setValid(validityRequest.isValid());
+        hubManager.updateToken(user, issAccessToken);
+
+        return success(response, ResultJson.success(issAccessToken.getModified()));
+    }
+
+    private String deleteAccessToken(Request request, Response response, User user) {
+        long tokenId = Long.parseLong(request.params("id"));
+
+        boolean result = hubManager.deleteAccessToken(user, tokenId);
+        if (!result) {
+            return badRequest(response, LOC.getMessage("hub.unable_delete_token"));
+        }
+
+        return success(response);
     }
 
     private static HubRegisterRequest validateRegisterRequest(HubRegisterRequest parsedRequest) {
