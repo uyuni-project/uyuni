@@ -122,9 +122,33 @@ def init_scc_login():
         # scc expects either a SCC machine login (must exists in SCC)
         # or a UUID4 following rfc4122 to identify a anonyme proxy
         uuid_num = str(uuid.uuid4())
-    with open("/etc/rhn/rhn.conf", "a", encoding="utf8") as r:
-        r.write("\n")
-        r.write(f"server.susemanager.scc_backup_srv_usr = {uuid_num}\n")
+    write_scc_config(uuid_num)
+
+# ugly way to ensure server.susemanager.scc_backup_srv_usr stays unique
+def write_scc_config(uuid_num):
+    conf_file = "/etc/rhn/rhn.conf"
+    key = "server.susemanager.scc_backup_srv_usr"
+    new_line = f"{key} = {uuid_num}\n"
+    if os.path.exists(conf_file):
+        with open(conf_file, "r", encoding="utf8") as file:
+            lines = file.readlines()
+    else:
+        lines = []
+    updated = False
+    for i, line in enumerate(lines):
+        if key in line:
+            lines[i] = new_line
+            updated = True
+            break  # if there's only one occurrence, you can exit the loop
+    # If the key wasn't found, append the new line at the end
+    if not updated:
+        # Ensure the file ends with a newline
+        if lines and not lines[-1].endswith("\n"):
+            lines[-1] += "\n"
+        lines.append(new_line)
+    # Write the updated contents back to the file
+    with open(conf_file, "w", encoding="utf8") as file:
+        file.writelines(lines)
 
 
 def import_suma_gpg_keyring():
