@@ -238,7 +238,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
     'deblike_minion' => 'ubuntu-2004-amd64-main for amd64',
     'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
@@ -313,7 +313,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
     'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
     'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'buildhost' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_buildhost' => 'SLES12-SP5-Pool for x86_64',
@@ -383,7 +383,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'sle_minion' => 'Fake-Base-Channel-SUSE-like',
     'pxeboot_minion' => 'Fake-Base-Channel-SUSE-like',
     'proxy' => 'Fake-Base-Channel-SUSE-like',
-    'buildhost' => 'Fake-Base-Channel-SUSE-like'
+    'build_host' => 'Fake-Base-Channel-SUSE-like'
   }
 }.freeze
 

@@ -4,7 +4,7 @@
 # This feature depends on:
 # - features/secondary/min_docker_api.feature
 
-@buildhost
+@build_host
 @scope_building_container_images
 @auth_registry
 Feature: Build image with authenticated registry
@@ -20,7 +20,7 @@ Feature: Build image with authenticated registry
     And I enter URI, username and password for registry
     And I click on "create-btn"
     Then I wait until I see "registry" text
-  
+
   @scc_credentials
   Scenario: Create a profile for the authenticated image store as Docker admin
     When I follow the left menu "Images > Profiles"
@@ -66,4 +66,3 @@ Feature: Build image with authenticated registry
 
   Scenario: Cleanup: delete registry image
     When I delete the image "auth_registry_profile" with version "latest" via API calls
-

@@ -16,7 +16,7 @@
 # If the image is not created, the message shown is "There are no entries to show."
 
 @skip_if_cloud
-@buildhost
+@build_host
 @scope_retail
 @scope_building_container_images
 @scc_credentials

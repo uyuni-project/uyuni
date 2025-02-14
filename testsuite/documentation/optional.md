@@ -81,7 +81,7 @@ and then run the test suite.
 Inside of the test suite, the scenarios that are tagged with
 
 ```
-@buildhost
+@build_host
 ```
 
 are executed only if the Docker and Kiwi build host is available.
