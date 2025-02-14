@@ -9142,6 +9142,15 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="hub.invalid_token_id" xml:space="preserve">
+        <source>The specified access token does not exist.</source>
+      </trans-unit>
+      <trans-unit id="hub.invalid_token_state" xml:space="preserve">
+        <source>The specified access token is in an invalid state.</source>
+      </trans-unit>
+      <trans-unit id="hub.unable_delete_token" xml:space="preserve">
+        <source>Unable to delete a token with the specified id</source>
+      </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>
