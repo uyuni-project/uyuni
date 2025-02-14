@@ -174,9 +174,7 @@ public class SCCEndpoints {
      * @return return unscoped json as string
      */
     public String unscoped(Request request, Response response, HubSCCCredentials credentials) {
-        var hostname = ConfigDefaults.get().getJavaHostname();
-        return serveEndpoint(c -> c.listProducts().stream()
-                .map(product -> adjustProduct(product, hostname)).toList());
+        return serveEndpoint(SCCClient::listProducts);
     }
 
     private void refreshTokens(List<IssPeripheral> peripherals) {
@@ -224,7 +222,7 @@ public class SCCEndpoints {
         json.setEnabled(true);
         json.setName(label);
         json.setDescription("");
-        json.setUrl("https://" + hostname + "/rhn/manager/download/" + label + "?" + token);
+        json.setUrl("https://" + hostname + "/rhn/manager/download/" + label + "/?" + token);
         json.setInstallerUpdates(false);
         json.setAutorefresh(false);
         json.setDistroTarget("");
@@ -256,7 +254,8 @@ public class SCCEndpoints {
                 json.setEnabled(channelTemplate.isMandatory());
                 json.setName(repository.getName());
                 json.setDescription(repository.getDescription());
-                json.setUrl("https://" + hostname + "/rhn/manager/download/" + label + "?" + token);
+                json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/?%3$s".formatted(
+                        hostname, repository.getSccId(), token));
                 json.setInstallerUpdates(repository.isInstallerUpdates());
                 json.setAutorefresh(repository.isAutorefresh());
                 json.setDistroTarget(repository.getDistroTarget());
