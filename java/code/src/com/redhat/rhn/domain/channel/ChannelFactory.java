@@ -180,6 +180,26 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all available Vendor Channels created from a given SCC repository ID
+     * @param sccId the SCC Repository ID
+     * @return return a list of available {@link Channel}s for this SCC repository ID
+     */
+    public static List<Channel> findVendorChannelBySccId(Long sccId) {
+        return getSession().createNativeQuery("""
+                SELECT c.*, cl.original_id,
+                CASE WHEN cl.original_id IS NULL THEN 0 ELSE 1 END AS clazz_
+                FROM suseSCCRepository r
+                JOIN suseChannelTemplate ct ON r.id = ct.repo_id
+                JOIN rhnChannel c on c.label = ct.channel_label
+                LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
+                WHERE r.scc_id = :sccId
+                ORDER BY c.label
+                """, Channel.class)
+                .setParameter("sccId", sccId)
+                .list();
+    }
+
+    /**
      * Lookup a content source by org/channel
      * @param org the org to lookup
      * @param c the channel
