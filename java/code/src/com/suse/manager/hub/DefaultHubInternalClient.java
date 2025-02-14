@@ -26,6 +26,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.RequestBuilder;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 
@@ -35,6 +37,7 @@ import java.io.Reader;
 import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -66,79 +69,75 @@ public class DefaultHubInternalClient implements HubInternalClient {
 
     @Override
     public void registerHub(String token, String rootCA, String gpgKey) throws IOException {
-        invokePostMethod("hub/sync", "registerHub", new RegisterJson(token, rootCA, gpgKey), Void.class);
+        invokePost("hub/sync", "registerHub", new RegisterJson(token, rootCA, gpgKey));
     }
 
     @Override
     public void storeCredentials(String username, String password) throws IOException {
-        invokePostMethod("hub/sync", "storeCredentials", new SCCCredentialsJson(username, password), Void.class);
+        invokePost("hub/sync", "storeCredentials", new SCCCredentialsJson(username, password));
     }
 
     @Override
     public ManagerInfoJson getManagerInfo() throws IOException {
-        return invokeGetMethod("hub", "managerinfo", ManagerInfoJson.class);
+        return invokeGet("hub", "managerinfo", ManagerInfoJson.class);
     }
 
     @Override
     public void storeReportDbCredentials(String username, String password) throws IOException {
-        invokePostMethod("hub", "storeReportDbCredentials",
-                Map.of("username", username, "password", password), Void.class);
+        invokePost("hub", "storeReportDbCredentials", Map.of("username", username, "password", password));
     }
 
     @Override
     public String replaceTokens(String newHubToken) throws IOException {
-        return invokePostMethod("hub/sync", "replaceTokens", newHubToken, String.class);
+        return invokePost("hub/sync", "replaceTokens", newHubToken, String.class);
     }
 
     @Override
     public void deregister() throws IOException {
-        invokePostMethod("hub/sync", "deregister", null, Void.class);
+        invokePost("hub/sync", "deregister", null);
     }
 
-    private <R> R invokeGetMethod(String namespace, String apiMethod, Class<R> responseClass)
+    private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)
             throws IOException {
-        HttpGet request = new HttpGet(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
-        request.setHeader("Authorization", "Bearer " + accessToken);
-
-        HttpResponse response = httpClientAdapter.executeRequest(request);
-        int statusCode = response.getStatusLine().getStatusCode();
-        // Ensure we get a valid response
-        if (statusCode != HttpStatus.SC_OK) {
-            throw new IOException("Unexpected response code %d".formatted(statusCode));
-        }
-
-        // Parse the response object, if specified
-        if (!Void.class.equals(responseClass)) {
-            try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
-                return GSON.fromJson(responseReader, responseClass);
-            }
-        }
-
-        return null;
+        return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseClass);
     }
 
-    private <Q, R> R invokePostMethod(String namespace, String apiMethod, Q requestObject,
-                                      Class<R> responseClass) throws IOException {
-        HttpPost request = new HttpPost(("https://%s/rhn/%s/%s").formatted(remoteHost, namespace, apiMethod));
-        request.setHeader("Authorization", "Bearer " + accessToken);
+    private <T> void invokePost(String namespace, String apiMethod, T requestObject) throws IOException {
+        invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, Void.class);
+    }
+
+    private <T, R> R invokePost(String namespace, String apiMethod, T requestObject, Class<R> responseClass)
+        throws IOException {
+        return invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, responseClass);
+    }
+
+    private <T, R> R invoke(String httpMethod, String namespace, String apiMethod, T requestObject,
+                            Class<R> responseClass) throws IOException {
+        RequestBuilder builder = RequestBuilder.create(httpMethod)
+            .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
+            .setHeader("Authorization", "Bearer " + accessToken);
 
         // Add the request object, if specified
         if (requestObject != null) {
             String body = GSON.toJson(requestObject, new TypeToken<>() { }.getType());
-            request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
+            builder.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
         }
 
+        HttpRequestBase request = (HttpRequestBase) builder.build();
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
         // Ensure we get a valid response
         if (statusCode != HttpStatus.SC_OK) {
-            throw new IOException("Unexpected response code %d".formatted(statusCode));
+            throw new InvalidResponseException("Unexpected response code %d".formatted(statusCode));
         }
 
         // Parse the response object, if specified
         if (!Void.class.equals(responseClass)) {
             try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
-                return GSON.fromJson(responseReader, responseClass);
+                return Objects.requireNonNull(GSON.fromJson(responseReader, responseClass));
+            }
+            catch (Exception ex) {
+                throw new InvalidResponseException("Unable to parse the JSON response", ex);
             }
         }
 
