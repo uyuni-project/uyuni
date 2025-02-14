@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-23 15:55+0100\n"
-"PO-Revision-Date: 2024-10-17 02:48+0000\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"PO-Revision-Date: 2025-02-12 09:25+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/"
 ">\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../src/spacecmd/activationkey.py:50
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -7277,13 +7277,11 @@ msgstr "사용법: system_rename OLDNAME NEWNAME"
 
 #: ../src/spacecmd/system.py:2061
 msgid "system_refreshpillar: Refresh pillar data of system(s) "
-msgstr ""
+msgstr "system_refreshpillar: 시스템의 열 데이터 새로 고침 "
 
 #: ../src/spacecmd/system.py:2062
-#, fuzzy
-#| msgid "usage: system_details <SYSTEMS>"
 msgid "usage: system_refreshpillar [<SYSTEMS>]"
-msgstr "사용법: system_details <SYSTEMS>"
+msgstr "사용법: system_refreshpillar [<SYSTEMS>]"
 
 #: ../src/spacecmd/system.py:2100
 msgid "system_listcustomvalues: List the custom values for a system"

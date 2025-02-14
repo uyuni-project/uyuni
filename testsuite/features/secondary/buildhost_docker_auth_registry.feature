@@ -5,6 +5,7 @@
 # - features/secondary/min_docker_api.feature
 
 @skip_if_github_validation
+
 @build_host
 @scope_building_container_images
 @auth_registry

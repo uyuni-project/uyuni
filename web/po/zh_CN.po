@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
-"PO-Revision-Date: 2025-01-16 03:50+0000\n"
-"Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"PO-Revision-Date: 2025-02-13 21:50+0000\n"
+"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
 "Language: zh_CN\n"
@@ -146,7 +146,7 @@ msgstr "添加到："
 
 #: ../html/src/components/action-schedule.tsx:298
 msgid "Loading the scheduler..."
-msgstr "正在装载日程安排程序..."
+msgstr "正在加载日程安排程序..."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 msgid "Attestations"
@@ -285,6 +285,7 @@ msgstr "流程输出"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -294,7 +295,7 @@ msgstr "保存"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:87
 msgid "Reset Changes"
-msgstr "重设置更改"
+msgstr "重置更改"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:100
 msgid "Enable attestation"
@@ -441,9 +442,11 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
-msgstr "重设置"
+msgstr "重置"
 
 #: ../html/src/components/formulas/PasswordInput.tsx:70
 msgid "Generate new password"
@@ -1090,7 +1093,7 @@ msgstr "帮助"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:634
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:635
 msgid "Loading..."
-msgstr "正在装载..."
+msgstr "正在加载..."
 
 #: ../html/src/components/utils/loading/text-border.stories.tsx:7
 #: ../html/src/components/utils/loading/text.stories.tsx:7
@@ -1151,31 +1154,31 @@ msgstr "发生了内部错误。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:27
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr "启用监视失败。有关细节，请查看服务器日志。"
+msgstr "启用监控失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:29
 msgid ""
 "Failed to enable all monitoring services. Some services are still disabled. "
 "See the server logs for details."
-msgstr "无法启用所有监视服务。某些服务仍已禁用。有关细节，请查看服务器日志。"
+msgstr "无法启用所有监控服务。某些服务仍已禁用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:31
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr "禁用监视失败。有关细节，请查看服务器日志。"
+msgstr "禁用监控失败。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid ""
 "Failed to disable all monitoring services. Some services are still enabled. "
 "See the server logs for details."
-msgstr "无法禁用所有监视服务。某些服务仍已已启用。有关细节，请查看服务器日志。"
+msgstr "无法禁用所有监控服务。某些服务仍已已启用。有关细节，请查看服务器日志。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "Monitoring enabled successfully."
-msgstr "已成功启用监视。"
+msgstr "已成功启用监控。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:36
 msgid "Monitoring disabled successfully."
-msgstr "已成功禁用监视。"
+msgstr "已成功禁用监控。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid ""
@@ -1201,11 +1204,11 @@ msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
-msgstr "监视状态未更改。"
+msgstr "监控状态未更改。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr "发生错误。监视状态未知。请刷新页面。"
+msgstr "发生错误。监控状态未知。请刷新页面。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:62
 msgid "Tomcat (Java JMX)"
@@ -1221,7 +1224,7 @@ msgstr "PostgreSQL 数据库"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:65
 msgid "Server self monitoring"
-msgstr "服务器自我监视"
+msgstr "服务器自我监控"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:81
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:83
@@ -1236,7 +1239,7 @@ msgstr "已禁用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:157
 msgid "Server Monitoring"
-msgstr "服务器监视"
+msgstr "服务器监控"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:159
 msgid "The server uses "
@@ -1248,7 +1251,7 @@ msgstr "Prometheus"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:163
 msgid " exporters to expose metrics about your environment."
-msgstr " 导出器显示有关您的环境的度量。"
+msgstr " 导出器显示有关您的环境的指标。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:166
 msgid "Refer to the "
@@ -1260,7 +1263,7 @@ msgstr "文档"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:174
 msgid " to learn how to consume these metrics."
-msgstr " 了解如何使用这些度量。"
+msgstr " 了解如何使用这些指标。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:258
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:278
@@ -1278,11 +1281,11 @@ msgstr "禁用"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:341
 msgid "SUSE Manager Configuration - Monitoring"
-msgstr "SUSE Manager 配置 - 监视"
+msgstr "SUSE Manager 配置 - 监控"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:346
 msgid "Setup your SUSE Manager server monitoring."
-msgstr "设置 SUSE Manager 服务器监视。"
+msgstr "设置 SUSE Manager 服务器监控。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:352
 msgid "General"
@@ -1305,16 +1308,22 @@ msgid "Cobbler"
 msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
 msgid "Monitoring"
-msgstr "监视"
+msgstr "监控"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:405
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#, fuzzy
+#| msgid "Password"
+msgid "Password Policy"
+msgstr "口令"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
 msgstr "重启动"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:406
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1380,6 +1389,76 @@ msgstr "从不"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "添加 PAYG 连接"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+msgid "Server Configuration - Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+msgid "Set up your server local users password policy."
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#, fuzzy
+#| msgid "Provider Settings"
+msgid "Password Policy Settings"
+msgstr "提供程序设置"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+msgid "Min Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+msgid "Max Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#, fuzzy
+#| msgid "Requires Reboot"
+msgid "Require Digits"
+msgstr "需要重引导"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+msgid "Require Lowercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+msgid "Require Uppercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+msgid "Restrict Consecutive Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#, fuzzy
+#| msgid "Required channels"
+msgid "Require Special Characters"
+msgstr "必需的通道"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+msgid "Allowed Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+msgid "Restrict Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+msgid "Max Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+msgid "Save Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+msgid "Password Policy Changed"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
+msgid "Password Policy reset to defaults"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1673,28 +1752,24 @@ msgstr "同步失败"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "保存并校验"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
-#, fuzzy
-#| msgid "Node Hostname"
 msgid "HTTP Proxy Hostname"
-msgstr "节点主机名"
+msgstr "HTTP 代理主机名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
-#, fuzzy
-#| msgid "Host name"
 msgid "hostname:port"
-msgstr "主机名"
+msgstr "主机名:端口"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid ""
 "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
+msgstr "例如：<code>example.com:8080</code> 或 <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "HTTP 代理用户名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1705,18 +1780,16 @@ msgstr "用户名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "HTTP 代理口令"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "安装代理服务器"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "代理"
+msgstr "HTTP 代理"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
@@ -1724,24 +1797,24 @@ msgid ""
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
 msgstr ""
+"如果此服务器通过 HTTP 代理访问网络外部，您可以使用此表单进行配置，否则，请转"
+"到<link>组身份凭证织</link>。"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "校验代理设置"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "成功校验代理设置"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "代理设置无效"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
-#, fuzzy
-#| msgid "Organization Unit"
 msgid "Organization Credentials"
-msgstr "组织单位"
+msgstr "组织身份凭证"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
@@ -1749,10 +1822,8 @@ msgid "Products"
 msgstr "产品"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Add PAYG Connection"
 msgid "PAYG Connections"
-msgstr "添加 PAYG 连接"
+msgstr "PAYG 连接"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
@@ -1848,7 +1919,7 @@ msgstr "目前没有任何任务在服务器上运行。"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:110
 #: ../html/src/manager/notifications/notification-messages.tsx:559
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr "会话已失效，请重新装载页面以查看最新数据。"
+msgstr "会话已失效，请重新加载页面以查看最新数据。"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:263
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:112
@@ -2625,11 +2696,11 @@ msgstr "使用中的项目"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
-msgstr "根据特定系统在线增补"
+msgstr "根据特定系统实时修补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:36
 msgid "Live patching based on a SUSE product"
-msgstr "根据 SUSE 产品在线增补"
+msgstr "根据 SUSE 产品实时修补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
@@ -2980,7 +3051,7 @@ msgstr "构建时间"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:32
 msgid "Loading global filters..."
-msgstr "正在装载全局过滤器..."
+msgstr "正在加载全局过滤器..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:36
 msgid "Updating project filters..."
@@ -3801,7 +3872,7 @@ msgstr "已更新"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:32
 msgid "Loading runtime information..."
-msgstr "正在装载运行时信息..."
+msgstr "正在加载运行时信息..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:66
 msgid "Instance is consistent with SUSE Manager"
@@ -3946,10 +4017,8 @@ msgid ""
 msgstr "发掘通过一个界面管理服务器、软件包、补丁等资源的新方式。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "了解 {product} 的<link>详细信息</link>。"
+msgstr "了解 {productName} 的<link>详细信息</link>。"
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -3961,11 +4030,11 @@ msgstr "登录"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "版权声明"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} 版本：{versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -3984,18 +4053,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "登录正在进行，您确定要关闭此页面吗？"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "了解 {product} 的<link>详细信息</link>。"
+msgstr "了解 {productName} 的详细信息："
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "查看网站"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "关于"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4312,12 +4379,12 @@ msgstr "引导"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:225
 msgid "Loading content.."
-msgstr "正在装载内容..."
+msgstr "正在加载内容..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:57
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:48
 msgid "An error occurred while loading data. Please check server logs."
-msgstr "装载数据时出错。请查看服务器日志。"
+msgstr "加载数据时出错。请查看服务器日志。"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:159
 msgid ""
@@ -4355,7 +4422,7 @@ msgstr "未配置任何设置。请在以下位置添加路径 "
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:81
 msgid "Loading playbook contents.."
-msgstr "正在装载剧本内容..."
+msgstr "正在加载剧本内容..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:87
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:200
@@ -4586,7 +4653,7 @@ msgstr "PAYG 实例不合规"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:64
 msgid "SCC Data Sync Disabled"
-msgstr ""
+msgstr "SCC 数据同步功能已禁用"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:245
 #: ../html/src/manager/notifications/notification-messages.tsx:246
@@ -5315,7 +5382,7 @@ msgstr "SUSE Manager Default"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:58
 msgid "Loading child channels.."
-msgstr "正在装载子通道..."
+msgstr "正在加载子通道..."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:107
 msgid "Base Channel:"
@@ -5426,7 +5493,7 @@ msgstr "您的系统正在引导：正在等待响应..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:390
 msgid "Loading SSH Private Key.."
-msgstr "正在装载 SSH 私用密钥..."
+msgstr "正在加载 SSH 私用密钥..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:398
 #: ../html/src/manager/systems/list-filter.tsx:13
@@ -5617,7 +5684,7 @@ msgstr "管理"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr "受监视主机"
+msgstr "受监控主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
 msgid "OS Image Build Host"
@@ -6044,12 +6111,12 @@ msgstr "添加虚拟主机管理器"
 
 #: ../html/src/utils/network.ts:97
 msgid "Session expired, please reload the page."
-msgstr "会话已失效，请重新装载页面。"
+msgstr "会话已失效，请重新加载页面。"
 
 #: ../html/src/utils/network.ts:99
 msgid ""
 "Authorization error, please reload the page or try to logout/login again."
-msgstr "授权错误，请重新装载页面或重试注销/登录。"
+msgstr "授权错误，请重新加载页面或重试注销/登录。"
 
 #: ../html/src/utils/network.ts:101
 msgid "Resource not found."
@@ -6863,9 +6930,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Select management node"
 #~ msgstr "选择管理节点"
-
-#~ msgid "Provider Settings"
-#~ msgstr "提供程序设置"
 
 #~ msgid "Provider:"
 #~ msgstr "提供程序："
