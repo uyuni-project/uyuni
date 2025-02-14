@@ -79,6 +79,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/access-tokens",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
 
     /**
@@ -185,5 +187,9 @@ public class AdminViewsController {
      */
     private static ModelAndView registerPeripheral(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/hub_register_peripheral.jade");
+    }
+
+    private static ModelAndView listAccessTokens(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/iss_token_list.jade");
     }
 }

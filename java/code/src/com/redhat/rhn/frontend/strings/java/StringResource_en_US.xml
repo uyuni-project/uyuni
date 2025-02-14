@@ -9106,6 +9106,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
       </trans-unit>
+      <trans-unit id="hub.tokenType.issued">
+        <source>Issued</source>
+      </trans-unit>
+      <trans-unit id="hub.tokenType.consumed">
+        <source>Consumed</source>
+      </trans-unit>
       <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
       </trans-unit>
