@@ -32,7 +32,9 @@ import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
+import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -40,6 +42,7 @@ import com.suse.manager.webui.utils.PageControlHelper;
 import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
+import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
@@ -95,6 +98,7 @@ public class HubApiController {
     public void initRoutes() {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
     }
@@ -177,6 +181,48 @@ public class HubApiController {
         return json(GSON, response, new PagedDataResultJson<>(accessTokens, totalSize, Collections.emptySet()), type);
     }
 
+    private String createToken(Request request, Response response, User user) {
+        CreateTokenRequest tokenRequest;
+
+        try {
+            tokenRequest = validateCreationRequest(GSON.fromJson(request.body(), CreateTokenRequest.class));
+        }
+        catch (JsonSyntaxException ex) {
+            LOGGER.error("Unable to parse JSON request", ex);
+            return badRequest(response, LOC.getMessage("hub.invalid_request"));
+        }
+
+        switch (tokenRequest.getType()) {
+            case ISSUED -> {
+                try {
+                    String serializedToken = hubManager.issueAccessToken(user, tokenRequest.getFqdn());
+                    return success(response, ResultJson.success(serializedToken));
+                }
+                catch (TokenException | RuntimeException ex) {
+                    LOGGER.error("Error while attempting to issue a token for {}", tokenRequest.getFqdn(), ex);
+                    return internalServerError(response, "hub.unable_to_issue_token");
+                }
+            }
+            case CONSUMED -> {
+                try {
+                    hubManager.storeAccessToken(user, tokenRequest.getFqdn(), tokenRequest.getToken());
+                    return success(response, ResultJson.success(tokenRequest.getToken()));
+                }
+                catch (TokenParsingException ex) {
+                    LOGGER.error("Unable to parse the token of request {}", tokenRequest, ex);
+                    return badRequest(response, "hub.unable_to_parse_token");
+                }
+                catch (RuntimeException ex) {
+                    LOGGER.error("Unable to process the store token request {}", tokenRequest, ex);
+                    return internalServerError(response, "hub.unable_to_store_token");
+                }
+            }
+            default -> {
+                return badRequest(response, "hub.invalid_request");
+            }
+        }
+    }
+
     private String setAccessTokenValidity(Request request, Response response, User user) {
         ValidityRequest validityRequest = GSON.fromJson(request.body(), ValidityRequest.class);
         long tokenId = Long.parseLong(request.params("id"));
@@ -219,5 +265,28 @@ public class HubApiController {
         }
 
         return parsedRequest;
+    }
+
+    private static CreateTokenRequest validateCreationRequest(CreateTokenRequest request) {
+        if (request == null) {
+            throw new JsonSyntaxException("Request is empty");
+        }
+
+        if (StringUtils.isEmpty(request.getFqdn()) || request.getType() == null) {
+            throw new JsonSyntaxException("Missing required field");
+        }
+
+        // Check if the token field is consistent with the type requested
+        boolean tokenPresent = StringUtils.isNotEmpty(request.getToken());
+
+        if (request.getType() == TokenType.ISSUED && tokenPresent) {
+            throw new JsonSyntaxException("Token must be null when creating an ISSUED token");
+        }
+
+        if (request.getType() == TokenType.CONSUMED && !tokenPresent) {
+            throw new JsonSyntaxException("Token is required when creating a CONSUMED token");
+        }
+
+        return request;
     }
 }
