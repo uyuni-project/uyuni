@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.controllers.admin;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
@@ -80,6 +77,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
         get("/manager/admin/setup/proxy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
+        get("/manager/admin/hub/peripherals/register",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
     }
 
     /**
@@ -175,5 +174,16 @@ public class AdminViewsController {
         ProxySettingsDto proxySettings = ProxySettingsManager.getProxySettings();
         data.put("proxySettings", GSON.toJson(proxySettings));
         return new ModelAndView(data, "controllers/admin/templates/proxy.jade");
+    }
+
+    /**
+     * Register a new ISSv3 server as hub or peripheral
+     * @param request the request
+     * @param response the response
+     * @param user the logged-in user
+     * @return the registration form
+     */
+    private static ModelAndView registerPeripheral(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/hub_register_peripheral.jade");
     }
 }
