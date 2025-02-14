@@ -297,7 +297,7 @@ Before('@ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ssh_minion']
 end
 
-Before('@buildhost') do
+Before('@build_host') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['build_host']
 end
 

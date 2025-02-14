@@ -17,7 +17,7 @@
 
 @skip_if_github_validation
 @skip_if_cloud
-@buildhost
+@build_host
 @scope_retail
 @scope_building_container_images
 @scc_credentials
