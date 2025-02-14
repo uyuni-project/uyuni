@@ -39,6 +39,10 @@ export class TokenTable extends React.Component<Props, State> {
     };
   }
 
+  public refresh(): void {
+    this.tableRef.current?.refresh();
+  }
+
   public render(): React.ReactNode {
     return (
       <Table
