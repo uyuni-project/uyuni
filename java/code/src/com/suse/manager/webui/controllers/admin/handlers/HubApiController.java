@@ -13,21 +13,27 @@ package com.suse.manager.webui.controllers.admin.handlers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.InvalidResponseException;
+import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.PageControlHelper;
+import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -35,6 +41,7 @@ import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -42,7 +49,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.net.ssl.SSLException;
 
@@ -81,6 +90,7 @@ public class HubApiController {
      */
     public void initRoutes() {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
+        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -148,6 +158,17 @@ public class HubApiController {
             LOGGER.error("Unexpected error while registering remote server {}", remoteServer, ex);
             return internalServerError(response, LOC.getMessage("hub.unexpected_error"));
         }
+    }
+
+    private String listTokens(Request request, Response response, User user) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+
+        long totalSize = hubManager.countAccessToken(user);
+
+        List<AccessTokenDTO> accessTokens = hubManager.listAccessToken(user, pc);
+        TypeToken<PagedDataResultJson<AccessTokenDTO, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(accessTokens, totalSize, Collections.emptySet()), type);
     }
 
     private static HubRegisterRequest validateRegisterRequest(HubRegisterRequest parsedRequest) {
