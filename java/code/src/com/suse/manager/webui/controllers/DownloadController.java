@@ -78,7 +78,7 @@ public class DownloadController {
     );
 
     /**
-     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minon. Turning
+     * If true, check via JWT tokens that files requested by a minion are actually accessible by that minion. Turning
      * this flag to false disables the checks.
      */
     private boolean checkTokens;
@@ -87,6 +87,10 @@ public class DownloadController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public void initRoutes() {
+        get("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
+        get("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
         get("/manager/download/:channel/getPackage/:file", this::downloadPackage);
         get("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         get("/manager/download/:channel/repodata/:file", this::downloadMetadata);
@@ -95,6 +99,10 @@ public class DownloadController {
         head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
         head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
+        head("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
     }
 
     /**
@@ -264,6 +272,25 @@ public class DownloadController {
     }
 
     /**
+     * Download metadata taking the scc repo id and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadMetadataHub(Request request, Response response) {
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+        String filename = request.params(":file");
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadMetadata(request, response, channelLabel, filename);
+    }
+
+    /**
      * Download metadata taking the channel and filename from the request path.
      *
      * @param request the request object
@@ -273,6 +300,10 @@ public class DownloadController {
     public Object downloadMetadata(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        return downloadMetadata(request, response, channelLabel, filename);
+    }
+
+    private Object downloadMetadata(Request request, Response response, String channelLabel, String filename) {
         String mountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/var/cache");
         String prefix = Config.get().getString(ConfigDefaults.REPOMD_PATH_PREFIX, "rhn/repodata");
 
@@ -304,6 +335,24 @@ public class DownloadController {
         return downloadFile(request, response, file);
     }
 
+    /**
+     * Download media metadata taking the scc repo id and filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadMediaFilesHub(Request request, Response response) {
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+        String filename = request.params(":file");
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channelLabel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadMediaFiles(request, response, channelLabel, filename);
+    }
 
     /**
      * Download media metadata taking the channel and filename from the request path.
@@ -315,6 +364,10 @@ public class DownloadController {
     public Object downloadMediaFiles(Request request, Response response) {
         String channelLabel = request.params(":channel");
         String filename = request.params(":file");
+        return downloadMediaFiles(request, response, channelLabel, filename);
+    }
+
+    private Object downloadMediaFiles(Request request, Response response, String channelLabel, String filename) {
         validatePaygCompliant();
 
         processToken(request, channelLabel, filename);
@@ -395,6 +448,28 @@ public class DownloadController {
     }
 
     /**
+     * Download a package taking the scc repo id and RPM filename from the request path.
+     *
+     * @param request the request object
+     * @param response the response object
+     * @return an object to make spark happy
+     */
+    public Object downloadPackageHub(Request request, Response response) {
+
+        // we can't use request.params(:file)
+        // See https://bugzilla.suse.com/show_bug.cgi?id=972158
+        // https://github.com/perwendel/spark/issues/490
+        Long sccid = Long.parseLong(request.params(":sccrepoid"));
+
+        List<Channel> vendorChannelBySccId = ChannelFactory.findVendorChannelBySccId(sccid);
+        String channel = vendorChannelBySccId.stream().map(Channel::getLabel).findFirst().orElseThrow(() -> {
+            LOG.error("Repository for SCC ID {} not found", sccid);
+            return halt(HttpStatus.SC_NOT_FOUND, "Repository not found");
+        });
+        return downloadPackage(request, response, channel);
+    }
+
+    /**
      * Download a package taking the channel and RPM filename from the request path.
      *
      * @param request the request object
@@ -407,6 +482,10 @@ public class DownloadController {
         // See https://bugzilla.suse.com/show_bug.cgi?id=972158
         // https://github.com/perwendel/spark/issues/490
         String channel = request.params(":channel");
+        return downloadPackage(request, response, channel);
+    }
+
+    private Object downloadPackage(Request request, Response response, String channel) {
         String path = "";
         try {
             URI uri = new URI(request.url());
