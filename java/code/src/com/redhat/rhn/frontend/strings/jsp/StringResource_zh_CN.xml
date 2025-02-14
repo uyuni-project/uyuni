@@ -1763,7 +1763,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">./includes/legends/system-legend.jsp</context>
         </context-group>
-        <target state="translated">监视状态</target>
+        <target state="translated">监控状态</target>
       </trans-unit>
       <trans-unit id="system-group-legend.jsp.title" xml:space="preserve">
         <source>System Group Legend</source>
@@ -7634,28 +7634,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.success" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; system(s) set to &lt;strong&gt;Monitoring&lt;/strong&gt;.</source>
-        <target state="translated">有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统已设置为&lt;strong&gt;监视&lt;/strong&gt;。</target>
+        <target state="translated">有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统已设置为&lt;strong&gt;监控&lt;/strong&gt;。</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.removed.success" xml:space="preserve">
         <source>Removed &lt;strong&gt;Monitoring&lt;/strong&gt; from &lt;strong&gt;{0}&lt;/strong&gt; system(s).</source>
-        <target state="translated">已从 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中去除&lt;strong&gt;监视&lt;/strong&gt;。</target>
+        <target state="translated">已从 &lt;strong&gt;{0}&lt;/strong&gt; 个系统中去除&lt;strong&gt;监控&lt;/strong&gt;。</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noManagement" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because they did not have &lt;strong&gt;Management&lt;/strong&gt; base entitlements. The failed systems are still selected below. If you click first the &lt;strong&gt;Set To Management Entitled&lt;/strong&gt; button below, then select the &lt;strong&gt;Monitoring&lt;/strong&gt; item in the drop-down list located in the &lt;strong&gt;Add-On entitlements section&lt;/strong&gt; and then click the &lt;strong&gt;Add Entitlement&lt;/strong&gt; button below, you'll be able to add the &lt;strong&gt;Monitoring&lt;/strong&gt; entitlement to these system(s).</source>
-        <target state="translated">有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无法添加&lt;strong&gt;监视&lt;/strong&gt;权利，因为它们没有&lt;strong&gt;管理&lt;/strong&gt;基础权利。这些系统在下面仍处于选中状态。如果您先单击下面的&lt;strong&gt;设置为管理赋权&lt;/strong&gt;按钮，然后选择 &lt;strong&gt;"附加权利" 部分&lt;/strong&gt;的下拉列表中的&lt;strong&gt;监视&lt;/strong&gt;选项，最后单击下面的&lt;strong&gt;添加权利&lt;/strong&gt;按钮，您将可以为这些系统添加&lt;strong&gt;监视&lt;/strong&gt;权利。</target>
+        <target state="translated">有 &lt;strong&gt;{0}&lt;/strong&gt; 个系统无法添加&lt;strong&gt;监控&lt;/strong&gt;权利，因为它们没有&lt;strong&gt;管理&lt;/strong&gt;基础权利。这些系统在下面仍处于选中状态。如果您先单击下面的&lt;strong&gt;设置为管理赋权&lt;/strong&gt;按钮，然后选择 &lt;strong&gt;"附加权利" 部分&lt;/strong&gt;的下拉列表中的&lt;strong&gt;监控&lt;/strong&gt;选项，最后单击下面的&lt;strong&gt;添加权利&lt;/strong&gt;按钮，您将可以为这些系统添加&lt;strong&gt;监控&lt;/strong&gt;权利。</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system_entitlements.monitoring.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source>
-        <target state="translated">为 &lt;strong&gt;{0}&lt;/strong&gt; 个系统添加&lt;strong&gt;监视&lt;/strong&gt;权利失败，因为 Solaris 系统不支持监视。</target>
+        <target state="translated">为 &lt;strong&gt;{0}&lt;/strong&gt; 个系统添加&lt;strong&gt;监控&lt;/strong&gt;权利失败，因为 Solaris 系统不支持监控。</target>
         <context-group name="ctx2">
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
@@ -7832,21 +7832,21 @@ organization. You may grant or remove the organization administrator role in the
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 配置 - 监视</target>
+        <target state="translated">@@PRODUCT_NAME@@ 配置 - 监控</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.header2" xml:space="preserve">
         <source>General Monitoring Config</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">常规监视配置</target>
+        <target state="translated">常规监控配置</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.summary" xml:space="preserve">
         <source>After updating the configuration options below, monitoring services on this @@PRODUCT_NAME@@ server and all of your Monitoring-enabled @@PRODUCT_NAME@@ Proxy servers will need to be restarted.  These actions will be scheduled automatically when you update this page.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">更新以下配置选项后，需要重启动此 @@PRODUCT_NAME@@ 服务器上的监视服务，以及所有启用了监视的 @@PRODUCT_NAME@@ Proxy 服务器。更新此页面时会自动安排这些操作。</target>
+        <target state="translated">更新以下配置选项后，需要重启动此 @@PRODUCT_NAME@@ 服务器上的监控服务，以及所有启用了监控的 @@PRODUCT_NAME@@ Proxy 服务器。更新此页面时会自动安排这些操作。</target>
       </trans-unit>
       <trans-unit id="generalconfig.jsp.update_config" xml:space="preserve">
         <source>Update Config</source>
@@ -9364,7 +9364,7 @@ organization management tools if you choose to remove this role from your login.
       </trans-unit>
       <trans-unit id="methods.jsp.summary" xml:space="preserve">
         <source>Notification Methods are email addresses where Monitoring related alerts generated by Probes will be sent to.</source>
-        <target state="translated">通知方法就是要将探测生成的与监视相关的警报发送到的电子邮件地址。</target>
+        <target state="translated">通知方法就是要将探测生成的与监控相关的警报发送到的电子邮件地址。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/notification/NotificationMethods.do</context>
         </context-group>
@@ -9506,7 +9506,7 @@ organization management tools if you choose to remove this role from your login.
           <context context-type="sourcefile">Any page that uses the Download to CSV function.  Shows
               up as a Column header in the CSV export.</context>
         </context-group>
-        <target state="translated">度量</target>
+        <target state="translated">指标</target>
       </trans-unit>
       <trans-unit id="time" xml:space="preserve">
         <source>Time</source>
@@ -9736,14 +9736,14 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">启用监视</target>
+        <target state="translated">启用监控</target>
       </trans-unit>
       <trans-unit id="general.jsp.monitoring_scout" xml:space="preserve">
         <source>Enable Monitoring Scout</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">启用监视侦察</target>
+        <target state="translated">启用监控侦察</target>
       </trans-unit>
       <trans-unit id="config.update" xml:space="preserve">
         <source>Update</source>
@@ -9771,7 +9771,7 @@ administrator privileges.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">已禁用监视功能。请转到&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;常规&lt;/strong&gt;&lt;/a&gt;配置页面并选中 "启用监视" 复选框。</target>
+        <target state="translated">已禁用监控功能。请转到&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;常规&lt;/strong&gt;&lt;/a&gt;配置页面并选中 "启用监控" 复选框。</target>
       </trans-unit>
       <trans-unit id="bootstrap.jsp.toolbar" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Configuration - Bootstrap</source>
@@ -13227,7 +13227,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;监视&lt;/strong&gt;系统</target>
+        <target state="translated">&lt;strong&gt;监控&lt;/strong&gt;系统</target>
       </trans-unit>
       <trans-unit id="channels.overview.toolbar" xml:space="preserve">
         <source>Software Channels Overview</source>
@@ -15533,7 +15533,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
       </trans-unit>
       <trans-unit id="system.event.spmigration.notification" xml:space="preserve">
         <source>&lt;strong&gt;Reload&lt;/strong&gt; the page after the action completed successfully to schedule the full migration.</source>
-        <target>成功完成操作后&lt;strong&gt;重新装载&lt;/strong&gt;页面以安排完整迁移。</target>
+        <target state="translated">成功完成操作后&lt;strong&gt;重新加载&lt;/strong&gt;页面以安排完整迁移。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -28473,7 +28473,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="resetpassword.jsp.error.header" xml:space="preserve">
         <source>Reset Password Link Error</source>
-        <target>重设置口令链接错误</target>
+        <target state="translated">重置口令链接错误</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
@@ -28484,7 +28484,7 @@ given channel.</source>
           Please contact your @@PRODUCT_NAME@@ administrator for assistance.
           </source>
         <target state="translated">
-          使用的重设置口令链接无效。
+          使用的重置口令链接无效。
           请联系您的 @@PRODUCT_NAME@@ 管理员取得帮助。
           </target>
         <context-group name="ctx">
@@ -28493,7 +28493,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="resetpassword.jsp.error.invalidtoken" xml:space="preserve">
         <source>Reset token has been invalidated.</source>
-        <target>重设置令牌已失效。</target>
+        <target state="translated">重置令牌已失效。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
@@ -28507,21 +28507,21 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="resetpassword.jsp.error.notoken" xml:space="preserve">
         <source>Reset token not found.</source>
-        <target>找不到重设置令牌。</target>
+        <target state="translated">找不到重置令牌。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
       </trans-unit>
       <trans-unit id="resetpassword.jsp.error.expiredtoken" xml:space="preserve">
         <source>Reset token has expired.</source>
-        <target>重设置令牌已失效。</target>
+        <target state="translated">重置令牌已失效。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetLink</context>
         </context-group>
       </trans-unit>
       <trans-unit id="passwordreset.jsp.header" xml:space="preserve">
         <source>Reset Password</source>
-        <target>重设置口令</target>
+        <target state="translated">重置口令</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ResetPasswordSubmit</context>
         </context-group>
@@ -28553,7 +28553,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="help.credentials.jsp.passwordreset.confirmation" xml:space="preserve">
         <source>Password Reset Confirmation</source>
-        <target>确认重设置口令</target>
+        <target state="translated">确认重置口令</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/ForgotCredentials.do</context>
         </context-group>
@@ -28938,7 +28938,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation">版权所有 (c) 2011 - 2024 SUSE LLC。</target>
+        <target state="final">版权所有 (c) 2011 - 2025 SUSE LLC。</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
@@ -29489,7 +29489,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建在线增补过滤器</target>
+        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建实时修补过滤器</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>

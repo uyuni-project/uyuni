@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
-"PO-Revision-Date: 2025-01-17 07:50+0000\n"
-"Last-Translator: Seeun Lee <selee@e4net.net>\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"PO-Revision-Date: 2025-02-13 21:50+0000\n"
+"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
 "MIME-Version: 1.0\n"
@@ -289,6 +289,7 @@ msgstr "프로세스 출력"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -446,6 +447,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "재설정"
@@ -1327,16 +1330,22 @@ msgid "Cobbler"
 msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
 msgid "Monitoring"
 msgstr "모니터링"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:405
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#, fuzzy
+#| msgid "Password"
+msgid "Password Policy"
+msgstr "비밀번호"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
 msgstr "다시 시작"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:406
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1402,6 +1411,76 @@ msgstr "안 함"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+msgid "Server Configuration - Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+msgid "Set up your server local users password policy."
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#, fuzzy
+#| msgid "Provider Settings"
+msgid "Password Policy Settings"
+msgstr "공급자 설정"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+msgid "Min Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+msgid "Max Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#, fuzzy
+#| msgid "Requires Reboot"
+msgid "Require Digits"
+msgstr "재부팅 필요"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+msgid "Require Lowercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+msgid "Require Uppercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+msgid "Restrict Consecutive Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#, fuzzy
+#| msgid "Required channels"
+msgid "Require Special Characters"
+msgstr "필수 채널"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+msgid "Allowed Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+msgid "Restrict Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+msgid "Max Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+msgid "Save Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+msgid "Password Policy Changed"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
+msgid "Password Policy reset to defaults"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1702,28 +1781,24 @@ msgstr "동기화 실패"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "저장 및 확인"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
-#, fuzzy
-#| msgid "Node Hostname"
 msgid "HTTP Proxy Hostname"
-msgstr "노드 호스트 이름"
+msgstr "HTTP 프록시 호스트 이름"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
-#, fuzzy
-#| msgid "Host name"
 msgid "hostname:port"
-msgstr "호스트 이름"
+msgstr "호스트 이름:포트"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid ""
 "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
+msgstr "예: <code>example.com:8080</code> 또는 <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "HTTP 프록시 사용자명"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1734,18 +1809,16 @@ msgstr "사용자 이름"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "HTTP 프록시 암호"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "프록시 서버 그림"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "프록시"
+msgstr "HTTP 프록시"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
@@ -1753,24 +1826,25 @@ msgid ""
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
 msgstr ""
+"이 서버가 HTTP 프록시를 사용하여 외부 네트워크에 액세스하는 경우 이 양식을 사"
+"용하여 구성할 수 있습니다. 그렇지 않은 경우 <link>조직 인증서</link>로 이동하"
+"십시오."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "프록시 설정 확인"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "프록시 설정 확인 성공"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "프록시 설정이 유효하지 않음"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
-#, fuzzy
-#| msgid "Organization Unit"
 msgid "Organization Credentials"
-msgstr "조직 단위"
+msgstr "조직 인증서"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
@@ -1778,10 +1852,8 @@ msgid "Products"
 msgstr "제품"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Add PAYG Connection"
 msgid "PAYG Connections"
-msgstr "PAYG 연결 추가"
+msgstr "PAYG 연결"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
@@ -4019,10 +4091,8 @@ msgstr ""
 "보십시오."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "<link>Learn more</link> about {productName}."
-msgstr "{product}에 대해 <link>자세히 알아보기</link>."
+msgstr "{productName}에 대해 <link>자세히 알아보기</link>."
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
@@ -4034,11 +4104,11 @@ msgstr "로그인"
 #: ../html/src/manager/login/susemanager/login.tsx:119
 #: ../html/src/manager/login/uyuni/login.tsx:117
 msgid "Copyright Notice"
-msgstr ""
+msgstr "저작권 고지사항"
 
 #: ../html/src/manager/login/susemanager/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} 릴리스 {versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
@@ -4059,18 +4129,16 @@ msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "로그인을 진행하는 동안 이 페이지를 닫으시겠습니까?"
 
 #: ../html/src/manager/login/uyuni/login.tsx:42
-#, fuzzy
-#| msgid "<link>Learn more</link> about {product}."
 msgid "Learn more about {productName}:"
-msgstr "{product}에 대해 <link>자세히 알아보기</link>."
+msgstr "{productName}에 대해 자세히 알아보기:"
 
 #: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "View website"
-msgstr ""
+msgstr "웹사이트 보기"
 
 #: ../html/src/manager/login/uyuni/login.tsx:114
 msgid "About"
-msgstr ""
+msgstr "정보"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:76
 msgid "Skip to the last maintenance window"
@@ -4665,7 +4733,7 @@ msgstr "PAYG 인스턴스가 호환되지 않음"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:64
 msgid "SCC Data Sync Disabled"
-msgstr ""
+msgstr "SCC 데이터 동기화 비활성화됨"
 
 #: ../html/src/manager/notifications/notification-messages.tsx:245
 #: ../html/src/manager/notifications/notification-messages.tsx:246
@@ -6977,9 +7045,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Select management node"
 #~ msgstr "관리 노드 선택"
-
-#~ msgid "Provider Settings"
-#~ msgstr "공급자 설정"
 
 #~ msgid "Provider:"
 #~ msgstr "공급자:"

@@ -28939,7 +28939,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="copyright.jsp.title" xml:space="preserve">
         <source>Copyright (c) 2011 - 2025 SUSE LLC.</source>
-        <target state="needs-adaptation">Copyright (c) 2011 - 2021 SUSE LLC.</target>
+        <target state="final">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
         <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>

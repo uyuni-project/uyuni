@@ -765,7 +765,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">监视</target>
+        <target state="translated">监控</target>
       </trans-unit>
       <trans-unit id="name" xml:space="preserve">
         <source>name</source>
@@ -1542,13 +1542,6 @@
           <context context-type="paramnotes">Passwords must be no shorter than 5 characters.</context>
         </context-group>
         <target state="translated">口令不能少于 {0} 个字符。</target>
-      </trans-unit>
-      <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
-        <source>Password contains tab or newline characters.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-        <target state="translated">口令包含制表符或换行符。</target>
       </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
@@ -2799,7 +2792,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/UserDetails</context>
         </context-group>
-        <target state="translated">监视管理员</target>
+        <target state="translated">监控管理员</target>
       </trans-unit>
       <trans-unit id="system_group_admin" xml:space="preserve">
         <source>System Group Administrator</source>
@@ -4132,7 +4125,7 @@ user before attempting to deactivate their account.</source>
       </trans-unit>
       <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
         <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-        <target state="translated">日期 "{0}" 无效，已重设置为默认值。请检查所选的月份有正确的天数。</target>
+        <target state="translated">日期 "{0}" 无效，已重置为默认值。请检查所选的月份有正确的天数。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
@@ -4149,7 +4142,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/monitoring/config/GeneralConfig.do</context>
         </context-group>
-        <target state="translated">配置已更新，监视服务已重启动。</target>
+        <target state="translated">配置已更新，监控服务已重启动。</target>
       </trans-unit>
       <trans-unit id="monitoring.services.novalueschanged" xml:space="preserve">
         <source>No changes made.</source>
@@ -5989,12 +5982,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">重启动</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve">
+      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-adaptation">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/admin/setup/ProxySettings.do"&gt;安装向导&lt;/a&gt;。</target>
+        <target state="final">您刚刚创建了您的第一个 @@PRODUCT_NAME@@ 用户。要完成安装，请使用&lt;a href="/rhn/manager/admin/setup/proxy"&gt;安装向导&lt;/a&gt;。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -6121,7 +6114,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/Restart.do</context>
         </context-group>
-        <target state="translated">@@PRODUCT_NAME@@ 监视侦察</target>
+        <target state="translated">@@PRODUCT_NAME@@ 监控侦察</target>
       </trans-unit>
       <trans-unit id="Panic Destination" xml:space="preserve">
         <source>Panic Destination</source>
@@ -6331,7 +6324,7 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSoftwareEdit.do</context>
         </context-group>
-        <target state="translated">此 kickstart 配置文件默认使用与目前所用 root 口令不同的加密类型。您必须重设置 root 口令以使用新方法对其进行加密。</target>
+        <target state="translated">此 kickstart 配置文件默认使用与目前所用 root 口令不同的加密类型。您必须重置 root 口令以使用新方法对其进行加密。</target>
       </trans-unit>
       <trans-unit id="gpgssl_keys.added" xml:space="preserve">
         <source>{0} Key(s) added.</source>
@@ -8780,7 +8773,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="Monitoring Administrators" xml:space="preserve">
         <source>Monitoring Administrators</source>
-        <target state="translated">监视管理员</target>
+        <target state="translated">监控管理员</target>
       </trans-unit>
       <trans-unit id="Configuration Administrators" xml:space="preserve">
         <source>Configuration Administrators</source>
@@ -8896,7 +8889,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="monitoringStatus" xml:space="preserve">
         <source>Monitor Status</source>
-        <target state="translated">监视状态</target>
+        <target state="translated">监控状态</target>
       </trans-unit>
       <trans-unit id="userLogin" xml:space="preserve">
         <source>User Login</source>
@@ -9868,7 +9861,7 @@ tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit approved="yes" id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
-        <target state="final">已将口令重设置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
+        <target state="final">已将口令重置信息发送到 {0}。如果您未收到该信息，请确保您拥有使用提供的登录信息和电子邮件注册的帐户。</target>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -11503,24 +11496,108 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">生成所需的 OVAL 数据，以提高 CVE 审计查询的准确度</target>
       </trans-unit>
-    <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+        <target state="final">已成功启用 SCC 数据转发功能。</target>
+      </trans-unit>
+      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+        <target state="final">SCC 数据转发功能已启用。</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+        <target state="final">数据未与 SCC 保持同步</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
+        <target state="final">
+          &lt;p&gt;禁用与 SCC 的数据同步将导致 RMT、SMT、@@PRODUCT_NAME@@ 和 SCC 直接注册的客户端之间托管客户端的可见性降低。
+          通过同步数据，您可以确保所有注册客户端具有统一的视图。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;单击此处启用数据转发功能&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;告知我们您选择停用的原因，从而帮助改进我们的服务&lt;/a&gt;
+        </target>
+      </trans-unit>
+    <trans-unit id="Password Policy" xml:space="preserve">
+        <source>Password Policy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
+        <source>Field {0} can't be equal or less than zero.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
+        <source>Field {0} can't be can't be greater or equal than field {1}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
+        <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.spacesinpassword" xml:space="preserve">
+        <source>Password contains tab or newline characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
+        <source>Password contains consecutive characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nodigitspassword" xml:space="preserve">
+        <source>Passwords must contain at least one digit.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nouppercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one upper case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nolowercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one lower case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
+        <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
+        <source>Password characters occurrences exceeded maximum allowed {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

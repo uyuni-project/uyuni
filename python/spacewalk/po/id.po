@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2020-09-12 19:48+0000\n"
 "Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/"
@@ -283,64 +283,64 @@ msgstr "Ketidakcocokan sesi kickstart"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "Penumpukan token pendaftaran ulang tidak didukung"
 
-#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
+#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 #, fuzzy
 msgid "Invalid username/password combination"
 msgstr "Kombinasi nama pengguna/kata sandi tidak valid"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:526
+#: ../server/rhnUser.py:527
 #, fuzzy, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Nama pengguna '%s' belum dicadangkan"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:532
+#: ../server/rhnUser.py:533
 #, fuzzy
 msgid "E-mail address not specified"
 msgstr "Alamat e-mail tidak ditentukan"
 
-#: ../server/rhnUser.py:574
+#: ../server/rhnUser.py:575
 #, fuzzy, python-format
 msgid "username should be at least %d characters"
 msgstr "nama pengguna harus setidaknya %d karakter"
 
-#: ../server/rhnUser.py:578
+#: ../server/rhnUser.py:579
 #, fuzzy, python-format
 msgid "username should be less than %d characters"
 msgstr "nama pengguna harus kurang dari %d karakter"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:593
 #, fuzzy, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "username = '%s', karakter '%s' tidak valid"
 
-#: ../server/rhnUser.py:613
+#: ../server/rhnUser.py:614
 #, fuzzy, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Batasi alamat e-mail Anda ke %s chars"
 
-#: ../server/rhnUser.py:701
+#: ../server/rhnUser.py:704
 #, fuzzy, python-format
 msgid "password must be at least %d characters"
 msgstr "kata sandi harus setidaknya %d karakter"
 
-#: ../server/rhnUser.py:705
+#: ../server/rhnUser.py:708
 #, fuzzy, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Kata sandi harus lebih pendek dari karakter %d"
 
-#: ../server/rhnUser.py:721
+#: ../server/rhnUser.py:724
 #, fuzzy, python-format
 msgid "password contains character `%s'"
 msgstr "kata sandi berisi karakter '%s'"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:733
 #, fuzzy, python-format
 msgid "username should be at least %d characters long"
 msgstr "username harus setidaknya %d karakter panjang"
 
-#: ../server/rhnUser.py:741
+#: ../server/rhnUser.py:744
 #, fuzzy, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "Tidak dapat mendaftarkan nama pengguna yang diakhiri dengan %s"
