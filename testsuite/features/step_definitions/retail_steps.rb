@@ -244,6 +244,18 @@ When(/^I install the GPG key of the test packages repository on the PXE boot min
   get_target('server').run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
 end
 
+When(/^I install the GPG key of the test packages repository on:"([^"]*)" minion$/) do |minion|
+  file = 'uyuni.key'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('server'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  system_name = get_system_name(minion)
+  get_target('server').run("salt-cp #{system_name} #{dest} #{dest}")
+  get_target('server').run("salt #{system_name} cmd.run 'rpmkeys --import #{dest}'")
+end
+
 When(/^I wait until Salt client is inactive on the PXE boot minion$/) do
   file = 'wait-end-of-cleanup-pxeboot.exp'
   source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"

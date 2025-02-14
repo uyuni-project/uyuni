@@ -156,6 +156,10 @@ When(/^I add "([^"]*)" channel$/) do |channel|
   get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync add channel #{channel}", buffer_size: 1_000_000)
 end
 
+When(/^I sync "([^"]*)" channel$/) do |channel|
+  get_target('server').run("echo -e \"admin\nadmin\n\" | mgr-sync sync --with-children #{channel}", buffer_size: 1_000_000)
+end
+
 When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
   command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = get_target('server').run(command)
