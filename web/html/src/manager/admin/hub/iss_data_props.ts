@@ -13,10 +13,12 @@ export type PeripheralListData = {
 export type HubDetailData = {
   id: string;
   fqdn: string;
+  rootCA: string;
 };
 
 export type PeripheralDetailData = {
   id: string;
   fqdn: string;
+  rootCA: string;
 };
 

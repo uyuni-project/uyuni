@@ -32,14 +32,30 @@ const HubDetails = (prop: HubDetailsProps) => {
     </>
   );
   if (hub != null) {
-    pageContent = <div>Hub FQDN: {hub.fqdn}</div>;
+    let rootCABlob = new Blob([hub.rootCA], { type: "text/plain" });
+    let dlUrl = URL.createObjectURL(rootCABlob);
+    pageContent = (
+      <>
+        <div>Hub FQDN: {hub.fqdn}</div>
+        <div>
+          <a
+            href={dlUrl}
+            onClick={() => {
+              URL.revokeObjectURL(dlUrl);
+            }}
+          >
+            <i className="bi bi-download">Download</i>
+          </a>
+        </div>
+      </>
+    );
   }
   return (
     <div className="responsive-wizard">
       {title}
-      <span>
+      <div>
         <h1>Known Hub Instance</h1>
-      </span>
+      </div>
       {pageContent}
     </div>
   );
