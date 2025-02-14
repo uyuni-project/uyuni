@@ -17,7 +17,11 @@ CREATE TABLE suseISSAccessToken
     type                iss_access_token_type_t NOT NULL,
     server_fqdn         VARCHAR(512) NOT NULL,
     valid               BOOLEAN,
-    expiration_date     TIMESTAMPTZ NULL
+    expiration_date     TIMESTAMPTZ NULL,
+    created             TIMESTAMPTZ
+                          DEFAULT (current_timestamp) NOT NULL,
+    modified            TIMESTAMPTZ
+                          DEFAULT (current_timestamp) NOT NULL
 );
 
 CREATE UNIQUE INDEX suse_isstoken_server_fqdn_type_idx
