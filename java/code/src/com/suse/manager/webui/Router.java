@@ -29,6 +29,7 @@ import com.suse.cloud.CloudPaygManager;
 import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.hub.HubController;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -66,6 +67,7 @@ import com.suse.manager.webui.controllers.activationkeys.ActivationKeysViewsCont
 import com.suse.manager.webui.controllers.admin.AdminApiController;
 import com.suse.manager.webui.controllers.admin.AdminViewsController;
 import com.suse.manager.webui.controllers.admin.EnableSCCDataForwardingController;
+import com.suse.manager.webui.controllers.admin.handlers.HubApiController;
 import com.suse.manager.webui.controllers.appstreams.AppStreamsController;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -284,8 +286,14 @@ public class Router implements SparkApplication {
     }
 
     private static void initISSv3Routes() {
-        HubController hubController = new HubController();
+        HubManager hubManager = new HubManager();
 
+        // ISS v3 Internal APIs
+        HubController hubController = new HubController(hubManager);
         hubController.initRoutes();
+
+        // API for the web interface
+        HubApiController hubApiController = new HubApiController(hubManager);
+        hubApiController.initRoutes();
     }
 }

@@ -160,17 +160,27 @@ public class HubManager {
 
     /**
      * Returns the ISS of the specified role, if present
-     * @param accessToken the access token granting access and identifying the the caller
+     * @param accessToken the access token granting access and identifying the caller
      * @param role the role of the server
      * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
      */
     public IssServer findServer(IssAccessToken accessToken, IssRole role) {
         ensureValidToken(accessToken);
 
-        return switch (role) {
-            case HUB -> hubFactory.lookupIssHubByFqdn(accessToken.getServerFqdn()).orElse(null);
-            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(accessToken.getServerFqdn()).orElse(null);
-        };
+        return lookupServerByFqdnAndRole(accessToken.getServerFqdn(), role);
+    }
+
+    /**
+     * Returns the ISS of the specified role, if present
+     * @param user the user performing the operation
+     * @param serverFqdn the fqdn of the server
+     * @param role the role of the server
+     * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
+     */
+    public IssServer findServer(User user, String serverFqdn, IssRole role) {
+        ensureSatAdmin(user);
+
+        return lookupServerByFqdnAndRole(serverFqdn, role);
     }
 
     /**
@@ -649,6 +659,13 @@ public class HubManager {
 
     private static String computeRootCaFileName(IssRole role, String serverFqdn) {
         return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
+    }
+
+    private IssServer lookupServerByFqdnAndRole(String serverFqdn, IssRole role) {
+        return switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(serverFqdn).orElse(null);
+        };
     }
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
