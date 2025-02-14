@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2025-02-13 21:50+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -289,6 +289,7 @@ msgstr "프로세스 출력"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -446,6 +447,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "이 필드는 결과 열 데이터에서 '키' 식별자로 사용됩니다."
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "재설정"
@@ -1327,16 +1330,22 @@ msgid "Cobbler"
 msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
 msgid "Monitoring"
 msgstr "모니터링"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:405
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#, fuzzy
+#| msgid "Password"
+msgid "Password Policy"
+msgstr "비밀번호"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
 msgstr "다시 시작"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:406
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1402,6 +1411,76 @@ msgstr "안 함"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+msgid "Server Configuration - Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+msgid "Set up your server local users password policy."
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#, fuzzy
+#| msgid "Provider Settings"
+msgid "Password Policy Settings"
+msgstr "공급자 설정"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+msgid "Min Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+msgid "Max Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#, fuzzy
+#| msgid "Requires Reboot"
+msgid "Require Digits"
+msgstr "재부팅 필요"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+msgid "Require Lowercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+msgid "Require Uppercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+msgid "Restrict Consecutive Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#, fuzzy
+#| msgid "Required channels"
+msgid "Require Special Characters"
+msgstr "필수 채널"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+msgid "Allowed Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+msgid "Restrict Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+msgid "Max Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+msgid "Save Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+msgid "Password Policy Changed"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
+msgid "Password Policy reset to defaults"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1747,9 +1826,9 @@ msgid ""
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
 msgstr ""
-"이 서버가 HTTP 프록시를 사용하여 외부 네트워크에 액세스하는 경우 이 양식을 "
-"사용하여 구성할 수 있습니다. 그렇지 않은 경우 <link>조직 인증서</link>로 "
-"이동하십시오."
+"이 서버가 HTTP 프록시를 사용하여 외부 네트워크에 액세스하는 경우 이 양식을 사"
+"용하여 구성할 수 있습니다. 그렇지 않은 경우 <link>조직 인증서</link>로 이동하"
+"십시오."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
@@ -5385,8 +5464,9 @@ msgstr "개발 디버깅 페이지"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 "
-"대단하시네요!"
+msgstr ""
+"개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단"
+"하시네요!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -6965,9 +7045,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Select management node"
 #~ msgstr "관리 노드 선택"
-
-#~ msgid "Provider Settings"
-#~ msgstr "공급자 설정"
 
 #~ msgid "Provider:"
 #~ msgstr "공급자:"

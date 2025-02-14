@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2025-02-13 21:50+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -285,6 +285,7 @@ msgstr "流程输出"
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
 #: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -441,6 +442,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr "此字段用作生成的支柱数据中的 '键' 标识符。"
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
 msgstr "重置"
@@ -1305,16 +1308,22 @@ msgid "Cobbler"
 msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
 msgid "Monitoring"
 msgstr "监控"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:405
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+#, fuzzy
+#| msgid "Password"
+msgid "Password Policy"
+msgstr "口令"
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
 msgstr "重启动"
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:406
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1380,6 +1389,76 @@ msgstr "从不"
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
 msgstr "添加 PAYG 连接"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+msgid "Server Configuration - Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+msgid "Set up your server local users password policy."
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+#, fuzzy
+#| msgid "Provider Settings"
+msgid "Password Policy Settings"
+msgstr "提供程序设置"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+msgid "Min Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+msgid "Max Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+#, fuzzy
+#| msgid "Requires Reboot"
+msgid "Require Digits"
+msgstr "需要重引导"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+msgid "Require Lowercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+msgid "Require Uppercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+msgid "Restrict Consecutive Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+#, fuzzy
+#| msgid "Required channels"
+msgid "Require Special Characters"
+msgstr "必需的通道"
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+msgid "Allowed Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+msgid "Restrict Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+msgid "Max Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+msgid "Save Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+msgid "Password Policy Changed"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
+msgid "Password Policy reset to defaults"
+msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -1717,9 +1796,9 @@ msgid ""
 "If this server uses an HTTP proxy to access the outside network, you can use "
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
-msgstr "如果此服务器通过 HTTP "
-"代理访问网络外部，您可以使用此表单进行配置，否则，请转到<link>组身份凭证织</l"
-"ink>。"
+msgstr ""
+"如果此服务器通过 HTTP 代理访问网络外部，您可以使用此表单进行配置，否则，请转"
+"到<link>组身份凭证织</link>。"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
@@ -6851,9 +6930,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Select management node"
 #~ msgstr "选择管理节点"
-
-#~ msgid "Provider Settings"
-#~ msgstr "提供程序设置"
 
 #~ msgid "Provider:"
 #~ msgstr "提供程序："
