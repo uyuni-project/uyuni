@@ -19,7 +19,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.webui.controllers.admin.handlers.MonitoringApiController;
+import com.suse.manager.webui.controllers.admin.handlers.PasswordPolicyController;
 import com.suse.manager.webui.controllers.admin.handlers.PaygApiContoller;
+import com.suse.manager.webui.controllers.admin.service.PasswordPolicyService;
 
 /**
  * Spark controller Admin Api.
@@ -37,5 +39,7 @@ public class AdminApiController {
         PaygApiContoller paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticApi));
         paygApiContoller.initRoutes();
 
+        PasswordPolicyController passwordPolicyController = new PasswordPolicyController(new PasswordPolicyService());
+        passwordPolicyController.initRoutes();
     }
 }

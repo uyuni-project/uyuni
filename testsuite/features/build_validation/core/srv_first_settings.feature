@@ -20,7 +20,7 @@ Feature: Very first settings
     And I select "Mr." from "prefix"
     And I enter "Admin" as "firstNames"
     And I enter "Admin" as "lastName"
-    And I enter "galaxy-noise@suse.de" as "email"
+    And I enter "galaxy-noise@localhost" as "email"
     And I click on "Create Organization"
     Then I am logged in
 
@@ -36,9 +36,9 @@ Feature: Very first settings
     And I select "Mr." from "prefix"
     And I enter "Test" as "firstNames"
     And I enter "User" as "lastName"
-    And I enter "galaxy-noise@suse.de" as "email"
+    And I enter "galaxy-noise@localhost" as "email"
     And I click on "Create Login"
-    Then I should see a "Account testing created, login information sent to galaxy-noise@suse.de" text
+    Then I should see a "Account testing created, login information sent to galaxy-noise@localhost" text
     And I should see a "testing" link
 
   Scenario: Grant testing user administrative priviledges

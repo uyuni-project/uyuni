@@ -83,6 +83,8 @@ public class DistUpgradeManager extends BaseManager {
     // Logger for this class
     private static final Logger LOG = LogManager.getLogger(DistUpgradeManager.class);
 
+    private static final String DISTUPGRADE_QUERIES_STRING = "distupgrade_queries";
+
     /**
      * For a given system, return true if distribution upgrades are supported.
      *
@@ -91,7 +93,7 @@ public class DistUpgradeManager extends BaseManager {
      * @return true if distribution upgrades are supported, else false.
      */
     public static boolean isUpgradeSupported(Server server, User user) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries",
+        SelectMode m = ModeFactory.getMode(DISTUPGRADE_QUERIES_STRING,
                 "system_dup_supported");
         HashMap<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
@@ -107,7 +109,7 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of possible migration target product IDs
      */
     public static List<SUSEProductDto> findTargetProducts(long productId) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_target_products");
+        SelectMode m = ModeFactory.getMode(DISTUPGRADE_QUERIES_STRING, "find_target_products");
         HashMap<String, Object> params = new HashMap<>();
         params.put("product_id", productId);
         return m.execute(params);
@@ -120,7 +122,7 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of possible migration source product IDs
      */
     public static List<SUSEProductDto> findSourceProducts(long productId) {
-        SelectMode m = ModeFactory.getMode("distupgrade_queries", "find_source_products");
+        SelectMode m = ModeFactory.getMode(DISTUPGRADE_QUERIES_STRING, "find_source_products");
         HashMap<String, Object> params = new HashMap<>();
         params.put("product_id", productId);
         return m.execute(params);
@@ -138,7 +140,7 @@ public class DistUpgradeManager extends BaseManager {
         List<Long> productIDs = productSet.getProductIDs();
         HashMap<String, Object> params = new HashMap<>();
         params.put("base_channel_id", baseChannelID);
-        SelectMode m = ModeFactory.getMode("distupgrade_queries", "channels_required_for_product_set");
+        SelectMode m = ModeFactory.getMode(DISTUPGRADE_QUERIES_STRING, "channels_required_for_product_set");
         return m.execute(params, productIDs);
     }
 
@@ -236,7 +238,7 @@ public class DistUpgradeManager extends BaseManager {
             if (baseChannel == null) {
                 // No base channel found
                 target.addMissingChannel(target.getBaseProduct().getFriendlyName());
-                LOG.debug("Missing Base Channels for {}", target.getBaseProduct().getFriendlyName());
+                LOG.warn("Missing Base Channels for {}", target.getBaseProduct().getFriendlyName());
             }
             else {
                 // Check for addon product channels only if base channel is synced
@@ -245,11 +247,11 @@ public class DistUpgradeManager extends BaseManager {
                         // Look for mandatory child channels
                         List<String> missing =
                                 SUSEProductFactory.findAllMandatoryChannels(addonProduct, target.getBaseProduct())
-                                .filter(pr -> ChannelFactory.lookupByLabel(pr.getChannelLabel()) == null)
-                                .map(pr -> {
-                                    LOG.warn("Mandatory channel not synced: {}", pr.getChannelLabel());
-                                    return pr.getChannelLabel();
-                                }).toList();
+                                        .filter(pr -> ChannelFactory.lookupByLabel(pr.getChannelLabel()) == null)
+                                        .map(pr -> {
+                                            LOG.warn("Mandatory channel not synced: {}", pr.getChannelLabel());
+                                            return pr.getChannelLabel();
+                                        }).toList();
                         target.addMissingChannels(missing);
                     }
                 }
@@ -261,7 +263,6 @@ public class DistUpgradeManager extends BaseManager {
     /**
      * Get all available migration targets from the installed products
      * on the system
-     *
      * Please note that ruby syntax comments in the code are referred
      * to the private project source at:
      * - https://github.com/SUSE/happy-customer/blob/
@@ -271,126 +272,133 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of available migration targets
      */
     private static List<SUSEProductSet> migrationTargets(Optional<SUSEProductSet> installedProducts) {
-        final List<SUSEProductSet> result = new LinkedList<>();
         return Opt.fold(installedProducts,
-            () -> {
-                LOG.warn("No products installed on this system");
-                return result;
-            },
-            prd -> {
-                SUSEProduct baseProduct = prd.getBaseProduct();
-                if (baseProduct == null) {
-                    LOG.warn("No base product found");
-                    return result;
-                }
-
-                // installed_extensions = @installed_products - [base_product]
-                List<SUSEProduct> installedExtensions = prd.getAddonProducts();
-                // base_successors = [base_product] + base_product.successors
-                final List<SUSEProduct> baseSuccessors = new ArrayList<>(baseProduct.getUpgrades().size() + 1);
-                baseSuccessors.add(baseProduct);
-                baseSuccessors.addAll(baseProduct.getUpgrades());
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Found '{}' successors for the base product.", baseSuccessors.size());
-                    baseSuccessors.forEach(bp -> LOG.debug(bp.getFriendlyName()));
-                }
-
-                final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
-                currentCombination.add(baseProduct);
-                currentCombination.addAll(installedExtensions);
-
-                // extension_successors = installed_extensions.map {|e| [e] + e.successors }
-                final List<List<SUSEProduct>> extensionSuccessors = new ArrayList<>(installedExtensions.size());
-                for (SUSEProduct e : installedExtensions) {
-                    final List<SUSEProduct> s = new ArrayList<>(e.getUpgrades().size() + 1);
-                    s.add(e);
-                    s.addAll(e.getUpgrades());
-                    extensionSuccessors.add(s);
-                    if (LOG.isDebugEnabled()) {
-                        LOG.debug("Extension: {}", e.getFriendlyName());
-                        e.getUpgrades().forEach(ex -> LOG.debug("Extension successor: {}", ex.getFriendlyName()));
-                        LOG.debug("-----------------------");
+                () -> {
+                    LOG.warn("No products installed on this system");
+                    return new LinkedList<>();
+                },
+                prd -> {
+                    SUSEProduct baseProduct = prd.getBaseProduct();
+                    if (baseProduct == null) {
+                        LOG.warn("No base product found");
+                        return new LinkedList<>();
                     }
+                    List<SUSEProduct> installedExtensions = prd.getAddonProducts();
+                    final List<SUSEProduct> baseSuccessors = getSuccessorsForBaseProduct(baseProduct);
+                    final List<SUSEProduct> currentCombination = new ArrayList<>(installedExtensions.size() + 1);
+                    currentCombination.add(baseProduct);
+                    currentCombination.addAll(installedExtensions);
+                    final List<List<SUSEProduct>> extSuccessors = getExtSuccessorsForInstalledExt(installedExtensions);
+                    List<List<SUSEProduct>> combinations = baseSuccessors.stream()
+                            .flatMap(baseSucc -> combineCompatibleExtensionSuccessor(extSuccessors, baseSucc).stream())
+                            .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
+                            .collect(toList());
+                    return getMigrationTargetProductSets(combinations);
                 }
+        );
+    }
 
-                // base_successors.each do |base|
-                //   available_extensions = installed_extensions.map do |ext|
-                //     options = ext.successors.merge(migration_path_scope)
-                //     options += [ext] if migration_kind == :online
-                //     options.select { |succ| succ.available_for?(base) }
-                //   end
-                //   combinations += [base].product(*available_extensions)
-                // end
-                List<List<SUSEProduct>> combinations = baseSuccessors.stream()
-                        .flatMap(baseSucc -> {
-                            // first compute extensions successors compatible with the base successor
-                            List<List<SUSEProduct>> compatibleExtensionSuccessors = extensionSuccessors.stream()
-                                    .map(extensionSucc -> extensionSucc.stream()
-                                            .filter(succ -> extAvailableForRoot(succ, baseSucc))
-                                            .toList())
-                                    .filter(list -> !list.isEmpty())
-                                    .collect(toList());
+    private static List<SUSEProduct> getSuccessorsForBaseProduct(SUSEProduct baseProduct) {
+        final List<SUSEProduct> baseSuccessors = new ArrayList<>(baseProduct.getUpgrades().size() + 1);
+        baseSuccessors.add(baseProduct);
+        baseSuccessors.addAll(baseProduct.getUpgrades());
+        if (baseProduct.getUpgrades().isEmpty()) {
+            LOG.warn("No upgdrades found for base product {}", baseProduct.getFriendlyName());
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found '{}' successors for the base product.", baseSuccessors.size());
+            baseSuccessors.forEach(bp -> LOG.debug(bp.getFriendlyName()));
+        }
+        return baseSuccessors;
+    }
 
-                            if (LOG.isDebugEnabled()) {
-                                if (compatibleExtensionSuccessors.isEmpty()) {
-                                    LOG.debug("No extension successors for base successor {}",
-                                            baseSucc.getFriendlyName());
-                                }
-                                else {
-                                    LOG.debug("Found extension successors for base successor {}:",
-                                            baseSucc.getFriendlyName());
-                                    // let's print out list of list with friendly names
-                                    compatibleExtensionSuccessors.stream()
-                                            .map(css -> css.stream().map(SUSEProduct::getFriendlyName).toList())
-                                            .forEach(LOG::debug);
-                                    LOG.debug("-----------------------");
-                                }
-                            }
+    private static List<List<SUSEProduct>> getExtSuccessorsForInstalledExt(List<SUSEProduct> installedExtensions) {
+        final List<List<SUSEProduct>> extensionSuccessors = new ArrayList<>(installedExtensions.size());
+        for (SUSEProduct e : installedExtensions) {
+            final List<SUSEProduct> s = new ArrayList<>(e.getUpgrades().size() + 1);
+            s.add(e);
+            s.addAll(e.getUpgrades());
+            extensionSuccessors.add(s);
+            if (e.getUpgrades().isEmpty()) {
+                LOG.warn("No upgdrades found for installed extension {}", e.getFriendlyName());
+            }
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Extension: {}", e.getFriendlyName());
+                e.getUpgrades().forEach(ex -> LOG.debug("Extension successor: {}", ex.getFriendlyName()));
+                LOG.debug("-----------------------");
+            }
+        }
+        return extensionSuccessors;
+    }
 
-                            // the base successor will be always on the 1st position in the combinations below
-                            compatibleExtensionSuccessors.add(0, List.of(baseSucc));
+    private static List<List<SUSEProduct>> combineCompatibleExtensionSuccessor(
+            List<List<SUSEProduct>> extensionSuccessors, SUSEProduct baseSucc
+    ) {
+        // first compute extensions successors compatible with the base successor
+        List<List<SUSEProduct>> compatibleExtensionSuccessors = extensionSuccessors.stream()
+                .map(extensionSucc -> extensionSucc.stream()
+                        .filter(succ -> extAvailableForRoot(succ, baseSucc))
+                        .collect(toList()))
+                .filter(list -> !list.isEmpty())
+                .collect(toList());
+        if (compatibleExtensionSuccessors.isEmpty()) {
+            LOG.warn("No extension successors for base successor {}", baseSucc.getFriendlyName());
+        }
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Found extension successors for base successor {}:",
+                    baseSucc.getFriendlyName());
+            // let's print out list of list with friendly names
+            compatibleExtensionSuccessors.stream()
+                    .map(css -> css.stream().map(SUSEProduct::getFriendlyName).collect(toList()))
+                    .forEach(LOG::debug);
+            LOG.debug("-----------------------");
+        }
+        // the base successor will be always on the 1st position in the combinations below
+        compatibleExtensionSuccessors.add(0, List.of(baseSucc));
+        return Lists.combinations(compatibleExtensionSuccessors);
+    }
 
-                            return Lists.combinations(compatibleExtensionSuccessors).stream();
-                        })
-                        .filter(comb -> !comb.equals(List.of(baseProduct)) && !comb.equals(currentCombination))
-                        .toList();
+    private static List<SUSEProductSet> getMigrationTargetProductSets(List<List<SUSEProduct>> combinations) {
+        final List<SUSEProductSet> result = new LinkedList<>();
+        for (List<SUSEProduct> combination : combinations) {
+            result.addAll(processCombination(combination));
+        }
+        return result;
+    }
 
-                for (List<SUSEProduct> combination : combinations) {
-                    SUSEProduct base = combination.get(0);
-                    if (!ContentSyncManager.isProductAvailable(base, base)) {
-                        // No Product Channels means, no subscription to access the channels
-                        LOG.warn("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
-                        continue;
-                    }
-                    if (combination.size() == 1) {
-                        LOG.debug("Found Target: {}", base.getFriendlyName());
-                        result.add(new SUSEProductSet(base, Collections.emptyList()));
-                    }
-                    else {
-                        // Take care that all recommended extensions are in the target
-                        List<SUSEProduct> addonProducts = ensureRecommendedAddons(base,
-                                combination.subList(1, combination.size()));
-                        addLibertyLinuxAddonIfMissing(base, addonProducts);
-
-                        //No Product Channels means, no subscription to access the channels
-                        if (addonProducts.stream()
-                                .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
-                            if (LOG.isDebugEnabled()) {
-                                addonProducts.stream()
-                                        .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
-                                        .forEach(ap -> LOG.warn("No SUSE Product Channels for {}. Skipping {}",
-                                                ap.getFriendlyName(), base.getFriendlyName()));
-                            }
-                            continue;
-                        }
-                        LOG.debug("Found Target: {}", base.getFriendlyName());
-                        addonProducts.forEach(ext -> LOG.debug("   - {}", ext.getFriendlyName()));
-                        result.add(new SUSEProductSet(base, addonProducts));
-                    }
-                }
+    private static List<SUSEProductSet> processCombination(List<SUSEProduct> combination) {
+        final List<SUSEProductSet> result = new LinkedList<>();
+        SUSEProduct base = combination.get(0);
+        if (!ContentSyncManager.isProductAvailable(base, base)) {
+            LOG.warn("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
+            return result;
+        }
+        // No Product Channels means, no subscription to access the channels
+        if (combination.size() == 1) {
+            LOG.debug("Found Target: {}", base.getFriendlyName());
+            result.add(new SUSEProductSet(base, Collections.emptyList()));
+        }
+        else {
+            List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
+            addLibertyLinuxAddonIfMissing(base, addonProducts);
+            // No Product Channels means, no subscription to access the channels
+            if (addonProducts.stream()
+                    .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
+                logUnavailableAddons(addonProducts, base);
                 return result;
             }
-        );
+            LOG.debug("Found Target: {}", base.getFriendlyName());
+            addonProducts.forEach(ext -> LOG.debug("   - {}", ext.getFriendlyName()));
+            result.add(new SUSEProductSet(base, addonProducts));
+        }
+        return result;
+    }
+
+    private static void logUnavailableAddons(List<SUSEProduct> addonProducts, SUSEProduct base) {
+        addonProducts.stream()
+                .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
+                .forEach(ap -> LOG.warn("No SUSE Product Channels for {}. Skipping {}",
+                        ap.getFriendlyName(), base.getFriendlyName()));
     }
 
     private static List<SUSEProduct> ensureRecommendedAddons(SUSEProduct baseIn, List<SUSEProduct> addonProducts) {
@@ -478,8 +486,7 @@ public class DistUpgradeManager extends BaseManager {
     public static SortedMap<ClonedChannel, List<Long>> getAlternatives(
             SUSEProductSet targetProducts, ChannelArch arch, User user) {
         // This list will be returned
-        TreeMap<ClonedChannel, List<Long>> alternatives =
-                new TreeMap<>();
+        TreeMap<ClonedChannel, List<Long>> alternatives = new TreeMap<>();
         // Get base channel
         Channel suseBaseChannel = getProductBaseChannel(
                 targetProducts.getBaseProduct().getId(), arch, user);
@@ -488,53 +495,56 @@ public class DistUpgradeManager extends BaseManager {
         // Get required channels for this product set
         List<EssentialChannelDto> requiredChildChannels =
                 getRequiredChannels(targetProducts, suseBaseChannel.getId());
-
         // For all possible alternatives (clones of base channel)
         for (ClonedChannel clone : allClones) {
             // SKip this channel if it's not a base channel
             if (!clone.isBaseChannel()) {
                 continue;
             }
-
-            // Set this to false as soon as we know this alternative is invalid
-            boolean isValidAlternative = true;
-
-            // Get all child channels of this clone
-            List<Channel> children = clone.getAccessibleChildrenFor(user);
-
             // Init the list of required channel IDs
-            List<Long> requiredChannelIDs = new ArrayList<>();
-
-            // All product channels need to be available as clones!
-            for (EssentialChannelDto c : requiredChildChannels) {
-                boolean foundChild = false;
-                long id = c.getId();
-                for (Channel child : children) {
-                    // Go back to the original channel and compare the IDs
-                    Channel childOriginal = ChannelManager.getOriginalChannel(child);
-                    if (childOriginal.getId() == id) {
-                        // This child's checkbox needs to be selected!
-                        requiredChannelIDs.add(child.getId());
-                        foundChild = true;
-                        break;
-                    }
-                }
-                if (!foundChild) {
-                    LOG.debug("Discarding cloned channel '{}' of base channel '{}' as a migration alternative. " +
-                            "The cloned channel doesn't have required child channels. Required child channels: '{}', " +
-                            "accessible child channels of the clone: '{}'.", clone, suseBaseChannel,
-                            requiredChildChannels, children);
-                    isValidAlternative = false;
-                    break;
-                }
-            }
-
-            // Is this a valid alternative?
-            if (isValidAlternative) {
+            // if the required channels ids is empty no valid alternative has been found
+            List<Long> requiredChannelIDs =
+                    getValidRequiredChannelIDs(user, clone, requiredChildChannels, suseBaseChannel);
+            if (!requiredChannelIDs.isEmpty()) {
                 alternatives.put(clone, requiredChannelIDs);
             }
         }
         return alternatives;
+    }
+
+    private static List<Long> getValidRequiredChannelIDs(
+            User user,
+            Channel clone,
+            List<EssentialChannelDto> requiredChildChannels,
+            Channel suseBaseChannel) {
+        // Init the list of required channel IDs
+        List<Long> requiredChannelIDs = new ArrayList<>();
+        // Get all child channels of this clone
+        List<Channel> children = clone.getAccessibleChildrenFor(user);
+        // All product channels need to be available as clones!
+        for (EssentialChannelDto c : requiredChildChannels) {
+            boolean foundChild = false;
+            long id = c.getId();
+            for (Channel child : children) {
+                // Go back to the original channel and compare the IDs
+                Channel childOriginal = ChannelManager.getOriginalChannel(child);
+                if (childOriginal.getId() == id) {
+                    // This child's checkbox needs to be selected!
+                    requiredChannelIDs.add(child.getId());
+                    foundChild = true;
+                    break;
+                }
+            }
+            if (!foundChild) {
+                LOG.debug("""
+                              Discarding cloned channel '{}' of base channel '{}' as a migration alternative. \
+                              The cloned channel doesn't have required child channels. Required child channels: '{}', \
+                              accessible child channels of the clone: '{}'.""",
+                        clone, suseBaseChannel, requiredChildChannels, children);
+                break;
+            }
+        }
+        return requiredChannelIDs;
     }
 
     /**
@@ -670,8 +680,9 @@ public class DistUpgradeManager extends BaseManager {
      * (typically: Taskomatic is down)
      */
     private static Long scheduleDistUpgrade(User user, Server server,
-            SUSEProductSet targetSet, Collection<Long> channelIDs,
-            boolean dryRun, boolean allowVendorChange, Date earliest) throws TaskomaticApiException {
+                                            SUSEProductSet targetSet, Collection<Long> channelIDs,
+                                            boolean dryRun, boolean allowVendorChange, Date earliest)
+            throws TaskomaticApiException {
         // Create action details
         DistUpgradeActionDetails details = new DistUpgradeActionDetails();
         List<String>  missingSuccessors = new ArrayList<>();
@@ -696,7 +707,7 @@ public class DistUpgradeManager extends BaseManager {
                 }
                 else {
                     missingSuccessors.add(addon.getName());
-               }
+                }
             }
             details.setMissingSuccessors(String.join(",", missingSuccessors));
         }
@@ -715,7 +726,7 @@ public class DistUpgradeManager extends BaseManager {
                 details.addChannelTask(task);
             }
         }
-        // Subscribe to all of the remaining channels
+        // Subscribe to all the remaining channels
         for (Long cid : channelIDs) {
             DistUpgradeChannelTask task = new DistUpgradeChannelTask();
             task.setChannel(ChannelFactory.lookupById(cid));
@@ -760,7 +771,7 @@ public class DistUpgradeManager extends BaseManager {
               - from OpenSUSE Leap 15.4 to SLES 15 SP4
             is not allowed.
             Only SP migrations should be possible.
-            Also individual assigning channels to perform a migration is forbidden
+            Also, individual assigning channels to perform a migration is forbidden
             */
             SUSEProduct installedBaseProduct = server.getInstalledProductSet()
                     .map(SUSEProductSet::getBaseProduct)
@@ -794,8 +805,8 @@ public class DistUpgradeManager extends BaseManager {
      * @return list of valid migration targets
      */
     public static List<SUSEProductSet> removeIncompatibleTargets(Optional<SUSEProductSet> installedProducts,
-            List<SUSEProductSet> allMigrationTargets, Optional<Set<String>> missingSuccessorExtensions) {
-
+                                                                 List<SUSEProductSet> allMigrationTargets,
+                                                                 Optional<Set<String>> missingSuccessorExtensions) {
         List<SUSEProductSet> migrationTargets = new LinkedList<>();
         for (SUSEProductSet t : allMigrationTargets) {
             if (installedProducts.isPresent() && installedProducts.get().getAddonProducts().isEmpty()) {
