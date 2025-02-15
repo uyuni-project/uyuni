@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -102,6 +103,10 @@ public class SystemEntitler {
         entitleServer(server, ent);
 
         server.asMinionServer().ifPresent(minion -> {
+            if (EntitlementManager.ANSIBLE_CONTROL_NODE.equals(ent)) {
+                MinionPillarManager.INSTANCE.generatePillar(minion, false, MinionPillarManager.PillarSubset.GENERAL);
+            }
+
             serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));
 
             if (EntitlementManager.MONITORING.equals(ent)) {
