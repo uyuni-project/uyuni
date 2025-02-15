@@ -18,6 +18,7 @@ package com.redhat.rhn.manager.system;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -36,8 +37,10 @@ import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.reflect.TypeToken;
@@ -46,7 +49,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -149,7 +154,16 @@ public class AnsibleManager extends BaseManager {
         ansiblePath.setMinionServer(minionServer);
         ansiblePath.setPath(Path.of(path));
 
-        return AnsibleFactory.saveAnsiblePath(ansiblePath);
+        ansiblePath = AnsibleFactory.saveAnsiblePath(ansiblePath);
+
+        // Refresh inotify beacon if a new inventory was added
+        if (type == AnsiblePath.Type.INVENTORY) {
+            MinionPillarManager.INSTANCE.generatePillar(minionServer, false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionServer.getMinionId()));
+        }
+
+        return ansiblePath;
     }
 
     /**
@@ -167,7 +181,17 @@ public class AnsibleManager extends BaseManager {
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
         validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
-        return AnsibleFactory.saveAnsiblePath(existing);
+
+        existing = AnsibleFactory.saveAnsiblePath(existing);
+
+        // Refresh inotify beacon if the updated path is an inventory
+        if (existing.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            MinionPillarManager.INSTANCE.generatePillar(existing.getMinionServer(), false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(existing.getMinionServer().getMinionId()));
+        }
+
+        return existing;
     }
 
     private static void validateAnsiblePath(String path, Optional<String> typeLabel, Optional<Long> pathId,
@@ -228,7 +252,15 @@ public class AnsibleManager extends BaseManager {
     public static void removeAnsiblePath(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
+
         AnsibleFactory.removeAnsiblePath(path);
+
+        // Refresh inotify beacon if the removed path was an inventory
+        if (path.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            MinionPillarManager.INSTANCE.generatePillar(path.getMinionServer(), false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(path.getMinionServer().getMinionId()));
+        }
     }
 
     /**
@@ -372,6 +404,30 @@ public class AnsibleManager extends BaseManager {
                             throw new IllegalStateException(error);
                         },
                         success -> success));
+    }
+
+    /**
+     * Generate the inotify beacon for the given ansible control node based on
+     * the {@link InventoryPath} related to it.
+     *
+     * @param minion the minion server
+     * @return the inotify beacon configuration
+     */
+    public static List<Map<String, Object>> generateBeacon(MinionServer minion) {
+        List<Map<String, Object>> beacon = new ArrayList<>();
+        List<InventoryPath> inventories = AnsibleFactory.listAnsibleInventoryPaths(minion.getId());
+
+        if (!inventories.isEmpty()) {
+            Map<String, Object> files = new HashMap<>();
+            inventories.forEach(i -> {
+                files.put(i.getPath().toString(), Map.of("mask", List.of("modify")));
+            });
+            beacon.add(Map.of("files", files));
+            beacon.add(Map.of("interval", 5));
+            beacon.add(Map.of("disable_during_state_run", true));
+        }
+
+        return beacon;
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
