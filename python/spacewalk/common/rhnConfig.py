@@ -388,6 +388,8 @@ def parse_line(line):
             "db_host": str,
             "server.susemanager.mirrcred_user": str,
             "server.susemanager.mirrcred_pass": str,
+            "web.version": str,
+            "web.version.uyuni": str,
         }
         val = val.strip()
 

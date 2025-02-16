@@ -80,8 +80,6 @@ use constant DB_INSTALL_LOG_SIZE => 11416;
 our $DEFAULT_DOC_ROOT = "/var/www/html";
 our $SUSE_DOC_ROOT = "/usr/share/susemanager/www/htdocs";
 
-our $CA_TRUST_DIR = '/etc/pki/ca-trust/source/anchors';
-our $SUSE_CA_TRUST_DIR = '/etc/pki/trust/anchors';
 use constant DEFAULT_SUSEMANAGER_CONF =>
   '/usr/share/rhn/config-defaults/rhn_server_susemanager.conf';
 
@@ -102,8 +100,6 @@ sub parse_options {
             "help",
             "skip-initial-configuration",
             "skip-fqdn-test",
-            "skip-ssl-cert-generation",
-            "skip-ssl-ca-generation",
             "skip-ssl-vhost-setup",
             "skip-services-check",
             "clear-db",
@@ -115,7 +111,7 @@ sub parse_options {
 
   my $usage = loc("usage: %s %s\n",
                   $0,
-                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [ --skip-ssl-cert-generation ] [--skip-ssl-ca-generation] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc] [--disconnected]" );
+                  "[ --help ] [ --answer-file=<filename> ] [ --skip-initial-configuration ] [ --skip-fqdn-test ] [--skip-ssl-vhost-setup] [ --skip-services-check ] [ --clear-db ] [--scc] [--disconnected]" );
 
   # Terminate if any errors were encountered parsing the command line args:
   my %opts;
@@ -835,7 +831,7 @@ sub write_rhn_conf {
 sub set_hibernate_conf {
     my $answers = shift;
 
-    if ($answers->{'db-backend'} eq 'postgresql') {
+    if ($answers->{'db-backend'} eq 'postgresql'){
         $answers->{'hibernate.dialect'} = "org.hibernate.dialect.PostgreSQLDialect";
         $answers->{'hibernate.connection.driver_class'} = "org.postgresql.Driver";
         $answers->{'hibernate.connection.driver_proto'} = "jdbc:postgresql";
@@ -877,14 +873,6 @@ Do not verify that the system has a valid hostname.  Red Hat Satellite
 requires that the hostname be properly set during installation.
 Using this option may result in a Satellite server that is not fully
 functional.
-
-=item B<--skip-ssl-cert-generation>
-
-Do not generate the SSL certificates for the Satellite.
-
-=item B<--skip-ssl-ca-generation>
-
-Do not generate the SSL CA, use existing CA to sign certificate for the Satellite.
 
 =item B<--skip-ssl-vhost-setup>
 

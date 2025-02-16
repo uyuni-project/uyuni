@@ -167,7 +167,7 @@ Feature: Update activation keys
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Build host Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "buildhost" from "selectedBaseChannel"
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
     And I wait until "SLE-Module-Basesystem15-SP4-Pool for x86_64" has been checked
@@ -187,14 +187,16 @@ Feature: Update activation keys
 
 @scc_credentials
 @uyuni
-  Scenario: Update build host key with Uyuni client tools
+  Scenario: Update build host key with Uyuni client tools and dev child channel
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Build host Key x86_64" in the content area
     And I wait for child channels to appear
-    And I select the parent channel for the "buildhost" from "selectedBaseChannel"
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
     And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
+    And I check "Dev-Build-Host-Channel"
+    And I wait until "Dev-Build-Host-Channel" has been checked
     And I click on "Update Activation Key"
     Then I should see a "Activation key Build host Key x86_64 has been modified" text
 

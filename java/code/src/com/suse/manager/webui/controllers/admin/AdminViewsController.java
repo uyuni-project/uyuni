@@ -21,6 +21,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.user.User;
@@ -29,8 +30,8 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
-import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
@@ -64,6 +65,7 @@ public class AdminViewsController {
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
+
     private AdminViewsController() { }
 
     /**
@@ -81,6 +83,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/config/monitoring",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+        get("/manager/admin/config/password-policy",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
@@ -159,6 +163,22 @@ public class AdminViewsController {
         return new ModelAndView(data, "controllers/admin/templates/issv3/update-peripheral.jade");
     }
 
+
+    /**
+     * Show password policy tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showPasswordPolicy(Request request, Response response, User user) {
+        PasswordPolicy pc = PasswordPolicy.buildFromFactory();
+        PasswordPolicy defaults = PasswordPolicy.buildFromDefaults();
+        Map<String, Object> data = new HashMap<>();
+        data.put("policy", GSON.toJson(pc));
+        data.put("defaults", GSON.toJson(defaults));
+        return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
+    }
 
     /**
      * show list of saved payg ssh connection data

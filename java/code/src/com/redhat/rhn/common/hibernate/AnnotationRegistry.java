@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.cloudpayg.CloudRmtHost;
 import com.redhat.rhn.domain.cloudpayg.PaygCredentialsProduct;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.common.ProvisionState;
+import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -260,6 +261,7 @@ public class AnnotationRegistry {
             ProjectSource.class,
             ProvisionState.class,
             PtfFilter.class,
+            RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
             RecurringInternalState.class,
