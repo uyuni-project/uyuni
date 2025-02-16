@@ -160,7 +160,7 @@ public class ContentSyncManager {
 
     private CloudPaygManager cloudPaygManager;
 
-    private static final HubFactory hubFactory = new HubFactory();
+    private static final HubFactory HUB_FACTORY = new HubFactory();
 
     private final Path tmpLoggingDir;
 
@@ -1096,7 +1096,13 @@ public class ContentSyncManager {
         String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
 
         SCCRepository repo = new SCCRepository();
-        repo.setSigned(true);
+        if (HUB_FACTORY.isISSPeripheral()) {
+            repo.setSigned(
+                StringUtils.isNotBlank(HUB_FACTORY.lookupIssHub().map(IssHub::getGpgKey).orElse("")));
+        }
+        else {
+            repo.setSigned(true);
+        }
         repo.update(jrepo);
 
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
@@ -1746,7 +1752,7 @@ public class ContentSyncManager {
         Map<Long, ReleaseStage> releaseStageById = productAttributeOverride(
                 tree, ProductTreeEntry::getReleaseStage);
 
-        Optional<IssHub> optIssHub = hubFactory.lookupIssHub();
+        Optional<IssHub> optIssHub = HUB_FACTORY.lookupIssHub();
         String hubFqdn = optIssHub.map(IssHub::getFqdn).orElse("invalid.hub.internal");
 
         return jsonProducts.stream().map(product -> {
@@ -1886,8 +1892,13 @@ public class ContentSyncManager {
                 ChannelTemplate template = Opt.fold(Optional.ofNullable(dbChannelTemplatesByIds.get(ids)),
                         () -> {
                             SCCRepository repo = repoMap.get(repoJson.getSCCId());
-                            repo.setSigned(entry.isSigned());
-
+                            if (HUB_FACTORY.isISSPeripheral()) {
+                                repo.setSigned(StringUtils.isNotBlank(
+                                        HUB_FACTORY.lookupIssHub().map(IssHub::getGpgKey).orElse("")));
+                            }
+                            else {
+                                repo.setSigned(entry.isSigned());
+                            }
                             ChannelTemplate channelTemplate = new ChannelTemplate();
                             channelTemplate.setUpdateTag(entry.getUpdateTag().orElse(null));
                             channelTemplate.setChannelLabel(entry.getChannelLabel());
@@ -1940,7 +1951,13 @@ public class ContentSyncManager {
                             // Allowed to change also in released stage
                             channelTemplate.setChannelName(entry.getChannelName());
                             channelTemplate.setMandatory(entry.isMandatory());
-                            channelTemplate.getRepository().setSigned(entry.isSigned());
+                            if (HUB_FACTORY.isISSPeripheral()) {
+                                channelTemplate.getRepository().setSigned(StringUtils.isNotBlank(
+                                        HUB_FACTORY.lookupIssHub().map(IssHub::getGpgKey).orElse("")));
+                            }
+                            else {
+                                channelTemplate.getRepository().setSigned(entry.isSigned());
+                            }
                             if (!entry.getGpgInfo().isEmpty()) {
                                 channelTemplate.setGpgKeyUrl(entry.getGpgInfo()
                                         .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
@@ -2090,7 +2107,7 @@ public class ContentSyncManager {
     private static boolean isChannelAccessible(ChannelTemplate template) {
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
-        boolean isISSSlave = IssFactory.getCurrentMaster() != null || hubFactory.isISSPeripheral();
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null || HUB_FACTORY.isISSPeripheral();
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = template.getRepository().isAccessible();
