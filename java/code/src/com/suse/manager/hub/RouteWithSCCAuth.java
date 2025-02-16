@@ -8,7 +8,7 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
-package com.suse.manager.iss;
+package com.suse.manager.hub;
 
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 

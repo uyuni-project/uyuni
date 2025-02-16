@@ -211,7 +211,7 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
                 .setPassword("password")
                 .setUuid("uuid")
                 .createSCCConfig();
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
+        return new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -226,7 +226,6 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
                 );
             }
         };
-        return sccWebClient;
     }
 
 }
