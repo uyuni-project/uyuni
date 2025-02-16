@@ -11533,7 +11533,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Pole {0} nemôže byť rovné alebo menšie ako nula.</target>
       </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
@@ -11541,7 +11541,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Pole {0} nemôže byť väčšie alebo rovné ako pole {1}.</target>
       </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
@@ -11549,7 +11549,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Maximálny povolený počet znakov hesla nesmie byť menší alebo rovný 0.</target>
       </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
@@ -11563,42 +11563,42 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Heslo obsahuje po sebe idúce znaky.</target>
       </trans-unit>
       <trans-unit id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Heslá musia obsahovať aspoň jednu číslicu.</target>
       </trans-unit>
       <trans-unit id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Heslá musia obsahovať aspoň jeden veľký znak.</target>
       </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Heslá musia obsahovať aspoň jeden malý znak.</target>
       </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Heslá musia obsahovať aspoň jeden špeciálny znak, povolené špeciálne znaky sú: {0}.</target>
       </trans-unit>
       <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="new"/>
+        <target state="translated">Počet znakov hesla prekročil povolené maximum {0}.</target>
       </trans-unit>
     </body>
   </file>
