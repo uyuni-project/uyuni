@@ -13,14 +13,16 @@ package com.suse.scc;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
-import com.suse.manager.iss.RouteWithSCCAuth;
+import com.suse.manager.hub.RouteWithSCCAuth;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssPeripheralChannelToken;
@@ -49,6 +51,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.time.Instant;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -56,7 +59,6 @@ import java.util.function.Function;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.fortuna.ical4j.model.Date;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -71,8 +73,8 @@ public class SCCEndpoints {
      */
     public static final Long CUSTOM_REPO_FAKE_SCC_ID = Long.MIN_VALUE;
 
-    private final String UUID;
-    private final URI SCC_URL;
+    private final String uuid;
+    private final URI sccUrl;
 
     private final HubFactory hubFactory;
 
@@ -82,8 +84,8 @@ public class SCCEndpoints {
      * @param sccUrlIn the SCC URL
      */
     public SCCEndpoints(String uuidIn, URI sccUrlIn) {
-        this.UUID = uuidIn;
-        this.SCC_URL = sccUrlIn;
+        this.uuid = uuidIn;
+        this.sccUrl = sccUrlIn;
         this.hubFactory = new HubFactory();
     }
 
@@ -109,10 +111,10 @@ public class SCCEndpoints {
             var password = userpass[1];
 
             Optional<HubSCCCredentials> credentials =
-                    CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream().filter(c -> {
-                        return c.getUsername().equals(username) &&
-                                MessageDigest.isEqual(c.getPassword().getBytes(), password.getBytes());
-                    }).findFirst();
+                    CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).stream().filter(c ->
+                            c.getUsername().equals(username) &&
+                                    MessageDigest.isEqual(c.getPassword().getBytes(), password.getBytes())
+                    ).findFirst();
 
 
             return credentials
@@ -175,9 +177,10 @@ public class SCCEndpoints {
                                 newToken.getSerializedForm(), Date.from(newToken.getExpirationTime()));
                         pc.setToken(pct);
                     }
+
                 }
                 catch (TokenBuildingException | TokenParsingException e) {
-                    throw new RuntimeException(e);
+                    throw new RhnRuntimeException(e);
                 }
             });
             hubFactory.save(p);
@@ -235,10 +238,7 @@ public class SCCEndpoints {
                 json.setAutorefresh(repository.isAutorefresh());
                 json.setDistroTarget(repository.getDistroTarget());
                 return json;
-            }).orElseGet(() -> {
-                //TODO: Handle custom channels
-                return buildCustomRepoJson(label, hostname, token);
-            });
+            }).orElseGet(() -> buildCustomRepoJson(label, hostname, token));
         }).toList();
         return gson.toJson(jsonRepos);
     }
@@ -270,36 +270,35 @@ public class SCCEndpoints {
     private <T> String serveEndpoint(Function<SCCClient, T> fn) {
         return ConfigDefaults.get().getOfflineMirrorDir()
                 .map(path -> fn.apply(new SCCFileClient(Paths.get(path))))
-                .or(() -> {
-                    return CredentialsFactory.listSCCCredentials().stream()
-                            .filter(c -> c.isPrimary())
-                            .findFirst()
-                            .map(cred -> {
+                .or(() -> CredentialsFactory.listSCCCredentials().stream()
+                        .filter(SCCCredentials::isPrimary)
+                        .findFirst()
+                        .map(cred -> {
 
-                                String username = cred.getUsername();
+                            String username = cred.getUsername();
 
-                                Path path = Paths.get(SCCConfig.DEFAULT_LOGGING_DIR).resolve(username);
+                            Path path = Paths.get(SCCConfig.DEFAULT_LOGGING_DIR).resolve(username);
 
-                                try {
-                                    return fn.apply(new SCCFileClient(path));
-                                }
-                                catch (SCCClientException e) {
-                                    String password = cred.getPassword();
+                            try {
+                                return fn.apply(new SCCFileClient(path));
+                            }
+                            catch (SCCClientException e) {
+                                String password = cred.getPassword();
 
-                                    SCCConfig config = new SCCConfigBuilder()
-                                            .setUrl(SCC_URL)
-                                            .setUsername(username)
-                                            .setPassword(password)
-                                            .setUuid(UUID)
-                                            .setLoggingDir(SCCConfig.DEFAULT_LOGGING_DIR)
-                                            .setSkipOwner(false)
-                                            .createSCCConfig();
+                                SCCConfig config = new SCCConfigBuilder()
+                                        .setUrl(sccUrl)
+                                        .setUsername(username)
+                                        .setPassword(password)
+                                        .setUuid(uuid)
+                                        .setLoggingDir(SCCConfig.DEFAULT_LOGGING_DIR)
+                                        .setSkipOwner(false)
+                                        .createSCCConfig();
 
-                                    return fn.apply(new SCCWebClient(config));
-                                }
+                                return fn.apply(new SCCWebClient(config));
+                            }
 
-                            });
-                }).map(gson::toJson).orElse("");
+                        })
+                ).map(gson::toJson).orElse("");
     }
 
     /**
@@ -310,6 +309,6 @@ public class SCCEndpoints {
      * @return return the product tree
      */
     public String productTree(Request request, Response response) {
-        return serveEndpoint(c -> c.productTree());
+        return serveEndpoint(SCCClient::productTree);
     }
 }

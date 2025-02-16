@@ -15,6 +15,7 @@ import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenParser;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -31,7 +32,7 @@ import javax.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSPeripheralChannelToken")
-public class IssPeripheralChannelToken {
+public class IssPeripheralChannelToken implements Serializable {
 
     private long id;
 
