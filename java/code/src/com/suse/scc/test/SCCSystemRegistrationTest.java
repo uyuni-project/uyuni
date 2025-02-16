@@ -246,7 +246,6 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
                                 .collect(Collectors.toList())
                 );
             }
-
         };
 
 
@@ -353,7 +352,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
                 .setPassword("password")
                 .setUuid("uuid")
                 .createSCCConfig();
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(sccConfig) {
+        return new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -367,9 +366,7 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
                                 .collect(Collectors.toList())
                 );
             }
-
         };
-        return sccWebClient;
     }
 
     public SCCCredentials getCredentials() {
