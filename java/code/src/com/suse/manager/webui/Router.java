@@ -20,6 +20,7 @@ import static spark.Spark.get;
 import static spark.Spark.notFound;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -147,7 +148,7 @@ public class Router implements SparkApplication {
             sccEndpoints.initRoutes(jade);
         }
         catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new RhnRuntimeException();
         }
 
         // Login
