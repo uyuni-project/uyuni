@@ -32,8 +32,9 @@ import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.controllers.admin.beans.HubResponse;
+import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
+import com.suse.manager.webui.controllers.admin.service.IssV3Service;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
@@ -41,7 +42,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -127,9 +127,9 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        HubFactory hubFactory = new HubFactory();
-        Type listType = new TypeToken<List<IssPeripheral>>() { }.getType();
-        data.put("hubs", GSON.toJson(hubFactory.listPeripherals(), listType));
+        IssV3Service service = new IssV3Service();
+        Type listType = new TypeToken<List<IssV3PeripheralsResponse>>() { }.getType();
+        data.put("peripherals", GSON.toJson(service.getPeripheralsList(), listType));
         return new ModelAndView(data, "controllers/admin/templates/issv3/list-peripherals.jade");
     }
 

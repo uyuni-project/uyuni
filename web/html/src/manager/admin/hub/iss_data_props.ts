@@ -6,8 +6,8 @@ export type PeripheralListData = {
   id: string;
   fqdn: string;
   nChannelsSync: number;
-  nAllChannels: number;
-  nOrgs: number;
+  nSyncOrgs: number;
+  rootCA: string;
 };
 
 export type HubDetailData = {
@@ -21,4 +21,3 @@ export type PeripheralDetailData = {
   fqdn: string;
   rootCA: string;
 };
-

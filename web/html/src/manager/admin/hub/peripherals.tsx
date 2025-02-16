@@ -27,7 +27,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
   );
 
   const addPeripheral = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripheral/create`);
+    window.pageRenderers?.spaengine?.navigate?.(`/manager/admin/hub/peripherals/register`);
   };
 
   let pageContent = <PeripheralsList peripherals={peripherals} />;
@@ -49,7 +49,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
         </div>
       </SectionToolbar>
       <span>
-        <h1>Known Peripherals instances</h1>
+        <h1>Known Peripherals Instances</h1>
       </span>
       {pageContent}
     </div>

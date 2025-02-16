@@ -27,7 +27,7 @@ const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
   let componentContent = (
     <Table
       data={peripherals}
-      identifier={(row) => row.fqdn}
+      identifier={(row: PeripheralListData) => row.id}
       selectable={false}
       initialSortColumnKey="fqdn"
       searchField={<SearchField filter={searchData} placeholder={t("Filter by FQDN")} />}
@@ -37,7 +37,7 @@ const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
         comparator={Utils.sortByText}
         header={t("Peripherals FQDN")}
         cell={(row) => (
-          <a className="js-spa" href={`/rhn/manager/admin/hub/peripheral/${row.id}`}>
+          <a className="js-spa" href={`/rhn/manager/admin/hub/peripherals/${row.id}`}>
             {row.fqdn}
           </a>
         )}
@@ -49,25 +49,26 @@ const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
         cell={(row: PeripheralListData) => <span>{row.nChannelsSync}</span>}
       />
       <Column
-        columnKey="nAllChannels"
-        comparator={Utils.sortByNumber}
-        header={t("N. of All Channels")}
-        cell={(row: PeripheralListData) => <span>{row.nAllChannels}</span>}
-      />
-      <Column
         columnKey="nOrgs"
         comparator={Utils.sortByNumber}
-        header={t("N. of All Organizzation")}
-        cell={(row: PeripheralListData) => <span>{row.nOrgs}</span>}
+        header={t("N. of Sync Orgs")}
+        cell={(row: PeripheralListData) => <span>{row.nSyncOrgs}</span>}
       />
       <Column
         columnKey="id"
         header={t("Download CA")}
-        cell={(row) => (
-          <a className="js-spa" href="_blank">
-            DL by {row.id}
-          </a>
-        )}
+        cell={(row: PeripheralListData) => {
+          let rootCABlob = new Blob([row.rootCA], { type: "text/plain" });
+          let dlUrl = URL.createObjectURL(rootCABlob);
+          <a
+            href={dlUrl}
+            onClick={() => {
+              URL.revokeObjectURL(dlUrl);
+            }}
+          >
+            <i className="bi bi-download" />
+          </a>;
+        }}
       />
     </Table>
   );
