@@ -368,8 +368,9 @@ public class DistUpgradeManager extends BaseManager {
 
     private static List<SUSEProductSet> processCombination(List<SUSEProduct> combination) {
         final List<SUSEProductSet> result = new LinkedList<>();
+        ContentSyncManager mgr = new ContentSyncManager();
         SUSEProduct base = combination.get(0);
-        if (!ContentSyncManager.isProductAvailable(base, base)) {
+        if (!mgr.isProductAvailable(base, base)) {
             LOG.warn("No SUSE Product Channels for {}. Skipping", base.getFriendlyName());
             return result;
         }
@@ -382,9 +383,8 @@ public class DistUpgradeManager extends BaseManager {
             List<SUSEProduct> addonProducts = combination.subList(1, combination.size());
             addLibertyLinuxAddonIfMissing(base, addonProducts);
             // No Product Channels means, no subscription to access the channels
-            if (addonProducts.stream()
-                    .anyMatch(ap -> !ContentSyncManager.isProductAvailable(ap, base))) {
-                logUnavailableAddons(addonProducts, base);
+            if (addonProducts.stream().anyMatch(ap -> !mgr.isProductAvailable(ap, base))) {
+                logUnavailableAddons(addonProducts, base, mgr);
                 return result;
             }
             LOG.debug("Found Target: {}", base.getFriendlyName());
@@ -394,9 +394,10 @@ public class DistUpgradeManager extends BaseManager {
         return result;
     }
 
-    private static void logUnavailableAddons(List<SUSEProduct> addonProducts, SUSEProduct base) {
+    private static void logUnavailableAddons(List<SUSEProduct> addonProducts, SUSEProduct base,
+                                             ContentSyncManager mgr) {
         addonProducts.stream()
-                .filter(ap -> !ContentSyncManager.isProductAvailable(ap, base))
+                .filter(ap -> !mgr.isProductAvailable(ap, base))
                 .forEach(ap -> LOG.warn("No SUSE Product Channels for {}. Skipping {}",
                         ap.getFriendlyName(), base.getFriendlyName()));
     }

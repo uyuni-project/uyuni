@@ -160,7 +160,10 @@ public class ContentSyncManager {
 
     private CloudPaygManager cloudPaygManager;
 
-    private static final HubFactory hubFactory = new HubFactory();
+    private final HubFactory hubFactory;
+
+    private final boolean isPeripheral;
+    private final boolean hubHasSignedMetadata;
 
     private final Path tmpLoggingDir;
 
@@ -178,6 +181,10 @@ public class ContentSyncManager {
     public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
         cloudPaygManager = paygMgrIn;
         tmpLoggingDir = tmpLogDir;
+        hubFactory = new HubFactory();
+        Optional<IssHub> issHub = hubFactory.lookupIssHub();
+        isPeripheral = issHub.isPresent();
+        hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
     }
 
     /**
@@ -1076,7 +1083,7 @@ public class ContentSyncManager {
         templatesToSave.forEach(SUSEProductFactory::save);
     }
 
-    private static PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
+    private PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
         URI uri;
 
         try {
@@ -1096,7 +1103,7 @@ public class ContentSyncManager {
         String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
 
         SCCRepository repo = new SCCRepository();
-        repo.setSigned(true);
+        repo.setSigned(isRepoSigned(true));
         repo.update(jrepo);
 
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
@@ -1738,7 +1745,7 @@ public class ContentSyncManager {
                 })).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private static List<SCCProductJson> overrideProductAttributes(
+    private List<SCCProductJson> overrideProductAttributes(
             List<SCCProductJson> jsonProducts, List<ProductTreeEntry> tree) {
         Map<Long, Optional<ProductType>> productTypeById = productAttributeOverride(
                 tree, ProductTreeEntry::getProductType);
@@ -1774,7 +1781,7 @@ public class ContentSyncManager {
      * @param reposById map of scc repositories by id
      * @param tree the static suse product tree
      */
-    public static void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
+    public void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
                                       List<ProductTreeEntry> tree) {
         Map<String, PackageArch> packageArchMap = PackageFactory.lookupPackageArch()
                 .stream().collect(Collectors.toMap(PackageArch::getLabel, a -> a));
@@ -1886,7 +1893,7 @@ public class ContentSyncManager {
                 ChannelTemplate template = Opt.fold(Optional.ofNullable(dbChannelTemplatesByIds.get(ids)),
                         () -> {
                             SCCRepository repo = repoMap.get(repoJson.getSCCId());
-                            repo.setSigned(entry.isSigned());
+                            repo.setSigned(isRepoSigned(entry.isSigned()));
 
                             ChannelTemplate channelTemplate = new ChannelTemplate();
                             channelTemplate.setUpdateTag(entry.getUpdateTag().orElse(null));
@@ -1940,7 +1947,7 @@ public class ContentSyncManager {
                             // Allowed to change also in released stage
                             channelTemplate.setChannelName(entry.getChannelName());
                             channelTemplate.setMandatory(entry.isMandatory());
-                            channelTemplate.getRepository().setSigned(entry.isSigned());
+                            channelTemplate.getRepository().setSigned(isRepoSigned(entry.isSigned()));
                             if (!entry.getGpgInfo().isEmpty()) {
                                 channelTemplate.setGpgKeyUrl(entry.getGpgInfo()
                                         .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
@@ -2076,7 +2083,7 @@ public class ContentSyncManager {
      * @param root the root we check for
      * @return true in case of all mandatory repos could be mirrored, otherwise false
      */
-    public static boolean isProductAvailable(SUSEProduct product, SUSEProduct root) {
+    public boolean isProductAvailable(SUSEProduct product, SUSEProduct root) {
         Set<ChannelTemplate> templates = product.getChannelTemplates();
         if (templates == null) {
             return false;
@@ -2084,13 +2091,13 @@ public class ContentSyncManager {
         return !templates.isEmpty() && templates.stream()
                 .filter(e -> e.getRootProduct().equals(root))
                 .filter(ChannelTemplate::isMandatory)
-                .allMatch(ContentSyncManager::isChannelAccessible);
+                .allMatch(this::isChannelAccessible);
     }
 
-    private static boolean isChannelAccessible(ChannelTemplate template) {
+    private boolean isChannelAccessible(ChannelTemplate template) {
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
-        boolean isISSSlave = IssFactory.getCurrentMaster() != null || hubFactory.isISSPeripheral();
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null || isPeripheral;
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = template.getRepository().isAccessible();
@@ -2667,6 +2674,13 @@ public class ContentSyncManager {
      */
     public static boolean isChannelNameReserved(String name) {
         return !SUSEProductFactory.lookupByChannelName(name).isEmpty();
+    }
+
+    private boolean isRepoSigned(boolean signedDefault) {
+        if (isPeripheral) {
+            return hubHasSignedMetadata;
+        }
+        return signedDefault;
     }
 
     /**
