@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-14 14:16+0100\n"
-"PO-Revision-Date: 2025-02-02 16:50+0000\n"
+"PO-Revision-Date: 2025-02-16 15:50+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -1315,14 +1315,12 @@ msgid "Monitoring"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "Passwort"
+msgstr "Passwortrichtlinie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
-msgstr ""
+msgstr "Wird neu gestartet"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
