@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Payg-as-you-go XMLRPC Handler
  *
- * @apidoc.namespace admin
+ * @apidoc.namespace admin.payg
  * @apidoc.doc Provides methods to access and modify PAYG ssh connection data
  */
 public class AdminPaygHandler extends BaseHandler {
