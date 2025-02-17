@@ -33,6 +33,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
 import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.config.ConfigUploadAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -2513,5 +2515,59 @@ public class ActionManager extends BaseManager {
             ret.add(a.getId());
         }
         return ret;
+    }
+
+    /**
+     * Schedule an immediate Ansible inventory refresh without a user.
+     *
+     * @param server the server
+     * @param inventoryPath the Ansible inventory
+     * @return the scheduled InventoryAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Action scheduleInventoryRefresh(Server server, String inventoryPath)
+            throws TaskomaticApiException {
+        Date earliest = new Date();
+        return scheduleInventoryRefresh(Optional.empty(), server, inventoryPath, earliest);
+    }
+
+    /**
+     * Schedule an Ansible inventory refresh.
+     *
+     * @param user the user
+     * @param server the server
+     * @param earliest The earliest time this action should be run.
+     * @param inventoryPath the Ansible inventory
+     * @return the scheduled InventoryAction
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     * (typically: Taskomatic is down)
+     */
+    public static Action scheduleInventoryRefresh(Optional<User> user, Server server, String inventoryPath,
+                                                       Date earliest) throws TaskomaticApiException {
+        checkSaltOrManagementEntitlement(server.getId());
+
+        InventoryAction action = (InventoryAction) ActionFactory.createAction(
+                ActionFactory.TYPE_INVENTORY);
+
+        InventoryActionDetails details = new InventoryActionDetails();
+        details.setInventoryPath(inventoryPath);
+
+        action.setName(ActionFactory.TYPE_INVENTORY.getName());
+        action.setOrg(server.getOrg());
+        action.setSchedulerUser(user.orElse(null));
+        action.setEarliestAction(earliest);
+        action.setDetails(details);
+
+        ServerAction sa = new ServerAction();
+        sa.setStatus(ActionFactory.STATUS_QUEUED);
+        sa.setRemainingTries(REMAINING_TRIES);
+        sa.setServerWithCheck(server);
+        action.addServerAction(sa);
+        sa.setParentActionWithCheck(action);
+
+        ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
     }
 }
