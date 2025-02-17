@@ -23,7 +23,6 @@
 # these features sync real channels (last core features)
 - features/reposync/srv_sync_channels.feature
 - features/reposync/srv_sync_products.feature
-- features/reposync/srv_enable_sync_products.feature
 - features/reposync/srv_create_fake_channels.feature
 - features/reposync/srv_create_fake_repositories.feature
 - features/reposync/srv_sync_fake_channels.feature
