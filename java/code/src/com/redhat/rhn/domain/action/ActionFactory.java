@@ -432,6 +432,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
         }
+        else if (typeIn.equals(TYPE_INVENTORY)) {
+            retval = new InventoryAction();
+        }
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
         }
@@ -1244,5 +1247,10 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing appstreams changes action.
      */
     public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
+
+    /**
+     * The constant representing "Refresh Ansible inventories" [ID:525]
+     */
+    public static final ActionType TYPE_INVENTORY = lookupActionTypeByLabel("ansible.inventory");
 }
 
