@@ -27,7 +27,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
   );
 
   const addPeripheral = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/manager/admin/hub/peripherals/register`);
+    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/register`);
   };
 
   let pageContent = <PeripheralsList peripherals={peripherals} />;
@@ -41,7 +41,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
             <Button
               id="addPeripheral"
               icon="fa-plus"
-              className={"btn-success"}
+              className={"btn-default"}
               text={t("Add Peripheral")}
               handler={addPeripheral}
             />

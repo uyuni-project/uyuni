@@ -27,7 +27,7 @@ const HubDetails = (prop: HubDetailsProps) => {
   );
   let pageContent = (
     <>
-      <span>{t("Noo Hub is currently configured for this server.")}</span>
+      <span>{t("No Hub is currently configured for this server.")}</span>
       <span>{t("Refresh this page after configuring this server as a Peripheral to see the Hub details")}</span>
     </>
   );

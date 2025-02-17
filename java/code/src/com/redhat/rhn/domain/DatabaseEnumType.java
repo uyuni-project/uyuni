@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -47,8 +47,14 @@ public abstract class DatabaseEnumType<T extends Enum<T>> extends CustomEnumType
         return value.name();
     }
 
-    // Converts a string value from the database to the proper enum value.
-    private static <T extends Enum<T>> T findByLabel(Class<T> enumType, String label) {
+    /**
+     * Converts a string value from the database to the proper enum value.
+     * @param enumType the class of the enum
+     * @param label the database value
+     * @return an instance of the specified enum
+     * @param <T> the enum
+      */
+    public static <T extends Enum<T>> T findByLabel(Class<T> enumType, String label) {
         return Arrays.stream(enumType.getEnumConstants())
             .filter(e -> Objects.equals(label, getLabel(e)))
             .findFirst()

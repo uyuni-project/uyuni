@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -38,6 +39,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -147,6 +149,18 @@ public class HubManager {
     }
 
     /**
+     * Deletes the access token with the specified id
+     * @param user the user performing the operation
+     * @param tokenId the id of the access token to delete
+     * @return true if the token was deleted, false otherwise
+     */
+    public boolean deleteAccessToken(User user, long tokenId) {
+        ensureSatAdmin(user);
+
+        return hubFactory.removeAccessTokenById(tokenId);
+    }
+
+    /**
      * Stores in the database the access token of the given FQDN
      * @param accessToken the access token granting access and identifying the caller
      * @param tokenToStore the token
@@ -160,17 +174,27 @@ public class HubManager {
 
     /**
      * Returns the ISS of the specified role, if present
-     * @param accessToken the access token granting access and identifying the the caller
+     * @param accessToken the access token granting access and identifying the caller
      * @param role the role of the server
      * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
      */
     public IssServer findServer(IssAccessToken accessToken, IssRole role) {
         ensureValidToken(accessToken);
 
-        return switch (role) {
-            case HUB -> hubFactory.lookupIssHubByFqdn(accessToken.getServerFqdn()).orElse(null);
-            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(accessToken.getServerFqdn()).orElse(null);
-        };
+        return lookupServerByFqdnAndRole(accessToken.getServerFqdn(), role);
+    }
+
+    /**
+     * Returns the ISS of the specified role, if present
+     * @param user the user performing the operation
+     * @param serverFqdn the fqdn of the server
+     * @param role the role of the server
+     * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
+     */
+    public IssServer findServer(User user, String serverFqdn, IssRole role) {
+        ensureSatAdmin(user);
+
+        return lookupServerByFqdnAndRole(serverFqdn, role);
     }
 
     /**
@@ -510,6 +534,52 @@ public class HubManager {
         }
     }
 
+    /**
+     * Count currently issued and consumed access tokens
+     * @param user the user performing the operation
+     * @return the number of token existing in the database
+     */
+    public long countAccessToken(User user) {
+        ensureSatAdmin(user);
+
+        return hubFactory.countAccessToken();
+    }
+
+    /**
+     * List the currently issued and consumed access tokens
+     * @param user the user performing the operation
+     * @param pc the pagination settings
+     * @return the existing tokens retrieved from the database using the specified pagination settings
+     */
+    public List<AccessTokenDTO> listAccessToken(User user, PageControl pc) {
+        ensureSatAdmin(user);
+
+        return hubFactory.listAccessToken(pc.getStart() - 1, pc.getPageSize());
+    }
+
+    /**
+     * Retrieve the access token with the specied id
+     * @param user the user performing the operation
+     * @param tokenId the id of the token
+     * @return the access token, if present
+     */
+    public Optional<IssAccessToken> lookupAccessTokenById(User user, long tokenId) {
+        ensureSatAdmin(user);
+
+        return hubFactory.lookupAccessTokenById(tokenId);
+    }
+
+    /**
+     * Updates the give token in the database
+     * @param user the user performing the operation
+     * @param issAccessToken the token
+     */
+    public void updateToken(User user, IssAccessToken issAccessToken) {
+        ensureSatAdmin(user);
+
+        hubFactory.updateToken(issAccessToken);
+    }
+
     private ManagerInfoJson collectManagerInfo() {
         String reportDbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
         // we need to provide the external hostname
@@ -649,6 +719,13 @@ public class HubManager {
 
     private static String computeRootCaFileName(IssRole role, String serverFqdn) {
         return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
+    }
+
+    private IssServer lookupServerByFqdnAndRole(String serverFqdn, IssRole role) {
+        return switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(serverFqdn).orElse(null);
+        };
     }
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)

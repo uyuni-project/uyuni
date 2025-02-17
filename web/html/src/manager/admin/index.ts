@@ -7,8 +7,9 @@ export default {
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
+  "admin/hub/register-peripheral": () => import("./hub/register-peripheral.renderer"),
+  "admin/hub/list-tokens": () => import("./hub/list-tokens.renderer"),
   "admin/hub/hub-details": () => import("./hub/hub-details.renderer"),
   "admin/hub/peripherals": () => import("./hub/peripherals.renderer"),
-  "admin/hub/peripheral/create": () => import("./hub/add/add-peripheral.renderer"),
   "admin/hub/peripheral/update": () => import("./hub/details/peripheral-details.renderer"),
 };

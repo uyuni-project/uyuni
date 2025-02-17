@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.controllers.admin;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
@@ -30,7 +27,6 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
-import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
@@ -65,6 +61,7 @@ public class AdminViewsController {
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
+    private static final HubFactory HUB_FACTORY = new HubFactory();
 
     private AdminViewsController() { }
 
@@ -73,16 +70,8 @@ public class AdminViewsController {
      * Invoked from Router. Init routes for Admin Views.
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/admin/hub/hub-details",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
-        get("/manager/admin/hub/peripherals",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
-        get("/manager/admin/hub/peripherals/create",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createISSv3Peripheral))), jade);
-        get("/manager/admin/hub/peripherals/update",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/config/monitoring",
-                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -93,6 +82,17 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPayg))), jade);
         get("/manager/admin/setup/proxy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showProxy))), jade);
+
+        get("/manager/admin/hub/hub-details",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
+        get("/manager/admin/hub/peripherals",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
+        get("/manager/admin/hub/peripherals/update",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
+        get("/manager/admin/hub/peripherals/register",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/access-tokens",
+            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
 
     /**
@@ -109,62 +109,6 @@ public class AdminViewsController {
     }
 
     /**
-     * Show iss hub tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        HubFactory hubFactory = new HubFactory();
-        data.put("hub", hubFactory.lookupIssHub().orElse(null));
-        return new ModelAndView(data, "controllers/admin/templates/issv3/hub-details.jade");
-    }
-
-    /**
-     * Show iss peripheral tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        IssV3Service service = new IssV3Service();
-        Type listType = new TypeToken<List<IssV3PeripheralsResponse>>() { }.getType();
-        data.put("peripherals", GSON.toJson(service.getPeripheralsList(), listType));
-        return new ModelAndView(data, "controllers/admin/templates/issv3/list-peripherals.jade");
-    }
-
-    /**
-     * Show iss peripheral tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView createISSv3Peripheral(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/admin/templates/issv3/create-peripheral.jade");
-    }
-
-    /**
-     * Show iss peripheral tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        //TODO: get peripheral data
-        data.put("peripheral", null);
-        return new ModelAndView(data, "controllers/admin/templates/issv3/update-peripheral.jade");
-    }
-
-
-    /**
      * Show password policy tab.
      * @param request http request
      * @param response http response
@@ -179,6 +123,63 @@ public class AdminViewsController {
         data.put("defaults", GSON.toJson(defaults));
         return new ModelAndView(data, "controllers/admin/templates/password-policy.jade");
     }
+
+    /**
+     * Show iss hub tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("hub", HUB_FACTORY.lookupIssHub().orElse(null));
+        return new ModelAndView(data, "controllers/admin/templates/hub-details.jade");
+    }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
+        List<PeripheralResponse> src = HUB_FACTORY.listPeripherals().stream()
+            .map(ph -> new PeripheralResponse(ph.getId(), ph.getFqdn(), 0L, 0L, 0L))
+            .toList();
+        data.put("peripherals", GSON.toJson(src, listType));
+        return new ModelAndView(data, "controllers/admin/templates/list-peripherals.jade");
+    }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView createISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        return new ModelAndView(data, "controllers/admin/templates/create-peripheral.jade");
+    }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        //TODO: get peripheral data
+        data.put("peripheral", null);
+        return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
+    }
+
 
     /**
      * show list of saved payg ssh connection data
@@ -244,5 +245,20 @@ public class AdminViewsController {
         ProxySettingsDto proxySettings = ProxySettingsManager.getProxySettings();
         data.put("proxySettings", GSON.toJson(proxySettings));
         return new ModelAndView(data, "controllers/admin/templates/proxy.jade");
+    }
+
+    /**
+     * Register a new ISSv3 server as hub or peripheral
+     * @param request the request
+     * @param response the response
+     * @param user the logged-in user
+     * @return the registration form
+     */
+    private static ModelAndView registerPeripheral(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/hub_register_peripheral.jade");
+    }
+
+    private static ModelAndView listAccessTokens(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/iss_token_list.jade");
     }
 }

@@ -653,6 +653,24 @@
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Hub Configuration" xml:space="preserve">
+        <source>Hub Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Hub Details" xml:space="preserve">
+        <source>Hub Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="Peripherals Configuration" xml:space="preserve">
+        <source>Peripherals Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="Remote Command" xml:space="preserve">
         <source>Remote Command</source>
         <context-group name="ctx">

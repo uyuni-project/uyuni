@@ -11,15 +11,19 @@
 package com.suse.manager.model.hub;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+import javax.persistence.Tuple;
 
 public class HubFactory extends HibernateFactory {
 
@@ -136,8 +140,9 @@ public class HubFactory extends HibernateFactory {
      * @param token the token to establish a connection with the specified server
      * @param type the type of token
      * @param expiration when the token is no longer valid
+     * @return the id of the stored access token
      */
-    public void saveToken(String fqdn, String token, TokenType type, Instant expiration) {
+    public IssAccessToken saveToken(String fqdn, String token, TokenType type, Instant expiration) {
         // Lookup if this association already exists
         IssAccessToken accessToken = lookupAccessTokenByFqdnAndType(fqdn, type);
         if (accessToken == null) {
@@ -151,6 +156,15 @@ public class HubFactory extends HibernateFactory {
 
         // Store the new token
         getSession().saveOrUpdate(accessToken);
+        return accessToken;
+    }
+
+    /**
+     * Updates an existing access token
+     * @param accessToken the access token to update
+     */
+    public void updateToken(IssAccessToken accessToken) {
+        getSession().update(accessToken);
     }
 
     /**
@@ -194,6 +208,18 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Retrieves the access token with the given id
+     * @param id the id of the token
+     * @return the access token instance, if present
+     */
+    public Optional<IssAccessToken> lookupAccessTokenById(long id) {
+        return getSession()
+            .createQuery("FROM IssAccessToken k WHERE k.id = :id", IssAccessToken.class)
+            .setParameter("id", id)
+            .uniqueResultOptional();
+    }
+
+    /**
      * Returns a list of access tokens for specified FQDN
      * @param fqdn the FQDN of the server
      * @return return the access tokens associated with the given fqdn
@@ -215,5 +241,76 @@ public class HubFactory extends HibernateFactory {
                 .createNativeQuery("DELETE FROM suseISSAccessToken WHERE server_fqdn = :fqdn")
                 .setParameter("fqdn", serverFqdn)
                 .executeUpdate();
+    }
+
+    /**
+     * Delete the access tokens with the given id
+     * @param id the id of the token
+     * @return true if the token was deleted, false otherwise
+     */
+    public boolean removeAccessTokenById(long id) {
+        int tokenRemoved = getSession()
+            .createNativeQuery("DELETE FROM suseISSAccessToken WHERE id = :id")
+            .setParameter("id", id)
+            .executeUpdate();
+
+        return tokenRemoved != 0;
+    }
+    /**
+     * Count the existing access tokens
+     * @return the current number of access tokens
+     */
+    public long countAccessToken() {
+        return getSession()
+            .createQuery("SELECT COUNT(*) FROM IssAccessToken k", Long.class)
+            .uniqueResult();
+    }
+
+    /**
+     * Lists the existing access token
+     * @param offset the first item to retrieve
+     * @param pageSize the maximum number of items to retrieve
+     * @return the list of tokens
+     */
+    public List<AccessTokenDTO> listAccessToken(int offset, int pageSize) {
+        return getSession().createNativeQuery("""
+                  SELECT k.id
+                          , k.type
+                          , k.server_fqdn
+                          , k.valid
+                          , k.expiration_date
+                          , k.created
+                          , k.modified
+                          , h.id as hub_id
+                          , p.id as peripheral_id
+                    FROM suseissaccesstoken k
+                          LEFT JOIN suseisshub h ON k.server_fqdn = h.fqdn
+                          LEFT JOIN suseissperipheral p ON k.server_fqdn = p.fqdn
+                ORDER BY k.created DESC
+                """, Tuple.class)
+            .addScalar("id", StandardBasicTypes.LONG)
+            .addScalar("type", StandardBasicTypes.STRING)
+            .addScalar("server_fqdn", StandardBasicTypes.STRING)
+            .addScalar("valid", StandardBasicTypes.BOOLEAN)
+            .addScalar("expiration_date", StandardBasicTypes.TIMESTAMP)
+            .addScalar("created", StandardBasicTypes.TIMESTAMP)
+            .addScalar("modified", StandardBasicTypes.TIMESTAMP)
+            .addScalar("hub_id", StandardBasicTypes.LONG)
+            .addScalar("peripheral_id", StandardBasicTypes.LONG)
+            .setFirstResult(offset)
+            .setMaxResults(pageSize)
+            .stream()
+            .map(tuple -> new AccessTokenDTO(
+                tuple.get("id", Long.class),
+                tuple.get("server_fqdn", String.class),
+                DatabaseEnumType.findByLabel(TokenType.class, tuple.get("type", String.class)),
+                tuple.get("valid", Boolean.class),
+                tuple.get("expiration_date", Date.class),
+                tuple.get("created", Date.class),
+                tuple.get("modified", Date.class),
+                tuple.get("hub_id", Long.class),
+                tuple.get("peripheral_id", Long.class)
+            ))
+            .toList();
     }
 }
