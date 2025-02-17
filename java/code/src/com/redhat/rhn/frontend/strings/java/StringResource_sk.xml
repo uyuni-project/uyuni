@@ -11549,7 +11549,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-        <target state="translated">Maximálny povolený počet znakov hesla nesmie byť menší alebo rovný 0.</target>
+        <target state="translated">Maximálny povolený výskyt znakov hesla nesmie byť menší alebo rovný 0.</target>
       </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
@@ -11598,7 +11598,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="translated">Počet znakov hesla prekročil povolené maximum {0}.</target>
+        <target state="translated">Výskyt znakov hesla prekročil povolené maximum {0}.</target>
       </trans-unit>
     </body>
   </file>
