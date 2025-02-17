@@ -1412,6 +1412,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-pool-amd64' => 27_960,
   'debian-12-pool-amd64-uyuni' => 28_260,
   'debian-12-suse-manager-tools-amd64' => 120,
+  'dev-suse-channel' => 120,
+  'dev-debian-like-channel' => 120,
+  'dev-rh-like-channel' => 120,
   'dev-build-host-channel' => 120,
   'el9-manager-tools-pool-x86_64' => 120,
   'el9-manager-tools-pool-x86_64-alma' => 120,
@@ -1675,10 +1678,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
   'ubuntu-24.04-suse-manager-tools-amd64' => 120,
-  'uyuni-proxy-devel-leap-x86_64' => 60,
-  'dev-suse-channel' => 300,
-  'dev-debian-like-channel' => 300,
-  'dev-rh-like-channel' => 300
+  'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
 
 EMPTY_CHANNELS = %w[
