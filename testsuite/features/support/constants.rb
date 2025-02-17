@@ -1412,6 +1412,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-pool-amd64' => 27_960,
   'debian-12-pool-amd64-uyuni' => 28_260,
   'debian-12-suse-manager-tools-amd64' => 120,
+  'dev-build-host-channel' => 120,
   'el9-manager-tools-pool-x86_64' => 120,
   'el9-manager-tools-pool-x86_64-alma' => 120,
   'el9-manager-tools-pool-x86_64-ol9' => 120,

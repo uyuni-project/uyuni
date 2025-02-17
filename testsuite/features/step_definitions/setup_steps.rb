@@ -327,7 +327,7 @@ Then(/^I should see the child channel "([^"]*)" "([^"]*)"$/) do |target_channel,
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath, match: :prefer_exact)['for']
 
   case target_status
   when 'selected'
@@ -343,7 +343,7 @@ Then(/^I should see the child channel "([^"]*)" "([^"]*)" and "([^"]*)"$/) do |t
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath)['for']
+  channel_checkbox_id = find(:xpath, xpath, match: :prefer_exact)['for']
   'disabled'.eql?(is_disabled) || raise('Invalid disabled flag value')
 
   case target_status
@@ -360,7 +360,7 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
   step %(I should see a "#{target_channel}" text)
 
   xpath = "//label[contains(text(), '#{target_channel}')]"
-  channel_checkbox_id = find(:xpath, xpath, match: :first)['for']
+  channel_checkbox_id = find(:xpath, xpath, match: :prefer_exact)['for']
 
   raise ScriptError, "Field #{channel_checkbox_id} is checked" if has_checked_field?(channel_checkbox_id)
 
@@ -517,7 +517,7 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
   repo_urls =
     if deb_host?(host)
       repo_list_output, _code = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-      repo_list_output.split("\n").map { |line| line.split[1].strip }
+      repo_list_output.split("\n").map { |line| line.split[-2].strip }
     elsif rh_host?(host)
       repo_list_output, _code = target.run('grep -rh ^baseurl /etc/yum.repos.d/')
       repo_list_output.split("\n").map { |line| line.split('=').last.strip }
