@@ -25,7 +25,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 
@@ -40,8 +39,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     protected IssPeripheralChannels() {
         // Default empty Constructor for Hibernate
     }
-
-    private IssPeripheralChannelToken token;
 
     /**
      * Constructor
@@ -64,15 +61,6 @@ public class IssPeripheralChannels extends BaseDomainHelper {
         peripheral = peripheralIn;
         channel = channelIn;
         peripheralOrgId = peripheralOrgIdIn;
-    }
-
-    @OneToOne(mappedBy = "peripheralChannel", fetch = FetchType.LAZY)
-    public IssPeripheralChannelToken getToken() {
-        return token;
-    }
-
-    public void setToken(IssPeripheralChannelToken tokenIn) {
-        this.token = tokenIn;
     }
 
     /**
