@@ -13,7 +13,6 @@ package com.suse.scc;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static spark.Spark.get;
 
-import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -23,36 +22,29 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.suse.manager.hub.RouteWithSCCAuth;
-import com.suse.manager.model.hub.HubFactory;
-import com.suse.manager.model.hub.IssPeripheral;
-import com.suse.manager.model.hub.IssPeripheralChannelToken;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
-import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.client.SCCWebClient;
-import com.suse.scc.model.SCCProductJson;
 import com.suse.scc.model.SCCRepositoryJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
-import java.time.Instant;
 import java.util.Base64;
-import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
@@ -76,7 +68,7 @@ public class SCCEndpoints {
     private final String uuid;
     private final URI sccUrl;
 
-    private final HubFactory hubFactory;
+    private static final Logger LOG = LogManager.getLogger(SCCEndpoints.class);
 
     /**
      * Constructor
@@ -86,7 +78,6 @@ public class SCCEndpoints {
     public SCCEndpoints(String uuidIn, URI sccUrlIn) {
         this.uuid = uuidIn;
         this.sccUrl = sccUrlIn;
-        this.hubFactory = new HubFactory();
     }
 
     private Route withSCCAuth(RouteWithSCCAuth route) {
@@ -154,39 +145,6 @@ public class SCCEndpoints {
         return serveEndpoint(SCCClient::listProducts);
     }
 
-    private void refreshTokens(List<IssPeripheral> peripherals) {
-        peripherals.forEach(p -> {
-            p.getPeripheralChannels().forEach(pc -> {
-                DownloadTokenBuilder builder = new DownloadTokenBuilder(0)
-                        .usingServerSecret()
-                        .allowingOnlyChannels(Set.of(pc.getChannel().getLabel()));
-                Instant now = Instant.now();
-                try {
-                    if (pc.getToken() != null) {
-                        IssPeripheralChannelToken pct = pc.getToken();
-                        if (now.isAfter(pct.getExpirationDate().toInstant())) {
-                            Token newToken = builder.build();
-                            pct.setToken(newToken.getSerializedForm());
-                            pct.setValid(true);
-                            pct.setExpirationDate(Date.from(newToken.getExpirationTime()));
-                        }
-                    }
-                    else {
-                        Token newToken = builder.build();
-                        IssPeripheralChannelToken pct = new IssPeripheralChannelToken(
-                                newToken.getSerializedForm(), Date.from(newToken.getExpirationTime()));
-                        pc.setToken(pct);
-                    }
-
-                }
-                catch (TokenBuildingException | TokenParsingException e) {
-                    throw new RhnRuntimeException(e);
-                }
-            });
-            hubFactory.save(p);
-        });
-    }
-
     /**
      * Build a {@link SCCRepositoryJson} object for a Hub custom repository
      * @param label the label
@@ -208,6 +166,26 @@ public class SCCEndpoints {
     }
 
     /**
+     * Build and return a short living token for a Hub repository sync
+     * @param channelLabel the channel label to the create the token for
+     * @return the token
+     */
+    public static Optional<String> buildHubRepositoryToken(String channelLabel) {
+        try {
+            DownloadTokenBuilder builder = new DownloadTokenBuilder(0)
+                    .usingServerSecret()
+                    // Short lived 2 day + 4 hours tokens refreshed on ever sync
+                    .expiringAfterMinutes(2L * (24 + 2) * 60)
+                    .allowingOnlyChannels(Set.of(channelLabel));
+            return Optional.of(builder.build().getSerializedForm());
+        }
+        catch (TokenBuildingException e) {
+            LOG.error("Error creating token for channel: {}", channelLabel, e);
+            return Optional.empty();
+        }
+    }
+
+    /**
      * Endpoint serving ISS peripheral channel information in scc repository format
      *
      * @param request
@@ -218,13 +196,11 @@ public class SCCEndpoints {
     public String repositories(Request request, Response response, HubSCCCredentials credentials) {
         var hostname = ConfigDefaults.get().getJavaHostname();
         var peripheral = credentials.getIssPeripheral();
-        refreshTokens(List.of(peripheral));
         var channels = peripheral.getPeripheralChannels();
         var jsonRepos = channels.stream().map(c -> {
             Channel channel = c.getChannel();
             String label = channel.getLabel();
-            IssPeripheralChannelToken peripheralChannelToken = c.getToken();
-            String token = peripheralChannelToken.getToken();
+            String tokenString = buildHubRepositoryToken(label).orElse("");
             return SUSEProductFactory.lookupByChannelLabelFirst(label).map(channelTemplate -> {
                 SCCRepository repository = channelTemplate.getRepository();
                 SCCRepositoryJson json = new SCCRepositoryJson();
@@ -233,12 +209,12 @@ public class SCCEndpoints {
                 json.setName(repository.getName());
                 json.setDescription(repository.getDescription());
                 json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/?%3$s".formatted(
-                        hostname, repository.getSccId(), token));
+                        hostname, repository.getSccId(), tokenString));
                 json.setInstallerUpdates(repository.isInstallerUpdates());
                 json.setAutorefresh(repository.isAutorefresh());
                 json.setDistroTarget(repository.getDistroTarget());
                 return json;
-            }).orElseGet(() -> buildCustomRepoJson(label, hostname, token));
+            }).orElseGet(() -> buildCustomRepoJson(label, hostname, tokenString));
         }).toList();
         return gson.toJson(jsonRepos);
     }
