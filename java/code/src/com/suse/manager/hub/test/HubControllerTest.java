@@ -679,7 +679,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("channelProductVersion", ch.getProduct().getVersion());
     }
 
-    @ParameterizedTest
+        @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void checkApiAddCustomChannel(boolean testIncludeTestChannelInChain) throws Exception {
         String apiUnderTest = "/hub/addCustomChannels";
@@ -867,6 +867,30 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 createDateUtil(2096, 10, 22), createDateUtil(2025, 4, 30));
     }
 
+    private void checkApiNotThrowing(CustomChannelInfoJson customChInfo) throws Exception {
+        String apiUnderTest = "/hub/addCustomChannels";
+
+        Map<String, String> bodyMap = new HashMap<>();
+        List<CustomChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
+        customChannelInfoListIn.add(customChInfo);
+        bodyMap.put("customchannellist", Json.GSON.toJson(customChannelInfoListIn));
+
+        ControllerTestUtils controllerTestUtils = new ControllerTestUtils();
+        try {
+            controllerTestUtils.withServerFqdn(DUMMY_SERVER_FQDN)
+                    .withApiEndpoint(apiUnderTest)
+                    .withHttpMethod(HttpMethod.post)
+                    .withRole(IssRole.PERIPHERAL)
+                    .withBearerTokenInHeaders()
+                    .withBody(bodyMap)
+                    .simulateControllerApiCall();
+            assertTrue(true);
+        }
+        catch (IllegalArgumentException e) {
+            fail(apiUnderTest + " API not failing when creating peripheral channel ");
+        }
+    }
+
     private void checkApiThrows(CustomChannelInfoJson customChInfo,
                                 String errorStartsWith) throws Exception {
         checkApiThrows(customChInfo, null, errorStartsWith);
@@ -974,7 +998,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         productionCh.setProduct(testCh.getProduct());
 
         CustomChannelInfoJson testChInfo = ChannelFactory.toCustomChannelInfo(testCh,
-                peripheralUser.getOrg().getId());
+                peripheralUser.getOrg().getId(), Optional.empty());
 
         assertEquals(localUser.getOrg().getId(), testCh.getOrg().getId());
         assertEquals(peripheralUser.getOrg().getId(), testChInfo.getPeripheralOrgId());
@@ -987,7 +1011,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("sles11-sp3-updates-x86_64", testChInfo.getOriginalChannelLabel());
 
         CustomChannelInfoJson productionChInfo = ChannelFactory.toCustomChannelInfo(productionCh,
-                peripheralUser.getOrg().getId());
+                peripheralUser.getOrg().getId(), Optional.empty());
 
         assertEquals(localUser.getOrg().getId(), productionCh.getOrg().getId());
         assertEquals(peripheralUser.getOrg().getId(), productionChInfo.getPeripheralOrgId());

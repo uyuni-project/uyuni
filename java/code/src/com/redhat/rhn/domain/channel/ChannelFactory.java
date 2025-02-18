@@ -56,6 +56,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -1473,10 +1474,18 @@ public class ChannelFactory extends HibernateFactory {
      *
      * @param customChannel the custom channel to be converted
      * @param peripheralOrgId the peripheral org id this channel will be assigned to in the peripheral
+     * @param forcedOriginalChannelLabel an optional string setting the original of a cloned channel,
+     *                                   instead of the pristine one
      * @return CustomChannelInfoJson the converted info of the custom channel
      */
-    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel,
-                                                            Long peripheralOrgId) throws TokenBuildingException {
+    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, Long peripheralOrgId,
+                                                            Optional<String> forcedOriginalChannelLabel)
+                throws TokenBuildingException {
+
+        if (!customChannel.isCustom()) {
+            throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
+        }
+
         CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson();
 
         customChannelInfo.setPeripheralOrgId(peripheralOrgId);
@@ -1526,7 +1535,12 @@ public class ChannelFactory extends HibernateFactory {
 
         Optional<ClonedChannel> clonedChannel = customChannel.asCloned();
         if (clonedChannel.isPresent()) {
-            customChannelInfo.setOriginalChannelLabel(clonedChannel.get().getOriginal().getLabel());
+            if (forcedOriginalChannelLabel.isPresent()) {
+                customChannelInfo.setOriginalChannelLabel(forcedOriginalChannelLabel.get());
+            }
+            else {
+                customChannelInfo.setOriginalChannelLabel(clonedChannel.get().getOriginal().getLabel());
+            }
         }
         else {
             customChannelInfo.setOriginalChannelLabel(null);
@@ -1556,44 +1570,14 @@ public class ChannelFactory extends HibernateFactory {
      * @return customChannel the converted custom channel
      */
     public static Channel toCustomChannel(CustomChannelInfoJson customChannelInfo) {
-
         Org org = OrgFactory.lookupById(customChannelInfo.getPeripheralOrgId());
-        if ((null != customChannelInfo.getPeripheralOrgId()) && (null == org)) {
-            throw new IllegalArgumentException("No org id [" +
-                    customChannelInfo.getPeripheralOrgId() +
-                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
-        }
-
         Channel parentChannel = ChannelFactory.lookupByLabel(customChannelInfo.getParentChannelLabel());
-        if (StringUtils.isNotEmpty(customChannelInfo.getParentChannelLabel()) && (null == parentChannel)) {
-            throw new IllegalArgumentException("No parent channel with label [" +
-                    customChannelInfo.getParentChannelLabel() +
-                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
-        }
-
         ChannelArch channelArch = ChannelFactory.findArchByLabel(customChannelInfo.getChannelArchLabel());
-        if (StringUtils.isNotEmpty(customChannelInfo.getChannelArchLabel()) && (null == channelArch)) {
-            throw new IllegalArgumentException("No channel arch [" +
-                    customChannelInfo.getChannelArchLabel() +
-                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
-        }
-
         ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(customChannelInfo.getChecksumTypeLabel());
-        if (StringUtils.isNotEmpty(customChannelInfo.getChecksumTypeLabel()) && (null == checksumType)) {
-            throw new IllegalArgumentException("No checksum type [" +
-                    customChannelInfo.getChecksumTypeLabel() +
-                    "] for custom channel [" + customChannelInfo.getLabel() + "]");
-        }
 
         Channel customChannel = new Channel();
         if (StringUtils.isNotEmpty(customChannelInfo.getOriginalChannelLabel())) {
             Channel originalChannel = ChannelFactory.lookupByLabel(customChannelInfo.getOriginalChannelLabel());
-
-            if (null == originalChannel) {
-                throw new IllegalArgumentException("No original channel [" +
-                        customChannelInfo.getOriginalChannelLabel() +
-                        "] for cloned channel [" + customChannelInfo.getLabel() + "]");
-            }
 
             ClonedChannel temp = new ClonedChannel();
             temp.setOriginal(originalChannel);
@@ -1633,14 +1617,138 @@ public class ChannelFactory extends HibernateFactory {
         customChannel.setUpdateTag(customChannelInfo.getUpdateTag());
         customChannel.setInstallerUpdates(customChannelInfo.isInstallerUpdates());
 
-        rebuildRepository(customChannelInfo.getRepositoryInfo());
+        // rebuild repository
+        ContentSyncManager csm = new ContentSyncManager();
+        HubFactory hubFactory = new HubFactory();
+        csm.refreshCustomRepo(List.of(customChannelInfo.getRepositoryInfo()), hubFactory.lookupIssHub().orElse(null));
 
         return customChannel;
     }
 
-    private static void rebuildRepository(SCCRepositoryJson repositoryJsonIn) {
-        ContentSyncManager csm = new ContentSyncManager();
-        HubFactory hubFactory = new HubFactory();
-        csm.refreshCustomRepo(List.of(repositoryJsonIn), hubFactory.lookupIssHub().orElse(null));
+    /**
+     * Ensures that the json info structure is valid, as well as all consequent data
+     *
+     * @param customChannelInfoJsonList list of custom channel info structures to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidCustomChannels(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+
+            if (ChannelFactory.doesChannelLabelExist(customChannelInfo.getLabel())) {
+                throw new IllegalArgumentException("Channel already found with the same label " +
+                        "for custom channel [" + customChannelInfo.getLabel() + "]");
+            }
+
+            ensureValidOrgIds(customChannelInfoJsonList);
+            ensureValidArch(customChannelInfoJsonList);
+            ensureValidChecksumType(customChannelInfoJsonList);
+            ensureValidCreatingParentChannel(customChannelInfoJsonList);
+            ensureValidCreatingOriginChannel(customChannelInfoJsonList);
+
+        }
+    }
+
+    private static void ensureValidOrgIds(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<Long> orgSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            Long orgId = customChannelInfo.getPeripheralOrgId();
+
+            if (null == orgId) {
+                throw new IllegalArgumentException("Custom channel info [" +
+                        customChannelInfo.getLabel() + "] must have a defined OrgId");
+            }
+
+            if (!orgSet.contains(orgId)) {
+                Org org = OrgFactory.lookupById(orgId);
+                if (null == org) {
+                    throw new IllegalArgumentException("No org id found [" + orgId +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                orgSet.add(orgId);
+            }
+        }
+    }
+
+    private static void ensureValidArch(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<String> archSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String archLabel = customChannelInfo.getChannelArchLabel();
+
+            if (StringUtils.isEmpty(archLabel)) {
+                throw new IllegalArgumentException("Custom channel info [" + customChannelInfo.getLabel() +
+                        "] must have valid architecture");
+            }
+
+            if (!archSet.contains(archLabel)) {
+                ChannelArch channelArch = ChannelFactory.findArchByLabel(archLabel);
+                if (null == channelArch) {
+                    throw new IllegalArgumentException("No channel arch found [" + archLabel +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                archSet.add(archLabel);
+            }
+        }
+    }
+
+    private static void ensureValidChecksumType(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<String> checksumTypeSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String checksumTypeLabel = customChannelInfo.getChecksumTypeLabel();
+
+            if (StringUtils.isEmpty(checksumTypeLabel)) {
+                throw new IllegalArgumentException("Custom channel info [" + customChannelInfo.getLabel() +
+                        "] must have valid checksum type");
+            }
+
+            if (!checksumTypeSet.contains(checksumTypeLabel)) {
+                ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(checksumTypeLabel);
+                if (null == checksumType) {
+                    throw new IllegalArgumentException("No checksum type found [" + checksumTypeLabel +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                checksumTypeSet.add(checksumTypeLabel);
+            }
+        }
+    }
+
+    private static void ensureValidCreatingParentChannel(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<String> parentChannelSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String parentChannelLabel = customChannelInfo.getParentChannelLabel();
+
+            if (StringUtils.isNotEmpty(parentChannelLabel) && (!parentChannelSet.contains(parentChannelLabel))) {
+                Channel parentChannel = ChannelFactory.lookupByLabel(parentChannelLabel);
+                if (null == parentChannel) {
+                    throw new IllegalArgumentException("No parent channel found with label [" + parentChannelLabel +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                parentChannelSet.add(parentChannelLabel);
+            }
+            //this channel could be a parent of the following ones
+            parentChannelSet.add(customChannelInfo.getLabel());
+        }
+    }
+
+    private static void ensureValidCreatingOriginChannel(List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        Set<String> originalChannelSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String originalChannelLabel = customChannelInfo.getOriginalChannelLabel();
+
+            if (StringUtils.isNotEmpty(originalChannelLabel) && (!originalChannelSet.contains(originalChannelLabel))) {
+                Channel originalChannel = ChannelFactory.lookupByLabel(originalChannelLabel);
+                if (null == originalChannel) {
+                    throw new IllegalArgumentException("No original channel found [" + originalChannelLabel +
+                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
+                }
+                originalChannelSet.add(originalChannelLabel);
+            }
+            //this channel could be an origin of the following ones
+            originalChannelSet.add(customChannelInfo.getLabel());
+        }
     }
 }
