@@ -53,6 +53,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
@@ -963,6 +964,40 @@ public class HubManager {
         return ChannelFactory.listAllChannels()
                 .stream()
                 .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
+                .toList();
+    }
+
+    /**
+     * modify a peripheral custom channel
+     *
+     * @param accessToken             the access token
+     * @param modifyCustomChannelList the list of custom channels modifications
+     * @return returns a list of the custom channel that have been added {@link Channel}
+     */
+    public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
+                                              List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> modifiedChannelsLabelList = new ArrayList<>();
+        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
+            // modify the channel
+            Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
+            ChannelFactory.save(customChannel);
+
+            modifiedChannelsLabelList.add(customChannel.getLabel());
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
                 .toList();
     }
 }
