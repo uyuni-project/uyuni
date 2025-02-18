@@ -41,6 +41,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.ChannelInfoJson;
+import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;

@@ -9,7 +9,6 @@ import Validation from "components/validation";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-import { SyncOrgsToPeripheralChannel } from "./SyncOrgsToPeripheralChannels";
 import { HubRegisterRequest } from "./types";
 
 enum RegistrationMode {
@@ -32,25 +31,6 @@ type FormModel = {
   certificateMode: CertificateMode;
   uploadedRootCA?: string;
   pastedRootCA?: string;
-  syncedChannels: SyncedOrgsToChannels[];
-};
-
-type Org = {
-  id: number;
-  label: string;
-};
-
-type Channel = {
-  id: number;
-  name: string;
-  label: string;
-  parent: string;
-};
-
-// if org is null channel is a vendor channel
-type SyncedOrgsToChannels = {
-  org: Org;
-  channels: Channel[];
 };
 
 type Props = {};
@@ -68,14 +48,13 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
     serverFqdn: "",
     registrationMode: RegistrationMode.Token,
     certificateMode: CertificateMode.NotNeeded,
-    syncedChannels: [],
   };
 
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      model: RegisterPeripheralForm.INITIAL_MODEL,
+      model: { ...RegisterPeripheralForm.INITIAL_MODEL },
       messages: [],
       loading: false,
       validated: false,
@@ -187,7 +166,7 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
             name="registrationMode"
             label={t("Registration mode")}
             title={t("Registration mode")}
-            hint={"Define how to connect to the remote server to initiate the registration"}
+            hint={t("Define how to connect to the remote server to initiate the registration")}
             inline={true}
             required
             labelClass="col-md-3"
@@ -234,9 +213,9 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
             name="certificateMode"
             label={t("Root CA certificate")}
             title={t("Root CA certificate")}
-            hint={
+            hint={t(
               "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
-            }
+            )}
             inline={true}
             required
             labelClass="col-md-3"
@@ -273,6 +252,7 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
 -----END CERTIFICATE-----`}
             />
           )}
+
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"

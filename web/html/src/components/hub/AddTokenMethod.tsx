@@ -145,13 +145,13 @@ export class AddTokenButton extends React.Component<Props, State> {
           <div className="col-lg-6">
             <div className="pull-right btn-group">
               <Button
-                id={`creation-modal-cancel-button`}
+                id="creation-modal-cancel-button"
                 className="btn-default"
                 text={t("Cancel")}
                 handler={() => this.setState({ createRequest: undefined })}
               />
               <Button
-                id={`creation-modal-submit-button`}
+                id="creation-modal-submit-button"
                 className="btn-primary"
                 disabled={!this.state.createRequestValid}
                 text={this.state.createRequest.type === TokenType.ISSUED ? t("Issue") : t("Store")}
@@ -210,7 +210,7 @@ export class AddTokenButton extends React.Component<Props, State> {
           <div className="col-lg-6">
             <div className="btn-group">
               <Button
-                id={`show-token-modal-close-button`}
+                id="show-token-modal-close-button"
                 className="btn-default"
                 handler={() => this.onCloseTokenModal()}
                 text={t("Close")}

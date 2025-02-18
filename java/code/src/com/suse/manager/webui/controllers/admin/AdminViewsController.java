@@ -79,7 +79,7 @@ public class AdminViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -113,7 +113,7 @@ public class AdminViewsController {
     public static ModelAndView showMonitoring(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         data.put("isUyuni", ConfigDefaults.get().isUyuni());
-        return new ModelAndView(data, "controllers/admin/templates/issv3/monitoring.jade");
+        return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
     }
 
     /**
@@ -153,20 +153,7 @@ public class AdminViewsController {
      * @return the view to show
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/admin/templates/list-peripherals.jade");
-    }
-
-    /**
-     * Show iss peripheral tab.
-     * @param request http request
-     * @param response http response
-     * @param user current user
-     * @return the view to show
-     */
-    public static ModelAndView createISSv3Peripheral(Request request, Response response, User user) {
-        Map<String, Object> data = new HashMap<>();
-        return new ModelAndView(data, "controllers/admin/templates/create-peripheral.jade");
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list-peripherals.jade");
     }
 
     /**

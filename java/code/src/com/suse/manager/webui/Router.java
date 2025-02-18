@@ -293,7 +293,7 @@ public class Router implements SparkApplication {
         hubController.initRoutes();
 
         // API for the web interface
-        HubApiController issApiController = new HubApiController(hubManager);
-        issApiController.initRoutes();
+        HubApiController hubApiController = new HubApiController(hubManager);
+        hubApiController.initRoutes();
     }
 }
