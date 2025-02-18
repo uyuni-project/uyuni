@@ -27,6 +27,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "suseISSPeripheralChannels")
 public class IssPeripheralChannels extends BaseDomainHelper {
@@ -95,7 +96,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     /**
      * Get the peripheral organization id where this channel should be assigned to.
      * Vendor Channels will have NULL here
-     * @return the peripherla organization id or NULL
+     * @return the peripheral organization id or NULL
      */
     @Column(name = "peripheral_org_id")
     public Integer getPeripheralOrgId() {
