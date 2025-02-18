@@ -61,13 +61,12 @@ def _handle_text_from_process(verbose: bool, *objs: str):
 
 
 def _check_retcode(retcode: int):
-    match retcode:
-        case 0:
-            ...  # success
-        case 127:
-            raise OSError("Command not found; podman is required")
-        case _:
-            raise HealthException("An error happened while running Podman")
+    if retcode == 0:
+        ...  # success
+    elif retcode == 127:
+        raise OSError("Command not found; podman is required")
+    else:
+        raise HealthException("An error happened while running Podman")
 
 
 class HealthException(Exception):

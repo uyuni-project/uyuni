@@ -114,16 +114,18 @@ class SupportConfigMetricsCollector:
                 return
 
             shared_buffers = int(shared_buffers)
-            match buffer_unit.lower():
-                case "kb":
-                    ...  # conversion done
-                case "mb":
-                    shared_buffers *= 1024
-                case "gb":
-                    shared_buffers *= 1024 * 1024
-                case _:
-                    print(f"Error when parsing shared buffer unit: {buffer_unit}")
-                    return
+
+            buffer_unit = buffer_unit.lower()
+            if buffer_unit == "kb":
+                ...  # conversion done
+            elif buffer_unit == "mb":
+                shared_buffers *= 1024
+            elif buffer_unit == "gb":
+                shared_buffers *= 1024 * 1024
+            else:
+                print(f"Error when parsing shared buffer unit: {buffer_unit}")
+                return
+
             self.shared_buffers_to_mem_ratio = round(shared_buffers / memory, 2)
 
     def parse_prefork_c_params(self):
@@ -229,19 +231,19 @@ class SupportConfigMetricsCollector:
         else:
             size, unit = float(size[:-1]), size[-1:]
 
-        match unit.lower():
-            case "k":
-                size /= 1024 * 1024
-            case "m":
-                size /= 1024
-            case "g":
-                ...  # already in GB
-            case "t":
-                size *= 1024
-            case "n/a":
-                ...  # no unit
-            case _:
-                print(f"Error when parsing shared buffer unit: {unit}")
+        unit = unit.lower()
+        if unit == "k":
+            size /= 1024 * 1024
+        elif unit == "m":
+            size /= 1024
+        elif unit == "g":
+            ...  # already in GB
+        elif unit == "t":
+            size *= 1024
+        elif unit == "n/a":
+            ...  # no unit
+        else:
+            print(f"Error when parsing shared buffer unit: {unit}")
 
         res["too_small"] = 1 if min_size_gb > size else 0
         return res
