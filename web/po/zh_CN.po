@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-11 09:51+0100\n"
-"PO-Revision-Date: 2024-10-16 11:48+0000\n"
+"PO-Revision-Date: 2025-02-18 10:29+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-4-3/zh_CN/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10\n"
 
 #: ../html/javascript/spacewalk-essentials.js:450
 msgid "remaining"
@@ -2140,7 +2140,7 @@ msgstr "根据特定系统在线增补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:36
 msgid "Live patching based on a SUSE product"
-msgstr "根据 SUSE 产品在线增补"
+msgstr "根据 SUSE 产品实时修补"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
