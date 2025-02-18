@@ -13,6 +13,7 @@ package com.suse.manager.hub.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -44,6 +45,7 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -362,7 +364,7 @@ public class ControllerTestUtils {
         return (String) withServerFqdn(serverFqdnIn)
                 .withApiEndpoint("/hub/addVendorChannels")
                 .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.PERIPHERAL)
+                .withRole(IssRole.HUB)
                 .withBearerTokenInHeaders()
                 .withBody(bodyMapIn)
                 .simulateControllerApiCall();
@@ -390,7 +392,7 @@ public class ControllerTestUtils {
         return withServerFqdn(serverFqdnIn)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.PERIPHERAL)
+                .withRole(IssRole.HUB)
                 .withBearerTokenInHeaders()
                 .withBody(bodyMapIn)
                 .simulateControllerApiCall();
@@ -430,5 +432,159 @@ public class ControllerTestUtils {
         catch (IllegalArgumentException e) {
             fail("addCustomChannels API should not throw");
         }
+    }
+
+    public ModifyCustomChannelInfoJson createValidModifyCustomChInfo() {
+        return createValidModifyCustomChInfo("customCh");
+    }
+
+    public ModifyCustomChannelInfoJson createValidModifyCustomChInfo(String channelLabel) {
+        User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
+        boolean isGpgCheck = true;
+        boolean isInstallerUpdates = true;
+        ModifyCustomChannelInfoJson info = new ModifyCustomChannelInfoJson(channelLabel);
+
+        info.setPeripheralOrgId(testPeripheralUser.getOrg().getId());
+        info.setOriginalChannelLabel("");
+
+        info.setBaseDir("baseDir_" + channelLabel);
+        info.setName("name_" + channelLabel);
+        info.setSummary("summary_" + channelLabel);
+        info.setDescription("description_" + channelLabel);
+        info.setProductNameLabel("productNameLabel");
+        info.setGpgCheck(isGpgCheck);
+        info.setGpgKeyUrl("gpgKeyUrl_" + channelLabel);
+        info.setGpgKeyId("gpgKeyId");
+        info.setGpgKeyFp("gpgKeyFp_" + channelLabel);
+        info.setEndOfLifeDate(createDateUtil(2096, 10, 22));
+        info.setChannelProductProduct("channelProductProduct");
+        info.setChannelProductVersion("channelProductVersion");
+        info.setChannelAccess("chAccess"); // max 10
+        info.setMaintainerName("maintainerName_" + channelLabel);
+        info.setMaintainerEmail("maintainerEmail_" + channelLabel);
+        info.setMaintainerPhone("maintainerPhone_" + channelLabel);
+        info.setSupportPolicy("supportPolicy_" + channelLabel);
+        info.setUpdateTag("updateTag_" + channelLabel);
+        info.setInstallerUpdates(isInstallerUpdates);
+
+        return info;
+    }
+
+    public Object testModifyCustomChannelsApiCall(String serverFqdnIn,
+                                                  List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoListIn)
+            throws Exception {
+        String apiUnderTest = "/hub/modifyCustomChannels";
+
+        Map<String, String> bodyMapIn = new HashMap<>();
+        bodyMapIn.put("modifycustomchannellist", Json.GSON.toJson(modifyCustomChannelInfoListIn));
+
+        return withServerFqdn(serverFqdnIn)
+                .withApiEndpoint(apiUnderTest)
+                .withHttpMethod(HttpMethod.post)
+                .withRole(IssRole.HUB)
+                .withBearerTokenInHeaders()
+                .withBody(bodyMapIn)
+                .simulateControllerApiCall();
+    }
+
+    public void checkModifyCustomChannelsApiNotThrowing(String serverFqdnIn,
+                                                        List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoListIn)
+            throws Exception {
+
+        try {
+            String answer = (String) testModifyCustomChannelsApiCall(serverFqdnIn, modifyCustomChannelInfoListIn);
+
+            List<ChannelInfoJson> peripheralCreatedCustomChInfo =
+                    Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
+
+            assertNotNull(peripheralCreatedCustomChInfo,
+                    "addCustomChannels API failing when creating peripheral channel");
+
+        }
+        catch (IllegalArgumentException e) {
+            fail("modifyCustomChannels API should not throw");
+        }
+    }
+
+    public void checkModifyCustomChannelsApiThrows(String serverFqdnIn,
+                                                   List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoListIn,
+                                                   String errorStartsWith) throws Exception {
+        try {
+            String answer = (String) testModifyCustomChannelsApiCall(serverFqdnIn, modifyCustomChannelInfoListIn);
+
+            ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
+            assertFalse(result.isSuccess(),
+                    "modifyCustomChannels API not failing when creating peripheral channel with " +
+                            errorStartsWith);
+            assertEquals("Internal Server Error", result.getMessages().get(0));
+            assertTrue(result.getMessages().get(1).startsWith(errorStartsWith),
+                    "Wrong expected start of error message: [" + result.getMessages().get(1) + "]");
+        }
+        catch (IllegalArgumentException e) {
+            fail("modifyCustomChannels API should not throw");
+        }
+    }
+
+    private static void checkEqualIfModified(Object modified, Object pristine) {
+        if (null != modified) {
+            assertEquals(modified, pristine);
+        }
+    }
+
+    private static void checkDifferentIfModified(Object modified, Object pristine) {
+        if (null != modified) {
+            assertNotEquals(modified, pristine);
+        }
+    }
+
+    @FunctionalInterface
+    private interface CheckMethod {
+        void checkCompatible(Object modified, Object pristine);
+    }
+
+    public void checkEqualModifications(ModifyCustomChannelInfoJson modifyInfo, Channel ch) {
+        checkModifications(modifyInfo, ch, ControllerTestUtils::checkEqualIfModified);
+    }
+
+    public void checkDifferentModifications(ModifyCustomChannelInfoJson modifyInfo, Channel ch) {
+        checkModifications(modifyInfo, ch, ControllerTestUtils::checkDifferentIfModified);
+    }
+
+    private void checkModifications(ModifyCustomChannelInfoJson modifyInfo, Channel ch, CheckMethod checkMethod) {
+        assertEquals(modifyInfo.getLabel(), ch.getLabel());
+
+        if (null != modifyInfo.getPeripheralOrgId()) {
+            checkMethod.checkCompatible(modifyInfo.getPeripheralOrgId(), ch.getOrg().getId());
+        }
+
+        checkMethod.checkCompatible(modifyInfo.getOriginalChannelLabel(), ch.getOriginal().getLabel());
+
+        checkMethod.checkCompatible(modifyInfo.getBaseDir(), ch.getBaseDir());
+        checkMethod.checkCompatible(modifyInfo.getName(), ch.getName());
+        checkMethod.checkCompatible(modifyInfo.getSummary(), ch.getSummary());
+        checkMethod.checkCompatible(modifyInfo.getDescription(), ch.getDescription());
+        checkMethod.checkCompatible(modifyInfo.getProductNameLabel(), ch.getProductName().getLabel());
+        checkMethod.checkCompatible(modifyInfo.isGpgCheck(), ch.isGPGCheck());
+        checkMethod.checkCompatible(modifyInfo.getGpgKeyUrl(), ch.getGPGKeyUrl());
+        checkMethod.checkCompatible(modifyInfo.getGpgKeyId(), ch.getGPGKeyId());
+        checkMethod.checkCompatible(modifyInfo.getGpgKeyFp(), ch.getGPGKeyFp());
+        checkMethod.checkCompatible(modifyInfo.getEndOfLifeDate().toString(), ch.getEndOfLife().toString());
+
+        checkMethod.checkCompatible(modifyInfo.getChannelProductProduct(), ch.getProduct().getProduct());
+        checkMethod.checkCompatible(modifyInfo.getChannelProductVersion(), ch.getProduct().getVersion());
+        checkMethod.checkCompatible(modifyInfo.getChannelAccess(), ch.getAccess());
+        checkMethod.checkCompatible(modifyInfo.getMaintainerName(), ch.getMaintainerName());
+        checkMethod.checkCompatible(modifyInfo.getMaintainerEmail(), ch.getMaintainerEmail());
+        checkMethod.checkCompatible(modifyInfo.getMaintainerPhone(), ch.getMaintainerPhone());
+        checkMethod.checkCompatible(modifyInfo.getSupportPolicy(), ch.getSupportPolicy());
+        checkMethod.checkCompatible(modifyInfo.getUpdateTag(), ch.getUpdateTag());
+        checkMethod.checkCompatible(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
+    }
+
+    public void createTestChannel(ModifyCustomChannelInfoJson modifyInfo, User userIn) throws Exception {
+        ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
+        String query = "ChannelArch.findById";
+        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        ChannelFactoryTest.createTestChannel(modifyInfo.getName(), modifyInfo.getLabel(), userIn.getOrg(), arch, cfam);
     }
 }
