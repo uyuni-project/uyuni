@@ -13,7 +13,9 @@ package com.suse.manager.hub;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -36,6 +38,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.security.cert.Certificate;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -95,6 +98,16 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public void deregister() throws IOException {
         invokePost("hub/sync", "deregister", null);
+    }
+
+    @Override
+    public List<OrgInfoJson> getAllPeripheralOrgs() throws IOException {
+        return invokeGet("hub", "listAllPeripheralOrgs", List.class);
+    }
+
+    @Override
+    public List<ChannelInfoJson> getAllPeripheralChannels() throws IOException {
+        return invokeGet("hub", "listAllPeripheralChannels", List.class);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)

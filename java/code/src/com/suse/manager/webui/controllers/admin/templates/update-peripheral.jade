@@ -6,7 +6,7 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('admin/hub/peripheral/update')
+    spaImportReactPage('admin/hub/peripheral/:id')
         .then(function (module) {
             module.renderer(
                 'update-peripheral', !{peripheral}

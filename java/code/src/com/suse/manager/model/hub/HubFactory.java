@@ -13,6 +13,7 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.RhnConfiguration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -123,6 +124,15 @@ public class HubFactory extends HibernateFactory {
                 .setFirstResult(offset)
                 .setMaxResults(pageSize)
                 .list();
+    }
+
+    /**
+     * Find a peripheral already registered by its id
+     * @param id the id
+     * @return the peripheral entity
+     */
+    public IssPeripheral findPeripheral(long id) {
+        return getSession().byId(IssPeripheral.class).load(id);
     }
 
     /**

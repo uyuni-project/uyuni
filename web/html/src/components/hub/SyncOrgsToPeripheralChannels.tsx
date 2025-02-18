@@ -64,18 +64,23 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     };
   }
 
-  /**
-   * When the user selects an organization from the Organizations table.
-   */
-  handleOrgSelect(org: Org) {
-    // When switching organizations, clear any previous channel selections.
-    this.setState({
-      selectedOrg: org,
-      selectedCustomChannels: [],
-      selectedSyncedCustomChannels: [],
-    });
+  handleOrgToggle(org: Org) {
+    // If the clicked org is already selected, deselect it.
+    if (this.state.selectedOrg && this.state.selectedOrg.id === org.id) {
+      this.setState({
+        selectedOrg: null,
+        selectedCustomChannels: [],
+        selectedSyncedCustomChannels: [],
+      });
+    } else {
+      // Otherwise, select it and clear any channel selections.
+      this.setState({
+        selectedOrg: org,
+        selectedCustomChannels: [],
+        selectedSyncedCustomChannels: [],
+      });
+    }
   }
-
   /**
    * Called when the user selects one or more rows in the Available Channels table.
    */
@@ -188,7 +193,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
                 header={"Name"}
                 cell={(row: Org) => (
                   <>
-                    <div onClick={() => this.handleOrgSelect(row)}>{row.label}</div>
+                    <div
+                      // Add the "selected-org" class if this org is selected.
+                      className={this.state.selectedOrg && this.state.selectedOrg.id === row.id ? "selected-org" : ""}
+                      onClick={() => this.handleOrgToggle(row)}
+                    >
+                      {row.label}
+                    </div>
                   </>
                 )}
               />
@@ -274,4 +285,4 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       </div>
     );
   }
-  }
+}

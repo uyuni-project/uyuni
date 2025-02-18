@@ -11,9 +11,12 @@
 
 package com.suse.manager.hub;
 
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Hub Inter-Server-Sync Client to connect a remote server and invoke the private server-to-server Rest-like API
@@ -58,6 +61,20 @@ public interface HubInternalClient {
      * @throws IOException when the communication fails
      */
     void deregister() throws IOException;
+
+    /**
+     * Return all the peripheral organizations
+     * @return the organizations
+     * @throws IOException
+     */
+    List<OrgInfoJson> getAllPeripheralOrgs() throws IOException;
+
+    /**
+     * Return all the peripheral channels
+     * @return the channels
+     * @throws IOException
+     */
+    List<ChannelInfoJson> getAllPeripheralChannels() throws IOException;
 
     /**
      * Replace the hub token on the remote peripheral server and get a new peripheral token back

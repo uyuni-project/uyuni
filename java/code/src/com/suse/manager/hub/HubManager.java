@@ -40,6 +40,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -47,7 +48,9 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -876,6 +879,44 @@ public class HubManager {
     public Optional<IssHub> getHub(User user) {
         ensureSatAdmin(user);
         return hubFactory.lookupIssHub();
+    }
+
+    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId) throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn()).getToken(),
+                issPeripheral.getRootCa()
+        );
+        return internalApi.getAllPeripheralOrgs();
+    }
+
+    public List<ChannelInfoJson> getPeripheralChannels(User user, Long peripheralId) throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn()).getToken(),
+                issPeripheral.getRootCa()
+        );
+        return internalApi.getAllPeripheralChannels();
+    }
+
+    public List<IssV3ChannelResponse> getHubCustomChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listCustomChannels().stream()
+                .map(ch -> new IssV3ChannelResponse(
+                        ch.getId(), ch.getName(), ch.getLabel()
+                )).toList();
+    }
+
+    public List<IssV3ChannelResponse> getHubVendorChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listVendorChannels().stream()
+                .map(ch -> new IssV3ChannelResponse(
+                        ch.getId(), ch.getName(), ch.getLabel()
+                )).toList();
     }
 
 }

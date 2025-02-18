@@ -19,6 +19,7 @@ import static spark.Spark.get;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.user.User;
@@ -28,18 +29,28 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -84,7 +95,7 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
-        get("/manager/admin/hub/peripherals/update",
+        get("/manager/admin/hub/peripherals/:id",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
@@ -167,11 +178,95 @@ public class AdminViewsController {
      */
     public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        //TODO: get peripheral data
-        data.put("peripheral", null);
+        long peripheralId = Long.parseLong(request.params("id"));
+        List<OrgInfoJson> peripheralOrgs;
+        List<ChannelInfoJson> peripheralCustomChannels;
+        List<ChannelInfoJson> peripheralVendorChannels;
+        List<IssV3ChannelResponse> hubVendorChannels;
+        List<IssV3ChannelResponse> hubCustomChannels;
+        try {
+            peripheralOrgs = HUB_MANAGER.getPeripheralOrgs(user, peripheralId);
+            List<ChannelInfoJson> peripheralChannels = HUB_MANAGER.getPeripheralChannels(user, peripheralId);
+            // Partition here so we don't go inside the list two times
+            Map<Boolean, List<ChannelInfoJson>> partitioned = peripheralChannels.stream()
+                    .collect(Collectors.partitioningBy(ch -> ch.getOrgId() != null));
+            peripheralCustomChannels = partitioned.get(true);
+            peripheralVendorChannels = partitioned.get(false);
+            hubVendorChannels = HUB_MANAGER.getHubVendorChannels(user);
+            hubCustomChannels = HUB_MANAGER.getHubCustomChannels(user);
+        }
+        catch (CertificateException | IOException eIn) {
+            throw new RuntimeException(eIn);
+        }
+        // Utility filter lambdas.
+        Function<Set<String>, Predicate<String>> availableFilter = peripheralLabels ->
+                hubLabel -> !peripheralLabels.contains(hubLabel);
+        Function<Set<String>, Predicate<String>> syncedFilter = peripheralLabels ->
+                peripheralLabels::contains;
+        // Channels that are not synced
+        List<IssV3ChannelResponse> availableCustomChannels = filterHubChannelsByPeripheral(
+                hubCustomChannels,
+                peripheralCustomChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                ChannelInfoJson::getLabel,
+                availableFilter
+        );
+        List<IssV3ChannelResponse> availableVendorChannels = filterHubChannelsByPeripheral(
+                hubVendorChannels,
+                peripheralVendorChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                ChannelInfoJson::getLabel,
+                availableFilter
+        );
+        // Channel that are already synced
+        List<IssV3ChannelResponse> syncedCustomChannels = filterHubChannelsByPeripheral(
+                hubCustomChannels,
+                peripheralCustomChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                ChannelInfoJson::getLabel,
+                syncedFilter
+        );
+        List<IssV3ChannelResponse> syncedVendorChannels = filterHubChannelsByPeripheral(
+                hubVendorChannels,
+                peripheralVendorChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                ChannelInfoJson::getLabel,
+                syncedFilter
+        );
+        data.put("availableOrgs", peripheralOrgs);
+        data.put("availableCustomChannels", availableCustomChannels);
+        data.put("availableVendorChannels", availableVendorChannels);
+        data.put("syncedCustomChannels", syncedCustomChannels);
+        data.put("syncedVendorChannels", syncedVendorChannels);
         return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
     }
 
+    /**
+     * Generic helper function to filter two list
+     * @param hubChannels
+     * @param peripheralChannels
+     * @param hubLabelExtractor
+     * @param peripheralLabelExtractor
+     * @param filterFunction
+     * @return
+     * @param <H>
+     * @param <P>
+     */
+    private static <H, P> List<H> filterHubChannelsByPeripheral(
+            List<H> hubChannels,
+            List<P> peripheralChannels,
+            Function<H, String> hubLabelExtractor,
+            Function<P, String> peripheralLabelExtractor,
+            Function<Set<String>, Predicate<String>> filterFunction
+    ) {
+        Set<String> peripheralLabels = peripheralChannels.stream()
+                .map(peripheralLabelExtractor)
+                .collect(Collectors.toSet());
+        Predicate<String> hubFilter = filterFunction.apply(peripheralLabels);
+        return hubChannels.stream()
+                .filter(hub -> hubFilter.test(hubLabelExtractor.apply(hub)))
+                .collect(Collectors.toList());
+    }
 
     /**
      * show list of saved payg ssh connection data
