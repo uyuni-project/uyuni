@@ -1427,22 +1427,6 @@ public class ContentSyncManager {
         });
     }
 
-    /**
-     * Check if the provided Credentials are usable for SCC. OES credentials will return false.
-     * @param c the credentials
-     * @return true if they can be used for SCC, otherwise false
-     */
-    public boolean isSCCCredentials(SCCCredentials c) {
-        try {
-            SCCClient scc = this.getSCCClient(new SCCContentSyncSource(c));
-            scc.listOrders();
-        }
-        catch (SCCClientException | ContentSyncSourceException e) {
-            return false;
-        }
-        return true;
-    }
-
     //Some old scc credentials are in reality OES credentials and don't work for SCC but only on the OES
     //endpoint so whenever there is an error using SCC credentials we have to check if those work for OES
     //and handle it accordingly
@@ -1697,8 +1681,7 @@ public class ContentSyncManager {
             }).findFirst().orElseGet(Collections::emptyList);
         });
 
-        return tree.stream()             .filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
-                .toList();
+        return tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag)).toList();
     }
 
     /**
