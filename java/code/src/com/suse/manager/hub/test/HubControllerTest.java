@@ -672,7 +672,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
         customChildChInfo.setParentChannelLabel("parentChannel");
 
-        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, Arrays.asList(customParentChInfo, customChildChInfo));
+        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
+                Arrays.asList(customParentChInfo, customChildChInfo));
     }
 
     @Test
@@ -682,17 +683,41 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
         customChildChInfo.setParentChannelLabel("parentChannel");
 
-        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, Arrays.asList(customChildChInfo, customParentChInfo), "No parent channel");
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
+                Arrays.asList(customChildChInfo, customParentChInfo), "No parent channel");
     }
 
     @Test
     public void ensureThrowsWhenMissingOriginalChannelInClonedChannels() throws Exception {
         CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
 
-        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomChInfo");
+        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
         clonedCustomChInfo.setOriginalChannelLabel(customChInfo.getLabel() + "MISSING");
 
-        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, Arrays.asList(customChInfo, clonedCustomChInfo), "No original channel");
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
+                Arrays.asList(customChInfo, clonedCustomChInfo), "No original channel");
+    }
+
+    @Test
+    public void ensureNotThrowingWhenOriginalChannelIsCreatedBefore() throws Exception {
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
+
+        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
+        clonedCustomChInfo.setOriginalChannelLabel("originalCustomCh");
+
+        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
+                Arrays.asList(customChInfo, clonedCustomChInfo));
+    }
+
+    @Test
+    public void ensureThrowsWhenOriginalChannelIsCreatedAfter() throws Exception {
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
+
+        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
+        clonedCustomChInfo.setOriginalChannelLabel("originalCustomCh");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
+                Arrays.asList(clonedCustomChInfo, customChInfo), "No original channel");
     }
 
     @Test

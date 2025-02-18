@@ -46,6 +46,7 @@ public class ModifyCustomChannelInfoJson {
 
     /**
      * Constructor
+     *
      * @param labelIn The channel label
      */
     public ModifyCustomChannelInfoJson(String labelIn) {
@@ -103,7 +104,6 @@ public class ModifyCustomChannelInfoJson {
     public void setOriginalChannelLabel(String originalChannelLabelIn) {
         originalChannelLabel = originalChannelLabelIn;
     }
-
 
     /**
      * @return Returns the baseDir.

@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2009--2017 Red Hat, Inc.
- * Copyright (c) 2011--2021 SUSE LLC
+ * Copyright (c) 2011--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -724,9 +724,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of modular channels
      */
     public static List<Channel> listModularChannels(User user) {
-        List<Channel> channels = singleton.listObjectsByNamedQuery("Channel.findModularChannels",
-                Map.of("org_id", user.getOrg().getId()));
-        return channels;
+        return singleton.listObjectsByNamedQuery("Channel.findModularChannels",
+                Map.of(ORG_ID, user.getOrg().getId()));
     }
 
     /**
@@ -1475,15 +1474,15 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Converts a custom channel to a custom channel info structure
      *
-     * @param customChannel the custom channel to be converted
-     * @param peripheralOrgId the peripheral org id this channel will be assigned to in the peripheral
+     * @param customChannel              the custom channel to be converted
+     * @param peripheralOrgId            the peripheral org id this channel will be assigned to in the peripheral
      * @param forcedOriginalChannelLabel an optional string setting the original of a cloned channel,
      *                                   instead of the pristine one
      * @return CustomChannelInfoJson the converted info of the custom channel
      */
     public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, Long peripheralOrgId,
                                                             Optional<String> forcedOriginalChannelLabel)
-                throws TokenBuildingException {
+            throws TokenBuildingException {
 
         if (!customChannel.isCustom()) {
             throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
@@ -1546,12 +1545,7 @@ public class ChannelFactory extends HibernateFactory {
             customChannelInfo.setOriginalChannelLabel(null);
         }
 
-        customChannelInfo.setRepositoryInfo(obtainRepositoryInfo(customChannel));
-
-        return customChannelInfo;
-    }
-
-    private static SCCRepositoryJson obtainRepositoryInfo(Channel customChannel) throws TokenBuildingException {
+        // obtain repository info
         String hostname = ConfigDefaults.get().getJavaHostname();
         String customChannelLabel = customChannel.getLabel();
 
@@ -1560,7 +1554,11 @@ public class ChannelFactory extends HibernateFactory {
                 .allowingOnlyChannels(Set.of(customChannelLabel))
                 .build();
 
-        return SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname, token.getSerializedForm());
+        SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
+                token.getSerializedForm());
+        customChannelInfo.setRepositoryInfo(repositoryInfo);
+
+        return customChannelInfo;
     }
 
     /**
@@ -1678,6 +1676,7 @@ public class ChannelFactory extends HibernateFactory {
     private interface SearchLabelMethod {
         String getSearchLabel(CustomChannelInfoJson arg);
     }
+
     @FunctionalInterface
     private interface LookupLabelMethod {
         Object lookupWithLabel(String label);

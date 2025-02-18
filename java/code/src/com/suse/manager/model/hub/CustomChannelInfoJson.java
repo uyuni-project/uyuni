@@ -11,8 +11,6 @@
 
 package com.suse.manager.model.hub;
 
-import com.redhat.rhn.domain.channel.Channel;
-
 import com.suse.scc.model.SCCRepositoryJson;
 
 import java.util.Objects;
@@ -26,6 +24,7 @@ public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
 
     /**
      * Constructor
+     *
      * @param labelIn The channel label
      */
     public CustomChannelInfoJson(String labelIn) {
@@ -60,7 +59,6 @@ public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
     public void setChannelArchLabel(String c) {
         this.channelArchLabel = c;
     }
-
 
     /**
      * @return Returns the checksum type label
