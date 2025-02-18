@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -819,6 +820,12 @@ public class HubManager {
             //retrieve vendor channel template
             Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
                     .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
 
             // get base channel of target channel
             if (!vendorChannelTemplate.get().isRoot()) {
