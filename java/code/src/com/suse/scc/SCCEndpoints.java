@@ -122,11 +122,11 @@ public class SCCEndpoints {
      * @param jade jade
      */
     public void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/api/scc/connect/organizations/products/unscoped", asJson(withSCCAuth(this::unscoped)));
-        get("/manager/api/scc/connect/organizations/repositories", asJson(withSCCAuth(this::repositories)));
-        get("/manager/api/scc/connect/organizations/subscriptions", asJson(withSCCAuth(this::subscriptions)));
-        get("/manager/api/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
-        get("/manager/api/scc/suma/product_tree.json", asJson(this::productTree));
+        get("/hub/scc/connect/organizations/products/unscoped", asJson(withSCCAuth(this::unscoped)));
+        get("/hub/scc/connect/organizations/repositories", asJson(withSCCAuth(this::repositories)));
+        get("/hub/scc/connect/organizations/subscriptions", asJson(withSCCAuth(this::subscriptions)));
+        get("/hub/scc/connect/organizations/orders", asJson(withSCCAuth(this::orders)));
+        get("/hub/scc/suma/product_tree.json", asJson(this::productTree));
     }
 
     private final Gson gson = new GsonBuilder()
