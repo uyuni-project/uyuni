@@ -16,10 +16,15 @@ package com.suse.cloud;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
+import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSourceException;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.scc.client.SCCClient;
+import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 
 import com.google.gson.Gson;
@@ -57,14 +62,12 @@ public class CloudPaygManager {
     private Instant cacheTime;
 
     private final TaskomaticApi tapi;
-    private final ContentSyncManager mgr;
 
     /**
      * Constructor
      */
     public CloudPaygManager() {
         tapi = new TaskomaticApi();
-        mgr = new ContentSyncManager(Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), this);
         cacheTime = Instant.MIN;
         hasSCCCredentials = null;
         complainceInfo = null;
@@ -74,11 +77,9 @@ public class CloudPaygManager {
     /**
      * Constructor
      * @param tapiIn the taskomatic api object
-     * @param syncManagerIn the content sync manager object
      */
-    public CloudPaygManager(TaskomaticApi tapiIn, ContentSyncManager syncManagerIn) {
+    public CloudPaygManager(TaskomaticApi tapiIn) {
         tapi = tapiIn;
-        mgr = syncManagerIn;
         cacheTime = Instant.MIN;
         hasSCCCredentials = null;
         complainceInfo = null;
@@ -146,7 +147,24 @@ public class CloudPaygManager {
 
     private boolean detectHasSCCCredentials() {
         return CredentialsFactory.listSCCCredentials().stream()
-                .anyMatch(mgr::isSCCCredentials);
+                .anyMatch(this::isSCCCredentials);
+    }
+
+    /**
+     * Check if the provided Credentials are usable for SCC. OES credentials will return false.
+     * @param c the credentials
+     * @return true if they can be used for SCC, otherwise false
+     */
+    protected boolean isSCCCredentials(SCCCredentials c) {
+        try {
+            SCCClient scc = new SCCContentSyncSource(c)
+                    .getClient(ContentSyncManager.getUUID(), Paths.get(SCCConfig.DEFAULT_LOGGING_DIR));
+            scc.listOrders();
+        }
+        catch (SCCClientException | ContentSyncSourceException e) {
+            return false;
+        }
+        return true;
     }
 
     private boolean detectIsCompliant() {
