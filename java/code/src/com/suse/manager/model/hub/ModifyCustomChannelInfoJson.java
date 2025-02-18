@@ -59,7 +59,12 @@ public class ModifyCustomChannelInfoJson {
     }
 
     private Date longToDate(Long longIn) {
-        return new Date(longIn);
+        if (null == longIn) {
+            return new Date();
+        }
+        else {
+            return new Date(longIn);
+        }
     }
 
     private Long dateToLong(Date dateIn) {
@@ -178,14 +183,14 @@ public class ModifyCustomChannelInfoJson {
     /**
      * @return the GPGCheck
      */
-    public boolean isGpgCheck() {
+    public Boolean isGpgCheck() {
         return gpgCheck;
     }
 
     /**
      * @param gpgCheckIn the GPGCheck to set
      */
-    public void setGpgCheck(boolean gpgCheckIn) {
+    public void setGpgCheck(Boolean gpgCheckIn) {
         this.gpgCheck = gpgCheckIn;
     }
 
@@ -361,14 +366,14 @@ public class ModifyCustomChannelInfoJson {
     /**
      * @return Returns the installerUpdates.
      */
-    public boolean isInstallerUpdates() {
+    public Boolean isInstallerUpdates() {
         return installerUpdates;
     }
 
     /**
      * @param installerUpdatesIn The installerUpdates to set.
      */
-    public void setInstallerUpdates(boolean installerUpdatesIn) {
+    public void setInstallerUpdates(Boolean installerUpdatesIn) {
         installerUpdates = installerUpdatesIn;
     }
 

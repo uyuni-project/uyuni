@@ -12,7 +12,6 @@
 package com.suse.manager.hub;
 
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
-import static com.suse.manager.hub.HubSparkHelper.allowingOnlyPeripheral;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyRegistered;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
@@ -37,6 +36,7 @@ import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
@@ -101,13 +101,15 @@ public class HubController {
         post("/hub/removeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
         get("/hub/listAllPeripheralOrgs",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralOrgs))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralChannels))));
         post("/hub/addVendorChannels",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::addVendorChannels))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::addVendorChannels))));
         post("/hub/addCustomChannels",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::addCustomChannels))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::addCustomChannels))));
+        post("/hub/modifyCustomChannels",
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::modifyCustomChannels))));
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
@@ -296,7 +298,6 @@ public class HubController {
         return success(response, createdVendorChannelInfoList);
     }
 
-
     private String addCustomChannels(Request request, Response response, IssAccessToken token) {
         Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
 
@@ -320,5 +321,30 @@ public class HubController {
                                 (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
                         .toList();
         return success(response, createdCustomChannelsInfoList);
+    }
+
+    private String modifyCustomChannels(Request request, Response response, IssAccessToken token) {
+        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
+
+        if ((null == requestList) || (!requestList.containsKey("modifycustomchannellist"))) {
+            return badRequest(response, "Invalid data: missing modifycustomchannellist entry");
+        }
+
+        List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoList = Arrays.asList(
+                GSON.fromJson(requestList.get("modifycustomchannellist"), ModifyCustomChannelInfoJson[].class));
+
+        if (modifyCustomChannelInfoList.isEmpty()) {
+            LOGGER.error("Bad Request: invalid modify custom channels list");
+            return badRequest(response, "Invalid data: invalid modify custom channels list");
+        }
+
+        List<ChannelInfoJson> modifiedCustomChannelsInfoList =
+                hubManager.modifyCustomChannels(token, modifyCustomChannelInfoList)
+                        .stream()
+                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
+                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
+                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
+                        .toList();
+        return success(response, modifiedCustomChannelsInfoList);
     }
 }
