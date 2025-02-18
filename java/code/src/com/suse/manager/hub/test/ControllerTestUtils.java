@@ -246,14 +246,12 @@ public class ControllerTestUtils {
                                                              boolean isInstallerUpdates,
                                                              String archLabel,
                                                              String checksumLabel,
-                                                             Date endOfLifeDate,
-                                                             Date lastSyncedDate) {
-        CustomChannelInfoJson info = new CustomChannelInfoJson();
+                                                             Date endOfLifeDate) {
+        CustomChannelInfoJson info = new CustomChannelInfoJson(channelLabel);
 
         info.setPeripheralOrgId(orgId);
         info.setParentChannelLabel(parentChannelLabel);
         info.setChannelArchLabel(archLabel);
-        info.setLabel(channelLabel);
         info.setBaseDir("baseDir_" + channelLabel);
         info.setName("name_" + channelLabel);
         info.setSummary("summary_" + channelLabel);
@@ -265,7 +263,6 @@ public class ControllerTestUtils {
         info.setGpgKeyFp("gpgKeyFp_" + channelLabel);
         info.setEndOfLifeDate(endOfLifeDate);
         info.setChecksumTypeLabel(checksumLabel);
-        info.setLastSyncedDate(lastSyncedDate);
         info.setChannelProductProduct("channelProductProduct");
         info.setChannelProductVersion("channelProductVersion");
         info.setChannelAccess("chAccess"); // max 10
@@ -286,8 +283,7 @@ public class ControllerTestUtils {
                                   boolean isInstallerUpdates,
                                   String archLabel,
                                   String checksumLabel,
-                                  Date endOfLifeDate,
-                                  Date lastSyncedDate) {
+                                  Date endOfLifeDate) {
         ChannelArch testChannelArch = ChannelFactory.findArchByLabel(archLabel);
         String channelLabel = ch.getLabel();
 
@@ -311,9 +307,7 @@ public class ControllerTestUtils {
         assertEquals(endOfLifeDate, ch.getEndOfLife());
         assertEquals(checksumLabel, ch.getChecksumType().getLabel());
         assertTrue(isNowUtil(ch.getLastModified()));
-        assertEquals(lastSyncedDate, ch.getLastSynced());
 
-        assertEquals(lastSyncedDate, ch.getLastSynced());
         assertEquals("chAccess", ch.getAccess());
 
         assertEquals("maintainerName_" + channelLabel, ch.getMaintainerName());
@@ -378,7 +372,7 @@ public class ControllerTestUtils {
         return createCustomChannelInfoJson(testPeripheralUser.getOrg().getId(),
                 channelLabel, "", "",
                 true, true, "channel-s390", "sha256",
-                createDateUtil(2096, 10, 22), createDateUtil(2025, 4, 30));
+                createDateUtil(2096, 10, 22));
     }
 
     public Object testAddCustomChannelsApiCall(String serverFqdnIn,

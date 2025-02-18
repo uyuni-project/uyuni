@@ -1489,7 +1489,7 @@ public class ChannelFactory extends HibernateFactory {
             throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
         }
 
-        CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson();
+        CustomChannelInfoJson customChannelInfo = new CustomChannelInfoJson(customChannel.getLabel());
 
         customChannelInfo.setPeripheralOrgId(peripheralOrgId);
 
@@ -1501,7 +1501,6 @@ public class ChannelFactory extends HibernateFactory {
                 customChannel.getChannelArch().getLabel();
         customChannelInfo.setChannelArchLabel(channelArchLabel);
 
-        customChannelInfo.setLabel(customChannel.getLabel());
         customChannelInfo.setBaseDir(customChannel.getBaseDir());
         customChannelInfo.setName(customChannel.getName());
         customChannelInfo.setSummary(customChannel.getSummary());
@@ -1518,8 +1517,6 @@ public class ChannelFactory extends HibernateFactory {
 
         customChannelInfo.setEndOfLifeDate(customChannel.getEndOfLife());
         customChannelInfo.setChecksumTypeLabel(customChannel.getChecksumTypeLabel());
-
-        customChannelInfo.setLastSyncedDate(customChannel.getLastSynced());
 
         String channelProductProduct = (null == customChannel.getProduct()) ? null :
                 customChannel.getProduct().getProduct();
@@ -1606,8 +1603,6 @@ public class ChannelFactory extends HibernateFactory {
 
         customChannel.setEndOfLife(customChannelInfo.getEndOfLifeDate());
         customChannel.setChecksumType(checksumType);
-
-        customChannel.setLastSynced(customChannelInfo.getLastSyncedDate());
 
         customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
                 customChannelInfo.getChannelProductProduct(), customChannelInfo.getChannelProductVersion()));

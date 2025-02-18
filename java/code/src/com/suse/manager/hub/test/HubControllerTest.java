@@ -494,7 +494,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String testChecksumLabel = "sha256";
 
         Date endOfLifeDate = testUtils.createDateUtil(2096, 10, 22);
-        Date lastSyncedDate = testUtils.createDateUtil(2025, 4, 30);
 
         User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
         Org testPeripheralOrg = testPeripheralUser.getOrg();
@@ -510,28 +509,24 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         CustomChannelInfoJson cloneBaseChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneBaseCh", "", vendorBaseChannelTemplateLabel,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
-                endOfLifeDate, lastSyncedDate);
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         CustomChannelInfoJson cloneDevelChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
-                endOfLifeDate, lastSyncedDate);
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         CustomChannelInfoJson cloneTestChInfo = null;
         String originalOfProdCh = "cloneDevelCh";
         if (testIncludeTestChannelInChain) {
             cloneTestChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                     "cloneTestCh", "", "cloneDevelCh",
-                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
-                    endOfLifeDate, lastSyncedDate);
+                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
             originalOfProdCh = "cloneTestCh";
         }
 
         CustomChannelInfoJson cloneProdChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneProdCh", "", originalOfProdCh,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
-                endOfLifeDate, lastSyncedDate);
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
         testUtils.createTestVendorChannels(user, DUMMY_SERVER_FQDN);
 
@@ -627,8 +622,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                     testIssInstallerUpdates,
                     testArchLabel,
                     testChecksumLabel,
-                    endOfLifeDate,
-                    lastSyncedDate);
+                    endOfLifeDate);
         }
     }
 
