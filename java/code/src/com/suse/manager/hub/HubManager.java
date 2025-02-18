@@ -863,4 +863,19 @@ public class HubManager {
         return ChannelFactory.listAllChannels();
     }
 
+    public Long countRegisteredPeripherals(User user) {
+        ensureSatAdmin(user);
+        return hubFactory.countPeripherals();
+    }
+
+    public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
+        ensureSatAdmin(user);
+        return hubFactory.listPaginatedPeripherals(pc.getStart() - 1, pc.getPageSize());
+    }
+
+    public Optional<IssHub> getHub(User user) {
+        ensureSatAdmin(user);
+        return hubFactory.lookupIssHub();
+    }
+
 }

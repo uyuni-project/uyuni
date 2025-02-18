@@ -37,6 +37,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -103,7 +104,7 @@ public class HubApiController {
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
 
         // Peripherals management
-        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
@@ -113,6 +114,16 @@ public class HubApiController {
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+    }
+
+    private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
+        List<IssV3PeripheralsResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
+                .map(IssV3PeripheralsResponse::fromIssEntity).toList();
+        TypeToken<PagedDataResultJson<IssV3PeripheralsResponse, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {

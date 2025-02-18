@@ -103,12 +103,26 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Count the total number of registered peripherals for this hub
+     * @return
+     */
+    public Long countPeripherals() {
+        return getSession()
+                .createQuery("SELECT COUNT(*) FROM IssPeripheral k", Long.class)
+                .uniqueResult();
+    }
+
+    /**
      * get the list of all the peripheral servers for a hub
-     *
+     * @param offset the first item to retrieve
+     * @param pageSize the maximum number of items to retrieve
      * @return a list of paginated peripherals
      */
-    public List<IssPeripheral> listPeripherals() {
-        return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class).list();
+    public List<IssPeripheral> listPaginatedPeripherals(int offset, int pageSize) {
+        return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize)
+                .list();
     }
 
     /**

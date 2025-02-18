@@ -1,7 +1,6 @@
 import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
-import { useState } from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Column } from "components/table/Column";
@@ -10,11 +9,9 @@ import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-import { PeripheralListData, PeripheralsListProp } from "../iss_data_props";
+import { PeripheralListData } from "../iss_data_props";
 
-const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
-  const [peripherals] = useState(peripheralsList.peripherals);
-
+const IssPeripheralsList = () => {
   const searchData = (row, criteria) => {
     const keysToSearch = ["fqdn"];
     if (criteria) {
@@ -26,7 +23,7 @@ const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
 
   let componentContent = (
     <Table
-      data={peripherals}
+      data="/rhn/manager/api/admin/hub/peripherals"
       identifier={(row: PeripheralListData) => row.id}
       selectable={false}
       initialSortColumnKey="fqdn"
@@ -62,6 +59,7 @@ const IssPeripheralsList = (peripheralsList: PeripheralsListProp) => {
           let dlUrl = URL.createObjectURL(rootCABlob);
           <a
             href={dlUrl}
+            download={row.fqdn + "_CA"}
             onClick={() => {
               URL.revokeObjectURL(dlUrl);
             }}

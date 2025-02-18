@@ -9,6 +9,7 @@ import Validation from "components/validation";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
+import { SyncOrgsToPeripheralChannel } from "./SyncOrgsToPeripheralChannels";
 import { HubRegisterRequest } from "./types";
 
 enum RegistrationMode {
@@ -31,6 +32,25 @@ type FormModel = {
   certificateMode: CertificateMode;
   uploadedRootCA?: string;
   pastedRootCA?: string;
+  syncedChannels: SyncedOrgsToChannels[];
+};
+
+type Org = {
+  id: number;
+  label: string;
+};
+
+type Channel = {
+  id: number;
+  name: string;
+  label: string;
+  parent: string;
+};
+
+// if org is null channel is a vendor channel
+type SyncedOrgsToChannels = {
+  org: Org;
+  channels: Channel[];
 };
 
 type Props = {};
@@ -48,6 +68,7 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
     serverFqdn: "",
     registrationMode: RegistrationMode.Token,
     certificateMode: CertificateMode.NotNeeded,
+    syncedChannels: [],
   };
 
   constructor(props: Props) {
@@ -252,7 +273,6 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
 -----END CERTIFICATE-----`}
             />
           )}
-
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"

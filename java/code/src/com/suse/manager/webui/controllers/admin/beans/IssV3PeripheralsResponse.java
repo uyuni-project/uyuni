@@ -14,6 +14,9 @@
  */
 package com.suse.manager.webui.controllers.admin.beans;
 
+import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
+
 public class IssV3PeripheralsResponse {
     private final long id;
     private final String fqdn;
@@ -61,5 +64,20 @@ public class IssV3PeripheralsResponse {
 
     public String getRootCA() {
         return rootCA;
+    }
+
+    /**
+     * Helper converter method from db entity
+     * @param peripheralEntity
+     * @return
+     */
+    public static IssV3PeripheralsResponse fromIssEntity(IssPeripheral peripheralEntity) {
+        return new IssV3PeripheralsResponse(
+                peripheralEntity.getId(),
+                peripheralEntity.getFqdn(),
+                peripheralEntity.getPeripheralChannels().size(),
+                peripheralEntity.getPeripheralChannels().stream()
+                        .map(IssPeripheralChannels::getPeripheralOrgId).distinct().count(),
+                peripheralEntity.getRootCa());
     }
 }

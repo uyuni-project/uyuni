@@ -1,25 +1,22 @@
 import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
-import { useState } from "react";
 
 import { Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
 import { HelpLink } from "components/utils";
 
-import { PeripheralsListProp } from "./iss_data_props";
 import PeripheralsList from "./list/peripherals-list";
 
-const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
-  const [peripherals] = useState(peripheralsList.peripherals);
+const IssPeripheral = () => {
 
   const title = (
     <div className="spacewalk-toolbar-h1">
       <h1>
         <i className="fa fa-cogs"></i>
         &nbsp;
-        {t("ISS - Hub Configuration")}
+        {t("Peripherals Configuration")}
         &nbsp;
         <HelpLink url="reference/admin/iss-peripheral.html" />
       </h1>
@@ -30,7 +27,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/register`);
   };
 
-  let pageContent = <PeripheralsList peripherals={peripherals} />;
+  let pageContent = <PeripheralsList />;
 
   return (
     <div className="responsive-wizard">
@@ -41,7 +38,7 @@ const IssPeripheral = (peripheralsList: PeripheralsListProp) => {
             <Button
               id="addPeripheral"
               icon="fa-plus"
-              className={"btn-default"}
+              className={"btn-success"}
               text={t("Add Peripheral")}
               handler={addPeripheral}
             />

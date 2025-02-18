@@ -27,18 +27,15 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
-import com.suse.manager.webui.controllers.admin.service.IssV3Service;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +58,7 @@ public class AdminViewsController {
 
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
-    private static final HubFactory HUB_FACTORY = new HubFactory();
+    private static final HubManager HUB_MANAGER = new HubManager();
 
     private AdminViewsController() { }
 
@@ -133,7 +130,7 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("hub", HUB_FACTORY.lookupIssHub().orElse(null));
+        data.put("hub", HUB_MANAGER.getHub(user).orElse(null));
         return new ModelAndView(data, "controllers/admin/templates/hub-details.jade");
     }
 
@@ -146,11 +143,6 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        Type listType = new TypeToken<List<PeripheralResponse>>() { }.getType();
-        List<PeripheralResponse> src = HUB_FACTORY.listPeripherals().stream()
-            .map(ph -> new PeripheralResponse(ph.getId(), ph.getFqdn(), 0L, 0L, 0L))
-            .toList();
-        data.put("peripherals", GSON.toJson(src, listType));
         return new ModelAndView(data, "controllers/admin/templates/list-peripherals.jade");
     }
 
