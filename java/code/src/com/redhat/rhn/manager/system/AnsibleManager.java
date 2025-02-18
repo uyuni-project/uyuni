@@ -45,6 +45,7 @@ import com.suse.salt.netapi.utils.Xor;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.InvalidPathException;
@@ -52,9 +53,11 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class AnsibleManager extends BaseManager {
 
@@ -404,6 +407,29 @@ public class AnsibleManager extends BaseManager {
                             throw new IllegalStateException(error);
                         },
                         success -> success));
+    }
+
+    /**
+     * Parse Ansible Inventory content to look for host names
+     *
+     * @param inventoryMap the Ansible Inventory content
+     * @return the Set of hostnames
+     */
+    public static Set<String> parseInventoryAndGetHostnames(Map<String, Map<String, Object>> inventoryMap) {
+        HashSet<String> hostnames = new HashSet<>();
+
+        for (Map.Entry<String, Map<String, Object>> entry : inventoryMap.entrySet()) {
+            String ansibleGroupName = entry.getKey();
+            if (!ansibleGroupName.equals("_meta")) {
+                @SuppressWarnings("unchecked")
+                List<String> hostList = (List<String>)entry.getValue().get("hosts");
+                if (CollectionUtils.isNotEmpty(hostList)) {
+                    hostnames.addAll(hostList);
+                }
+            }
+        }
+
+        return hostnames;
     }
 
     /**
