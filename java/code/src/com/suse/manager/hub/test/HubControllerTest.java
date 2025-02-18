@@ -19,26 +19,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.ConnectionManager;
-import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
-import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.channel.software.ChannelSoftwareHandler;
 import com.redhat.rhn.manager.channel.ChannelManager;
-import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -67,9 +58,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,47 +73,14 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     private static final String DUMMY_SERVER_FQDN = "dummy-server.unit-test.local";
 
+    private final ControllerTestUtils testUtils = new ControllerTestUtils();
+
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         HubController dummyHubController = new HubController();
         dummyHubController.initRoutes();
-    }
-
-    private String createTestUserName() {
-        return "testUser" + TestUtils.randomString();
-    }
-
-    private String createTestPassword() {
-        return "testPassword" + TestUtils.randomString();
-    }
-
-    private void createReportDbUser(String testReportDbUserName, String testReportDbPassword) {
-        String dbname = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
-        ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
-        ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
-        ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
-
-        dbHelper.createDBUser(localRh.getSession(), dbname, testReportDbUserName, testReportDbPassword);
-        localRcm.commitTransaction();
-    }
-
-    private boolean existsReportDbUser(String testReportDbUserName) {
-        ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
-        ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
-        ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
-
-        return dbHelper.hasDBUser(localRh.getSession(), testReportDbUserName);
-    }
-
-    private void cleanupReportDbUser(String testReportDbUserName) {
-        ConnectionManager localRcm = ConnectionManagerFactory.localReportingConnectionManager();
-        ReportDbHibernateFactory localRh = new ReportDbHibernateFactory(localRcm);
-        ReportDBHelper dbHelper = ReportDBHelper.INSTANCE;
-
-        dbHelper.dropDBUser(localRh.getSession(), testReportDbUserName);
-        localRcm.commitTransaction();
     }
 
     private static Stream<Arguments> allApiEndpoints() {
@@ -163,10 +119,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @ParameterizedTest
     @MethodSource("onlyGetApis")
     public void ensureGetApisNotWorkingWithPost(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole) {
-        ControllerTestUtils utils = new ControllerTestUtils();
-
         assertThrows(IllegalStateException.class, () ->
-                        utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                        testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                                 .withApiEndpoint(apiEndpoint)
                                 .withHttpMethod(HttpMethod.post)
                                 .withRole(apiRole)
@@ -178,10 +132,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @ParameterizedTest
     @MethodSource("onlyPostApis")
     public void ensurePostApisNotWorkingWithGet(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole) {
-        ControllerTestUtils utils = new ControllerTestUtils();
-
         assertThrows(IllegalStateException.class, () ->
-                        utils.withServerFqdn(DUMMY_SERVER_FQDN)
+                        testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                                 .withApiEndpoint(apiEndpoint)
                                 .withHttpMethod(HttpMethod.get)
                                 .withRole(apiRole)
@@ -194,9 +146,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("onlyHubApis")
     public void ensureHubApisNotWorkingWithPeripheral(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
             throws Exception {
-        ControllerTestUtils utils = new ControllerTestUtils();
-
-        String answerKO = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiEndpoint)
                 .withHttpMethod(apiMethod)
                 .withRole(IssRole.PERIPHERAL)
@@ -212,9 +162,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("onlyPeripheralApis")
     public void ensurePeripheralApisNotWorkingWithHub(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
             throws Exception {
-        ControllerTestUtils utils = new ControllerTestUtils();
-
-        String answerKO = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiEndpoint)
                 .withHttpMethod(apiMethod)
                 .withRole(IssRole.HUB)
@@ -230,10 +178,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("allApiEndpoints")
     public void ensureNotWorkingWithoutToken(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
             throws Exception {
-        ControllerTestUtils utils = new ControllerTestUtils();
-
         try {
-            utils.withServerFqdn(DUMMY_SERVER_FQDN)
+            testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                     .withApiEndpoint(apiEndpoint)
                     .withHttpMethod(apiMethod)
                     .withRole(apiRole)
@@ -250,8 +196,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkPingApiEndpoint() throws Exception {
         String apiUnderTest = "/hub/ping";
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withBearerTokenInHeaders()
@@ -270,8 +215,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         bodyMap.put("rootCA", "----- BEGIN TEST ROOTCA ----");
         bodyMap.put("token", dummyToken.getSerializedForm());
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(ConfigDefaults.get().getHostname())
+        String answer = (String) testUtils.withServerFqdn(ConfigDefaults.get().getHostname())
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withBearerTokenInHeaders()
@@ -289,14 +233,13 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkStoreCredentialsApiEndpoint() throws Exception {
         String apiUnderTest = "/hub/sync/storeCredentials";
 
-        String testUserName = createTestUserName();
-        String testPassword = createTestPassword();
+        String testUserName = testUtils.createTestUserName();
+        String testPassword = testUtils.createTestPassword();
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("username", testUserName);
         bodyMap.put("password", testPassword);
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(ConfigDefaults.get().getHostname())
+        String answer = (String) testUtils.withServerFqdn(ConfigDefaults.get().getHostname())
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withRole(IssRole.HUB)
@@ -312,8 +255,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkManagerinfoApiEndpoint() throws Exception {
         String apiUnderTest = "/hub/managerinfo";
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.get)
                 .withRole(IssRole.HUB)
@@ -332,17 +274,16 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkStoreReportDbCredentialsApiEndpoint() throws Exception {
         String apiUnderTest = "/hub/storeReportDbCredentials";
 
-        String testReportDbUserName = createTestUserName();
-        String testReportDbPassword = createTestPassword();
+        String testReportDbUserName = testUtils.createTestUserName();
+        String testReportDbPassword = testUtils.createTestPassword();
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("username", testReportDbUserName);
         bodyMap.put("password", testReportDbPassword);
 
         //check there is no user with that username
-        assertFalse(existsReportDbUser(testReportDbUserName));
+        assertFalse(testUtils.existsReportDbUser(testReportDbUserName));
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withRole(IssRole.HUB)
@@ -354,12 +295,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertTrue(jsonObj.get("success").getAsBoolean(), apiUnderTest + " API call is failing");
 
         //check there is one user with that username
-        assertTrue(existsReportDbUser(testReportDbUserName),
+        assertTrue(testUtils.existsReportDbUser(testReportDbUserName),
                 apiUnderTest + " API reports no user " + testReportDbUserName);
 
         //cleanup
-        cleanupReportDbUser(testReportDbUserName);
-        assertFalse(existsReportDbUser(testReportDbUserName),
+        testUtils.cleanupReportDbUser(testReportDbUserName);
+        assertFalse(testUtils.existsReportDbUser(testReportDbUserName),
                 "cleanup of user not working for user " + testReportDbUserName);
     }
 
@@ -367,18 +308,17 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkRemoveReportDbCredentialsApiEndpoint() throws Exception {
         String apiUnderTest = "/hub/removeReportDbCredentials";
 
-        String testReportDbUserName = createTestUserName();
+        String testReportDbUserName = testUtils.createTestUserName();
         String testReportDbPassword = "testPassword" + TestUtils.randomString();
         Map<String, String> bodyMap = new HashMap<>();
         bodyMap.put("username", testReportDbUserName);
 
         //create a user
-        createReportDbUser(testReportDbUserName, testReportDbPassword);
-        assertTrue(existsReportDbUser(testReportDbUserName),
+        testUtils.createReportDbUser(testReportDbUserName, testReportDbPassword);
+        assertTrue(testUtils.existsReportDbUser(testReportDbUserName),
                 "failed creation of user " + testReportDbUserName);
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withRole(IssRole.HUB)
@@ -389,7 +329,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
         assertTrue(jsonObj.get("success").getAsBoolean(), apiUnderTest + " API call is failing");
         //check the user is gone
-        assertFalse(existsReportDbUser(testReportDbUserName),
+        assertFalse(testUtils.existsReportDbUser(testReportDbUserName),
                 apiUnderTest + " API call fails to remove user " + testReportDbUserName);
     }
 
@@ -401,8 +341,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         Org org2 = UserTestUtils.findNewOrg("org2");
         Org org3 = UserTestUtils.findNewOrg("org3");
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.get)
                 .withRole(IssRole.PERIPHERAL)
@@ -430,8 +369,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         Channel testBaseChannel = ChannelTestUtils.createBaseChannel(user);
         Channel testChildChannel = ChannelTestUtils.createChildChannel(user, testBaseChannel);
 
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
+        String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.get)
                 .withRole(IssRole.PERIPHERAL)
@@ -460,22 +398,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(testBaseChannel.getId(), testChildChannelInfo.get().getParentChannelId());
     }
 
-    private Channel utilityCreateVendorBaseChannel(String name, String label) throws Exception {
-        Org nullOrg = null;
-        ChannelFamily cfam = ChannelFamilyFactoryTest.createNullOrgTestChannelFamily();
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
-        return ChannelFactoryTest.createTestChannel(name, label, nullOrg, arch, cfam);
-    }
-
-    private Channel utilityCreateVendorChannel(String name, String label, Channel vendorBaseChannel) throws Exception {
-        Channel vendorChannel = utilityCreateVendorBaseChannel(name, label);
-        vendorChannel.setParentChannel(vendorBaseChannel);
-        vendorChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha512"));
-        ChannelFactory.save(vendorChannel);
-        return vendorChannel;
-    }
-
     private static Stream<Arguments> allBaseAndVendorChannelAlreadyPresentCombinations() {
         return Stream.of(Arguments.of(false, false),
                 Arguments.of(true, false),
@@ -492,36 +414,23 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         //SUSE Linux Enterprise Server 11 SP3 x86_64
         String vendorBaseChannelTemplateName = "SLES11-SP3-Pool for x86_64";
         String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64";
-
-        //SUSE Linux Enterprise Server 11 SP3 x86_64
         String vendorChannelTemplateName = "SLES11-SP3-Updates for x86_64";
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
+        String answer = testUtils.createTestVendorChannels(user, DUMMY_SERVER_FQDN,
+                vendorBaseChannelTemplateName, vendorBaseChannelTemplateLabel,
+                baseChannelAlreadyPresentInPeripheral,
+                vendorChannelTemplateName, vendorChannelTemplateLabel,
+                channelAlreadyPresentInPeripheral);
 
         int expectedNumOfPeripheralCreatedChannels = 2;
-        Channel vendorBaseChannel = null;
         if (baseChannelAlreadyPresentInPeripheral) {
-            vendorBaseChannel = utilityCreateVendorBaseChannel(vendorBaseChannelTemplateName,
-                    vendorBaseChannelTemplateLabel);
             expectedNumOfPeripheralCreatedChannels--;
         }
         if (channelAlreadyPresentInPeripheral) {
-            utilityCreateVendorChannel(vendorChannelTemplateName, vendorChannelTemplateLabel, vendorBaseChannel);
             expectedNumOfPeripheralCreatedChannels--;
         }
 
-        Map<String, String> bodyMap = new HashMap<>();
-        bodyMap.put("vendorchannellabellist", Json.GSON.toJson(List.of(vendorChannelTemplateLabel)));
-
-        ControllerTestUtils utils = new ControllerTestUtils();
-        String answer = (String) utils.withServerFqdn(DUMMY_SERVER_FQDN)
-                .withApiEndpoint(apiUnderTest)
-                .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.PERIPHERAL)
-                .withBearerTokenInHeaders()
-                .withBody(bodyMap)
-                .simulateControllerApiCall();
         List<ChannelInfoJson> peripheralVendorCreatedChannelsInfo =
                 Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
 
@@ -576,127 +485,20 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
-    private static Date createDateUtil(int year, int month, int dayOfMonth) {
-        GregorianCalendar cal = new GregorianCalendar(year, month, dayOfMonth);
-        return cal.getTime();
-    }
-
-    private static boolean isNowUtil(Date dateIn) {
-        GregorianCalendar cal = new GregorianCalendar();
-        Date nowDate = createDateUtil(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
-
-        return (dateIn.getTime() - nowDate.getTime() < 24L * 60L * 60L * 1000L);
-    }
-
-    private static CustomChannelInfoJson createCustomChannelInfoJson(Long orgId,
-                                                                     String channelLabel,
-                                                                     String parentChannelLabel,
-                                                                     String originalChannelLabel,
-                                                                     boolean isGpgCheck,
-                                                                     boolean isInstallerUpdates,
-                                                                     String archLabel,
-                                                                     String checksumLabel,
-                                                                     Date endOfLifeDate,
-                                                                     Date lastSyncedDate) {
-        CustomChannelInfoJson info = new CustomChannelInfoJson();
-
-        info.setPeripheralOrgId(orgId);
-        info.setParentChannelLabel(parentChannelLabel);
-        info.setChannelArchLabel(archLabel);
-        info.setLabel(channelLabel);
-        info.setBaseDir("baseDir_" + channelLabel);
-        info.setName("name_" + channelLabel);
-        info.setSummary("summary_" + channelLabel);
-        info.setDescription("description_" + channelLabel);
-        info.setProductNameLabel("productNameLabel");
-        info.setGpgCheck(isGpgCheck);
-        info.setGpgKeyUrl("gpgKeyUrl_" + channelLabel);
-        info.setGpgKeyId("gpgKeyId");
-        info.setGpgKeyFp("gpgKeyFp_" + channelLabel);
-        info.setEndOfLifeDate(endOfLifeDate);
-        info.setChecksumTypeLabel(checksumLabel);
-        info.setLastSyncedDate(lastSyncedDate);
-        info.setChannelProductProduct("channelProductProduct");
-        info.setChannelProductVersion("channelProductVersion");
-        info.setChannelAccess("chAccess"); // max 10
-        info.setMaintainerName("maintainerName_" + channelLabel);
-        info.setMaintainerEmail("maintainerEmail_" + channelLabel);
-        info.setMaintainerPhone("maintainerPhone_" + channelLabel);
-        info.setSupportPolicy("supportPolicy_" + channelLabel);
-        info.setUpdateTag("updateTag_" + channelLabel);
-        info.setInstallerUpdates(isInstallerUpdates);
-
-        info.setOriginalChannelLabel(originalChannelLabel);
-
-        return info;
-    }
-
-    private static void testCustomChannel(Channel ch, Long peripheralOrgId,
-                                          boolean isGpgCheck,
-                                          boolean isInstallerUpdates,
-                                          String archLabel,
-                                          String checksumLabel,
-                                          Date endOfLifeDate,
-                                          Date lastSyncedDate) {
-        ChannelArch testChannelArch = ChannelFactory.findArchByLabel(archLabel);
-        String channelLabel = ch.getLabel();
-
-        if (null != peripheralOrgId) {
-            assertEquals(peripheralOrgId, ch.getOrg().getId());
-        }
-        else {
-            assertNull(ch.getOrg());
-        }
-
-        assertEquals(testChannelArch, ch.getChannelArch());
-        assertEquals("baseDir_" + channelLabel, ch.getBaseDir());
-        assertEquals("name_" + channelLabel, ch.getName());
-        assertEquals("summary_" + channelLabel, ch.getSummary());
-        assertEquals("description_" + channelLabel, ch.getDescription());
-        assertEquals(isGpgCheck, ch.isGPGCheck());
-        assertEquals("gpgKeyUrl_" + channelLabel, ch.getGPGKeyUrl());
-        assertEquals("gpgKeyId", ch.getGPGKeyId());
-        assertEquals("gpgKeyFp_" + channelLabel, ch.getGPGKeyFp());
-
-        assertEquals(endOfLifeDate, ch.getEndOfLife());
-        assertEquals(checksumLabel, ch.getChecksumType().getLabel());
-        assertTrue(HubControllerTest.isNowUtil(ch.getLastModified()));
-        assertEquals(lastSyncedDate, ch.getLastSynced());
-
-        assertEquals(lastSyncedDate, ch.getLastSynced());
-        assertEquals("chAccess", ch.getAccess());
-
-        assertEquals("maintainerName_" + channelLabel, ch.getMaintainerName());
-        assertEquals("maintainerEmail_" + channelLabel, ch.getMaintainerEmail());
-        assertEquals("maintainerPhone_" + channelLabel, ch.getMaintainerPhone());
-
-        assertEquals("supportPolicy_" + channelLabel, ch.getSupportPolicy());
-        assertEquals("updateTag_" + channelLabel, ch.getUpdateTag());
-        assertEquals(isInstallerUpdates, ch.isInstallerUpdates());
-
-        assertEquals("productNameLabel", ch.getProductName().getLabel());
-        assertEquals("channelProductProduct", ch.getProduct().getProduct());
-        assertEquals("channelProductVersion", ch.getProduct().getVersion());
-    }
-
-        @ParameterizedTest
+    @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void checkApiAddCustomChannel(boolean testIncludeTestChannelInChain) throws Exception {
-        String apiUnderTest = "/hub/addCustomChannels";
-
         boolean testIsGpgCheck = true;
         boolean testIssInstallerUpdates = true;
         String testArchLabel = "channel-s390";
         String testChecksumLabel = "sha256";
 
-        Date endOfLifeDate = createDateUtil(2096, 10, 22);
-        Date lastSyncedDate = createDateUtil(2025, 4, 30);
+        Date endOfLifeDate = testUtils.createDateUtil(2096, 10, 22);
+        Date lastSyncedDate = testUtils.createDateUtil(2025, 4, 30);
 
         User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
         Org testPeripheralOrg = testPeripheralUser.getOrg();
         Long testPeripheralOrgId = testPeripheralOrg.getId();
-
-        ControllerTestUtils controllerTestUtils = new ControllerTestUtils();
 
         // vendorBaseCh -> cloneBaseCh
         //  ^                ^
@@ -706,12 +508,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64"; //SUSE Linux Enterprise Server 11 SP3 x86_64
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
 
-        CustomChannelInfoJson cloneBaseChInfo = createCustomChannelInfoJson(testPeripheralOrgId,
+        CustomChannelInfoJson cloneBaseChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneBaseCh", "", vendorBaseChannelTemplateLabel,
                 testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
                 endOfLifeDate, lastSyncedDate);
 
-        CustomChannelInfoJson cloneDevelChInfo = createCustomChannelInfoJson(testPeripheralOrgId,
+        CustomChannelInfoJson cloneDevelChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel,
                 testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
                 endOfLifeDate, lastSyncedDate);
@@ -719,39 +521,19 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         CustomChannelInfoJson cloneTestChInfo = null;
         String originalOfProdCh = "cloneDevelCh";
         if (testIncludeTestChannelInChain) {
-            cloneTestChInfo = createCustomChannelInfoJson(testPeripheralOrgId,
+            cloneTestChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                     "cloneTestCh", "", "cloneDevelCh",
                     testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
                     endOfLifeDate, lastSyncedDate);
             originalOfProdCh = "cloneTestCh";
         }
 
-        CustomChannelInfoJson cloneProdChInfo = createCustomChannelInfoJson(testPeripheralOrgId,
+        CustomChannelInfoJson cloneProdChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
                 "cloneProdCh", "", originalOfProdCh,
                 testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel,
                 endOfLifeDate, lastSyncedDate);
 
-        // create peripheral vendor channels: vendorBaseCh and vendorCh
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
-
-        Map<String, String> vendorBodyMap = new HashMap<>();
-        vendorBodyMap.put("vendorchannellabellist", Json.GSON.toJson(List.of(vendorChannelTemplateLabel)));
-
-        String vendorAnswer = (String) controllerTestUtils.withServerFqdn(DUMMY_SERVER_FQDN)
-                .withApiEndpoint("/hub/addVendorChannels")
-                .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.PERIPHERAL)
-                .withBearerTokenInHeaders()
-                .withBody(vendorBodyMap)
-                .simulateControllerApiCall();
-        List<ChannelInfoJson> peripheralVendorCreatedChannelsInfo =
-                Arrays.asList(Json.GSON.fromJson(vendorAnswer, ChannelInfoJson[].class));
-
-        assertEquals(2, peripheralVendorCreatedChannelsInfo.size());
-        assertTrue(peripheralVendorCreatedChannelsInfo.stream()
-                .anyMatch(e -> e.getLabel().equals("sles11-sp3-pool-x86_64")));
-        assertTrue(peripheralVendorCreatedChannelsInfo.stream()
-                .anyMatch(e -> e.getLabel().equals("sles11-sp3-updates-x86_64")));
+        testUtils.createTestVendorChannels(user, DUMMY_SERVER_FQDN);
 
         Channel vendorBaseCh = ChannelFactory.lookupByLabel(vendorBaseChannelTemplateLabel);
         assertNotNull(vendorBaseCh);
@@ -759,7 +541,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(vendorCh);
 
         //create peripheral vendorCh custom cloned channels
-        Map<String, String> bodyMap = new HashMap<>();
         List<CustomChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
         customChannelInfoListIn.add(cloneBaseChInfo);
         customChannelInfoListIn.add(cloneDevelChInfo);
@@ -768,15 +549,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
         customChannelInfoListIn.add(cloneProdChInfo);
 
-        bodyMap.put("customchannellist", Json.GSON.toJson(customChannelInfoListIn));
-
-        String answer = (String) controllerTestUtils.withServerFqdn(DUMMY_SERVER_FQDN)
-                .withApiEndpoint(apiUnderTest)
-                .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.PERIPHERAL)
-                .withBearerTokenInHeaders()
-                .withBody(bodyMap)
-                .simulateControllerApiCall();
+        String answer = (String) testUtils.testAddCustomChannelsApiCall(DUMMY_SERVER_FQDN, customChannelInfoListIn);
         List<ChannelInfoJson> peripheralCreatedCustomChInfo =
                 Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
 
@@ -849,7 +622,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
             channelsToTest.add(cloneTestCh);
         }
         for (Channel ch : channelsToTest) {
-            testCustomChannel(ch, testPeripheralOrgId,
+            testUtils.testCustomChannel(ch, testPeripheralOrgId,
                     testIsGpgCheck,
                     testIssInstallerUpdates,
                     testArchLabel,
@@ -859,110 +632,73 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
-    private CustomChannelInfoJson createValidCustomChInfo() {
-        User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
-        return createCustomChannelInfoJson(testPeripheralUser.getOrg().getId(),
-                "customCh", "", "",
-                true, true, "channel-s390", "sha256",
-                createDateUtil(2096, 10, 22), createDateUtil(2025, 4, 30));
-    }
+    @Test
+    public void ensureNotThrowingWhenDataIsValid() throws Exception {
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
 
-    private void checkApiNotThrowing(CustomChannelInfoJson customChInfo) throws Exception {
-        String apiUnderTest = "/hub/addCustomChannels";
-
-        Map<String, String> bodyMap = new HashMap<>();
-        List<CustomChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
-        customChannelInfoListIn.add(customChInfo);
-        bodyMap.put("customchannellist", Json.GSON.toJson(customChannelInfoListIn));
-
-        ControllerTestUtils controllerTestUtils = new ControllerTestUtils();
-        try {
-            controllerTestUtils.withServerFqdn(DUMMY_SERVER_FQDN)
-                    .withApiEndpoint(apiUnderTest)
-                    .withHttpMethod(HttpMethod.post)
-                    .withRole(IssRole.PERIPHERAL)
-                    .withBearerTokenInHeaders()
-                    .withBody(bodyMap)
-                    .simulateControllerApiCall();
-            assertTrue(true);
-        }
-        catch (IllegalArgumentException e) {
-            fail(apiUnderTest + " API not failing when creating peripheral channel ");
-        }
-    }
-
-    private void checkApiThrows(CustomChannelInfoJson customChInfo,
-                                String errorStartsWith) throws Exception {
-        checkApiThrows(customChInfo, null, errorStartsWith);
-    }
-
-    private void checkApiThrows(CustomChannelInfoJson customChInfo,
-                                CustomChannelInfoJson customChInfoAux,
-                                String errorStartsWith) throws Exception {
-        String apiUnderTest = "/hub/addCustomChannels";
-
-        Map<String, String> bodyMap = new HashMap<>();
-        List<CustomChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
-        customChannelInfoListIn.add(customChInfo);
-        if (null != customChInfoAux) {
-            customChannelInfoListIn.add(customChInfoAux);
-        }
-        bodyMap.put("customchannellist", Json.GSON.toJson(customChannelInfoListIn));
-
-        ControllerTestUtils controllerTestUtils = new ControllerTestUtils();
-        try {
-            controllerTestUtils.withServerFqdn(DUMMY_SERVER_FQDN)
-                    .withApiEndpoint(apiUnderTest)
-                    .withHttpMethod(HttpMethod.post)
-                    .withRole(IssRole.PERIPHERAL)
-                    .withBearerTokenInHeaders()
-                    .withBody(bodyMap)
-                    .simulateControllerApiCall();
-            fail(apiUnderTest + " API not failing when creating peripheral channel with " + errorStartsWith);
-        }
-        catch (IllegalArgumentException e) {
-            assertTrue(e.getMessage().startsWith(errorStartsWith),
-                    "Wrong expected start of error message: [" + e.getMessage() + "]");
-        }
+        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, List.of(customChInfo));
     }
 
     @Test
     public void ensureThrowsWhenMissingPeriperhalOrg() throws Exception {
-        CustomChannelInfoJson customChInfo = createValidCustomChInfo();
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setPeripheralOrgId(75842L);
-        checkApiThrows(customChInfo, "No org id");
-    }
 
-    @Test
-    public void ensureThrowsWhenMissingParentChannel() throws Exception {
-        CustomChannelInfoJson customChInfo = createValidCustomChInfo();
-        customChInfo.setParentChannelLabel("missingParentChannelLabel");
-        checkApiThrows(customChInfo, "No parent channel");
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No org id");
     }
 
     @Test
     public void ensureThrowsWhenMissingChannelArch() throws Exception {
-        CustomChannelInfoJson customChInfo = createValidCustomChInfo();
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setChannelArchLabel("channel-dummy-arch");
-        checkApiThrows(customChInfo, "No channel arch");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No channel arch");
     }
 
     @Test
     public void ensureThrowsWhenMissingChecksumType() throws Exception {
-        CustomChannelInfoJson customChInfo = createValidCustomChInfo();
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setChecksumTypeLabel("sha123456");
-        checkApiThrows(customChInfo, "No checksum type");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No checksum type");
+    }
+
+    @Test
+    public void ensureThrowsWhenMissingParentChannel() throws Exception {
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        customChInfo.setParentChannelLabel("missingParentChannelLabel");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No parent channel");
+    }
+
+    @Test
+    public void ensureNotThrowingWhenParentChannelIsCreatedBefore() throws Exception {
+        CustomChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
+
+        CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
+        customChildChInfo.setParentChannelLabel("parentChannel");
+
+        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, Arrays.asList(customParentChInfo, customChildChInfo));
+    }
+
+    @Test
+    public void ensureThrowsWhenParentChannelIsCreatedAfter() throws Exception {
+        CustomChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
+
+        CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
+        customChildChInfo.setParentChannelLabel("parentChannel");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, Arrays.asList(customChildChInfo, customParentChInfo), "No parent channel");
     }
 
     @Test
     public void ensureThrowsWhenMissingOriginalChannelInClonedChannels() throws Exception {
-        CustomChannelInfoJson customChInfo = createValidCustomChInfo();
-        CustomChannelInfoJson clonedCustomChInfo = createValidCustomChInfo();
-        clonedCustomChInfo.setLabel("clonedCustomChInfo");
-        clonedCustomChInfo.setName("name_clonedCustomChInfo");
+        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
 
+        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomChInfo");
         clonedCustomChInfo.setOriginalChannelLabel(customChInfo.getLabel() + "MISSING");
-        checkApiThrows(customChInfo, clonedCustomChInfo, "No original channel");
+
+        testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, Arrays.asList(customChInfo, clonedCustomChInfo), "No original channel");
     }
 
     @Test
@@ -976,12 +712,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         //create vendor channels
         String vendorBaseChannelTemplateName = "SLES11-SP3-Pool for x86_64";
         String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64";
-        Channel vendorBaseCh = utilityCreateVendorBaseChannel(vendorBaseChannelTemplateName,
+        Channel vendorBaseCh = testUtils.createVendorBaseChannel(vendorBaseChannelTemplateName,
                 vendorBaseChannelTemplateLabel);
 
         String vendorChannelTemplateName = "SLES11-SP3-Updates for x86_64";
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
-        Channel vendorCh = utilityCreateVendorChannel(vendorChannelTemplateName,
+        Channel vendorCh = testUtils.createVendorChannel(vendorChannelTemplateName,
                 vendorChannelTemplateLabel, vendorBaseCh);
         vendorCh.setProductName(pn);
         vendorCh.setProduct(cp);
