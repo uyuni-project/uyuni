@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
 import com.redhat.rhn.domain.action.config.ConfigRevisionActionResult;
 import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
@@ -64,6 +65,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
+import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -71,12 +73,14 @@ import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -712,6 +716,14 @@ public class SaltUtils {
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_COCO_ATTESTATION)) {
             handleCocoAttestationResult(action, serverAction, jsonResult);
+        }
+        else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
+            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+                handleInventoryRefresh(action, serverAction, jsonResult);
+            }
+            else {
+                serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
+            }
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
@@ -1885,6 +1897,37 @@ public class SaltUtils {
             long duration = Duration.between(start, Instant.now()).getSeconds();
             LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
         }
+    }
+
+    private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
+        try {
+            Set<String> hostvars = AnsibleManager.parseInventoryAndGetHostnames(
+                    Json.GSON.fromJson(jsonResult, Map.class));
+            InventoryAction inventoryAction = (InventoryAction) action;
+            Optional<InventoryPath> inventory = AnsibleFactory.lookupAnsibleInventoryPath(
+                    serverAction.getServerId(), inventoryAction.getDetails().getInventoryPath());
+
+            if (inventory.isPresent()) {
+                Set<Server> registeredServers = new HashSet<>();
+                hostvars.forEach(serverName -> ServerFactory.findByFqdn(serverName).ifPresent(registeredServers::add));
+
+                inventory.get().setInventoryServers(registeredServers);
+                AnsibleFactory.saveAnsiblePath(inventory.get());
+            }
+            else {
+                String message = String.format("Unable to find Ansible inventory: '%s' for system %s",
+                        inventoryAction.getDetails().getInventoryPath(),
+                        serverAction.getServerId());
+                LOG.warn(message);
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setResultMsg(message);
+            }
+        }
+        catch (JsonSyntaxException e) {
+            LOG.warn("Unable to parse Ansible inventory from json: {}", e.getMessage());
+            return;
+        }
+        serverAction.setResultMsg("Successfully refreshed Ansible managed systems");
     }
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
