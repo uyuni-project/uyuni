@@ -8,3 +8,8 @@ Feature: Create bootstrap repositories
 
   Scenario: Create the bootstrap repositories including custom channels
     When I create the bootstrap repositories including custom channels
+
+@uyuni
+@build_host
+  Scenario: Create the bootstrap repository for Uyuni Build Host
+    When I create the bootstrap repository for "build_host" on the server
