@@ -806,7 +806,7 @@ public class HubManager {
      */
     public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
         ensureValidToken(accessToken);
-        ensureValidVendorChannels(vendorChannelLabelList);
+        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
 
         String mirrorUrl = null;
 
@@ -847,18 +847,6 @@ public class HubManager {
                 .toList();
     }
 
-    private void ensureValidVendorChannels(List<String> vendorChannelLabelList) {
-        for (String vendorChannelLabel : vendorChannelLabelList) {
-            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
-                    .lookupByChannelLabelFirst(vendorChannelLabel);
-
-            if (vendorChannelTemplate.isEmpty()) {
-                throw new InvalidChannelLabelException(vendorChannelLabel,
-                        InvalidChannelLabelException.Reason.IS_MISSING,
-                        "Invalid data: vendor channel label not found", vendorChannelLabel);
-            }
-        }
-    }
 
     /**
      * add custom channels to peripheral

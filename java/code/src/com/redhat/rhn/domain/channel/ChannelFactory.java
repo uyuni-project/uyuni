@@ -26,10 +26,13 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.ChannelTemplate;
+import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
@@ -1626,7 +1629,26 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Ensures that the json info structure is valid, as well as all consequent data
+     * Ensures that the vendor channels json info structure is valid, as well as all consequent data
+     *
+     * @param vendorChannelLabelList list of vendor channel labels to be checked
+     * @throws IllegalArgumentException if something is wrong
+     */
+    public static void ensureValidVendorChannels(List<String> vendorChannelLabelList) {
+        for (String vendorChannelLabel : vendorChannelLabelList) {
+            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
+                    .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
+        }
+    }
+
+    /**
+     * Ensures that the custom channels json info structure is valid, as well as all consequent data
      *
      * @param customChannelInfoJsonList list of custom channel info structures to be checked
      * @throws IllegalArgumentException if something is wrong
@@ -1640,11 +1662,65 @@ public class ChannelFactory extends HibernateFactory {
             }
 
             ensureValidOrgIds(customChannelInfoJsonList);
-            ensureValidArch(customChannelInfoJsonList);
-            ensureValidChecksumType(customChannelInfoJsonList);
-            ensureValidCreatingParentChannel(customChannelInfoJsonList);
-            ensureValidCreatingOriginChannel(customChannelInfoJsonList);
 
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "channel arch",
+                    CustomChannelInfoJson::getChannelArchLabel, ChannelFactory::findArchByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, false, "checksum type",
+                    CustomChannelInfoJson::getChecksumTypeLabel, ChannelFactory::findChecksumTypeByLabel, null);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "parent channel",
+                    CustomChannelInfoJson::getParentChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+
+            ensureExistingOrAboutToCreate(customChannelInfoJsonList, true, "original channel",
+                    CustomChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
+                    CustomChannelInfoJson::getLabel);
+        }
+    }
+
+    @FunctionalInterface
+    private interface SearchLabelMethod {
+        String getSearchLabel(CustomChannelInfoJson arg);
+    }
+    @FunctionalInterface
+    private interface LookupLabelMethod {
+        Object lookupWithLabel(String label);
+    }
+
+    @FunctionalInterface
+    private interface AccumulateFollowingMethod {
+        String accumulateFollowing(CustomChannelInfoJson arg);
+    }
+
+    private static void ensureExistingOrAboutToCreate(List<CustomChannelInfoJson> customChannelInfoJsonList,
+                                                      boolean emptyIsAllowed, String informationTypeString,
+                                                      SearchLabelMethod searchLabelMethod,
+                                                      LookupLabelMethod lookupLabelMethod,
+                                                      AccumulateFollowingMethod accumulateFollowingMethod) {
+        Set<String> accumulationSet = new HashSet<>();
+
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            String searchLabel = searchLabelMethod.getSearchLabel(customChannelInfo);
+            boolean isEmptySearchLabel = StringUtils.isEmpty(searchLabel);
+
+            if (isEmptySearchLabel && (!emptyIsAllowed)) {
+                throw new IllegalArgumentException(String.format("Custom channel searchLabel [%s] must have valid %s",
+                        customChannelInfo.getLabel(), informationTypeString));
+            }
+
+            if ((!isEmptySearchLabel) && (!accumulationSet.contains(searchLabel))) {
+                if (null == lookupLabelMethod.lookupWithLabel(searchLabel)) {
+                    throw new IllegalArgumentException(String.format("No %s named [%s] for custom channel [%s]",
+                            informationTypeString, searchLabel, customChannelInfo.getLabel()));
+                }
+                accumulationSet.add(searchLabel);
+            }
+
+            //when looking to a parent or original channel, this channel can be a parent/original of the following ones
+            if (null != accumulateFollowingMethod) {
+                accumulationSet.add(accumulateFollowingMethod.accumulateFollowing(customChannelInfo));
+            }
         }
     }
 
@@ -1667,88 +1743,6 @@ public class ChannelFactory extends HibernateFactory {
                 }
                 orgSet.add(orgId);
             }
-        }
-    }
-
-    private static void ensureValidArch(List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        Set<String> archSet = new HashSet<>();
-
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            String archLabel = customChannelInfo.getChannelArchLabel();
-
-            if (StringUtils.isEmpty(archLabel)) {
-                throw new IllegalArgumentException("Custom channel info [" + customChannelInfo.getLabel() +
-                        "] must have valid architecture");
-            }
-
-            if (!archSet.contains(archLabel)) {
-                ChannelArch channelArch = ChannelFactory.findArchByLabel(archLabel);
-                if (null == channelArch) {
-                    throw new IllegalArgumentException("No channel arch found [" + archLabel +
-                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
-                }
-                archSet.add(archLabel);
-            }
-        }
-    }
-
-    private static void ensureValidChecksumType(List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        Set<String> checksumTypeSet = new HashSet<>();
-
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            String checksumTypeLabel = customChannelInfo.getChecksumTypeLabel();
-
-            if (StringUtils.isEmpty(checksumTypeLabel)) {
-                throw new IllegalArgumentException("Custom channel info [" + customChannelInfo.getLabel() +
-                        "] must have valid checksum type");
-            }
-
-            if (!checksumTypeSet.contains(checksumTypeLabel)) {
-                ChecksumType checksumType = ChannelFactory.findChecksumTypeByLabel(checksumTypeLabel);
-                if (null == checksumType) {
-                    throw new IllegalArgumentException("No checksum type found [" + checksumTypeLabel +
-                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
-                }
-                checksumTypeSet.add(checksumTypeLabel);
-            }
-        }
-    }
-
-    private static void ensureValidCreatingParentChannel(List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        Set<String> parentChannelSet = new HashSet<>();
-
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            String parentChannelLabel = customChannelInfo.getParentChannelLabel();
-
-            if (StringUtils.isNotEmpty(parentChannelLabel) && (!parentChannelSet.contains(parentChannelLabel))) {
-                Channel parentChannel = ChannelFactory.lookupByLabel(parentChannelLabel);
-                if (null == parentChannel) {
-                    throw new IllegalArgumentException("No parent channel found with label [" + parentChannelLabel +
-                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
-                }
-                parentChannelSet.add(parentChannelLabel);
-            }
-            //this channel could be a parent of the following ones
-            parentChannelSet.add(customChannelInfo.getLabel());
-        }
-    }
-
-    private static void ensureValidCreatingOriginChannel(List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        Set<String> originalChannelSet = new HashSet<>();
-
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            String originalChannelLabel = customChannelInfo.getOriginalChannelLabel();
-
-            if (StringUtils.isNotEmpty(originalChannelLabel) && (!originalChannelSet.contains(originalChannelLabel))) {
-                Channel originalChannel = ChannelFactory.lookupByLabel(originalChannelLabel);
-                if (null == originalChannel) {
-                    throw new IllegalArgumentException("No original channel found [" + originalChannelLabel +
-                            "] for custom channel [" + customChannelInfo.getLabel() + "]");
-                }
-                originalChannelSet.add(originalChannelLabel);
-            }
-            //this channel could be an origin of the following ones
-            originalChannelSet.add(customChannelInfo.getLabel());
         }
     }
 }
