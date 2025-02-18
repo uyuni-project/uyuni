@@ -16,9 +16,16 @@
 package com.redhat.rhn.domain.server.ansible;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
+
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
@@ -27,6 +34,8 @@ import javax.persistence.Transient;
 @Entity
 @DiscriminatorValue("inventory")
 public class InventoryPath extends AnsiblePath {
+
+    private Set<Server> inventoryServers;
 
     /**
      * Standard constructor
@@ -45,5 +54,29 @@ public class InventoryPath extends AnsiblePath {
     @Transient
     public Type getEntityType() {
         return Type.INVENTORY;
+    }
+
+    /**
+     * Gets the inventory servers
+     *
+     * @return the inventory servers
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseAnsibleInventoryServers",
+            joinColumns = @JoinColumn(name = "inventory_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id")
+    )
+    public Set<Server> getInventoryServers() {
+        return inventoryServers;
+    }
+
+    /**
+     * Sets the inventory server
+     *
+     * @param inventoryServersIn the inventory servers
+     */
+    public void setInventoryServers(Set<Server> inventoryServersIn) {
+        inventoryServers = inventoryServersIn;
     }
 }
