@@ -17,7 +17,6 @@ package com.suse.cloud.test;
 
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -139,13 +138,6 @@ public class TestCloudPaygManagerBuilder {
     }
 
     public CloudPaygManager build() {
-        ContentSyncManager syncManager = new ContentSyncManager() {
-            @Override
-            public boolean isSCCCredentials(SCCCredentials c) {
-                return sccCredentials;
-            }
-        };
-
         TaskomaticApi taskoApi = new TaskomaticApi() {
             @Override
             public Map<String, Object> lookupScheduleByBunchAndLabel(User user, String bunchName, String scheduleLabel)
@@ -161,7 +153,7 @@ public class TestCloudPaygManagerBuilder {
             }
         };
 
-        return new CloudPaygManager(taskoApi, syncManager) {
+        return new CloudPaygManager(taskoApi) {
             @Override
             protected String requestUrl(String url) {
                 return billingDataServiceStatus;
@@ -172,6 +164,11 @@ public class TestCloudPaygManagerBuilder {
                 return new PaygComplainceInfo(
                     cloudProvider, payg, packageModified, billingAdapterRunning, billingAdapterHealthy, meteringAccess
                 );
+            }
+
+            @Override
+            protected boolean isSCCCredentials(SCCCredentials c) {
+                return sccCredentials;
             }
         };
     }
