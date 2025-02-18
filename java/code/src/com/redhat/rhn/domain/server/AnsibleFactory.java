@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.PathConverter;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -60,6 +61,23 @@ public class AnsibleFactory extends HibernateFactory {
                 "AND p.minionServer.id = :minionServerId")
                 .setParameter("path", path)
                 .setParameter("minionServerId", minionServerId)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Lookup {@link InventoryPath} associated with a {@link MinionServer} with given path
+     *
+     * @param minionId the id of {@link MinionServer}
+     * @param inventoryPath the path of the inventory
+     * @return optional of {@link InventoryPath}
+     */
+    public static Optional<InventoryPath> lookupAnsibleInventoryPath(long minionId, String inventoryPath) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM InventoryPath p " +
+                        "WHERE p.minionServer.id = :mid " +
+                        "AND p.path = :inventoryPath")
+                .setParameter("mid", minionId)
+                .setParameter("inventoryPath", new PathConverter().convertToEntityAttribute(inventoryPath))
                 .uniqueResultOptional();
     }
 
