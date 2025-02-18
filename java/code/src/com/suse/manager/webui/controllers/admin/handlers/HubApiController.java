@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
 import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.patch;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -36,6 +37,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -50,6 +52,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -92,16 +95,57 @@ public class HubApiController {
         this.hubManager = hubManagerIn;
     }
 
-    /**
-     * initialize all the API Routes for the ISSv3 support
-     */
+    private String pass(Request request, Response response, User satAdmin) {
+        throw new NotImplementedException();
+    }
+        /**
+         * initialize all the API Routes for the ISSv3 support
+         */
     public void initRoutes() {
+        // Hub management
+        get("/manager/api/admin/hub", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
+
+        // Peripherals management
+        get("/manager/api/admin/hub/peripherals/list", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
+        get("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::deletePeripheral));
+
+        // Peripheral channels management
+        get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+
+        // Token management
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
     }
+
+    private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
+        PageControlHelper pageHelper = new PageControlHelper(request);
+        PageControl pc = pageHelper.getPageControl();
+        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
+        List<IssV3PeripheralsResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
+                .map(IssV3PeripheralsResponse::fromIssEntity).toList();
+        TypeToken<PagedDataResultJson<IssV3PeripheralsResponse, Long>> type = new TypeToken<>() { };
+        return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
+    }
+
+    private String deletePeripheral(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        try {
+            hubManager.deregister(satAdmin, peripheralId);
+        }
+        catch (CertificateException eIn) {
+            return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
+        }
+        return success(response);
+    }
+
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
         HubRegisterRequest issRequest;
