@@ -4,11 +4,9 @@ import io
 import os
 import requests
 import zipfile
-import re
-import time
-from uyuni_health_check import config
-from uyuni_health_check.utils import HealthException, console
-from uyuni_health_check.containers.manager import (
+from health_check import config
+from health_check.utils import console
+from health_check.containers.manager import (
     build_image,
     image_exists,
     container_is_running,

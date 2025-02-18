@@ -4,12 +4,12 @@ import click
 import os
 from rich.markdown import Markdown
 
-from uyuni_health_check.grafana.grafana_manager import prepare_grafana
-import uyuni_health_check.utils as utils
-from uyuni_health_check.utils import console, HealthException
-from uyuni_health_check.loki.loki_manager import run_loki
-from uyuni_health_check.exporters import exporter
-from uyuni_health_check.containers.manager import (
+from health_check.grafana.grafana_manager import prepare_grafana
+import health_check.utils as utils
+from health_check.utils import console, HealthException
+from health_check.loki.loki_manager import run_loki
+from health_check.exporters import exporter
+from health_check.containers.manager import (
     create_podman_network,
     clean_containers,
 )
@@ -62,7 +62,7 @@ def cli(ctx: click.Context, supportconfig_path: str, verbose: bool):
 @click.pass_context
 def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     """
-    Start execution of Uyuni Health Check
+    Start execution of Health Check
 
     Build the necessary containers, deploy them, get the metrics and display them
 
@@ -101,7 +101,7 @@ def clean(ctx: click.Context):
 
 
 def main():
-    console.print(Markdown("# Uyuni Health Check"))
+    console.print(Markdown("# Health Check"))
     cli()  # pylint: disable=no-value-for-parameter
 
 

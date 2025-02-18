@@ -1,9 +1,9 @@
 """A module that manages the Grafana container"""
 
 import json
-from uyuni_health_check import config
-from uyuni_health_check.utils import console
-from uyuni_health_check.containers.manager import (
+from health_check import config
+from health_check.utils import console
+from health_check.containers.manager import (
     build_image,
     image_exists,
     container_is_running,

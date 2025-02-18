@@ -1,8 +1,8 @@
 """Module that contains podman-related functionality"""
 
 from typing import List
-from uyuni_health_check import config
-from uyuni_health_check.utils import run_command, console
+from health_check import config
+from health_check.utils import run_command, console
 
 
 def podman(cmd: List[str], verbose=False, raise_exc=True) -> List:
@@ -95,9 +95,9 @@ def clean_containers(verbose=False):
 
 def create_podman_network(verbose=False):
     """
-    Create uyuni-health-check pod where we run the containers
+    Create health-check pod where we run the containers
 
-    :param server: the Uyuni server to create the pod on or localhost
+    :param server: the server to create the pod on or localhost
     """
     console.log("[bold]Creating podman network")
 
