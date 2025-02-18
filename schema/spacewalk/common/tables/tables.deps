@@ -299,3 +299,7 @@ suseAppstreamPackage               :: suseAppstream rhnPackage
 suseAppstreamApi                   :: suseAppstream
 rhnChannelNewestPackage            :: suseAppstream rhnChannel rhnPackageName rhnPackageEVR \
                                       rhnPackageArch
+endpoint                           :: schemas/access
+namespace                          :: schemas/access
+endpointNamespace                  :: schemas/access endpoint namespace
+userNamespace                      :: schemas/access web_contact namespace
