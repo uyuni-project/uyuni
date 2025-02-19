@@ -158,7 +158,7 @@ public class SCCEndpoints {
         json.setEnabled(true);
         json.setName(label);
         json.setDescription("");
-        json.setUrl("https://" + hostname + "/rhn/manager/download/" + label + "/?" + token);
+        json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$s/?%3$s".formatted(hostname, label, token));
         json.setInstallerUpdates(false);
         json.setAutorefresh(false);
         json.setDistroTarget("");
