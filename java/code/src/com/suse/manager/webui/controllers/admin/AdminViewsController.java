@@ -95,7 +95,7 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
-        get("/manager/admin/hub/peripherals/:id",
+        get("/manager/admin/hub/peripheral/:id",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/peripherals/register",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
@@ -172,6 +172,7 @@ public class AdminViewsController {
         List<IssV3ChannelResponse> hubVendorChannels;
         List<IssV3ChannelResponse> hubCustomChannels;
         try {
+            // Can't page this, we need everything.
             peripheralOrgs = HUB_MANAGER.getPeripheralOrgs(user, peripheralId);
             List<ChannelInfoJson> peripheralChannels = HUB_MANAGER.getPeripheralChannels(user, peripheralId);
             // Partition here so we don't go inside the list two times
