@@ -1480,7 +1480,7 @@ public class ChannelFactory extends HibernateFactory {
      *                                   instead of the pristine one
      * @return CustomChannelInfoJson the converted info of the custom channel
      */
-    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, Long peripheralOrgId,
+    public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, long peripheralOrgId,
                                                             Optional<String> forcedOriginalChannelLabel)
             throws TokenBuildingException {
 

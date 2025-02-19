@@ -834,7 +834,6 @@ public class HubManager {
                 // check if base channel is already added
                 if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
                     // if not, add base channel
-                    csm.addChannel(vendorBaseChannelLabel, mirrorUrl);
                     addedVendorChannelLabels.add(vendorBaseChannelLabel);
                 }
             }
@@ -842,10 +841,12 @@ public class HubManager {
             // check if channel is already added
             if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
                 //add target channel
-                csm.addChannel(vendorChannelLabel, mirrorUrl);
                 addedVendorChannelLabels.add(vendorChannelLabel);
             }
         }
+
+        //add target channels
+        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
 
         return ChannelFactory.listAllChannels()
                 .stream()
