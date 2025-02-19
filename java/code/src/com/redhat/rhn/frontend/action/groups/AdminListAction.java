@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -75,6 +78,7 @@ public class AdminListAction extends BaseListAction<UserOverview> {
         if (!UserManager.canAdministerSystemGroup(user, serverGroup)) {
             throw new PermissionCheckFailureException();
         }
+        ensureRoleBasedAccess(user, "systems.groups.admins", Namespace.AccessMode.W);
 
         long updated = 0;
         // remove admins

@@ -14,7 +14,11 @@
  */
 package com.redhat.rhn.frontend.action.systems.duplicate;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.frontend.dto.SystemCompareDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
@@ -51,6 +55,10 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
     private static final int MAX_LIMIT = 3;
 
     private final SystemManager systemManager;
+
+    public DuplicateSystemsCompareAction() {
+        systemManager = GlobalInstanceHolder.SYSTEM_MANAGER;
+    }
 
     /**
      * Constructor
@@ -92,6 +100,7 @@ public class DuplicateSystemsCompareAction extends RhnAction implements Listable
             for (Iterator<String> itr = helper.getSet().iterator(); itr.hasNext();) {
                 String sid = itr.next();
                 if (request.getParameter("btn" + sid) != null) {
+                    ensureRoleBasedAccess(context.getCurrentUser(), "systems.details.delete", Namespace.AccessMode.W);
                     Long id = Long.valueOf(sid);
                     Server server = SystemManager.lookupByIdAndUser(id,
                                                     context.getCurrentUser());
