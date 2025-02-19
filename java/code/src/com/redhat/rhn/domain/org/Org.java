@@ -510,6 +510,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
                             !Config.get().getBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED)) {
                         continue;
                     }
+                    else if (EntitlementManager.ANSIBLE_MANAGED_ENTITLED.equals(ent.getLabel())) {
+                        continue;
+                    }
                     addonEntitlements.add(ent);
                 }
             }
