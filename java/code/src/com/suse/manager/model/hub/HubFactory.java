@@ -13,7 +13,6 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.common.RhnConfiguration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

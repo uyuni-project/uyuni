@@ -12,7 +12,6 @@
 package com.suse.manager.hub;
 
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
-import static com.suse.manager.hub.HubSparkHelper.allowingOnlyPeripheral;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyRegistered;
 import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
 import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
@@ -99,9 +98,9 @@ public class HubController {
         post("/hub/removeReportDbCredentials",
                 asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
         get("/hub/listAllPeripheralOrgs",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralOrgs))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
-                asJson(usingTokenAuthentication(allowingOnlyPeripheral(this::listAllPeripheralChannels))));
+                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralChannels))));
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
