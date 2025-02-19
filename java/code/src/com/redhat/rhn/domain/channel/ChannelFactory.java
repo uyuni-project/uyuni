@@ -40,9 +40,6 @@ import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
 import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
-import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
-import com.suse.manager.webui.utils.token.Token;
-import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.scc.SCCEndpoints;
 import com.suse.scc.model.SCCRepositoryJson;
 
@@ -1481,8 +1478,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return CustomChannelInfoJson the converted info of the custom channel
      */
     public static CustomChannelInfoJson toCustomChannelInfo(Channel customChannel, long peripheralOrgId,
-                                                            Optional<String> forcedOriginalChannelLabel)
-            throws TokenBuildingException {
+                                                            Optional<String> forcedOriginalChannelLabel) {
 
         if (!customChannel.isCustom()) {
             throw new IllegalArgumentException("Channel [" + customChannel.getLabel() + "] is not custom");
@@ -1549,14 +1545,12 @@ public class ChannelFactory extends HibernateFactory {
         String hostname = ConfigDefaults.get().getJavaHostname();
         String customChannelLabel = customChannel.getLabel();
 
-        Token token = new DownloadTokenBuilder(0)
-                .usingServerSecret()
-                .allowingOnlyChannels(Set.of(customChannelLabel))
-                .build();
-
-        SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
-                token.getSerializedForm());
-        customChannelInfo.setRepositoryInfo(repositoryInfo);
+        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(customChannelLabel);
+        if (tokenString.isPresent()) {
+            SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
+                    tokenString.get());
+            customChannelInfo.setRepositoryInfo(repositoryInfo);
+        }
 
         return customChannelInfo;
     }
