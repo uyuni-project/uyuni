@@ -15,10 +15,14 @@
 
 package com.redhat.rhn.frontend.action.token.configuration;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.token.BaseListAction;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -52,6 +56,8 @@ public class ListRemoveChannelsAction extends BaseListAction<ConfigChannelDto> {
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response) {
         RequestContext context = new RequestContext(request);
+        User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.activation_keys.config", Namespace.AccessMode.W);
         ActivationKey key = context.lookupAndBindActivationKey();
         ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
         Set<String> set = helper.getSet();
@@ -59,7 +65,7 @@ public class ListRemoveChannelsAction extends BaseListAction<ConfigChannelDto> {
         for (String id : set) {
             Long ccid = Long.valueOf(id);
             ConfigChannel cc = ConfigurationFactory.lookupConfigChannelById(ccid);
-            proc.remove(key.getConfigChannelsFor(context.getCurrentUser()), cc);
+            proc.remove(key.getConfigChannelsFor(user), cc);
         }
         getStrutsDelegate().saveMessage(
                     "config_channels_to_unsubscribe.unsubscribe.success",

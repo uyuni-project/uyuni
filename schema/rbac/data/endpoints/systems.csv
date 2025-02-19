@@ -1,54 +1,56 @@
 class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
+# Many of the struts handlers handle table/list selection besides actual 'Modify'
+# operations on the same POST route. These POST routes are mapped as 'View' in the DB.
+# 'Modify' access is enforced for specific modify operations in the controller methods.
+# TODO: grep 'ensureAccess' in java to find the additional namespaces to be inserted.
+
 # Systems list
-# TODO: List pages do a POST to SSM, ignore the 403 (or not?)
 ,/manager/systems/list/all,GET,W,t,systems.list,R
 ,/manager/systems/list/virtual,GET,W,t,systems.list,R
 ,/manager/api/systems/list/all,GET,W,t,systems.list,R
 ,/manager/api/systems/list/virtual,GET,W,t,systems.list,R
 ,/systems/BootstrapSystemList.do,GET,W,t,systems.list,R
-# TODO: 'Delete selected' is also handled by the same POST pathts
+
 ,/systems/DuplicateIPList.do,GET,W,t,systems.list,R
-,/systems/DuplicateIPList.do,POST,W,t,systems.list,W
+,/systems/DuplicateIPList.do,POST,W,t,systems.list,R
 ,/systems/DuplicateIPv6List.do,GET,W,t,systems.list,R
-,/systems/DuplicateIPv6List.do,POST,W,t,systems.list,W
+,/systems/DuplicateIPv6List.do,POST,W,t,systems.list,R
 ,/systems/DuplicateHostName.do,GET,W,t,systems.list,R
-,/systems/DuplicateHostName.do,POST,W,t,systems.list,W
+,/systems/DuplicateHostName.do,POST,W,t,systems.list,R
 ,/systems/DuplicateMacAddress.do,GET,W,t,systems.list,R
-,/systems/DuplicateMacAddress.do,POST,W,t,systems.list,W
+,/systems/DuplicateMacAddress.do,POST,W,t,systems.list,R
+,/systems/DuplicateSystemsCompare.do,GET,W,t,systems.list,R
+,/systems/DuplicateSystemsCompare.do,POST,W,t,systems.list,R
+# Delete duplicate systems uses 'systems.details.delete'
+
 ,/systems/SystemCurrency.do,GET,W,t,systems.list,R
 ,/systems/SystemCurrency.do,POST,W,t,systems.list,R
-# TODO: 'Add/remove system type' is also handled by the same POST path
 ,/systems/SystemEntitlements.do,GET,W,t,systems.list,R
-,/systems/SystemEntitlementsSubmit.do,POST,W,t,systems.list,W
+,/systems/SystemEntitlementsSubmit.do,POST,W,t,systems.list,R
 ,/manager/systems/csv/all,GET,W,t,systems.list,R
 ,/manager/systems/csv/virtualSystems,GET,W,t,systems.list,R
-# TODO: POST path also handles SSM
-,/systems/SystemGroupList.do,GET,W,t,systems.groups.list,R
-,/systems/SystemGroupList.do,POST,W,t,systems.groups.list,R
 
 # System groups
+
+,/systems/SystemGroupList.do,GET,W,t,systems.groups.list,R
+,/systems/SystemGroupList.do,POST,W,t,systems.groups.list,R
+,/systems/WorkWithGroup.do,GET,W,t,systems.groups.details,R
 ,/groups/GroupDetail.do,GET,W,t,systems.groups.details,R
 ,/groups/EditGroup.do,GET,W,t,systems.groups.details,W
 ,/groups/EditGroup.do,POST,W,t,systems.groups.details,W
 ,/groups/Delete.do,GET,W,t,systems.groups.details.delete,W
 ,/groups/Delete.do,POST,W,t,systems.groups.details.delete,W
-# TODO: POST path also handles SSM and Remove
 ,/groups/ListRemoveSystems.do,GET,W,t,systems.groups.systems,R
-,/groups/ListRemoveSystems.do,POST,W,t,systems.groups.systems,W
-# TODO: POST path also handles SSM and Add
+,/groups/ListRemoveSystems.do,POST,W,t,systems.groups.systems,R
 ,/groups/AddSystems.do,GET,W,t,systems.groups.target_systems,W
 ,/groups/AddSystems.do,POST,W,t,systems.groups.target_systems,W
-# TODO: Move to system.details.software.errata ..etc
 ,/groups/ListErrata.do,GET,W,t,systems.groups.patches,R
 ,/groups/ListErrata.do,POST,W,t,systems.groups.patches,R
-# TODO: POST path also handles SSM and patch apply
-# TODO: Move to system.details.software.errata ..etc
 ,/groups/SystemsAffected.do,GET,W,t,systems.groups.patches,R
 ,/groups/SystemsAffected.do,POST,W,t,systems.groups.patches,R
-# TODO: POST path also handles Update
 ,/groups/AdminList.do,GET,W,t,systems.groups.admins,R
-,/groups/AdminList.do,POST,W,t,systems.groups.admins,W
+,/groups/AdminList.do,POST,W,t,systems.groups.admins,R
 
 # System details
 # TODO: systems/details/Connection.do
@@ -85,6 +87,10 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/SystemHardware.do,POST,W,t,systems.details.hardware,W
 ,/systems/details/SystemMigrate.do,GET,W,t,systems.details.transfer,W
 ,/systems/details/SystemMigrate.do,POST,W,t,systems.details.transfer,W
+
+# SSM add/remove (unauthorized)
+,/systems/details/RemoveFromSSM.do,GET,W,f,systems.details.overview,R
+,/systems/details/AddToSSM.do,GET,W,f,systems.details.overview,R
 
 # System software
 ,/systems/details/packages/Packages.do,GET,W,t,systems.software.packages,R
@@ -127,11 +133,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/SPMigration.do,GET,W,t,systems.software.migration,W
 ,/systems/details/SPMigration.do,POST,W,t,systems.software.migration,W
 
-# TODO: Add/Remove to/from SSM endpoints
-
-# TODO: SSM (maybe always allow?)
-# ,/systems/WorkWithGroup.do,GET,W,t,?,?
-
 # TODO: CSV download should be split and grouped together with the list namespaces(OR always allow CSV via list page)
 # ,/CSVDownloadAction.do,GET,W,t,?,?
 
@@ -140,7 +141,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/configuration/ViewCentralPaths.do,GET,W,t,systems.config.files,R
 ,/systems/details/configuration/ViewCentralPaths.do,POST,W,t,systems.config.files,R
 ,/systems/details/configuration/DeployFile.do,GET,W,t,systems.config.files,W
-# TODO: Select All POST
 ,/systems/details/configuration/DeployFileSubmit.do,POST,W,t,systems.config.files,W
 ,/systems/details/configuration/DeployFileConfirm.do,GET,W,t,systems.config.files,W
 ,/systems/details/configuration/DeployFileConfirmSubmit.do,POST,W,t,systems.config.files,W
@@ -149,16 +149,13 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/configuration/DiffFileConfirm.do,GET,W,t,systems.config.files,W
 ,/systems/details/configuration/DiffFileConfirmSubmit.do,POST,W,t,systems.config.files,W
 ,/systems/details/configuration/ConfigChannelList.do,GET,W,t,systems.config.channels,R
-# TODO: Select All POST
-,/systems/details/configuration/ConfigChannelListUnsubscribeSubmit.do,POST,W,t,systems.config.channels,W
+,/systems/details/configuration/ConfigChannelListUnsubscribeSubmit.do,POST,W,t,systems.config.channels,R
 ,/systems/details/configuration/SubscriptionsSetup.do,GET,W,t,systems.config.channels,W
-# TODO: Select All POST
 ,/systems/details/configuration/SubscriptionsSubmit.do,POST,W,t,systems.config.channels,W
 ,/systems/details/configuration/RankChannels.do,GET,W,t,systems.config.channels,R
 ,/systems/details/configuration/RankChannels.do,POST,W,t,systems.config.channels,W
 
 # System groups
-# TODO: Select All POST
 ,/systems/details/groups/ListRemove.do,GET,W,t,systems.groups.list,R
 ,/systems/details/groups/ListRemove.do,POST,W,t,systems.groups.list,R
 ,/systems/details/groups/Add.do,GET,W,t,systems.groups.join,W
@@ -201,7 +198,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/api/recurringactions/:id/delete,DELETE,W,t,systems.recurring,W
 
 # System Events
-# TODO: Pagination POST
 ,/systems/details/history/Pending.do,GET,W,t,systems.events,R
 ,/systems/details/history/Pending.do,POST,W,t,systems.events,W
 ,/systems/details/history/History.do,GET,W,t,systems.events,R
@@ -223,9 +219,8 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/Search.do,POST,W,t,systems.search,R
 
 # Activation keys
-# TODO: Pagination POST
 ,/activationkeys/List.do,GET,W,t,systems.activation_keys.list,R
-,/activationkeys/List.do,POST,W,t,systems.activation_keys.list,W
+,/activationkeys/List.do,POST,W,t,systems.activation_keys.list,R
 ,/activationkeys/Create.do,GET,W,t,systems.activation_keys.details,W
 ,/activationkeys/Create.do,POST,W,t,systems.activation_keys.details,W
 ,/activationkeys/Edit.do,GET,W,t,systems.activation_keys.details,R
@@ -236,25 +231,18 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/activationkeys/Edit.do,POST,W,t,systems.activation_keys.details,W
 ,/activationkeys/packages/Packages.do,GET,W,t,systems.activation_keys.packages,R
 ,/activationkeys/packages/Packages.do,POST,W,t,systems.activation_keys.packages,W
-# TODO: Pagination POST
 ,/activationkeys/configuration/List.do,GET,W,t,systems.activation_keys.config,R
-,/activationkeys/configuration/List.do,POST,W,t,systems.activation_keys.config,W
-# TODO: Pagination POST
+,/activationkeys/configuration/List.do,POST,W,t,systems.activation_keys.config,R
 ,/activationkeys/configuration/Subscribe.do,GET,W,t,systems.activation_keys.config,W
 ,/activationkeys/configuration/Subscribe.do,POST,W,t,systems.activation_keys.config,W
 ,/activationkeys/configuration/Rank.do,GET,W,t,systems.activation_keys.config,W
 ,/activationkeys/configuration/Rank.do,POST,W,t,systems.activation_keys.config,W
-
-# TODO: Pagination POST
-,/activationkeys/groups/List.do,GET,W,t,systems.activation_keys.groups,W
-,/activationkeys/groups/List.do,POST,W,t,systems.activation_keys.groups,W
-# TODO: Pagination POST
+,/activationkeys/groups/List.do,GET,W,t,systems.activation_keys.groups,R
+,/activationkeys/groups/List.do,POST,W,t,systems.activation_keys.groups,R
 ,/activationkeys/groups/Add.do,GET,W,t,systems.activation_keys.groups,W
 ,/activationkeys/groups/Add.do,POST,W,t,systems.activation_keys.groups,W
-
-# TODO: Onboard a client with AK and test this page
 ,/activationkeys/systems/List.do,GET,W,t,systems.activation_keys.details,R
-
+,/activationkeys/systems/List.do,POST,W,t,systems.activation_keys.details,R
 ,/activationkeys/Clone.do,GET,W,t,systems.activation_keys.details,W
 ,/activationkeys/Clone.do,POST,W,t,systems.activation_keys.details,W
 ,/activationkeys/Delete.do,GET,W,t,systems.activation_keys.delete,W
@@ -264,7 +252,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/profiles/List.do,GET,W,t,systems.profiles,R
 ,/profiles/Details.do,GET,W,t,systems.profiles,R
 ,/profiles/Details.do,POST,W,t,systems.profiles,W
-# TODO: Pagination POST
 ,/profiles/PackageList.do,GET,W,t,systems.profiles,R
 ,/profiles/PackageList.do,POST,W,t,systems.profiles,R
 ,/profiles/Delete.do,GET,W,t,systems.profiles,W
@@ -272,7 +259,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
 # Custom keys
 # TODO: Download CSV action
-# TODO: Post pagination
 ,/systems/customdata/CustomDataList.do,GET,W,t,systems.custom_data,R
 ,/systems/customdata/CustomDataList.do,POST,W,t,systems.custom_data,R
 ,/systems/customdata/CreateCustomKey.do,GET,W,t,systems.custom_data,W

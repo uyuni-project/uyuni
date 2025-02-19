@@ -14,6 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.groups;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -68,6 +71,8 @@ public final class ErrataSystemsAffectedAction extends BaseListAction<SystemOver
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response) {
 
+        RequestContext context = new RequestContext(request);
+        ensureRoleBasedAccess(context.getCurrentUser(), "systems.groups.patches", Namespace.AccessMode.W);
         RhnSet set = RhnSetDecl.SYSTEMS_AFFECTED.get(
             new RequestContext(request).getCurrentUser());
 

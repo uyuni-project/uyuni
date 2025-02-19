@@ -20,3 +20,7 @@ com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.productName,/manager/api/api/produ
 com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler.hasMaster,/manager/api/sync/master/hasMaster,GET,A,f,,
 ,/ajax/item-selector,POST,W,f,,
 ,/manager/frontend-log,POST,W,f,,
+
+# SSM
+,/manager/api/sets/:label,POST,W,f,,
+,/manager/api/sets/:label/clear,POST,W,f,,
