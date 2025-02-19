@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems.entitlements;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.validator.ValidatorResult;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetElement;
@@ -32,6 +33,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.user.UserManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -154,6 +156,9 @@ public class SystemEntitlementsSubmitAction extends
             boolean add) {
         log.debug("operateAddOnEntitlements");
 
+        User user = new RequestContext(request).getCurrentUser();
+        UserManager.ensureRoleBasedAccess(user, "systems.list", Namespace.AccessMode.W);
+
         RhnSet set = updateSet(request);
 
         //if they chose no probe suites, return to the same page with a message
@@ -162,8 +167,6 @@ public class SystemEntitlementsSubmitAction extends
         }
 
         Map<String, Object> params = makeParamMap(formIn, request);
-        RequestContext rctx = new RequestContext(request);
-        User user = rctx.getCurrentUser();
 
         int successCount = 0;
         int failureCount = 0;
