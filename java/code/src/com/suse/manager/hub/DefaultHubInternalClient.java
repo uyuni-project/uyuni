@@ -36,6 +36,7 @@ import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Type;
 import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.List;
@@ -82,6 +83,7 @@ public class DefaultHubInternalClient implements HubInternalClient {
 
     @Override
     public ManagerInfoJson getManagerInfo() throws IOException {
+        // For non-generic types, it's fine to use ManagerInfoJson.class
         return invokeGet("hub", "managerinfo", ManagerInfoJson.class);
     }
 
@@ -102,36 +104,42 @@ public class DefaultHubInternalClient implements HubInternalClient {
 
     @Override
     public List<OrgInfoJson> getAllPeripheralOrgs() throws IOException {
-        return invokeGet("hub", "listAllPeripheralOrgs", List.class);
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<List<OrgInfoJson>>() { }.getType();
+        return invokeGet("hub", "listAllPeripheralOrgs", type);
     }
 
     @Override
     public List<ChannelInfoJson> getAllPeripheralChannels() throws IOException {
-        return invokeGet("hub", "listAllPeripheralChannels", List.class);
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<List<ChannelInfoJson>>() { }.getType();
+        return invokeGet("hub", "listAllPeripheralChannels", type);
     }
 
-    private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)
+    private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
             throws IOException {
-        return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseClass);
+        return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseType);
     }
 
     private <T> void invokePost(String namespace, String apiMethod, T requestObject) throws IOException {
         invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, Void.class);
     }
 
-    private <T, R> R invokePost(String namespace, String apiMethod, T requestObject, Class<R> responseClass)
-        throws IOException {
-        return invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, responseClass);
+    private <T, R> R invokePost(String namespace, String apiMethod, T requestObject, Type responseType)
+            throws IOException {
+        return invoke(HttpPost.METHOD_NAME, namespace, apiMethod, requestObject, responseType);
     }
 
-    private <T, R> R invoke(String httpMethod, String namespace, String apiMethod, T requestObject,
-                            Class<R> responseClass) throws IOException {
+    private <T, R> R invoke(
+            String httpMethod, String namespace, String apiMethod, T requestObject, Type responseType
+    ) throws IOException {
         RequestBuilder builder = RequestBuilder.create(httpMethod)
-            .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
-            .setHeader("Authorization", "Bearer " + accessToken);
+                .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
+                .setHeader("Authorization", "Bearer " + accessToken);
 
         // Add the request object, if specified
         if (requestObject != null) {
+            // You can also use GSON.toJson(requestObject) here unless you have a specific need for a TypeToken.
             String body = GSON.toJson(requestObject, new TypeToken<>() { }.getType());
             builder.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
         }
@@ -145,15 +153,15 @@ public class DefaultHubInternalClient implements HubInternalClient {
         }
 
         // Parse the response object, if specified
-        if (!Void.class.equals(responseClass)) {
+        if (!Void.class.equals(responseType)) {
             try (Reader responseReader = new InputStreamReader(response.getEntity().getContent())) {
-                return Objects.requireNonNull(GSON.fromJson(responseReader, responseClass));
+                return Objects.requireNonNull(GSON.fromJson(responseReader, responseType));
             }
             catch (Exception ex) {
                 throw new InvalidResponseException("Unable to parse the JSON response", ex);
             }
         }
-
         return null;
     }
+
 }
