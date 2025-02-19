@@ -4,7 +4,6 @@ import * as React from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Column } from "components/table/Column";
-import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
@@ -12,29 +11,18 @@ import { Utils } from "utils/functions";
 import { PeripheralListData } from "../iss_data_props";
 
 const IssPeripheralsList = () => {
-  const searchData = (row, criteria) => {
-    const keysToSearch = ["fqdn"];
-    if (criteria) {
-      const needle = criteria.toLocaleLowerCase();
-      return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
-    }
-    return true;
-  };
-
   let componentContent = (
     <Table
-      data="/rhn/manager/api/admin/hub/peripherals"
+      data="/rhn/manager/api/admin/hub/peripherals/list"
       identifier={(row: PeripheralListData) => row.id}
-      selectable={false}
       initialSortColumnKey="fqdn"
-      searchField={<SearchField filter={searchData} placeholder={t("Filter by FQDN")} />}
     >
       <Column
         columnKey="fqdn"
         comparator={Utils.sortByText}
         header={t("Peripherals FQDN")}
         cell={(row) => (
-          <a className="js-spa" href={`/rhn/manager/admin/hub/peripherals/${row.id}`}>
+          <a className="js-spa" href={`/rhn/manager/admin/hub/peripheral/${row.id}`}>
             {row.fqdn}
           </a>
         )}
@@ -57,15 +45,17 @@ const IssPeripheralsList = () => {
         cell={(row: PeripheralListData) => {
           let rootCABlob = new Blob([row.rootCA], { type: "text/plain" });
           let dlUrl = URL.createObjectURL(rootCABlob);
-          <a
-            href={dlUrl}
-            download={row.fqdn + "_CA"}
-            onClick={() => {
-              URL.revokeObjectURL(dlUrl);
-            }}
-          >
-            <i className="bi bi-download" />
-          </a>;
+          return (
+            <a
+              href={dlUrl}
+              download={row.fqdn + "_CA.pem"}
+              onClick={() => {
+                URL.revokeObjectURL(dlUrl);
+              }}
+            >
+              <i className="fa fa-download" />
+            </a>
+          );
         }}
       />
     </Table>

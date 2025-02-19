@@ -98,16 +98,15 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub management
+        // Hub managementF
         get("/manager/api/admin/hub", withProductAdmin(this::pass));
         get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
-        patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
 
         // Peripherals management
-        get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
+        get("/manager/api/admin/hub/peripherals/list", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
-        get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
-        patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
 
         // Token management
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));

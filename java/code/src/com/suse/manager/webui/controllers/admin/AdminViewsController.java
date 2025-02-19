@@ -36,6 +36,7 @@ import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -183,7 +184,7 @@ public class AdminViewsController {
             hubVendorChannels = HUB_MANAGER.getHubVendorChannels(user);
             hubCustomChannels = HUB_MANAGER.getHubCustomChannels(user);
         }
-        catch (CertificateException | IOException eIn) {
+        catch (CertificateException | IOException | TokenParsingException eIn) {
             throw new RuntimeException(eIn);
         }
         // Utility filter lambdas.

@@ -882,12 +882,13 @@ public class HubManager {
         return hubFactory.lookupIssHub();
     }
 
-    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId) throws CertificateException, IOException {
+    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId) throws CertificateException, IOException, TokenParsingException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
         var internalApi = clientFactory.newInternalClient(
                 issPeripheral.getFqdn(),
-                hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn()).getToken(),
+                accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
         return internalApi.getAllPeripheralOrgs();
