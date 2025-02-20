@@ -40,7 +40,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
               <p>
                 {t("Learn more about {productName}:", {
-                  productName: product.key,
+                  productName: product.productName,
                 })}
                 <a href={product.url} className={styles.learnMore} target="_blank" rel="noopener noreferrer">
                   {t("View website")}

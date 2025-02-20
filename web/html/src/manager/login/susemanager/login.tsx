@@ -53,7 +53,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
                   {str}
                 </a>
               ),
-              productName: product.key,
+              productName: product.productName,
             })}
           </p>
         </div>

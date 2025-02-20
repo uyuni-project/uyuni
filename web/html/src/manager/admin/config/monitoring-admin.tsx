@@ -331,6 +331,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       </React.Fragment>
     );
   }
+  const productName = props.isUyuni ? "SUSE Multi-Linux Manager" : "Uyuni";
   return (
     <div className="responsive-wizard">
       {messages && <Messages items={messages} />}
@@ -338,12 +339,14 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
         <div className="spacewalk-toolbar"></div>
         <h1>
           <i className="fa fa-info-circle"></i>
-          {t("SUSE Manager Configuration - Monitoring")}
+          {t("{productName} Configuration - Monitoring", {
+            productName,
+          })}
           <HelpLink url={`${props.isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
         </h1>
       </div>
       <div className="page-summary">
-        <p>{t("Setup your SUSE Manager server monitoring.")}</p>
+        <p>{t("Set up monitoring for your server.")}</p>
       </div>
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">

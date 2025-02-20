@@ -524,7 +524,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
-          title={t("All instances are consistent with SUSE Manager")}
+          title={t("All instances are consistent with SUSE Multi-Linux Manager")}
         />
       );
     } else if (row.runtimeStatus === 2) {

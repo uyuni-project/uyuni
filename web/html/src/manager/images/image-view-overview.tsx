@@ -242,9 +242,9 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
         <span>
           <i
             className="fa fa-check-circle fa-1-5x text-success"
-            title={t("All instances are consistent with SUSE Manager")}
+            title={t("All instances are consistent with SUSE Multi-Linux Manager")}
           />
-          <a href={"#/runtime/" + data.id}>{t("All instances are consistent with SUSE Manager")}</a>
+          <a href={"#/runtime/" + data.id}>{t("All instances are consistent with SUSE Multi-Linux Manager")}</a>
         </span>
       );
     } else if (data.runtimeStatus === 2) {

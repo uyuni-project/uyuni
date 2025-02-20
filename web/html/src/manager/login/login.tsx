@@ -11,26 +11,26 @@ type Theme = "uyuni" | "susemanager-light" | "susemanager-dark";
 
 const products = {
   suma: {
-    key: "SUSE Manager",
+    productName: "SUSE Multi-Linux Manager",
     headerTitle: (
       <React.Fragment>
         <span>SUSE</span>
         <i className="fa fa-registered" />
-        <span>Manager</span>
+        <span>Multi-Linux Manager</span>
       </React.Fragment>
     ),
     bodyTitle: (
       <span>
         SUSE
         <br />
-        {" Manager"}
+        {" Multi-Linux Manager"}
       </span>
     ),
-    url: "http://www.suse.com/products/suse-manager/",
-    title: "SUSE Manager login page",
+    url: "https://www.suse.com/products/multi-linux-manager/",
+    title: "SUSE Multi-Linux Manager login page",
   },
   uyuni: {
-    key: "Uyuni",
+    productName: "Uyuni",
     headerTitle: "Uyuni",
     bodyTitle: "Uyuni",
     url: "http://www.uyuni-project.org/",

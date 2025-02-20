@@ -63,7 +63,10 @@ class PodInfo extends React.Component<PodInfoProps> {
 
     if (statusId === 1) {
       icon = (
-        <i className="fa fa-check-circle fa-1-5x text-success" title={t("Instance is consistent with SUSE Manager")} />
+        <i
+          className="fa fa-check-circle fa-1-5x text-success"
+          title={t("Instance is consistent with SUSE Multi-Linux Manager")}
+        />
       );
     } else if (statusId === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;
@@ -100,7 +103,10 @@ class ClusterInfo extends React.Component<ClusterInfoProps> {
 
     if (statusId === 1) {
       icon = (
-        <i className="fa fa-check-circle fa-1-5x text-success" title={t("Cluster is consistent with SUSE Manager")} />
+        <i
+          className="fa fa-check-circle fa-1-5x text-success"
+          title={t("Cluster is consistent with SUSE Multi-Linux Manager")}
+        />
       );
     } else if (statusId === 2) {
       icon = <i className="fa fa-question-circle fa-1-5x" title={t("No information")} />;

@@ -129,7 +129,7 @@ class ProductsPageWrapper extends React.Component {
           currentObject.setState({
             errors: MessagesUtils.warning(
               t(
-                "No SUSE Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
+                "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
               )
             ),
           });
