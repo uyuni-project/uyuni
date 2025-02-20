@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024 SUSE LLC
+# Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature relies on having properly configured
@@ -35,11 +35,6 @@ Feature: Build OS images
     And I enter the image filename for "pxeboot_minion" relative to profiles as "path"
     And I click on "create-btn"
     And I wait until no Salt job is running on "build_host"
-
-  # WORKAROUND
-  # Remove as soon as the issue is fixed
-  Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
-    When I let Kiwi build from external repositories
 
   Scenario: Login as Kiwi image administrator and build an image
     Given I am authorized for the "Images" section
