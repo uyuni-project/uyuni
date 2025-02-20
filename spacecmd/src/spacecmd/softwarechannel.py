@@ -31,18 +31,12 @@
 # pylint: disable=C0103
 
 import gettext
-try:
-    from urllib import ContentTooShortError
-except ImportError:
-    from urllib.error import ContentTooShortError
-try:
-    from urllib import urlretrieve
-except ImportError:
-    from urllib.request import urlretrieve
-try:
-    from xmlrpc import client as xmlrpclib
-except ImportError:
-    import xmlrpclib
+
+from urllib.error import ContentTooShortError
+from urllib.request import urlretrieve
+
+from xmlrpc import client as xmlrpclib
+
 from spacecmd.i18n import _N
 from spacecmd.utils import *
 
