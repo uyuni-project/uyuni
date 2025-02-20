@@ -114,8 +114,8 @@ public final class HubSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithHubToken allowingOnlyHub(RouteWithHubToken route) {
-        return allowingOnly(List.of(IssRole.HUB), route);
+    public static RouteWithHubToken onlyFromHub(RouteWithHubToken route) {
+        return onlyFrom(List.of(IssRole.HUB), route);
     }
 
     /**
@@ -123,8 +123,8 @@ public final class HubSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithHubToken allowingOnlyPeripheral(RouteWithHubToken route) {
-        return allowingOnly(List.of(IssRole.PERIPHERAL), route);
+    public static RouteWithHubToken onlyFromPeripheral(RouteWithHubToken route) {
+        return onlyFrom(List.of(IssRole.PERIPHERAL), route);
     }
 
     /**
@@ -132,8 +132,8 @@ public final class HubSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithHubToken allowingOnlyRegistered(RouteWithHubToken route) {
-        return allowingOnly(List.of(IssRole.HUB, IssRole.PERIPHERAL), route);
+    public static RouteWithHubToken onlyFromRegistered(RouteWithHubToken route) {
+        return onlyFrom(List.of(IssRole.HUB, IssRole.PERIPHERAL), route);
     }
 
     /**
@@ -141,11 +141,11 @@ public final class HubSparkHelper {
      * @param route the route
      * @return the route
      */
-    public static RouteWithHubToken allowingOnlyUnregistered(RouteWithHubToken route) {
-        return allowingOnly(List.of(), route);
+    public static RouteWithHubToken onlyFromUnregistered(RouteWithHubToken route) {
+        return onlyFrom(List.of(), route);
     }
 
-    private static RouteWithHubToken allowingOnly(List<IssRole> allowedRoles, RouteWithHubToken route) {
+    private static RouteWithHubToken onlyFrom(List<IssRole> allowedRoles, RouteWithHubToken route) {
         return (request, response, issAccessToken) -> {
             String fqdn = issAccessToken.getServerFqdn();
             Optional<IssHub> issHub = HUB_FACTORY.lookupIssHubByFqdn(fqdn);
