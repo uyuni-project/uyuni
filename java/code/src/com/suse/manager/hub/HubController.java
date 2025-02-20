@@ -11,9 +11,9 @@
 
 package com.suse.manager.hub;
 
-import static com.suse.manager.hub.HubSparkHelper.allowingOnlyHub;
-import static com.suse.manager.hub.HubSparkHelper.allowingOnlyRegistered;
-import static com.suse.manager.hub.HubSparkHelper.allowingOnlyUnregistered;
+import static com.suse.manager.hub.HubSparkHelper.onlyFromHub;
+import static com.suse.manager.hub.HubSparkHelper.onlyFromRegistered;
+import static com.suse.manager.hub.HubSparkHelper.onlyFromUnregistered;
 import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
@@ -90,26 +90,26 @@ public class HubController {
      */
     public void initRoutes() {
         post("/hub/ping", asJson(usingTokenAuthentication(this::ping)));
-        post("/hub/sync/deregister", asJson(usingTokenAuthentication(allowingOnlyRegistered(this::deregister))));
-        post("/hub/sync/registerHub", asJson(usingTokenAuthentication(allowingOnlyUnregistered(this::registerHub))));
-        post("/hub/sync/replaceTokens", asJson(usingTokenAuthentication(allowingOnlyHub(this::replaceTokens))));
-        post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(allowingOnlyHub(this::storeCredentials))));
-        post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(allowingOnlyHub(this::setHubDetails))));
-        get("/hub/managerinfo", asJson(usingTokenAuthentication(allowingOnlyHub(this::getManagerInfo))));
+        post("/hub/sync/deregister", asJson(usingTokenAuthentication(onlyFromRegistered(this::deregister))));
+        post("/hub/sync/registerHub", asJson(usingTokenAuthentication(onlyFromUnregistered(this::registerHub))));
+        post("/hub/sync/replaceTokens", asJson(usingTokenAuthentication(onlyFromHub(this::replaceTokens))));
+        post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(onlyFromHub(this::storeCredentials))));
+        post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(onlyFromHub(this::setHubDetails))));
+        get("/hub/managerinfo", asJson(usingTokenAuthentication(onlyFromHub(this::getManagerInfo))));
         post("/hub/storeReportDbCredentials",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::setReportDbCredentials))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::setReportDbCredentials))));
         post("/hub/removeReportDbCredentials",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::removeReportDbCredentials))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::removeReportDbCredentials))));
         get("/hub/listAllPeripheralOrgs",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralOrgs))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::listAllPeripheralChannels))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralChannels))));
         post("/hub/addVendorChannels",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::addVendorChannels))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::addVendorChannels))));
         post("/hub/addCustomChannels",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::addCustomChannels))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::addCustomChannels))));
         post("/hub/modifyCustomChannels",
-                asJson(usingTokenAuthentication(allowingOnlyHub(this::modifyCustomChannels))));
+                asJson(usingTokenAuthentication(onlyFromHub(this::modifyCustomChannels))));
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
