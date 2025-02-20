@@ -16,6 +16,7 @@ package com.redhat.rhn.domain.state;
 
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -27,16 +28,54 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * A generic state revision to be subclassed for instance as {@link ServerStateRevision}.
  */
+@Entity
+@Table(name = "suseStateRevision")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class StateRevision {
 
-    private long id;
-    private Date created;
-    private User creator;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "state_revision_seq")
+    @SequenceGenerator(name = "state_revision_seq", sequenceName = "suse_state_revision_id_seq", allocationSize = 1)
+    private Long id;
+
+    @OneToMany(mappedBy = "stateRevision", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<PackageState> packageStates = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "suseStateRevisionConfigChannel",
+            joinColumns = @JoinColumn(name = "state_revision_id"),
+            inverseJoinColumns = @JoinColumn(name = "config_channel_id")
+    )
+    @OrderColumn(name = "position")
     private List<ConfigChannel> configChannels = new ArrayList<>();
+
+    @Column(name = "created", insertable = false, updatable = false)
+    private Date created;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id")
+    private UserImpl creator;
 
     /**
      * @return the id
@@ -69,7 +108,7 @@ public class StateRevision {
     /**
      * @return the creator
      */
-    public User getCreator() {
+    public UserImpl getCreator() {
         return creator;
     }
 
@@ -77,7 +116,12 @@ public class StateRevision {
      * @param creatorIn the creator to set
      */
     public void setCreator(User creatorIn) {
-        this.creator = creatorIn;
+        if (creatorIn instanceof UserImpl userImpl) {
+            this.creator = userImpl;
+        }
+        else {
+            this.creator = null;
+        }
     }
 
     /**

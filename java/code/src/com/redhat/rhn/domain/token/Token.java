@@ -27,38 +27,121 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Type;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Token
  */
+@Entity
+@Table(name = "rhnRegToken")
 public class Token implements Identifiable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "token_seq")
+    @SequenceGenerator(name = "token_seq", sequenceName = "RHN_REG_TOKEN_SEQ", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
-    private String note;
-    private Long disabled;
-    private boolean deployConfigs;
-    private Long usageLimit;
-    private Org org;
-    private User creator;
-    private Server server;
-    private ContactMethod contactMethod;
-    private Set<Server> activatedSystems = new HashSet<>();
-    private List<ConfigChannel> configChannels = new LinkedList<>();
-    private Set<ServerGroupType> entitlements = new HashSet<>();
-    private Set<Channel> channels = new HashSet<>();
-    private Set<ServerGroup> serverGroups = new HashSet<>();
-    private Set<TokenPackage> packages = new HashSet<>();
-    private Set<TokenChannelAppStream> appStreams = new HashSet<>();
 
+    @Column(name = "note", length = 2048)
+    private String note;
+
+    @Column(name = "disabled")
+    private Long disabled;
+
+    @Column(name = "deploy_configs")
+    @Type(type = "yes_no")
+    private boolean deployConfigs;
+
+    @Column(name = "usage_limit")
+    private Long usageLimit;
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserImpl creator;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id")
+    private Server server;
+
+    @ManyToOne
+    @JoinColumn(name = "contact_method_id")
+    private ContactMethod contactMethod;
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenEntitlement",
+            joinColumns = @JoinColumn(name = "reg_token_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_type_id")
+    )
+    private Set<ServerGroupType> entitlements = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenChannels",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "channel_id")
+    )
+    private Set<Channel> channels  = new HashSet<>();
+
+    @OneToMany(mappedBy = "token", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TokenChannelAppStream> appStreams  = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenGroups",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_group_id")
+    )
+    private Set<ServerGroup> serverGroups  = new HashSet<>();
+
+    @OneToMany(mappedBy = "token", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TokenPackage> packages  = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnServerTokenRegs",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id")
+    )
+    private Set<Server> activatedServers  = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnRegTokenConfigChannels",
+            joinColumns = @JoinColumn(name = "token_id"),
+            inverseJoinColumns = @JoinColumn(name = "config_channel_id")
+    )
+    @OrderColumn(name = "position") // Handles list indexing.
+    private List<ConfigChannel> configChannels  = new ArrayList<>();
     /**
      * @return Returns the entitlements.
      */
@@ -234,7 +317,12 @@ public class Token implements Identifiable {
      * @param u The user to set.
      */
     public void setCreator(User u) {
-        this.creator = u;
+        if (u instanceof UserImpl userImpl) {
+            this.creator = userImpl;
+        }
+        else {
+            this.creator = null;
+        }
     }
 
     /**
@@ -465,14 +553,14 @@ public class Token implements Identifiable {
      * @return Returns the activated systems
      */
     public Set<Server> getActivatedServers() {
-        return activatedSystems;
+        return activatedServers;
     }
 
     /**
      * @param servers the activated servers to set.
      */
     protected void setActivatedServers(Set<Server> servers) {
-        this.activatedSystems = servers;
+        this.activatedServers = servers;
     }
 
     /**

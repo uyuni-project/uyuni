@@ -10,6 +10,7 @@
 
 - features/secondary/srv_users.feature
 - features/secondary/srv_menu.feature
+- features/secondary/srv_mgr_sync_list_products.feature
 - features/secondary/srv_monitoring.feature
 - features/secondary/srv_virtual_host_manager.feature
 - features/secondary/srv_power_management.feature

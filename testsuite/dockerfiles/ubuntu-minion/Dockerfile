@@ -1,5 +1,5 @@
-FROM ubuntu:22.04
-RUN echo "deb [trusted=yes] http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/Ubuntu2204-Uyuni-Client-Tools/xUbuntu_22.04/ /" > /etc/apt/sources.list.d/uyuni-tools.list
+FROM ubuntu:24.04
+RUN echo "deb [trusted=yes] http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/Ubuntu2404-Uyuni-Client-Tools/xUbuntu_24.04/ /" > /etc/apt/sources.list.d/uyuni-tools.list
 RUN apt-get update && \
   apt-get -y install ca-certificates && \
   apt-get -y install venv-salt-minion openssh-server openssh-client hostname iproute2 libopenscap8 scap-security-guide-ubuntu udev dmidecode tar \

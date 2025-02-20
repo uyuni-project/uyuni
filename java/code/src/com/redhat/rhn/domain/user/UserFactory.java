@@ -177,7 +177,7 @@ public  class UserFactory extends HibernateFactory {
      * @param id the id to search for
      * @return the user found
      */
-    public static User lookupById(Long id) {
+    public static UserImpl lookupById(Long id) {
         Session session = HibernateFactory.getSession();
         return session.get(UserImpl.class, id);
     }
@@ -410,10 +410,8 @@ public  class UserFactory extends HibernateFactory {
      * @param usr the user to sync
      */
     protected void syncUserPerms(User usr) {
-        UserImpl uimpl = (UserImpl) usr;
-
         boolean orgAdminChanged = false;
-        Boolean wasOrgAdmin = uimpl.wasOrgAdmin();
+        Boolean wasOrgAdmin = usr.wasOrgAdmin();
         if (wasOrgAdmin != null) {
             orgAdminChanged =
                     usr.hasRole(RoleFactory.ORG_ADMIN) != wasOrgAdmin;
@@ -422,7 +420,7 @@ public  class UserFactory extends HibernateFactory {
         if (orgAdminChanged) {
             syncServerGroupPerms(usr);
         }
-        uimpl.resetWasOrgAdmin();
+        usr.resetWasOrgAdmin();
     }
 
     /**
@@ -670,7 +668,7 @@ public  class UserFactory extends HibernateFactory {
      * @param inOrg Optional Org to find users for.
      * @return list of users.
      */
-    public List<User> findAllUsers(Optional<Org> inOrg) {
+    public List<UserImpl> findAllUsers(Optional<Org> inOrg) {
         return Opt.fold(inOrg,
             () -> listObjectsByNamedQuery("User.getAllUsers", Map.of()),
             org -> listObjectsByNamedQuery("User.findAllUsersByOrg", Map.of("org_id", org.getId())));
@@ -682,8 +680,26 @@ public  class UserFactory extends HibernateFactory {
      * @param inOrg Org to find administrators for.
      * @return list of users.
      */
-    public List<User> findAllOrgAdmins(Org inOrg) {
-        return listObjectsByNamedQuery("User.findAllOrgAdmins", Map.of("org_id", inOrg.getId()));
+    public List<UserImpl> findAllOrgAdmins(Org inOrg) {
+        String sql = """
+                SELECT u.*
+                FROM web_contact u
+                WHERE EXISTS (
+                    SELECT 1
+                    FROM rhnUserGroupMembers ugm
+                    JOIN rhnUserGroup ug ON ugm.user_group_id = ug.id
+                    JOIN rhnUserGroupType r ON ug.group_type = r.id
+                    WHERE ug.org_id = :org_id
+                      AND r.label = 'org_admin'
+                      AND ugm.user_id = u.id
+                )
+                """;
+
+        Query<UserImpl> query = HibernateFactory.getSession().createNativeQuery(sql, UserImpl.class);
+        query.setParameter("org_id", inOrg.getId());
+
+        // Execute the query and return the result
+        return query.getResultList();
     }
 
     /**

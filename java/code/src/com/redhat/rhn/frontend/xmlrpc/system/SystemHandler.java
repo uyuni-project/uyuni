@@ -2887,7 +2887,9 @@ public class SystemHandler extends BaseHandler {
     @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid, String profileName)
             throws FaultException {
-       return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, new Date());
+       return provisionSystem(
+               loggedInUser, RhnXmlRpcServer.getRequest(), sid, null, profileName, new Date(), new HashMap<>()
+       );
     }
 
     /**
@@ -2911,7 +2913,7 @@ public class SystemHandler extends BaseHandler {
     @ApiIgnore(ApiType.XMLRPC)
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, String profileName)
             throws FaultException {
-        return provisionSystem(loggedInUser, request, sid, profileName, new Date());
+        return provisionSystem(loggedInUser, request, sid, null, profileName, new Date(), new HashMap<>());
     }
 
     /**
@@ -2936,7 +2938,9 @@ public class SystemHandler extends BaseHandler {
     @ApiIgnore(ApiType.HTTP)
     public int provisionSystem(User loggedInUser, Integer sid, Integer proxy, String profileName)
             throws FaultException {
-        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, proxy, profileName, new Date());
+        return provisionSystem(
+                loggedInUser, RhnXmlRpcServer.getRequest(), sid, proxy, profileName, new Date(), new HashMap<>()
+        );
     }
 
     /**
@@ -2963,7 +2967,7 @@ public class SystemHandler extends BaseHandler {
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid, Integer proxy,
                                String profileName)
             throws FaultException {
-        return provisionSystem(loggedInUser, request, sid, proxy, profileName, new Date());
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, new Date(), new HashMap<>());
     }
 
     /**
@@ -2989,7 +2993,9 @@ public class SystemHandler extends BaseHandler {
     public int provisionSystem(User loggedInUser, Integer sid,
             String profileName, Date earliestDate)
                     throws FaultException {
-        return provisionSystem(loggedInUser, RhnXmlRpcServer.getRequest(), sid, profileName, earliestDate);
+        return provisionSystem(
+                loggedInUser, RhnXmlRpcServer.getRequest(), sid, null, profileName, earliestDate, new HashMap<>()
+        );
     }
 
     /**
@@ -3016,7 +3022,7 @@ public class SystemHandler extends BaseHandler {
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
                                 String profileName, Date earliestDate)
             throws FaultException {
-        return provisionSystem(loggedInUser, request , sid, null, profileName, earliestDate);
+        return provisionSystem(loggedInUser, request , sid, null, profileName, earliestDate, new HashMap<>());
     }
 
     /**
@@ -3045,8 +3051,9 @@ public class SystemHandler extends BaseHandler {
                                Integer proxy, String profileName, Date earliestDate)
             throws FaultException {
         HttpServletRequest request = RhnXmlRpcServer.getRequest();
-        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate);
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate, new HashMap<>());
     }
+
     /**
      * Provision a system using the specified kickstart/autoinstallation profile at specified time.
      *
@@ -3071,7 +3078,77 @@ public class SystemHandler extends BaseHandler {
      */
     @ApiIgnore(ApiType.XMLRPC)
     public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
-            Integer proxy, String profileName, Date earliestDate)
+                               Integer proxy, String profileName, Date earliestDate)
+        throws FaultException {
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate, new HashMap<>());
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @param advancedOptions custom kernel or post kernel options
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.param
+     *  #struct_begin("advancedOptions")
+     *      #prop_desc("string", "kernel_options", "custom kernel options")
+     *      #prop_desc("string", "post_kernel_options", "custom post kernel options")
+     *  #struct_end()
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.HTTP)
+    public int provisionSystem(User loggedInUser, Integer sid, Integer proxy, String profileName,
+                               Date earliestDate, Map<String, String> advancedOptions)
+            throws FaultException {
+        HttpServletRequest request = RhnXmlRpcServer.getRequest();
+        return provisionSystem(loggedInUser, request, sid, proxy, profileName, earliestDate, advancedOptions);
+    }
+
+    /**
+     * Provision a system using the specified kickstart/autoinstallation profile at specified time.
+     *
+     * @param loggedInUser The current user
+     * @param request the request
+     * @param sid of the system to be provisioned
+     * @param proxy ID of the proxy to use
+     * @param profileName of Profile to be used.
+     * @param earliestDate when the autoinstallation needs to be scheduled
+     * @param advancedOptions custom kernel or post kernel options
+     * @return Returns id of the action if successful, exception otherwise
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * id cannot be found or profile is not found.
+     *
+     * @apidoc.doc Provision a system using the specified kickstart/autoinstallation profile.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the system to be provisioned.")
+     * @apidoc.param #param_desc("int", "proxy", "ID of the proxy to use.")
+     * @apidoc.param #param_desc("string", "profileName", "Profile to use.")
+     * @apidoc.param #param("$date", "earliestDate")
+     * @apidoc.param
+     *  #struct_begin("advancedOptions")
+     *      #prop_desc("string", "kernel_options", "custom kernel options")
+     *      #prop_desc("string", "post_kernel_options", "custom post kernel options")
+     *  #struct_end()
+     * @apidoc.returntype #param_desc("int", "id", "ID of the action scheduled, otherwise exception thrown
+     * on error")
+     */
+    @ApiIgnore(ApiType.XMLRPC)
+    public int provisionSystem(User loggedInUser, HttpServletRequest request, Integer sid,
+            Integer proxy, String profileName, Date earliestDate, Map<String, String> advancedOptions)
         throws FaultException {
         log.debug("provisionSystem called.");
 
@@ -3096,6 +3173,14 @@ public class SystemHandler extends BaseHandler {
         KickstartScheduleCommand cmd = new KickstartScheduleCommand(
                 Long.valueOf(sid),
                 ksdata.getId(), loggedInUser, earliestDate, host);
+        if (advancedOptions != null) {
+            if (advancedOptions.containsKey("kernel_options")) {
+                cmd.setKernelOptions(advancedOptions.get("kernel_options"));
+            }
+            if (advancedOptions.containsKey("post_kernel_options")) {
+                cmd.setPostKernelOptions(advancedOptions.get("post_kernel_options"));
+            }
+        }
         if (proxy != null) {
             Server proxyServer = SystemManager.lookupByIdAndOrg(Long.valueOf(proxy), loggedInUser.getOrg());
             if (proxyServer == null) {

@@ -360,13 +360,13 @@
             "amd64"
         ],
         "autorefresh": true,
-        "description": "Ubuntu-22.04-SUSE-Manager-Tools for amd64",
+        "description": "Ubuntu-24.04-SUSE-Manager-Tools for amd64",
         "distro_target": "amd64",
         "enabled": true,
-        "id": 5940,
+        "id": 7404,
         "installer_updates": false,
-        "name": "Ubuntu-22.04-SUSE-Manager-Tools",
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/22.04-CLIENT-TOOLS/x86_64/update/"
+        "name": "Ubuntu-24.04-SUSE-Manager-Tools",
+        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/24.04-CLIENT-TOOLS/x86_64/update/"
     },
     {
         "arch": [

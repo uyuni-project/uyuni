@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Distribution Channel Mapping
@@ -43,16 +43,16 @@ Feature: Distribution Channel Mapping
     Then I should see a "openSUSE Leap 15.5" link in the content area
 
 @deblike_minion
-  Scenario: Create new map for x86_64 Ubuntu clients with test base channel
+  Scenario: Create new map for amd64 Ubuntu clients with test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
-    When I enter "Ubuntu 22.04.01 LTS" as "os"
-    And I enter "22.04" as "release"
-    And I select "x86_64" from "architecture"
+    When I enter "Ubuntu 24.04" as "os"
+    And I enter "24.04" as "release"
+    And I select "AMD64 Debian" from "architecture"
     And I select "Fake-Base-Channel-Debian-like" from "channel_label"
     And I click on "Create Mapping"
-    Then I should see a "Ubuntu 22.04.01 LTS" link in the content area
+    Then I should see a "Ubuntu 24.04" link in the content area
 
 @scc_credentials
   Scenario: Create new map for iSeries SUSE clients using test channel
@@ -97,17 +97,15 @@ Feature: Distribution Channel Mapping
     And I should see the text "opensuse_leap15_5-x86_64" in the Channel Label field
 
 @deblike_minion
-  Scenario: Update map for x86_64 Ubuntu clients using test base channel
+  Scenario: Update map for amd64 Ubuntu clients using test base channel
     When I follow the left menu "Software > Distribution Channel Mapping"
-    Then I should see the text "Ubuntu 22.04.01 LTS" in the Operating System field
-    And I should see the text "x86_64" in the Architecture field
-    And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
-    When I follow "Ubuntu 22.04.01 LTS"
-    And I enter "Ubuntu 22.04.01 LTS modified" as "os"
-    And I select "Fake-Base-Channel-Debian-like" from "channel_label"
+    Then I should see the text "Ubuntu 24.04" in the Operating System field
+    And I should see the text "AMD64 Debian" in the Architecture field
+    And I should see the text "fake-base-channel-debian-like" in the Channel Label field
+    When I follow "Ubuntu 24.04"
+    And I enter "Ubuntu 24.04 modified" as "os"
     And I click on "Update Mapping"
-    Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
-    And I should see the text "fake-base-channel-suse-like" in the Channel Label field
+    Then I should see the text "Ubuntu 24.04 modified" in the Operating System field
 
 @scc_credentials
   Scenario: Update map for IA-32 SUSE clients using amd deb test channel
@@ -151,17 +149,17 @@ Feature: Distribution Channel Mapping
     Then I should not see a "openSUSE Leap 15.5 modified" link
 
 @deblike_minion
-  Scenario: Cleanup: delete the map created for x68_64 Ubuntu clients
+  Scenario: Cleanup: delete the map created for amd64 Ubuntu clients
     When I follow the left menu "Software > Distribution Channel Mapping"
-    Then I should see the text "Ubuntu 22.04.01 LTS modified" in the Operating System field
-    And I should see the text "x86_64" in the Architecture field
-    When I follow "Ubuntu 22.04.01 LTS modified"
+    Then I should see the text "Ubuntu 24.04 modified" in the Operating System field
+    And I should see the text "AMD64 Debian" in the Architecture field
+    When I follow "Ubuntu 24.04 modified"
     Then I should see a "Update Distribution Channel Map" text
     And I should see a "Delete Distribution Channel" link
     When I follow "Delete Distribution Channel Mapping"
     Then I should see a "Delete Distribution Channel Map" text
     When I click on "Delete Mapping"
-    Then I should not see a "Ubuntu 22.04.01 LTS modified" link
+    Then I should not see a "Ubuntu 24.04 modified" link
 
 @scc_credentials
   Scenario: Cleanup: delete the map created for i586 clients

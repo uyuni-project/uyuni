@@ -43,6 +43,7 @@ import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.domain.user.UserServerPreference;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.ChannelPerms;
 import com.redhat.rhn.frontend.dto.SystemGroupOverview;
 import com.redhat.rhn.frontend.dto.SystemSearchResult;
@@ -711,7 +712,7 @@ public class UserManager extends BaseManager {
      * @param user The user who's org to search for users.
      * @return A list of users.
      */
-    public static List<User> usersInOrg(User user) {
+    public static List<UserImpl> usersInOrg(User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             throw getNoAdminError();
         }

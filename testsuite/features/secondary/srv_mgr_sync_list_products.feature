@@ -1,10 +1,10 @@
 # Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-Feature: List available products and enable them
+Feature: List available products
   In order to use software channels
   As root user
-  I want to list available products and enable them
+  I want to list available products from command line
 
 @susemanager
   Scenario: List available products

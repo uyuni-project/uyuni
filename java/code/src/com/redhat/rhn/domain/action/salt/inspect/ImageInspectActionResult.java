@@ -19,49 +19,115 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
  * ImageInspectActionResult
  */
+@Entity
+@Table(name = "rhnActionImageInspectResult")
 public class ImageInspectActionResult implements Serializable {
 
-    private Long serverId;
-    private Long actionImageInspectId;
+    @Embeddable
+    public static class ImageInspectActionResultId implements Serializable {
 
-    private ImageInspectActionDetails parentActionDetails;
+        @Column(name = "server_id")
+        private Long serverId;
+
+        @Column(name = "action_image_inspect_id")
+        private Long actionImageInspectId;
+
+        /**
+         * @return the actionImageInspectId
+         */
+        public Long getActionImageInspectId() {
+            return actionImageInspectId;
+        }
+
+        /**
+         * @param actionImageInspectIdIn the actionImageInspectId to set.
+         */
+        public void setActionImageInspectId(Long actionImageInspectIdIn) {
+            actionImageInspectId = actionImageInspectIdIn;
+        }
+
+        /**
+         * @return the serverId
+         */
+        public Long getServerId() {
+            return serverId;
+        }
+
+        /**
+         * @param serverIdIn serverId to set
+         */
+        public void setServerId(Long serverIdIn) {
+            serverId = serverIdIn;
+        }
+    }
+
+    @EmbeddedId
+    private ImageInspectActionResultId id = new ImageInspectActionResultId();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_image_inspect_id", insertable = false, updatable = false)
+    private ImageInspectActionDetails parentScriptActionDetails;
+
+
+    /**
+     * @return the Id
+     */
+    public ImageInspectActionResultId getId() {
+        return id;
+    }
+
+    /**
+     * @param idIn the id to set
+     */
+    public void setId(ImageInspectActionResultId idIn) {
+        id = idIn;
+    }
 
     /**
      * @return the serverId
      */
     public Long getServerId() {
-        return serverId;
+        return this.getId().getServerId();
     }
 
     /**
      * @param sid serverId to set
      */
     public void setServerId(Long sid) {
-        this.serverId = sid;
+        this.getId().setServerId(sid);
     }
 
     /**
      * @return the actionImageInspectId
      */
     public Long getActionImageInspectId() {
-        return actionImageInspectId;
+        return this.getId().getActionImageInspectId();
     }
 
     /**
      * @param actionId the actionImageInspectId to set.
      */
     public void setActionImageInspectId(Long actionId) {
-        this.actionImageInspectId = actionId;
+        this.getId().setActionImageInspectId(actionId);
     }
 
     /**
      * @return the parentActionDetails
      */
     public ImageInspectActionDetails getParentScriptActionDetails() {
-        return parentActionDetails;
+        return parentScriptActionDetails;
     }
 
     /**
@@ -69,7 +135,7 @@ public class ImageInspectActionResult implements Serializable {
      */
     public void setParentScriptActionDetails(
             ImageInspectActionDetails parentActionDetailsIn) {
-        this.parentActionDetails = parentActionDetailsIn;
+        this.parentScriptActionDetails = parentActionDetailsIn;
     }
 
     @Override

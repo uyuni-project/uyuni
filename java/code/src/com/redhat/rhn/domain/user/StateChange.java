@@ -19,12 +19,13 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * StateChange
  */
-public class StateChange implements Comparable<StateChange> {
+public class StateChange implements Comparable<StateChange>, Serializable {
 
     private Long id;
     private Date date = new Date();

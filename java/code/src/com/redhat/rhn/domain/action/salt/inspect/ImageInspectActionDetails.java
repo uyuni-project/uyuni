@@ -14,22 +14,47 @@
  */
 package com.redhat.rhn.domain.action.salt.inspect;
 
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChild;
 
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * ImageInspectActionDetails - Class representation of the table rhnActionImageInspect.
  */
+@Entity
+@Table(name = "rhnActionImageInspect")
 public class ImageInspectActionDetails extends ActionChild {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "image_inspect_seq")
+    @SequenceGenerator(name = "image_inspect_seq", sequenceName = "RHN_ACT_IMAGE_INSPECT_ID_SEQ", allocationSize = 1)
     private Long id;
-    private Long actionId;
+
+    @Column
     private String name;
+
+    @Column
     private String version;
+
+    @Column(name = "image_store_id")
     private Long imageStoreId;
+
+    @OneToMany(mappedBy = "id.actionImageInspectId", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ImageInspectActionResult> results = new HashSet<>();
+
+    @Column(name = "build_action_id")
     private Long buildActionId;
 
     /**
@@ -89,17 +114,17 @@ public class ImageInspectActionDetails extends ActionChild {
     }
 
     /**
-     * @return the action id
+     * @return the action
      */
-    public Long getActionId() {
-        return actionId;
+    public Action getAction() {
+        return super.getParentAction();
     }
 
     /**
-     * @param actionIdIn the action id to set
+     * @param actionIn the action to set
      */
-    public void setActionId(Long actionIdIn) {
-        this.actionId = actionIdIn;
+    public void setAction(Action actionIn) {
+        super.setParentAction(actionIn);
     }
 
     /**

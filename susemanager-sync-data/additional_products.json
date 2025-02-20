@@ -1,5 +1,111 @@
 [
     {
+        "id" : -47,
+        "name" : "Amazon Linux",
+        "identifier" : "amazonlinux",
+        "former_identifier" : "",
+        "version" : "2023",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Amazon Linux 2023 aarch64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -633,
+                "url" : "https://cdn.amazonlinux.com/al2023/core/mirrors/latest/aarch64/mirror.list",
+                "name" : "amazonlinux2023",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Linux 2023 aarch64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -634,
+                "url" : "https://cdn.amazonlinux.com/al2023/kernel-livepatch/mirrors/al2023/aarch64/mirror.list",
+                "name" : "amazonlinux2023-kernel-livepatch",
+                "distro_target" : "aarch64",
+                "description" : "Amazon Linux 2023 Kernel Livepatch aarch64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -46,
+        "name" : "Amazon Linux",
+        "identifier" : "amazonlinux",
+        "former_identifier" : "",
+        "version" : "2023",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Amazon Linux 2023 x86_64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -631,
+                "url" : "https://cdn.amazonlinux.com/al2023/core/mirrors/latest/x86_64/mirror.list",
+                "name" : "amazonlinux2023",
+                "distro_target" : "x86_64",
+                "description" : "Amazon Linux 2023 x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -632,
+                "url" : "https://cdn.amazonlinux.com/al2023/kernel-livepatch/mirrors/al2023/x86_64/mirror.list",
+                "name" : "amazonlinux2023-kernel-livepatch",
+                "distro_target" : "x86_64",
+                "description" : "Amazon Linux 2023 Kernel Livepatch x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
         "id" : -45,
         "name" : "Open Enterprise Server",
         "identifier" : "OES",

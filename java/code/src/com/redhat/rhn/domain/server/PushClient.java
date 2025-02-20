@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.domain.server;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * PushClient - Class representation of the table rhnpushclient.
  */
-public class PushClient {
+public class PushClient implements Serializable {
 
     private Long id;
     private String name;
