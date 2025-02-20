@@ -20,11 +20,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         <property name="type" type="string" column="type"/>
     </class>
 
-    <query name="PackageEvr.findById">
-        <![CDATA[from com.redhat.rhn.domain.rhnpackage.PackageEvr as p
-                        where p.id = :id]]>
-    </query>
-
     <query name="PackageEvr.lookupByEvr">
         <![CDATA[from com.redhat.rhn.domain.rhnpackage.PackageEvr as p
              where ((p.epoch is null and :e_in is null) or (p.epoch = :e_in)) and

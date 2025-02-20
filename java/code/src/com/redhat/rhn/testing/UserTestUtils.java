@@ -240,7 +240,6 @@ public class UserTestUtils  {
      * @param orgIn to add to
      */
     public static void addManagement(Org orgIn) {
-        EntitlementServerGroup sg =
             ServerGroupTestUtils.createEntitled(orgIn,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
     }

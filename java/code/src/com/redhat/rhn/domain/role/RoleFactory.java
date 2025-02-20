@@ -56,11 +56,10 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (Role) session.getNamedQuery("Role.findById")
-                                       .setParameter("id", id, StandardBasicTypes.LONG)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where id = :id", RoleImpl.class)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
@@ -70,11 +69,10 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
-        return (Role) session.getNamedQuery("Role.findByLabel")
-                                       .setParameter("label", name, StandardBasicTypes.STRING)
-                                       //Retrieve from cache if there
-                                       .setCacheable(true)
-                                       .uniqueResult();
+        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where label = :label", RoleImpl.class)
+                .setParameter("label", name, StandardBasicTypes.STRING)
+                .setCacheable(true)
+                .uniqueResult();
     }
 
     /**
