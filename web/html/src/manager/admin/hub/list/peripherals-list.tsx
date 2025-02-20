@@ -4,25 +4,51 @@ import * as React from "react";
 
 import withPageWrapper from "components/general/with-page-wrapper";
 import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
+import { showSuccessToastr } from "components/toastr";
 
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 import { PeripheralListData } from "../iss_data_props";
 
 const IssPeripheralsList = () => {
+  const searchData = (row, criteria) => {
+    const keysToSearch = ["FQDN"];
+    if (criteria) {
+      const needle = criteria.toLocaleLowerCase();
+      return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
+    }
+    return true;
+  };
+
+  const handlePeripheralDelete = (peripheral) => {
+    const request = ""
+    Network.post("/rhn/manager/api/admin/hub/peripheral/:id", request)
+      .catch((xhr) => Network.showResponseErrorToastr(xhr))
+      .then((response) => {
+        // On successfull sync to peripheral
+        
+      })
+      .finally(() => {
+        showSuccessToastr(t("Channels synced correctly to peripheral!"));
+      });
+  }
+
   let componentContent = (
     <Table
       data="/rhn/manager/api/admin/hub/peripherals/list"
       identifier={(row: PeripheralListData) => row.id}
       initialSortColumnKey="fqdn"
+      searchField={<SearchField filter={searchData} placeholder={t("Filter by FQDN")} />}
     >
       <Column
         columnKey="fqdn"
         comparator={Utils.sortByText}
         header={t("Peripherals FQDN")}
         cell={(row) => (
-          <a className="js-spa" href={`/rhn/manager/admin/hub/peripheral/${row.id}`}>
+          <a className="js-spa" href={`/rhn/manager/admin/hub/peripherals/details/${row.id}`}>
             {row.fqdn}
           </a>
         )}
@@ -57,6 +83,11 @@ const IssPeripheralsList = () => {
             </a>
           );
         }}
+      />
+      <Column
+        columnKey="remove"
+        header={t("Remove")}
+        cell={(row: PeripheralListData) => <i className="fa fa-trash" onClick={handlePeripheralDelete}></i>}
       />
     </Table>
   );

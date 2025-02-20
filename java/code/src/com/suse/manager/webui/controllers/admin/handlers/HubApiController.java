@@ -107,6 +107,12 @@ public class HubApiController {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+
+        // Peripheral channels
+        get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+        patch("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
 
         // Token management
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));

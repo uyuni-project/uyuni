@@ -5,18 +5,12 @@ import * as React from "react";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { SyncOrgsToPeripheralChannel, SyncPeripheralsProps } from "components/hub";
 
-const IssPeripheralDetails = (props: SyncPeripheralsProps) => {
-  return (
-    <div>
-      <SyncOrgsToPeripheralChannel
-        availableOrgs={props.availableOrgs}
-        availableCustomChannels={props.availableCustomChannels}
-        availableVendorChannels={props.availableVendorChannels}
-        syncedCustomChannels={props.syncedCustomChannels}
-        syncedVendorChannels={props.syncedVendorChannels}
-      />
-    </div>
-  );
+export type PeripheralDetails = {
+  fqdn: string;
+};
+
+const IssPeripheralDetails = (props: PeripheralDetails) => {
+  return <div>"Update Peripheral Configuration"</div>;
 };
 
 export default hot(withPageWrapper(IssPeripheralDetails));

@@ -72,6 +72,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Business logic to manage ISSv3 Sync
@@ -882,7 +883,8 @@ public class HubManager {
         return hubFactory.lookupIssHub();
     }
 
-    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId) throws CertificateException, IOException, TokenParsingException {
+    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
+            throws CertificateException, IOException, TokenParsingException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
@@ -894,31 +896,38 @@ public class HubManager {
         return internalApi.getAllPeripheralOrgs();
     }
 
-    public List<ChannelInfoJson> getPeripheralChannels(User user, Long peripheralId) throws CertificateException, IOException {
+    public Set<IssV3ChannelResponse> getPeripheralChannels(User user, Long peripheralId)
+            throws CertificateException, IOException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
-        var internalApi = clientFactory.newInternalClient(
-                issPeripheral.getFqdn(),
-                hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn()).getToken(),
-                issPeripheral.getRootCa()
-        );
-        return internalApi.getAllPeripheralChannels();
+        return issPeripheral.getPeripheralChannels().stream().map(
+                entity -> new IssV3ChannelResponse(
+                        entity.getChannel().getId(),
+                        entity.getChannel().getName(),
+                        entity.getChannel().getLabel(),
+                        entity.getChannel().getChannelArch().getName(),
+                        entity.getChannel().getOrg() != null ?
+                                new IssV3ChannelResponse.ChannelOrgResponse(
+                                        entity.getChannel().getOrg().getId(), entity.getChannel().getOrg().getName()) :
+                                null)
+        ).collect(Collectors.toSet());
     }
 
-    public List<IssV3ChannelResponse> getHubCustomChannels(User user) {
+    public Set<IssV3ChannelResponse> getHubCustomChannels(User user) {
         ensureSatAdmin(user);
         return ChannelFactory.listCustomChannels().stream()
                 .map(ch -> new IssV3ChannelResponse(
-                        ch.getId(), ch.getName(), ch.getLabel()
-                )).toList();
+                        ch.getId(), ch.getName(), ch.getLabel(), ch.getChannelArch().getName(),
+                        new IssV3ChannelResponse.ChannelOrgResponse(ch.getOrg().getId(), ch.getOrg().getName())
+                )).collect(Collectors.toSet());
     }
 
-    public List<IssV3ChannelResponse> getHubVendorChannels(User user) {
+    public Set<IssV3ChannelResponse> getHubVendorChannels(User user) {
         ensureSatAdmin(user);
         return ChannelFactory.listVendorChannels().stream()
                 .map(ch -> new IssV3ChannelResponse(
-                        ch.getId(), ch.getName(), ch.getLabel()
-                )).toList();
+                        ch.getId(), ch.getName(), ch.getLabel(), ch.getChannelArch().getName(), null
+                )).collect(Collectors.toSet());
     }
 
 }

@@ -1,52 +1,55 @@
 import * as React from "react";
 
+import { Button } from "components/buttons";
+import { Dialog } from "components/dialog/Dialog";
 import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
+import { showSuccessToastr } from "components/toastr";
 
-import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 // Types for organization and channel.
 export type Org = {
-  id: number;
-  label: string;
+  orgId: number;
+  orgName: string;
 };
 
+//TODO: logic for parent and clone channels
+// if a parent is selected for sync, sync all child channels too
+// if a clone of a vendor is selected for sync, sync father Vendor channel too
 export type Channel = {
-  id: number;
-  name: string;
-  label: string;
-};
-
-// Mapping: organization ID → channels synced to that organization.
-export type SyncedCustomChannels = {
-  [orgId: number]: Channel[];
-};
-
-type State = {
-  // The currently selected organization (or null if none is selected)
-  selectedOrg: Org | null;
-  // The channels that you selected for sync
-  selectedCustomChannels: Channel[];
-  // The channels that you selected to remove from sync
-  selectedSyncedCustomChannels: Channel[];
-  // For each organization, the channels that have been synced.
-  syncedCustomChannels: SyncedCustomChannels;
-  // Vendor channels have org null
-  syncedVendorChannels: Channel[];
-  // All the available orgs on the peripheral
-  availableOrgs: Org[];
-  // Custom channels not yet synced from hub
-  availableCustomChannels: Channel[];
-  // Vendor channels not yet synced from hub
-  availableVendorChannels: Channel[];
+  channelId: number;
+  channelName: string;
+  channelLabel: string;
+  channelArch: string;
+  // null channelOrg means is a Vendor Channel
+  channelOrg: Org | null;
 };
 
 export type SyncPeripheralsProps = {
   availableOrgs: Org[];
   availableCustomChannels: Channel[];
   availableVendorChannels: Channel[];
-  syncedCustomChannels: SyncedCustomChannels;
+  syncedCustomChannels: Channel[];
   syncedVendorChannels: Channel[];
+};
+
+type State = {
+  selectedOrg: Org | null;
+  syncedChannels: Channel[];
+  availableOrgs: Org[];
+  availableChannels: Channel[];
+  syncModalOpen: boolean;
+  modalSelectedChannels: Channel[];
+};
+
+type SyncChannelRequest = {
+  channel: string;
+};
+
+type RemoveSyncChannelRequest = {
+  channel: string;
 };
 
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
@@ -54,234 +57,149 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     super(props);
     this.state = {
       selectedOrg: null,
-      selectedCustomChannels: [],
-      selectedSyncedCustomChannels: [],
-      syncedCustomChannels: props.syncedCustomChannels,
-      syncedVendorChannels: props.syncedVendorChannels,
+      syncedChannels: props.syncedCustomChannels.concat(props.syncedVendorChannels),
       availableOrgs: props.availableOrgs,
-      availableCustomChannels: props.availableCustomChannels,
-      availableVendorChannels: props.availableVendorChannels,
+      availableChannels: props.availableCustomChannels.concat(props.availableVendorChannels),
+      syncModalOpen: false,
+      modalSelectedChannels: [],
     };
   }
 
-  handleOrgToggle(org: Org) {
-    // If the clicked org is already selected, deselect it.
-    if (this.state.selectedOrg && this.state.selectedOrg.id === org.id) {
-      this.setState({
-        selectedOrg: null,
-        selectedCustomChannels: [],
-        selectedSyncedCustomChannels: [],
-      });
-    } else {
-      // Otherwise, select it and clear any channel selections.
-      this.setState({
-        selectedOrg: org,
-        selectedCustomChannels: [],
-        selectedSyncedCustomChannels: [],
-      });
-    }
-  }
-  /**
-   * Called when the user selects one or more rows in the Available Channels table.
-   */
-  handleCustomChannelSelect(channels: Channel[]) {
-    // You can also write:
-    // this.setState(prev => ({ selectedCustomChannels: [...prev.selectedCustomChannels, ...channels] }));
-    this.setState({
-      selectedCustomChannels: this.state.selectedCustomChannels.concat(...channels),
-    });
-  }
+  onChannelSyncConfirm = (channels: Channel[]) => {
+    let newChannels = this.state.syncedChannels.concat(channels);
+    this.setState({ syncedChannels: newChannels });
+    /*
+    const request = ""
+    Network.post("/rhn/manager/api/admin/hub/peripheral/:id/sync-channels", request)
+      .catch((xhr) => Network.showResponseErrorToastr(xhr))
+      .then((response) => {
+        // On successfull sync to peripheral
+        
+      })
+      .finally(() => {
+        showSuccessToastr(t("Channels synced correctly to peripheral!"));
+      });*/
+  };
 
-  /**
-   * Called when the user selects one or more rows in the Synced Channels table.
-   */
-  handleSyncedCustomChannelSelect(channels: Channel[]) {
-    this.setState({
-      selectedSyncedCustomChannels: this.state.selectedSyncedCustomChannels.concat(...channels),
-    });
-  }
+  onChannelToSyncSelect = (channels: Channel[]) => {
+    this.setState({ modalSelectedChannels: channels });
+  };
 
-  /**
-   * Moves channels selected in the Available table into the Synced table for the selected organization.
-   */
-  handleAddChannels() {
-    const { selectedOrg, syncedCustomChannels, selectedCustomChannels, availableCustomChannels } = this.state;
+  onChannelSyncModalOpen = () => this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: true });
 
-    if (!selectedOrg) {
-      alert("Please select an organization first.");
-      return;
-    }
-    if (selectedCustomChannels.length === 0) {
-      alert("Please select at least one channel to add.");
-      return;
-    }
-
-    const orgId = selectedOrg.id;
-    const currentSynced = syncedCustomChannels[orgId] || [];
-    const newSynced = currentSynced.concat(selectedCustomChannels);
-
-    // Remove only the selected channels from availableCustomChannels.
-    const addedChannelIds = new Set(selectedCustomChannels.map((ch) => ch.id));
-    const newAvailableCustomChannels = availableCustomChannels.filter((ch) => !addedChannelIds.has(ch.id));
-
-    this.setState({
-      syncedCustomChannels: {
-        ...syncedCustomChannels,
-        [orgId]: newSynced,
-      },
-      availableCustomChannels: newAvailableCustomChannels,
-      selectedCustomChannels: [],
-    });
-  }
-
-  /**
-   * Moves channels selected in the Synced table back to the Available list.
-   */
-  handleRemoveChannels() {
-    const { selectedOrg, syncedCustomChannels, selectedSyncedCustomChannels, availableCustomChannels } = this.state;
-
-    if (!selectedOrg) {
-      alert("Please select an organization first.");
-      return;
-    }
-    if (selectedSyncedCustomChannels.length === 0) {
-      alert("Please select at least one channel to remove.");
-      return;
-    }
-
-    const orgId = selectedOrg.id;
-    const currentSynced = syncedCustomChannels[orgId] || [];
-    const remainingSynced = currentSynced.filter((ch) => !selectedSyncedCustomChannels.some((sel) => sel.id === ch.id));
-
-    // Add the removed channels back into availableCustomChannels.
-    const newAvailableCustomChannels = availableCustomChannels.concat(selectedSyncedCustomChannels);
-
-    this.setState({
-      syncedCustomChannels: {
-        ...syncedCustomChannels,
-        [orgId]: remainingSynced,
-      },
-      availableCustomChannels: newAvailableCustomChannels,
-      selectedSyncedCustomChannels: [],
-    });
-  }
+  onChannelSyncModalClose = () => this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: false });
 
   render() {
-    const {
-      selectedOrg,
-      syncedCustomChannels,
-      availableOrgs,
-      availableCustomChannels,
-      selectedCustomChannels,
-      selectedSyncedCustomChannels,
-    } = this.state;
+    const { syncedChannels, availableChannels } = this.state;
 
-    // If an organization is selected, show its synced channels; otherwise, show an empty list.
-    const syncedChannels = selectedOrg ? syncedCustomChannels[selectedOrg.id] || [] : [];
+    const searchData = (row, criteria) => {
+      const keysToSearch = ["name"];
+      if (criteria) {
+        const needle = criteria.toLocaleLowerCase();
+        return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
+      }
+      return true;
+    };
 
-    return (
-      <div className="container mt-4">
-        <h3>Sync Organizations to Peripheral Channels</h3>
-        <div className="row">
-          {/* Organizations Table */}
-          <div className="col-md-4">
-            <h5>Organizations</h5>
-            <Table data={availableOrgs} identifier={(row: Org) => row.id} selectable={false}>
-              <Column
-                columnKey="label"
-                comparator={Utils.sortByText}
-                header={"Name"}
-                cell={(row: Org) => (
-                  <>
-                    <div
-                      // Add the "selected-org" class if this org is selected.
-                      className={this.state.selectedOrg && this.state.selectedOrg.id === row.id ? "selected-org" : ""}
-                      onClick={() => this.handleOrgToggle(row)}
-                    >
-                      {row.label}
-                    </div>
-                  </>
-                )}
-              />
-            </Table>
-          </div>
+    const syncedChannelsTable = (
+      <>
+        <span>
+          <h3>{t("Synced Channels")}</h3>
+        </span>
+        <Table
+          data={syncedChannels}
+          identifier={(row: Channel) => row.channelId}
+          selectable={false}
+          initialSortColumnKey="name"
+          searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
+        >
+          <Column columnKey="name" header={t("Name")} cell={(row: Channel) => <span>{row.channelName}</span>} />
+          <Column columnKey="label" header={t("Label")} cell={(row: Channel) => <span>{row.channelLabel}</span>} />
+          <Column columnKey="arch" header={t("Arch")} cell={(row: Channel) => <span>{row.channelArch}</span>} />
+          <Column
+            columnKey="orgName"
+            header={t("Org")}
+            cell={(row: Channel) => <span>{row.channelOrg ? row.channelOrg.orgName : "SUSE"}</span>}
+          />
+          <Column columnKey="remove" header={t("Remove")} cell={(row: Channel) => <i className="fa fa-trash"></i>} />
+        </Table>
+      </>
+    );
 
-          {/* Channels Dual-List Section */}
-          <div className="col-md-8">
-            <h5>
-              {selectedOrg ? `Organization: ${selectedOrg.label} (ID: ${selectedOrg.id})` : "No Organization Selected"}
-            </h5>
-            <div className="row">
-              {/* Synced Channels Table */}
-              <div className="col-md-5">
-                <h6>Synced Channels</h6>
-                <Table
-                  data={syncedChannels}
-                  identifier={(row: Channel) => row.id}
-                  selectable={true}
-                  onSelect={this.handleSyncedCustomChannelSelect}
-                >
-                  <Column
-                    columnKey="name"
-                    comparator={Utils.sortByText}
-                    header={"Name"}
-                    cell={(row: Channel) => <span>{row.name}</span>}
-                  />
-                  <Column
-                    columnKey="label"
-                    comparator={Utils.sortByText}
-                    header={"Label"}
-                    cell={(row: Channel) => <span>{row.label}</span>}
-                  />
-                </Table>
-              </div>
+    const modalContent = (
+      <>
+        <span>
+          <h4>Select an organizzation from the Peripheral to Sync your channels to:</h4>
+        </span>
+        <span>
+          <h5>(Vendor channels are automatically synced to SUSE Organization)</h5>
+        </span>
+        <span>
+          <h3>{t("Available Channels")}</h3>
+        </span>
+        <Table
+          data={availableChannels}
+          identifier={(row: Channel) => row.channelId}
+          selectable={true}
+          onSelect={this.onChannelToSyncSelect}
+          selectedItems={this.state.modalSelectedChannels}
+          initialSortColumnKey="name"
+          searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
+        >
+          <Column columnKey="name" header={t("Name")} cell={(row: Channel) => <span>{row.channelName}</span>} />
+          <Column columnKey="label" header={t("Label")} cell={(row: Channel) => <span>{row.channelLabel}</span>} />
+          <Column columnKey="arch" header={t("Arch")} cell={(row: Channel) => <span>{row.channelArch}</span>} />
+          <Column
+            columnKey="orgName"
+            header={t("Org")}
+            cell={(row: Channel) => <span>{row.channelOrg ? row.channelOrg.orgName : "SUSE"}</span>}
+          />
+        </Table>
+      </>
+    );
 
-              {/* Buttons to move channels between lists */}
-              <div className="col-md-2 d-flex flex-column justify-content-center align-items-center">
-                <button
-                  type="button"
-                  className="btn btn-primary mb-2"
-                  onClick={this.handleAddChannels}
-                  disabled={!selectedOrg || selectedCustomChannels.length === 0}
-                >
-                  Add &gt;&gt;
-                </button>
-                <button
-                  type="button"
-                  className="btn btn-secondary"
-                  onClick={this.handleRemoveChannels}
-                  disabled={!selectedOrg || selectedSyncedCustomChannels.length === 0}
-                >
-                  &lt;&lt; Remove
-                </button>
-              </div>
-
-              {/* Available Channels Table */}
-              <div className="col-md-5">
-                <h6>Available Channels</h6>
-                <Table
-                  data={availableCustomChannels}
-                  identifier={(row: Channel) => row.id}
-                  selectable={true}
-                  onSelect={this.handleCustomChannelSelect}
-                >
-                  <Column
-                    columnKey="name"
-                    comparator={Utils.sortByText}
-                    header={"Name"}
-                    cell={(row: Channel) => <span>{row.name}</span>}
-                  />
-                  <Column
-                    columnKey="label"
-                    comparator={Utils.sortByText}
-                    header={"Label"}
-                    cell={(row: Channel) => <span>{row.label}</span>}
-                  />
-                </Table>
-              </div>
-            </div>
+    const modalFooter = (
+      <>
+        <div className="col-lg-6">
+          <div className="pull-right btn-group">
+            <Button
+              id="sync-modal-confirm"
+              className="btn-primary"
+              text={t("Confirm")}
+              handler={this.onChannelSyncConfirm}
+            />
+            <Button
+              id="sync-modal-cancel"
+              className="btn-danger"
+              text="Cancel"
+              handler={this.onChannelSyncModalClose}
+            />
           </div>
         </div>
+      </>
+    );
+    return (
+      <div className="container mt-4">
+        <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
+        <div className="synced-channels mb-3">{syncedChannelsTable}</div>
+        {/* Modal Button to Open the Channel Selection Modal */}
+        <div className="text-center mb-4">
+          <Button
+            className="btn-primary"
+            title={t("Add Channels")}
+            text={t("Add Channels")}
+            handler={this.onChannelSyncModalOpen}
+          />
+        </div>
+        {/* Modal Dialog with Available Channels Table */}
+        <Dialog
+          id="sync-channel-modal"
+          title={t("Add Channel to Sync")}
+          content={modalContent}
+          isOpen={this.state.syncModalOpen}
+          footer={modalFooter}
+          onClose={this.onChannelSyncModalClose}
+        />
       </div>
     );
   }
