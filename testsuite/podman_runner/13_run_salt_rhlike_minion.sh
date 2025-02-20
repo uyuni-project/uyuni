@@ -12,3 +12,6 @@ sudo -i podman exec rhlike_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /ro
 sudo -i podman exec -d rhlike_minion node_exporter
 sudo -i podman exec -d rhlike_minion prometheus-apache_exporter
 sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" rhlike_minion prometheus-postgres_exporter
+
+sudo -i podman exec rhlike_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/yum.repos.d/*"
+sudo -i podman exec rhlike_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/yum.repos.d/*"

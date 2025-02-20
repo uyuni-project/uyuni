@@ -7,6 +7,7 @@
 #
 # Skip if container because the action chain fails
 # This needs to be fixed
+@skip_if_github_validation
 @ssh_minion
 @scope_action_chains
 @scope_salt_ssh

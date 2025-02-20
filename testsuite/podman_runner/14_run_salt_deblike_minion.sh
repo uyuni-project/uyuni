@@ -11,3 +11,6 @@ sudo -i podman exec -d deblike_minion prometheus-node-exporter
 sudo -i podman exec -d deblike_minion prometheus-apache-exporter
 sudo -i podman exec -d -e DATA_SOURCE_NAME="postgresql://user:passwd@localhost:5432/database?sslmode=disable" deblike_minion prometheus-postgres-exporter
 sudo -i podman exec -d deblike_minion bash -c "prometheus-exporter-exporter -config.file /etc/exporter_exporter.yaml -config.dirs /etc/exporter_exporter.d"
+
+sudo -i podman exec deblike_minion bash -c "sed -e 's/http:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
+sudo -i podman exec deblike_minion bash -c "sed -e 's/https:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/apt/sources.list.d/*"
