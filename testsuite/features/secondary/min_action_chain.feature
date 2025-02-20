@@ -42,9 +42,10 @@ Feature: Action chains on Salt minions
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Pre-requisite: remove all action chains before testing on Salt minion
-    When I delete all action chains
-    And I cancel all scheduled actions
+  Scenario: Create a custom action chain for the Salt minion
+    When I call actionchain.create_chain() with chain label "salt_minion_action_chain"
+    And I follow the left menu "Schedule > Action Chains"
+    Then I should see a "salt_minion_action_chain" text
 
   Scenario: Add a patch installation to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
@@ -136,7 +137,6 @@ Feature: Action chains on Salt minions
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
-@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow first "Schedule System Reboot"
@@ -159,32 +159,39 @@ Feature: Action chains on Salt minions
   Scenario: Verify the action chain list on Salt minion
     When I follow "Schedule"
     And I follow "Action Chains"
-    And I follow "new action chain"
+    And I follow "salt_minion_action_chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "Run a remote command on 1 system" text
+    And I should see a "6. Reboot 1 system" text
+    And I should see a "7. Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for Salt minion
     Given I am authorized as "testing" with password "testing"
     When I follow "Schedule"
     And I follow "Action Chains"
-    Then I should not see a "new action chain" link
+    Then I should not see a "salt_minion_action_chain" link
 
   Scenario: Execute the action chain from the web UI on Salt minion
     Given I am authorized for the "Admin" section
     And I am on the Systems overview page of this "sle_minion"
     When I follow "Schedule"
     And I follow "Action Chains"
-    And I follow "new action chain"
+    And I follow "salt_minion_action_chain"
     And I click on "Save and Schedule"
-    Then I should see a "Action Chain new action chain has been scheduled for execution." text
+    Then I should see a "Action Chain salt_minion_action_chain has been scheduled for execution." text
     When I wait for "virgo-dummy" to be installed on "sle_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "sle_minion"
 
-  Scenario: Add a remote command to the new action chain on Salt minion
+  # previous, completed, action chain will no longer be available
+  Scenario: Create a custom action chain for the Salt minion
+    When I call actionchain.create_chain() with chain label "salt_minion_action_chain_to_delete"
+    And I follow the left menu "Schedule > Action Chains"
+    Then I should see a "salt_minion_action_chain_to_delete" text
+
+  Scenario: Add a remote command to the action chain on Salt minion
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -199,13 +206,12 @@ Feature: Action chains on Salt minions
   Scenario: Delete the action chain for Salt minion
     When I follow "Schedule"
     And I follow "Action Chains"
-    And I follow "new action chain"
+    And I follow "salt_minion_action_chain_to_delete"
     And I follow "delete action chain" in the content area
     And I click on "Delete"
 
   Scenario: Downgrade again repositories to lower version on Salt minion
-    When I enable repository "test_repo_rpm_pool" on this "sle_minion"
-    And I remove package "andromeda-dummy" from this "sle_minion" without error control
+    When I remove package "andromeda-dummy" from this "sle_minion" without error control
     And I remove package "virgo-dummy" from this "sle_minion" without error control
     And I install package "milkyway-dummy" on this "sle_minion" without error control
     And I install old package "andromeda-dummy-1.0" on this "sle_minion"
@@ -225,7 +231,7 @@ Feature: Action chains on Salt minions
 
   Scenario: Add operations to the action chain via API for Salt minions
     Given I want to operate on this "sle_minion"
-    When I call actionchain.create_chain() with chain label "throwaway_chain"
+    When I call actionchain.create_chain() with chain label "salt_minion_api_chain"
     And I call actionchain.add_package_install()
     And I call actionchain.add_package_removal()
     And I call actionchain.add_package_upgrade()
@@ -234,11 +240,11 @@ Feature: Action chains on Salt minions
     Then I should be able to see all these actions in the action chain
     When I call actionchain.remove_action() on each action within the chain
     Then the current action chain should be empty
-    When I delete the action chain
+    And I delete the action chain
 
   Scenario: Run an action chain via API on Salt minion
-    And I want to operate on this "sle_minion"
-    When I call actionchain.create_chain() with chain label "multiple_scripts"
+    Given I want to operate on this "sle_minion"
+    When I call actionchain.create_chain() with chain label "salt_minion_multiple_scripts"
     And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
     And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
