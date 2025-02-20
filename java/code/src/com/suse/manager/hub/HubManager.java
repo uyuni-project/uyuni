@@ -686,7 +686,6 @@ public class HubManager {
         // Create the new credentials for the hub
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials(username, password);
 
-        // TODO Ensure the path is correct once the SCC Endoint is implemented
         credentials.setUrl("https://" + hub.getFqdn());
         CredentialsFactory.storeCredentials(credentials);
 
