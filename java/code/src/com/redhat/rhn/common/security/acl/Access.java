@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,6 +44,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
 import com.suse.manager.webui.utils.ViewHelper;
 
@@ -675,5 +677,27 @@ public class Access extends BaseHandler {
         }
 
         return server.getChannels().stream().anyMatch(Channel::isModular);
+    }
+
+    /**
+     * Checks if this server is a hub
+     * @param ctx the acl context
+     * @param params the parameters for the acl
+     * @return true if this server has peripheral registered
+     */
+    public boolean aclIsHub(Map<String, Object> ctx, String[] params) {
+        HubFactory factory = new HubFactory();
+        return factory.isISSHub();
+    }
+
+    /**
+     * Checks if this server is a peripheral
+     * @param ctx the acl context
+     * @param params the parameters for the acl
+     * @return true if this server is registered as a peripheral on a hub
+     */
+    public boolean aclIsPeripheral(Map<String, Object> ctx, String[] params) {
+        HubFactory factory = new HubFactory();
+        return factory.isISSPeripheral();
     }
 }

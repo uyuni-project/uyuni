@@ -103,12 +103,28 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * @return return true, when this system is an Inter-Server-Sync Hub Server
+     */
+    public boolean isISSHub() {
+        return countPeripherals() != 0;
+    }
+
+    /**
      * get the list of all the peripheral servers for a hub
      *
      * @return a list of paginated peripherals
      */
     public List<IssPeripheral> listPeripherals() {
         return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class).list();
+    }
+
+    /**
+     * get number of peripheral registered on this server
+     *
+     * @return a number of peripherals
+     */
+    public long countPeripherals() {
+        return getSession().createQuery("SELECT count(*) FROM IssPeripheral", Long.class).uniqueResult();
     }
 
     /**
