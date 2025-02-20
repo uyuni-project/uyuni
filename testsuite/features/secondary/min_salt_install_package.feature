@@ -1,6 +1,7 @@
 # Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_salt
 Feature: Install a patch on the client via Salt through the UI
 
