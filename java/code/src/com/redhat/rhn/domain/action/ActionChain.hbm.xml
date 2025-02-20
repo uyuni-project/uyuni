@@ -2,26 +2,6 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.redhat.rhn.domain.action.ActionChain" table="rhnActionChain">
-        <id name="id" type="long" column="id">
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">rhn_actionchain_id_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-
-        <property name="label" column="label" type="string"/>
-        <property name="dispatched" column="dispatched" type="yes_no"/>
-        <property name="created" column="created" type="timestamp" insert="false" update="false"/>
-        <property name="modified" column="modified" type="timestamp" insert="false"/>
-
-        <many-to-one name="user" column="user_id" not-null="true" class="com.redhat.rhn.domain.user.legacy.UserImpl"/>
-        <set name="entries" inverse="true" lazy="true" cascade="all-delete-orphan">
-            <key column="actionchain_id"/>
-            <one-to-many class="com.redhat.rhn.domain.action.ActionChainEntry"/>
-        </set>
-    </class>
-
     <query name="ActionChain.getActionChain">
         <![CDATA[
             SELECT chain

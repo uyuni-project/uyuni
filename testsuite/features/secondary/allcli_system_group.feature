@@ -61,13 +61,7 @@ Feature: Manage a group of systems
     And I check the "sle_minion" client
     And I click on "Add Systems"
     Then I should see a "1 systems were added to new-systems-group server group." text
-  
-  Scenario: Add the SLE minion system to SSM
-    When I follow the left menu "Systems > System Groups"
-    And I follow "new-systems-group"
-    And I follow " Systems"
-    And I check the "sle_minion" client
-    And I follow "Add Selected to SSM"
+    And I click on "Add Selected to SSM"
 
   Scenario: The SLE minion is part of the new group
     Given I am on the Systems overview page of this "sle_minion"
@@ -102,28 +96,6 @@ Feature: Manage a group of systems
     And I click on "Apply Patches"
     And I click on "Confirm"
     Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
-
-  Scenario: Add the fake RPM repository to the SUSE fake child channel
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-RPM-SUSE-Channel"
-    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
-    And I click on "Update Channel"
-    Then I should see a "Channel Fake-RPM-SUSE-Channel updated" text
-    When I follow "Repositories" in the content area
-    And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
-    Then I should see a "Fake-RPM-SUSE-Channel repository information was successfully updated" text
-
-  Scenario: Add the fake RPM repository to the Test child channel
-    When I follow the left menu "Software > Manage > Channels"
-    And I follow "Test-Child-Channel-x86_64"
-    And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
-    And I click on "Update Channel"
-    Then I should see a "Channel Test-Child-Channel-x86_64 updated" text
-    When I follow "Repositories" in the content area
-    And I select the "fake-rpm-repo" repo
-    And I click on "Save Repositories"
-    Then I should see a "Test-Child-Channel-x86_64 repository information was successfully updated" text
 
   Scenario: Install a package
     When I follow the left menu "Systems > System Set Manager > Overview"

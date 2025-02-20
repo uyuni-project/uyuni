@@ -597,15 +597,12 @@ import javax.persistence.NoResultException;
     @SuppressWarnings("unchecked")
     public static List<Map<String, Object>> listUpdateLastSeenCandidates(SCCCredentials cred) {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<Object[]> rows = getSession().createQuery(
-                "SELECT reg.sccLogin, reg.sccPasswd, si.checkin " +
-                "FROM com.redhat.rhn.domain.scc.SCCRegCacheItem AS reg " +
-                "JOIN reg.server AS s " +
-                "JOIN s.serverInfo AS si " +
-                "WHERE reg.registrationErrorTime IS NULL " +
-                "AND reg.credentials = :cred " +
-                "AND reg.sccId IS NOT NULL ")
-                .setParameter("cred", cred)
+        List<Object[]> rows = getSession().createNativeQuery("""
+            SELECT reg.scc_login, reg.scc_passwd, si.checkin FROM suseSCCRegCache reg
+            JOIN rhnServer s ON reg.server_id = s.id JOIN rhnServerInfo si ON s.id = si.server_id
+            WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
+            """)
+                .setParameter("cred", cred.getId(), StandardBasicTypes.LONG)
                 .list();
         for (Object[] row : rows) {
             Map<String, Object> entry = new HashMap<>();

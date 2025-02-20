@@ -15,10 +15,12 @@
 package com.redhat.rhn.domain.user;
 
 
+import java.io.Serializable;
+
 /**
  * State
  */
-public class State {
+public class State implements Serializable {
 
     private Long id;
     private String label;

@@ -16,12 +16,14 @@
 package com.redhat.rhn.domain;
 
 
+import java.io.Serializable;
+
 /**
  * Simple interface that a domain object can implement if it wants to provide a
  * common way to give back an id field.
  *
  */
-public interface Identifiable {
+public interface Identifiable extends Serializable {
 
     /**
      * Get the database id of this Object.

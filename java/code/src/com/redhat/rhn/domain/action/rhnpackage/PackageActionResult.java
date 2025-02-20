@@ -21,31 +21,126 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * PackageActionResult
  */
-public class PackageActionResult extends BaseDomainHelper implements Serializable {
+@Entity
+@Table(name = "rhnServerActionPackageResult")
+public class PackageActionResult extends BaseDomainHelper {
 
-    private static final long serialVersionUID = 1L;
-    private Server server;
-    private PackageActionDetails details;
+    @Embeddable
+    public static class PackageActionResultId implements Serializable {
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "server_id", nullable = false)
+        private Server server = new Server();
+
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "results", nullable = false)
+        private PackageActionDetails details;
+
+        // Constructors, getters, setters, equals, and hashCode
+
+        /**
+         * Default Constructor.
+         */
+        public PackageActionResultId() {
+        }
+
+        /**
+         * Constructor.
+         * @param serverIn the server
+         * @param  detailsIn the details
+         */
+        public PackageActionResultId(Server serverIn, PackageActionDetails detailsIn) {
+            this.server = serverIn;
+            this.details = detailsIn;
+        }
+
+        /**
+         * @return Return the server.
+         */
+        public Server getServer() {
+            return server;
+        }
+
+        /**
+         * @param serverIn The server to set.
+         */
+        public void setServer(Server serverIn) {
+            this.server = serverIn;
+        }
+
+        /**
+         * @return Return the detatils.
+         */
+        public PackageActionDetails getDetails() {
+            return details;
+        }
+
+        /**
+         * @param detailsIn The details to set.
+         */
+        public void setDetails(PackageActionDetails detailsIn) {
+            this.details = detailsIn;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            PackageActionResultId that = (PackageActionResultId) o;
+            return server.equals(that.server) && details.equals(that.details);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(server, details);
+        }
+    }
+
+    @EmbeddedId
+    private PackageActionResultId id = new PackageActionResultId();
+
+    @Column(name = "result_code")
     private Long resultCode;
-    //private <blob> stderr;
-    //private <blob> stdout;
+
+
+    public PackageActionResultId getId() {
+        return id;
+    }
+
+    public void setId(PackageActionResultId idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the packageActionDetails.
      */
     public PackageActionDetails getDetails() {
-        return details;
+        return this.getId().getDetails();
     }
 
     /**
      * @param p The packageActionDetails to set.
      */
     public void setDetails(PackageActionDetails p) {
-        this.details = p;
+        this.getId().setDetails(p);
     }
 
     /**
@@ -66,14 +161,14 @@ public class PackageActionResult extends BaseDomainHelper implements Serializabl
      * @return Returns the server.
      */
     public Server getServer() {
-        return server;
+        return id.getServer();
     }
 
     /**
      * @param s The server to set.
      */
     public void setServer(Server s) {
-        this.server = s;
+        this.id.setServer(s);
     }
 
     /**

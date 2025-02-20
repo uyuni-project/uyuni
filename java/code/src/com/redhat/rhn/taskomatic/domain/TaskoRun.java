@@ -16,13 +16,14 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.taskomatic.TaskoFactory;
 
+import java.io.Serializable;
 import java.util.Date;
 
 
 /**
  * TaskoRun
  */
-public class TaskoRun {
+public class TaskoRun implements Serializable {
 
     public static final String STATUS_READY_TO_RUN = "READY";
     public static final String STATUS_RUNNING = "RUNNING";
