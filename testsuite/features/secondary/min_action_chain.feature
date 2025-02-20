@@ -6,6 +6,7 @@
 # - features/secondary/allcli_action_chain.feature
 # If the action chain fails to be completed and run.
 
+@skip_if_github_validation
 @sle_minion
 @scope_action_chains
 Feature: Action chains on Salt minions
