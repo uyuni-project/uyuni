@@ -6328,7 +6328,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.missingreason" xml:space="preserve">
         <source>In order to lock a system, please specify the reason.</source>
-        <target/>
+        <target state="translated">Ak chcete systém zamknúť, prosím, uveďte dôvod.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -6336,49 +6336,49 @@ organization. You may grant or remove the organization administrator role in the
       <!-- == Systems == -->
       <trans-unit id="overview.jsp.header" xml:space="preserve">
         <source>System Overview</source>
-        <target/>
+        <target state="translated">Prehľad systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.alt" xml:space="preserve">
         <source>System Icon</source>
-        <target/>
+        <target state="translated">Systémová ikona</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.systems" xml:space="preserve">
         <source>View System Groups</source>
-        <target/>
+        <target state="translated">Zobraziť systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.groups" xml:space="preserve">
         <source>View Systems</source>
-        <target/>
+        <target state="translated">Zobraziť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.header" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.physicalheader" xml:space="preserve">
         <source>Physical Systems</source>
-        <target/>
+        <target state="translated">Fyzické systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.status" xml:space="preserve">
         <source>Updates</source>
-        <target/>
+        <target state="translated">Aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6386,7 +6386,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.monitoring" xml:space="preserve">
         <source>Health</source>
-        <target/>
+        <target state="translated">Zdravie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -6394,7 +6394,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
