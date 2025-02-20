@@ -15,13 +15,6 @@ datasources:
   timeout: '120'
   editable: true
 
-- name: Prometheus 
-  type: prometheus
-  access: proxy 
-  orgId: 1
-  url: http://uyuni-health-check-prometheus:9090
-  editable: false
-
 - name: infinity-ds
   type: yesoreyeram-infinity-datasource
   orgId: 1

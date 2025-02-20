@@ -1,8 +1,8 @@
 """Module that manages the supportconfig exporter container"""
 
-from uyuni_health_check import config
-from uyuni_health_check.utils import console
-from uyuni_health_check.containers.manager import (
+from health_check import config
+from health_check.utils import console
+from health_check.containers.manager import (
     image_exists,
     build_image,
     podman,
@@ -14,7 +14,7 @@ def prepare_exporter(supportconfig_path: str, verbose: bool):
     """
     Build the exporter image and deploy it on the server
 
-    :param server: the Uyuni server to deploy the exporter on
+    :param server: the server to deploy the exporter on
     """
     exporter_name = config.load_prop("exporter.container_name")
     image = config.load_prop("exporter.image")
