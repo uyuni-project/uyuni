@@ -13,13 +13,12 @@
  * in this software or its documentation.
  */
 
-package com.suse.rest;
+package com.suse.proxy.get.formdata;
 
-/**
- * Enum to represent the types of authentication required for a request.
- */
-public enum RestRequestAuthEnum {
-    NONE,
-    BEARER,
-    BASIC;
+public interface ProxyConfigGetFormDataContextHandler {
+    /**
+     * Handles a step in saving a proxy configuration
+     * @param context the context
+     */
+    void handle(ProxyConfigGetFormDataContext context);
 }

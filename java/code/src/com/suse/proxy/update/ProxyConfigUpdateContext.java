@@ -26,6 +26,8 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.RegistryUrl;
+import com.suse.proxy.get.ProxyConfigGetFacade;
+import com.suse.proxy.get.ProxyConfigGetFacadeImpl;
 import com.suse.proxy.model.ProxyConfig;
 
 import java.util.EnumMap;
@@ -33,8 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This class the context that is passed through the chain of responsibility pattern.
- * Its main purpose is to hold the relevant data through the steps of the proxy config update process.
+ * This class holds relevant data through the steps of the proxy config update process.
  */
 public class ProxyConfigUpdateContext {
 
@@ -46,6 +47,7 @@ public class ProxyConfigUpdateContext {
     private final SystemManager systemManager;
     private final User user;
     private final SaltApi saltApi;
+    private final ProxyConfigGetFacade proxyConfigGetFacade;
 
     // Acquired/computed data
     private String proxyFqdn;
@@ -75,10 +77,30 @@ public class ProxyConfigUpdateContext {
             SaltApi saltApiIn,
             User userIn
     ) {
+        this(requestIn, systemManagerIn, saltApiIn, userIn, new ProxyConfigGetFacadeImpl());
+    }
+
+    /**
+     * Full params constructor
+     *
+     * @param requestIn              the request
+     * @param systemManagerIn        the system manager
+     * @param saltApiIn              the salt API
+     * @param userIn                 the user
+     * @param proxyConfigGetFacadeIn the proxy config get facade
+     */
+    public ProxyConfigUpdateContext(
+            ProxyConfigUpdateJson requestIn,
+            SystemManager systemManagerIn,
+            SaltApi saltApiIn,
+            User userIn,
+            ProxyConfigGetFacade proxyConfigGetFacadeIn
+    ) {
         this.request = requestIn;
         this.systemManager = systemManagerIn;
         this.saltApi = saltApiIn;
         this.user = userIn;
+        this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
 
     public ProxyConfigUpdateJson getRequest() {
@@ -89,40 +111,40 @@ public class ProxyConfigUpdateContext {
         return errorReport;
     }
 
-    public void setProxyFqdn(String proxyFqdnIn) {
-        this.proxyFqdn = proxyFqdnIn;
-    }
-
     public String getProxyFqdn() {
         return proxyFqdn;
+    }
+
+    public void setProxyFqdn(String proxyFqdnIn) {
+        this.proxyFqdn = proxyFqdnIn;
     }
 
     public Map<ProxyContainerImagesEnum, RegistryUrl> getRegistryUrls() {
         return registryUrls;
     }
 
-    public void setProxyMinion(MinionServer minionServerIn) {
-        this.proxyMinion = minionServerIn;
-    }
-
     public MinionServer getProxyMinion() {
         return proxyMinion;
     }
 
-    public void setParentServer(Server server) {
-        this.parentServer = server;
-    }
-
-    public void setProxyConfig(ProxyConfig proxyConfigIn) {
-        this.proxyConfig = proxyConfigIn;
+    public void setProxyMinion(MinionServer minionServerIn) {
+        this.proxyMinion = minionServerIn;
     }
 
     public Server getParentServer() {
         return parentServer;
     }
 
+    public void setParentServer(Server server) {
+        this.parentServer = server;
+    }
+
     public ProxyConfig getProxyConfig() {
         return proxyConfig;
+    }
+
+    public void setProxyConfig(ProxyConfig proxyConfigIn) {
+        this.proxyConfig = proxyConfigIn;
     }
 
     public SystemManager getSystemManager() {
@@ -133,12 +155,12 @@ public class ProxyConfigUpdateContext {
         return user;
     }
 
-    public void setProxyConfigFiles(Map<String, Object> proxyConfigFilesIn) {
-        this.proxyConfigFiles = proxyConfigFilesIn;
-    }
-
     public Map<String, Object> getProxyConfigFiles() {
         return proxyConfigFiles;
+    }
+
+    public void setProxyConfigFiles(Map<String, Object> proxyConfigFilesIn) {
+        this.proxyConfigFiles = proxyConfigFilesIn;
     }
 
     public String getRootCA() {
@@ -183,6 +205,10 @@ public class ProxyConfigUpdateContext {
 
     public SaltApi getSaltApi() {
         return saltApi;
+    }
+
+    public ProxyConfigGetFacade getProxyConfigGetFacade() {
+        return proxyConfigGetFacade;
     }
 }
 

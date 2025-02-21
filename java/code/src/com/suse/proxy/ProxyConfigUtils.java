@@ -30,19 +30,24 @@ import com.redhat.rhn.domain.server.Pillar;
 import com.suse.proxy.model.ProxyConfig;
 import com.suse.proxy.model.ProxyConfigImage;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Utility class for handling Proxy Config
  * Includes relevant constants and mappings from DTO / Pillar
+ * Pillar entries for the registry URLs will follow the example format:
+ * { ..., "registries": { "proxy-httpd": { "url": "https://.../proxy-httpd", "tag": "latest" }, ... } }
+ * names for the registry entries are defined in ProxyContainerImagesEnum image names
  */
 public class ProxyConfigUtils {
-
-    private static final String SAFE_SUFFIX = "_safe";
-    private static final String CERTIFICATE_HEADER = "-----BEGIN CERTIFICATE-----\n";
-
 
     private ProxyConfigUtils() {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
@@ -74,15 +79,10 @@ public class ProxyConfigUtils {
     public static final String REGISTRY_BASE_URL = "registryBaseURL";
     public static final String REGISTRY_BASE_TAG = "registryBaseTag";
 
-
-    // Pillar entries
-    // The pillar entries for the registry URLs will follow the example format:
-    // { ..., "registries": { "proxy-httpd": { "url": "https://.../proxy-httpd", "tag": "latest" }, ... } }
-    // names for the registry entries are defined in ProxyContainerImagesEnum image names
+    // Registry entries
     public static final String PILLAR_REGISTRY_ENTRY = "registries";
     public static final String PILLAR_REGISTRY_URL_ENTRY = "url";
     public static final String PILLAR_REGISTRY_TAG_ENTRY = "tag";
-
 
     /**
      * Maps a minion pillar ProxyConfig
@@ -91,20 +91,23 @@ public class ProxyConfigUtils {
      * @return the ProxyConfig
      */
     public static ProxyConfig proxyConfigFromPillar(Pillar rootPillar) {
-        Map<String, Object> pillar = rootPillar.getPillar();
         ProxyConfig proxyConfig = new ProxyConfig();
 
-        proxyConfig.setServerId((Long) pillar.get(SERVER_ID_FIELD));
-        proxyConfig.setProxyFqdn(String.valueOf(pillar.get(PROXY_FQDN_FIELD)));
+        if (rootPillar == null  || rootPillar.getPillar() == null) {
+            return proxyConfig;
+        }
+        Map<String, Object> pillar = rootPillar.getPillar();
 
-        proxyConfig.setParentFqdn(String.valueOf(pillar.get(PARENT_FQDN_FIELD)));
+        proxyConfig.setServerId((Long) pillar.get(SERVER_ID_FIELD));
+        proxyConfig.setProxyFqdn(Objects.toString(pillar.get(PROXY_FQDN_FIELD), null));
+        proxyConfig.setParentFqdn(Objects.toString(pillar.get(PARENT_FQDN_FIELD), null));
         proxyConfig.setProxyPort((Integer) pillar.get(PROXY_PORT_FIELD));
         proxyConfig.setMaxCache((Integer) pillar.get(MAX_CACHE_FIELD));
-        proxyConfig.setEmail(String.valueOf(pillar.get(EMAIL_FIELD)));
-        proxyConfig.setRootCA(String.valueOf(pillar.get(ROOT_CA_FIELD)));
+        proxyConfig.setEmail(Objects.toString(pillar.get(EMAIL_FIELD), null));
+        proxyConfig.setRootCA(Objects.toString(pillar.get(ROOT_CA_FIELD), null));
         proxyConfig.setIntermediateCAs((List<String>) pillar.get(INTERMEDIATE_CAS_FIELD));
-        proxyConfig.setProxyCert(String.valueOf(pillar.get(PROXY_CERT_FIELD)));
-        proxyConfig.setProxyKey(String.valueOf(pillar.get(PROXY_KEY_FIELD)));
+        proxyConfig.setProxyCert(Objects.toString(pillar.get(PROXY_CERT_FIELD), null));
+        proxyConfig.setProxyKey(Objects.toString(pillar.get(PROXY_KEY_FIELD), null));
 
 
         Map<String, Object> registries = (Map<String, Object>) pillar.get(PILLAR_REGISTRY_ENTRY);
@@ -162,12 +165,12 @@ public class ProxyConfigUtils {
     }
 
     /**
-     * Maps a ProxyConfig to a safe data map
+     * Maps a ProxyConfig
      *
      * @param proxyConfig the ProxyConfig
-     * @return the safe data map
+     * @return the data map
      */
-    public static Map<String, Object> safeDataMapFromProxyConfig(ProxyConfig proxyConfig) {
+    public static Map<String, Object> dataMapFromProxyConfig(ProxyConfig proxyConfig) {
         Map<String, Object> data = new HashMap<>();
 
         if (isAbsent(proxyConfig)) {
@@ -180,54 +183,67 @@ public class ProxyConfigUtils {
         data.put(PROXY_PORT_FIELD, proxyConfig.getProxyPort());
         data.put(MAX_CACHE_FIELD, proxyConfig.getMaxCache());
         data.put(EMAIL_FIELD, proxyConfig.getEmail());
-        data.put(ROOT_CA_FIELD + SAFE_SUFFIX, getSafeCertInput(proxyConfig.getRootCA()));
-        data.put(PROXY_CERT_FIELD + SAFE_SUFFIX, getSafeCertInput(proxyConfig.getProxyCert()));
-        data.put(PROXY_KEY_FIELD + SAFE_SUFFIX, getSafeCertInput(proxyConfig.getProxyKey()));
 
-        List<String> intermediateCAs = proxyConfig.getIntermediateCAs();
-        if (isProvided(intermediateCAs)) {
-            data.put(INTERMEDIATE_CAS_FIELD + SAFE_SUFFIX,
-                    intermediateCAs.stream()
-                            .map(ProxyConfigUtils::getSafeCertInput)
-                            .toList());
-        }
+        data.put(USE_CERTS_MODE_FIELD, USE_CERTS_MODE_KEEP);
 
         ProxyConfigImage httpdImage = proxyConfig.getHttpdImage();
+        ProxyConfigImage saltBrokerImage = proxyConfig.getSaltBrokerImage();
+        ProxyConfigImage squidImage = proxyConfig.getSquidImage();
+        ProxyConfigImage sshImage = proxyConfig.getSshImage();
+        ProxyConfigImage tftpdImage = proxyConfig.getTftpdImage();
+
+        // If all images are absent, we assume the source mode is RPM
+        if (allAbsent(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage)) {
+            data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_RPM);
+            return data;
+        }
+
+        // Otherwise we assume the source mode is registry
+        data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_REGISTRY);
+
+        // Check if all images have the same tag and prefix
+        boolean isRegistryModeSimple =
+                ProxyConfigUtils.getCommonTag(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage)
+                .map(tag ->
+                        ProxyConfigUtils.getCommonPrefix(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage)
+                        .map(prefix -> {
+                            data.put(REGISTRY_MODE, ProxyConfigUtils.REGISTRY_MODE_SIMPLE);
+                            data.put(REGISTRY_BASE_TAG, tag);
+                            data.put(REGISTRY_BASE_URL, prefix);
+                            return true;
+                        })
+                        .orElse(false))
+                .orElse(false);
+
+        if (isRegistryModeSimple) {
+            return data;
+        }
+
+        // Otherwise registry mode is advanced
+        data.put(REGISTRY_MODE, ProxyConfigUtils.REGISTRY_MODE_ADVANCED);
         if (isProvided(httpdImage)) {
             data.put(PROXY_HTTPD.getUrlField(), httpdImage.getUrl());
             data.put(PROXY_HTTPD.getTagField(), httpdImage.getTag());
         }
 
-        ProxyConfigImage saltBrokerImage = proxyConfig.getSaltBrokerImage();
         if (isProvided(saltBrokerImage)) {
             data.put(PROXY_SALT_BROKER.getUrlField(), saltBrokerImage.getUrl());
             data.put(PROXY_SALT_BROKER.getTagField(), saltBrokerImage.getTag());
         }
 
-        ProxyConfigImage squidImage = proxyConfig.getSquidImage();
         if (isProvided(squidImage)) {
             data.put(PROXY_SQUID.getUrlField(), squidImage.getUrl());
             data.put(PROXY_SQUID.getTagField(), squidImage.getTag());
         }
 
-        ProxyConfigImage sshImage = proxyConfig.getSshImage();
         if (isProvided(sshImage)) {
             data.put(PROXY_SSH.getUrlField(), sshImage.getUrl());
             data.put(PROXY_SSH.getTagField(), sshImage.getTag());
         }
 
-        ProxyConfigImage tftpdImage = proxyConfig.getTftpdImage();
         if (isProvided(tftpdImage)) {
             data.put(PROXY_TFTPD.getUrlField(), tftpdImage.getUrl());
             data.put(PROXY_TFTPD.getTagField(), tftpdImage.getTag());
-        }
-
-        if (allAbsent(httpdImage, saltBrokerImage, squidImage, sshImage, tftpdImage)) {
-            data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_RPM);
-        }
-        else {
-            data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_REGISTRY);
-            data.put(REGISTRY_MODE, ProxyConfigUtils.REGISTRY_MODE_ADVANCED);
         }
 
         return data;
@@ -241,8 +257,12 @@ public class ProxyConfigUtils {
      * @return a map of the data for the apply_proxy_config salt state file
      */
     public static Map<String, Object> applyProxyConfigDataFromPillar(Pillar rootPillar) {
-        Map<String, Object> pillar = rootPillar.getPillar();
         Map<String, Object> data = new HashMap<>();
+
+        if (rootPillar == null  || rootPillar.getPillar() == null || rootPillar.getPillar().isEmpty()) {
+            return data;
+        }
+        Map<String, Object> pillar = rootPillar.getPillar();
 
         data.put(PARENT_FQDN_FIELD, pillar.get(PARENT_FQDN_FIELD));
         data.put(PROXY_PORT_FIELD, pillar.get(PROXY_PORT_FIELD));
@@ -274,17 +294,75 @@ public class ProxyConfigUtils {
 
 
     /**
-     * Returns a preview of the certificate to be used as a (safe) preview
-     * Truncates the input to the 10 characters.
+     * Verifies if all the images have the same (non-nullable) tag
      *
-     * @param cert the input string
-     * @return the safe certificate input
+     * @param images the images to be verified
+     * @return the common tag if all images have the same tag, otherwise empty
      */
-    public static String getSafeCertInput(String cert) {
-        if (isAbsent(cert)) {
-            return null;
+    public static Optional<String> getCommonTag(ProxyConfigImage... images) {
+        if (isAbsent(images)) {
+            return Optional.empty();
         }
-        String content = cert.startsWith(CERTIFICATE_HEADER) ? cert.substring(CERTIFICATE_HEADER.length()) : cert;
-        return content.length() <= 10 ? content : content.substring(0, 10) + "...";
+
+        Set<String> tags = new HashSet<>();
+        for (ProxyConfigImage image : images) {
+            if (image == null || image.getTag() == null) {
+                return Optional.empty();
+            }
+            tags.add(image.getTag());
+        }
+
+        return tags.size() == 1 ? Optional.of(tags.iterator().next()) : Optional.empty();
     }
+
+    /**
+     * Verifies if all the images url have a common prefix
+     *
+     * @param images the images to be verified
+     * @return the common prefix if all images have the same prefix, otherwise empty
+     */
+    public static Optional<String> getCommonPrefix(ProxyConfigImage... images) {
+        if (isAbsent(images)) {
+            return Optional.empty();
+        }
+
+        Set<String> allowedImageNames = Arrays.stream(ProxyContainerImagesEnum.values())
+                .map(ProxyContainerImagesEnum::getImageName)
+                .collect(Collectors.toSet());
+
+        Set<String> imageUrlPrefixes = new HashSet<>();
+
+        for (ProxyConfigImage image : images) {
+            if (image == null || image.getUrl() == null) {
+                return Optional.empty();
+            }
+
+            String url = image.getUrl();
+            int lastSlash = url.lastIndexOf('/');
+
+            // If there is no slash, the image name is already invalid
+            if (lastSlash == -1) {
+                return Optional.empty();
+            }
+
+            // If the image name not provided or not in the allowed image names, then no common prefix
+            String imageName = url.substring(lastSlash + 1);
+            if (isAbsent(imageName) || !allowedImageNames.contains(imageName)) {
+                return Optional.empty();
+            }
+
+            // If the prefix is not provided, then no common prefix
+            String urlPrefix = url.substring(0, lastSlash + 1);
+            if (isAbsent(urlPrefix)) {
+                return Optional.empty();
+            }
+
+            // Add the prefix to a set
+            imageUrlPrefixes.add(urlPrefix);
+        }
+
+        // If the set does not contain exactly one entry, then no common prefix
+        return imageUrlPrefixes.size() == 1 ? Optional.of(imageUrlPrefixes.iterator().next()) : Optional.empty();
+    }
+
 }
