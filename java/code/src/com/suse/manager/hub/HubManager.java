@@ -40,8 +40,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
-import com.suse.manager.model.hub.ChannelInfoJson;
-import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -63,6 +61,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -375,6 +374,33 @@ public class HubManager {
         ensureServerNotRegistered(remoteServer);
 
         registerWithToken(user, remoteServer, rootCA, remoteToken);
+    }
+
+    /**
+     * Remove a registered Peripheral server
+     * @param user the user performing the operation
+     * @param peripheralId the peripheral entity id
+     *
+     * @throws CertificateException if the specified certificate is not parseable
+     */
+    public void deregister(User user, Long peripheralId) throws CertificateException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                accessToken.getToken(),
+                issPeripheral.getRootCa()
+        );
+        Transaction trans = HubFactory.getSession().beginTransaction();
+        try {
+            deletePeripheral(issPeripheral.getFqdn());
+            internalApi.deregister();
+            trans.commit();
+        }
+        catch (Exception exc) {
+            trans.rollback();
+        }
     }
 
     /**

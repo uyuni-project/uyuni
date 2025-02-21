@@ -98,7 +98,7 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub managementF
+        // Hub management
         get("/manager/api/admin/hub", withProductAdmin(this::pass));
         get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
 
@@ -107,9 +107,9 @@ public class HubApiController {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
-        delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::deletePeripheral));
 
-        // Peripheral channels
+        // Peripheral channels management
         get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
@@ -129,6 +129,17 @@ public class HubApiController {
                 .map(IssV3PeripheralsResponse::fromIssEntity).toList();
         TypeToken<PagedDataResultJson<IssV3PeripheralsResponse, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
+    }
+
+    private String deletePeripheral(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        try {
+            hubManager.deregister(satAdmin, peripheralId);
+        }
+        catch (CertificateException eIn) {
+            return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
+        }
+        return success(response);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
