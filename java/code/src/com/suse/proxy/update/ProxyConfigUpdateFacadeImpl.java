@@ -33,13 +33,13 @@ import java.util.List;
  * These steps have a specific order and are executed in sequence.
  * If an error occurs in any of these steps, the process halts and the errors are be reported.
  */
-public class ProxyConfigUpdate {
+public class ProxyConfigUpdateFacadeImpl implements ProxyConfigUpdateFacade {
     private final List<ProxyConfigUpdateContextHandler> contextHandlerChain = new ArrayList<>();
 
     /**
      * Constructor
      */
-    public ProxyConfigUpdate() {
+    public ProxyConfigUpdateFacadeImpl() {
         this.contextHandlerChain.addAll(asList(
                 new ProxyConfigUpdateAcquisitor(),
                 new ProxyConfigUpdateValidation(),
@@ -58,6 +58,7 @@ public class ProxyConfigUpdate {
      * @param saltApi       the salt API
      * @param user          the user
      */
+    @Override
     public void update(ProxyConfigUpdateJson request, SystemManager systemManager, SaltApi saltApi, User user) {
         ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, systemManager, saltApi, user);
 

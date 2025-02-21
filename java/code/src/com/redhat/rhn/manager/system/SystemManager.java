@@ -115,7 +115,8 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.manager.system.proxycontainerconfig.ProxyContainerConfigCreate;
+import com.redhat.rhn.manager.system.proxycontainerconfig.ProxyContainerConfigCreateFacade;
+import com.redhat.rhn.manager.system.proxycontainerconfig.ProxyContainerConfigCreateFacadeImpl;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
@@ -191,6 +192,7 @@ public class SystemManager extends BaseManager {
     private SaltApi saltApi;
     private ServerFactory serverFactory;
     private ServerGroupFactory serverGroupFactory;
+    private ProxyContainerConfigCreateFacade proxyContainerConfigCreateFacade;
 
     /**
      * Instantiates a new system manager.
@@ -210,6 +212,7 @@ public class SystemManager extends BaseManager {
                 new SystemUnentitler(monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApiIn, monitoringManager, serverGroupManager)
         );
+        this.proxyContainerConfigCreateFacade = new ProxyContainerConfigCreateFacadeImpl();
     }
 
     /**
@@ -2155,7 +2158,7 @@ public class SystemManager extends BaseManager {
                                              SSLCertManager certManager)
             throws SSLCertGenerationException {
 
-        return new ProxyContainerConfigCreate().create(
+        return proxyContainerConfigCreateFacade.create(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
                 rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager);
     }
@@ -2190,9 +2193,10 @@ public class SystemManager extends BaseManager {
             SSLCertPair caPair, String caPassword, SSLCertData certData,
             SSLCertManager certManager
     ) throws SSLCertGenerationException {
-        return new ProxyContainerConfigCreate().createFiles(
+        return this.proxyContainerConfigCreateFacade.createFiles(
                 saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
-                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager);
+                rootCA, intermediateCAs, proxyCertKey, caPair, caPassword, certData, certManager
+        );
     }
 
     /**
