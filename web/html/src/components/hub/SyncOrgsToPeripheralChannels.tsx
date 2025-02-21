@@ -4,7 +4,7 @@ import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { Table } from "components/table/Table";
+import { Table, TableRef } from "components/table/Table";
 import { showSuccessToastr } from "components/toastr";
 
 import Network from "utils/network";
@@ -16,8 +16,6 @@ export type Org = {
 };
 
 //TODO: logic for parent and clone channels
-// if a parent is selected for sync, sync all child channels too
-// if a clone of a vendor is selected for sync, sync father Vendor channel too
 export type Channel = {
   channelId: number;
   channelName: string;
@@ -28,6 +26,7 @@ export type Channel = {
 };
 
 export type SyncPeripheralsProps = {
+  peripheralId: number;
   availableOrgs: Org[];
   availableCustomChannels: Channel[];
   availableVendorChannels: Channel[];
@@ -36,50 +35,75 @@ export type SyncPeripheralsProps = {
 };
 
 type State = {
-  selectedOrg: Org | null;
+  peripheralId: number;
   syncedChannels: Channel[];
   availableOrgs: Org[];
   availableChannels: Channel[];
   syncModalOpen: boolean;
-  modalSelectedChannels: Channel[];
+  modalSelectedChannels: number[];
+  selectedOrg: Org | null;
 };
 
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
+  private tableRef: React.RefObject<TableRef> = React.createRef();
+
   constructor(props: SyncPeripheralsProps) {
     super(props);
     this.state = {
-      selectedOrg: null,
+      peripheralId: props.peripheralId,
       syncedChannels: props.syncedCustomChannels.concat(props.syncedVendorChannels),
       availableOrgs: props.availableOrgs,
       availableChannels: props.availableCustomChannels.concat(props.availableVendorChannels),
       syncModalOpen: false,
       modalSelectedChannels: [],
+      selectedOrg: null,
     };
   }
 
-  onChannelSyncConfirm = (channels: Channel[]) => {
-    let newChannels = this.state.syncedChannels.concat(channels);
-    this.setState({ syncedChannels: newChannels });
-    const request: number[] = [];
-    Network.post("/rhn/manager/api/admin/hub/peripheral/:id/channels", request)
-      .catch((xhr) => Network.showResponseErrorToastr(xhr))
-      .then((response) => {
-        // On successfull sync to peripheral
+  private setStateFromApiProps(props: SyncPeripheralsProps) {
+    this.setState({
+      syncedChannels: props.syncedCustomChannels.concat(props.syncedVendorChannels),
+      availableOrgs: props.availableOrgs,
+      availableChannels: props.availableCustomChannels.concat(props.availableVendorChannels),
+    });
+  }
+
+  private openCloseModalState(isOpen: boolean) {
+    this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: isOpen });
+  }
+
+  onChannelSyncConfirm = (event) => {
+    const { peripheralId, modalSelectedChannels } = this.state;
+    const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/channels`;
+
+    const syncChannels = () =>
+      Network.post(endpoint, modalSelectedChannels).then(() => {
         showSuccessToastr(t("Channels synced correctly to peripheral!"));
+        return Network.get(endpoint);
+      });
+    syncChannels()
+      .then((response: SyncPeripheralsProps) => {
+        this.setStateFromApiProps(response);
       })
-      .finally(() => {});
+      .catch((error) => {
+        Network.showResponseErrorToastr(error);
+      });
   };
 
-  onChannelToSyncSelect = (channels: Channel[]) => {
-    this.setState({ modalSelectedChannels: channels });
+  onChannelToSyncSelect = (channelsIds: number[]) => {
+    this.setState({ modalSelectedChannels: channelsIds });
   };
 
-  onChannelSyncModalOpen = () => this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: true });
+  onChannelSyncModalOpen = () => {
+    this.openCloseModalState(true);
+  };
 
-  onChannelSyncModalClose = () => this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: false });
+  onChannelSyncModalClose = () => {
+    this.openCloseModalState(false);
+  };
 
   render() {
-    const { syncedChannels, availableChannels } = this.state;
+    const { syncedChannels, availableChannels, modalSelectedChannels, syncModalOpen } = this.state;
 
     const searchData = (row, criteria) => {
       const keysToSearch = ["name"];
@@ -100,6 +124,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
           identifier={(row: Channel) => row.channelId}
           selectable={false}
           initialSortColumnKey="name"
+          ref={this.tableRef}
           searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
         >
           <Column columnKey="name" header={t("Name")} cell={(row: Channel) => <span>{row.channelName}</span>} />
@@ -129,7 +154,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
           identifier={(row: Channel) => row.channelId}
           selectable={true}
           onSelect={this.onChannelToSyncSelect}
-          selectedItems={this.state.modalSelectedChannels}
+          selectedItems={modalSelectedChannels}
           initialSortColumnKey="name"
           searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
         >
@@ -183,7 +208,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
           id="sync-channel-modal"
           title={t("Add Channel to Sync")}
           content={modalContent}
-          isOpen={this.state.syncModalOpen}
+          isOpen={syncModalOpen}
           footer={modalFooter}
           onClose={this.onChannelSyncModalClose}
         />
@@ -191,3 +216,4 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     );
   }
 }
+export default SyncOrgsToPeripheralChannel;

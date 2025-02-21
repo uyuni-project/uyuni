@@ -70,7 +70,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -407,16 +406,13 @@ public class HubManager {
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
-        // TODO: is this the correct way to get a transaction here?
-        Transaction trans = HubFactory.getSession().beginTransaction();
+        // TODO: transaction here
         try {
             deletePeripheral(issPeripheral.getFqdn());
             internalApi.deregister();
-            trans.commit();
         }
         catch (IOException exc) {
-            LOG.error("Failed to communicate with Peripheral ");
-            trans.rollback();
+            // TODO: rollback here
             throw exc;
         }
     }
@@ -1239,9 +1235,9 @@ public class HubManager {
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
-        Transaction transaction = HubFactory.getSession().beginTransaction();
+        // TODO: transaction start
         try {
-            Set<String> channelsLabel = new HashSet<>();
+            List<String> channelsLabel = new ArrayList<>();
             Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
             channels.forEach(ch -> {
                 peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch));
@@ -1250,10 +1246,9 @@ public class HubManager {
             issPeripheral.setPeripheralChannels(peripheralChannels);
             hubFactory.save(issPeripheral);
             internalApi.syncVendorChannels(channelsLabel);
-            transaction.commit();
         }
         catch (IOException eIn) {
-            transaction.rollback();
+            // TODO: transaction rollback
             throw eIn;
         }
     }

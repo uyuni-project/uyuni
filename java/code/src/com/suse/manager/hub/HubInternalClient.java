@@ -17,7 +17,6 @@ import com.suse.manager.model.hub.OrgInfoJson;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Hub Inter-Server-Sync Client to connect a remote server and invoke the private server-to-server Rest-like API
@@ -91,6 +90,6 @@ public interface HubInternalClient {
      * @return a list with minimal info about the synced channels
      * @throws IOException when the communication fails
      */
-    List<ChannelInfoJson> syncVendorChannels(Set<String> channelsLabelIn) throws IOException;
+    List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException;
 
 }

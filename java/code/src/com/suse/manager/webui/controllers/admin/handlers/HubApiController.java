@@ -150,8 +150,13 @@ public class HubApiController {
         try {
             operation.apply(satAdmin, peripheralId, channelsId);
         }
-        catch (CertificateException | IOException e) {
-            return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
         }
         return success(response);
     }
@@ -179,8 +184,13 @@ public class HubApiController {
         try {
             hubManager.deregister(satAdmin, peripheralId);
         }
-        catch (CertificateException | IOException eIn) {
-            return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
         }
         return success(response);
     }
