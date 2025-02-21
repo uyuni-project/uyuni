@@ -6188,147 +6188,147 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.success.singular" xml:space="preserve">
         <source>{0} system has been &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; to reboot at {1}.</source>
-        <target/>
+        <target state="translated">{0} systém bol &lt;a href="/rhn/schedule/PendingActions.do"&gt;naplánovaný&lt;/a&gt; na reštart o {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.success.plural" xml:space="preserve">
         <source>{0} systems have been &lt;a href="/rhn/schedule/PendingActions.do"&gt;scheduled&lt;/a&gt; to reboot at {1}.</source>
-        <target/>
+        <target state="translated">{0} systémy boli &lt;a href="/rhn/schedule/PendingActions.do"&gt;naplánované&lt;/a&gt; na reštart o {1}.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.queued.singular" xml:space="preserve">
         <source>{0} system reboot has been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">{0} reštart systému bol pridaný do reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.queued.plural" xml:space="preserve">
         <source>{0} system reboots have been added to the Action Chain &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</source>
-        <target/>
+        <target state="translated">{0} reštarty systémov boli pridané do reťazca akcií &lt;a href="/rhn/schedule/ActionChain.do?id={1}"&gt;{2}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.message.error.noselect" xml:space="preserve">
         <source>Please select at least one system for reboot.</source>
-        <target/>
+        <target state="translated">Vyberte aspoň jeden systém pre reštart.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.no-system" xml:space="preserve">
         <source>There are no selected systems.</source>
-        <target/>
+        <target state="translated">Neexistujú žiadne vybrané systémy.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.confirm" xml:space="preserve">
         <source>Confirm</source>
-        <target/>
+        <target state="translated">Potvrdiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.tabtitle" xml:space="preserve">
         <source>Lock/Unlock</source>
-        <target/>
+        <target state="translated">Zamknúť/Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.header" xml:space="preserve">
         <source>Lock or Unlock the Systems</source>
-        <target/>
+        <target state="translated">Zamknúť alebo odomknúť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.summary" xml:space="preserve">
         <source>Select system to lock or unlock their profiles. No updates will occur to locked systems until they are unlocked.</source>
-        <target/>
+        <target state="translated">Vyberte systém na zamknutie alebo odomknutie ich profilov. Žiadne aktualizácie sa v zamknutých systémoch nevykonajú, kým nebudú odomknuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.dispatch.lock" xml:space="preserve">
         <source>Lock</source>
-        <target/>
+        <target state="translated">Zamknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.dispatch.unlock" xml:space="preserve">
         <source>Unlock</source>
-        <target/>
+        <target state="translated">Odomknúť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.success" xml:space="preserve">
         <source>Out of {0} selected systems, {1} has been locked.</source>
-        <target/>
+        <target state="translated">Z {0} vybraných systémov bol {1} zamknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.skipped" xml:space="preserve">
         <source>No systems has been locked.</source>
-        <target/>
+        <target state="translated">Žiadny systém nebol zamknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.all.success" xml:space="preserve">
         <source>All selected systems has been locked.</source>
-        <target/>
+        <target state="translated">Všetky vybrané systémy boli zamknuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.all.skipped" xml:space="preserve">
         <source>None of selected systems has been locked.</source>
-        <target/>
+        <target state="translated">Žiadny z vybraných systémov nebol zamknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.unlocked.success" xml:space="preserve">
         <source>Out of {0} selected systems, {1} has been unlocked.</source>
-        <target/>
+        <target state="translated">Z {0} vybraných systémov bol {1} odomknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.unlocked.skipped" xml:space="preserve">
         <source>No systems has been unlocked.</source>
-        <target/>
+        <target state="translated">Žiadny systém nebol odomknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.success" xml:space="preserve">
         <source>All selected systems has been unlocked.</source>
-        <target/>
+        <target state="translated">Všetky vybrané systémy boli odomknuté.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.unlocked.all.skipped" xml:space="preserve">
         <source>None of selected systems has been unlocked.</source>
-        <target/>
+        <target state="translated">Žiadny z vybraných systémov nebol odomknutý.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.lockunlock.message.locked.missingreason" xml:space="preserve">
         <source>In order to lock a system, please specify the reason.</source>
-        <target/>
+        <target state="translated">Ak chcete systém zamknúť, prosím, uveďte dôvod.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
@@ -6336,49 +6336,49 @@ organization. You may grant or remove the organization administrator role in the
       <!-- == Systems == -->
       <trans-unit id="overview.jsp.header" xml:space="preserve">
         <source>System Overview</source>
-        <target/>
+        <target state="translated">Prehľad systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.alt" xml:space="preserve">
         <source>System Icon</source>
-        <target/>
+        <target state="translated">Systémová ikona</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.systems" xml:space="preserve">
         <source>View System Groups</source>
-        <target/>
+        <target state="translated">Zobraziť systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="overview.jsp.groups" xml:space="preserve">
         <source>View Systems</source>
-        <target/>
+        <target state="translated">Zobraziť systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.header" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.physicalheader" xml:space="preserve">
         <source>Physical Systems</source>
-        <target/>
+        <target state="translated">Fyzické systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.status" xml:space="preserve">
         <source>Updates</source>
-        <target/>
+        <target state="translated">Aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6386,7 +6386,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.monitoring" xml:space="preserve">
         <source>Health</source>
-        <target/>
+        <target state="translated">Zdravie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/rhn/YourRhn</context>
@@ -6394,7 +6394,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.errata" xml:space="preserve">
         <source>Patches</source>
-        <target/>
+        <target state="translated">Opravy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>

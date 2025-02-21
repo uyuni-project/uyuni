@@ -32,7 +32,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-24 15:21+0100\n"
-"PO-Revision-Date: 2023-10-16 10:15+0000\n"
+"PO-Revision-Date: 2025-02-12 11:50+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/zh_CN/>\n"
@@ -41,7 +41,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.9.2\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -459,7 +459,7 @@ msgid ""
 "There was an error loading your configuration.  Make sure that\n"
 "you have read access to /etc/sysconfig/rhn."
 msgstr ""
-"装载配置时出错。请确保\n"
+"加载配置时出错。请确保\n"
 "您对 /etc/sysconfig/rhn 拥有读取访问权限。"
 
 #: ../src/up2date_client/rhnregGui.py:1294
