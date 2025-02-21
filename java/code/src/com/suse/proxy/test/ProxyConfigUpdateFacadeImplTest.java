@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.RhnGeneralException;
 import com.redhat.rhn.testing.MockObjectTestCase;
 
-import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 import com.suse.proxy.update.ProxyConfigUpdateContext;
 import com.suse.proxy.update.ProxyConfigUpdateContextHandler;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
 import org.jmock.junit5.JUnit5Mockery;
 import org.junit.Test;
@@ -127,8 +127,10 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
      * @throws IllegalAccessException if the field cannot be accessed
      */
     @SuppressWarnings("squid:S3011")
-    private void replaceHandlers(ProxyConfigUpdateFacadeImpl proxyConfigUpdate, List<ProxyConfigUpdateContextHandler> handlers)
-            throws NoSuchFieldException, IllegalAccessException {
+    private void replaceHandlers(
+            ProxyConfigUpdateFacadeImpl proxyConfigUpdate,
+            List<ProxyConfigUpdateContextHandler> handlers
+    ) throws NoSuchFieldException, IllegalAccessException {
         Field field = ProxyConfigUpdateFacadeImpl.class.getDeclaredField("contextHandlerChain");
         field.setAccessible(true);
         field.set(proxyConfigUpdate, handlers);
