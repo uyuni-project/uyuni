@@ -154,21 +154,30 @@ public class ProductsController {
     /**
      * Trigger a synchronization of Products
      *
-     * @param request the request
+     * @param request  the request
      * @param response the response
-     * @param user the user
+     * @param user     the user
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeProducts(Request request, Response response, User user) {
+        return json(response, doSynchronizeProducts());
+    }
+
+    /**
+     * Trigger a synchronization of Products
+     *
+     * @return a boolean flag of the success/failed result
+     */
+    public static boolean doSynchronizeProducts() {
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
                 csm.updateSUSEProducts(csm.getProducts());
-                return json(response, true);
+                return true;
             }
             catch (Exception e) {
                 log.fatal(e.getMessage(), e);
-                return json(response, false);
+                return false;
             }
         });
     }
@@ -182,15 +191,24 @@ public class ProductsController {
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeChannelFamilies(Request request, Response response, User user) {
+        return json(response, doSynchronizeChannelFamilies());
+    }
+
+    /**
+     * Trigger a synchronization of Channel Families
+     *
+     * @return a boolean flag of the success/failed result
+     */
+    public static boolean doSynchronizeChannelFamilies() {
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
                 csm.updateChannelFamilies(csm.readChannelFamilies());
-                return json(response, true);
+                return true;
             }
             catch (Exception e) {
                 log.fatal(e.getMessage(), e);
-                return json(response, false);
+                return false;
             }
         });
     }
@@ -198,21 +216,30 @@ public class ProductsController {
     /**
      * Trigger a synchronization of Repositories
      *
-     * @param request the request
+     * @param request  the request
      * @param response the response
-     * @param user the user
+     * @param user     the user
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeRepositories(Request request, Response response, User user) {
+        return json(response, doSynchronizeRepositories());
+    }
+
+    /**
+     * Trigger a synchronization of Repositories
+     *
+     * @return a boolean flag of the success/failed result
+     */
+    public static boolean doSynchronizeRepositories() {
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
                 csm.updateRepositories(null);
-                return json(response, true);
+                return true;
             }
             catch (Exception e) {
                 log.fatal(e.getMessage(), e);
-                return json(response, false);
+                return false;
             }
         });
     }
@@ -220,21 +247,30 @@ public class ProductsController {
     /**
      * Trigger a synchronization of Subscriptions
      *
-     * @param request the request
+     * @param request  the request
      * @param response the response
-     * @param user the user
+     * @param user     the user
      * @return a JSON flag of the success/failed result
      */
     public static String synchronizeSubscriptions(Request request, Response response, User user) {
+        return json(response, doSynchronizeSubscriptions());
+    }
+
+    /**
+     * Trigger a synchronization of Subscriptions
+     *
+     * @return a boolean flag of the success/failed result
+     */
+    public static boolean doSynchronizeSubscriptions() {
         return FileLocks.SCC_REFRESH_LOCK.withFileLock(() -> {
             try {
                 ContentSyncManager csm = new ContentSyncManager();
                 csm.updateSubscriptions();
-                return json(response, true);
+                return true;
             }
             catch (Exception e) {
                 log.fatal(e.getMessage(), e);
-                return json(response, false);
+                return false;
             }
         });
     }
