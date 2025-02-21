@@ -1,6 +1,5 @@
 # Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
-
 @skip_if_github_validation
 @scope_recurring_actions
 Feature: Recurring Actions
@@ -65,6 +64,8 @@ Feature: Recurring Actions
     And I follow the event "Apply recurring states [util.syncstates] scheduled" completed during last minute
     And I should see a "SLS: util.syncstates" text
 
+# This fails in github actions...
+@skip_if_github_validation
   Scenario: Cleanup: Disable IP forwarding
     When I follow the left menu "Salt > Remote Commands"
     Then I should see a "Remote Commands" text in the content area

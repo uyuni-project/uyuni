@@ -16,12 +16,13 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.user.User;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * ServerLock - Class representation of the table rhnServerLock.
  */
-public class ServerLock {
+public class ServerLock implements Serializable {
 
     private Long id;
     private Server server;

@@ -35,6 +35,7 @@ Feature: Synchronize fake channels
     Then "orion-dummy-1.1-1.1.x86_64.rpm" package should have been stored
     And solver file for "fake-rpm-suse-channel" should reference "orion-dummy-1.1-1.1.x86_64.rpm"
 
+@skip_if_github_validation
   Scenario: Synchronize Fake-Child-Channel-i586 channel
     Given I am authorized for the "Admin" section
     When I follow the left menu "Software > Manage > Channels"

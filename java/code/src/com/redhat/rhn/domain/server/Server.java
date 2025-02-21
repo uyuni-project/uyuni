@@ -500,7 +500,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     /**
      * Protected constructor
      */
-    protected Server() {
+    public Server() {
         devices = new HashSet<>();
         notes = new HashSet<>();
         networkInterfaces = new HashSet<>();

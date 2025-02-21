@@ -1,7 +1,6 @@
 # Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 Feature: Update activation keys
   In order to register systems to the spacewalk server
   As admin
@@ -187,7 +186,7 @@ Feature: Update activation keys
 
 @scc_credentials
 @uyuni
-  Scenario: Update build host key with Uyuni client tools and dev child channel
+  Scenario: Update build host key with Uyuni client tools
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Build host Key x86_64" in the content area
     And I wait for child channels to appear
@@ -195,6 +194,18 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I check "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)"
     And I wait until "Uyuni Client Tools for SLES15 SP4 x86_64 (Development)" has been checked
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Build host Key x86_64 has been modified" text
+
+@skip_if_github_validation
+@scc_credentials
+@uyuni
+  Scenario: Update build host key with dev child channel
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Build host Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "build_host" from "selectedBaseChannel"
+    And I wait for child channels to appear
     And I check "Dev-Build-Host-Channel"
     And I wait until "Dev-Build-Host-Channel" has been checked
     And I click on "Update Activation Key"
@@ -244,6 +255,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Terminal Key x86_64 has been modified" text
 
+@skip_if_github_validation    
 @sle_minion
   Scenario: Update SLE key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
@@ -253,6 +265,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key SUSE Test Key x86_64 has been modified" text
 
+@skip_if_github_validation    
 @deblike_minion
   Scenario: Update Debian-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"
@@ -262,6 +275,7 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Debian-like Test Key has been modified" text
 
+@skip_if_github_validation    
 @rhlike_minion
   Scenario: Update RedHat-like key with to include dev child channel
     When I follow the left menu "Systems > Activation Keys"

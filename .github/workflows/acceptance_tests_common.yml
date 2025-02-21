@@ -117,14 +117,14 @@ jobs:
         run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
       - name: Configure SSHD in controller, server, build host and SSH minion
         run: ./testsuite/podman_runner/11_setup_sshd.sh
-      - name: Run Core tests
-        run: ./testsuite/podman_runner/12_run_core_tests.sh
       - name: Run and configure Salt Minion container
-        run: ./testsuite/podman_runner/13_run_salt_sle_minion.sh
+        run: ./testsuite/podman_runner/12_run_salt_sle_minion.sh
       - name: Run and configure RH-Like Minion container
-        run: ./testsuite/podman_runner/14_run_salt_rhlike_minion.sh
+        run: ./testsuite/podman_runner/13_run_salt_rhlike_minion.sh
       - name: Run and configure Deb-Like Minion container
-        run: ./testsuite/podman_runner/15_run_salt_deblike_minion.sh
+        run: ./testsuite/podman_runner/14_run_salt_deblike_minion.sh
+      - name: Run Core tests
+        run: ./testsuite/podman_runner/15_run_core_tests.sh
       - name: Accept all keys
         run: ./testsuite/podman_runner/16_accept_all_keys.sh
       - name: Run init clients

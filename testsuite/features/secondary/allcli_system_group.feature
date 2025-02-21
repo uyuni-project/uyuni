@@ -1,7 +1,6 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
-@skip_if_github_validation
 @scope_visualization
 Feature: Manage a group of systems
 
@@ -90,13 +89,6 @@ Feature: Manage a group of systems
     And I should see a "Action Details" text
     And I wait until I see "2 systems successfully completed this action." text, refreshing the page
 
-  Scenario: Remove SLE client from new group
-    Given I am on the Systems overview page of this "rhlike_minion"
-    When I follow "Groups"
-    And I check "new-systems-group" in the list
-    And I click on "Leave Selected Groups"
-    Then I should see a "1 system groups removed." text
-
   Scenario: Remove SLE minion from new group
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups"
@@ -106,7 +98,7 @@ Feature: Manage a group of systems
 
   # Red Hat-like minion is intentionally not removed from group
 
-  @skip_if_containerized_server
+@skip_if_containerized_server
   Scenario: Cleanup: uninstall formula from the server
     When I manually uninstall the "locale" formula from the server
 

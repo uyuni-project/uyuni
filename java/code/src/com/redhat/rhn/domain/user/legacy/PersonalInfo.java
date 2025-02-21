@@ -17,11 +17,13 @@ package com.redhat.rhn.domain.user.legacy;
 
 import com.redhat.rhn.domain.user.User;
 
+import java.io.Serializable;
+
 /**
  * Class PersonalInfo that reflects the DB representation of WEB_USER_PERSONAL_INFO
  * DB table: WEB_USER_PERSONAL_INFO
  */
-public class PersonalInfo extends AbstractUserChild {
+public class PersonalInfo extends AbstractUserChild implements Serializable {
 
     private String prefix;
     private String firstNames;

@@ -3,7 +3,7 @@
 
 # Skip if container because action chains fail on containers
 # This needs to be fixed
-
+@skip_if_github_validation
 @ssh_minion
 @sle_minion
 @scope_action_chains

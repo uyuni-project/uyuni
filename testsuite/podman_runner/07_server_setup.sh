@@ -78,8 +78,8 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -e EXTERNALDB_PROVIDER=""  \
     -e ISS_PARENT=""  \
     -e ACTIVATE_SLP=""  \
-    -e SCC_USER=""  \
-    -e SCC_PASS=""  \
+    -e SCC_USER="test"  \
+    -e SCC_PASS="test"  \
     --cgroupns=host \
     -h server \
     --name=server-setup \
@@ -91,3 +91,4 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema" 
+

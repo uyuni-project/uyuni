@@ -188,5 +188,6 @@ end
 # @param repo_url [String] The URL of the repository to check.
 # @return [Boolean] Returns true if the repository is a development repository, false otherwise.
 def devel_repo?(repo_url)
-  repo_url.downcase.include?('devel') || repo_url.downcase.include?('systemsmanagement')
+  url = repo_url.downcase
+  (url.include?('devel') || url.include?('systemsmanagement')) && !url.include?('sle-module')
 end

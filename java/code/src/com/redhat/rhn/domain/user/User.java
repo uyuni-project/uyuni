@@ -607,4 +607,15 @@ public interface User extends Serializable {
      * @param webThemeIn style web theme to set
      */
     void setWebTheme(String webThemeIn);
+
+    /**
+     * Determine if this was org admin.
+     * @return Boolean
+     */
+    Boolean wasOrgAdmin();
+
+    /**
+     * Reset the wasOrgAdmin value.
+     */
+    void resetWasOrgAdmin();
 }

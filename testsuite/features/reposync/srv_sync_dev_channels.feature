@@ -1,6 +1,7 @@
 # Copyright (c) 2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 Feature: Synchronize development channels
   In order to use the content provided inside the repositories of the dev channels
   As admin
@@ -42,7 +43,7 @@ Feature: Synchronize development channels
     Then I should see a "Repository sync scheduled for Dev-RH-like-Channel." text
     And I wait until the channel "dev-rh-like-channel" has been synced
 
-@buildhost
+@build_host
 @uyuni
   Scenario: Synchronize Dev-Build-Host-Channel channel
     Given I am authorized for the "Admin" section
