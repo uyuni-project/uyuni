@@ -117,7 +117,11 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/addVendorChannels", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/addCustomChannels", IssRole.HUB),
-                Arguments.of(HttpMethod.post, "/hub/modifyCustomChannels", IssRole.HUB)
+                Arguments.of(HttpMethod.post, "/hub/modifyCustomChannels", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/channelfamilies", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/products", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/repositories", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/sync/subscriptions", IssRole.HUB)
         );
     }
 

@@ -18,6 +18,7 @@ import static com.suse.manager.hub.HubSparkHelper.usingTokenAuthentication;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.message;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static spark.Spark.get;
@@ -110,6 +111,14 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::addCustomChannels))));
         post("/hub/modifyCustomChannels",
                 asJson(usingTokenAuthentication(onlyFromHub(this::modifyCustomChannels))));
+        post("/hub/sync/channelfamilies",
+                asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeChannelFamilies))));
+        post("/hub/sync/products",
+                asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeProducts))));
+        post("/hub/sync/repositories",
+                asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeRepositories))));
+        post("/hub/sync/subscriptions",
+                asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeSubscriptions))));
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
@@ -346,5 +355,21 @@ public class HubController {
                                 (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
                         .toList();
         return success(response, modifiedCustomChannelsInfoList);
+    }
+
+    private String synchronizeChannelFamilies(Request request, Response response, IssAccessToken token) {
+        return json(response, hubManager.synchronizeChannelFamilies(token));
+    }
+
+    private String synchronizeProducts(Request request, Response response, IssAccessToken token) {
+        return json(response, hubManager.synchronizeProducts(token));
+    }
+
+    private String synchronizeRepositories(Request request, Response response, IssAccessToken token) {
+        return json(response, hubManager.synchronizeRepositories(token));
+    }
+
+    private String synchronizeSubscriptions(Request request, Response response, IssAccessToken token) {
+        return json(response, hubManager.synchronizeSubscriptions(token));
     }
 }
