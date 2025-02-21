@@ -70,7 +70,8 @@ public class ProxyConfigUpdateRegistryPreConditions implements ProxyConfigUpdate
                 registryUtils.getTags(context.getRegistryUrls().get(proxyImage));
             }
             catch (ParseException parseException) {
-                LOG.error("Failed to get tags for: {} {}", proxyImage.getImageName(), context.getRegistryUrls().get(proxyImage));
+                LOG.error("Failed to get tags for: {} {}",
+                        proxyImage.getImageName(), context.getRegistryUrls().get(proxyImage));
                 context.getErrorReport().register(
                         "Failed to get tags for: " + proxyImage.getImageName()
                 );

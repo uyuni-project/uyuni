@@ -10,7 +10,7 @@ import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput
 import { unflattenModel } from "components/input/form-utils";
 import { Radio } from "components/input/radio/Radio";
 import { Text } from "components/input/text/Text";
-import { Panel } from "components/panels/Panel";
+import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
@@ -36,13 +36,9 @@ enum RegistryMode {
 
 type ProxyConfigModel = {
   rootCA: string;
-  rootCA_safe?: string;
   proxyCertificate: string;
-  proxyCertificate_safe?: string;
   proxyKey: string;
-  proxyKey_safe?: string;
   intermediateCAs?: string[];
-  intermediateCAs_safe?: string[];
   proxyAdminEmail: string;
   maxSquidCacheSize: string;
   parentFQDN: string;
@@ -130,7 +126,13 @@ const tagMapping = {
   registryTftpdURL: "registryTftpdTag",
 };
 
-export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFailMessage }: ProxyConfigProps) {
+export function ProxyConfig({
+  serverId,
+  isUyuni,
+  parents,
+  currentConfig,
+  initFailMessage,
+}: Readonly<ProxyConfigProps>) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
@@ -138,8 +140,7 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
   const [errors, setErrors] = useState({});
   const [tagOptions, setTagOptions] = useState<TagOptions>({});
 
-  const showUseCertsMode =
-    currentConfig.rootCA_safe || currentConfig.proxyKey_safe || currentConfig.proxyCertificate_safe;
+  const hasExistingConfig = currentConfig !== undefined && Object.keys(currentConfig).length > 0;
   const originalConfig = { ...currentConfig };
 
   const [model, setModel] = useState(() => {
@@ -148,13 +149,6 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
       ...currentConfig,
     };
 
-    if (showUseCertsMode) {
-      return {
-        ...initialModel,
-        useCertsMode: UseCertsMode.Keep,
-      };
-    }
-
     return initialModel;
   });
 
@@ -162,6 +156,8 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
     if (currentConfig.sourceMode === SourceMode.RPM) {
       //work-around to trigger validation for filled forms using RPM
       retrieveRegistryTags(currentConfig, null);
+    } else if (currentConfig.registryBaseURL) {
+      retrieveRegistryTags(currentConfig, "registryBaseURL");
     } else {
       imageNames.forEach((url) => {
         if (currentConfig[url]) {
@@ -302,7 +298,9 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
   const restoreRegistryInputs = () => {
     setModel({
       ...model,
-      registryMode: RegistryMode.Advanced,
+      registryMode: originalConfig.registryMode,
+      registryBaseURL: originalConfig.registryBaseURL,
+      registryBaseTag: originalConfig.registryBaseTag,
       registryHttpdURL: originalConfig.registryHttpdURL,
       registryHttpdTag: originalConfig.registryHttpdTag,
       registrySaltbrokerURL: originalConfig.registrySaltbrokerURL,
@@ -322,14 +320,10 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
     }
   };
 
-  const onChangeRegistryeMode = (e, v) => {
-    if (RegistryMode.Advanced === v && Object.keys(originalConfig).length > 0) {
+  const onChangeRegistryMode = (e, v) => {
+    if (originalConfig.registryMode === v && Object.keys(originalConfig).length > 0) {
       restoreRegistryInputs();
     }
-  };
-
-  const getMinionNames = (data: any[] = []) => {
-    return Array.from(new Set(data.map((item) => item.name))).sort();
   };
 
   const useDebounce = (callback: (...args: any) => any, timeoutMs: number) =>
@@ -413,7 +407,7 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
             placeholder={t("e.g., server.domain.com")}
             labelClass="col-md-3"
             divClass="col-md-6"
-            options={getMinionNames(parents)}
+            options={parents}
             isClearable={true}
           />
           <Text
@@ -447,7 +441,7 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
             divClass="col-md-6"
           />
           <hr />
-          {showUseCertsMode && (
+          {hasExistingConfig && (
             <Radio
               name="useCertsMode"
               label={t("Certificates")}
@@ -466,54 +460,18 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
           )}
           {Object.keys(currentConfig).length > 0 && model.useCertsMode === UseCertsMode.Keep && (
             <>
-              <Text
-                name={"rootCA_safe"}
-                defaultValue={currentConfig.rootCA_safe}
-                label={t("Root CA")}
-                hint={t("To sign the SSL certificate in PEM format")}
-                type="text"
-                disabled={true}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-              />
-              <Panel
-                headingLevel="label"
-                title={t("Intermediate CAs")}
-                className="panel-default col-md-6 offset-md-3 no-padding"
-              >
-                {(currentConfig.intermediateCAs_safe || []).map((ca, index) => (
-                  <Text
-                    key={index}
-                    name={`intermediateCAs${index}_safe`}
-                    defaultValue={ca}
-                    label={t("CA file in PEM format")}
-                    type="text"
-                    disabled={true}
-                    labelClass="col-md-3 no-padding"
-                    divClass="col-md-9"
-                  />
-                ))}
-              </Panel>
-              <Text
-                name={"proxyCertificate_safe"}
-                defaultValue={currentConfig.proxyCertificate_safe}
-                label={t("Proxy certificate")}
-                hint={t("In PEM format")}
-                type="text"
-                disabled={true}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-              />
-              <Text
-                name={"proxyKey_safe"}
-                defaultValue={currentConfig.proxyKey_safe}
-                label={t("Proxy SSL private key")}
-                hint={t("In PEM format")}
-                type="text"
-                disabled={true}
-                labelClass="col-md-3"
-                divClass="col-md-6"
-              />
+              <div className="offset-md-3 col-md-6">
+                <Messages
+                  items={[
+                    {
+                      severity: "info",
+                      text: t(
+                        "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+                      ),
+                    },
+                  ]}
+                />
+              </div>
             </>
           )}
           {(currentConfig === undefined || model.useCertsMode === UseCertsMode.Replace) && (
@@ -602,7 +560,7 @@ export function ProxyConfig({ serverId, isUyuni, parents, currentConfig, initFai
                   { label: t("Simple"), value: RegistryMode.Simple },
                   { label: t("Advanced"), value: RegistryMode.Advanced },
                 ]}
-                onChange={onChangeRegistryeMode}
+                onChange={onChangeRegistryMode}
               />
               {model.registryMode === RegistryMode.Simple && (
                 <>

@@ -17,6 +17,9 @@ package com.suse.rest;
 
 import java.util.Map;
 
+/**
+ * Class to represent a generic REST request.
+ */
 public class RestRequest {
 
     private final RestRequestMethodEnum method;

@@ -1,5 +1,6 @@
 -- oracle equivalent source sha1 0690aebc316b2ea8195ae4804ec450d5d301057c
 --
+-- Copyright (c) 2016--2025 SUSE LLC
 -- Copyright (c) 2008--2015 Red Hat, Inc.
 --
 -- This software is licensed to you under the GNU General Public License,
@@ -238,6 +239,7 @@ as $$
                        when 'monitoring_entitled' then 'Monitoring'
                        when 'ansible_control_node' then 'Ansible'
                        when 'peripheral_server' then 'Peripheral'
+                       when 'proxy_entitled' then 'Proxy'
                       end  );
 
             perform rhn_server.insert_into_servergroup (server_id_in, sgid);
