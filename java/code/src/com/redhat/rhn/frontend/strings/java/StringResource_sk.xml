@@ -11519,14 +11519,14 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Pomôžte nám zlepšiť naše služby tým, že nám oznámite svoj dôvod odstúpenie.&lt;/a&gt;
         </target>
       </trans-unit>
-    <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Synchronizácia dát OVAL</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Generovanie dát OVAL potrebných na zvýšenie presnosti dopytov auditu CVE</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

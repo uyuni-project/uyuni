@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:22+0100\n"
-"PO-Revision-Date: 2025-02-01 16:50+0000\n"
+"POT-Creation-Date: 2025-02-21 09:50+0100\n"
+"PO-Revision-Date: 2025-02-14 18:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/"
 ">\n"
@@ -1772,28 +1772,25 @@ msgstr "synchronizácia zlyhala"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "Uložiť a overiť"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
-#, fuzzy
-#| msgid "Node Hostname"
 msgid "HTTP Proxy Hostname"
-msgstr "Názov hostiteľa uzla"
+msgstr "Názov hostiteľa HTTP Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
-#, fuzzy
-#| msgid "Host name"
 msgid "hostname:port"
-msgstr "Názov hostiteľa"
+msgstr "názov_hostiteľa:port"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid ""
 "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
 msgstr ""
+"Napríklad: <code>example.com:8080</code> alebo <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "Používateľské meno HTTP Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
@@ -1805,18 +1802,16 @@ msgstr "Používateľské meno"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "Heslo HTTP Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:125
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "Ilustrácia proxy servera"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:126
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
-#, fuzzy
-#| msgid "Proxy"
 msgid "HTTP Proxy"
-msgstr "Proxy"
+msgstr "HTTP Proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 msgid ""
@@ -1824,24 +1819,25 @@ msgid ""
 "this form to configure it. If that is not the case, move on to "
 "<link>Organization Credentials</link>."
 msgstr ""
+"Ak tento server používa na prístup k vonkajšej sieti HTTP proxy, môžete ho "
+"pomocou tohto formulára nakonfigurovať. Ak to nie je tento prípad, prejdite "
+"na <link>Prihlasovacie údaje organizácie</link>."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "Overovanie nastavení proxy"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "Úspešne overené nastavenia proxy"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "Nastavenia proxy nie sú platné"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
-#, fuzzy
-#| msgid "Organization Unit"
 msgid "Organization Credentials"
-msgstr "Organizačná jednotka"
+msgstr "Prihlasovacie údaje organizácie"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:296
@@ -1849,10 +1845,8 @@ msgid "Products"
 msgstr "Produkty"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
-#, fuzzy
-#| msgid "Add PAYG Connection"
 msgid "PAYG Connections"
-msgstr "Pridať pripojenie PAYG"
+msgstr "Pripojenia PAYG"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
@@ -2083,32 +2077,35 @@ msgstr "Ovplyvnené, čiastočná oprava je k dispozícii v priradenom kanáli"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
-msgstr ""
+msgstr "Neznáme, metadáta CVE nie sú k dispozícii"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
 msgid ""
 "It is not possible to scan the client server for CVE vulnerabilities without "
 "channels or OVAL metadata."
 msgstr ""
+"Bez kanálov alebo metadát OVAL nie je možné skenovať klientsky server na "
+"zraniteľnosti CVE."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Error, see console"
-msgstr ""
+msgstr "Chyba, pozrite si konzolu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
-#, fuzzy
-#| msgid "Unknown Hostnames"
 msgid "Unknown patch status"
-msgstr "Neznáme názvy hostiteľov"
+msgstr "Neznámy stav opravy"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
 msgstr ""
+"Dáta OVAL nie sú synchronizované. Potenciálne prehliadnuté zraniteľnosti"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
 msgstr ""
+"Kanály produktu servera nie sú synchronizované; nie sú k dispozícii žiadne "
+"informácie o opravách"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"

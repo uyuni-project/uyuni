@@ -5991,7 +5991,7 @@ usuari abans d'intentar desactivar el seu compte.</target>
       </trans-unit>
       <trans-unit id="message.firstusercreated" xml:space="preserve">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
-        <target state="needs-adaptation">Acabeu de crear el primer usuari del PRODUCTNAMEPRODUCTNAME.. Per a finalitzar la instal·lació, utilitzeu lt;a href."/rhn/admin/setup/ProxySettings.do"gt;Auxiliar d'instal·laciólt;/agt;.</target>
+        <target state="translated">Acabeu de crear el primer usuari del producte @@PRODUCT_NAME@@. Per acabar la instal·lació, useu l'&lt;a href="/rhn/manager/admin/setup/proxy"&gt;Assistent de configuració&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
@@ -11519,14 +11519,14 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Ajudeu-nos a millorar els nostres serveis compartint el motiu pel qual els heu desactivat&lt;/a&gt;
         </target>
       </trans-unit>
-    <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
+      <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Sincronitza dades d'OVAL</target>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Genereu les dades d'OVAL necessàries per augmentar la precisió de les consultes d'auditoria de CVE</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
