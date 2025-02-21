@@ -44,14 +44,6 @@ type State = {
   modalSelectedChannels: Channel[];
 };
 
-type SyncChannelRequest = {
-  channel: string;
-};
-
-type RemoveSyncChannelRequest = {
-  channel: string;
-};
-
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
   constructor(props: SyncPeripheralsProps) {
     super(props);
@@ -68,17 +60,14 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   onChannelSyncConfirm = (channels: Channel[]) => {
     let newChannels = this.state.syncedChannels.concat(channels);
     this.setState({ syncedChannels: newChannels });
-    /*
-    const request = ""
-    Network.post("/rhn/manager/api/admin/hub/peripheral/:id/sync-channels", request)
+    const request: number[] = [];
+    Network.post("/rhn/manager/api/admin/hub/peripheral/:id/channels", request)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
       .then((response) => {
         // On successfull sync to peripheral
-        
-      })
-      .finally(() => {
         showSuccessToastr(t("Channels synced correctly to peripheral!"));
-      });*/
+      })
+      .finally(() => {});
   };
 
   onChannelToSyncSelect = (channels: Channel[]) => {
@@ -129,11 +118,9 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const modalContent = (
       <>
         <span>
-          <h4>Select an organizzation from the Peripheral to Sync your channels to:</h4>
+          <h4>Select an organizzation from the Peripheral to Sync your channels to: //TODO: SelectBox</h4>
         </span>
-        <span>
-          <h5>(Vendor channels are automatically synced to SUSE Organization)</h5>
-        </span>
+        <span>(Vendor channels are automatically synced to SUSE Organization)</span>
         <span>
           <h3>{t("Available Channels")}</h3>
         </span>

@@ -35,6 +35,7 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
@@ -58,6 +59,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
@@ -114,9 +116,9 @@ public class HubApiController {
         delete("/manager/api/admin/hub/peripheral/:id", withProductAdmin(this::deletePeripheral));
 
         // Peripheral channels management
-        get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
-        patch("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
-        delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::pass));
+        get("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::syncChannelsToPeripheral));
+        delete("/manager/api/admin/hub/peripheral/:id/channels", withProductAdmin(this::desyncChannelsToPeripheral));
 
         // Token management
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
@@ -125,6 +127,43 @@ public class HubApiController {
         delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
     }
 
+    private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+        return json(response, GSON.toJson(syncModel));
+    }
+
+    // Define a functional interface that allows throwing CertificateException
+    @FunctionalInterface
+    private interface ChannelsOperation {
+        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException;
+    }
+
+    // Common helper method to process the request
+    private String processChannelsOperation(
+            Request request, Response response, User satAdmin, ChannelsOperation operation
+    ) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        Type listType = new TypeToken<List<Long>>() { }.getType();
+        List<Long> channelsId = GSON.fromJson(request.body(), listType);
+        try {
+            operation.apply(satAdmin, peripheralId, channelsId);
+        }
+        catch (CertificateException e) {
+            return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
+        }
+
+        return success(response);
+    }
+
+    // Refactored methods that use the common helper
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::syncChannelsByIdForPeripheral);
+    }
+
+    private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
+    }
     private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
         PageControlHelper pageHelper = new PageControlHelper(request);
         PageControl pc = pageHelper.getPageControl();

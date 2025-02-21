@@ -31,7 +31,6 @@ import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
-import com.suse.manager.webui.controllers.admin.service.ChannelSyncService;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 
 import com.google.gson.Gson;
@@ -156,9 +155,8 @@ public class AdminViewsController {
     public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         long peripheralId = Long.parseLong(request.params("id"));
-        ChannelSyncService service = new ChannelSyncService(HUB_MANAGER);
         data.put("detailsData", GSON.toJson(null));
-        data.put("channelsSyncData", GSON.toJson(service.getSyncedAndAvailableChannels(user, peripheralId)));
+        data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
         return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
     }
 
