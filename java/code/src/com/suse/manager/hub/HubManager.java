@@ -55,6 +55,7 @@ import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -998,5 +999,49 @@ public class HubManager {
                 .stream()
                 .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
                 .toList();
+    }
+
+    /**
+     * Trigger a synchronization of Channel Families on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeChannelFamilies(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeChannelFamilies();
+    }
+
+    /**
+     * Trigger a synchronization of Products on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeProducts(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeProducts();
+    }
+
+    /**
+     * Trigger a synchronization of Repositories on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeRepositories(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeRepositories();
+    }
+
+    /**
+     * Trigger a synchronization of Subscriptions on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeSubscriptions(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeSubscriptions();
     }
 }
