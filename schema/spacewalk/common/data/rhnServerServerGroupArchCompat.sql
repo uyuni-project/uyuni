@@ -1252,11 +1252,11 @@ insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('armv7l-debian-linux'),
             lookup_sg_type('proxy_entitled'));
-            
+
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('cloud'),
-            lookup_sg_type('proxy_entitled
-            l_server'));
+            lookup_sg_type('proxy_entitled'));            
+
 insert into rhnServerServerGroupArchCompat ( server_arch_id, server_group_type )
 	values (lookup_server_arch('arm64-debian-linux'),
             lookup_sg_type('proxy_entitled'));
