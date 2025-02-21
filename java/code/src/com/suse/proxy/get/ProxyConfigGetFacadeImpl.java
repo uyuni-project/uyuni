@@ -19,7 +19,6 @@ import static com.suse.proxy.ProxyConfigUtils.PROXY_PILLAR_CATEGORY;
 import static com.suse.utils.Predicates.isAbsent;
 import static java.util.Arrays.asList;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -79,7 +78,8 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
      */
     @Override
     public Map<String, Object> getFormData(User user, Server server) {
-        ProxyConfigGetFormDataContext context = new ProxyConfigGetFormDataContext(user, server, this.getProxyConfig(server));
+        ProxyConfigGetFormDataContext context =
+                new ProxyConfigGetFormDataContext(user, server, this.getProxyConfig(server));
 
         for (ProxyConfigGetFormDataContextHandler handler : getFormDataContextHandlerChain) {
             handler.handle(context);
