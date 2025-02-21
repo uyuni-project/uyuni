@@ -1,12 +1,13 @@
 # Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@scope_ssm
+@sle_minion
 @scope_visualization
 Feature: Manage a group of systems
 
   Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
-    When I install the GPG key of the test packages repository on:"sle_minion" minion
 
   Scenario: Pre-requisite: enable dummy packages to fake an installation
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
@@ -142,8 +143,8 @@ Feature: Manage a group of systems
     And I should see "rhlike_minion" as link
     And I should see "sle_minion" as link
 
+# container already has locale formula installed
 @skip_if_containerized_server
-  # container already has locale formula installed
   Scenario: Install the locale formula package on the server
     When I manually install the "locale" formula on the server
 
