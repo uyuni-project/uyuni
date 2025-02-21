@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -48,11 +48,6 @@ Feature: Prepare buildhost and build OS image for SLES 12 SP5
     And I enter the image filename for "sle12sp5_terminal" relative to profiles as "path"
     And I click on "create-btn"
     And I wait until no Salt job is running on "sle12sp5_buildhost"
-
-  # WORKAROUND
-  # Remove as soon as the issue is fixed
-  Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
-    When I let Kiwi build from external repositories
 
   Scenario: Build Kiwi image for SLES 12 SP5
     When I follow the left menu "Images > Build"

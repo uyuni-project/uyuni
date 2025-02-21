@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -10,7 +10,7 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     Given I am authorized for the "Admin" section
 
   Scenario: Create the bootstrap repository for a SLES 15 SP4 build host
-     When I create the bootstrap repository for "sle15sp4_buildhost" on the server
+    When I create the bootstrap repository for "sle15sp4_buildhost" on the server
 
   Scenario: Clean up sumaform leftovers on a SLES 15 SP4 build host
     When I perform a full salt minion cleanup on "sle15sp4_buildhost"
@@ -48,11 +48,6 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP4
     And I enter the image filename for "sle15sp4_terminal" relative to profiles as "path"
     And I click on "create-btn"
     And I wait until no Salt job is running on "sle15sp4_buildhost"
-
-  # WORKAROUND
-  # Remove as soon as the issue is fixed
-  Scenario: Work around issue https://github.com/SUSE/spacewalk/issues/10360
-    When I let Kiwi build from external repositories
 
   Scenario: Build Kiwi image for SLES 15 SP4
     When I follow the left menu "Images > Build"
