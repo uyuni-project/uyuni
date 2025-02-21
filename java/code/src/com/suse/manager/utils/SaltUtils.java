@@ -1125,10 +1125,8 @@ public class SaltUtils {
                     List<List<Object>> files = new ArrayList<>();
                     String imageDir = info.getName() + "-" + info.getVersion() + "-" + info.getRevisionNumber() + "/";
                     if (!buildInfo.getBundles().isEmpty()) {
-                        buildInfo.getBundles().forEach(bundle -> {
-                            files.add(List.of(bundle.getFilepath(),
-                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum()));
-                        });
+                        buildInfo.getBundles().forEach(bundle -> files.add(List.of(bundle.getFilepath(),
+                                    imageDir + bundle.getFilename(), "bundle", bundle.getChecksum())));
                     }
                     else {
                         files.add(List.of(buildInfo.getImage().getFilepath(),
@@ -1728,12 +1726,11 @@ public class SaltUtils {
         // name and EVR are never null due to DB constraints
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
 
-        String sb = p.getName().getName() +
+        return p.getName().getName() +
                 "-" +
                 p.getEvr().toUniversalEvrString() +
                 "." +
                 Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown");
-        return sb;
     }
 
     /**
