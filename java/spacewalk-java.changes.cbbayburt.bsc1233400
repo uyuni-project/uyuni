@@ -1,2 +1,0 @@
-- Only show versions for 'kernel-default' in CLM Live Patching
-  template (bsc#1233400)

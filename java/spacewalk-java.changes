@@ -1,4 +1,61 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:35:55 CET 2025 - rosuna@suse.com
+
+- version 4.3.84-0
+  * Prevent class cast exceptions when getting cobbler profiles
+    (bsc#1227759)
+  * Correct reference to 4.4 as the next major version
+  * Remove disabled stylesheet reference
+  * Do not explicitly trigger Cobbler sync when adding a system via
+    SUMA API (bsc#1219450)
+  * Allow the listing of already included patches when importing
+    them into a custom channel (bsc#1228856)
+  * Filter away Debian12 boostrap extra log messages (bsc#1216553)
+  * Update UI tip pointing to new kickstarts template directory
+    (bsc#1221219)
+  * Re-wording 'Monitoring' to 'Monitor this host' on the UI
+    systems properties page (bsc#1212161)
+  * Fix bug when accessing menu Systems | System Set Manager |
+    Misc | Reboot with no system selected (bsc#1222820)
+  * Fix migration options after migrating a minion to
+    Liberty Linux 9 (bsc#1233258)
+  * Fix updated packages list when a SLE Micro gets
+    updated (bsc#1227118)
+  * Fix formatting in 'contentmanagement' API docs (bsc#1225287)
+  * Only show versions for 'kernel-default' in CLM Live Patching
+    template (bsc#1233400)
+  * Ensure channel lists are reliably sorted by name (bsc#1233724)
+  * More robust parsing of max memory configuration (bsc#1229000)
+  * Fix All Managed packages list (bsc#1233450)
+  * Use dots instead of underscores in apidoc (bsc#1233761)
+  * Fix missing FROM-clause entry for table 'pn' in managed software
+    list (bsc#1233450)
+  * Ensure reporting database uses lowercase usernames (bsc#1220494)
+  * Fix NPE if child channel has no parent (bsc#1231053)
+  * Show an error notification only when we invalidate the
+    PAYG credentials (bsc#1228956)
+  * Make the list for package actions unique so it can be passed
+    to Salt (bsc#1232042)
+  * SUSE CDN token identifier changed
+  * Fix Monitoring detection on Oracle Linux (bsc#1234033)
+  * Handle new kind of auth tokens
+  * Support new official SUSE update hosts
+  * Check consistence of base and child channels (bsc#1232713)
+  * Set a send date when preparing emails
+  * saltboot: add MAC based terminal naming (jsc#SUMA-314)
+  * Fix enabled flag for users listed via API (bsc#1233431)
+  * Prevent return duplicated packages on XML-RPC API endpoint
+    `listLatestUpgradablePackages` (bsc#1231430)
+  * Better logging during SP migration
+  * Add notification for users with disabled SCC data forwarding
+    (jsc#SUMA-431)
+  * Send additional data to SCC (jsc#SUMA-406)
+  * Rename SUSEProductSCCRepository to the more meaningful name
+    ChannelTemplate
+  * Various improvements for ContentSyncManager in regard of
+    hibernate schema and performance (bsc#1236212)
+
+-------------------------------------------------------------------
 Mon Nov 25 08:53:46 CET 2024 - marina.latini@suse.com
 
 - version 4.3.83-0

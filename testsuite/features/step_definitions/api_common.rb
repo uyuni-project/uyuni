@@ -190,7 +190,7 @@ Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, p
   $current_password = password
   next if $api_test.user.list_users.to_s.include? user
 
-  $api_test.user.create(user, password, user, user, 'galaxy-noise@suse.de')
+  $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')
   roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
   roles.each do |role|
     $api_test.user.add_role(user, role)

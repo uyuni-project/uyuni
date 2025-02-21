@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:15:00 CET 2025 - rosuna@suse.com
+
+- version 4.3.16
+  * Remove the build tag with the release number
+  * Update the chart version to SUSE Manager 4.3.15
+
+-------------------------------------------------------------------
 Mon Sep 02 15:31:19 CEST 2024 - rosuna@suse.com
 
 - version 4.3.15

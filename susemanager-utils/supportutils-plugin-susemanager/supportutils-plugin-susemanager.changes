@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:39:50 CET 2025 - rosuna@suse.com
+
+- version 4.3.14-0
+  * Adjust requires for plugin to allow compatibility with
+    supportutils 3.2.9 release (bsc#1235145)
+
+-------------------------------------------------------------------
 Mon Nov 25 08:52:17 CET 2024 - marina.latini@suse.com
 
 - version 4.3.13-0

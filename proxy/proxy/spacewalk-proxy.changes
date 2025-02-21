@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:26:53 CET 2025 - rosuna@suse.com
+
+- version 4.3.20-0
+  * Set proxy authtoken FQDN based on config file (bsc#1230255)
+  * Add IPv6 support for salt-broker (bsc#1227827)
+  * Make salt-broker reconnecting if master IP has changed (bsc#1228182)
+  * Make salt-broker less dependant on spacewalk libs
+  * Make socket opt setting more strict and verbose (bsc#1229286)
+
+-------------------------------------------------------------------
 Mon Sep 02 15:29:40 CEST 2024 - rosuna@suse.com
 
 - version 4.3.19-0

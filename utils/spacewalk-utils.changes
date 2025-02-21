@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:28:49 CET 2025 - rosuna@suse.com
+
+- version 4.3.23-0
+  * Force login to spacecmd from spacewalk-hostname-rename (bsc#1229848)
+
+-------------------------------------------------------------------
 Fri Oct 04 14:57:25 CEST 2024 - rosuna@suse.com
 
 - version 4.3.22-0

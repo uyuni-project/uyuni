@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:31:51 CET 2025 - rosuna@suse.com
+
+- version 4.3.40-0
+  * Create SLE15SP7 bootstrap repo definitions
+  * Remove unsupported Salt 3000 from bootstrap repo package list
+    (bsc#1226958)
+  * Rename table suseProductSCCRepository to the more meaningful
+    name suseChannelTemplate (bsc#1234994)
+  * Fix generating bootstrap repository for SUMA-43-SERVER (bsc#1234233)
+  * Add bootstrap repo definitions for SL Micro 6.1 (bsc#1233595)
+  * Allow translation to wrap strings as weblate forces it
+  * Show Source String change for translations
+
+-------------------------------------------------------------------
 Fri Oct 04 14:58:03 CEST 2024 - rosuna@suse.com
 
 - version 4.3.39-0

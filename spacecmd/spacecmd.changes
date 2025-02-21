@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Thu Feb 13 16:23:39 CET 2025 - rosuna@suse.com
+
+- version 4.3.30-0
+  * Fix error in 'kickstart_delete' when using wildcards
+    (bsc#1227578)
+  * Allow translation to wrap strings as weblate forces it
+  * Show Source String change for translations
+  * Spacecmd bootstrap now works with specified port (bsc#1229437)
+  * Fix sls backup creation as directory with spacecmd (bsc#1230745)
+
+-------------------------------------------------------------------
 Mon Sep 02 15:26:36 CEST 2024 - rosuna@suse.com
 
 - version 4.3.29-0
