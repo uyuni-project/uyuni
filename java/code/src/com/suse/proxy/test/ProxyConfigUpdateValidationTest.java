@@ -18,7 +18,17 @@ package com.suse.proxy.test;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_ADVANCED;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
-import static com.suse.proxy.test.ProxyConfigUpdateUtils.assertExpectedErrors;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ADMIN_MAIL;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_MAX_CACHE;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PARENT_FQDN;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_CERT;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_FQDN;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_KEY;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_PROXY_PORT;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_ROOT_CA;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_SERVER_ID;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.DUMMY_TAG;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.assertExpectedErrors;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.domain.server.Server;
@@ -42,6 +52,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
  */
 @ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
+
+    public static final String UNKNOWN = "unknown";
 
     /**
      * Test a scenario where ProxyConfigUpdateJson is resolved as being empty
@@ -84,19 +96,19 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
         };
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder()
-                .serverId(123L)
+                .serverId(DUMMY_SERVER_ID)
                 .parentFqdn("invalid@fqdn")
-                .proxyPort(3182)
-                .maxCache(1000)
-                .email("admin@suse.com")
+                .proxyPort(DUMMY_PROXY_PORT)
+                .maxCache(DUMMY_MAX_CACHE)
+                .email(DUMMY_ADMIN_MAIL)
                 .sourceRPM()
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
-        proxyConfigUpdateContext.setRootCA("rootCA");
-        proxyConfigUpdateContext.setProxyCert("proxyCert");
-        proxyConfigUpdateContext.setProxyKey("proxyKey");
+        proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
+        proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
+        proxyConfigUpdateContext.setProxyKey(DUMMY_PROXY_KEY);
 
         //
         new ProxyConfigUpdateValidation().handle(proxyConfigUpdateContext);
@@ -114,11 +126,11 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
-        proxyConfigUpdateContext.setRootCA("rootCA");
-        proxyConfigUpdateContext.setProxyCert("proxyCert");
-        proxyConfigUpdateContext.setProxyKey("proxyKey");
-        proxyConfigUpdateContext.setParentServer(new Server(123L, "parent.fqdn.com"));
-        proxyConfigUpdateContext.setProxyFqdn("proxy.fqdn.com");
+        proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
+        proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
+        proxyConfigUpdateContext.setProxyKey(DUMMY_PROXY_KEY);
+        proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
+        proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
 
         //
         new ProxyConfigUpdateValidation().handle(proxyConfigUpdateContext);
@@ -156,8 +168,8 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
-        proxyConfigUpdateContext.setParentServer(new Server(123L, "parent.fqdn.com"));
-        proxyConfigUpdateContext.setProxyFqdn("proxy.fqdn.com");
+        proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
+        proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
 
         //
         new ProxyConfigUpdateValidation().handle(proxyConfigUpdateContext);
@@ -181,8 +193,8 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
-        proxyConfigUpdateContext.setParentServer(new Server(123L, "parent.fqdn.com"));
-        proxyConfigUpdateContext.setProxyFqdn("proxy.fqdn.com");
+        proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
+        proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setProxyConfig(new ProxyConfig());
 
         //
@@ -202,7 +214,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
         };
 
         ProxyConfigUpdateJson request = getBaseRequestWithReplaceCerts()
-                .sourceMode("unknown")
+                .sourceMode(UNKNOWN)
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext(request);
@@ -225,7 +237,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
 
         ProxyConfigUpdateJson request = getBaseRequestWithReplaceCerts()
                 .sourceMode(SOURCE_MODE_REGISTRY)
-                .registryMode("unknown")
+                .registryMode(UNKNOWN)
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext(request);
@@ -267,7 +279,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .sourceMode(SOURCE_MODE_REGISTRY)
                 .registryMode(REGISTRY_MODE_SIMPLE)
                 .registryBaseURL("http://registry.suse.com")
-                .registryBaseTag("latest")
+                .registryBaseTag(DUMMY_TAG)
                 .build();
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext(request);
@@ -315,11 +327,11 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
     public void testSuccessWhenAdvancedRegistryMode() {
         ProxyConfigUpdateJson request = getBaseRequestWithReplaceCerts()
                 .sourceRegistryAdvanced(
-                        "http://registry.suse.com/httpd", "latest",
-                        "http://registry.suse.com/saltbroker", "latest",
-                        "http://registry.suse.com/squid", "latest",
-                        "http://registry.suse.com/ssh", "latest",
-                        "http://registry.suse.com/tftpd", "latest"
+                        "http://registry.suse.com/httpd", DUMMY_TAG,
+                        "http://registry.suse.com/saltbroker", DUMMY_TAG,
+                        "http://registry.suse.com/squid", DUMMY_TAG,
+                        "http://registry.suse.com/ssh", DUMMY_TAG,
+                        "http://registry.suse.com/tftpd", DUMMY_TAG
                 )
                 .build();
 
@@ -340,13 +352,13 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
      */
     private static ProxyConfigUpdateContext getProxyConfigUpdateContext(ProxyConfigUpdateJson request) {
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
-        proxyConfigUpdateContext.setParentServer(new Server(123L, "parent.fqdn.com"));
-        proxyConfigUpdateContext.setProxyFqdn("proxy.fqdn.com");
+        proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
+        proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
         proxyConfigUpdateContext.setProxyConfig(new ProxyConfig());
-        proxyConfigUpdateContext.setRootCA("rootCA");
-        proxyConfigUpdateContext.setProxyCert("proxyCert");
-        proxyConfigUpdateContext.setProxyKey("proxyKey");
+        proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
+        proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
+        proxyConfigUpdateContext.setProxyKey(DUMMY_PROXY_KEY);
         return proxyConfigUpdateContext;
     }
 
@@ -357,11 +369,11 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
      */
     private ProxyConfigUpdateJsonBuilder getBaseRequestWithRpm() {
         return new ProxyConfigUpdateJsonBuilder()
-                .serverId(123L)
-                .parentFqdn("proxy.suse.com")
-                .proxyPort(3182)
-                .maxCache(1000)
-                .email("admin@suse.com")
+                .serverId(DUMMY_SERVER_ID)
+                .parentFqdn(DUMMY_PARENT_FQDN)
+                .proxyPort(DUMMY_PROXY_PORT)
+                .maxCache(DUMMY_MAX_CACHE)
+                .email(DUMMY_ADMIN_MAIL)
                 .sourceRPM();
     }
 
@@ -372,11 +384,11 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
      */
     private ProxyConfigUpdateJsonBuilder getBaseRequestWithReplaceCerts() {
         return new ProxyConfigUpdateJsonBuilder()
-                .serverId(123L)
-                .parentFqdn("proxy.suse.com")
-                .proxyPort(3182)
-                .maxCache(1000)
-                .email("admin@suse.com")
+                .serverId(DUMMY_SERVER_ID)
+                .parentFqdn(DUMMY_PARENT_FQDN)
+                .proxyPort(DUMMY_PROXY_PORT)
+                .maxCache(DUMMY_MAX_CACHE)
+                .email(DUMMY_ADMIN_MAIL)
                 .replaceCerts(null, null, null, null);
     }
 }

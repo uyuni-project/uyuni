@@ -15,29 +15,31 @@
 
 package com.suse.proxy.get;
 
-import static com.suse.proxy.ProxyConfigUtils.PROXY_PILLAR_CATEGORY;
-import static com.suse.utils.Predicates.isAbsent;
-
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 
-import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.model.ProxyConfig;
 
-public class ProxyConfigGet {
+import java.util.Map;
+
+/**
+ * Interface for operations that retrieve proxy configuration data.
+ */
+public interface ProxyConfigGetFacade {
 
     /**
      * Get the proxy configuration
      * @param server the server
      * @return the proxy configuration
      */
-    public ProxyConfig get(Server server) {
-        if (isAbsent(server)) {
-            return null;
-        }
-        return server.asMinionServer()
-                .flatMap(minionServer -> minionServer
-                        .getPillarByCategory(PROXY_PILLAR_CATEGORY)
-                        .map(ProxyConfigUtils::proxyConfigFromPillar))
-                .orElse(null);
-    }
+    ProxyConfig getProxyConfig(Server server);
+
+    /**
+     * Get the data to be rendered in the form
+     * @param user the user
+     * @param server the server
+     * @return the form data
+     */
+    Map<String, Object> getFormData(User user, Server server);
+
 }

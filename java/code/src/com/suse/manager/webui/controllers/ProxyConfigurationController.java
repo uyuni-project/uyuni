@@ -26,37 +26,26 @@ import static com.suse.utils.Predicates.isAbsent;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnGeneralException;
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.ShortSystemInfo;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.api.ParseException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.utils.MinionServerUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.manager.webui.utils.gson.SimpleMinionJson;
-import com.suse.proxy.ProxyConfigUtils;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.ProxyRegistryUtils;
 import com.suse.proxy.ProxyRegistryUtilsImpl;
 import com.suse.proxy.RegistryUrl;
-import com.suse.proxy.get.ProxyConfigGet;
-import com.suse.proxy.update.ProxyConfigUpdate;
-import com.suse.utils.Json;
+import com.suse.proxy.get.ProxyConfigGetFacade;
+import com.suse.proxy.get.ProxyConfigGetFacadeImpl;
+import com.suse.proxy.update.ProxyConfigUpdateFacade;
+import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -69,14 +58,10 @@ import org.apache.logging.log4j.Logger;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -95,8 +80,9 @@ public class ProxyConfigurationController {
 
     private final SystemManager systemManager;
     private final SaltApi saltApi;
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
-    private ProxyRegistryUtils proxyRegistryUtils = new ProxyRegistryUtilsImpl();
+    private final ProxyRegistryUtils proxyRegistryUtils;
+    private final ProxyConfigUpdateFacade proxyConfigUpdateFacade;
+    private final ProxyConfigGetFacade proxyConfigGetFacade;
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
@@ -105,14 +91,42 @@ public class ProxyConfigurationController {
             .create();
 
     /**
-     * Create a new controller instance
+     * Create a new controller instance with default facades implementations
      *
      * @param systemManagerIn the system manager
      * @param saltApiIn       the salt API
      */
     public ProxyConfigurationController(SystemManager systemManagerIn, SaltApi saltApiIn) {
+        this(
+                systemManagerIn,
+                saltApiIn,
+                new ProxyRegistryUtilsImpl(),
+                new ProxyConfigUpdateFacadeImpl(),
+                new ProxyConfigGetFacadeImpl()
+        );
+    }
+
+    /**
+     * Create a new controller instance
+     *
+     * @param systemManagerIn the system manager
+     * @param saltApiIn the salt API
+     * @param proxyRegistryUtilsIn the proxy registry utils
+     * @param proxyConfigUpdateFacadeIn the proxy config update facade
+     * @param proxyConfigGetFacadeIn the proxy config get facade
+     */
+    public ProxyConfigurationController(
+            SystemManager systemManagerIn,
+            SaltApi saltApiIn,
+            ProxyRegistryUtils proxyRegistryUtilsIn,
+            ProxyConfigUpdateFacade proxyConfigUpdateFacadeIn,
+            ProxyConfigGetFacade proxyConfigGetFacadeIn
+    ) {
         this.systemManager = systemManagerIn;
         this.saltApi = saltApiIn;
+        this.proxyRegistryUtils = proxyRegistryUtilsIn;
+        this.proxyConfigUpdateFacade = proxyConfigUpdateFacadeIn;
+        this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
 
     /**
@@ -123,7 +137,7 @@ public class ProxyConfigurationController {
      */
     public void initRoutes(ProxyConfigurationController proxyController, JadeTemplateEngine jade) {
         get("/manager/systems/details/proxy-config",
-                withCsrfToken(withDocsLocale(withUserAndServer(this::proxyConfig))),
+                withCsrfToken(withDocsLocale(withUserAndServer(this::getProxyConfiguration))),
                 jade
         );
         post("/manager/systems/details/proxy-config", withUser(this::updateProxyConfiguration));
@@ -139,70 +153,8 @@ public class ProxyConfigurationController {
      * @param server   the current server
      * @return the ModelAndView object to render the page
      */
-    public ModelAndView proxyConfig(Request request, Response response, User user, Server server) {
-        Map<String, Object> data = new HashMap<>();
-
-        // Handle the "Convert to Proxy" button: if server is convertible to proxy and doesn't have the proxy
-        // entitlement, add it
-        if (server.isConvertibleToProxy() && !server.hasProxyEntitlement()) {
-            user.getOrg().getValidAddOnEntitlementsForOrg().stream()
-                    .filter(e -> e.getLabel().equalsIgnoreCase(EntitlementManager.PROXY_ENTITLED))
-                    .findFirst()
-                    .ifPresentOrElse(f -> {
-                        ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(server, f);
-                        if (!vr.getErrors().isEmpty()) {
-                            LOG.error("Failed to add proxy entitlement to server. Server ID: {}, " +
-                                            "hasProxyEntitlement: {}, isConvertibleToProxy: {}, errors: {}",
-                                    server.getId(),
-                                    server.hasProxyEntitlement(),
-                                    server.isConvertibleToProxy(),
-                                    vr.getErrors()
-                            );
-                            data.put("initFailMessage", "Failed to automatically add proxy entitlement to server.");
-                        }
-                    }, () -> {
-                    });
-        }
-
-        Map<String, Object> proxyConfigDataMap =
-                ProxyConfigUtils.safeDataMapFromProxyConfig(new ProxyConfigGet().get(server));
-        data.put("currentConfig", Json.GSON.toJson(proxyConfigDataMap));
-        data.put("parents", Json.GSON.toJson(getElectableParents(user)));
-        data.put("isUyuni", ConfigDefaults.get().isUyuni());
-        return new ModelAndView(data, "templates/minion/proxy-config.jade");
-    }
-
-    /**
-     * Get the list of electable parents to use as parent.
-     *
-     * @param user the current user
-     * @return the list of electable parents
-     */
-    public List<SimpleMinionJson> getElectableParents(User user) {
-        DataResult<ShortSystemInfo> dr = SystemManager.systemListShort(user, null);
-        dr.elaborate();
-        Set<Long> systems = Arrays.stream(dr.toArray())
-                .map(system -> ((ShortSystemInfo) system).getId()).
-                collect(Collectors.toSet());
-
-        List<Server> electableParentsServers =
-                ServerFactory.lookupByIdsAndOrg(systems, user.getOrg()).stream().filter(Server::isProxy).toList();
-        List<SimpleMinionJson> electableParentsAsSimpleMinionJson = new ArrayList<>(
-                MinionServerUtils.filterSaltMinions(electableParentsServers)
-                        .map(SimpleMinionJson::fromMinionServer)
-                        .toList()
-        );
-
-        String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
-        if (isAbsent(localManagerFqdn)) {
-            if (LOG.isErrorEnabled()) {
-                LOG.error("Could not determine the Server FQDN. Skipping it as a parent.");
-            }
-            return electableParentsAsSimpleMinionJson;
-        }
-
-        electableParentsAsSimpleMinionJson.add(new SimpleMinionJson(-1L, localManagerFqdn));
-        return electableParentsAsSimpleMinionJson;
+    public ModelAndView getProxyConfiguration(Request request, Response response, User user, Server server) {
+        return new ModelAndView(proxyConfigGetFacade.getFormData(user, server), "templates/minion/proxy-config.jade");
     }
 
     /**
@@ -330,7 +282,7 @@ public class ProxyConfigurationController {
                 GSON.fromJson(request.body(), new TypeToken<ProxyConfigUpdateJson>() { }.getType());
 
         try {
-            new ProxyConfigUpdate().update(data, systemManager, saltApi, user);
+            proxyConfigUpdateFacade.update(data, systemManager, saltApi, user);
             return result(response, ResultJson.success("Proxy configuration applied"));
         }
         catch (RhnRuntimeException e) {

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class to build and execute a request.
+ * Builder for Rest request.
  */
 @SuppressWarnings("checkstyle:VisibilityModifier")
 public class RestRequestBuilder {

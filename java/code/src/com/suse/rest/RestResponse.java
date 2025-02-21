@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Class to represent a response from a request.
+ * Class to represent a response from a Rest request.
  */
 public class RestResponse {
     private final int statusCode;

@@ -71,9 +71,10 @@ public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContext
         }
         JsonObject jsonObject = jsonElement.getAsJsonObject();
         for (String key : jsonObject.keySet()) {
-            if (!jsonObject.get(key).getAsJsonObject().get("result").getAsBoolean()) {
+            JsonElement jsonElementChild = jsonObject.get(key);
+            if (!jsonElementChild.getAsJsonObject().get("result").getAsBoolean()) {
                 context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-                LOG.error(FAIL_APPLY_MESSAGE + " Failing entry: {}", jsonElement);
+                LOG.error(FAIL_APPLY_MESSAGE + " Failing entry: {}", jsonElementChild);
             }
         }
 

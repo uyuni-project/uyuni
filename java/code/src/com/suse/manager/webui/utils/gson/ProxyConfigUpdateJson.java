@@ -19,7 +19,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 /**
- * Represents the data sent from the UI to convert a minion into a proxy container configuration
+ * Represents the data received from the UI to convert a minion into a proxy container configuration
  */
 public class ProxyConfigUpdateJson {
 
