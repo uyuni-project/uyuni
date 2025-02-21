@@ -6401,28 +6401,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles" xml:space="preserve">
         <source>Config Diffs</source>
-        <target/>
+        <target state="translated">Konfiguračné rozdiely</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.last_checked_in" xml:space="preserve">
         <source>Last Checked in</source>
-        <target/>
+        <target state="translated">Naposledy prihlásený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target state="translated">Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6430,7 +6430,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.channel" xml:space="preserve">
         <source>Base Channel</source>
-        <target/>
+        <target state="translated">Základný kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6438,14 +6438,14 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.entitlement" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target state="translated">Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.nosystems" xml:space="preserve">
         <source>No Systems</source>
-        <target/>
+        <target state="translated">Žiadne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6453,7 +6453,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.unentitled" xml:space="preserve">
         <source>System without System Type</source>
-        <target/>
+        <target state="translated">Systém bez typu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6461,7 +6461,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.notcheckingin" xml:space="preserve">
         <source>System not checking in with @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">Systém sa neprihlasuje s @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6469,7 +6469,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.locked" xml:space="preserve">
         <source>System locked</source>
-        <target/>
+        <target state="translated">Systém uzamknutý</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
