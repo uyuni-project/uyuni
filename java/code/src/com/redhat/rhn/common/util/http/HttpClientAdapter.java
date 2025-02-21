@@ -13,6 +13,7 @@ package com.redhat.rhn.common.util.http;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -220,7 +221,7 @@ public class HttpClientAdapter {
             keystore.load(in, null);
 
             // Add any additional certificate to the store, if specified
-            if (!(additionalCertificates == null || additionalCertificates.isEmpty())) {
+            if (CollectionUtils.isNotEmpty(additionalCertificates)) {
                 int customCert = 0;
                 for (Certificate certificate : additionalCertificates) {
                     keystore.setCertificateEntry("additional_certificate_" + customCert++, certificate);

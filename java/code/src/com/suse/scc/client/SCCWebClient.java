@@ -154,6 +154,7 @@ public class SCCWebClient implements SCCClient {
             }
         }
         catch (IOException e) {
+            LOG.error(e);
             throw new SCCClientException(e);
         }
         return value;

@@ -356,7 +356,14 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupOrgsUsingChannelFamily(ChannelFamily channelFamily) {
-        return singleton.listObjectsByNamedQuery("Org.findOrgsWithSystemsInChannelFamily", Map.of("cf", channelFamily));
+        return HibernateFactory.getSession().createNativeQuery("""
+                            SELECT DISTINCT o.* FROM WEB_CUSTOMER o WHERE EXISTS (
+                            SELECT 1 FROM rhnServer s WHERE s.org_id = o.id AND EXISTS (
+                            SELECT 1 FROM rhnChannel c JOIN rhnChannelFamilyMembers cfm ON c.id = cfm.channel_id
+                            WHERE c.id IN (SELECT channel_id FROM rhnServerChannel WHERE server_id = s.id)
+                            AND cfm.channel_family_id = :cf
+                            ))
+                """, Org.class).setParameter("cf", channelFamily.getId(), StandardBasicTypes.LONG).getResultList();
     }
 
     /**

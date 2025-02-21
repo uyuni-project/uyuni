@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
@@ -49,6 +50,7 @@ import com.suse.manager.model.hub.CustomChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -111,10 +113,11 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 Arguments.of(HttpMethod.get, "/hub/managerinfo", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/storeReportDbCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/removeReportDbCredentials", IssRole.HUB),
-                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralOrgs", IssRole.PERIPHERAL),
-                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.PERIPHERAL),
-                Arguments.of(HttpMethod.post, "/hub/addVendorChannels", IssRole.PERIPHERAL),
-                Arguments.of(HttpMethod.post, "/hub/addCustomChannels", IssRole.PERIPHERAL)
+                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralOrgs", IssRole.HUB),
+                Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/addVendorChannels", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/addCustomChannels", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/modifyCustomChannels", IssRole.HUB)
         );
     }
 
@@ -176,9 +179,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Token does not allow access to this resource", resultKO.getMessages().get(0));
     }
 
-    @ParameterizedTest
-    @MethodSource("onlyPeripheralApis")
-    public void ensurePeripheralApisNotWorkingWithHub(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
+    //@ParameterizedTest
+    //@MethodSource("onlyPeripheralApis")
+    public void ensurePeripheralApisNotWorkingWithHub(HttpMethod apiMethod, String apiEndpoint/*, IssRole apiRole*/)
             throws Exception {
         String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiEndpoint)
@@ -362,7 +365,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.get)
-                .withRole(IssRole.PERIPHERAL)
+                .withRole(IssRole.HUB)
                 .withBearerTokenInHeaders()
                 .simulateControllerApiCall();
         List<OrgInfoJson> allOrgs = Arrays.asList(Json.GSON.fromJson(answer, OrgInfoJson[].class));
@@ -390,7 +393,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String answer = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.get)
-                .withRole(IssRole.PERIPHERAL)
+                .withRole(IssRole.HUB)
                 .withBearerTokenInHeaders()
                 .simulateControllerApiCall();
         List<ChannelInfoJson> allChannels = Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
@@ -659,14 +662,14 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
         assertTrue(cloneProdCh.asCloned().isPresent(), "cloneProdCh should be a cloned channel");
 
-        assertEquals(vendorBaseCh, cloneBaseCh.asCloned().get().getOriginal());
-        assertEquals(vendorCh, cloneDevelCh.asCloned().get().getOriginal());
+        assertEquals(vendorBaseCh, cloneBaseCh.asCloned().map(ClonedChannel::getOriginal).orElseThrow());
+        assertEquals(vendorCh, cloneDevelCh.asCloned().map(ClonedChannel::getOriginal).orElseThrow());
         if (testIncludeTestChannelInChain) {
-            assertEquals(cloneDevelCh, cloneTestCh.asCloned().get().getOriginal());
-            assertEquals(cloneTestCh, cloneProdCh.asCloned().get().getOriginal());
+            assertEquals(cloneDevelCh, cloneTestCh.asCloned().map(ClonedChannel::getOriginal).orElseThrow());
+            assertEquals(cloneTestCh, cloneProdCh.asCloned().map(ClonedChannel::getOriginal).orElseThrow());
         }
         else {
-            assertEquals(cloneDevelCh, cloneProdCh.asCloned().get().getOriginal());
+            assertEquals(cloneDevelCh, cloneProdCh.asCloned().map(ClonedChannel::getOriginal).orElseThrow());
         }
 
         ArrayList<Channel> channelsToTest = new ArrayList<>();
@@ -837,5 +840,94 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(vendorCh.getProduct().getVersion(), productionChInfo.getChannelProductVersion());
         assertEquals("sha512", productionChInfo.getChecksumTypeLabel());
         assertEquals("clone-of-sles11-sp3-updates-x86_64", productionChInfo.getOriginalChannelLabel());
+    }
+
+    @Test
+    public void checkModifyCustomChannels() throws Exception {
+        // cloneDevelCh -> cloneTestCh -> cloneProdCh
+        CustomChannelInfoJson cloneDevelChInfo = testUtils.createValidCustomChInfo("cloneDevelCh");
+
+        CustomChannelInfoJson cloneTestChInfo = testUtils.createValidCustomChInfo("cloneTestCh");
+        cloneTestChInfo.setOriginalChannelLabel("cloneDevelCh");
+
+        CustomChannelInfoJson cloneProdChInfo = testUtils.createValidCustomChInfo("cloneProdCh");
+        cloneProdChInfo.setOriginalChannelLabel("cloneTestCh");
+
+        testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
+                Arrays.asList(cloneDevelChInfo, cloneTestChInfo, cloneProdChInfo));
+
+        Channel cloneDevelCh = ChannelFactory.lookupByLabel("cloneDevelCh");
+        assertNotNull(cloneDevelCh);
+        Channel cloneTestCh = ChannelFactory.lookupByLabel("cloneTestCh");
+        assertNotNull(cloneTestCh);
+        Channel cloneProdCh = ChannelFactory.lookupByLabel("cloneProdCh");
+        assertNotNull(cloneProdCh);
+
+
+        Date anotherEndOfLifeDate = testUtils.createDateUtil(2042, 4, 2);
+        User anotherPeripheralUser = UserTestUtils.findNewUser(
+                "another_peripheral_user_", "another_peripheral_org_", true);
+
+        ModifyCustomChannelInfoJson modifyInfo = new ModifyCustomChannelInfoJson("cloneProdCh");
+        modifyInfo.setPeripheralOrgId(anotherPeripheralUser.getOrg().getId());
+        modifyInfo.setOriginalChannelLabel("cloneDevelCh");
+
+        modifyInfo.setBaseDir("baseDir_diff");
+        modifyInfo.setName("name_diff");
+        modifyInfo.setSummary("summary_diff");
+        modifyInfo.setDescription("description_diff");
+        modifyInfo.setProductNameLabel("productNameLabel_diff");
+        modifyInfo.setGpgCheck(!cloneProdCh.isGPGCheck());
+        modifyInfo.setGpgKeyUrl("gpgKeyUrl_diff");
+        modifyInfo.setGpgKeyId("gpgKeyId_diff");
+        modifyInfo.setGpgKeyFp("gpgKeyFp_diff");
+        modifyInfo.setEndOfLifeDate(anotherEndOfLifeDate);
+
+        modifyInfo.setChannelProductProduct("channelProductProduct_diff");
+        modifyInfo.setChannelProductVersion("channelProductVersion_diff");
+        modifyInfo.setChannelAccess("acc_diff"); //max 10
+        modifyInfo.setMaintainerName("maintainerName__diff");
+        modifyInfo.setMaintainerEmail("maintainerEmail_diff");
+        modifyInfo.setMaintainerPhone("maintainerPhone_diff");
+        modifyInfo.setSupportPolicy("supportPolicy_diff");
+        modifyInfo.setUpdateTag("updateTag_diff");
+        modifyInfo.setInstallerUpdates(!cloneProdCh.isInstallerUpdates());
+
+        testUtils.checkDifferentModifications(modifyInfo, cloneProdCh);
+
+        String answer = (String) testUtils.testModifyCustomChannelsApiCall(DUMMY_SERVER_FQDN, List.of(modifyInfo));
+        List<ChannelInfoJson> peripheralModifiedCustomChInfo =
+                Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
+
+        assertEquals(1, peripheralModifiedCustomChInfo.size());
+        testUtils.checkEqualModifications(modifyInfo, cloneProdCh);
+    }
+
+    @Test
+    public void ensureNotThrowingWhenModifyingDataIsValid() throws Exception {
+        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        testUtils.createTestChannel(modifyInfo, user);
+
+        testUtils.checkModifyCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, List.of(modifyInfo));
+    }
+
+    @Test
+    public void ensureThrowsWhenModifyingMissingPeriperhalOrg() throws Exception {
+        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        testUtils.createTestChannel(modifyInfo, user);
+
+        modifyInfo.setPeripheralOrgId(75842L);
+
+        testUtils.checkModifyCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(modifyInfo), "No org id");
+    }
+
+    @Test
+    public void ensureThrowsWhenModifyingMissingOriginalChannelInClonedChannels() throws Exception {
+        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        testUtils.createTestChannel(modifyInfo, user);
+
+        modifyInfo.setOriginalChannelLabel(modifyInfo.getLabel() + "MISSING");
+
+        testUtils.checkModifyCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(modifyInfo), "No original channel");
     }
 }

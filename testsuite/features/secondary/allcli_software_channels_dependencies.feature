@@ -43,9 +43,9 @@ Feature: Channel subscription with recommended or required dependencies
     And I check radio button "(none, disable service)"
     And I wait for child channels to appear
     And I check radio button "openSUSE Leap 15.5 (x86_64)"
-    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "unselected" and "disabled"
-    When I select the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
-    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "selected"
+    Then I should see the child channel "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)" "unselected" and "disabled"
+    When I select the child channel "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)"
+    Then I should see the child channel "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64)" "selected"
 
 @susemanager
   Scenario: Play with recommended and required child channels selection in SSM

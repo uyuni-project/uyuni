@@ -1133,6 +1133,18 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2023/bootstrap/",
     },
+    "amazonlinux-2023-x86_64": {
+        "PDID": [-46, 2543],
+        "BETAPDID": [2548],
+        "PKGLIST": RES9,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2023/bootstrap/",
+    },
+    "amazonlinux-2023-aarch64": {
+        "PDID": [-47, 2542],
+        "BETAPDID": [2547],
+        "PKGLIST": RES9,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/amzn/2023/bootstrap/",
+    },
     "RHEL7-x86_64": {
         "PDID": [-7, 1683],
         "BETAPDID": [2065],

@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-31 14:15+0100\n"
+"POT-Creation-Date: 2025-02-14 14:16+0100\n"
 "PO-Revision-Date: 2024-05-07 10:43+0000\n"
 "Last-Translator: Julio González Gil <jgonzalez@suse.com>\n"
 "Language-Team: Spanish <https://l10n.opensuse.org/projects/uyuni/backend/es/"
@@ -280,62 +280,62 @@ msgstr "Kickstart de sesión no coincidente"
 msgid "Stacking of re-registration tokens is not supported"
 msgstr "El apilado de vuelta a registrar fichas no se soporta"
 
-#: ../server/rhnUser.py:326 ../server/rhnUser.py:329
+#: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
 msgstr "Combinación de nombre de usuario/contraseña no válida"
 
 #. nope, not reserved either
-#: ../server/rhnUser.py:526
+#: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
 msgstr "Nombre de usuario ‘%s’ no ha sido reservado"
 
 #. New accounts have to specify an e-mail address
-#: ../server/rhnUser.py:532
+#: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
 msgstr "Dirección de correo electrónico no especificada"
 
-#: ../server/rhnUser.py:574
+#: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
 msgstr "nombre de usuario debería tener al menos %d caracteres"
 
-#: ../server/rhnUser.py:578
+#: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
 msgstr "nombre de usuario debería ser menos de %d caracteres"
 
-#: ../server/rhnUser.py:592
+#: ../server/rhnUser.py:593
 #, python-format
 msgid "username = `%s', invalid character `%s'"
 msgstr "nombre de usuario = ‘%s’, carácter no válido ‘%s’"
 
-#: ../server/rhnUser.py:613
+#: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
 msgstr "Por favor limite su dirección de correo electrónico a %s caracteres"
 
-#: ../server/rhnUser.py:701
+#: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
 msgstr "contraseña debe ser al menos %d caracteres"
 
-#: ../server/rhnUser.py:705
+#: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
 msgstr "Contraseña debe ser más corta de %d caracteres"
 
-#: ../server/rhnUser.py:721
+#: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
 msgstr "contraseña contiene carácter ‘%s’"
 
-#: ../server/rhnUser.py:730
+#: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
 msgstr "nombre de usuario debería ser al menos %d caracteres de largo"
 
-#: ../server/rhnUser.py:741
+#: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
 msgstr "No puedo registrar nombres de usuario que terminen con %s"

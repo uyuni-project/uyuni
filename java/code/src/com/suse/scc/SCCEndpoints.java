@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
@@ -152,13 +153,13 @@ public class SCCEndpoints {
      * @param token the token
      * @return return {@link SCCRepositoryJson} object for a Hub custom repository
      */
-    public SCCRepositoryJson buildCustomRepoJson(String label, String hostname, String token) {
+    public static SCCRepositoryJson buildCustomRepoJson(String label, String hostname, String token) {
         SCCRepositoryJson json = new SCCRepositoryJson();
         json.setSCCId(CUSTOM_REPO_FAKE_SCC_ID);
         json.setEnabled(true);
         json.setName(label);
         json.setDescription("");
-        json.setUrl("https://" + hostname + "/rhn/manager/download/" + label + "/?" + token);
+        json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$s/?%3$s".formatted(hostname, label, token));
         json.setInstallerUpdates(false);
         json.setAutorefresh(false);
         json.setDistroTarget("");
@@ -186,6 +187,30 @@ public class SCCEndpoints {
     }
 
     /**
+     * Build a {@link SCCRepositoryJson} object for a Hub Vendor repository
+     * @param channelTemplate the channel template
+     * @param hostname the hostname
+     * @param token the token
+     * @return return {@link SCCRepositoryJson} object for a Hub vendor repository
+     */
+    private static SCCRepositoryJson buildVendorRepoJson(ChannelTemplate channelTemplate, String hostname,
+                                                        String token) {
+        SCCRepository repository = channelTemplate.getRepository();
+        SCCRepositoryJson json = new SCCRepositoryJson();
+        json.setSCCId(repository.getSccId());
+        json.setEnabled(channelTemplate.isMandatory());
+        json.setName(repository.getName());
+        json.setDescription(repository.getDescription());
+        json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/?%3$s".formatted(
+                hostname, repository.getSccId(), token));
+        json.setInstallerUpdates(repository.isInstallerUpdates());
+        json.setAutorefresh(repository.isAutorefresh());
+        json.setDistroTarget(repository.getDistroTarget());
+        return json;
+    }
+
+
+    /**
      * Endpoint serving ISS peripheral channel information in scc repository format
      *
      * @param request
@@ -201,20 +226,9 @@ public class SCCEndpoints {
             Channel channel = c.getChannel();
             String label = channel.getLabel();
             String tokenString = buildHubRepositoryToken(label).orElse("");
-            return SUSEProductFactory.lookupByChannelLabelFirst(label).map(channelTemplate -> {
-                SCCRepository repository = channelTemplate.getRepository();
-                SCCRepositoryJson json = new SCCRepositoryJson();
-                json.setSCCId(repository.getSccId());
-                json.setEnabled(channelTemplate.isMandatory());
-                json.setName(repository.getName());
-                json.setDescription(repository.getDescription());
-                json.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/?%3$s".formatted(
-                        hostname, repository.getSccId(), tokenString));
-                json.setInstallerUpdates(repository.isInstallerUpdates());
-                json.setAutorefresh(repository.isAutorefresh());
-                json.setDistroTarget(repository.getDistroTarget());
-                return json;
-            }).orElseGet(() -> buildCustomRepoJson(label, hostname, tokenString));
+            return SUSEProductFactory.lookupByChannelLabelFirst(label)
+                    .map(channelTemplate -> buildVendorRepoJson(channelTemplate, hostname, tokenString))
+                    .orElseGet(() -> buildCustomRepoJson(label, hostname, tokenString));
         }).toList();
         return gson.toJson(jsonRepos);
     }
@@ -250,11 +264,8 @@ public class SCCEndpoints {
                         .filter(SCCCredentials::isPrimary)
                         .findFirst()
                         .map(cred -> {
-
                             String username = cred.getUsername();
-
                             Path path = Paths.get(SCCConfig.DEFAULT_LOGGING_DIR).resolve(username);
-
                             try {
                                 return fn.apply(new SCCFileClient(path));
                             }
@@ -272,9 +283,8 @@ public class SCCEndpoints {
 
                                 return fn.apply(new SCCWebClient(config));
                             }
-
                         })
-                ).map(gson::toJson).orElse("");
+                ).map(gson::toJson).orElse("[]");
     }
 
     /**

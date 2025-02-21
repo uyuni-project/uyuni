@@ -19,14 +19,12 @@ RUN find /var/cache/zypp/packages/ -type f -name '*.rpm'
 RUN rpm -ivh --nodeps $(find /var/cache/zypp/packages/ -type f \
     -name update-alternatives.rpm -o \
     -name python3-base.rpm -o -name 'libpython3*.rpm' -o -name 'libopenssl1*.rpm' -o -name libexpat1.rpm -o \
-    -name python3-CherryPy.rpm -o -name python3-zc.lockfile.rpm -o -name python3-cheroot.rpm -o -name python3-six.rpm -o \
-    -name python3-portend.rpm -o -name python3-tempora.rpm -o \
-    -name salt.rpm -o -name python3-salt.rpm -o \
+    -name salt.rpm -o -name python3-salt.rpm -o -name python3-tornado.rpm -o \
     -name python3-contextvars.rpm -o -name python3-immutables.rpm -o -name python3-looseversion.rpm -o \
     -name python3-packaging.rpm -o -name python3-distro.rpm -o \
     -name python3-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name python3-Jinja2.rpm -o -name python3-MarkupSafe.rpm -o \
     -name python3-msgpack.rpm -o -name python3-more-itertools.rpm -o \
-    -name saline.rpm -o -name python3-saline.rpm -o -name python3-python-dateutil.rpm)
+    -name saline.rpm -o -name python3-saline.rpm -o -name python3-python-dateutil.rpm -o -name python3-six.rpm)
 RUN zypper clean --all
 
 RUN mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/

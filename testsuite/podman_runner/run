@@ -9,6 +9,12 @@ export AUTH_REGISTRY=auth_registry
 set -x
 set -e
 
+# Disable firewall so we can connect to debug
+sudo ufw disable
+
+# make sure docker is installed because we need the socket
+dpkg -l | grep "^ii  docker.io" || sudo apt -y install docker.io
+
 ./00_setup_env.sh
 ./01_setup_tmp_dirs.sh
 ./02_setup_network.sh
@@ -21,10 +27,10 @@ set -e
 ./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
-./12_run_core_tests.sh
-./13_run_salt_sle_minion.sh
-./14_run_salt_rhlike_minion.sh
-./15_run_salt_deblike_minion.sh
+./12_run_salt_sle_minion.sh
+./13_run_salt_rhlike_minion.sh
+./14_run_salt_deblike_minion.sh
+./15_run_core_tests.sh
 ./16_accept_all_keys.sh
 ./17_run_init_clients_tests.sh
 ./18_run_secondary_tests.sh

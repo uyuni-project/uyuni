@@ -41,7 +41,7 @@ Feature: Sanity checks
     And "sle_minion" should communicate with the server using public interface
     And the clock from "sle_minion" should be exact
 
-@buildhost
+@build_host
   Scenario: The build host is healthy
     Then "build_host" should have a FQDN
     And reverse resolution should work for "build_host"

@@ -83,7 +83,6 @@ public class DefaultHubInternalClient implements HubInternalClient {
 
     @Override
     public ManagerInfoJson getManagerInfo() throws IOException {
-        // For non-generic types, it's fine to use ManagerInfoJson.class
         return invokeGet("hub", "managerinfo", ManagerInfoJson.class);
     }
 
@@ -134,12 +133,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
             String httpMethod, String namespace, String apiMethod, T requestObject, Type responseType
     ) throws IOException {
         RequestBuilder builder = RequestBuilder.create(httpMethod)
-                .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
-                .setHeader("Authorization", "Bearer " + accessToken);
+            .setUri("https://%s/rhn/%s/%s".formatted(remoteHost, namespace, apiMethod))
+            .setHeader("Authorization", "Bearer " + accessToken);
 
         // Add the request object, if specified
         if (requestObject != null) {
-            // You can also use GSON.toJson(requestObject) here unless you have a specific need for a TypeToken.
             String body = GSON.toJson(requestObject, new TypeToken<>() { }.getType());
             builder.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
         }

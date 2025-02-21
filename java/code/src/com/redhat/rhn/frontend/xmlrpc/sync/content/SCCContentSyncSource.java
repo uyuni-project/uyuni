@@ -67,7 +67,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
             IssHub issHub = credentials.getIssHub();
             if (issHub != null) {
                 String rootCa = issHub.getRootCa();
-                URI uri = new URI("https://" + issHub.getFqdn() + "/rhn/hub/scc/");
+                URI uri = new URI("https://%1$s/rhn/hub/scc/".formatted(issHub.getFqdn()));
                 var cfg = new SCCConfigBuilder()
                         .setUrl(uri)
                         .setCertificates(CertificateUtils.parse(rootCa).stream().toList())

@@ -14,7 +14,7 @@
 
 @skip_if_containerized_server
 @skip_if_github_validation
-@buildhost
+@build_host
 @proxy
 @private_net
 @pxeboot_minion

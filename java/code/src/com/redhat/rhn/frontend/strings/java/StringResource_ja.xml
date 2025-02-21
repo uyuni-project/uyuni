@@ -1543,13 +1543,6 @@
         </context-group>
         <target>パスワードは {0} 文字以上でなければなりません。</target>
       </trans-unit>
-      <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
-        <source>Password contains tab or newline characters.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-        <target>パスワードには、タブまたは改行文字が含まれます。</target>
-      </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
         <target>パスワードを {0} 文字以上にすることはできません。</target>
@@ -5987,12 +5980,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target>再起動</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve">
+      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-adaptation">@@PRODUCT_NAME@@ Service の最初のユーザーが作成されました。追加の設定は、&lt;a href="/rhn/admin/config/GeneralConfig.do"&gt;&lt;strong&gt;ここをクリック&lt;/strong&gt;&lt;/a&gt; して完了してください。</target>
+        <target state="final">@@PRODUCT_NAME@@の最初のユーザーが作成されました。インストールを終了するには、&lt;a href="/rhn/manager/admin/setup/proxy"&gt;セットアップウィザード&lt;/a&gt;を使用してください。</target>
       </trans-unit>
       <trans-unit id="message.kerbuserlogged" xml:space="preserve">
         <source>You've logged as externally authenticated &lt;strong&gt;{0}&lt;/strong&gt; user. To be able to login using this account with login and password, please set your password on &lt;a href="/rhn/account/UserDetails.do"&gt;&lt;strong&gt;{0} user page&lt;/strong&gt;&lt;/a&gt;.</source>
@@ -11499,24 +11492,108 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">CVE監査クエリの精度を高めるために必要なOVALデータを生成する</target>
       </trans-unit>
-    <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
+        <target state="final">SCCデータ転送が正常に有効化されました。</target>
+      </trans-unit>
+      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
+        <target state="final">SCCデータ転送はすでに有効になっています。</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
+        <target state="final">データがSCCと同期されていません</target>
+      </trans-unit>
+      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
+        <target state="final">
+          &lt;p&gt;SCCとのデータ同期を無効にすると、RMT、SMT、@@PRODUCT_NAME@@、およびSCCに直接登録されたクライアント間の管理対象クライアントの可視性が低下します。
+          データの同期により、登録されたすべてのクライアントの統一されたビューが確保されます。&lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;データ転送を有効にするには、ここをクリックしてください&lt;/a&gt;.&lt;/p&gt;
+          &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;オプトアウトの理由を共有して、サービス向上にご協力ください&lt;/a&gt;
+        </target>
+      </trans-unit>
+    <trans-unit id="Password Policy" xml:space="preserve">
+        <source>Password Policy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
+        <source>Field {0} can't be equal or less than zero.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
+        <source>Field {0} can't be can't be greater or equal than field {1}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
+        <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.spacesinpassword" xml:space="preserve">
+        <source>Password contains tab or newline characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
+        <source>Password contains consecutive characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nodigitspassword" xml:space="preserve">
+        <source>Passwords must contain at least one digit.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nouppercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one upper case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nolowercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one lower case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
+        <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
+        <source>Password characters occurrences exceeded maximum allowed {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>

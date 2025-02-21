@@ -27,7 +27,7 @@ Feature: Create custom channels with development repositories
     When I prepare the development repositories of "sle_minion" as part of "dev-suse-channel" channel
 
 @uyuni
-@buildhost
+@build_host
   Scenario: Create a custom channel for Build Host
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Create Channel"
@@ -41,7 +41,7 @@ Feature: Create custom channels with development repositories
     Then I should see a "Channel Dev-Build-Host-Channel created." text
 
 @uyuni
-@buildhost
+@build_host
   Scenario: Create custom repositories inside the Build Host custom channel
     When I prepare the development repositories of "build_host" as part of "dev-build-host-channel" channel
 

@@ -6069,70 +6069,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="ssm.misc.custom.title" xml:space="preserve">
         <source>Select Custom Info Key to modify</source>
-        <target/>
+        <target state="translated">Vybrať vlastný informačný kľúč na úpravu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.custom.summary" xml:space="preserve">
         <source>Please select the key for which you want to set or remove values.</source>
-        <target/>
+        <target state="translated">Prosím, vyberte kľúč, pre ktorý chcete nastaviť alebo odstrániť hodnoty.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.setcustom.title" xml:space="preserve">
         <source>Set or Remove value for Custom Info Key</source>
-        <target/>
+        <target state="translated">Nastaviť alebo odstrániť hodnotu pre vlastný informačný kľúč</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.setcustom.summary" xml:space="preserve">
         <source>Enter the value you wish to be applied or remove any set values for this key on selected systems.</source>
-        <target/>
+        <target state="translated">Zadajte hodnotu, ktorá sa má použiť, alebo odstráňte všetky nastavené hodnoty pre tento kľúč na vybraných systémoch.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.setcustom.provisioning" xml:space="preserve">
         <source>Caution: this will overwrite or remove all values for this key on selected systems with a Provisioning System Type.</source>
-        <target/>
+        <target state="translated">Upozornenie: Týmto sa prepíšu alebo odstránia všetky hodnoty tohto kľúča vo vybraných systémoch s typom systému poskytovania.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.setcustom.setvalues" xml:space="preserve">
         <source>Set Values</source>
-        <target/>
+        <target state="translated">Nastaviť hodnoty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.setcustom.removevalues" xml:space="preserve">
         <source>Remove Values</source>
-        <target/>
+        <target state="translated">Odstrániť hodnoty</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.header" xml:space="preserve">
         <source>Reboot of the Systems</source>
-        <target/>
+        <target state="translated">Reštart systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.summary" xml:space="preserve">
         <source>Choose the systems you need to reboot and schedule an action for it.</source>
-        <target/>
+        <target state="translated">Zvoľte systémy, ktoré potrebujete reštartovať a naplánovať pre ne akciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.misc.reboot.operationname" xml:space="preserve">
         <source>Schedule Systems Reboot</source>
-        <target/>
+        <target state="translated">Naplánovať reštart systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/misc/Index.do</context>
         </context-group>

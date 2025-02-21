@@ -7,7 +7,6 @@ Feature: List available channels and enable them
   As root user
   I want to list available channels and enable them
 
-@susemanager
   Scenario: List available channels
     # Order matters here, refresh first
     When I refresh SCC
@@ -16,19 +15,23 @@ Feature: List available channels and enable them
     And I should get "    [ ] SLE-Product-SLES15-SP4-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle-product-sles15-sp4-updates-x86_64]"
     And I should get "    [ ] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
-@susemanager
   Scenario: List available mandatory channels
     When I execute mgr-sync "list channels -e --no-optional"
     Then I should get "[ ] SLE-Product-SLES15-SP4-Pool for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle-product-sles15-sp4-pool-x86_64]"
     And I should get "    [ ] SLE-Product-SLES15-SP4-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle-product-sles15-sp4-updates-x86_64]"
     And I shouldn't get "    [ ] SLE15-SP4-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP4 x86_64 [sle15-sp4-installer-updates-x86_64]"
 
-@susemanager
-  Scenario: List products
+  Scenario: List Server product
     When I execute mgr-sync "list products"
     Then I should get "[ ] SUSE Linux Enterprise Server 15 SP4 x86_64"
-    And I should get "[ ] SUSE Manager Proxy 4.3 x86_64"
+	
+@proxy
+@susemanager
+  Scenario: List Proxy product
+    When I execute mgr-sync "list products"
+    Then I should get "[ ] SUSE Manager Proxy 4.3 x86_64"
 
+@proxy
 @susemanager
   Scenario: List all products for SUSE Manager
     When I execute mgr-sync "list products --expand"
@@ -37,7 +40,6 @@ Feature: List available channels and enable them
     And I should get "  [ ] (R) SUSE Manager Client Tools for RHEL, Liberty and Clones 7 x86_64"
     And I should get "  [ ] (R) SUSE Manager Client Tools for SLE 15 x86_64"
 
-@susemanager
   Scenario: List products with filter
     When I execute mgr-sync "list products --expand --filter x86_64"
     Then I should get "[ ] SUSE Linux Enterprise Server 15 SP4 x86_64"

@@ -20,12 +20,13 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * MgrServerInfo
  */
-public class MgrServerInfo {
+public class MgrServerInfo implements Serializable {
 
     private Server server;
     private PackageEvr version;

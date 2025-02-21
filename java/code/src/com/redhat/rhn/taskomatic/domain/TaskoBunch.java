@@ -14,22 +14,47 @@
  */
 package com.redhat.rhn.taskomatic.domain;
 
-import java.util.ArrayList;
-import java.util.Date;
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * TaskoBunch
  */
-public class TaskoBunch {
+@Entity
+@Table(name = "rhnTaskoBunch")
+public class TaskoBunch extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_bunch_seq")
+    @SequenceGenerator(name = "tasko_bunch_seq", sequenceName = "RHN_TASKO_BUNCH_ID_SEQ", allocationSize = 1)
+    @Column(name = "id", nullable = false)
     private Long id;
+
+    @Column(name = "name", unique = true)
     private String name;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "org_bunch")
     private String orgBunch;
-    private List<TaskoTemplate> templates = new ArrayList<>();
-    private Date created;
-    private Date modified;
+
+    @OneToMany(mappedBy = "bunch", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderColumn(name = "ordering")
+    private List<TaskoTemplate> templates;
 
     /**
      * @return Returns the id.
@@ -71,34 +96,6 @@ public class TaskoBunch {
      */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
-    }
-
-    /**
-     * @return Returns the created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
     }
 
     /**
