@@ -97,6 +97,7 @@ Feature: Manage a group of systems
     And I click on "Confirm"
     Then I should see a "Patch virgo-dummy-3456 has been scheduled for 1 system" text
 
+@skip_if_github_validation
   Scenario: Install a package
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"
@@ -111,6 +112,7 @@ Feature: Manage a group of systems
     And I click on "Confirm"
     Then I should see a "Package installations are being scheduled, it may take several minutes for this to complete." text
 
+@skip_if_github_validation
   Scenario: Delete a package
     When I follow the left menu "Systems > System Set Manager > Overview"
     And I follow "Packages"

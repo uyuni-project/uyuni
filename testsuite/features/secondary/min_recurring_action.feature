@@ -1,6 +1,6 @@
 # Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
-
+@skip_if_github_validation
 @scope_recurring_actions
 Feature: Recurring Actions
 
