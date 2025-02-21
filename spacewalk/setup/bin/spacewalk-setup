@@ -77,8 +77,6 @@ setup_cc(\%opts, \%answers);
 
 setup_default_proxy(\%answers);
 
-Spacewalk::Setup::postgresql_setup_db(\%opts, \%answers);
-
 if ($opts{'db-only'}) {
     exit;
 }
@@ -103,9 +101,6 @@ if(not $opts{"skip-initial-configuration"}) {
 
 print Spacewalk::Setup::loc("* Configuring apache SSL virtual host.\n");
 setup_mod_ssl(\%opts, \%answers);
-
-Spacewalk::Setup::postgresql_reportdb_setup(\%opts, \%answers);
-print Spacewalk::Setup::loc("* Report DB Configured. \n");
 
 
 print Spacewalk::Setup::loc("* Update configuration in database.\n");
@@ -282,13 +277,6 @@ sub populate_initial_configs {
     my $opts = shift;
     my $answers = shift;
 
-    # TODO: This may need to be addressed. Can query this for postgresql with
-    # "show client_encoding;":
-    my $charset = 'UTF8';
-
-    # Define some db specific settings:
-    Spacewalk::Setup::set_hibernate_conf($answers);
-
     # Set the document root depending on OS.
     my $DOC_ROOT = $Spacewalk::Setup::SUSE_DOC_ROOT;
 
@@ -300,7 +288,6 @@ sub populate_initial_configs {
      serverDOTsatelliteDOThttp_proxy_username => $answers->{'rhn-http-proxy-username'} || '',
      serverDOTsatelliteDOThttp_proxy_password => $answers->{'rhn-http-proxy-password'} || '',
      javaDOThostname => $answers->{hostname},
-     encrypted_passwords => 1,
      db_backend => $answers->{'db-backend'},
      db_user => $answers->{'db-user'},
      db_password => $answers->{'db-password'},
@@ -308,17 +295,9 @@ sub populate_initial_configs {
      db_host => $answers->{'db-host'},
      db_port => $answers->{'db-port'},
      db_ssl_enabled => $answers->{'db-ssl-enabled'},
-     externaldb => $answers->{'externaldb'},
-     externaldb_admin_user => $answers->{'externaldb-admin-user'},
-     externaldb_admin_password => $answers->{'externaldb-admin-password'},
      db_sslrootcert => $answers->{'db-ca-cert'},
-     hibernate_dialect => $answers->{'hibernate.dialect'},
-     hibernate_driver => $answers->{'hibernate.connection.driver_class'},
-     hibernate_driver_proto => $answers->{'hibernate.connection.driver_proto'},
      traceback_mail => $answers->{'admin-email'},
-     serverDOTnls_lang => 'english.' . $charset,
      server_secret_key => generate_secret(),
-     cobblerDOThost => 'localhost',
      report_db_backend => $answers->{'db-backend'},
      report_db_user => $answers->{'report-db-user'},
      report_db_password => $answers->{'report-db-password'},
@@ -495,28 +474,4 @@ sub valid_multiple_email {
   }
 
   return $valid;
-}
-
-sub wait_for_tomcat {
-
-    for (my $i = 0; $i < 20; $i++) {
-        IO::Socket::INET->new(
-            PeerAddr => 'localhost',
-            PeerPort => '8009',
-            Proto    => 'tcp'
-        ) and last;
-        sleep 5;
-    }
-
-    for (my $i = 0; $i < 20; $i++) {
-        my $retval = system("/usr/bin/curl -fkIL http://localhost/ > /dev/null 2>&1");
-        if ($retval) {
-            sleep 5;
-        }
-        else {
-            return 1;
-        }
-    }
-    print "Tomcat failed to start properly or the installer ran out of tries.  Please check /var/log/tomcat/catalina.out or /var/log/tomcat/catalina.\$(date +%Y-%m-%d).log for errors.\n";
-    return 0;
 }

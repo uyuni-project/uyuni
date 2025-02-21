@@ -99,10 +99,9 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 %if 0%{?suse_version}
 BuildRequires:  %fillup_prereq
 BuildRequires:  %insserv_prereq
-BuildRequires:  postgresql-init
 BuildRequires:  tftp
-Requires(pre):  %fillup_prereq %insserv_prereq tftp postgresql-init
-Requires(preun):%fillup_prereq %insserv_prereq tftp postgresql-init
+Requires(pre):  %fillup_prereq %insserv_prereq tftp
+Requires(preun):%fillup_prereq %insserv_prereq tftp
 Requires(post): user(%{apache_user})
 %endif
 Requires(pre):  salt
