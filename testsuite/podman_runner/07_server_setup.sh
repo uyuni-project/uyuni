@@ -92,3 +92,6 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema" 
 
+${src_dir}/testsuite/podman_runner/setup-nginx-proxy-for-docker-registries.sh
+
+
