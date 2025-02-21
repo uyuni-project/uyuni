@@ -15,6 +15,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
+import com.redhat.rhn.frontend.xmlrpc.ServerInvocationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
@@ -334,6 +335,25 @@ public class HubHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     public int deregister(User loggedInUser, String fqdn) {
+        return deregister(loggedInUser, fqdn, true);
+    }
+
+    /**
+     * De-register the server identified by the fqdn.
+     * @param loggedInUser the user
+     * @param fqdn the FQDN of the server to de-register
+     * @param onlyLocal true if the de-registration has to be performed only this server, false to instead fully
+     * deregister on both sides
+     * @return 1 on success, exception otherwise
+     *
+     * @apidoc.doc De-register the server identified by the fqdn.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "the FQDN of the remote server to de-register")
+     * @apidoc.param #param_desc("boolean", "onlyLocal", " true if the de - registration has to be performed only this
+     * server, false to instead fully deregister on both sides")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int deregister(User loggedInUser, String fqdn, boolean onlyLocal) {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
@@ -341,15 +361,18 @@ public class HubHandler extends BaseHandler {
         }
 
         try {
-            hubManager.deleteIssServerLocal(loggedInUser, fqdn);
+            hubManager.deregister(loggedInUser, fqdn, onlyLocal);
         }
-        catch (Exception ex) {
+        catch (CertificateException ex) {
             LOGGER.error("De-registration failed for {} ", fqdn, ex);
-            throw ex;
+            throw new InvalidCertificateException(ex);
         }
+        catch (IOException ex) {
+            throw new ServerInvocationException(fqdn, ex);
+        }
+
         return 1;
     }
-
     /**
      * Set server details
      *

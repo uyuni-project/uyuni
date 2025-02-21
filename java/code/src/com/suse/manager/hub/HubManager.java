@@ -222,17 +222,30 @@ public class HubManager {
     }
 
     /**
-     * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
+     * Deregister the server with the given FQDN. The de-registration can be optionally performed also on the
+     * remote server.
      * @param user the user
      * @param fqdn the FQDN
+     * @param onlyLocal specify if the de-registration has to be performed also on the remote server
+     * @throws CertificateException when it's not possible to use remote server certificate
+     * @throws IOException when the connection with the remote server fails
      */
-    public void deleteIssServerLocal(User user, String fqdn) {
+    public void deregister(User user, String fqdn, boolean onlyLocal) throws CertificateException, IOException {
         ensureSatAdmin(user);
-        if (hubFactory.isISSPeripheral()) {
-            deleteHub(fqdn);
+
+        IssRole remoteRole = hubFactory.isISSPeripheral() ? IssRole.HUB : IssRole.PERIPHERAL;
+        IssServer server = findServer(user, fqdn, remoteRole);
+
+        if (!onlyLocal) {
+            IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(server.getFqdn());
+            var internalClient = clientFactory.newInternalClient(fqdn, accessToken.getToken(), server.getRootCa());
+            internalClient.deregister();
         }
-        else {
-            deletePeripheral(fqdn);
+
+        switch (remoteRole) {
+            case HUB -> deleteHub(fqdn);
+            case PERIPHERAL -> deletePeripheral(fqdn);
+            default -> throw new IllegalStateException("Role should either be HUB or PERIPHERAL");
         }
     }
 
@@ -257,10 +270,15 @@ public class HubManager {
             LOG.info("Peripheral Server with name {} not found", peripheralFqdn);
             return; // no error as the state is already as wanted.
         }
+
         IssPeripheral peripheral = issPeripheral.get();
+        deletePeripheral(peripheral);
+    }
+
+    private void deletePeripheral(IssPeripheral peripheral) {
         CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
         hubFactory.remove(peripheral);
-        hubFactory.removeAccessTokensFor(peripheralFqdn);
+        hubFactory.removeAccessTokensFor(peripheral.getFqdn());
     }
 
     private void deleteHub(String hubFqdn) {
@@ -270,9 +288,13 @@ public class HubManager {
             return; // no error as the state is already as wanted.
         }
         IssHub hub = issHub.get();
+        deleteHub(hub);
+    }
+
+    private void deleteHub(IssHub hub) {
         CredentialsFactory.removeCredentials(hub.getMirrorCredentials());
         hubFactory.remove(hub);
-        hubFactory.removeAccessTokensFor(hubFqdn);
+        hubFactory.removeAccessTokensFor(hub.getFqdn());
     }
 
     /**
