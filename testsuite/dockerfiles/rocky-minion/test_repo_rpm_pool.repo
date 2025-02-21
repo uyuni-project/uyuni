@@ -1,7 +1,0 @@
-[test_repo_rpm_pool]
-baseurl=https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/
-enabled=1
-gpgcheck=0
-name=tools_pool_repo
-priority=98
-refresh=1

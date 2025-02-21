@@ -38,6 +38,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -62,6 +63,8 @@ import com.suse.manager.webui.services.iface.VirtManager;
 import com.suse.manager.webui.services.test.TestSaltApi;
 import com.suse.manager.webui.services.test.TestSystemQuery;
 
+import org.cobbler.CobblerConnection;
+import org.cobbler.SystemRecord;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
@@ -70,7 +73,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -134,10 +139,14 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                         "custom", "echo test-command");
                 k.getKickstartDefaults().getKstree().setChannel(server.getBaseChannel());
                 String profileName = k.getLabel();
+                Map<String, String> advancedOptions = Map.of(
+                        "kernel_options", "console=tty0", "post_kernel_options", "console=tty1"
+                );
                 RhnMockHttpServletRequest request = new RhnMockHttpServletRequest();
 
                 int result = 0;
-                result = handler.provisionSystem(admin, request, server.getId().intValue(), profileName);
+                result = handler.provisionSystem(admin, request, server.getId().intValue(), null, profileName,
+                        new Date(), advancedOptions);
 
                 // something was scheduled
                 assertNotEquals(0, result);
@@ -155,8 +164,14 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 assertNotNull(actions);
                 KickstartInitiateAction kia = (KickstartInitiateAction) actions.get(0);
                 KickstartActionDetails kad = kia.getKickstartActionDetails();
+                assertEquals(" console=tty0", kad.getAppendString());
                 assertEquals(ConfigDefaults.get().getHostname(), kad.getKickstartHost());
 
+                // Cobbler kernel and post kernel options
+                CobblerConnection con = CobblerXMLRPCHelper.getConnection(admin);
+                SystemRecord rec =  SystemRecord.lookupById(con, server.getCobblerId());
+                assertEquals(" console=tty0", rec.getKernelOptions().get());
+                assertEquals("console=tty1", rec.getKernelOptionsPost().get());
         }
 
         @Test

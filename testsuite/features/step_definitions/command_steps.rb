@@ -925,7 +925,7 @@ When(/^I (install|remove) OpenSCAP dependencies (on|from) "([^"]*)"$/) do |actio
   when /^centos/, /^rocky/
     pkgs = 'openscap-utils scap-security-guide-redhat'
   when /^ubuntu/
-    pkgs = 'libopenscap8 scap-security-guide-ubuntu'
+    pkgs = 'openscap-utils openscap-scanner openscap-common ssg-debderived'
   else
     raise ScriptError, "The node #{node.hostname} has not a supported OS Family (#{os_family})"
   end

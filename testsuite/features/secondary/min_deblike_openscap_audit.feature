@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2023 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_openscap
@@ -33,6 +33,8 @@ Feature: OpenSCAP audit of Debian-like Salt minion
     And I follow "Schedule" in the content area
     And I wait at most 30 seconds until I do not see "This system does not yet have OpenSCAP scan capability." text, refreshing the page
     And I enter "--profile standard" as "params"
+    # WORKAROUND: the security guide for 24.04 does not exist yet
+    #             for now we still use the security guide for 22.04
     And I enter "/usr/share/xml/scap/ssg/content/ssg-ubuntu2204-xccdf.xml" as "path"
     And I click on "Schedule"
     Then I should see a "XCCDF scan has been scheduled" text

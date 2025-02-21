@@ -145,7 +145,7 @@ If you want a Debian-like minion, make this variable point to the machine
 that will be the Debian-like minion:
 
 ```bash
-export DEBLIKE_MINION=ubuntu2204.example.com
+export DEBLIKE_MINION=ubuntu2404.example.com
 ```
 
 and then run the test suite.

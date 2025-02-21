@@ -348,6 +348,6 @@ RPMOPTS="--define \"_topdir $RPM_BUILD_DIR\"\
 
 eval "rpmbuild -ta $RPMOPTS --clean $RPM_BUILD_DIR/$TARBALL" || exit 1
 
-mv $RPM_BUILD_DIR/$ARCH/$NAME-$VERSION-$RELEASE.$ARCH.rpm .
-mv $RPM_BUILD_DIR/$NAME-$VERSION-$RELEASE.src.rpm .
+cp $RPM_BUILD_DIR/$ARCH/$NAME-$VERSION-$RELEASE.$ARCH.rpm .
+cp $RPM_BUILD_DIR/$NAME-$VERSION-$RELEASE.src.rpm .
 rm -rf $RPM_BUILD_DIR
