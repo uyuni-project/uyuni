@@ -59,7 +59,8 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
      */
     @Test
     public void testSuccessWhenBlankRequest() {
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(new ProxyConfigUpdateJson(), null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext =
+                new ProxyConfigUpdateContext(new ProxyConfigUpdateJson(), null, null, null);
         new ProxyConfigUpdateRegistryPreConditions().handle(proxyConfigUpdateContext);
         assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
     }
