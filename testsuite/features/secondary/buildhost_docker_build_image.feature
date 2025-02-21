@@ -17,7 +17,6 @@
 @build_host
 @scope_building_container_images
 @no_auth_registry
-@skip_if_github_validation
 Feature: Build container images
 
   Scenario: Log in as org admin user
