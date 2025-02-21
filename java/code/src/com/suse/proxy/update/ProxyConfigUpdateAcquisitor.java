@@ -30,7 +30,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.RegistryUrl;
-import com.suse.proxy.get.ProxyConfigGet;
 import com.suse.proxy.model.ProxyConfig;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,7 +38,8 @@ import org.apache.logging.log4j.Logger;
 import java.net.URISyntaxException;
 
 /**
- * Acquires additional information from the request data
+ * Acquires information required for updating the proxy configuration
+ * Might these be just used for validation purposes or actually updating the proxy configuration
  */
 public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateAcquisitor.class);
@@ -66,7 +66,7 @@ public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHand
                     context.setProxyFqdn(ofNullable(minionServer.findPrimaryFqdn())
                             .map(ServerFQDN::getName)
                             .orElse(minionServer.getName()));
-                    context.setProxyConfig(new ProxyConfigGet().get(minionServer));
+                    context.setProxyConfig(context.getProxyConfigGetFacade().getProxyConfig(minionServer));
                 }
             });
         }
@@ -74,7 +74,10 @@ public class ProxyConfigUpdateAcquisitor implements ProxyConfigUpdateContextHand
 
     /**
      * Acquires the certificates from the request or the current proxy configuration
-     *
+     * In case the request specifies to keep the current certificates, the current proxy configuration is used.
+     * Two main reasons for this:
+     * 1) We want to keep the exact same certificates we have stored;
+     * 2) WebUi is getting truncated certificates data, that's also what we'll get back.
      * @param context the context
      */
     private void acquireCertificates(ProxyConfigUpdateContext context) {

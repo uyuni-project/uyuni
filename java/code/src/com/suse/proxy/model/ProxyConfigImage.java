@@ -15,6 +15,9 @@
 
 package com.suse.proxy.model;
 
+/**
+ * Class representing the proxy configuration image
+ */
 public class ProxyConfigImage {
 
     private String url;

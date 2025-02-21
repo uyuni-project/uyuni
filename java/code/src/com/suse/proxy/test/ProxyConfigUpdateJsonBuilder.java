@@ -15,12 +15,30 @@
 
 package com.suse.proxy.test;
 
+import static com.suse.proxy.ProxyConfigUtils.EMAIL_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.INTERMEDIATE_CAS_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.MAX_CACHE_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.PARENT_FQDN_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_CERT_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_KEY_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.PROXY_PORT_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_TAG;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_BASE_URL;
+import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE;
 import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_ADVANCED;
-import static com.suse.proxy.ProxyConfigUtils.REGISTRY_MODE_SIMPLE;
+import static com.suse.proxy.ProxyConfigUtils.ROOT_CA_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.SERVER_ID_FIELD;
+import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_REGISTRY;
 import static com.suse.proxy.ProxyConfigUtils.SOURCE_MODE_RPM;
+import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_FIELD;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_KEEP;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
+import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_HTTPD;
+import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SALT_BROKER;
+import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SQUID;
+import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SSH;
+import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_TFTPD;
 import static com.suse.utils.Predicates.isProvided;
 
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
@@ -85,7 +103,12 @@ public class ProxyConfigUpdateJsonBuilder {
         return this;
     }
 
-    public ProxyConfigUpdateJsonBuilder replaceCerts(String rootCAIn, List<String> intermediateCAsIn, String proxyCertIn, String proxyKeyIn) {
+    public ProxyConfigUpdateJsonBuilder replaceCerts(
+            String rootCAIn,
+            List<String> intermediateCAsIn,
+            String proxyCertIn,
+            String proxyKeyIn
+    ) {
         useCertsMode = USE_CERTS_MODE_REPLACE;
         rootCA = rootCAIn;
         intermediateCAs = intermediateCAsIn;
@@ -94,7 +117,12 @@ public class ProxyConfigUpdateJsonBuilder {
         return this;
     }
 
-    public ProxyConfigUpdateJsonBuilder keepCerts(String rootCAIn, List<String> intermediateCAsIn, String proxyCertIn, String proxyKeyIn) {
+    public ProxyConfigUpdateJsonBuilder keepCerts(
+            String rootCAIn,
+            List<String> intermediateCAsIn,
+            String proxyCertIn,
+            String proxyKeyIn
+    ) {
         useCertsMode = USE_CERTS_MODE_KEEP;
         rootCA = rootCAIn;
         intermediateCAs = intermediateCAsIn;
@@ -128,6 +156,7 @@ public class ProxyConfigUpdateJsonBuilder {
         return this;
     }
 
+    @SuppressWarnings("java:S107")
     public ProxyConfigUpdateJsonBuilder sourceRegistryAdvanced(
             String registryHttpdURLIn, String registryHttpdTagIn,
             String registrySaltbrokerURLIn, String registrySaltbrokerTagIn,
@@ -152,36 +181,36 @@ public class ProxyConfigUpdateJsonBuilder {
 
     public ProxyConfigUpdateJson build() {
         JsonObject requestJsonObject = new JsonObject();
-        requestJsonObject.addProperty("serverId", this.serverId);
-        requestJsonObject.addProperty("parentFQDN", this.parentFqdn);
-        requestJsonObject.addProperty("proxyPort", this.proxyPort);
-        requestJsonObject.addProperty("maxSquidCacheSize", this.maxCache);
-        requestJsonObject.addProperty("proxyAdminEmail", this.email);
-        requestJsonObject.addProperty("useCertsMode", this.useCertsMode);
-        requestJsonObject.addProperty("rootCA", this.rootCA);
+        requestJsonObject.addProperty(SERVER_ID_FIELD, this.serverId);
+        requestJsonObject.addProperty(PARENT_FQDN_FIELD, this.parentFqdn);
+        requestJsonObject.addProperty(PROXY_PORT_FIELD, this.proxyPort);
+        requestJsonObject.addProperty(MAX_CACHE_FIELD, this.maxCache);
+        requestJsonObject.addProperty(EMAIL_FIELD, this.email);
+        requestJsonObject.addProperty(USE_CERTS_MODE_FIELD, this.useCertsMode);
+        requestJsonObject.addProperty(ROOT_CA_FIELD, this.rootCA);
         JsonArray intermediateCAsArray = new JsonArray();
         if (isProvided(this.intermediateCAs)) {
             for (String ca : this.intermediateCAs) {
                 intermediateCAsArray.add(ca);
             }
         }
-        requestJsonObject.add("intermediateCAs", intermediateCAsArray);
-        requestJsonObject.addProperty("proxyCertificate", this.proxyCert);
-        requestJsonObject.addProperty("proxyKey", this.proxyKey);
-        requestJsonObject.addProperty("sourceMode", this.sourceMode);
-        requestJsonObject.addProperty("registryMode", this.registryMode);
-        requestJsonObject.addProperty("registryBaseURL", this.registryBaseURL);
-        requestJsonObject.addProperty("registryBaseTag", this.registryBaseTag);
-        requestJsonObject.addProperty("registryHttpdURL", this.registryHttpdURL);
-        requestJsonObject.addProperty("registryHttpdTag", this.registryHttpdTag);
-        requestJsonObject.addProperty("registrySaltbrokerURL", this.registrySaltbrokerURL);
-        requestJsonObject.addProperty("registrySaltbrokerTag", this.registrySaltbrokerTag);
-        requestJsonObject.addProperty("registrySquidURL", this.registrySquidURL);
-        requestJsonObject.addProperty("registrySquidTag", this.registrySquidTag);
-        requestJsonObject.addProperty("registrySshURL", this.registrySshURL);
-        requestJsonObject.addProperty("registrySshTag", this.registrySshTag);
-        requestJsonObject.addProperty("registryTftpdURL", this.registryTftpdURL);
-        requestJsonObject.addProperty("registryTftpdTag", this.registryTftpdTag);
+        requestJsonObject.add(INTERMEDIATE_CAS_FIELD, intermediateCAsArray);
+        requestJsonObject.addProperty(PROXY_CERT_FIELD, this.proxyCert);
+        requestJsonObject.addProperty(PROXY_KEY_FIELD, this.proxyKey);
+        requestJsonObject.addProperty(SOURCE_MODE_FIELD, this.sourceMode);
+        requestJsonObject.addProperty(REGISTRY_MODE, this.registryMode);
+        requestJsonObject.addProperty(REGISTRY_BASE_URL, this.registryBaseURL);
+        requestJsonObject.addProperty(REGISTRY_BASE_TAG, this.registryBaseTag);
+        requestJsonObject.addProperty(PROXY_HTTPD.getUrlField(), this.registryHttpdURL);
+        requestJsonObject.addProperty(PROXY_HTTPD.getTagField(), this.registryHttpdTag);
+        requestJsonObject.addProperty(PROXY_SALT_BROKER.getUrlField(), this.registrySaltbrokerURL);
+        requestJsonObject.addProperty(PROXY_SALT_BROKER.getTagField(), this.registrySaltbrokerTag);
+        requestJsonObject.addProperty(PROXY_SQUID.getUrlField(), this.registrySquidURL);
+        requestJsonObject.addProperty(PROXY_SQUID.getTagField(), this.registrySquidTag);
+        requestJsonObject.addProperty(PROXY_SSH.getUrlField(), this.registrySshURL);
+        requestJsonObject.addProperty(PROXY_SSH.getTagField(), this.registrySshTag);
+        requestJsonObject.addProperty(PROXY_TFTPD.getUrlField(), this.registryTftpdURL);
+        requestJsonObject.addProperty(PROXY_TFTPD.getTagField(), this.registryTftpdTag);
 
         return Json.GSON.fromJson(requestJsonObject, ProxyConfigUpdateJson.class);
     }

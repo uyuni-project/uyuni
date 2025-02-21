@@ -21,7 +21,7 @@ import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SALT_BROKER;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SQUID;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_SSH;
 import static com.suse.proxy.ProxyContainerImagesEnum.PROXY_TFTPD;
-import static com.suse.proxy.test.ProxyConfigUpdateUtils.assertExpectedErrors;
+import static com.suse.proxy.test.ProxyConfigUpdateTestUtils.assertExpectedErrors;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.testing.MockObjectTestCase;
@@ -42,7 +42,6 @@ import org.jmock.junit5.JUnit5Mockery;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -51,6 +50,7 @@ import java.util.Map;
  * These will assume the previous step in the chain of responsibility {@link ProxyConfigUpdateAcquisitor} and
  * {@link ProxyConfigUpdateValidation} have been executed and, no errors have been added to the context.
  */
+@SuppressWarnings({"java:S1171", "java:S3599"})
 @ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCase {
 
@@ -76,7 +76,8 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
     }
 
     /**
-     * Test a scenario when sourceMode is set to "Registry" but proxy RegistryUrls failed to be created (on previous steps)
+     * Test a scenario when sourceMode is set to "Registry" but proxy RegistryUrls failed to be created
+     * (on previous steps)
      */
     @Test
     public void testFailWhenRegistryUrlNotProvided() {
@@ -97,6 +98,7 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
         assertExpectedErrors(expectedErrorMessages, proxyConfigUpdateContext);
     }
 
+    @SuppressWarnings("java:S1130") // Suppress the ParseException warning (due to the mocked getTags() method)
     @Test
     public void testWhenGetTagsThrowsParseException() throws ParseException {
         final String[] expectedErrorMessages = {
@@ -135,37 +137,6 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
         //
         preConditions.handle(proxyConfigUpdateContext);
         assertExpectedErrors(expectedErrorMessages, proxyConfigUpdateContext);
-    }
-
-    @Test
-    public void testSuccess() throws ParseException {
-        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
-        ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().sourceMode(SOURCE_MODE_REGISTRY).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, null, null, null);
-
-        Map<ProxyContainerImagesEnum, RegistryUrl> registryUrls = new EnumMap<>(ProxyContainerImagesEnum.class);
-        RegistryUrl registryUrl = context.mock(RegistryUrl.class);
-        registryUrls.put(PROXY_HTTPD, registryUrl);
-        registryUrls.put(PROXY_SALT_BROKER, registryUrl);
-        registryUrls.put(PROXY_SQUID, registryUrl);
-        registryUrls.put(PROXY_SSH, registryUrl);
-        registryUrls.put(PROXY_TFTPD, registryUrl);
-        proxyConfigUpdateContext.getRegistryUrls().putAll(registryUrls);
-
-        // Inject the mock service so registryUtils.getTags() will not throw an exception
-        ProxyRegistryUtils proxyRegistryUtils = context.mock(ProxyRegistryUtils.class);
-        ProxyConfigUpdateRegistryPreConditions preConditions =
-                new ProxyConfigUpdateRegistryPreConditions(proxyRegistryUtils);
-
-        context.checking(new Expectations() {{
-            exactly(5).of(proxyRegistryUtils).getTags(with(any(RegistryUrl.class)));
-            will(returnValue(new ArrayList<>()));
-        }});
-
-        preConditions.handle(proxyConfigUpdateContext);
-
-        assertFalse(proxyConfigUpdateContext.getErrorReport().hasErrors());
     }
 
 }

@@ -17,6 +17,9 @@ package com.suse.proxy.model;
 
 import java.util.List;
 
+/**
+ * Class representing the proxy configuration
+ */
 public class ProxyConfig {
 
     private Long serverId;

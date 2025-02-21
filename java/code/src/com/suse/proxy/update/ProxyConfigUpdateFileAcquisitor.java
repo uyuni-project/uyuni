@@ -105,7 +105,5 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
             LOG.error("Failed to create proxy container configuration", e);
             context.getErrorReport().register("Failed to create proxy container configuration");
         }
-
     }
-
 }
