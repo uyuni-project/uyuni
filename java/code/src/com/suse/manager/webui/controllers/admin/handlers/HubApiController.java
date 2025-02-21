@@ -100,9 +100,10 @@ public class HubApiController {
     private String pass(Request request, Response response, User satAdmin) {
         throw new NotImplementedException();
     }
-        /**
-         * initialize all the API Routes for the ISSv3 support
-         */
+
+    /**
+     * initialize all the API Routes for the ISSv3 support
+     * */
     public void initRoutes() {
         // Hub management
         get("/manager/api/admin/hub", withProductAdmin(this::pass));
@@ -136,7 +137,7 @@ public class HubApiController {
     // Define a functional interface that allows throwing CertificateException
     @FunctionalInterface
     private interface ChannelsOperation {
-        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException;
+        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException, IOException;
     }
 
     // Common helper method to process the request
@@ -149,10 +150,9 @@ public class HubApiController {
         try {
             operation.apply(satAdmin, peripheralId, channelsId);
         }
-        catch (CertificateException e) {
+        catch (CertificateException | IOException e) {
             return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
         }
-
         return success(response);
     }
 
@@ -179,7 +179,7 @@ public class HubApiController {
         try {
             hubManager.deregister(satAdmin, peripheralId);
         }
-        catch (CertificateException eIn) {
+        catch (CertificateException | IOException eIn) {
             return internalServerError(response, LOC.getMessage("hub.unable_establish_secure_connection"));
         }
         return success(response);

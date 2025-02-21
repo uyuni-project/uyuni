@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * HTTP Client for the Hub Inter-Server-Sync internal server-to-server APIs
@@ -113,6 +114,13 @@ public class DefaultHubInternalClient implements HubInternalClient {
         // Use a TypeToken to preserve the generic type information
         Type type = new TypeToken<List<ChannelInfoJson>>() { }.getType();
         return invokeGet("hub", "listAllPeripheralChannels", type);
+    }
+
+    @Override
+    public List<ChannelInfoJson> syncVendorChannels(Set<String> channelsLabelIn) throws IOException {
+        // Use a TypeToken to preserve the generic type information
+        Type type = new TypeToken<Set<String>>() { }.getType();
+        return invokePost("hub", "addVendorChannels", channelsLabelIn, type);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)

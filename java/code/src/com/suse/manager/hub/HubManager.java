@@ -50,14 +50,15 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
-import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
+import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -397,7 +398,7 @@ public class HubManager {
      * @param peripheralId the peripheral entity id
      * @throws CertificateException if the specified certificate is not parseable
      */
-    public void deregister(User user, Long peripheralId) throws CertificateException {
+    public void deregister(User user, Long peripheralId) throws CertificateException, IOException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
@@ -406,14 +407,17 @@ public class HubManager {
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
+        // TODO: is this the correct way to get a transaction here?
         Transaction trans = HubFactory.getSession().beginTransaction();
         try {
             deletePeripheral(issPeripheral.getFqdn());
             internalApi.deregister();
             trans.commit();
         }
-        catch (Exception exc) {
+        catch (IOException exc) {
+            LOG.error("Failed to communicate with Peripheral ");
             trans.rollback();
+            throw exc;
         }
     }
 
@@ -999,7 +1003,6 @@ public class HubManager {
                 .toList();
     }
 
-
     /**
      * add custom channels to peripheral
      *
@@ -1018,13 +1021,11 @@ public class HubManager {
         if (csm.isRefreshNeeded(mirrorUrl)) {
             throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
         }
-
         List<String> addedChannelsLabelList = new ArrayList<>();
         for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
             // Create the channel
             Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
             ChannelFactory.save(customChannel);
-
             addedChannelsLabelList.add(customChannel.getLabel());
         }
 
@@ -1228,16 +1229,33 @@ public class HubManager {
      * @param channelsId the list of channels id from the hub
      */
     public void syncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId)
-            throws CertificateException {
+            throws CertificateException, IOException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
         var internalApi = clientFactory.newInternalClient(
                 issPeripheral.getFqdn(),
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
-        //internalApi.
+        Transaction transaction = HubFactory.getSession().beginTransaction();
+        try {
+            Set<String> channelsLabel = new HashSet<>();
+            Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+            channels.forEach(ch -> {
+                peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch));
+                channelsLabel.add(ch.getLabel());
+            });
+            issPeripheral.setPeripheralChannels(peripheralChannels);
+            hubFactory.save(issPeripheral);
+            internalApi.syncVendorChannels(channelsLabel);
+            transaction.commit();
+        }
+        catch (IOException eIn) {
+            transaction.rollback();
+            throw eIn;
+        }
     }
 
     /**
@@ -1246,10 +1264,14 @@ public class HubManager {
      * @param peripheralId the peripheral id
      * @param channelsId the list of channels id from the hub
      */
-    public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId)
-            throws CertificateException {
+    public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId) {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
+        Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+        channels.forEach(ch -> peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch)));
+        issPeripheral.setPeripheralChannels(peripheralChannels);
+        hubFactory.save(issPeripheral);
     }
 
 }
