@@ -589,10 +589,19 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canDeregisterHub() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+    public void canDeregisterHub() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
-        createHubRegistration(fqdn, null, null);
-        hubManager.deleteIssServerLocal(satAdmin, fqdn);
+        IssAccessToken token = createHubRegistration(fqdn, null, null);
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deregister();
+        }});
+
+        hubManager.deregister(satAdmin, fqdn, false);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
@@ -601,10 +610,42 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void canDeregisterPeripheral() throws TokenBuildingException, TaskomaticApiException, TokenParsingException {
+    public void canDeregisterHubLocalOnly() throws Exception {
         String fqdn = LOCAL_SERVER_FQDN;
-        createPeripheralRegistration(fqdn, null);
-        hubManager.deleteIssServerLocal(satAdmin, fqdn);
+        hubManager.deregister(satAdmin, fqdn, true);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
+        assertEquals(0, CredentialsFactory.listSCCCredentials().size());
+    }
+
+    @Test
+    public void canDeregisterPeripheral() throws Exception {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createPeripheralRegistration(fqdn, null);
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), null);
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deregister();
+        }});
+
+        hubManager.deregister(satAdmin, fqdn, false);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
+        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+    }
+
+    @Test
+    public void canDeregisterPeripheralLocalOnly() throws Exception {
+        String fqdn = LOCAL_SERVER_FQDN;
+
+        hubManager.deregister(satAdmin, fqdn, true);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));

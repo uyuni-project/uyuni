@@ -7784,6 +7784,9 @@ Follow this url to see the full list of inactive systems:
       <trans-unit id="api.iss.duplicateslave" xml:space="preserve">
         <source>A record for Slave @@PRODUCT_NAME@@ {0} already exists</source>
       </trans-unit>
+      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
+        <source>Unable to invoke the remote server {0}</source>
+      </trans-unit>
       <trans-unit id="securityErrata" xml:space="preserve">
         <source>Security Patches</source>
       </trans-unit>
