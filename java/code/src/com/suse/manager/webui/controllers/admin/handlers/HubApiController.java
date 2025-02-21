@@ -156,7 +156,6 @@ public class HubApiController {
         return success(response);
     }
 
-    // Refactored methods that use the common helper
     private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
         return processChannelsOperation(request, response, satAdmin, hubManager::syncChannelsByIdForPeripheral);
     }
@@ -164,6 +163,7 @@ public class HubApiController {
     private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
         return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
     }
+
     private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
         PageControlHelper pageHelper = new PageControlHelper(request);
         PageControl pc = pageHelper.getPageControl();
