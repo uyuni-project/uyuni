@@ -11494,19 +11494,19 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">CVE 감사 쿼리의 정확도를 향상하기 위해 필요한 OVAL 데이터 생성</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
         <target state="final">SCC 데이터 전달이 활성화되었습니다.</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
         <target state="final">SCC 데이터 전달이 이미 활성화되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
         <target state="final">데이터가 SCC와 동기화되지 않고 있습니다</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;

@@ -5982,7 +5982,7 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">重启动</target>
       </trans-unit>
-      <trans-unit id="message.firstusercreated" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.firstusercreated" xml:space="preserve">
         <source>You have just created your first @@PRODUCT_NAME@@ user. To finalize your installation please use the &lt;a href="/rhn/manager/admin/setup/proxy"&gt;Setup Wizard&lt;/a&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
@@ -11496,19 +11496,19 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="final">生成所需的 OVAL 数据，以提高 CVE 审计查询的准确度</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
         <target state="final">已成功启用 SCC 数据转发功能。</target>
       </trans-unit>
-      <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
         <target state="final">SCC 数据转发功能已启用。</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
         <target state="final">数据未与 SCC 保持同步</target>
       </trans-unit>
-      <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
