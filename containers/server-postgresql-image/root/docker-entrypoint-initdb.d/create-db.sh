@@ -1,0 +1,10 @@
+#!/bin/bash
+MANAGER_DB_NAME=susemanager
+
+run_sql() {
+    PGHOST= PGHOSTADDR= psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" --no-password --no-psqlrc "$@"
+}
+
+echo "CREATE DATABASE $MANAGER_DB_NAME ENCODING = UTF8 ;" | run_sql
+echo "CREATE EXTENSION IF NOT EXISTS plpgsql;"  | run_sql
+echo "CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASSWORD' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | run_sql

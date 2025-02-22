@@ -59,6 +59,7 @@ import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
+import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -120,7 +121,6 @@ public class HubManager {
 
     /**
      * Builds an instance with the given dependencies
-     *
      * @param hubFactoryIn the hub factory
      * @param clientFactoryIn the ISS client factory
      * @param mirrorCredentialsManagerIn the mirror credentials manager
@@ -139,7 +139,6 @@ public class HubManager {
 
     /**
      * Create a new access token for the given FQDN and store it in the database
-     *
      * @param user the user performing the operation
      * @param fqdn the FQDN of the peripheral/hub
      * @return the serialized form of the token
@@ -939,133 +938,6 @@ public class HubManager {
     }
 
     /**
-     * add vendor channel to peripheral
-     *
-     * @param accessToken            the access token
-     * @param vendorChannelLabelList the vendor channel label list
-     * @return returns a list of the vendor channel that have been added {@link Channel}
-     * the possible return cases are:
-     * 1) empty list: the vendor channel and its base channel were already present in the peripheral (nothing created)
-     * 2) one-channel list: if only the vendor channel was created while the base channel was already present
-     * 3) two-channel list: if both the vendor and the base channel were added to the peripheral
-     */
-    public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> addedVendorChannelLabels = new ArrayList<>();
-        for (String vendorChannelLabel : vendorChannelLabelList) {
-            //retrieve vendor channel template
-            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
-                    .lookupByChannelLabelFirst(vendorChannelLabel);
-
-            if (vendorChannelTemplate.isEmpty()) {
-                throw new InvalidChannelLabelException(vendorChannelLabel,
-                        InvalidChannelLabelException.Reason.IS_MISSING,
-                        "Invalid data: vendor channel label not found", vendorChannelLabel);
-            }
-
-            // get base channel of target channel
-            if (!vendorChannelTemplate.get().isRoot()) {
-                String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
-
-                // check if base channel is already added
-                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
-                    // if not, add base channel
-                    addedVendorChannelLabels.add(vendorBaseChannelLabel);
-                }
-            }
-
-            // check if channel is already added
-            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
-                //add target channel
-                addedVendorChannelLabels.add(vendorChannelLabel);
-            }
-        }
-
-        //add target channels
-        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * add custom channels to peripheral
-     *
-     * @param accessToken               the access token
-     * @param customChannelInfoJsonList the list of custom channel info to add
-     * @return returns a list of the custom channels {@link Channel} that have been added
-     */
-    public List<Channel> addCustomChannels(IssAccessToken accessToken,
-                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-        List<String> addedChannelsLabelList = new ArrayList<>();
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
-            // Create the channel
-            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
-            ChannelFactory.save(customChannel);
-            addedChannelsLabelList.add(customChannel.getLabel());
-        }
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * modify a peripheral custom channel
-     *
-     * @param accessToken             the access token
-     * @param modifyCustomChannelList the list of custom channels modifications
-     * @return returns a list of the custom channel that have been added {@link Channel}
-     */
-    public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
-                                              List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> modifiedChannelsLabelList = new ArrayList<>();
-        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
-            // modify the channel
-            Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
-            ChannelFactory.save(customChannel);
-
-            modifiedChannelsLabelList.add(customChannel.getLabel());
-        }
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
      * Get the Peripheral Organizations
      * @param user the SatAdmin
      * @param peripheralId the Peripheral ID
@@ -1267,6 +1139,177 @@ public class HubManager {
         channels.forEach(ch -> peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch)));
         issPeripheral.setPeripheralChannels(peripheralChannels);
         hubFactory.save(issPeripheral);
+    }
+
+    /**
+     * add vendor channel to peripheral
+     *
+     * @param accessToken            the access token
+     * @param vendorChannelLabelList the vendor channel label list
+     * @return returns a list of the vendor channel that have been added {@link Channel}
+     * the possible return cases are:
+     * 1) empty list: the vendor channel and its base channel were already present in the peripheral (nothing created)
+     * 2) one-channel list: if only the vendor channel was created while the base channel was already present
+     * 3) two-channel list: if both the vendor and the base channel were added to the peripheral
+     */
+    public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> addedVendorChannelLabels = new ArrayList<>();
+        for (String vendorChannelLabel : vendorChannelLabelList) {
+            //retrieve vendor channel template
+            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
+                    .lookupByChannelLabelFirst(vendorChannelLabel);
+
+            if (vendorChannelTemplate.isEmpty()) {
+                throw new InvalidChannelLabelException(vendorChannelLabel,
+                        InvalidChannelLabelException.Reason.IS_MISSING,
+                        "Invalid data: vendor channel label not found", vendorChannelLabel);
+            }
+
+            // get base channel of target channel
+            if (!vendorChannelTemplate.get().isRoot()) {
+                String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
+
+                // check if base channel is already added
+                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
+                    // if not, add base channel
+                    addedVendorChannelLabels.add(vendorBaseChannelLabel);
+                }
+            }
+
+            // check if channel is already added
+            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
+                //add target channel
+                addedVendorChannelLabels.add(vendorChannelLabel);
+            }
+        }
+
+        //add target channels
+        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
+                .toList();
+    }
+
+    /**
+     * add custom channels to peripheral
+     *
+     * @param accessToken               the access token
+     * @param customChannelInfoJsonList the list of custom channel info to add
+     * @return returns a list of the custom channels {@link Channel} that have been added
+     */
+    public List<Channel> addCustomChannels(IssAccessToken accessToken,
+                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+        List<String> addedChannelsLabelList = new ArrayList<>();
+        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+            // Create the channel
+            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
+            ChannelFactory.save(customChannel);
+            addedChannelsLabelList.add(customChannel.getLabel());
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
+                .toList();
+    }
+
+    /**
+     * modify a peripheral custom channel
+     *
+     * @param accessToken             the access token
+     * @param modifyCustomChannelList the list of custom channels modifications
+     * @return returns a list of the custom channel that have been added {@link Channel}
+     */
+    public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
+                                              List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
+        ensureValidToken(accessToken);
+        ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
+
+        String mirrorUrl = null;
+
+        ContentSyncManager csm = new ContentSyncManager();
+        if (csm.isRefreshNeeded(mirrorUrl)) {
+            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        }
+
+        List<String> modifiedChannelsLabelList = new ArrayList<>();
+        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
+            // modify the channel
+            Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
+            ChannelFactory.save(customChannel);
+
+            modifiedChannelsLabelList.add(customChannel.getLabel());
+        }
+
+        return ChannelFactory.listAllChannels()
+                .stream()
+                .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
+                .toList();
+    }
+
+    /**
+     * Trigger a synchronization of Channel Families on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeChannelFamilies(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeChannelFamilies();
+    }
+
+    /**
+     * Trigger a synchronization of Products on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeProducts(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeProducts();
+    }
+
+    /**
+     * Trigger a synchronization of Repositories on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeRepositories(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeRepositories();
+    }
+
+    /**
+     * Trigger a synchronization of Subscriptions on the peripheral
+     *
+     * @param accessToken the access token
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeSubscriptions(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeSubscriptions();
     }
 
 }

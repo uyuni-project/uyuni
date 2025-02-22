@@ -32,7 +32,7 @@ export const TextArea = (props: Props) => {
         const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
         return (
           <textarea
-            className={`form-control${inputClass ? ` ${inputClass}` : ""}`}
+            className={"form-control " + (inputClass ?? "")}
             name={props.name}
             id={props.name}
             value={fieldValue}

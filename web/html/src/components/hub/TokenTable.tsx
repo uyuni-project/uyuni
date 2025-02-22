@@ -87,84 +87,21 @@ export class TokenTable extends React.Component<Props, State> {
           headerClass="text-center"
           columnKey="creationDate"
           header={t("Created")}
-          cell={(row: AccessToken) => <FromNow value={row.creationDate} />}
+          cell={(row: AccessToken) => this.renderDate(row.creationDate)}
         />
         <Column
           columnClass="text-center"
           headerClass="text-center"
           columnKey="modificationDate"
           header={t("Last Modified")}
-          cell={(row: AccessToken) => <FromNow value={row.modificationDate} />}
+          cell={(row: AccessToken) => this.renderDate(row.modificationDate)}
         />
         {(this.props.allowDeletion || this.props.allowToggleValidity) && (
           <Column
             columnClass="text-right"
             headerClass="text-right"
             header={t("Actions")}
-            cell={(row: AccessToken) => (
-              <div className="btn-group">
-                {this.props.allowToggleValidity && (
-                  <>
-                    <Button
-                      icon={row.valid ? "fa-ban" : "fa-check"}
-                      className="btn-default"
-                      handler={() =>
-                        // If the token is used, ask for confirmation. Otherwise, directly toggle the validity
-                        row.hubId !== null || row.peripheralId !== null
-                          ? this.setState({ confirmValidityDialog: true, selectedRow: row })
-                          : this.onToggleValidity(row)
-                      }
-                    >
-                      {row.valid ? t("Invalidate") : t("Validate")}
-                    </Button>
-                    {this.state.selectedRow && (
-                      <DangerDialog
-                        id="confirm-validity-modal"
-                        isOpen={this.state.confirmValidityDialog}
-                        title={t("Confirm access token modification")}
-                        content={
-                          <div>
-                            <div>{this.getValidityConfirmationMessage(this.state.selectedRow)}</div>
-                            <div>{t("Confirm if you want to proceed.")}</div>
-                          </div>
-                        }
-                        onConfirm={() => this.state.selectedRow && this.onToggleValidity(this.state.selectedRow)}
-                        onClose={() => this.setState({ confirmValidityDialog: false, selectedRow: undefined })}
-                        submitText={this.state.selectedRow.valid ? t("Invalidate") : t("Validate")}
-                        submitIcon={this.state.selectedRow.valid ? "fa-ban" : "fa-check"}
-                      />
-                    )}
-                  </>
-                )}
-                {this.props.allowDeletion && (
-                  <>
-                    <Button
-                      disabled={row.hubId !== null || row.peripheralId !== null}
-                      title={this.getDeleteTitle(row)}
-                      className="btn-default"
-                      icon="fa-trash"
-                      handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
-                    >
-                      {t("Delete")}
-                      {this.state.selectedRow && (
-                        <DangerDialog
-                          id="confirm-deletion-modal"
-                          isOpen={this.state.confirmDeleteDialog}
-                          title={t("Confirm access token deletion")}
-                          content={
-                            <div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>
-                          }
-                          onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
-                          onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
-                          submitText={t("Delete")}
-                          submitIcon="fa-trash"
-                        />
-                      )}
-                    </Button>
-                  </>
-                )}
-              </div>
-            )}
+            cell={(row: AccessToken) => this.renderActions(row)}
           />
         )}
       </Table>
@@ -177,7 +114,7 @@ export class TokenTable extends React.Component<Props, State> {
     }
 
     const isExpired = localizedMoment(expirationTime).isBefore(localizedMoment());
-    const param = { expiration: (_str) => <FromNow value={expirationTime} /> };
+    const param = { expiration: (_str) => this.renderDate(expirationTime) };
 
     return (
       <span className={isExpired ? "text-danger" : ""}>
@@ -186,11 +123,80 @@ export class TokenTable extends React.Component<Props, State> {
     );
   }
 
+  private renderDate(date: Date): React.ReactNode {
+    return <FromNow value={date} />;
+  }
+
+  private renderActions(row: AccessToken) {
+    return (
+      <div className="btn-group">
+        {this.props.allowToggleValidity && (
+          <>
+            <Button
+              icon={row.valid ? "fa-ban" : "fa-check"}
+              className="btn-default"
+              handler={() =>
+                // If the token is used, ask for confirmation. Otherwise, directly toggle the validity
+                row.hubId !== null || row.peripheralId !== null
+                  ? this.setState({ confirmValidityDialog: true, selectedRow: row })
+                  : this.onToggleValidity(row)
+              }
+            >
+              {row.valid ? t("Invalidate") : t("Validate")}
+            </Button>
+            {this.state.selectedRow && (
+              <DangerDialog
+                id="confirm-validity-modal"
+                isOpen={this.state.confirmValidityDialog}
+                title={t("Confirm access token modification")}
+                content={
+                  <div>
+                    <div>{this.getValidityConfirmationMessage(this.state.selectedRow)}</div>
+                    <div>{t("Confirm if you want to proceed.")}</div>
+                  </div>
+                }
+                onConfirm={() => this.state.selectedRow && this.onToggleValidity(this.state.selectedRow)}
+                onClose={() => this.setState({ confirmValidityDialog: false, selectedRow: undefined })}
+                submitText={this.state.selectedRow.valid ? t("Invalidate") : t("Validate")}
+                submitIcon={this.state.selectedRow.valid ? "fa-ban" : "fa-check"}
+              />
+            )}
+          </>
+        )}
+        {this.props.allowDeletion && (
+          <>
+            <Button
+              disabled={row.hubId !== null || row.peripheralId !== null}
+              title={this.getDeleteTitle(row)}
+              className="btn-default"
+              icon="fa-trash"
+              handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
+            >
+              {t("Delete")}
+              {this.state.selectedRow && (
+                <DangerDialog
+                  id="confirm-deletion-modal"
+                  isOpen={this.state.confirmDeleteDialog}
+                  title={t("Confirm access token deletion")}
+                  content={<div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>}
+                  onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
+                  onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
+                  submitText={t("Delete")}
+                  submitIcon="fa-trash"
+                />
+              )}
+            </Button>
+          </>
+        )}
+      </div>
+    );
+  }
+
   private onDelete(row: AccessToken): void {
     Network.del(`/rhn/manager/api/admin/hub/access-tokens/${row.id}`)
       .catch((xhr) => Network.showResponseErrorToastr(xhr))
       .then((response) => {
-        this.tableRef.current?.refresh();
+        this.refresh();
         showInfoToastr("Access token successfully deleted");
       });
   }
@@ -223,48 +229,59 @@ export class TokenTable extends React.Component<Props, State> {
   }
 
   private getValidityConfirmationMessage(row: AccessToken): string {
-    const params = { fqdn: row.serverFqdn };
-    // token issued for another server currently valid and linked to a hub
-    if (row.type === TokenType.ISSUED && row.valid && row.hubId !== null) {
-      return t("Invalidating this access token will prevent the hub {fqdn} from accesssing.", params);
+    const messageGeneratorMap: { [key: string]: (params: object) => string } = {
+      "issued-valid-hub": (params) =>
+        // token issued for another server currently valid and linked to a hub
+        t("Invalidating this access token will prevent the hub {fqdn} from accesssing.", params),
+      "issued-valid-peripheral": (params) =>
+        // token issued for another server currently valid and linked to a peripheral
+        t("Invalidating this access token will prevent the peripheral {fqdn} from accesssing.", params),
+      "issued-invalid-hub": (params) =>
+        // token issued for another server currently not valid and linked to a hub
+        t("Enabling this access token will grant access to the hub {fqdn}.", params),
+      "issued-invalid-peripheral": (params) =>
+        // token issued for another server currently not valid and linked to a peripheral
+        t("Enabling this access token will grant access to the peripheral {fqdn}.", params),
+      "consumed-valid-hub": (params) =>
+        // token received from another server currently valid and linked to a hub
+        t("Invalidating this access token will prevent access to the hub {fqdn}.", params),
+      "consumed-valid-peripheral": (params) =>
+        // token received from another server currently valid and linked to a peripheral
+        t("Invalidating this access token will prevent access to the peripheral {fqdn}.", params),
+      "consumed-invalid-hub": (params) =>
+        // token received from another server currently not valid and linked to a hub
+        t("Enabling this access token will restore access to the hub {fqdn}.", params),
+      "consumed-invalid-peripheral": (params) =>
+        // token received from another server currently not valid and linked to a peripheral
+        t("Enabling this access token will restore access to the peripheral {fqdn}.", params),
+    };
+
+    const key = `${this.getTypePart(row.type)}-${this.getValidityPart(row.valid)}-${this.getRolePart(row)}`;
+    const messageGenerator = messageGeneratorMap[key];
+
+    if (messageGenerator) {
+      return messageGenerator({ fqdn: row.serverFqdn });
     }
 
-    // token issued for another server currently valid and linked to a peripheral
-    if (row.type === TokenType.ISSUED && row.valid && row.peripheralId !== null) {
-      return t("Invalidating this access token will prevent the peripheral {fqdn} from accesssing.", params);
-    }
-
-    // token issued for another server currently not valid and linked to a hub
-    if (row.type === TokenType.ISSUED && !row.valid && row.hubId !== null) {
-      return t("Enabling this access token will grant access to the hub {fqdn}.", params);
-    }
-
-    // token issued for another server currently not valid and linked to a peripheral
-    if (row.type === TokenType.ISSUED && !row.valid && row.peripheralId !== null) {
-      return t("Enabling this access token will grant access to the peripheral {fqdn}.", params);
-    }
-
-    // token received from another server currently valid and linked to a hub
-    if (row.type === TokenType.CONSUMED && row.valid && row.hubId !== null) {
-      return t("Invalidating this access token will prevent access to the hub {fqdn}.", params);
-    }
-
-    // token received from another server currently valid and linked to a peripheral
-    if (row.type === TokenType.CONSUMED && row.valid && row.peripheralId !== null) {
-      return t("Invalidating this access token will prevent access to the peripheral {fqdn}.", params);
-    }
-
-    // token received from another server currently not valid and linked to a hub
-    if (row.type === TokenType.CONSUMED && !row.valid && row.hubId !== null) {
-      return t("Enabling this access token will restore access to the hub {fqdn}.", params);
-    }
-
-    // token received from another server currently not valid and linked to a peripheral
-    if (row.type === TokenType.CONSUMED && !row.valid && row.peripheralId !== null) {
-      return t("Enabling this access token will restore access to the peripheral {fqdn}.", params);
-    }
-
-    // This line should be unreachable
     return `invalid row state: ${row.type}, ${row.valid}, ${row.hubId}/${row.peripheralId}`;
+  }
+
+  private getTypePart(type: TokenType): "issued" | "consumed" {
+    return type === TokenType.ISSUED ? "issued" : "consumed";
+  }
+
+  private getValidityPart(valid: boolean): "valid" | "invalid" {
+    return valid ? "valid" : "invalid";
+  }
+
+  private getRolePart(row): "hub" | "peripheral" | "undefined" {
+    if (row.hubId !== null) {
+      return "hub";
+    }
+
+    if (row.peripheralId !== null) {
+      return "peripheral";
+    }
+    return "undefined";
   }
 }
