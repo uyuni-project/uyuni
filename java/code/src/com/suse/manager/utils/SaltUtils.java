@@ -21,6 +21,7 @@ import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static com.suse.manager.webui.services.SaltConstants.SUMA_STATE_FILES_ROOT_PATH;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
@@ -718,12 +719,7 @@ public class SaltUtils {
             handleCocoAttestationResult(action, serverAction, jsonResult);
         }
         else if (action.getActionType().equals(ActionFactory.TYPE_INVENTORY)) {
-            if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
                 handleInventoryRefresh(action, serverAction, jsonResult);
-            }
-            else {
-                serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
-            }
         }
         else {
            serverAction.setResultMsg(getJsonResultWithPrettyPrint(jsonResult));
@@ -1900,34 +1896,37 @@ public class SaltUtils {
     }
 
     private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
-        try {
-            Set<String> hostvars = AnsibleManager.parseInventoryAndGetHostnames(
-                    Json.GSON.fromJson(jsonResult, Map.class));
-            InventoryAction inventoryAction = (InventoryAction) action;
-            Optional<InventoryPath> inventory = AnsibleFactory.lookupAnsibleInventoryPath(
-                    serverAction.getServerId(), inventoryAction.getDetails().getInventoryPath());
+        String inventoryPath = ((InventoryAction) action).getDetails().getInventoryPath();
+        if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
+            try {
+                Set<String> inventorySystems = AnsibleManager.parseInventoryAndGetHostnames(
+                        Json.GSON.fromJson(jsonResult, Map.class));
 
-            if (inventory.isPresent()) {
-                Set<Server> registeredServers = new HashSet<>();
-                hostvars.forEach(serverName -> ServerFactory.findByFqdn(serverName).ifPresent(registeredServers::add));
+                InventoryPath inventory = AnsibleFactory.lookupAnsibleInventoryPath(
+                                serverAction.getServerId(), inventoryPath)
+                        .orElseThrow(() -> new LookupException("Unable to find Ansible inventory: " +
+                                inventoryPath + " for system " + serverAction.getServerId()));
 
-                inventory.get().setInventoryServers(registeredServers);
-                AnsibleFactory.saveAnsiblePath(inventory.get());
+                Set<Server> systemsToAdd = inventorySystems.stream().map(s -> ServerFactory.findByFqdn(s)
+                        .orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet());
+
+                AnsibleManager.handleInventoryRefresh(inventory, systemsToAdd);
+                serverAction.setResultMsg("Refreshed Ansible managed systems of inventory: '" + inventoryPath + "'");
             }
-            else {
-                String message = String.format("Unable to find Ansible inventory: '%s' for system %s",
-                        inventoryAction.getDetails().getInventoryPath(),
-                        serverAction.getServerId());
-                LOG.warn(message);
+            catch (JsonSyntaxException e) {
+                LOG.error("Unable to parse Ansible hostnames from json: {}", e.getMessage());
                 serverAction.setStatus(ActionFactory.STATUS_FAILED);
-                serverAction.setResultMsg(message);
+                serverAction.setResultMsg("Unable to parse hostnames from inventory: " + inventoryPath);
+                }
+            catch (LookupException e) {
+                LOG.error(e.getMessage());
+                serverAction.setStatus(ActionFactory.STATUS_FAILED);
+                serverAction.setResultMsg(e.getMessage());
             }
         }
-        catch (JsonSyntaxException e) {
-            LOG.warn("Unable to parse Ansible inventory from json: {}", e.getMessage());
-            return;
+        else {
+            serverAction.setResultMsg(jsonResult.getAsString());
         }
-        serverAction.setResultMsg("Successfully refreshed Ansible managed systems");
     }
 
     private static PackageEvr parsePackageEvr(Optional<String> epoch, String version, Optional<String> release,
