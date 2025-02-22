@@ -9163,6 +9163,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="hub.cannot_find_server" xml:space="preserve">
+        <source>Cannot find a remote server with the specified id.</source>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
+        <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
+      </trans-unit>
       <trans-unit id="cveaudit.nav.title" xml:space="preserve">
         <source>CVE Audit</source>
       </trans-unit>
