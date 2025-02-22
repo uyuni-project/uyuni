@@ -114,7 +114,7 @@ export class TokenTable extends React.Component<Props, State> {
     }
 
     const isExpired = localizedMoment(expirationTime).isBefore(localizedMoment());
-    const param = { expiration: (_str) => <FromNow value={expirationTime} /> };
+    const param = { expiration: (_str) => this.renderDate(expirationTime) };
 
     return (
       <span className={isExpired ? "text-danger" : ""}>
