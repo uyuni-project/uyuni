@@ -16,6 +16,11 @@ export type AccessToken = {
   peripheralId: number | null;
 };
 
+export enum IssRole {
+  Hub = "HUB",
+  Peripheral = "PERIPHERAL",
+}
+
 export type HubRegisterRequest = {
   fqdn: string;
   token?: string;
@@ -43,7 +48,11 @@ export type PeripheralListData = {
 };
 
 export type HubDetailData = {
-  id: string;
+  id: number;
   fqdn: string;
-  rootCA: string;
+  rootCA: string | null;
+  gpgKey: string | null;
+  sccUsername: string;
+  created: Date;
+  modified: Date;
 };
