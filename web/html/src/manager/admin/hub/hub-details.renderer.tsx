@@ -1,8 +1,19 @@
+import * as React from "react";
+
+import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
 
-import HubDetails from "./hub-details";
-import { HubDetailData } from "./iss_data_props";
+import { HubDetailData } from "components/hub";
+import { MessagesContainer } from "components/toastr";
+
+import { HubDetails } from "./hub-details";
 
 export const renderer = (id: string, hubDetailsData: HubDetailData) => {
-  SpaRenderer.renderNavigationReact(<HubDetails hub={hubDetailsData} />, document.getElementById(id));
+  SpaRenderer.renderNavigationReact(
+    <RolesProvider>
+      <MessagesContainer />
+      <HubDetails hub={hubDetailsData} />
+    </RolesProvider>,
+    document.getElementById(id)
+  );
 };

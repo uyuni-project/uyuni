@@ -37,6 +37,7 @@ import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
+import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.suse.manager.webui.utils.PageControlHelper;
@@ -45,6 +46,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
+import com.suse.utils.CertificateUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -60,6 +62,7 @@ import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.SSLException;
 
@@ -108,6 +111,8 @@ public class HubApiController {
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
+        post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
+        delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
     }
 
     private String deleteHub(Request request, Response response, User user) {
@@ -116,6 +121,28 @@ public class HubApiController {
 
     private String deletePeripheral(Request request, Response response, User user) {
         return deleteServer(request, response, user, IssRole.PERIPHERAL);
+    }
+
+    private String updateHubRootCA(Request request, Response response, User user) {
+        UpdateRootCARequest updateRequest;
+        try {
+            updateRequest = validateUpdateRootCARequest(GSON.fromJson(request.body(), UpdateRootCARequest.class));
+        }
+        catch (CertificateException ex) {
+            LOGGER.error("Unable to parse the specified certificate", ex);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (JsonSyntaxException ex) {
+            LOGGER.error("Unable to parse JSON request", ex);
+            return badRequest(response, LOC.getMessage("hub.invalid_request"));
+        }
+
+        return updateServerRootCA(request, response, user, IssRole.HUB, updateRequest.getRootCA());
+    }
+
+    private String removeHubRootCA(Request request, Response response, User user) {
+        // Perform the update using null as value
+        return updateServerRootCA(request, response, user, IssRole.HUB, null);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -286,6 +313,20 @@ public class HubApiController {
         return success(response);
     }
 
+    private String updateServerRootCA(Request request, Response response, User user, IssRole role, String rootCA) {
+        long serverId = Long.parseLong(request.params("id"));
+        IssServer server = hubManager.findServer(user, serverId, role);
+        if (server == null) {
+            return badRequest(response, LOC.getMessage("hub.cannot_find_server"));
+        }
+
+        // Collections.singletonMap() is used in place of Map.of() because it allows null as value
+        Map<String, String> dataMap = Collections.singletonMap("root_ca", rootCA);
+        hubManager.updateServerData(user, server.getFqdn(), role, dataMap);
+
+        return success(response);
+    }
+
     private static HubRegisterRequest validateRegisterRequest(HubRegisterRequest parsedRequest) {
         if (StringUtils.isEmpty(parsedRequest.getFqdn())) {
             throw new JsonSyntaxException("Missing required server FQDN in the request");
@@ -319,6 +360,17 @@ public class HubApiController {
         if (request.getType() == TokenType.CONSUMED && !tokenPresent) {
             throw new JsonSyntaxException("Token is required when creating a CONSUMED token");
         }
+
+        return request;
+    }
+
+    private UpdateRootCARequest validateUpdateRootCARequest(UpdateRootCARequest request) throws CertificateException {
+        if (request == null) {
+            throw new JsonSyntaxException("Request is empty");
+        }
+
+        CertificateUtils.parse(request.getRootCA())
+            .orElseThrow(() -> new JsonSyntaxException("rootCA is empty"));
 
         return request;
     }

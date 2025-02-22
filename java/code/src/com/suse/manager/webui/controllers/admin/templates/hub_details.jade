@@ -8,7 +8,5 @@ script(type='text/javascript').
 script(type='text/javascript').
     spaImportReactPage('admin/hub/hub-details')
         .then(function (module) {
-            module.renderer(
-                'hub-details', !{hub}
-            )
+            module.renderer("hub-details", !{hub});
         });
