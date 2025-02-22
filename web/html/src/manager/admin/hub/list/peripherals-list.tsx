@@ -92,15 +92,17 @@ const IssPeripheralsList = () => {
         columnKey="remove"
         header={t("Remove")}
         cell={(row: PeripheralListData) => (
-          <i
-            className="fa fa-trash"
+          <a
+            href="_blank"
             onClick={(e) =>
               handlePeripheralDelete(e, {
                 id: parseInt(row.id, 10),
                 fqdn: row.fqdn,
               })
             }
-          />
+          >
+            <i className="fa fa-trash" />
+          </a>
         )}
       />
     </Table>
