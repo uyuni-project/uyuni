@@ -207,6 +207,19 @@ public class HubManager {
     }
 
     /**
+     * Returns the ISS of the specified role, if present
+     * @param user the user performing the operation
+     * @param id the id of the server
+     * @param role the role of the server
+     * @return an {@link IssHub} or {@link IssPeripheral} depending on the specified role, null if the FQDN is unknown
+     */
+    public IssServer findServer(User user, long id, IssRole role) {
+        ensureSatAdmin(user);
+
+        return lookupServerByIdAndRole(id, role);
+    }
+
+    /**
      * Save the given remote server as hub or peripheral depending on the specified role
      * @param accessToken the access token granting access and identifying the caller
      * @param role the role of the server
@@ -756,6 +769,13 @@ public class HubManager {
         return switch (role) {
             case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
             case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(serverFqdn).orElse(null);
+        };
+    }
+
+    private IssServer lookupServerByIdAndRole(long id, IssRole role) {
+        return switch (role) {
+            case HUB -> hubFactory.findHubById(id);
+            case PERIPHERAL -> hubFactory.findPeripheralById(id);
         };
     }
 

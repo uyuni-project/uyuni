@@ -74,6 +74,16 @@ public class HubFactory extends HibernateFactory {
         removeObject(hubIn);
     }
 
+
+    /**
+     * Retrieves a {@link IssHub} by id
+     * @param id the id of the hub
+     * @return the hub object
+     */
+    public IssHub findHubById(long id) {
+        return getSession().get(IssHub.class, id);
+    }
+
     /**
      * Lookup {@link IssHub} object by its FQDN
      * @param fqdnIn the fqdn
@@ -83,6 +93,15 @@ public class HubFactory extends HibernateFactory {
         return getSession().createQuery("FROM IssHub WHERE fqdn = :fqdn", IssHub.class)
                 .setParameter("fqdn", fqdnIn)
                 .uniqueResultOptional();
+    }
+
+    /**
+     * Retrieves a {@link IssPeripheral} by id
+     * @param id the id of the peripheral
+     * @return the peripheral object
+     */
+    public IssPeripheral findPeripheralById(long id) {
+        return getSession().get(IssPeripheral.class, id);
     }
 
     /**

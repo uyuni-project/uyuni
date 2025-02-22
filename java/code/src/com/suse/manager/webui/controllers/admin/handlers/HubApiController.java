@@ -98,7 +98,6 @@ public class HubApiController {
      */
     public void initRoutes() {
         // Hub management
-        get("/manager/api/admin/hub", withProductAdmin(this::pass));
         get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
         post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
         post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
@@ -107,7 +106,16 @@ public class HubApiController {
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
-        get("/manager/api/admin/hub/:id", withProductAdmin(this::pass));
+        delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
+        delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
+    }
+
+    private String deleteHub(Request request, Response response, User user) {
+        return deleteServer(request, response, user, IssRole.HUB);
+    }
+
+    private String deletePeripheral(Request request, Response response, User user) {
+        return deleteServer(request, response, user, IssRole.PERIPHERAL);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -255,6 +263,24 @@ public class HubApiController {
         boolean result = hubManager.deleteAccessToken(user, tokenId);
         if (!result) {
             return badRequest(response, LOC.getMessage("hub.unable_delete_token"));
+        }
+
+        return success(response);
+    }
+
+    private String deleteServer(Request request, Response response, User user, IssRole issRole) {
+        long serverId = Long.parseLong(request.params("id"));
+        IssServer server = hubManager.findServer(user, serverId, issRole);
+        if (server == null) {
+            return badRequest(response, LOC.getMessage("hub.cannot_find_server"));
+        }
+
+        try {
+            hubManager.deregister(user, server.getFqdn(), false);
+        }
+        catch (IOException | CertificateException ex) {
+            LOGGER.error("Unable to register: error to connect with the remote server {}", server.getFqdn(), ex);
+            internalServerError(response, LOC.getMessage("hub.unable_to_deregister"));
         }
 
         return success(response);
