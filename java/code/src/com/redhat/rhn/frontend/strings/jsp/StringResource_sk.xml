@@ -6477,7 +6477,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.kickstart" xml:space="preserve">
         <source>Autoinstallation in progress</source>
-        <target/>
+        <target state="translated">Prebieha automatická inštalácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6485,7 +6485,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.bootstrap" xml:space="preserve">
         <source>Unprovisioned System</source>
-        <target/>
+        <target state="translated">Neposkytnutý systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6498,7 +6498,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.virthost" xml:space="preserve">
         <source>Virtual Host</source>
-        <target/>
+        <target state="translated">Virtuálny hostiteľ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6511,7 +6511,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.virtguest" xml:space="preserve">
         <source>Virtual Guest</source>
-        <target/>
+        <target state="translated">Virtuálny hosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6524,7 +6524,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.nonvirt" xml:space="preserve">
         <source>Non-Virtual System</source>
-        <target/>
+        <target state="translated">Nevirtuálny systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6537,7 +6537,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.isproxy" xml:space="preserve">
         <source>Proxy</source>
-        <target/>
+        <target state="translated">Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6550,7 +6550,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.up2date" xml:space="preserve">
         <source>System is up to date</source>
-        <target/>
+        <target state="translated">Systém je aktuálny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6558,7 +6558,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.updatesscheduled" xml:space="preserve">
         <source>All updates scheduled</source>
-        <target/>
+        <target state="translated">Všetky aktualizácie naplánované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6566,7 +6566,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.actionsscheduled" xml:space="preserve">
         <source>Actions scheduled</source>
-        <target/>
+        <target state="translated">Akcie naplánované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6574,7 +6574,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.critical" xml:space="preserve">
         <source>Critical updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú kritické aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6582,7 +6582,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="systemlist.jsp.updates" xml:space="preserve">
         <source>Updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6590,28 +6590,28 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="outofdatelist.jsp.header" xml:space="preserve">
         <source>Out of Date Systems</source>
-        <target/>
+        <target state="translated">Zastarané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unentitledlist.jsp.header" xml:space="preserve">
         <source>Systems without System Type</source>
-        <target/>
+        <target state="translated">Systémy bez typu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Unentitled</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ungroupedlist.jsp.header" xml:space="preserve">
         <source>Ungrouped Systems</source>
-        <target/>
+        <target state="translated">Nezoskupené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
         </context-group>
       </trans-unit>
       <trans-unit id="requiringrebootlist.jsp.header" xml:space="preserve">
         <source>Systems Requiring Reboot</source>
-        <target/>
+        <target state="translated">Systémy vyžadujúce reštart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/RequiringReboot</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6619,7 +6619,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="extrapackagessystemslist.jsp.header" xml:space="preserve">
         <source>Non Compliant Systems</source>
-        <target/>
+        <target state="translated">Nevyhovujúce systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6627,7 +6627,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="inactivelist.jsp.header" xml:space="preserve">
         <source>Inactive Systems</source>
-        <target/>
+        <target state="translated">Neaktívne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Inactive</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6635,7 +6635,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="registeredlist.jsp.header" xml:space="preserve">
         <source>Recently Registered Systems</source>
-        <target/>
+        <target state="translated">Nedávno registrované systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6643,7 +6643,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="registeredlist.jsp.date" xml:space="preserve">
         <source>Date Registered</source>
-        <target/>
+        <target state="translated">Dátum registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6651,7 +6651,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="registeredlist.jsp.user" xml:space="preserve">
         <source>Registered by</source>
-        <target/>
+        <target state="translated">Registrované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
