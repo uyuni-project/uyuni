@@ -1911,6 +1911,8 @@ public class SaltUtils {
                         .orElse(null)).filter(Objects::nonNull).collect(Collectors.toSet());
 
                 AnsibleManager.handleInventoryRefresh(inventory, systemsToAdd);
+                AnsibleFactory.saveAnsiblePath(inventory);
+
                 serverAction.setResultMsg("Refreshed Ansible managed systems of inventory: '" + inventoryPath + "'");
             }
             catch (JsonSyntaxException e) {
