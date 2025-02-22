@@ -162,11 +162,19 @@ public class AnsibleManager extends BaseManager {
 
         ansiblePath.setMinionServer(minionServer);
         ansiblePath.setPath(Path.of(path));
-
         ansiblePath = AnsibleFactory.saveAnsiblePath(ansiblePath);
 
-        // Refresh inotify beacon if a new inventory was added
         if (type == AnsiblePath.Type.INVENTORY) {
+            // Schedule inventory refresh
+            try {
+                ActionManager.scheduleInventoryRefresh(ansiblePath.getMinionServer(), ansiblePath.getPath().toString());
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule Ansible inventory refresh for minion: {}",
+                        ansiblePath.getMinionServer().getMinionId(), e);
+            }
+
+            // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(minionServer, false,
                     MinionPillarManager.PillarSubset.GENERAL);
             GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionServer.getMinionId()));
@@ -188,16 +196,32 @@ public class AnsibleManager extends BaseManager {
     public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
         AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
+        if (existing.getPath().toString().equals(newPath)) {
+            // nothing to update
+            return existing;
+        }
         validateAnsiblePath(newPath, empty(), of(existingPathId), existing.getMinionServer().getId());
         existing.setPath(Path.of(newPath));
 
-        existing = AnsibleFactory.saveAnsiblePath(existing);
-
-        // Refresh inotify beacon if the updated path is an inventory
         if (existing.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            // Remove ansible managed systems from changed inventory and schedule inventory refresh
+            try {
+                handleInventoryRefresh((InventoryPath) existing, new HashSet<>());
+                AnsibleFactory.saveAnsiblePath(existing);
+                ActionManager.scheduleInventoryRefresh(existing.getMinionServer(), existing.getPath().toString());
+            }
+            catch (TaskomaticApiException e) {
+                log.error("Could not schedule Ansible inventory refresh for minion: {}",
+                        existing.getMinionServer().getMinionId(), e);
+            }
+
+            // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(existing.getMinionServer(), false,
                     MinionPillarManager.PillarSubset.GENERAL);
             GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(existing.getMinionServer().getMinionId()));
+        }
+        else {
+            AnsibleFactory.saveAnsiblePath(existing);
         }
 
         return existing;
@@ -262,14 +286,20 @@ public class AnsibleManager extends BaseManager {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
 
-        AnsibleFactory.removeAnsiblePath(path);
-
-        // Refresh inotify beacon if the removed path was an inventory
         if (path.getEntityType() == AnsiblePath.Type.INVENTORY) {
+            // Remove entitlement from managed servers
+            handleInventoryRefresh((InventoryPath) path, new HashSet<>());
+            AnsibleFactory.removeAnsiblePath(path);
+
+            // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(path.getMinionServer(), false,
                     MinionPillarManager.PillarSubset.GENERAL);
             GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(path.getMinionServer().getMinionId()));
         }
+        else {
+            AnsibleFactory.removeAnsiblePath(path);
+        }
+
     }
 
     /**
@@ -474,12 +504,11 @@ public class AnsibleManager extends BaseManager {
 
         // Only remove entitlement from servers if they no longer appear in the list of ansible managed systems
         List<Server> ansibleManagedSystems = AnsibleFactory.listAnsibleInventoryServersExcludingPath(inventory);
-        ansibleManagedSystems.removeIf(ansibleManagedSystems::contains);
+        systemsToRemove.removeIf(ansibleManagedSystems::contains);
 
         updateAnsibleManagedSystems(systemsToAdd, systemsToRemove);
 
         inventory.setInventoryServers(systemsToAdd);
-        AnsibleFactory.saveAnsiblePath(inventory);
     }
 
     /**
