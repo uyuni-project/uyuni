@@ -93,6 +93,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
+    public void scheduleProductRefresh() throws IOException {
+        invokePost("hub", "scheduleProductRefresh", Map.of());
+    }
+
+    @Override
     public void deregister() throws IOException {
         invokePost("hub/sync", "deregister", null);
     }
