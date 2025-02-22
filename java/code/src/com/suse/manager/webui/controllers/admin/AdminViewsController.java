@@ -29,6 +29,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.suse.manager.admin.PaygAdminManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
+import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.HubDetailsData;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -38,6 +40,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +58,7 @@ public class AdminViewsController {
 
     private static final Gson GSON = new GsonBuilder()
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
+            .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
             .serializeNulls()
             .create();
 
@@ -130,7 +134,7 @@ public class AdminViewsController {
      */
     public static ModelAndView showISSv3Hub(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("hub", HUB_FACTORY.lookupIssHub().orElse(null));
+        data.put("hub", GSON.toJson(HUB_FACTORY.lookupIssHub().map(HubDetailsData::new).orElse(null)));
         return new ModelAndView(data, "controllers/admin/templates/hub_details.jade");
     }
 

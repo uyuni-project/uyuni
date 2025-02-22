@@ -1,64 +1,66 @@
-import { hot } from "react-hot-loader/root";
+import * as React from "react";
 
-import { useState } from "react";
+import { DeregisterServer, HubDetailData, HubDetailsForm, IssRole } from "components/hub";
+import { TopPanel } from "components/panels";
 
-import withPageWrapper from "components/general/with-page-wrapper";
-import { HelpLink } from "components/utils";
-
-import { HubDetailData } from "./iss_data_props";
-
-export type HubDetailsProps = {
-  hub: HubDetailData;
+export type Props = {
+  hub: HubDetailData | null;
 };
 
-const HubDetails = (prop: HubDetailsProps) => {
-  const [hub] = useState(prop.hub);
+type State = {
+  hub: HubDetailData | null;
+};
 
-  const title = (
-    <div className="spacewalk-toolbar-h1">
-      <h1>
-        <i className="fa fa-cogs"></i>
-        &nbsp;
-        {t("Hub Details")}
-        &nbsp;
-        <HelpLink url="reference/admin/hub/hub-details.html" />
-      </h1>
-    </div>
-  );
-  let pageContent = (
-    <>
-      <span>{t("No Hub is currently configured for this server.")}</span>
-      <span>{t("Refresh this page after configuring this server as a Peripheral to see the Hub details")}</span>
-    </>
-  );
-  if (hub != null) {
-    let rootCABlob = new Blob([hub.rootCA], { type: "text/plain" });
-    let dlUrl = URL.createObjectURL(rootCABlob);
-    pageContent = (
-      <>
-        <div>Hub FQDN: {hub.fqdn}</div>
-        <div>
-          <a
-            href={dlUrl}
-            onClick={() => {
-              URL.revokeObjectURL(dlUrl);
-            }}
-          >
-            <i className="bi bi-download">Download</i>
-          </a>
-        </div>
-      </>
+export class HubDetails extends React.Component<Props, State> {
+  public constructor(props: Props) {
+    super(props);
+
+    this.state = { hub: props.hub !== null ? { ...props.hub } : null };
+  }
+
+  public render(): React.ReactNode {
+    return (
+      <TopPanel
+        title={t("Hub Details")}
+        icon="fa-cogs"
+        helpUrl="reference/admin/hub/hub-details.html"
+        button={
+          <div className="btn-group pull-right">
+            {this.state.hub !== null && (
+              <DeregisterServer
+                role={IssRole.Hub}
+                id={this.state.hub.id}
+                fqdn={this.state.hub.fqdn}
+                onDeregistered={() => this.setState({ hub: null })}
+              />
+            )}
+          </div>
+        }
+      >
+        {this.state.hub === null ? (
+          <div>
+            <p>
+              {t(
+                "No hub is currently configured for this server. " +
+                  "Refresh this page after configuring this server as a peripheral, to see the hub details"
+              )}
+            </p>
+          </div>
+        ) : (
+          <>
+            <p>
+              {t(
+                "This server is currently registered as peripheral of hub {fqdn}. " +
+                  "This page shows the details of the hub server.",
+                {
+                  fqdn: this.state.hub.fqdn,
+                }
+              )}
+            </p>
+            <HubDetailsForm model={this.state.hub} editable={true} />
+          </>
+        )}
+      </TopPanel>
     );
   }
-  return (
-    <div className="responsive-wizard">
-      {title}
-      <div>
-        <h1>Known Hub Instance</h1>
-      </div>
-      {pageContent}
-    </div>
-  );
-};
-
-export default hot(withPageWrapper(HubDetails));
+}
