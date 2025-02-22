@@ -34,6 +34,9 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.UnsupportedOperationException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -47,6 +50,8 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
@@ -61,6 +66,7 @@ import java.util.Set;
 
 public class AnsibleManager extends BaseManager {
 
+    private static Logger log = LogManager.getLogger(AnsibleManager.class);
     private final SaltApi saltApi;
 
     /**
@@ -454,6 +460,48 @@ public class AnsibleManager extends BaseManager {
         }
 
         return beacon;
+    }
+
+    /**
+     * Handle add or remove ansible_managed entitlement from systems
+     *
+     * @param inventory the inventory
+     * @param systemsToAdd the systems to add
+     */
+    public static void handleInventoryRefresh(InventoryPath inventory, Set<Server> systemsToAdd) {
+        Set<Server> systemsToRemove = inventory.getInventoryServers();
+        systemsToRemove.removeAll(systemsToAdd);
+
+        // Only remove entitlement from servers if they no longer appear in the list of ansible managed systems
+        List<Server> ansibleManagedSystems = AnsibleFactory.listAnsibleInventoryServersExcludingPath(inventory);
+        ansibleManagedSystems.removeIf(ansibleManagedSystems::contains);
+
+        updateAnsibleManagedSystems(systemsToAdd, systemsToRemove);
+
+        inventory.setInventoryServers(systemsToAdd);
+        AnsibleFactory.saveAnsiblePath(inventory);
+    }
+
+    /**
+     * Handle add or remove ansible_managed entitlement from systems
+     *
+     * @param systemsToAdd the servers to add
+     * @param systemsToRemove the servers to remove
+     */
+    public static void updateAnsibleManagedSystems(Set<Server> systemsToAdd, Set<Server> systemsToRemove) {
+        SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+
+        // Add entitlement to servers
+        systemsToAdd.forEach(s -> {
+            if (!s.hasEntitlement(EntitlementManager.ANSIBLE_MANAGED) &&
+                    systemEntitlementManager.canEntitleServer(s, EntitlementManager.ANSIBLE_MANAGED)) {
+                systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.ANSIBLE_MANAGED);
+            }
+        });
+        // Remove entitlement from servers
+        systemsToRemove.forEach(s ->
+                systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.ANSIBLE_MANAGED)
+        );
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {

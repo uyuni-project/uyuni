@@ -124,6 +124,21 @@ public class AnsibleFactory extends HibernateFactory {
     }
 
     /**
+     * List all {@link Server}s linked to inventories excluding given {@link InventoryPath}
+     *
+     * @param path the inventory to exclude
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersExcludingPath(InventoryPath path) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsibleInventoryServers ais
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ais.inventory_id != :inventory_id""", Server.class)
+                .setParameter("inventory_id", path.getId())
+                .getResultList();
+    }
+
+    /**
      * Save an {@link AnsiblePath}
      *
      * @param path the {@link AnsiblePath}
