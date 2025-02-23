@@ -1181,14 +1181,16 @@ public class HubManager {
                 String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
 
                 // check if base channel is already added
-                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
+                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel) &&
+                        !addedVendorChannelLabels.contains(vendorBaseChannelLabel)) {
                     // if not, add base channel
                     addedVendorChannelLabels.add(vendorBaseChannelLabel);
                 }
             }
 
             // check if channel is already added
-            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
+            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel) &&
+                    !addedVendorChannelLabels.contains(vendorChannelLabel)) {
                 //add target channel
                 addedVendorChannelLabels.add(vendorChannelLabel);
             }
