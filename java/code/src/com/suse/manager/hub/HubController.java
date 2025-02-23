@@ -29,6 +29,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
@@ -52,6 +53,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +69,8 @@ public class HubController {
 
     private final HubManager hubManager;
 
+    private final TaskomaticApi taskomaticApi;
+
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
         .serializeNulls()
@@ -75,15 +80,17 @@ public class HubController {
      * Default constructor
      */
     public HubController() {
-        this(new HubManager());
+        this(new HubManager(), new TaskomaticApi());
     }
 
     /**
      * Builds an instance with the specified hub manager
      * @param hubManagerIn the hub manager
+     * @param taskomaticApiIn the taskomatic api
      */
-    public HubController(HubManager hubManagerIn) {
+    public HubController(HubManager hubManagerIn, TaskomaticApi taskomaticApiIn) {
         this.hubManager = hubManagerIn;
+        this.taskomaticApi = taskomaticApiIn;
     }
 
     /**
@@ -97,6 +104,8 @@ public class HubController {
         post("/hub/sync/storeCredentials", asJson(usingTokenAuthentication(onlyFromHub(this::storeCredentials))));
         post("/hub/sync/setHubDetails", asJson(usingTokenAuthentication(onlyFromHub(this::setHubDetails))));
         get("/hub/managerinfo", asJson(usingTokenAuthentication(onlyFromHub(this::getManagerInfo))));
+        post("/hub/scheduleProductRefresh",
+                asJson(usingTokenAuthentication(onlyFromHub(this::scheduleProductRefresh))));
         post("/hub/storeReportDbCredentials",
                 asJson(usingTokenAuthentication(onlyFromHub(this::setReportDbCredentials))));
         post("/hub/removeReportDbCredentials",
@@ -119,6 +128,18 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeRepositories))));
         post("/hub/sync/subscriptions",
                 asJson(usingTokenAuthentication(onlyFromHub(this::synchronizeSubscriptions))));
+    }
+
+    private String scheduleProductRefresh(Request request, Response response, IssAccessToken issAccessToken) {
+        try {
+            Date earliest = Date.from(Instant.now().plus(10, ChronoUnit.SECONDS));
+            taskomaticApi.scheduleProductRefresh(earliest, false);
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Scheduling a product refresh failed. ", ex);
+            return internalServerError(response, "Scheduling product refresh failed");
+        }
+        return success(response);
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
