@@ -882,4 +882,15 @@ public class TaskomaticApi {
         invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "mgr-sync-refresh-bunch",
                 Map.of("noRepoSync", !withReposync), earliest);
     }
+
+    /**
+     * Schedule a product refresh via taskomatic
+     * @param earliest earliest execution
+     * @param withReposync perform also a repo-sync
+     * @throws TaskomaticApiException if there is an error
+     */
+    public void scheduleProductRefresh(Date earliest, boolean withReposync) throws TaskomaticApiException {
+        invoke("tasko.scheduleSingleSatBunchRun", "mgr-sync-refresh-bunch",
+                Map.of("noRepoSync", !withReposync), earliest);
+    }
 }
