@@ -72,6 +72,8 @@ public class TaskomaticApi {
             MINION_ACTION_JOB_PREFIX + "download-";
     public static final String MINION_ACTIONCHAIN_BUNCH_LABEL = "minion-action-chain-executor-bunch";
     public static final String MINION_ACTIONCHAIN_JOB_PREFIX = "minion-action-chain-executor-";
+
+    private static final String SCHEDULE_SINGLE_SAT_BUNCH_RUN = "tasko.scheduleSingleSatBunchRun";
     private static final Logger LOG = LogManager.getLogger(TaskomaticApi.class);
 
 
@@ -135,7 +137,7 @@ public class TaskomaticApi {
         scheduleParams.put("action_id", Long.toString(actionIn.getId()));
         scheduleParams.put("force_pkg_list_refresh", Boolean.toString(forcePackageListRefresh));
         scheduleParams.put("ssh_minion_id", sshMinion.getMinionId());
-        invoke("tasko.scheduleSingleSatBunchRun",
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN,
                 "ssh-minion-action-executor-bunch",
                 StringUtils.substring(
                         "ssh-minion-action-executor-" + actionIn.getId() + "-" + sshMinion.getId(), 0, 50),
@@ -263,7 +265,7 @@ public class TaskomaticApi {
     public Date scheduleSingleSatBunch(User user, String bunchName,
                                        Map<String, String> params) throws TaskomaticApiException {
         ensureSatAdminRole(user);
-        return (Date) invoke("tasko.scheduleSingleSatBunchRun", bunchName, params);
+        return (Date) invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, bunchName, params);
     }
 
     /**
@@ -276,7 +278,7 @@ public class TaskomaticApi {
      */
     public Date scheduleGathererRefresh(User user, Map<String, String> params) throws TaskomaticApiException {
         ensureOrgAdminRole(user);
-        return (Date) invoke("tasko.scheduleSingleSatBunchRun", "gatherer-matcher-bunch", params);
+        return (Date) invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "gatherer-matcher-bunch", params);
     }
 
     /**
@@ -669,7 +671,7 @@ public class TaskomaticApi {
         Map<String, String> params = new HashMap<>();
         params.put("actionchain_id", Long.toString(actionchain.getId()));
 
-        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTIONCHAIN_BUNCH_LABEL,
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, MINION_ACTIONCHAIN_BUNCH_LABEL,
                 MINION_ACTIONCHAIN_JOB_PREFIX + actionchain.getId(), params,
                 earliestAction);
     }
@@ -689,7 +691,7 @@ public class TaskomaticApi {
         params.put("staging_job", "true");
         params.put("staging_job_minion_server_id", Long.toString(minionId));
 
-        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_DOWNLOAD_PREFIX + actionId + "-" + minionId, params,
                 stagingDateTime);
     }
@@ -751,7 +753,7 @@ public class TaskomaticApi {
         Map<String, String> params = new HashMap<>();
         params.put("action_id", Long.toString(action.getId()));
         params.put("user_id", Long.toString(user.getId()));
-        invoke("tasko.scheduleSingleSatBunchRun", MINION_ACTION_BUNCH_LABEL,
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, MINION_ACTION_BUNCH_LABEL,
                 MINION_ACTION_JOB_PREFIX + action.getId(), params,
                 action.getEarliestAction());
     }
@@ -809,7 +811,7 @@ public class TaskomaticApi {
             throws TaskomaticApiException {
         Map<String, String> scheduleParams = new HashMap<>();
         scheduleParams.put("sshData_id", sshdata.getId().toString());
-        invoke("tasko.scheduleSingleSatBunchRun", "update-payg-data-bunch", scheduleParams);
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "update-payg-data-bunch", scheduleParams);
     }
 
     /**
@@ -856,7 +858,7 @@ public class TaskomaticApi {
 
         Map<String, Object> paramList = new HashMap<>();
         paramList.put("filename_to_root_ca_cert_map", sanitisedFilenameToRootCaCertMap);
-        invoke("tasko.scheduleSingleSatBunchRun", "root-ca-cert-update-bunch", paramList);
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "root-ca-cert-update-bunch", paramList);
     }
 
     /**
@@ -868,7 +870,7 @@ public class TaskomaticApi {
         if (StringUtils.isBlank(gpgKey)) {
             return;
         }
-        invoke("tasko.scheduleSingleSatBunchRun", "custom-gpg-key-import-bunch", Map.of("gpg-key", gpgKey));
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "custom-gpg-key-import-bunch", Map.of("gpg-key", gpgKey));
     }
 
     /**
@@ -878,7 +880,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there is an error
      */
     public void scheduleProductRefresh(Date earliest, boolean withReposync) throws TaskomaticApiException {
-        invoke("tasko.scheduleSingleSatBunchRun", "mgr-sync-refresh-bunch",
+        invoke(SCHEDULE_SINGLE_SAT_BUNCH_RUN, "mgr-sync-refresh-bunch",
                 Map.of("noRepoSync", !withReposync), earliest);
     }
 }
