@@ -168,7 +168,7 @@ artifacts:
     package: log4j-slf4j
     repository: Leap
   - artifact: jsch
-    repository: Leap
+    repository: Leap_sle
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Leap
