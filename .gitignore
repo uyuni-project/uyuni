@@ -97,6 +97,7 @@ schema/spacewalk/postgres/data/common/
 schema/spacewalk/postgres/main.sql
 schema/spacewalk/postgres/tables/common/
 schema/spacewalk/postgres/views/common/
+schema/spacewalk/postgres/schemas/common/
 schema/spacewalk/upgrade/*/*.postgresql
 schema/reportdb/postgres/docs/tables/*.sql
 schema/reportdb/postgres/docs/views/*.sql
