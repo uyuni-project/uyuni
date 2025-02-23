@@ -314,20 +314,15 @@ public class HubController {
     }
 
     private String addVendorChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("vendorchannellabellist"))) {
-            return badRequest(response, "Invalid data: missing vendorchannellabellist entry");
-        }
-
-        List<String> vendorChannelLabelList = GSON.fromJson(requestList.get("vendorchannellabellist"), List.class);
-        if (vendorChannelLabelList == null || vendorChannelLabelList.isEmpty()) {
+        Type listType = new TypeToken<List<String>>() { }.getType();
+        List<String> channelsLabels = GSON.fromJson(request.body(), listType);
+        if (channelsLabels == null || channelsLabels.isEmpty()) {
             LOGGER.error("Bad Request: invalid invalid vendor channel label list");
             return badRequest(response, "Invalid data: invalid vendor channel label list");
         }
 
         List<ChannelInfoJson> createdVendorChannelInfoList =
-                hubManager.addVendorChannels(token, vendorChannelLabelList)
+                hubManager.addVendorChannels(token, channelsLabels)
                         .stream()
                         .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
                                 ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
