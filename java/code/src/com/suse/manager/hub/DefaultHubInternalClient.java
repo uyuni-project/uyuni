@@ -39,11 +39,11 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.security.cert.Certificate;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * HTTP Client for the Hub Inter-Server-Sync internal server-to-server APIs
@@ -124,8 +124,10 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException {
         // Use a TypeToken to preserve the generic type information
-        Type type = new TypeToken<Set<String>>() { }.getType();
-        return invokePost("hub", "addVendorChannels", channelsLabelIn, type);
+        Map<String, List<String>> data = new HashMap<>();
+        data.put("vendorchannellabellist", channelsLabelIn);
+        Type type = new TypeToken<List<ChannelInfoJson>>() { }.getType();
+        return invokePost("hub", "addVendorChannels", data, type);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)
