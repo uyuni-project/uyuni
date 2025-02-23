@@ -305,7 +305,7 @@ public class Router implements SparkApplication {
         HubManager hubManager = new HubManager();
 
         // ISS v3 Internal APIs
-        HubController hubController = new HubController(hubManager);
+        HubController hubController = new HubController(hubManager, new TaskomaticApi());
         hubController.initRoutes();
 
         // API for the web interface

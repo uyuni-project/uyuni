@@ -681,6 +681,7 @@ public class HubManager {
             if (changed) {
                 setReportDbUser(user, peripheralServer, false);
             }
+            internalApi.scheduleProductRefresh();
         }
         catch (Exception ex) {
             // cleanup the remote side

@@ -1386,6 +1386,7 @@ public class ChannelFactory extends HibernateFactory {
      *
      * @return list of vendor content sources
      */
+    @SuppressWarnings("unchecked")
     public static List<ContentSource> listVendorContentSources() {
         return getSession().createNativeQuery("SELECT * FROM rhnContentSource WHERE org_id IS NULL",
                 ContentSource.class).getResultList();

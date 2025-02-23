@@ -92,4 +92,10 @@ public interface HubInternalClient {
      */
     List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException;
 
+    /**
+     * Schedule a product refresh on the remote peripheral server
+     * @throws IOException when the communication fails
+     */
+    void scheduleProductRefresh() throws IOException;
+
 }
