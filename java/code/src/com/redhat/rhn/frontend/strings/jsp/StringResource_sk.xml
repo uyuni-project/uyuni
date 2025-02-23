@@ -6610,21 +6610,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="registeredlist.jsp.view" xml:space="preserve">
         <source>View systems registered: </source>
-        <target/>
+        <target state="translated">Zobraziť registrované systémy: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="proxylist.jsp.header" xml:space="preserve">
         <source>Proxy Servers</source>
-        <target/>
+        <target state="translated">Proxy servery</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ProxyList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.header" xml:space="preserve">
         <source>System Currency Report</source>
-        <target/>
+        <target state="translated">Správa o systémovej mene</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6632,119 +6632,119 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.critical" xml:space="preserve">
         <source>Security (Critical)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Kritické)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.important" xml:space="preserve">
         <source>Security (Important)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Dôležité)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.moderate" xml:space="preserve">
         <source>Security (Moderate)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Stredné)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.low" xml:space="preserve">
         <source>Security (Low)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Nízke)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.bug" xml:space="preserve">
         <source>Bug Fixes</source>
-        <target/>
+        <target state="translated">Opravy chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.enhancement" xml:space="preserve">
         <source>Enhancements</source>
-        <target/>
+        <target state="translated">Zlepšenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.score" xml:space="preserve">
         <source>Score</source>
-        <target/>
+        <target state="translated">Skóre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.header" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target state="translated">Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.nogroups" xml:space="preserve">
         <source>No system groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.name" xml:space="preserve">
         <source>Group Name</source>
-        <target/>
+        <target state="translated">Názov skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extgrouplist.jsp.name" xml:space="preserve">
         <source>External Group Name</source>
-        <target/>
+        <target state="translated">Názov externej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership" xml:space="preserve">
         <source>Membership</source>
-        <target/>
+        <target state="translated">Členstvo v skupine</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership.current" xml:space="preserve">
         <source>Current Profile Only</source>
-        <target/>
+        <target state="translated">Len súčasný profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership.snapshot" xml:space="preserve">
         <source>Snapshot Profile Only</source>
-        <target/>
+        <target state="translated">Len profil snímky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.status" xml:space="preserve">
         <source>Updates</source>
-        <target/>
+        <target state="translated">Aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.use" xml:space="preserve">
         <source>Use in SSM</source>
-        <target/>
+        <target state="translated">Použiť v SSM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
