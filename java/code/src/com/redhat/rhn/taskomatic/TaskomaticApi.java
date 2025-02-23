@@ -344,7 +344,7 @@ public class TaskomaticApi {
      */
     public void scheduleRecurringAction(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
-            throw new PermissionException(String.format("User '%s' can't schedule action '$s'", user, action));
+            throw new PermissionException(String.format("User '%s' can't schedule action '%s'", user, action));
         }
 
         doScheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-action-executor-bunch",
@@ -371,7 +371,7 @@ public class TaskomaticApi {
      */
     public void unscheduleRecurringAction(RecurringAction action, User user) throws TaskomaticApiException {
         if (!action.canAccess(user)) {
-            throw new PermissionException(String.format("User '%s' can't unschedule action '$s'", user, action));
+            throw new PermissionException(String.format("User '%s' can't unschedule action '%s'", user, action));
         }
 
         doUnscheduleSatBunch(user, action.computeTaskoScheduleName(), "recurring-action-executor-bunch");
@@ -519,8 +519,7 @@ public class TaskomaticApi {
      * @throws TaskomaticApiException if there was an error
      */
     public List<Map<String, Object>> listSatBunchSchedules(User user) throws TaskomaticApiException {
-        List<Map<String, Object>> bunches = (List<Map<String, Object>>) invoke("tasko.listSatBunches");
-        return bunches;
+        return (List<Map<String, Object>>) invoke("tasko.listSatBunches");
     }
 
     /**
