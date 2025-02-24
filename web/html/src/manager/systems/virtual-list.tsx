@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { docsLocale } from "core/user-preferences";
+
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
@@ -12,8 +14,6 @@ import { VirtualSystemsListFilter } from "./list-filter";
 
 // See java/code/src/com/suse/manager/webui/templates/systems/virtual-list.jade
 type Props = {
-  /** Locale of the help links */
-  docsLocale: string;
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
@@ -36,11 +36,7 @@ export function VirtualSystems(props: Props) {
       <h1>
         <IconTag type="header-system" />
         {t("Virtual Systems")}
-        <a
-          href={`/docs/${props.docsLocale}/reference/systems/systems-list.html`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={`/docs/${docsLocale}/reference/systems/systems-list.html`} target="_blank" rel="noopener noreferrer">
           <IconTag type="header-help" />
         </a>
       </h1>

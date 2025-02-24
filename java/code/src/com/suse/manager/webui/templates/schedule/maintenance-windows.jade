@@ -1,7 +1,5 @@
 include /templates/common.jade
 
-#maintenance-windows
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.timezone = "#{h.renderTimezone()}";
@@ -9,6 +7,6 @@ script(type='text/javascript').
     window.type = "#{type}";
     window.isAdmin = "#{isAdmin}";
 
-script(type='text/javascript').
-    spaImportReactPage('maintenance/maintenance-windows')
-        .then(function (module) { module.renderer('maintenance-windows') });
+#maintenance-windows
+    script(type='text/javascript').
+        injectReactPage('maintenance/maintenance-windows');

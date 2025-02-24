@@ -89,9 +89,9 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
   }
 }
 
-export const renderer = (renderId: string, { id, pathContentType }) => {
+export const renderer = (parent: Element, { id, pathContentType }) => {
   return SpaRenderer.renderNavigationReact(
     <AnsiblePathContent minionServerId={id} pathContentType={pathContentType} />,
-    document.getElementById(renderId)
+    parent
   );
 };

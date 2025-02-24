@@ -8,7 +8,6 @@
 <html>
 <body>
 <%@ include file="/WEB-INF/pages/common/fragments/ssm/header.jspf" %>
-  <div id="channels-div"></div>
   <script>
         var csrfToken = "<%= com.redhat.rhn.common.security.CSRFTokenValidator.getToken(session) %>";
         var timezone = "<%= com.suse.manager.webui.utils.ViewHelper.getInstance().renderTimezone() %>";
@@ -16,9 +15,10 @@
         var userPrefPageSize = <%= new com.redhat.rhn.frontend.struts.RequestContext(request).getCurrentUser().getPageSize() %>;
         var actionChains = ${actionChainsJson};
   </script>
-  <script>
-    spaImportReactPage('systems/ssm/ssm-subscribe-channels')
-      .then(function(module) { module.renderer('channels-div') });
-  </script>
+  <div id="channels-div">
+    <script type="text/javascript">
+      injectReactPage('systems/ssm/ssm-subscribe-channels');
+    </script>
+  </div>
 </body>
 </html>

@@ -1,7 +1,5 @@
 include ./minion-header.jade
 
-#highstate
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.minions = [{id: #{server.id}, name: "#{server.name}"}];
@@ -10,6 +8,6 @@ script(type='text/javascript').
     window.localTime = "#{h.renderLocalTime()}";
     window.actionChains = !{actionChains};
 
-script(type='text/javascript').
-    spaImportReactPage('state/highstate')
-        .then(function (module) { module.renderer('highstate') });
+#highstate
+    script(type='text/javascript').
+        injectReactPage('state/highstate');

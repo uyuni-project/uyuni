@@ -9,7 +9,7 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 const capitalize = Utils.capitalize;
 
-export const renderer = (renderId, { groupId, formulaId }) => {
+export const renderer = (parent: Element, { groupId, formulaId }) => {
   const messageMap = {
     formula_saved: t("Formula saved. Apply the <link>Highstate</link> for the changes to take effect.", {
       link: (str) => (
@@ -55,6 +55,6 @@ export const renderer = (renderId, { groupId, formulaId }) => {
       scope="group"
       messageTexts={messageMap}
     />,
-    document.getElementById(renderId)
+    parent
   );
 };

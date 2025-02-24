@@ -12,8 +12,8 @@ declare global {
   }
 }
 
-export const renderer = (id) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <CoCoSSMSchedule systemSupport={window.systemSupport ?? []} actionChains={window.actionChains} />,
-    document.getElementById(id)
+    parent
   );

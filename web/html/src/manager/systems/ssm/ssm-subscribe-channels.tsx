@@ -1149,4 +1149,4 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
   }
 }
 
-export const renderer = (id) => SpaRenderer.renderNavigationReact(<SsmChannelPage />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<SsmChannelPage />, parent);

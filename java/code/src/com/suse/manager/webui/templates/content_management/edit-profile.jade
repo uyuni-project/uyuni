@@ -1,7 +1,5 @@
 include ../common.jade
 
-#image-profile-edit
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.profileId = "#{profileId}";
@@ -9,6 +7,6 @@ script(type='text/javascript').
     window.customDataKeys = !{customDataKeys};
     window.imageTypesDataFromTheServer = !{imageTypesDataFromTheServer};
 
-script(type='text/javascript').
-    spaImportReactPage('images/image-profile-edit')
-        .then(function(module) { module.renderer('image-profile-edit') });
+#image-profile-edit
+    script(type='text/javascript').
+        injectReactPage('images/image-profile-edit');

@@ -10,7 +10,7 @@ import { MessagesContainer } from "components/toastr/toastr";
 
 import ListFilters from "./list-filters";
 
-export const renderer = (id, { filters, flashMessage }) => {
+export const renderer = (parent: Element, { filters, flashMessage }) => {
   let filtersJson = [];
   try {
     filtersJson = JSON.parse(filters);
@@ -25,6 +25,6 @@ export const renderer = (id, { filters, flashMessage }) => {
         <ListFilters filters={filtersJson} flashMessage={flashMessage} />
       </UserLocalizationProvider>
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

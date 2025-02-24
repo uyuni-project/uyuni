@@ -112,7 +112,7 @@ window.pageRenderers.spaengine.init = function init(timeout?: number) {
 
       Loggerhead.info("Loading `" + window.location + "`");
       SpaRenderer.onSpaEndNavigation();
-      onDocumentReadyInitOldJS();
+      onDocumentReadyInitOldJS?.();
       onSpaEndNavigationCallbacks.forEach((callback) => callback());
     });
 

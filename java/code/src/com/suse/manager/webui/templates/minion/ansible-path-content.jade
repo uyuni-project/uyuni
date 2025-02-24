@@ -1,7 +1,5 @@
 include ./minion-header.jade
 
-#ansible-path-content
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
     window.timezone = "#{h.renderTimezone()}";
@@ -15,11 +13,9 @@ if actionChains
 script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
 
-script(type='text/javascript').
-    spaImportReactPage('minion/ansible/path-content')
-        .then(function (module) {
-            module.renderer(
-                'ansible-path-content',
-                {id: #{server.id}, pathContentType: '#{pathContentType}'}
-            )
+#ansible-path-content
+    script(type='text/javascript').
+        injectReactPage('minion/ansible/path-content', {
+            id: #{server.id},
+            pathContentType: '#{pathContentType}'
         });

@@ -13,7 +13,7 @@ declare global {
   }
 }
 
-export const renderer = (id) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <CoCoSettings
       serverId={window.serverId}
@@ -21,5 +21,5 @@ export const renderer = (id) =>
       // TODO: enable when the backend implementation is ready
       showOnScheduleOption={false}
     />,
-    document.getElementById(id)
+    parent
   );

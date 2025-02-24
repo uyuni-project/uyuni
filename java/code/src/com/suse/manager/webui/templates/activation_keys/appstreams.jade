@@ -13,7 +13,6 @@
     a(href="/docs/#{docsLocale}/reference/systems/activation-keys.html", target="_blank")
       i.fa.fa-question-circle.spacewalk-help-link
 !{tabs}
-#appstreams
 
 div#init_channels_appstreams(style="display: none")
     | #{channelsAppStreams}
@@ -22,10 +21,8 @@ script(type='text/javascript').
     window.activationKeyId = "#{activationKeyId}";
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('activationkeys/appstreams')
-        .then(function(module) {
-            module.renderer('appstreams', {
-                channelsAppStreams: document.getElementById('init_channels_appstreams').textContent,
-            })
-        });
+#appstreams
+  script(type='text/javascript').
+    injectReactPage('activationkeys/appstreams', {
+      channelsAppStreams: document.getElementById('init_channels_appstreams').textContent,
+    });

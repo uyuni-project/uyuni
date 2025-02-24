@@ -214,5 +214,4 @@ const MaintenanceWindows = () => {
   );
 };
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<MaintenanceWindows />, document.getElementById("maintenance-windows"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<MaintenanceWindows />, parent);

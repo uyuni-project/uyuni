@@ -1,9 +1,5 @@
 import * as React from "react";
 
-import SpaRenderer from "core/spa/spa-renderer";
-
-import { MessagesContainer } from "components/toastr/toastr";
-
 import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -170,7 +166,7 @@ class MenuLevel extends React.Component<MenuLevelProps> {
   }
 }
 
-class Nav extends React.Component {
+export class Nav extends React.Component {
   state = { search: "", forceCollapse: false };
 
   onSearch = (e) => {
@@ -218,9 +214,7 @@ class Nav extends React.Component {
   }
 }
 
-SpaRenderer.renderGlobalReact(<Nav />, document.getElementById("nav"));
-
-class Breadcrumb extends React.Component {
+export class Breadcrumb extends React.Component {
   componentDidMount() {}
 
   onSPAEndNavigation() {
@@ -282,12 +276,3 @@ class Breadcrumb extends React.Component {
     );
   }
 }
-
-SpaRenderer.renderGlobalReact(<Breadcrumb />, document.getElementById("breadcrumb"));
-
-SpaRenderer.renderGlobalReact(
-  <>
-    <MessagesContainer containerId="global" />
-  </>,
-  document.getElementById("messages-container")
-);

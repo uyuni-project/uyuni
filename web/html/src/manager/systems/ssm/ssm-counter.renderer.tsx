@@ -8,5 +8,5 @@ type RendererProps = {
   count?: number;
 };
 
-export const renderer = (id: string, { count }: RendererProps = {}) =>
-  SpaRenderer.renderNavigationReact(<SsmCounter count={count} />, document.getElementById(id));
+export const renderer = (parent: Element, { count }: RendererProps = {}) =>
+  SpaRenderer.renderNavigationReact(<SsmCounter count={count} />, parent);

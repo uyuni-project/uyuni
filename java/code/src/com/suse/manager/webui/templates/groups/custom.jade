@@ -12,7 +12,6 @@
     | #{" " + groupName + " "}
 
 !{tabs}
-#config-channels
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
@@ -22,6 +21,6 @@ script(src='/javascript/legacy/ace-editor/ace.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/legacy/ace-editor/ext-modelist.js?cb=#{webBuildtimestamp}')
 script(src='/javascript/jquery-ui.js?cb=#{webBuildtimestamp}')
 
-script(type='text/javascript').
-    spaImportReactPage('groups/config-channels/group-config-channels')
-        .then(function(module) { module.renderer('config-channels') });
+#config-channels
+    script(type='text/javascript').
+        injectReactPage('groups/config-channels/group-config-channels');

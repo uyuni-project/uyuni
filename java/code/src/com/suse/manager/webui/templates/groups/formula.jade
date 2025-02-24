@@ -13,19 +13,12 @@
 
 !{tabs}
 
-#formula
-
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-script(type='text/javascript').
-    spaImportReactPage('groups/formula/group-formula')
-        .then(function(module) {
-             module.renderer(
-                'formula',
-                {
-                    groupId: "#{groupId}",
-                    formulaId: #{formula_id}
-                }
-            )
+#formula
+    script(type='text/javascript').
+        injectReactPage('groups/formula/group-formula', {
+            groupId: "#{groupId}",
+            formulaId: #{formula_id}
         });

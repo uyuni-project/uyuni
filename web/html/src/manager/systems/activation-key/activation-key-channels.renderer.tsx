@@ -8,8 +8,5 @@ type RendererProps = {
   activationKeyId?: any;
 };
 
-export const renderer = (id: string, { activationKeyId }: RendererProps = {}) =>
-  SpaRenderer.renderNavigationReact(
-    <ActivationKeyChannels activationKeyId={activationKeyId} />,
-    document.getElementById(id)
-  );
+export const renderer = (parent: Element, { activationKeyId }: RendererProps = {}) =>
+  SpaRenderer.renderNavigationReact(<ActivationKeyChannels activationKeyId={activationKeyId} />, parent);

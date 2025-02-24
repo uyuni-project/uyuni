@@ -12,7 +12,7 @@ type RendererProps = {
   wasFreshlyCreatedMessage?: string;
 };
 
-export const renderer = (id: string, { project, wasFreshlyCreatedMessage }: RendererProps = {}) => {
+export const renderer = (parent: Element, { project, wasFreshlyCreatedMessage }: RendererProps = {}) => {
   let projectJson: any = {};
   try {
     projectJson = JSON.parse(project || "");
@@ -25,6 +25,6 @@ export const renderer = (id: string, { project, wasFreshlyCreatedMessage }: Rend
       <MessagesContainer />
       <Project project={projectJson} {...(wasFreshlyCreatedMessage && { wasFreshlyCreatedMessage })} />
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

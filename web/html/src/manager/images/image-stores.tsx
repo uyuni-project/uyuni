@@ -246,5 +246,4 @@ class ImageStores extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<ImageStores />, document.getElementById("image-stores"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<ImageStores />, parent);

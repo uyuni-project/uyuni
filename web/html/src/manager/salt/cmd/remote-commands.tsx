@@ -574,4 +574,4 @@ class RemoteCommand extends React.Component<RemoteCommandProps, RemoteCommandSta
   };
 }
 
-export const renderer = (id) => SpaRenderer.renderNavigationReact(<RemoteCommand />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<RemoteCommand />, parent);

@@ -202,4 +202,4 @@ class KeyManagement extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) => SpaRenderer.renderNavigationReact(<KeyManagement />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<KeyManagement />, parent);

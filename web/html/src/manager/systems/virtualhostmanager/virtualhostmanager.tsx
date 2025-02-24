@@ -212,5 +212,4 @@ class VirtualHostManager extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id: string) =>
-  SpaRenderer.renderNavigationReact(<VirtualHostManager />, document.getElementById(id));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<VirtualHostManager />, parent);

@@ -11,9 +11,9 @@ type RendererProps = {
   warningMessage?: ServerMessageType;
 };
 
-export const renderer = (id: string, { flashMessage, warningMessage }: RendererProps = {}) => {
+export const renderer = (parent: Element, { flashMessage, warningMessage }: RendererProps = {}) => {
   SpaRenderer.renderNavigationReact(
     <FormulaCatalog flashMessage={flashMessage} warningMessage={warningMessage} />,
-    document.getElementById(id)
+    parent
   );
 };

@@ -12,11 +12,11 @@ declare global {
   }
 }
 
-export const renderer = (id) =>
+export const renderer = (parent: Element) =>
   SpaRenderer.renderNavigationReact(
     <CoCoSSMSettings
       systemSupport={window.systemSupport ?? []}
       availableEnvironmentTypes={window.availableEnvironmentTypes ?? []}
     />,
-    document.getElementById(id)
+    parent
   );

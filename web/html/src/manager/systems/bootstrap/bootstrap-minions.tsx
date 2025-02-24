@@ -685,7 +685,7 @@ class BootstrapMinions extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id) => {
+export const renderer = (parent: Element) => {
   const params = new URLSearchParams(window.location.search);
   const targetHost = params.get("targetHost");
   const ansibleInventoryId = Number.parseInt(params.get("ansibleInventoryId") || "", 10) || null;
@@ -697,6 +697,6 @@ export const renderer = (id) => {
       ansibleInventoryId={ansibleInventoryId}
       targetHost={targetHost}
     />,
-    document.getElementById(id)
+    parent
   );
 };

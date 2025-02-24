@@ -2,20 +2,12 @@ include /templates/common.jade
 
 +userRoles
 
-#content-management-list-projects
-
 div#init_data_projects(style="display: none")
     | #{contentProjects}
 
-
-script(type='text/javascript').
-    spaImportReactPage('content-management/list-projects')
-        .then(function(module) {
-            module.renderer(
-                'content-management-list-projects',
-                {
-                    projects: document.getElementById('init_data_projects').textContent,
-                    flashMessage: "#{flashMessage}"
-                }
-            );
+#content-management-list-projects
+    script(type='text/javascript').
+        injectReactPage('content-management/list-projects', {
+            projects: document.getElementById('init_data_projects').textContent,
+            flashMessage: "#{flashMessage}"
         });

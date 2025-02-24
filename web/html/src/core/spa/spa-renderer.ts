@@ -42,14 +42,13 @@ function renderNavigationReact(element: JSX.Element, container: Element | null |
   }
 
   window.pageRenderers?.spa?.reactRenderers?.push({
-    element,
-    container,
     clean: () => {
+      console.log("remove 2", container);
       ReactDOM.unmountComponentAtNode(container);
     },
   });
   ReactDOM.render(element, container, () => {
-    onDocumentReadyInitOldJS();
+    window.onDocumentReadyInitOldJS?.();
   });
 }
 
@@ -64,7 +63,7 @@ function beforeNavigation() {
 function afterNavigationTransition() {
   window.pageRenderers?.spa?.previousReactRenderers?.forEach((navigationRenderer) => {
     try {
-      (navigationRenderer as any).clean();
+      navigationRenderer.clean();
     } catch (error) {
       Loggerhead.error(error);
     }

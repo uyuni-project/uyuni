@@ -62,14 +62,49 @@ const pages = {
   ...Storybook,
 };
 
-window.spaImportReactPage = function spaImportReactPage(pageName) {
-  SpaRenderer.addReactApp(pageName);
+type PageName = keyof typeof pages;
+type Page<T extends PageName> = typeof pages[T];
+type Awaited<T> = T extends Promise<infer Type> ? Type : never;
+type PageRendererParams<T extends PageName> = Parameters<Awaited<ReturnType<Page<T>>>["renderer"]>;
 
+// Drop first item of tuple type, e.g. [foo, bar, tea] -> [bar, tea]
+type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never;
+
+const injectReactPage = async <T extends PageName>(pageName: T, ...params: Tail<PageRendererParams<T>>) => {
   if (!pages[pageName]) {
     throw new RangeError(
       `Found no page with name "${pageName}", did you add the renderer to \`pages\` in \`web/html/src/manager/index.ts\`?`
     );
   }
+  SpaRenderer.addReactApp(pageName);
 
-  return pages[pageName]();
+  const current = document.currentScript;
+  if (!current) {
+    throw new RangeError("Unable to identify `currentScript` in `injectReactPage`");
+  }
+
+  const injectTarget = current.parentElement;
+  if (!injectTarget) {
+    throw new RangeError("Unable to find `injectTarget` in `injectReactPage`");
+  }
+
+  // For debug purposes only
+  injectTarget.setAttribute("data-page-name", pageName);
+
+  const page = await pages[pageName]();
+
+  /**
+   * Typescript doesn't currently support partial type inference for generics, so we cannot infer both of the correct types here
+   * See https://github.com/Microsoft/TypeScript/pull/23696
+   */
+  // @ts-expect-error
+  page.renderer(injectTarget, ...(params ?? {}));
 };
+
+declare global {
+  interface Window {
+    injectReactPage: typeof injectReactPage;
+  }
+}
+
+window.injectReactPage = injectReactPage;

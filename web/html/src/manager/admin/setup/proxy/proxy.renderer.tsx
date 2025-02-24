@@ -12,12 +12,12 @@ type Props = {
   proxySettings: ProxySettings;
 };
 
-export const renderer = (id: string, props: Props) => {
+export const renderer = (parent: Element, props: Props) => {
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
       <Proxy proxySettings={props.proxySettings} />
     </RolesProvider>,
-    document.getElementById(id)
+    parent
   );
 };

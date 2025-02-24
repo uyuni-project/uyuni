@@ -421,4 +421,4 @@ class BuildImage extends React.Component<Props, State> {
   }
 }
 
-export const renderer = () => SpaRenderer.renderNavigationReact(<BuildImage />, document.getElementById("image-build"));
+export const renderer = (parent: Element) => SpaRenderer.renderNavigationReact(<BuildImage />, parent);

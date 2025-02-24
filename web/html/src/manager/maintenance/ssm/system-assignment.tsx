@@ -31,5 +31,5 @@ function SystemAssignment(props: { systems: string[] }) {
   );
 }
 
-export const renderer = (id: string, systems: string[]) =>
-  SpaRenderer.renderNavigationReact(<SystemAssignment systems={systems} />, document.getElementById(id));
+export const renderer = (parent: Element, systems: string[]) =>
+  SpaRenderer.renderNavigationReact(<SystemAssignment systems={systems} />, parent);

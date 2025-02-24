@@ -6,13 +6,12 @@ proxy.jade.spacewalk-toolbar-h1
       i.fa.fa-question-circle.spacewalk-help-link
 
 !{tabs}
-#coco-schedule
 
 script(type="text/javascript").
     window.csrfToken = "#{csrf_token}";
     window.systemSupport = !{systemSupport};
     window.actionChains = !{actionChains};
 
-script(type='text/javascript').
-    spaImportReactPage('systems/coco-schedule')
-        .then(function(module) { module.renderer('coco-schedule') });
+#coco-schedule
+  script(type='text/javascript').
+    injectReactPage('systems/coco-schedule');

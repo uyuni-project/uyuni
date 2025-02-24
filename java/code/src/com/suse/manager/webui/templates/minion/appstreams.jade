@@ -1,7 +1,5 @@
 include ./minion-header.jade
 
-#appstreams
-
 div#init_channels_appstreams(style="display: none")
     | #{channelsAppStreams}
 
@@ -12,10 +10,8 @@ script(type='text/javascript').
     window.serverId = "#{server.id}";
     window.actionChains = !{actionChains};
 
-script(type='text/javascript').
-    spaImportReactPage('appstreams/appstreams')
-        .then(function(module) {
-            module.renderer('appstreams', {
-                channelsAppStreams: document.getElementById('init_channels_appstreams').textContent,
-            })
+#appstreams
+    script(type='text/javascript').
+        injectReactPage('appstreams/appstreams', {
+            channelsAppStreams: document.getElementById('init_channels_appstreams').textContent,
         });

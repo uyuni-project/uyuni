@@ -80,5 +80,5 @@ class PtfOverview extends React.Component<Props, State> {
   }
 }
 
-export const renderer = (id: string) =>
-  SpaRenderer.renderNavigationReact(<PtfOverview serverId={window.serverId} />, document.getElementById(id));
+export const renderer = (parent: Element) =>
+  SpaRenderer.renderNavigationReact(<PtfOverview serverId={window.serverId} />, parent);
