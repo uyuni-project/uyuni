@@ -26,7 +26,7 @@ jobs:
     outputs:
       require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
       - uses: dorny/paths-filter@v3
         id: filter
         with:
@@ -49,7 +49,7 @@ jobs:
         run: pip install pyyaml
       - name: Welcome message
         run: echo "Running acceptance tests. More info at https://github.com/uyuni-project/uyuni/wiki/Running-Acceptance-Tests-at-PR"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.2
       - name: Cache jar files
         uses: actions/cache@v4
         with:

@@ -28,7 +28,7 @@ jobs:
     container: registry.opensuse.org/systemsmanagement/uyuni/master/docker/containers/uyuni-master-pgsql:latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v4.2.2
 
     - name: Cache dependencies
       id: cache-dependencies

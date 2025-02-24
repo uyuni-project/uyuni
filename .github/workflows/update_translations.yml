@@ -35,7 +35,7 @@ jobs:
          access_token: ${{ github.token }}
 
    - name: Checkout repo
-     uses: actions/checkout@v4
+     uses: actions/checkout@v4.2.2
      with:
        token: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
