@@ -21,38 +21,32 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.query.NativeQuery;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-
 public class WebEndpointFactory extends HibernateFactory {
 
-    private static final Logger log = LogManager.getLogger(WebEndpointFactory.class);
+    private static final Logger LOG = LogManager.getLogger(WebEndpointFactory.class);
 
     private WebEndpointFactory() {
     }
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
-    public static List<WebEndpoint> lookupByUserId(Long userId) {
-        if (userId == null) {
-            return new LinkedList<>();
-        }
-        NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_userEndpoints");
-        query.setParameter("user_id", userId);
-        return query.getResultList();
-    }
-
-    public static Optional<WebEndpoint> lookupByUserIdEndpointScope(Long userId, String endpoint, String httpMethod, WebEndpoint.Scope scope) {
+    /**
+     * Look up user access table by user ID, path, HTTP method and scope (Web UI or API)
+     * @param userId the user ID
+     * @param endpoint the path of the web endpoint
+     * @param httpMethod the HTTP method of the endpoint
+     * @param scope the scope of the endpoint (Web UI or API)
+     * @return the web endpoint if found in the user access table
+     */
+    public static Optional<WebEndpoint> lookupByUserIdEndpointScope(Long userId, String endpoint, String httpMethod,
+                                                                    WebEndpoint.Scope scope) {
         NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_endpoint_scope");
         query.setParameter("user_id", userId);
         query.setParameter("endpoint", endpoint);
@@ -61,6 +55,13 @@ public class WebEndpointFactory extends HibernateFactory {
         return query.uniqueResultOptional();
     }
 
+    /**
+     * Look up user access table by user ID, path and HTTP method
+     * @param userId the user ID
+     * @param endpoint the path of the web endpoint
+     * @param httpMethod the HTTP method of the endpoint
+     * @return the web endpoint if found in the user access table
+     */
     public static Optional<WebEndpoint> lookupByUserIdEndpoint(Long userId, String endpoint, String httpMethod) {
         NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_endpoint");
         query.setParameter("user_id", userId);
@@ -69,7 +70,15 @@ public class WebEndpointFactory extends HibernateFactory {
         return query.uniqueResultOptional();
     }
 
-    public static Optional<WebEndpoint> lookupByUserIdClassMethodScope(Long userId, String classMethod, WebEndpoint.Scope scope) {
+    /**
+     * Look up user access table by user ID, class method and scope
+     * @param userId the user ID
+     * @param classMethod the class and method name of the handler method
+     * @param scope the scope of the endpoint (Web UI or API)
+     * @return the web endpoint if found in the user access table
+     */
+    public static Optional<WebEndpoint> lookupByUserIdClassMethodScope(Long userId, String classMethod,
+                                                                       WebEndpoint.Scope scope) {
         NativeQuery<WebEndpoint> query = getSession().getNamedNativeQuery("WebEndpoint_user_access_class_method");
         query.setParameter("user_id", userId);
         query.setParameter("class_method", classMethod);
@@ -77,43 +86,23 @@ public class WebEndpointFactory extends HibernateFactory {
         return query.uniqueResultOptional();
     }
 
+    /**
+     * Get all unauthorized web UI endpoints
+     * @return the set of unauthorized web endpoints
+     */
     public static Set<String> getUnauthorizedWebEndpoints() {
         // TODO: Cache
         NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthenticated_webui");
         return query.getResultStream().collect(Collectors.toUnmodifiableSet());
     }
 
+    /**
+     * Get all unauthorized API methods
+     * @return the set of unauthorized API methods as a string of qualified class name & method
+     */
     public static Set<String> getUnauthorizedApiMethods() {
         // TODO: Cache
         NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthenticated_api");
         return query.getResultStream().collect(Collectors.toUnmodifiableSet());
-    }
-
-    public static List<WebEndpoint> lookupAll() {
-        return getSession().createQuery("FROM WebEndpoint").list();
-    }
-
-    public static Optional<WebEndpoint> lookupByEndpoint(String endpoint) {
-        if (endpoint == null) {
-            return Optional.empty();
-        }
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<WebEndpoint> select = builder.createQuery(WebEndpoint.class);
-        Root<WebEndpoint> root = select.from(WebEndpoint.class);
-        select.where(builder.equal(root.get("endpoint"), endpoint));
-
-        return getSession().createQuery(select).uniqueResultOptional();
-    }
-
-    public static List<WebEndpoint> lookupByScope(WebEndpoint.Scope scope) {
-        if (scope == null) {
-            return new LinkedList<>();
-        }
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<WebEndpoint> select = builder.createQuery(WebEndpoint.class);
-        Root<WebEndpoint> root = select.from(WebEndpoint.class);
-        select.where(builder.equal(root.get("scope"), scope));
-
-        return getSession().createQuery(select).getResultList();
     }
 }
