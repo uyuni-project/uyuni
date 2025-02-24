@@ -2547,22 +2547,18 @@ public class ContentSyncManager {
         try {
             URI uri = new URI(url);
 
-            // SMT doesn't do dir listings, so we try to get the metadata
-            Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
-
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
+                Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
                 boolean res = Files.isReadable(testUrlPath);
                 LOG.debug("accessibleUrl:{} {}", testUrlPath, res);
                 return res;
             }
             else {
-                URI testUri = new URI(uri.getScheme(), null, uri.getHost(),
-                        uri.getPort(), testUrlPath.toString(), uri.getQuery(), null);
                 // Verify the mirrored repo by sending a HEAD request
-                int status = MgrSyncUtils.sendHeadRequest(testUri.toString(),
+                int status = MgrSyncUtils.sendHeadRequest(uri.toString(),
                         user, password).getStatusLine().getStatusCode();
-                LOG.debug("accessibleUrl: {} returned status {}", testUri, status);
+                LOG.debug("accessibleUrl: {} returned status {}", uri, status);
                 return (status == HttpURLConnection.HTTP_OK);
             }
         }
