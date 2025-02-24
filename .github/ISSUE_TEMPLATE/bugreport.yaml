@@ -40,11 +40,13 @@ body:
     validations:
       required: false
   - type: textarea
-     attributes:
-       label: uyuni-tools version used to deploy/manage the server or proxy (if relevant)
-       placeholder: |
-         Paste output of `zypper info mgradm`, or `zypper info mgrpxy`, or `zypper info mgrctl`, depending on the context
-       render: bash
+    attributes:
+      label: uyuni-tools version used to deploy/manage the server or proxy (if relevant)
+      placeholder: |
+        Paste output of `zypper info mgradm`, or `zypper info mgrpxy`, or `zypper info mgrctl`, depending on the context
+      render: bash
+    validations:
+      required: false
   - type: textarea
     attributes:
       label: Useful logs
