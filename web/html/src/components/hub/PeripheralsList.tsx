@@ -4,14 +4,25 @@ import { DeregisterServer, IssRole, PeripheralListData } from "components/hub";
 import { LargeTextAttachment } from "components/large-text-attachment";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { Table } from "components/table/Table";
+import { Table, TableRef } from "components/table/Table";
 
 import { Utils } from "utils/functions";
 
-export class PeripheralsList extends React.Component<{}> {
+type Props = {};
+
+export class PeripheralsList extends React.Component<Props> {
+  private tableRef: React.RefObject<TableRef>;
+
+  public constructor(props: Props) {
+    super(props);
+
+    this.tableRef = React.createRef();
+  }
+
   public render(): React.ReactNode {
     let componentContent = (
       <Table
+        ref={this.tableRef}
         data="/rhn/manager/api/admin/hub/peripherals"
         identifier={(row: PeripheralListData) => row.id}
         initialSortColumnKey="fqdn"
@@ -53,7 +64,18 @@ export class PeripheralsList extends React.Component<{}> {
   }
 
   private renderDeregister(row: PeripheralListData): React.ReactNode {
-    return <DeregisterServer id={row.id} fqdn={row.fqdn} role={IssRole.Peripheral} />;
+    return (
+      <DeregisterServer
+        id={row.id}
+        fqdn={row.fqdn}
+        role={IssRole.Peripheral}
+        onDeregistered={() => this.onServerDeregistered()}
+      />
+    );
+  }
+
+  private onServerDeregistered(): void {
+    this.tableRef.current?.refresh();
   }
 
   private searchData(row: PeripheralListData, criteria: string | undefined): boolean {
