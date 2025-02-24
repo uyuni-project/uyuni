@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { productName } from "core/user-preferences";
+
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 
 // See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
@@ -65,7 +67,7 @@ class PodInfo extends React.Component<PodInfoProps> {
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
-          title={t("Instance is consistent with SUSE Multi-Linux Manager")}
+          title={t("Instance is consistent with {productName}", { productName })}
         />
       );
     } else if (statusId === 2) {
@@ -105,7 +107,7 @@ class ClusterInfo extends React.Component<ClusterInfoProps> {
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
-          title={t("Cluster is consistent with SUSE Multi-Linux Manager")}
+          title={t("Cluster is consistent with {productName", { productName })}
         />
       );
     } else if (statusId === 2) {

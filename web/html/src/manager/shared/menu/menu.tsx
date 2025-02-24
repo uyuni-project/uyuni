@@ -254,11 +254,11 @@ class Breadcrumb extends React.Component {
           <span>
             {t("SUSE")}
             <i className="fa fa-registered"></i>
-            {t("Manager")}
+            {t("Multi-Linux Manager")}
           </span>
         }
         target=""
-        title={t("SUSE Manager homepage")}
+        title={t("SUSE Multi-Linux Manager homepage")}
       />
     );
 

@@ -71,8 +71,8 @@
                   </a>
                 </c:when>
                 <c:otherwise>
-                  <a href="/" class="navbar-brand js-spa" target="" title="SUSE Manager homepage">
-                    <span>SUSE<i class="fa fa-registered"></i>Manager</span>
+                  <a href="/" class="navbar-brand js-spa" target="" title="SUSE Multi-Linux Manager homepage">
+                    <span>SUSE<i class="fa fa-registered"></i>Multi-Linux Manager</span>
                   </a>
                 </c:otherwise>
               </c:choose>

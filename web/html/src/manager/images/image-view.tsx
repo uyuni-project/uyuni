@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
+import { productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import { FromNow } from "components/datetime";
@@ -524,7 +525,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
       icon = (
         <i
           className="fa fa-check-circle fa-1-5x text-success"
-          title={t("All instances are consistent with SUSE Multi-Linux Manager")}
+          title={t("All instances are consistent with {productName}", { productName })}
         />
       );
     } else if (row.runtimeStatus === 2) {

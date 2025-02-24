@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { productName } from "core/user-preferences";
+
 import { Button, LinkButton } from "components/buttons";
 import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
@@ -242,9 +244,9 @@ class ImageInfo extends React.Component<ImageInfoProps, ImageInfoState> {
         <span>
           <i
             className="fa fa-check-circle fa-1-5x text-success"
-            title={t("All instances are consistent with SUSE Multi-Linux Manager")}
+            title={t("All instances are consistent with {productName}", { productName })}
           />
-          <a href={"#/runtime/" + data.id}>{t("All instances are consistent with SUSE Multi-Linux Manager")}</a>
+          <a href={"#/runtime/" + data.id}>{t("All instances are consistent with {productName}", { productName })}</a>
         </span>
       );
     } else if (data.runtimeStatus === 2) {
