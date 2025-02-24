@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016--2025 SUSE LLC
+ * Copyright (c) 2016 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -40,7 +40,6 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
-import com.redhat.rhn.domain.action.ProxyConfigurationApplyAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
