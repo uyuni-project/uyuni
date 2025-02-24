@@ -9,7 +9,7 @@ import withPageWrapper from "components/general/with-page-wrapper";
 import SusemanagerThemeLogin from "./susemanager/login";
 import UyuniThemeLogin from "./uyuni/login";
 
-type Theme = "uyuni" | "susemanager-light" | "susemanager-dark";
+type Theme = "uyuni" | "suse-light" | "suse-dark";
 
 const products = {
   suma: {
