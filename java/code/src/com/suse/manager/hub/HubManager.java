@@ -1029,7 +1029,7 @@ public class HubManager {
             Map<Boolean, List<IssV3ChannelResponse>> partitioned = syncedPeripheralChannels.stream()
                     .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg() != null));
             syncedCustomChannels = new HashSet<>(partitioned.get(true));
-            syncedVendorChannels = new HashSet<>(partitioned.get(true));
+            syncedVendorChannels = new HashSet<>(partitioned.get(false));
             hubVendorChannels = getHubVendorChannels(user);
             hubCustomChannels = getHubCustomChannels(user);
         }
