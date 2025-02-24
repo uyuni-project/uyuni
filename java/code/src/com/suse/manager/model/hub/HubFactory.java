@@ -13,9 +13,11 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.time.Instant;
@@ -140,16 +142,22 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * get number of peripheral registered on this server
+     *
+     * @param pc the page control object
+     * @return the number of peripherals
+     */
+    public long countPeripherals(PageControl pc) {
+        return buildQueryFromPageControl("IssPeripheral", Long.class, pc).uniqueResult();
+    }
+
+    /**
      * get the list of all the peripheral servers for a hub
-     * @param offset the first item to retrieve
-     * @param pageSize the maximum number of items to retrieve
+     * @param pc the page control object
      * @return a list of paginated peripherals
      */
-    public List<IssPeripheral> listPaginatedPeripherals(int offset, int pageSize) {
-        return getSession().createQuery("FROM IssPeripheral", IssPeripheral.class)
-            .setFirstResult(offset)
-            .setMaxResults(pageSize)
-            .list();
+    public List<IssPeripheral> listPaginatedPeripherals(PageControl pc) {
+        return buildQueryFromPageControl("IssPeripheral", IssPeripheral.class, pc).list();
     }
 
     /**
@@ -353,5 +361,32 @@ public class HubFactory extends HibernateFactory {
                 tuple.get("peripheral_id", Long.class)
             ))
             .toList();
+    }
+
+    private static <T> Query<T> buildQueryFromPageControl(String entityName, Class<T> resultClass, PageControl pc) {
+        boolean countQuery = Long.class.equals(resultClass);
+        String hql = "FROM %s e".formatted(entityName);
+        if (pc.hasFilter()) {
+            hql += " WHERE e.%s LIKE :filter".formatted(pc.getFilterColumn());
+        }
+
+        if (countQuery) {
+            hql = "SELECT COUNT(*) " + hql;
+        }
+        else {
+            hql += " ORDER BY e.%s %s".formatted(pc.getSortColumn(), pc.isSortDescending() ? "DESC" : "ASC");
+        }
+
+        Query<T> query = getSession().createQuery(hql, resultClass);
+        if (pc.hasFilter()) {
+            query.setParameter("filter", "%" + pc.getFilterData() + "%");
+        }
+
+        if (!countQuery) {
+            query.setFirstResult(pc.getStart() - 1);
+            query.setMaxResults(pc.getPageSize());
+        }
+
+        return query;
     }
 }
