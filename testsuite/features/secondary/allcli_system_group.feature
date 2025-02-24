@@ -9,6 +9,7 @@ Feature: Manage a group of systems
   Scenario: Log in as org admin user
     Given I am authorized for the "Admin" section
 
+@skip_if_github_validation
   Scenario: Pre-requisite: enable dummy packages to fake an installation
     When I enable repository "test_repo_rpm_pool" on this "sle_minion"
     And I refresh the metadata for "sle_minion"
