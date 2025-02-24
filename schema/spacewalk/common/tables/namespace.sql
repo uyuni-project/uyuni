@@ -17,3 +17,6 @@ CREATE TABLE access.namespace (
     description TEXT
 );
 COMMENT ON TABLE access.namespace IS 'Namespace definitions to provide access to';
+
+CREATE UNIQUE INDEX namespace_ns_mode_uq
+ON access.namespace(namespace, access_mode);

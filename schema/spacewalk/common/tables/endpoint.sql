@@ -16,7 +16,7 @@ CREATE TABLE access.endpoint (
     http_method     VARCHAR NOT NULL,
     scope           CHAR(1) NOT NULL
                         CHECK (scope in ('A', 'W')),
-    authorized      BOOLEAN NOT NULL DEFAULT true,
+    auth_required   BOOLEAN NOT NULL DEFAULT true,
     created         TIMESTAMPTZ NOT NULL DEFAULT (current_timestamp),
     modified        TIMESTAMPTZ NOT NULL DEFAULT (current_timestamp)
 );
