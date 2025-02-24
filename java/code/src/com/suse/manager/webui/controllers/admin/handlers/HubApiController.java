@@ -216,9 +216,11 @@ public class HubApiController {
     private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
         PageControlHelper pageHelper = new PageControlHelper(request);
         PageControl pc = pageHelper.getPageControl();
-        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
+        long totalSize = hubManager.countRegisteredPeripherals(satAdmin, pc);
+
         List<PeripheralResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
             .map(PeripheralResponse::fromIssEntity).toList();
+
         TypeToken<PagedDataResultJson<PeripheralResponse, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
     }
