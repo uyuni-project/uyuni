@@ -42,6 +42,9 @@ mgr_keep_system_up2date_updatestack:
 mgr_keep_system_up2date_pkgs:
   pkg.uptodate:
     - refresh: True
+{%- if grains['os_family'] == 'Debian' %}
+    - dist_upgrade: True
+{%- endif %}
     - require:
       - sls: channels
       - mgr_keep_system_up2date_updatestack
