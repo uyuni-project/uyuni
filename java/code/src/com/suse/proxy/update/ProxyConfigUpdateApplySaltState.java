@@ -15,20 +15,14 @@
 
 package com.suse.proxy.update;
 
-import static com.suse.utils.Predicates.isAbsent;
-
-import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.ProxyConfigurationApplyAction;
-import com.redhat.rhn.manager.action.ActionManager;
 
-import com.suse.salt.netapi.calls.LocalCall;
-
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.suse.salt.netapi.calls.modules.State;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -38,45 +32,52 @@ import java.util.Optional;
 public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContextHandler {
     private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateApplySaltState.class);
 
-    public static final String FAIL_APPLY_MESSAGE = "Failed to apply proxy configuration salt state.";
+    private static final String FAIL_APPLY_MESSAGE = "Failed to apply proxy configuration salt state.";
 
     @Override
     public void handle(ProxyConfigUpdateContext context) {
+
         ProxyConfigurationApplyAction action = new ProxyConfigurationApplyAction(
                 context.getPillar(),
                 context.getProxyConfigFiles(),
                 context.getUser().getOrg()
         );
-        action.setName("Apply proxy configuration: " + context.getProxyMinion().getMinionId());
-        ActionManager.addServerToAction(context.getProxyMinion(), action);
-        Map<LocalCall<?>, Optional<JsonElement>> applySaltStateResponse =
-                GlobalInstanceHolder.SALT_SERVER_ACTION_SERVICE.executeSSHAction(action, context.getProxyMinion());
 
-        if (isAbsent(applySaltStateResponse)) {
-            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-            LOG.error(FAIL_APPLY_MESSAGE + " No response.");
-            return;
-        }
-        else if (applySaltStateResponse.size() != 1) {
-            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-            LOG.error(FAIL_APPLY_MESSAGE + " Unexpected response size. {}", applySaltStateResponse);
-            return;
-        }
+        Optional<Map<String, State.ApplyResult>> stringApplyResultMap = context.getSaltApi().callSync(
+                        action.getApplyProxyConfigCall(),
+                        context.getProxyMinion().getMinionId())
+                .map(
+                        result -> result.fold(
+                                error -> {
+                                    context.getErrorReport().register(error);
+                                    return null;
+                                },
+                                applyResults -> {
+                                    if (applyResults.isEmpty()) {
+                                        context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+                                        LOG.error(FAIL_APPLY_MESSAGE + " Unexpected response size. {}", applyResults.size());
+                                        return null;
+                                    }
 
-        JsonElement jsonElement = applySaltStateResponse.values().iterator().next().orElse(null);
-        if (jsonElement == null || !jsonElement.isJsonObject()) {
-            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-            LOG.error(FAIL_APPLY_MESSAGE + " Unexpected response format. {}", jsonElement);
-            return;
-        }
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        for (String key : jsonObject.keySet()) {
-            JsonElement jsonElementChild = jsonObject.get(key);
-            if (!jsonElementChild.getAsJsonObject().get("result").getAsBoolean()) {
-                context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-                LOG.error(FAIL_APPLY_MESSAGE + " Failing entry: {}", jsonElementChild);
-            }
-        }
+                                    List<String> failedStates = applyResults.entrySet().stream()
+                                            .filter(p -> !p.getValue().isResult())
+                                            .map(e ->
+                                                    String.format(
+                                                            "name: %s, comment: %s",
+                                                            e.getKey(),
+                                                            e.getValue().getComment()
+                                                    ))
+                                            .toList();
+                                    if (!failedStates.isEmpty()) {
+                                        context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+                                        LOG.debug(FAIL_APPLY_MESSAGE + " Fail applying: {}", failedStates);
+                                    }
+                                    return applyResults;
+                                }));
 
+        if (stringApplyResultMap.isEmpty()) {
+            context.getErrorReport().register(FAIL_APPLY_MESSAGE);
+            LOG.error(FAIL_APPLY_MESSAGE + " No apply results.");
+        }
     }
 }
