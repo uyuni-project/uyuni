@@ -181,7 +181,7 @@ export function ProxyConfig({
 
     const fileReaders = Object.keys(model)
       .filter((key) => {
-        const matcher = key.match(/^([a-zA-Z0-9]*[A-Za-z])[0-9]*$/);
+        const matcher = /^([a-zA-Z\d]*[A-Za-z])\d*$/.exec(key);
         const fieldName = matcher ? matcher[1] : key;
         return fileFields.includes(fieldName);
       })
@@ -219,9 +219,8 @@ export function ProxyConfig({
       };
       const registryData =
         model.sourceMode === SourceMode.Registry
-          ? Object.assign(
-              {},
-              model.registryMode === RegistryMode.Simple
+          ? {
+              ...(model.registryMode === RegistryMode.Simple
                 ? {
                     registryBaseURL: model.registryBaseURL,
                     registryBaseTag: model.registryBaseTag,
@@ -237,8 +236,8 @@ export function ProxyConfig({
                     registrySshTag: model.registrySshTag,
                     registryTftpdURL: model.registryTftpdURL,
                     registryTftpdTag: model.registryTftpdTag,
-                  }
-            )
+                  }),
+            }
           : {};
 
       const formData = unflattenModel(Object.assign({}, commonData, registryData, ...values));
@@ -276,12 +275,12 @@ export function ProxyConfig({
   };
 
   const onChange = (newModel) => {
-    setModel(Object.assign({}, newModel));
+    setModel({ ...newModel });
     asyncValidate(newModel);
   };
 
   const onAddField = (fieldName: string) => {
-    return (index: number) => setModel(Object.assign({}, model, { [fieldName + index]: "" }));
+    return (index: number) => setModel({ ...model, [fieldName + index]: "" });
   };
 
   const onRemoveField = (fieldName: string) => {
