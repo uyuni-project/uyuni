@@ -35,7 +35,7 @@ INSERT INTO rhnConfiguration (key, description, default_value, value)
     FROM rhnConfiguration
     WHERE key = 'extauth_keep_temproles'
 ON CONFLICT (key) DO UPDATE
-  SET default_value = rhnConfiguration.default_value;
+  SET default_value = EXCLUDED.default_value;
 
 DELETE FROM rhnConfiguration
     WHERE key = 'extauth_keep_temproles';
