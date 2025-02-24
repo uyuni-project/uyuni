@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS access.namespace (
 );
 COMMENT ON TABLE access.namespace IS 'Namespace definitions to provide access to';
 
-CREATE UNIQUE INDEX namespace_ns_mode_uq
+CREATE UNIQUE INDEX IF NOT EXISTS namespace_ns_mode_uq
 ON access.namespace(namespace, access_mode);
 
 
