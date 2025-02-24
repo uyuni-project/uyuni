@@ -426,7 +426,7 @@ public class CVEAuditManagerOVAL {
     private static void extractAndSaveOVALData(OVALOsProduct product, File ovalFile) {
         OvalParser ovalParser = new OvalParser();
         OVALResources ovalResources = ovalParser.parseResources(ovalFile);
-        ovalParser.parseDefinitionsInBulk(ovalFile, (definitionsBulk) -> {
+        ovalParser.parseDefinitionsInBulk(ovalFile, definitionsBulk -> {
             OvalRootType ovalRoot = new OvalRootType();
             ovalRoot.setDefinitions(definitionsBulk);
             ovalRoot.setTests(ovalResources.getTests());
