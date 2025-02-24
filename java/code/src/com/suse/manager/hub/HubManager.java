@@ -1027,7 +1027,7 @@ public class HubManager {
             Set<IssV3ChannelResponse> syncedPeripheralChannels = getPeripheralChannels(user, peripheralId);
             // Partition here so we don't go inside the list two times
             Map<Boolean, List<IssV3ChannelResponse>> partitioned = syncedPeripheralChannels.stream()
-                    .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg().getOrgId() != null));
+                    .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg() != null));
             syncedCustomChannels = new HashSet<>(partitioned.get(true));
             syncedVendorChannels = new HashSet<>(partitioned.get(true));
             hubVendorChannels = getHubVendorChannels(user);
@@ -1102,28 +1102,24 @@ public class HubManager {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        //TODO: check for parents, ask sync for parents if not already synced
         List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
         var internalApi = clientFactory.newInternalClient(
                 issPeripheral.getFqdn(),
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
-        // TODO: transaction start
-        try {
-            List<String> channelsLabel = new ArrayList<>();
-            Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
-            channels.forEach(ch -> {
-                peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch));
-                channelsLabel.add(ch.getLabel());
-            });
-            issPeripheral.setPeripheralChannels(peripheralChannels);
-            hubFactory.save(issPeripheral);
-            internalApi.syncVendorChannels(channelsLabel);
-        }
-        catch (IOException eIn) {
-            // TODO: transaction rollback
-            throw eIn;
-        }
+        List<String> channelsLabel = new ArrayList<>();
+        Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+        channels.forEach(ch -> {
+            IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
+            peripheralChannels.add(issPeripheralChannel);
+            channelsLabel.add(ch.getLabel());
+            hubFactory.save(issPeripheralChannel);
+        });
+        issPeripheral.setPeripheralChannels(peripheralChannels);
+        hubFactory.save(issPeripheral);
+        internalApi.syncVendorChannels(channelsLabel);
     }
 
     /**
@@ -1134,6 +1130,7 @@ public class HubManager {
      */
     public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId) {
         ensureSatAdmin(user);
+        //TODO: check for children, desync children is parent is desynced
         IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
         List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
         Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
