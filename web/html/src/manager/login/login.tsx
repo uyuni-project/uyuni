@@ -17,8 +17,7 @@ const products = {
     headerTitle: (
       <React.Fragment>
         <span>SUSE</span>
-        <i className="fa fa-registered" />
-        <span>Multi-Linux Manager</span>
+        <i className="fa fa-registered" /> <span>Multi-Linux Manager</span>
       </React.Fragment>
     ),
     bodyTitle: (

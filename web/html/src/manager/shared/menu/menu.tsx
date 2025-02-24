@@ -252,9 +252,7 @@ class Breadcrumb extends React.Component {
         url="/"
         label={
           <span>
-            {t("SUSE")}
-            <i className="fa fa-registered"></i>
-            {t("Multi-Linux Manager")}
+            SUSE<i className="fa fa-registered"></i> Multi-Linux Manager
           </span>
         }
         target=""

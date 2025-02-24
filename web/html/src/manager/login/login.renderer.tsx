@@ -30,7 +30,6 @@ export const renderer = (
         validationErrors={validationErrors}
         schemaUpgradeRequired={schemaUpgradeRequired}
         webVersion={webVersion}
-        productName={productName}
         customHeader={customHeader}
         customFooter={customFooter}
         legalNote={legalNote}
