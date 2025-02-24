@@ -17,17 +17,17 @@ package com.redhat.rhn.domain.action;
 
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Pillar;
 
-import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.proxy.ProxyConfigUtils;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.utils.Xor;
+
+import com.google.gson.reflect.TypeToken;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -36,6 +36,7 @@ import java.util.Optional;
  */
 public class ProxyConfigurationApplyAction extends Action {
 
+    private static final String APPLY_PROXY_CONFIG = "proxy.apply_proxy_config";
     private final Pillar pillar;
     private final Map<String, Object> proxyConfigFiles;
 
@@ -47,6 +48,7 @@ public class ProxyConfigurationApplyAction extends Action {
      */
     public ProxyConfigurationApplyAction(Pillar pillarIn, Map<String, Object> proxyConfigFilesIn, Org orgIn) {
         this.setActionType(ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY);
+        this.setId(ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY.getId().longValue());
         this.pillar = pillarIn;
         this.proxyConfigFiles = proxyConfigFilesIn;
         this.setOrg(orgIn);
@@ -61,18 +63,30 @@ public class ProxyConfigurationApplyAction extends Action {
     }
 
     /**
-     * Get the apply_proxy_config local call
-     * @param minions the minions
+     * Builds the LocalCall for the apply_proxy_config state apply with the pillar and config files data
      * @return the apply_proxy_config local call
      */
-    public Map<LocalCall<?>, List<MinionSummary>> getApplyProxyConfigAction(List<MinionSummary> minions) {
+    public LocalCall<Xor<String, Map<String, State.ApplyResult>>> getApplyProxyConfigCall() {
         Map<String, Object> data = new HashMap<>();
         data.putAll(ProxyConfigUtils.applyProxyConfigDataFromPillar(getPillar()));
         data.putAll(getProxyConfigFiles());
 
-        return Map.of(
-                State.apply(Collections.singletonList(SaltServerActionService.APPLY_PROXY_CONFIG), Optional.of(data)),
-                minions
+        return State.apply(
+                Collections.singletonList(APPLY_PROXY_CONFIG),
+                Optional.of(data),
+                Optional.of(false), Optional.of(false),
+                new TypeToken<Xor<String, Map<String, State.ApplyResult>>>() { }
+        );
+    }
+
+    public LocalCall<Map<String, State.ApplyResult>> getApplyProxyConfigCallSimple() {
+        Map<String, Object> data = new HashMap<>();
+        data.putAll(ProxyConfigUtils.applyProxyConfigDataFromPillar(getPillar()));
+        data.putAll(getProxyConfigFiles());
+
+        return State.apply(
+                Collections.singletonList(APPLY_PROXY_CONFIG),
+                Optional.of(data)
         );
     }
 }
