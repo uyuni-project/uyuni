@@ -29,7 +29,10 @@ import com.google.gson.reflect.TypeToken;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.persistence.Transient;
 
 /**
  * ProxyConfigurationApply - Class representing TYPE_PROXY_CONFIGURATION_APPLY action
@@ -38,7 +41,9 @@ public class ProxyConfigurationApplyAction extends Action {
 
     private static final String APPLY_PROXY_CONFIG = "proxy.apply_proxy_config";
     private final Pillar pillar;
-    private final Map<String, Object> proxyConfigFiles;
+
+    @Transient
+    private final transient Map<String, Object> proxyConfigFiles;
 
     /**
      * Default constructor
@@ -75,18 +80,27 @@ public class ProxyConfigurationApplyAction extends Action {
                 Collections.singletonList(APPLY_PROXY_CONFIG),
                 Optional.of(data),
                 Optional.of(false), Optional.of(false),
-                new TypeToken<Xor<String, Map<String, State.ApplyResult>>>() { }
+                new TypeToken<>() { }
         );
     }
 
-    public LocalCall<Map<String, State.ApplyResult>> getApplyProxyConfigCallSimple() {
-        Map<String, Object> data = new HashMap<>();
-        data.putAll(ProxyConfigUtils.applyProxyConfigDataFromPillar(getPillar()));
-        data.putAll(getProxyConfigFiles());
-
-        return State.apply(
-                Collections.singletonList(APPLY_PROXY_CONFIG),
-                Optional.of(data)
-        );
+    @Override
+    public int hashCode() {
+        return Objects.hash(pillar, proxyConfigFiles, getOrg());
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        ProxyConfigurationApplyAction that = (ProxyConfigurationApplyAction) obj;
+        return Objects.equals(pillar, that.pillar) &&
+                Objects.equals(proxyConfigFiles, that.proxyConfigFiles) &&
+                Objects.equals(getOrg(), that.getOrg());
+    }
+
 }

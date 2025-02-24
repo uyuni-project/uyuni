@@ -55,7 +55,10 @@ public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContext
                                 applyResults -> {
                                     if (applyResults.isEmpty()) {
                                         context.getErrorReport().register(FAIL_APPLY_MESSAGE);
-                                        LOG.error(FAIL_APPLY_MESSAGE + " Unexpected response size. {}", applyResults.size());
+                                        LOG.error(
+                                                FAIL_APPLY_MESSAGE + " Unexpected response size. {}",
+                                                applyResults.size()
+                                        );
                                         return null;
                                     }
 
