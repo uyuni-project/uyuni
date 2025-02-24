@@ -46,12 +46,12 @@ import javax.persistence.Table;
         query = "SELECT * FROM access.userAccessTable e WHERE user_id = :user_id AND e.scope = :scope " +
                 "AND e.class_method = :class_method LIMIT 1"
 )
-@NamedNativeQuery(name = "WebEndpoint_get_unauthenticated_webui",
-        // Get unauthenticated Web UI endpoints
+@NamedNativeQuery(name = "WebEndpoint_get_unauthorized",
+        // Get all endpoints that don't require authorization
         query = "SELECT endpoint FROM access.endpoint WHERE auth_required = false"
 )
-@NamedNativeQuery(name = "WebEndpoint_get_unauthenticated_api",
-        // Get unauthenticated API endpoints
+@NamedNativeQuery(name = "WebEndpoint_get_unauthorized_api",
+        // Get API handler class and methods that don't require authorization
         query = "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND auth_required = false"
 )
 public class WebEndpoint extends BaseDomainHelper {

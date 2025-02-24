@@ -87,22 +87,22 @@ public class WebEndpointFactory extends HibernateFactory {
     }
 
     /**
-     * Get all unauthorized web UI endpoints
-     * @return the set of unauthorized web endpoints
+     * Get all endpoints that don't require authorization
+     * @return the set of endpoints that don't require authorization
      */
     public static Set<String> getUnauthorizedWebEndpoints() {
         // TODO: Cache
-        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthenticated_webui");
+        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthorized");
         return query.getResultStream().collect(Collectors.toUnmodifiableSet());
     }
 
     /**
-     * Get all unauthorized API methods
+     * Get API handler class and methods that don't require authorization
      * @return the set of unauthorized API methods as a string of qualified class name & method
      */
     public static Set<String> getUnauthorizedApiMethods() {
         // TODO: Cache
-        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthenticated_api");
+        NativeQuery<String> query = getSession().getNamedNativeQuery("WebEndpoint_get_unauthorized_api");
         return query.getResultStream().collect(Collectors.toUnmodifiableSet());
     }
 }
