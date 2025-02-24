@@ -113,6 +113,12 @@ mgrpxy_installed:
 
         [Install]
         WantedBy=multi-user.target
+    - require:
+      - file: /etc/uyuni/proxy/config.yaml
+      - file: /etc/uyuni/proxy/httpd.yaml
+      - file: /etc/uyuni/proxy/ssh.yaml
+      - pkg: podman_installed
+      - pkg: mgrpxy_installed
 
 # The system will run this service to enable apply_proxy_config.service after reboot
 enable_apply_proxy_config_service:
@@ -121,10 +127,6 @@ enable_apply_proxy_config_service:
     - enable: True
     - require:
       - file: /etc/systemd/system/apply_proxy_config.service
-      - file: /etc/uyuni/proxy/config.yaml
-      - file: /etc/uyuni/proxy/httpd.yaml
-      - file: /etc/uyuni/proxy/ssh.yaml
-
 
 {% else %}
 
