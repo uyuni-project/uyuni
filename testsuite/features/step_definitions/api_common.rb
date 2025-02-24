@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 SUSE LLC
+# Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the API.
@@ -302,13 +302,13 @@ end
 
 # actionchain namespace
 
-When(/^I call actionchain\.create_chain\(\) with chain label "(.*?)"$/) do |label|
+When(/^I create an action chain with label "(.*?)" via API$/) do |label|
   action_id = $api_test.actionchain.create_chain(label)
   refute(action_id < 1)
   $chain_label = label
 end
 
-When(/^I call actionchain\.list_chains\(\) if label "(.*?)" is there$/) do |label|
+When(/^I see label "(.*?)" when I list action chains via API$/) do |label|
   assert_includes($api_test.actionchain.list_chains, label)
 end
 
@@ -328,7 +328,7 @@ When(/^I delete all action chains$/) do
 end
 
 # Renaming chain
-Then(/^I call actionchain\.rename_chain\(\) to rename it from "(.*?)" to "(.*?)"$/) do |old_label, new_label|
+Then(/^I rename the action chain with label "(.*?)" to "(.*?)" via API$/) do |old_label, new_label|
   $api_test.actionchain.rename_chain(old_label, new_label)
 end
 
@@ -345,7 +345,7 @@ Then(/^no action chain with the label "(.*?)"$/) do |label|
 end
 
 # Schedule scenario
-When(/^I call actionchain\.add_script_run\(\) with the script "(.*?)"$/) do |script|
+When(/^I add the script "(.*?)" to the action chain via API$/) do |script|
   refute($api_test.actionchain.add_script_run($client_id, $chain_label, 'root', 'root', 300, "#!/bin/bash\n#{script}") < 1)
 end
 
@@ -359,31 +359,31 @@ Then(/^I should be able to see all these actions in the action chain$/) do
 end
 
 # Reboot
-When(/^I call actionchain\.add_system_reboot\(\)$/) do
+When(/^I add a system reboot to the action chain via API$/) do
   refute($api_test.actionchain.add_system_reboot($client_id, $chain_label) < 1)
 end
 
 # Packages operations
-When(/^I call actionchain\.add_package_install\(\)$/) do
+When(/^I add a package install to the action chain via API$/) do
   pkgs = $api_test.system.list_all_installable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
   refute($api_test.actionchain.add_package_install($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.add_package_removal\(\)$/) do
+When(/^I add a package removal to the action chain via API$/) do
   pkgs = $api_test.system.list_all_installable_packages($client_id)
   refute($api_test.actionchain.add_package_removal($client_id, [pkgs[0]['id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.add_package_upgrade\(\)$/) do
+When(/^I add a package upgrade to the action chain via API$/) do
   pkgs = $api_test.system.list_latest_upgradable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
   refute($api_test.actionchain.add_package_upgrade($client_id, [pkgs[0]['to_package_id']], $chain_label) < 1)
 end
 
-When(/^I call actionchain\.add_package_verify\(\)$/) do
+When(/^I add a package verification to the action chain via API$/) do
   pkgs = $api_test.system.list_all_installable_packages($client_id)
   refute_nil(pkgs)
   refute_empty(pkgs)
@@ -391,7 +391,7 @@ When(/^I call actionchain\.add_package_verify\(\)$/) do
 end
 
 # Manage actions within the action chain
-When(/^I call actionchain\.remove_action\(\) on each action within the chain$/) do
+When(/^I remove each action within the chain via API$/) do
   actions = $api_test.actionchain.list_chain_actions($chain_label)
   refute_nil(actions)
   actions.each do |action|
