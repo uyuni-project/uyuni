@@ -26,29 +26,31 @@ export class PeripheralsList extends React.Component<Props> {
         data="/rhn/manager/api/admin/hub/peripherals"
         identifier={(row: PeripheralListData) => row.id}
         initialSortColumnKey="fqdn"
+        defaultSearchField="fqdn"
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by FQDN")} />}
       >
         <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
         <Column
           columnKey="nChannelsSync"
-          comparator={Utils.sortByNumber}
+          sortable={false}
           header={t("N. of Sync Channels")}
           cell={(row: PeripheralListData) => row.nChannelsSync}
         />
         <Column
           columnKey="nOrgs"
-          comparator={Utils.sortByNumber}
           header={t("N. of Sync Orgs")}
+          sortable={false}
           cell={(row: PeripheralListData) => row.nSyncOrgs}
         />
         <Column
-          columnKey="id"
           header={t("Download Root CA")}
+          sortable={false}
           cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)}
         />
         <Column
           columnKey="remove"
           header={t("Deregister")}
+          sortable={false}
           cell={(row: PeripheralListData) => this.renderDeregister(row)}
         />
       </Table>
