@@ -2,6 +2,8 @@ import { hot } from "react-hot-loader/root";
 
 import * as React from "react";
 
+import { isUyuni } from "core/user-preferences";
+
 import withPageWrapper from "components/general/with-page-wrapper";
 
 import SusemanagerThemeLogin from "./susemanager/login";
@@ -39,13 +41,11 @@ const products = {
 };
 
 type Props = {
-  isUyuni: boolean;
   theme: Theme;
   bounce: string;
   validationErrors: Array<string>;
   schemaUpgradeRequired: boolean;
   webVersion: string;
-  productName: string;
   customHeader: string;
   customFooter: string;
   legalNote: string;
@@ -60,7 +60,7 @@ export type ThemeProps = Props & {
 };
 
 const Login = (props: Props) => {
-  const product = props.isUyuni ? products.uyuni : products.suma;
+  const product = isUyuni ? products.uyuni : products.suma;
   if (props.theme === "uyuni") {
     return <UyuniThemeLogin {...props} product={product} />;
   }

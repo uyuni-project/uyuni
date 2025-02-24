@@ -6,7 +6,6 @@ import Login from "./login";
 export const renderer = (
   id: string,
   {
-    isUyuni,
     theme,
     urlBounce,
     validationErrors,
@@ -26,7 +25,6 @@ export const renderer = (
   if (elementToRender) {
     ReactDOM.render(
       <Login
-        isUyuni={isUyuni}
         theme={theme}
         bounce={urlBounce}
         validationErrors={validationErrors}

@@ -3,7 +3,7 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import { useEffect } from "react";
 
-import { docsLocale } from "core/user-preferences";
+import { docsLocale, isUyuni, productName } from "core/user-preferences";
 
 import { AsyncButton, Button } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
@@ -146,12 +146,8 @@ const ListPlaceholder = (props) => {
   );
 };
 
-type HelpPanelProps = {
-  isUyuni: boolean;
-};
-
-const HelpPanel = (props: HelpPanelProps) => {
-  const docsDirectory = props.isUyuni ? "/uyuni" : "/suse-manager";
+const HelpPanel = () => {
+  const docsDirectory = isUyuni ? "/uyuni" : "/suse-manager";
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
@@ -202,11 +198,7 @@ const ExportersMessages = (props: {
   }
 };
 
-type MonitoringAdminProps = {
-  isUyuni: boolean;
-};
-
-const MonitoringAdmin = (props: MonitoringAdminProps) => {
+const MonitoringAdmin = () => {
   const {
     action,
     fetchStatus,
@@ -331,7 +323,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
       </React.Fragment>
     );
   }
-  const productName = props.isUyuni ? "SUSE Multi-Linux Manager" : "Uyuni";
+
   return (
     <div className="responsive-wizard">
       {messages && <Messages items={messages} />}
@@ -342,7 +334,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
           {t("{productName} Configuration - Monitoring", {
             productName,
           })}
-          <HelpLink url={`${props.isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
+          <HelpLink url={`${isUyuni ? "uyuni" : "suse-manager"}/administration/monitoring.html`} />
         </h1>
       </div>
       <div className="page-summary">
@@ -416,7 +408,7 @@ const MonitoringAdmin = (props: MonitoringAdminProps) => {
               </div>
             </div>
           </div>
-          <HelpPanel isUyuni={props.isUyuni} />
+          <HelpPanel />
         </div>
       </Panel>
     </div>

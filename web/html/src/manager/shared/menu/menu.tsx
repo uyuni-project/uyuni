@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
+import { isUyuni } from "core/user-preferences";
 
 import { MessagesContainer } from "components/toastr/toastr";
 
@@ -235,7 +236,7 @@ class Breadcrumb extends React.Component {
       level = level.submenu ? level.submenu.find((l) => l.active) : null;
     }
 
-    const product_name_link = window._IS_UYUNI ? (
+    const product_name_link = isUyuni ? (
       <Link
         key="home"
         className="navbar-brand"
