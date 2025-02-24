@@ -110,10 +110,6 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for a Ubuntu 24.04 minion
     When I create the bootstrap repository for "ubuntu2404_minion" on the server
 
-@debian11_minion
-  Scenario: Create the bootstrap repository for a Debian 11 minion
-    When I create the bootstrap repository for "debian11_minion" on the server
-
 @debian12_minion
   Scenario: Create the bootstrap repository for a Debian 12 minion
     When I create the bootstrap repository for "debian12_minion" on the server
