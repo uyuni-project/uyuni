@@ -1833,7 +1833,7 @@ public class SaltUtils {
 
         HardwareMapper hwMapper = new HardwareMapper(server,
                 new ValueMap(result.getGrains()));
-        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
+        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()), result.getCpuArchSpecs());
         server.setRam(hwMapper.getTotalMemory());
         server.setSwap(hwMapper.getTotalSwapMemory());
         if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
