@@ -48,11 +48,11 @@ import javax.persistence.Table;
 )
 @NamedNativeQuery(name = "WebEndpoint_get_unauthenticated_webui",
         // Get unauthenticated Web UI endpoints
-        query = "SELECT endpoint FROM access.endpoint WHERE authorized = false"
+        query = "SELECT endpoint FROM access.endpoint WHERE auth_required = false"
 )
 @NamedNativeQuery(name = "WebEndpoint_get_unauthenticated_api",
         // Get unauthenticated API endpoints
-        query = "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND authorized = false"
+        query = "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND auth_required = false"
 )
 public class WebEndpoint extends BaseDomainHelper {
     @Id
@@ -64,7 +64,7 @@ public class WebEndpoint extends BaseDomainHelper {
     private String httpMethod;
     @Enumerated(EnumType.STRING)
     private Scope scope;
-    private Boolean authorized;
+    private Boolean authRequired;
 
     public enum Scope {
         A("API"),
@@ -95,15 +95,15 @@ public class WebEndpoint extends BaseDomainHelper {
      * @param endpointIn the endpoint URL or path
      * @param httpMethodIn the HTTP method (e.g., GET, POST)
      * @param scopeIn the scope that defines where the endpoint is used (API or Web application)
-     * @param authorizedIn whether the endpoint is authorized (true) or not (false)
+     * @param authRequiredIn whether the endpoint requires authorization
      */
     public WebEndpoint(String classNameIn, String endpointIn, String httpMethodIn, Scope scopeIn,
-                       Boolean authorizedIn) {
+                       Boolean authRequiredIn) {
         className = classNameIn;
         endpoint = endpointIn;
         httpMethod = httpMethodIn;
         scope = scopeIn;
-        authorized = authorizedIn;
+        authRequired = authRequiredIn;
     }
 
     public Long getId() {
@@ -146,12 +146,12 @@ public class WebEndpoint extends BaseDomainHelper {
         httpMethod = httpMethodIn;
     }
 
-    public Boolean isAuthorized() {
-        return authorized;
+    public Boolean isAuthRequired() {
+        return authRequired;
     }
 
-    public void setAuthorized(Boolean authorizedIn) {
-        authorized = authorizedIn;
+    public void setAuthRequired(Boolean authRequiredIn) {
+        authRequired = authRequiredIn;
     }
 
     @Override
