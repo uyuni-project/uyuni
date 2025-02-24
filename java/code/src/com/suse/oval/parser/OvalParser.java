@@ -46,6 +46,9 @@ import com.suse.oval.ovaltypes.linux.RpminfoTest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.stax2.XMLEventReader2;
+import org.codehaus.stax2.XMLInputFactory2;
+import org.codehaus.stax2.evt.XMLEvent2;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -57,12 +60,9 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.xml.namespace.QName;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
 
 /**
  * The Oval Parser is responsible for parsing OVAL(Open Vulnerability and Assessment Language) documents
@@ -109,19 +109,20 @@ public class OvalParser {
      * @param bulkHandler an operation to applied on every bulk of parsed OVAL definitions.
      * */
     public void parseDefinitionsInBulk(File ovalFile, OVALDefinitionsBulkHandler bulkHandler) {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLInputFactory2 xmlInputFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
         // Disable external entities processing as a protection measure against XXE.
         xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
         try {
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+            XMLEventReader2 reader =
+                (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
             // Disable external entities processing as a protection measure against XXE.
             xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
             List<DefinitionType> definitions = new ArrayList<>();
 
             while (reader.hasNext()) {
-                XMLEvent nextEvent = reader.nextEvent();
+                XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
                 if (nextEvent.isStartElement()) {
                     String elementName = nextEvent.asStartElement().getName().getLocalPart();
@@ -171,17 +172,18 @@ public class OvalParser {
      * @return an {@link OVALResources} object containing OVAL objects, states and tests.
      * */
     public OVALResources parseResources(File ovalFile) {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        XMLInputFactory2 xmlInputFactory = (XMLInputFactory2) XMLInputFactory2.newInstance();
         // Disable external entities processing as a protection measure against XXE.
         xmlInputFactory.setProperty("javax.xml.stream.isSupportingExternalEntities", false);
 
         try {
-            XMLEventReader reader = xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
+            XMLEventReader2 reader =
+                (XMLEventReader2) xmlInputFactory.createXMLEventReader(new FileInputStream(ovalFile));
 
             OVALResources resources = new OVALResources();
 
             while (reader.hasNext()) {
-                XMLEvent nextEvent = reader.nextEvent();
+                XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
                 if (nextEvent.isStartElement()) {
                     String elementName = nextEvent.asStartElement().getName().getLocalPart();
@@ -209,7 +211,7 @@ public class OvalParser {
         }
     }
 
-    private DefinitionType parseDefinitionType(StartElement definitionElement, XMLEventReader reader)
+    private DefinitionType parseDefinitionType(StartElement definitionElement, XMLEventReader2 reader)
             throws XMLStreamException {
         DefinitionType definitionType = new DefinitionType();
 
@@ -228,7 +230,7 @@ public class OvalParser {
         });
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("metadata")) {
@@ -249,7 +251,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </definition>");
     }
 
-    private CriteriaType parseDefinitionCriteria(StartElement criteriaElement, XMLEventReader reader)
+    private CriteriaType parseDefinitionCriteria(StartElement criteriaElement, XMLEventReader2 reader)
             throws XMLStreamException {
         CriteriaType criteriaType = new CriteriaType();
 
@@ -272,7 +274,7 @@ public class OvalParser {
 
         List<BaseCriteria> children = new ArrayList<>();
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("criterion")) {
                     children.add(parseDefinitionCriterion(nextEvent.asStartElement()));
@@ -313,10 +315,10 @@ public class OvalParser {
         return criterionType;
     }
 
-    private MetadataType parseDefinitionMetadata(XMLEventReader reader) throws XMLStreamException {
+    private MetadataType parseDefinitionMetadata(XMLEventReader2 reader) throws XMLStreamException {
         MetadataType metadataType = new MetadataType();
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("title")) {
@@ -340,13 +342,13 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </metadata>");
     }
 
-    private Advisory parseAdvisory(XMLEventReader reader) throws XMLStreamException {
+    private Advisory parseAdvisory(XMLEventReader2 reader) throws XMLStreamException {
         Advisory advisory = new Advisory();
 
         List<AdvisoryCveType> cveList = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("affected_cpe_list")) {
@@ -371,11 +373,11 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </advisory>");
     }
 
-    private AdvisoryAffectedType parseAdvisoryAffectedType(XMLEventReader reader) throws XMLStreamException {
+    private AdvisoryAffectedType parseAdvisoryAffectedType(XMLEventReader2 reader) throws XMLStreamException {
         AdvisoryAffectedType advisoryAffectedType = new AdvisoryAffectedType();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("resolution")) {
@@ -393,7 +395,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </affected>");
     }
 
-    private AdvisoryResolutionType parseAdvisoryResolutionType(StartElement resolutionElement, XMLEventReader reader)
+    private AdvisoryResolutionType parseAdvisoryResolutionType(StartElement resolutionElement, XMLEventReader2 reader)
             throws XMLStreamException {
         AdvisoryResolutionType advisoryResolutionType = new AdvisoryResolutionType();
 
@@ -405,7 +407,7 @@ public class OvalParser {
         List<String> affectedComponents = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("component")) {
@@ -424,7 +426,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </resolution>");
     }
 
-    private AdvisoryCveType parseAdvisoryCve(XMLEventReader reader) throws XMLStreamException {
+    private AdvisoryCveType parseAdvisoryCve(XMLEventReader2 reader) throws XMLStreamException {
         AdvisoryCveType cveType = new AdvisoryCveType();
 
         cveType.setCve(reader.getElementText());
@@ -432,11 +434,11 @@ public class OvalParser {
         return cveType;
     }
 
-    private List<String> parseAffectedCpeList(XMLEventReader reader) throws XMLStreamException {
+    private List<String> parseAffectedCpeList(XMLEventReader2 reader) throws XMLStreamException {
         List<String> cpes = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("cpe")) {
@@ -454,11 +456,11 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </affected_cpe_list>");
     }
 
-    private List<TestType> parseTests(XMLEventReader reader) throws XMLStreamException {
+    private List<TestType> parseTests(XMLEventReader2 reader) throws XMLStreamException {
         List<TestType> tests = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 String element = nextEvent.asStartElement().getName().getLocalPart();
@@ -480,7 +482,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </tests>");
     }
 
-    private TestType parseTestType(StartElement testElement, XMLEventReader reader, PackageType packageType)
+    private TestType parseTestType(StartElement testElement, XMLEventReader2 reader, PackageType packageType)
             throws XMLStreamException {
 
         Objects.requireNonNull(packageType);
@@ -507,7 +509,7 @@ public class OvalParser {
         });
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("object")) {
@@ -543,11 +545,11 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for test type");
     }
 
-    private List<StateType> parseStates(XMLEventReader reader) throws XMLStreamException {
+    private List<StateType> parseStates(XMLEventReader2 reader) throws XMLStreamException {
         List<StateType> states = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 String element = nextEvent.asStartElement().getName().getLocalPart();
@@ -569,7 +571,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </states>");
     }
 
-    private StateType parseStateType(StartElement rpmStateElement, XMLEventReader reader, PackageType packageType)
+    private StateType parseStateType(StartElement rpmStateElement, XMLEventReader2 reader, PackageType packageType)
             throws XMLStreamException {
         Objects.requireNonNull(packageType);
         StateType stateType;
@@ -595,7 +597,7 @@ public class OvalParser {
         });
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
             if (nextEvent.isStartElement()) {
                 String elementName = nextEvent.asStartElement().getName().getLocalPart();
                 if (elementName.equals("arch")) {
@@ -620,7 +622,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for state type");
     }
 
-    private ArchType parseArchStateEntity(StartElement archElement, XMLEventReader reader) throws XMLStreamException {
+    private ArchType parseArchStateEntity(StartElement archElement, XMLEventReader2 reader) throws XMLStreamException {
         ArchType archType = new ArchType();
 
         archElement.getAttributes().forEachRemaining(attribute -> {
@@ -636,7 +638,7 @@ public class OvalParser {
         return archType;
     }
 
-    private EVRType parseEVRStateEntity(StartElement evrElement, XMLEventReader reader) throws XMLStreamException {
+    private EVRType parseEVRStateEntity(StartElement evrElement, XMLEventReader2 reader) throws XMLStreamException {
         EVRType evrType = new EVRType();
 
         evrElement.getAttributes().forEachRemaining(attribute -> {
@@ -651,7 +653,7 @@ public class OvalParser {
         return evrType;
     }
 
-    private VersionType parseVersionStateEntity(StartElement versionElement, XMLEventReader reader)
+    private VersionType parseVersionStateEntity(StartElement versionElement, XMLEventReader2 reader)
             throws XMLStreamException {
         VersionType versionType = new VersionType();
 
@@ -668,11 +670,11 @@ public class OvalParser {
         return versionType;
     }
 
-    private List<ObjectType> parseObjects(XMLEventReader reader) throws XMLStreamException {
+    private List<ObjectType> parseObjects(XMLEventReader2 reader) throws XMLStreamException {
         List<ObjectType> objects = new ArrayList<>();
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
 
             if (nextEvent.isStartElement()) {
                 String element = nextEvent.asStartElement().getName().getLocalPart();
@@ -694,7 +696,7 @@ public class OvalParser {
         throw new OvalParserException("Unable to find the closing tag for </objects>");
     }
 
-    private ObjectType parseObjectType(StartElement rpmObjectElement, XMLEventReader reader, PackageType packageType)
+    private ObjectType parseObjectType(StartElement rpmObjectElement, XMLEventReader2 reader, PackageType packageType)
             throws XMLStreamException {
         Objects.requireNonNull(packageType);
         ObjectType objectType;
@@ -721,7 +723,7 @@ public class OvalParser {
         });
 
         while (reader.hasNext()) {
-            XMLEvent nextEvent = reader.nextEvent();
+            XMLEvent2 nextEvent = (XMLEvent2) reader.nextEvent();
             if (nextEvent.isStartElement()) {
                 if (nextEvent.asStartElement().getName().getLocalPart().equals("name")) {
                     objectType.setPackageName(reader.getElementText());
