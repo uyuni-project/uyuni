@@ -299,7 +299,30 @@ public class AnsibleManager extends BaseManager {
         else {
             AnsibleFactory.removeAnsiblePath(path);
         }
+    }
 
+    /**
+     * Remove all ansible paths for given minion server
+     *
+     * @param minionServer the minion server
+     */
+    public static void removeAnsiblePaths(MinionServer minionServer) {
+        List<AnsiblePath> paths = AnsibleFactory.listAnsiblePaths(minionServer.getId());
+        Set<Server> systemsToRemove = new HashSet<>();
+        paths.forEach(p -> {
+            if (p.getEntityType() == AnsiblePath.Type.INVENTORY) {
+                systemsToRemove.addAll(((InventoryPath) p).getInventoryServers());
+            }
+            AnsibleFactory.removeAnsiblePath(p);
+        });
+        if (!systemsToRemove.isEmpty()) {
+            List<Server> ansibleManagedSystems = AnsibleFactory.listAnsibleInventoryServersExcludingControlNode(
+                    minionServer.getId());
+            systemsToRemove.removeIf(ansibleManagedSystems::contains);
+            updateAnsibleManagedSystems(new HashSet<>(), systemsToRemove);
+        }
+        MinionPillarManager.INSTANCE.generatePillar(minionServer, false, MinionPillarManager.PillarSubset.GENERAL);
+        GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionServer.getMinionId()));
     }
 
     /**
