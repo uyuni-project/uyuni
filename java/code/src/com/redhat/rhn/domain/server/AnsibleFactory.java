@@ -124,6 +124,22 @@ public class AnsibleFactory extends HibernateFactory {
     }
 
     /**
+     * List all ansible managed {@link Server}s linked to given {@link Server}
+     *
+     * @param minionId the id of the contorl node
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersByControlNode(long minionId) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
+                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ap.server_id = :server_id""", Server.class)
+                .setParameter("server_id", minionId)
+                .getResultList();
+    }
+
+    /**
      * List all {@link Server}s linked to inventories excluding given {@link InventoryPath}
      *
      * @param path the inventory to exclude
@@ -135,6 +151,22 @@ public class AnsibleFactory extends HibernateFactory {
                  JOIN rhnServer s ON ais.server_id = s.id
                  WHERE ais.inventory_id != :inventory_id""", Server.class)
                 .setParameter("inventory_id", path.getId())
+                .getResultList();
+    }
+
+    /**
+     * List all {@link Server}s linked to inventories from control nodes excluding given {@link MinionServer}
+     *
+     * @param minionId the id of the control node to exclude
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersExcludingControlNode(long minionId) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
+                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ap.server_id != :server_id""", Server.class)
+                .setParameter("server_id", minionId)
                 .getResultList();
     }
 
