@@ -144,8 +144,21 @@ public class AnsibleManager extends BaseManager {
      */
     public static AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
         MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
+        return createAnsiblePath(typeLabel, minionServer, path);
+    }
 
-        validateAnsiblePath(path, of(typeLabel), empty(), minionServerId);
+    /**
+     * Create and save a new ansible path
+     *
+     * @param typeLabel the type label
+     * @param minionServer the minion server
+     * @param path the path
+     * @return the created and saved AnsiblePath
+     * @throws LookupException if the user does not have permissions or server not found
+     * @throws ValidatorException if the validation fails
+     */
+    public static AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer, String path) {
+        validateAnsiblePath(path, of(typeLabel), empty(), minionServer.getId());
 
         AnsiblePath ansiblePath;
         AnsiblePath.Type type = AnsiblePath.Type.fromLabel(typeLabel);
@@ -554,6 +567,30 @@ public class AnsibleManager extends BaseManager {
         systemsToRemove.forEach(s ->
                 systemEntitlementManager.removeServerEntitlement(s, EntitlementManager.ANSIBLE_MANAGED)
         );
+    }
+
+    /**
+     * Create default playbook and inventory paths for given minion server
+     *
+     * @param minionServer the minion server
+     */
+    public static void createDefaultPaths(MinionServer minionServer) {
+        String inventory = "/etc/ansible/hosts";
+        String playbook = "/etc/ansible/playbooks";
+        try {
+            AnsibleManager.createAnsiblePath(
+                    AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
+        }
+        catch (ValidatorException e) {
+            log.info("Inventory path: '" + inventory + "' already exists. Skipping...");
+        }
+        try {
+            AnsibleManager.createAnsiblePath(
+                    AnsiblePath.Type.PLAYBOOK.getLabel(), minionServer, playbook);
+        }
+        catch (ValidatorException e) {
+            log.info("Playbook path: '" + playbook + "' already exists. Skipping...");
+        }
     }
 
     private static MinionServer lookupAnsibleControlNode(long systemId, User user) {
