@@ -110,13 +110,11 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.kickstart.cobbler.test.MockXMLRPCInvoker;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -137,7 +135,6 @@ import com.suse.manager.metrics.SystemsCollector;
 import com.suse.manager.ssl.SSLCertManager;
 import com.suse.manager.ssl.SSLCertPair;
 import com.suse.manager.webui.controllers.utils.ContactMethodUtil;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -219,11 +216,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
             }
         });
         SaltApi saltApi = new TestSaltApi();
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
         this.systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         createMetadataFiles();

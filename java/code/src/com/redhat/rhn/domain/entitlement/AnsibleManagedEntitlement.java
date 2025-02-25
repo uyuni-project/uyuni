@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.entitlement;
 
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 /**

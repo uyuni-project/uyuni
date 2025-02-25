@@ -85,7 +85,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -108,7 +107,6 @@ import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltServerActionService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -153,10 +151,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             SALT_UTILS,
             SALT_KEY_UTILS
     );
-    private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(MONITORING_MANAGER, SERVER_GROUP_MANAGER),
-            new SystemEntitler(SALT_API, MONITORING_MANAGER, SERVER_GROUP_MANAGER)
+            new SystemUnentitler(SALT_API), new SystemEntitler(SALT_API)
     );
 
     @Override
