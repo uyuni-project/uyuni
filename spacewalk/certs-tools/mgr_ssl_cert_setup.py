@@ -30,7 +30,6 @@ from collections import namedtuple
 from datetime import datetime
 
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean
-from uyuni.common.fileutils import getUidGid
 
 LOGFILE = "/var/log/rhn/mgr-ssl-cert-setup.log"
 PKI_DIR = "/etc/pki/"
