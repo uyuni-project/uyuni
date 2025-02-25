@@ -226,13 +226,13 @@ public class AnsibleController {
         AnsiblePath currentPath;
         try {
             if (json.getId() == null) {
-                currentPath = AnsibleManager.createAnsiblePath(json.getType(),
+                currentPath = getAnsibleManager().createAnsiblePath(json.getType(),
                         json.getMinionServerId(),
                         json.getPath(),
                         user);
             }
             else {
-                currentPath = AnsibleManager.updateAnsiblePath(json.getId(),
+                currentPath = getAnsibleManager().updateAnsiblePath(json.getId(),
                         json.getPath(),
                         user);
             }
@@ -258,7 +258,7 @@ public class AnsibleController {
         Long ansiblePathId = GSON.fromJson(req.body(), Long.class);
 
         try {
-            AnsibleManager.removeAnsiblePath(ansiblePathId, user);
+            getAnsibleManager().removeAnsiblePath(ansiblePathId, user);
         }
         catch (LookupException e) {
             return result(res, error(LOCAL.getMessage("ansible.entity_not_found")), new TypeToken<>() { });
