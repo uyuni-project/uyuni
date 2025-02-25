@@ -57,6 +57,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -719,6 +720,18 @@ public class SystemManager extends BaseManager {
 
         CobblerSystemRemoveCommand rc = new CobblerSystemRemoveCommand(user, server);
         rc.store();
+
+        // remove associated Ansible managed systems
+        if (server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE)) {
+            List<Server> managedSystemsToRemove = AnsibleFactory.listAnsibleInventoryServersByControlNode(
+                    server.getId());
+            if (!managedSystemsToRemove.isEmpty()) {
+                List<Server> ansibleManagedServers = AnsibleFactory.listAnsibleInventoryServersExcludingControlNode(
+                        server.getId());
+                managedSystemsToRemove.removeAll(ansibleManagedServers);
+                AnsibleManager.updateAnsibleManagedSystems(new HashSet<>(), new HashSet<>(managedSystemsToRemove));
+            }
+        }
 
         // remove associated VirtualInstances
         Set<VirtualInstance> toRemove = new HashSet<>();
