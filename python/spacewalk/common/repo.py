@@ -315,9 +315,7 @@ class DpkgRepo:
                         )
                     )
             else:
-                logger.error(
-                    "No release file found: '%s'. Raising GeneralRepoException.", uri
-                )
+                logger.error("No release file found: '%s'.", uri)
                 # pylint: disable-next=consider-using-f-string
                 raise GeneralRepoException("No release file found: {}".format(uri))
         else:
@@ -405,7 +403,6 @@ class DpkgRepo:
         if not self.is_flat():
             if self.gpg_verify and not self._has_valid_gpg_signature(local_path):
                 logger.error("%s: %s", DpkgRepo.GPG_VERIFICATION_FAILED, release_file)
-                logger.error("Raising GeneralRepoException!")
                 raise GeneralRepoException(
                     f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {release_file}"
                 )
@@ -414,7 +411,7 @@ class DpkgRepo:
                     self._release = self._parse_release_index(f.read().decode("utf-8"))
             except IOError as ex:
                 logger.exception(
-                    "IOError while accessing file: '%s'. Raising GeneralRepoException!",
+                    "IOError while accessing file: '%s'.",
                     release_file,
                 )
                 raise GeneralRepoException(
@@ -430,7 +427,7 @@ class DpkgRepo:
                 release_file = self._get_parent_url(local_path, 0, "Release")
             else:
                 logger.error(
-                    "No release file found in '%s'. Raising GeneralRepoException.",
+                    "No release file found in '%s'.",
                     self._get_parent_url(local_path, 0),
                 )
                 raise GeneralRepoException(
@@ -447,7 +444,7 @@ class DpkgRepo:
                         local_path
                     ):
                         logger.error(
-                            "%s: %s. Raising GeneralRepoException.",
+                            "%s: '%s'.",
                             DpkgRepo.GPG_VERIFICATION_FAILED,
                             release_file,
                         )
@@ -457,7 +454,7 @@ class DpkgRepo:
                     self._release = self._parse_release_index(release_file_content)
             except IOError as ex:
                 logger.exception(
-                    "IOError while accessing file: '%s'. Raising GeneralRepoException.",
+                    "IOError while accessing file: '%s'.",
                     release_file,
                 )
                 raise GeneralRepoException(
@@ -489,8 +486,7 @@ class DpkgRepo:
                 http.HTTPStatus.FORBIDDEN,
             ]:
                 logger.error(
-                    "Fetching release index failed with http status '%s'. Raising "
-                    "GeneralRepoException.",
+                    "Fetching release index failed with http status '%s'.",
                     resp.status_code,
                 )
                 raise GeneralRepoException(
@@ -511,9 +507,7 @@ class DpkgRepo:
                 and self.gpg_verify
                 and not self._has_valid_gpg_signature(resp.url, resp)
             ):
-                logger.error(
-                    "Repo has no valid GPG signature. Raising GeneralRepoException."
-                )
+                logger.error("Repo has no valid GPG signature.")
                 raise GeneralRepoException(
                     f"{DpkgRepo.GPG_VERIFICATION_FAILED}: {resp.url}"
                 )
