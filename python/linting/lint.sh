@@ -71,7 +71,7 @@ function get_all_files_with_python_shebang() {
 function main() {
   ensure_latest_container_image
   if [[ "${CHECK_ALL_FILES}" == "true" ]]; then
-    files="$(get_all_py_files)$(get_all_files_with_python_shebang)"
+    files="$(get_all_py_files) $(get_all_files_with_python_shebang)"
     echo "Linting and formatting: $files"
     execute_black $files
     execute_lint $files
