@@ -3842,8 +3842,7 @@ public class SystemManager extends BaseManager {
      */
     public static void updateSystemOverview(Long sid) {
         // We need the server to be already in the database to update it
-        if (sid != null &&
-                TaskFactory.lookup(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid) == null) {
+        if (sid != null) {
             TaskFactory.createTask(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid);
         }
     }
