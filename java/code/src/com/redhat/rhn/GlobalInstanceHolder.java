@@ -20,7 +20,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.taglibs.helpers.RenderUtils;
 import com.redhat.rhn.manager.formula.FormulaManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -38,7 +37,6 @@ import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
 import com.suse.manager.webui.menu.MenuTree;
 import com.suse.manager.webui.services.SaltServerActionService;
 import com.suse.manager.webui.services.ThrottlingService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -81,11 +79,8 @@ public class GlobalInstanceHolder {
             new RegularMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
     public static final SSHMinionBootstrapper SSH_MINION_BOOTSTRAPPER =
             new SSHMinionBootstrapper(SYSTEM_QUERY, SALT_API, PAYG_MANAGER, ATTESTATION_MANAGER);
-    public static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     public static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(MONITORING_MANAGER, SERVER_GROUP_MANAGER),
-            new SystemEntitler(SALT_API, MONITORING_MANAGER,
-                    SERVER_GROUP_MANAGER)
+            new SystemUnentitler(SALT_API), new SystemEntitler(SALT_API)
     );
     public static final SystemManager SYSTEM_MANAGER = new SystemManager(ServerFactory.SINGLETON,
             ServerGroupFactory.SINGLETON, SALT_API);

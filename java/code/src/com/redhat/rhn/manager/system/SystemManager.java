@@ -110,7 +110,6 @@ import com.redhat.rhn.frontend.xmlrpc.ProxySystemIsSatelliteException;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
@@ -133,7 +132,6 @@ import com.suse.manager.utils.PagedSqlQueryBuilder;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.StateRevisionService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 import com.suse.utils.Opt;
@@ -205,11 +203,8 @@ public class SystemManager extends BaseManager {
         this.serverFactory = serverFactoryIn;
         this.serverGroupFactory = serverGroupFactoryIn;
         this.saltApi = saltApiIn;
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
-                new SystemEntitler(saltApiIn, monitoringManager, serverGroupManager)
+                new SystemUnentitler(saltApiIn), new SystemEntitler(saltApiIn)
         );
     }
 

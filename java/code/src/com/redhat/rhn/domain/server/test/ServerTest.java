@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -50,7 +49,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -69,11 +67,9 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-    private final SystemUnentitler systemUnentitler = new SystemUnentitler(
-            monitoringManager, serverGroupManager);
+    private final SystemUnentitler systemUnentitler = new SystemUnentitler(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            systemUnentitler, new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+            systemUnentitler, new SystemEntitler(saltApi)
     );
 
     @Test
