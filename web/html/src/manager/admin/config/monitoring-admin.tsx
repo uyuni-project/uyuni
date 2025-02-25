@@ -338,7 +338,7 @@ const MonitoringAdmin = () => {
         </h1>
       </div>
       <div className="page-summary">
-        <p>{t("Set up monitoring for your server.")}</p>
+        <p>{t("Set up monitoring for your {productName} server.", { productName })}</p>
       </div>
       <div className="spacewalk-content-nav">
         <ul className="nav nav-tabs">
