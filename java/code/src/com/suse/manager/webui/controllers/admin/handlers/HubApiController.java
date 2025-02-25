@@ -34,6 +34,7 @@ import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
@@ -63,7 +64,6 @@ import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.SSLException;
 
@@ -333,8 +333,8 @@ public class HubApiController {
 
         try {
             // Collections.singletonMap() is used in place of Map.of() because it allows null as value
-            Map<String, String> dataMap = Collections.singletonMap("root_ca", rootCA);
-            hubManager.updateServerData(user, server.getFqdn(), role, dataMap);
+            UpdatableServerData data = new UpdatableServerData(Collections.singletonMap("root_ca", rootCA));
+            hubManager.updateServerData(user, server.getFqdn(), role, data);
         }
         catch (TaskomaticApiException e) {
             return internalServerError(response, LOC.getMessage("hub.cannot_refresh_certificate"));

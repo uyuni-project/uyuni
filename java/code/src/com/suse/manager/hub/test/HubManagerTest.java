@@ -58,6 +58,7 @@ import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -830,8 +831,11 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("---- BEGIN ROOT CA ----", hub.getRootCa());
         assertEquals("---- BEGIN GPG PUB KEY -----", hub.getGpgKey());
 
-        Map<String, String> data = Map.of("gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
-                "root_ca", "---- BEGIN NEW ROOT CA ----");
+        UpdatableServerData data = new UpdatableServerData(Map.of(
+            "gpg_key", "---- BEGIN NEW GPG PUB KEY -----",
+            "root_ca", "---- BEGIN NEW ROOT CA ----")
+        );
+
         hubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
