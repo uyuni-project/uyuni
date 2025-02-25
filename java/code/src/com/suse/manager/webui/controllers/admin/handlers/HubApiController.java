@@ -331,9 +331,14 @@ public class HubApiController {
             return badRequest(response, LOC.getMessage("hub.cannot_find_server"));
         }
 
-        // Collections.singletonMap() is used in place of Map.of() because it allows null as value
-        Map<String, String> dataMap = Collections.singletonMap("root_ca", rootCA);
-        hubManager.updateServerData(user, server.getFqdn(), role, dataMap);
+        try {
+            // Collections.singletonMap() is used in place of Map.of() because it allows null as value
+            Map<String, String> dataMap = Collections.singletonMap("root_ca", rootCA);
+            hubManager.updateServerData(user, server.getFqdn(), role, dataMap);
+        }
+        catch (TaskomaticApiException e) {
+            return internalServerError(response, LOC.getMessage("hub.cannot_refresh_certificate"));
+        }
 
         return success(response);
     }

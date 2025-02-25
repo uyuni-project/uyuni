@@ -528,7 +528,8 @@ public class HubManager {
      * @param role the role which should be changed
      * @param data the new data
      */
-    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data) {
+    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data)
+        throws TaskomaticApiException {
         ensureValidToken(token);
         updateServerData(fqdn, role, data);
     }
@@ -540,41 +541,40 @@ public class HubManager {
      * @param fqdn the FQDN identifying the Hub or Peripheral Server
      * @param role the role which should be changed
      * @param data the new data
+     * @throws TaskomaticApiException when it's not possible to schedule the certificate refresh
      */
-    public void updateServerData(User user, String fqdn, IssRole role, Map<String, String> data) {
+    public void updateServerData(User user, String fqdn, IssRole role, Map<String, String> data)
+        throws TaskomaticApiException {
         ensureSatAdmin(user);
         updateServerData(fqdn, role, data);
     }
 
-    private void updateServerData(String fqdn, IssRole role, Map<String, String> data) {
-        switch (role) {
-            case HUB -> hubFactory.lookupIssHubByFqdn(fqdn).ifPresentOrElse(issHub -> {
-                        if (data.containsKey("root_ca")) {
-                            issHub.setRootCa(data.get("root_ca"));
-                        }
-                        if (data.containsKey("gpg_key")) {
-                            issHub.setGpgKey(data.get("gpg_key"));
-                        }
-                        hubFactory.save(issHub);
-                    },
-                    () -> {
-                        LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
-                    });
-            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn).ifPresentOrElse(issPeripheral -> {
-                        if (data.containsKey("root_ca")) {
-                            issPeripheral.setRootCa(data.get("root_ca"));
-                        }
-                        hubFactory.save(issPeripheral);
-                    },
-                    ()-> {
-                        LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
-                    });
-            default -> {
-                LOG.error("Unknown role {}", role);
-                throw new IllegalArgumentException("Unknown role");
+    private void updateServerData(String fqdn, IssRole role, Map<String, String> data) throws TaskomaticApiException {
+        Optional<? extends IssServer> server = switch (role) {
+            case HUB -> hubFactory.lookupIssHubByFqdn(fqdn);
+            case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn);
+        };
+
+        boolean needsRefresh = server.map(issServer -> {
+            boolean caUpdated = false;
+            if (data.containsKey("root_ca")) {
+                issServer.setRootCa(data.get("root_ca"));
+                caUpdated = true;
             }
+
+            if (data.containsKey("gpg_key") && issServer instanceof IssHub issHub) {
+                issHub.setGpgKey(data.get("gpg_key"));
+            }
+
+            hubFactory.save(issServer);
+            return caUpdated;
+        }).orElseThrow(() -> {
+            LOG.error("Server {} not found with role {}", fqdn, role);
+            return new IllegalArgumentException("Server not found");
+        });
+
+        if (needsRefresh) {
+            taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, fqdn), data.get("root_ca"));
         }
     }
 
