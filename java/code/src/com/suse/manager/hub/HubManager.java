@@ -55,6 +55,7 @@ import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
@@ -74,7 +75,6 @@ import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -528,7 +528,7 @@ public class HubManager {
      * @param role the role which should be changed
      * @param data the new data
      */
-    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, Map<String, String> data)
+    public void updateServerData(IssAccessToken token, String fqdn, IssRole role, UpdatableServerData data)
         throws TaskomaticApiException {
         ensureValidToken(token);
         updateServerData(fqdn, role, data);
@@ -543,38 +543,35 @@ public class HubManager {
      * @param data the new data
      * @throws TaskomaticApiException when it's not possible to schedule the certificate refresh
      */
-    public void updateServerData(User user, String fqdn, IssRole role, Map<String, String> data)
+    public void updateServerData(User user, String fqdn, IssRole role, UpdatableServerData data)
         throws TaskomaticApiException {
         ensureSatAdmin(user);
         updateServerData(fqdn, role, data);
     }
 
-    private void updateServerData(String fqdn, IssRole role, Map<String, String> data) throws TaskomaticApiException {
+    private void updateServerData(String fqdn, IssRole role, UpdatableServerData data) throws TaskomaticApiException {
         Optional<? extends IssServer> server = switch (role) {
             case HUB -> hubFactory.lookupIssHubByFqdn(fqdn);
             case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn);
         };
 
-        boolean needsRefresh = server.map(issServer -> {
-            boolean caUpdated = false;
-            if (data.containsKey("root_ca")) {
-                issServer.setRootCa(data.get("root_ca"));
-                caUpdated = true;
+        server.ifPresentOrElse(issServer -> {
+            if (data.hasRootCA()) {
+                issServer.setRootCa(data.getRootCA());
             }
 
-            if (data.containsKey("gpg_key") && issServer instanceof IssHub issHub) {
-                issHub.setGpgKey(data.get("gpg_key"));
+            if (data.hasGpgKey() && issServer instanceof IssHub issHub) {
+                issHub.setGpgKey(data.getGpgKey());
             }
 
             hubFactory.save(issServer);
-            return caUpdated;
-        }).orElseThrow(() -> {
+        }, () -> {
             LOG.error("Server {} not found with role {}", fqdn, role);
-            return new IllegalArgumentException("Server not found");
+            throw new IllegalArgumentException("Server not found");
         });
 
-        if (needsRefresh) {
-            taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, fqdn), data.get("root_ca"));
+        if (data.hasRootCA()) {
+            taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, fqdn), data.getRootCA());
         }
     }
 
