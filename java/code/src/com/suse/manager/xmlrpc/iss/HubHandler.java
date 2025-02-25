@@ -23,6 +23,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -397,7 +398,7 @@ public class HubHandler extends BaseHandler {
     public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
         ensureSatAdmin(loggedInUser);
         try {
-            hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+            hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), new UpdatableServerData(data));
         }
         catch (TaskomaticApiException e) {
             throw new com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException("Unable to refresh root CA certificate");
