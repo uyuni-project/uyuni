@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -43,6 +44,7 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidServerGroupException;
 import com.redhat.rhn.frontend.xmlrpc.NoSuchSystemException;
+import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.frontend.xmlrpc.configchannel.XmlRpcConfigChannelHelper;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -52,13 +54,14 @@ import com.redhat.rhn.manager.token.ActivationKeyManager;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.utils.MachinePasswordUtils;
-import com.suse.manager.webui.utils.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.Token;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.NonUniqueObjectException;
-import org.jose4j.lang.JoseException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -271,25 +274,19 @@ public class ActivationKeyHandler extends BaseHandler {
             throw new AuthenticationException("wrong machine password.");
         }
 
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.setExpirationTimeMinutesInTheFuture(
-                Config.get().getInt(
-                        ConfigDefaults.TEMP_TOKEN_LIFETIME
-                )
-        );
-        tokenBuilder.onlyChannels(key.getChannels()
-                .stream().map(Channel::getLabel)
-                .collect(Collectors.toSet()));
-
         try {
+            Token token = new DownloadTokenBuilder(minion.getOrg().getId())
+                .usingServerSecret()
+                .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
+                .allowingOnlyChannels(key.getChannels().stream().map(Channel::getLabel).collect(Collectors.toSet()))
+                .build();
+
             String url = "https://" + minion.getChannelHost() + "/rhn/manager/download/";
-            String token = tokenBuilder.getToken();
-            return key.getChannels().stream().map(
-                c -> new ChannelInfo(c.getLabel(), c.getName(), url + c.getLabel(), token)
+            return key.getChannels().stream()
+                .map(c -> new ChannelInfo(c.getLabel(), c.getName(), url + c.getLabel(), token.getSerializedForm())
             ).collect(Collectors.toList());
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             throw new TokenCreationException(e);
         }
     }

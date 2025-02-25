@@ -45,10 +45,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.net.NoRouteToHostException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.attribute.UserPrincipalLookupService;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -114,7 +123,41 @@ public class SCCWebClient implements SCCClient {
      */
     public SCCWebClient(SCCConfig configIn) {
         config = configIn;
-        httpClient = new HttpClientAdapter();
+        httpClient = new HttpClientAdapter(configIn.getAdditionalCerts(), false);
+    }
+
+    private <T> T writeCache(T value, String name) {
+        Path credentialCache = Paths.get(config.getLoggingDir(),
+                config.getUsername().replaceAll("[^a-zA-Z0-9\\._]+", "_"));
+        try {
+
+            UserPrincipal tomcatUser = null;
+            UserPrincipal rootUser = null;
+            if (!config.isSkipOwner()) {
+                FileSystem fileSystem = FileSystems.getDefault();
+                UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+                tomcatUser = service.lookupPrincipalByName("tomcat");
+                rootUser = service.lookupPrincipalByName("root");
+            }
+
+            Files.createDirectories(credentialCache);
+            if (!config.isSkipOwner() && Files.getOwner(credentialCache, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+                Files.setOwner(credentialCache, tomcatUser);
+            }
+
+            Path jsonFilePath = credentialCache.resolve(name + ".json");
+            try (BufferedWriter file = Files.newBufferedWriter(jsonFilePath)) {
+                gson.toJson(value, file);
+                if (!config.isSkipOwner() && Files.getOwner(jsonFilePath, LinkOption.NOFOLLOW_LINKS).equals(rootUser)) {
+                    Files.setOwner(jsonFilePath, tomcatUser);
+                }
+            }
+        }
+        catch (IOException e) {
+            LOG.error(e);
+            throw new SCCClientException(e);
+        }
+        return value;
     }
 
     /**
@@ -122,8 +165,9 @@ public class SCCWebClient implements SCCClient {
      */
     @Override
     public List<SCCRepositoryJson> listRepositories() throws SCCClientException {
-        return getList("/connect/organizations/repositories",
+        List<SCCRepositoryJson> list = getList("/connect/organizations/repositories",
                 SCCRepositoryJson.class);
+        return writeCache(list, "organizations_repositories");
     }
 
     /**
@@ -131,8 +175,9 @@ public class SCCWebClient implements SCCClient {
      */
     @Override
     public List<SCCProductJson> listProducts() throws SCCClientException {
-        return getList(
+        List<SCCProductJson> list = getList(
                 "/connect/organizations/products/unscoped", SCCProductJson.class);
+        return writeCache(list, "organizations_products_unscoped");
     }
 
     /**
@@ -140,8 +185,9 @@ public class SCCWebClient implements SCCClient {
      */
     @Override
     public List<SCCSubscriptionJson> listSubscriptions() throws SCCClientException {
-        return getList("/connect/organizations/subscriptions",
+        List<SCCSubscriptionJson> list = getList("/connect/organizations/subscriptions",
                 SCCSubscriptionJson.class);
+        return writeCache(list, "organizations_subscriptions");
     }
 
     /**
@@ -149,14 +195,16 @@ public class SCCWebClient implements SCCClient {
      */
     @Override
     public List<SCCOrderJson> listOrders() throws SCCClientException {
-        return getList("/connect/organizations/orders",
+        List<SCCOrderJson> list = getList("/connect/organizations/orders",
                 SCCOrderJson.class);
+        return writeCache(list, "organizations_orders");
     }
 
     @Override
     public List<ProductTreeEntry> productTree() throws SCCClientException {
-        return getList("/suma/product_tree.json",
+        List<ProductTreeEntry> list = getList("/suma/product_tree.json",
                 ProductTreeEntry.class);
+        return writeCache(list, "product_tree");
     }
 
     /**
@@ -168,7 +216,7 @@ public class SCCWebClient implements SCCClient {
      * @return object of type given by resultType
      * @throws SCCClientException if the request was not successful
      */
-    private <T> List<T> getList(String endpoint, Type resultType)
+    private <T> List<T> getList(String endpoint, Class<T> resultType)
             throws SCCClientException {
 
         PaginatedResult<List<T>> firstPage = request(endpoint, SCCClientUtils.toListType(resultType), "GET");

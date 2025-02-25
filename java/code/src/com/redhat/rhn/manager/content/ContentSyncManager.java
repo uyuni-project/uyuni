@@ -64,12 +64,16 @@ import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
 import com.suse.mgrsync.MgrSyncStatus;
 import com.suse.salt.netapi.parser.JsonParser;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCClientUtils;
+import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.ChannelFamilyJson;
 import com.suse.scc.model.SCCOrderItemJson;
@@ -156,24 +160,31 @@ public class ContentSyncManager {
 
     private CloudPaygManager cloudPaygManager;
 
-    private final Optional<Path> tmpLoggingDir;
+    private final HubFactory hubFactory;
+
+    private final boolean isPeripheral;
+    private final boolean hubHasSignedMetadata;
+
+    private final Path tmpLoggingDir;
 
     /**
      * Default constructor.
      */
     public ContentSyncManager() {
-        cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
-        tmpLoggingDir = Optional.empty();
+        this(Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), GlobalInstanceHolder.PAYG_MANAGER);
     }
 
     /**
-     * Constructor for testing
-     * @param tmpLogDir overwrite logdir for credential output
+     * @param tmpLogDir logdir for credential output
      * @param paygMgrIn {@link CloudPaygManager} to use
      */
     public ContentSyncManager(Path tmpLogDir, CloudPaygManager paygMgrIn) {
         cloudPaygManager = paygMgrIn;
-        tmpLoggingDir = Optional.ofNullable(tmpLogDir);
+        tmpLoggingDir = tmpLogDir;
+        hubFactory = new HubFactory();
+        Optional<IssHub> issHub = hubFactory.lookupIssHub();
+        isPeripheral = issHub.isPresent();
+        hubHasSignedMetadata = StringUtils.isNotBlank(issHub.map(IssHub::getGpgKey).orElse(""));
     }
 
     /**
@@ -868,18 +879,19 @@ public class ContentSyncManager {
         List<Long> availableRepoIds = SCCCachingFactory.lookupRepositories().stream()
                 .map(SCCRepository::getSccId)
                 .toList();
-        List<SCCRepositoryJson> ptfRepos = repositories.stream()
+        Map<Boolean, List<SCCRepositoryJson>> ptfOrCustomRepos = repositories.stream()
                 .filter(r -> !availableRepoIds.contains(r.getSCCId()))
-                .filter(SCCRepositoryJson::isPtfRepository)
-                .collect(Collectors.toList());
-        generatePtfChannels(ptfRepos);
+                .collect(Collectors.groupingBy(SCCRepositoryJson::isPtfRepository,
+                        Collectors.toList()));
+
+        generatePtfChannels(ptfOrCustomRepos.getOrDefault(Boolean.TRUE, Collections.emptyList()));
         Map<Long, SCCRepository> availableReposById = SCCCachingFactory.lookupRepositories().stream()
                 .collect(Collectors.toMap(SCCRepository::getSccId, r -> r));
 
         List<SCCRepositoryAuth> allExistingRepoAuths = SCCCachingFactory.lookupRepositoryAuth();
 
         // cloudrmt and mirror work together
-        // mirror and scc doesn't work togehter
+        // mirror and scc doesn't work together
         //CLEANUP
         if (source instanceof LocalDirContentSyncSource) {
             // cleanup if we come from scc
@@ -979,6 +991,11 @@ public class ContentSyncManager {
         source.getCredentials(SCCCredentials.class)
             .ifPresent(scc -> repoIdsFromCredential.addAll(refreshOESRepositoryAuth(scc, mirrorUrl, oesRepos)));
 
+        // Custom Channels
+        source.getCredentials(SCCCredentials.class)
+            .ifPresent(scc -> refreshCustomRepoAuthentication(
+                    ptfOrCustomRepos.getOrDefault(Boolean.FALSE, Collections.emptyList()), scc));
+
         //DELETE OLD
         // check if we have to remove auths which exists before
         List<SCCRepositoryAuth> authList = SCCCachingFactory.lookupRepositoryAuthByCredential(source);
@@ -989,6 +1006,63 @@ public class ContentSyncManager {
                     a.getRepo().getRepositoryAuth().remove(a);
                     SCCCachingFactory.deleteRepositoryAuth(a);
                 });
+    }
+
+    private void refreshCustomRepoAuthentication(List<SCCRepositoryJson> customReposIn, SCCCredentials creds) {
+        refreshCustomRepo(customReposIn, creds.getIssHub());
+    }
+
+    /**
+     * refreshes custom repositories
+     *
+     * @param customReposIn list of SCCRepositoryJson objects {@link SCCRepositoryJson}
+     * @param issHub        {@link IssHub} to use
+     */
+    public void refreshCustomRepo(List<SCCRepositoryJson> customReposIn, IssHub issHub) {
+        if (issHub == null) {
+            LOG.debug("Only Peripheral server manage custom channels via SCC API");
+            return;
+        }
+        boolean metadataSigned = StringUtils.isNotBlank(issHub.getGpgKey());
+        for (SCCRepositoryJson repo : customReposIn) {
+            Channel customChannel = ChannelFactory.lookupByLabel(repo.getName());
+            if (!isValidCustomChannel(repo, customChannel)) {
+                LOG.error("Invalid custom repo/channel {} - {}", repo, customChannel);
+                continue;
+            }
+            Set<ContentSource> css = customChannel.getSources();
+            if (css.isEmpty()) {
+                // new channel; need to add the source
+                ContentSource source = new ContentSource();
+                source.setLabel(customChannel.getLabel());
+                source.setOrg(customChannel.getOrg());
+                source.setSourceUrl(repo.getUrl());
+                source.setType(ChannelManager.findCompatibleContentSourceType(customChannel.getChannelArch()));
+                source.setMetadataSigned(metadataSigned);
+                ChannelFactory.save(source);
+
+                css.add(source);
+                customChannel.setSources(css);
+                ChannelFactory.save(customChannel);
+            }
+            else if (css.size() == 1) {
+                // found the repo; update the URL
+                ContentSource source = css.iterator().next();
+                source.setSourceUrl(repo.getUrl());
+                source.setMetadataSigned(metadataSigned);
+                ChannelFactory.save(source);
+            }
+            else {
+                LOG.error("Multiple repositories not allowed for this custom channel {}. Skipping",
+                        customChannel.getName());
+            }
+        }
+    }
+
+    private boolean isValidCustomChannel(SCCRepositoryJson repoIn, Channel customChannelIn) {
+        return customChannelIn != null && repoIn != null &&
+                Objects.equals(repoIn.getSCCId(), HubManager.CUSTOM_REPO_FAKE_SCC_ID) &&
+                Objects.equals(customChannelIn.getLabel(), repoIn.getName());
     }
 
     private void generatePtfChannels(List<SCCRepositoryJson> repositories) {
@@ -1018,7 +1092,7 @@ public class ContentSyncManager {
         templatesToSave.forEach(SUSEProductFactory::save);
     }
 
-    private static PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
+    private PtfProductRepositoryInfo parsePtfInfoFromUrl(SCCRepositoryJson jrepo) {
         URI uri;
 
         try {
@@ -1038,7 +1112,7 @@ public class ContentSyncManager {
         String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
 
         SCCRepository repo = new SCCRepository();
-        repo.setSigned(true);
+        repo.setSigned(isRepoSigned(true));
         repo.update(jrepo);
 
         SUSEProduct product = SUSEProductFactory.findSUSEProduct(parts[4], parts[5], null, archStr, false);
@@ -1273,7 +1347,7 @@ public class ContentSyncManager {
             relFiles.add("/repodata/repomd.xml");
         }
         for (String relFile : relFiles) {
-            Path urlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/"), relFile).toPath();
+            Path urlPath = new File(Objects.toString(uri.getRawPath(), "/"), relFile).toPath();
             urls.add(new URI(uri.getScheme(), null, uri.getHost(), uri.getPort(), urlPath.toString(),
                     uri.getQuery(), null).toString());
         }
@@ -1360,22 +1434,6 @@ public class ContentSyncManager {
             LOG.debug("Found {} available subscriptions.", subscriptions.size());
             return subscriptions;
         });
-    }
-
-    /**
-     * Check if the provided Credentials are usable for SCC. OES credentials will return false.
-     * @param c the credentials
-     * @return true if they can be used for SCC, otherwise false
-     */
-    public boolean isSCCCredentials(SCCCredentials c) {
-        try {
-            SCCClient scc = this.getSCCClient(new SCCContentSyncSource(c));
-            scc.listOrders();
-        }
-        catch (SCCClientException | ContentSyncSourceException e) {
-            return false;
-        }
-        return true;
     }
 
     //Some old scc credentials are in reality OES credentials and don't work for SCC but only on the OES
@@ -1632,7 +1690,7 @@ public class ContentSyncManager {
             }).findFirst().orElseGet(Collections::emptyList);
         });
 
-        return tree.stream()             .filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
+        return tree.stream().filter(e -> e.getTags().isEmpty() || e.getTags().contains(tag))
                 .collect(Collectors.toList());
     }
 
@@ -1680,13 +1738,17 @@ public class ContentSyncManager {
                 })).entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private static List<SCCProductJson> overrideProductAttributes(
+    private List<SCCProductJson> overrideProductAttributes(
             List<SCCProductJson> jsonProducts, List<ProductTreeEntry> tree) {
         Map<Long, Optional<ProductType>> productTypeById = productAttributeOverride(
                 tree, ProductTreeEntry::getProductType);
 
         Map<Long, ReleaseStage> releaseStageById = productAttributeOverride(
                 tree, ProductTreeEntry::getReleaseStage);
+
+        Optional<IssHub> optIssHub = hubFactory.lookupIssHub();
+        String hubFqdn = optIssHub.map(IssHub::getFqdn).orElse("invalid.hub.internal");
+
         return jsonProducts.stream().map(product -> {
             ProductType productType = Optional.ofNullable(productTypeById.get(product.getId()))
                     .flatMap(Function.identity())
@@ -1694,7 +1756,10 @@ public class ContentSyncManager {
 
             ReleaseStage releaseStage = Optional.ofNullable(releaseStageById.get(product.getId()))
                     .orElseGet(product::getReleaseStage);
-
+            if (optIssHub.isPresent()) {
+                product.getRepositories().forEach(r ->
+                        r.setUrl("https://%1$s/rhn/manager/download/hubsync/%2$d/".formatted(hubFqdn, r.getSCCId())));
+            }
             return product.copy()
                     .setProductType(productType)
                     .setReleaseStage(releaseStage)
@@ -1704,12 +1769,12 @@ public class ContentSyncManager {
 
 
     /**
-     * Update Products, Repositories and relation ship table in DB.
+     * Update Products, Repositories and relationship table in DB.
      * @param productsById map of scc products by id
      * @param reposById map of scc repositories by id
      * @param tree the static suse product tree
      */
-    public static void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
+    public void updateProducts(Map<Long, SCCProductJson> productsById, Map<Long, SCCRepositoryJson> reposById,
                                       List<ProductTreeEntry> tree) {
         Map<String, PackageArch> packageArchMap = PackageFactory.lookupPackageArch()
                 .stream().collect(Collectors.toMap(PackageArch::getLabel, a -> a));
@@ -1821,7 +1886,7 @@ public class ContentSyncManager {
                 ChannelTemplate template = Opt.fold(Optional.ofNullable(dbChannelTemplatesByIds.get(ids)),
                         () -> {
                             SCCRepository repo = repoMap.get(repoJson.getSCCId());
-                            repo.setSigned(entry.isSigned());
+                            repo.setSigned(isRepoSigned(entry.isSigned()));
 
                             ChannelTemplate channelTemplate = new ChannelTemplate();
                             channelTemplate.setUpdateTag(entry.getUpdateTag().orElse(null));
@@ -1875,7 +1940,7 @@ public class ContentSyncManager {
                             // Allowed to change also in released stage
                             channelTemplate.setChannelName(entry.getChannelName());
                             channelTemplate.setMandatory(entry.isMandatory());
-                            channelTemplate.getRepository().setSigned(entry.isSigned());
+                            channelTemplate.getRepository().setSigned(isRepoSigned(entry.isSigned()));
                             if (!entry.getGpgInfo().isEmpty()) {
                                 channelTemplate.setGpgKeyUrl(entry.getGpgInfo()
                                         .stream().map(GpgInfoEntry::getUrl).collect(Collectors.joining(" ")));
@@ -2011,7 +2076,7 @@ public class ContentSyncManager {
      * @param root the root we check for
      * @return true in case of all mandatory repos could be mirrored, otherwise false
      */
-    public static boolean isProductAvailable(SUSEProduct product, SUSEProduct root) {
+    public boolean isProductAvailable(SUSEProduct product, SUSEProduct root) {
         Set<ChannelTemplate> templates = product.getChannelTemplates();
         if (templates == null) {
             return false;
@@ -2019,13 +2084,13 @@ public class ContentSyncManager {
         return !templates.isEmpty() && templates.stream()
                 .filter(e -> e.getRootProduct().equals(root))
                 .filter(ChannelTemplate::isMandatory)
-                .allMatch(ContentSyncManager::isChannelAccessible);
+                .allMatch(this::isChannelAccessible);
     }
 
-    private static boolean isChannelAccessible(ChannelTemplate template) {
+    private boolean isChannelAccessible(ChannelTemplate template) {
         boolean isPublic = template.getProduct().getChannelFamily().isPublic();
         boolean isAvailable = ChannelFactory.lookupByLabel(template.getChannelLabel()) != null;
-        boolean isISSSlave = IssFactory.getCurrentMaster() != null;
+        boolean isISSSlave = IssFactory.getCurrentMaster() != null || isPeripheral;
         boolean isMirrorable = false;
         if (!isISSSlave) {
             isMirrorable = template.getRepository().isAccessible();
@@ -2549,7 +2614,7 @@ public class ContentSyncManager {
 
             // Build full URL to test
             if (uri.getScheme().equals("file")) {
-                Path testUrlPath = new File(StringUtils.defaultString(uri.getRawPath(), "/")).toPath();
+                Path testUrlPath = new File(Objects.toString(uri.getRawPath(), "/")).toPath();
                 boolean res = Files.isReadable(testUrlPath);
                 LOG.debug("accessibleUrl:{} {}", testUrlPath, res);
                 return res;
@@ -2602,6 +2667,13 @@ public class ContentSyncManager {
      */
     public static boolean isChannelNameReserved(String name) {
         return !SUSEProductFactory.lookupByChannelName(name).isEmpty();
+    }
+
+    private boolean isRepoSigned(boolean signedDefault) {
+        if (isPeripheral) {
+            return hubHasSignedMetadata;
+        }
+        return signedDefault;
     }
 
     /**

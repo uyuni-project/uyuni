@@ -30,6 +30,7 @@ import com.redhat.rhn.manager.setup.MirrorCredentialsDto;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.model.hub.HubFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,27 +84,6 @@ public class ContentSyncHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         ContentSyncManager csm = new ContentSyncManager();
         return csm.listChannels();
-    }
-
-    /**
-     * @Deprecated
-     * Synchronize channels between the Customer Center and the #product() database.
-     * This method is one step of the whole refresh cycle.
-     *
-     * @param loggedInUser the currently logged in user
-     * @param mirrorUrl optional mirror URL
-     * @return Integer
-     * @throws ContentSyncException in case of an error
-     *
-     * @apidoc.doc (Deprecated) Synchronize channels between the Customer Center
-     *             and the #product() database.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "mirrorUrl", "Sync from mirror temporarily")
-     * @apidoc.returntype #return_int_success()
-     */
-    public Integer synchronizeChannels(User loggedInUser, String mirrorUrl)
-            throws ContentSyncException {
-        return 1;
     }
 
     /**
@@ -218,6 +198,11 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer addChannel(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. " +
+                    "Managing channels is disabled and can only be done from the Hub Server.");
+        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(mirrorUrl)) {
             throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
@@ -244,6 +229,11 @@ public class ContentSyncHandler extends BaseHandler {
     public Object[] addChannels(User loggedInUser, String channelLabel, String mirrorUrl)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. " +
+                    "Managing channels is disabled and can only be done from the Hub Server.");
+        }
         ContentSyncManager csm = new ContentSyncManager();
         if (csm.isRefreshNeeded(mirrorUrl)) {
             throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
@@ -289,6 +279,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer addCredentials(User loggedInUser, String username, String password,
             boolean primary) throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. Managing credentials is disabled.");
+        }
         MirrorCredentialsDto creds = new MirrorCredentialsDto(username, password);
         MirrorCredentialsManager credsManager = new MirrorCredentialsManager();
         long id = credsManager.storeMirrorCredentials(creds, null);
@@ -314,6 +308,10 @@ public class ContentSyncHandler extends BaseHandler {
     public Integer deleteCredentials(User loggedInUser, String username)
             throws ContentSyncException {
         ensureSatAdmin(loggedInUser);
+        HubFactory hubFactory = new HubFactory();
+        if (hubFactory.isISSPeripheral()) {
+            throw new ContentSyncException("This is an ISS Peripheral Server. Managing credentials is disabled.");
+        }
         for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             if (c.getUsername().equals(username)) {
                 new MirrorCredentialsManager().deleteMirrorCredentials(c.getId(), null);

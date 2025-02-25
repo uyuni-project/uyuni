@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.domain.user;
 
+import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
@@ -117,6 +119,18 @@ public interface User extends Serializable {
      * @return Set of Roles that this user has
      */
     Set<Role> getRoles();
+
+    /**
+     * Gets the namespaces related to this user in the context of RBAC.
+     * @return Set of namespaces
+     */
+    Set<Namespace> getNamespaces();
+
+    /**
+     * Sets the namespaces related to this user in the context of RBAC.
+     * @param namespaceIn new value for namespaces
+     */
+    void setNamespaces(Set<Namespace> namespaceIn);
 
     /**
      * Gets the permanent roles assigned to this user.
@@ -618,4 +632,16 @@ public interface User extends Serializable {
      * Reset the wasOrgAdmin value.
      */
     void resetWasOrgAdmin();
+
+    /**
+     * Sets the RBAC access groups that this user belongs to
+     * @param accessGroupsIn the access groups
+     */
+    void setAccessGroups(Set<AccessGroup> accessGroupsIn);
+
+    /**
+     * Gets the access group memberships of the user
+     * @return the set of access groups
+     */
+    Set<AccessGroup> getAccessGroups();
 }

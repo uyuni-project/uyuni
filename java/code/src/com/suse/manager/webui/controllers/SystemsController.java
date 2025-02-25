@@ -42,7 +42,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
-import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
@@ -60,6 +59,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.utils.PagedSqlQueryBuilder;
@@ -83,6 +83,8 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -388,14 +390,14 @@ public class SystemsController {
              return badRequest(response, "unknown_system");
          }
          if (server.isMgrServer()) {
-             Optional<MinionServer> minion = server.asMinionServer();
-             if (minion.isEmpty()) {
-                 if (LOG.isDebugEnabled()) {
-                     LOG.error("System ({}) not a minion", StringUtil.sanitizeLogInput(sidStr));
-                 }
-                 return badRequest(response, "system_not_mgr_server");
+             try {
+                 HubManager hubManager = new HubManager();
+                 hubManager.setReportDbUser(user, server, true);
              }
-             SystemManager.setReportDbUser(minion.get(), true);
+             catch (CertificateException | IOException e) {
+                 LOG.error(e.getMessage(), e);
+                 return badRequest(response, "set_reportdb_creds_failed");
+             }
          }
          else {
              if (LOG.isErrorEnabled()) {

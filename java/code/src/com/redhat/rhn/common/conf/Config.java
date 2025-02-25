@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2024 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -280,6 +281,36 @@ public class Config {
             return null;
         }
         return Integer.valueOf(val);
+    }
+
+    /**
+     * get the config entry for string s, if no value is found
+     * return the defaultValue specified.
+     *
+     * @param s string to get the value of
+     * @param defaultValue Default value if entry is not found.
+     * @return the value
+     */
+    public long getLong(String s, long defaultValue) {
+        Long val = getLong(s);
+        if (val == null) {
+            return defaultValue;
+        }
+        return val;
+    }
+
+    /**
+     * get the config entry for string s
+     *
+     * @param s string to get the value of
+     * @return the value
+     */
+    public Long getLong(String s) {
+        String val = getString(s);
+        if (val == null) {
+            return null;
+        }
+        return Long.valueOf(val);
     }
 
     /**

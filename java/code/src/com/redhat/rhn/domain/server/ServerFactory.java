@@ -1036,6 +1036,21 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Find Server by a set of possible FQDNs
+     * @param fqdns the set of FQDNs
+     * @return return the first Server found if any
+     */
+    public static Optional<Server> findByAnyFqdn(Set<String> fqdns) {
+        for (String fqdn : fqdns) {
+            Optional<Server> server = findByFqdn(fqdn);
+            if (server.isPresent()) {
+                return server;
+            }
+        }
+        return Optional.empty();
+    }
+
+    /**
      * Lookup a Server by their FQDN
      * @param name of the FQDN to search for
      * @return the Server found
@@ -1572,16 +1587,16 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Remove MgrServerInfo from minion
      *
-     * @param minion the minion
+     * @param server the minion
      */
-    public static void dropMgrServerInfo(MinionServer minion) {
-        MgrServerInfo serverInfo = minion.getMgrServerInfo();
+    public static void dropMgrServerInfo(Server server) {
+        MgrServerInfo serverInfo = server.getMgrServerInfo();
         if (serverInfo == null) {
             return;
         }
         ReportDBCredentials credentials = serverInfo.getReportDbCredentials();
         CredentialsFactory.removeCredentials(credentials);
         SINGLETON.removeObject(serverInfo);
-        minion.setMgrServerInfo(null);
+        server.setMgrServerInfo(null);
     }
 }

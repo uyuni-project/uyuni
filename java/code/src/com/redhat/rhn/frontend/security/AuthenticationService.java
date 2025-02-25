@@ -92,4 +92,11 @@ public interface AuthenticationService {
      * @param response The current response
      */
     void invalidate(HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * Returns {@code true} if the request URI requires authentication
+     * @param request the HTTP request
+     * @return {@code true} if the request URI requires authentication
+     */
+    boolean requestURIRequiresAuthentication(HttpServletRequest request);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015 SUSE LLC
+ * Copyright (c) 2015--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,16 +7,13 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.common.util.http;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpException;
 import org.apache.http.HttpHost;
@@ -34,6 +31,8 @@ import org.apache.http.client.config.RequestConfig.Builder;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.ProxyAuthenticationStrategy;
@@ -49,9 +48,11 @@ import java.io.InputStream;
 import java.net.URI;
 import java.security.KeyStore;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.net.ssl.SSLContext;
@@ -101,14 +102,41 @@ public class HttpClientAdapter {
 
     /** The credentials provider. */
     private final CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+
+    /**
+     * The cookie store
+     */
+    private BasicCookieStore cookieStore;
+
+    /**
+     * Initialize an {@link HttpClient} for performing requests. Proxy settings will
+     * be read from the configuration and applied transparently. The cookies will not be supported.
+     */
+    public HttpClientAdapter() {
+        this(List.of(), false);
+    }
+
+    /**
+     * Initialize an {@link HttpClient} for performing requests. Proxy settings will
+     * be read from the configuration and applied transparently. The cookies will not be supported.
+     *
+     * @param additionalCertificates a list of additional certificate to consider when establishing the connection
+     */
+    public HttpClientAdapter(List<Certificate> additionalCertificates) {
+        this(additionalCertificates, false);
+    }
+
     /**
      * Initialize an {@link HttpClient} for performing requests. Proxy settings will
      * be read from the configuration and applied transparently.
+     *
+     * @param allowCookies true, to allow and use cookies.
+     * @param additionalCertificates a list of additional certificate to consider when establishing the connection
      */
-    public HttpClientAdapter() {
+    public HttpClientAdapter(List<Certificate> additionalCertificates, boolean allowCookies) {
         Optional<SSLConnectionSocketFactory> sslSocketFactory = Optional.empty();
         try {
-            SSLContext sslContext = buildSslSocketContext();
+            SSLContext sslContext = buildSslSocketContext(additionalCertificates);
             List<String> supportedProtocols = Arrays.asList(sslContext.getSupportedSSLParameters().getProtocols());
             List<String> wantedProtocols = Arrays.asList("TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3");
             wantedProtocols.retainAll(supportedProtocols);
@@ -129,7 +157,7 @@ public class HttpClientAdapter {
         Builder requestConfigBuilder = RequestConfig.custom()
                 .setConnectTimeout(HttpClientAdapter.getHTTPConnectionTimeout(5))
                 .setSocketTimeout(HttpClientAdapter.getHTTPSocketTimeout(5 * 60))
-                .setCookieSpec(CookieSpecs.IGNORE_COOKIES);
+                .setCookieSpec(allowCookies ? CookieSpecs.STANDARD : CookieSpecs.IGNORE_COOKIES);
 
         // Store the proxy settings
         String proxyHostname = ConfigDefaults.get().getProxyHost();
@@ -170,21 +198,35 @@ public class HttpClientAdapter {
         requestConfig = requestConfigBuilder.build();
         clientBuilder.setMaxConnPerRoute(Config.get().getInt(MAX_CONNCECTIONS, 1));
         clientBuilder.setMaxConnTotal(Config.get().getInt(MAX_CONNCECTIONS, 1));
+        if (allowCookies) {
+            cookieStore = new BasicCookieStore();
+            clientBuilder.setDefaultCookieStore(cookieStore);
+        }
+
         httpClient = clientBuilder.build();
     }
 
-    private SSLContext buildSslSocketContext() throws NoSuchAlgorithmException {
+    private SSLContext buildSslSocketContext(List<Certificate> additionalCertificates) throws NoSuchAlgorithmException {
 
         LOG.info("Started checking for certificates and if it finds the certificates will be loaded...");
 
-        String keyStoreLoc = System.getProperty("javax.net.ssl.trustStore",
-                System.getProperty("java.home") + "/lib/security/cacerts");
+        String defaultLocation = System.getProperty("java.home") + "/lib/security/cacerts";
+        String keyStoreLoc = System.getProperty("javax.net.ssl.trustStore", defaultLocation);
+
         SSLContext context;
 
         try (InputStream in = new FileInputStream(keyStoreLoc)) {
             // Create a KeyStore containing our trusted CAs
             KeyStore keystore = KeyStore.getInstance(KeyStore.getDefaultType());
             keystore.load(in, null);
+
+            // Add any additional certificate to the store, if specified
+            if (CollectionUtils.isNotEmpty(additionalCertificates)) {
+                int customCert = 0;
+                for (Certificate certificate : additionalCertificates) {
+                    keystore.setCertificateEntry("additional_certificate_" + customCert++, certificate);
+                }
+            }
 
             // Create a TrustManager that trusts the CAs in our KeyStore
             String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
@@ -325,6 +367,25 @@ public class HttpClientAdapter {
         }
 
         return executeRequest(request, ignoreNoProxy);
+    }
+
+    /**
+     * Set the value of a cookie
+     * @param cookie the cookie
+     */
+    public void setCookie(Cookie cookie) {
+        cookieStore.addCookie(cookie);
+    }
+
+    /**
+     * Retrieves the cookies with the specified name from the cookie store.
+     * @param name the name of the cookie to retrieve
+     * @return the cookie with a matching name.
+     */
+    public List<Cookie> getCookies(String name) {
+        return cookieStore.getCookies().stream()
+            .filter(cookie -> Objects.equals(name, cookie.getName()))
+            .toList();
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2024 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.services;
 
@@ -115,12 +111,13 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
-import com.suse.manager.webui.utils.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.SaltModuleRun;
 import com.suse.manager.webui.utils.SaltState;
 import com.suse.manager.webui.utils.SaltSystemReboot;
 import com.suse.manager.webui.utils.salt.custom.MgrActionChains;
 import com.suse.manager.webui.utils.salt.custom.ScheduleMetadata;
+import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
+import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.salt.netapi.calls.LocalAsyncResult;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
@@ -153,7 +150,6 @@ import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
 import org.cobbler.Profile;
 import org.cobbler.SystemRecord;
-import org.jose4j.lang.JoseException;
 
 import java.io.File;
 import java.io.IOException;
@@ -1392,18 +1388,19 @@ public class SaltServerActionService {
     }
 
     private String getChannelUrl(MinionServer minion, String channelLabel) {
-        DownloadTokenBuilder tokenBuilder = new DownloadTokenBuilder(minion.getOrg().getId());
-        tokenBuilder.useServerSecret();
-        tokenBuilder.setExpirationTimeMinutesInTheFuture(
-            Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME)
-        );
-        tokenBuilder.onlyChannels(Collections.singleton(channelLabel));
-        String token = "";
+        String token;
+
         try {
-            token = tokenBuilder.getToken();
+            token = new DownloadTokenBuilder(minion.getOrg().getId())
+                .usingServerSecret()
+                .expiringAfterMinutes(Config.get().getInt(ConfigDefaults.TEMP_TOKEN_LIFETIME))
+                .allowingOnlyChannels(Set.of(channelLabel))
+                .build()
+                .getSerializedForm();
         }
-        catch (JoseException e) {
+        catch (TokenBuildingException e) {
             LOG.error("Could not generate token for {}", channelLabel, e);
+            token = "";
         }
 
         String host = minion.getChannelHost();

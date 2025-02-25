@@ -185,8 +185,9 @@ public class SCCRepositoryJson {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-        .append("sccId", getSCCId())
-        .append("description", getDescription())
-        .toString();
+                .append("sccId", getSCCId())
+                .append("name", getName())
+                .append("description", getDescription())
+                .toString();
     }
 }
