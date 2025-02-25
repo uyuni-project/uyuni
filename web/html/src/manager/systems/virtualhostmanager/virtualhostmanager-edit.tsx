@@ -172,6 +172,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
     var buttons = [
       <Button
         id="clear-btn"
+        key="clear-btn"
         className="btn-default"
         icon="fa-eraser"
         text={t("Clear fields")}
@@ -180,6 +181,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
       <div className="pull-right">
         <Button
           id="back"
+          key="back"
           className="btn-default"
           icon="fa-chevron-left"
           text={t("Back")}
