@@ -317,7 +317,7 @@ public class HubHandler extends BaseHandler {
         }
         catch (TaskomaticApiException ex) {
             LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException("Unable to refresh root CA certificate");
         }
 
         return 1;
@@ -396,7 +396,12 @@ public class HubHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
         ensureSatAdmin(loggedInUser);
-        hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        try {
+            hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        }
+        catch (TaskomaticApiException e) {
+            throw new com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException("Unable to refresh root CA certificate");
+        }
         return 1;
     }
 }
