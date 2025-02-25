@@ -87,7 +87,7 @@ public class SystemUnentitler {
 
         server.asMinionServer().ifPresent(s -> {
             if (EntitlementManager.ANSIBLE_CONTROL_NODE.equals(ent)) {
-                AnsibleManager.removeAnsiblePaths(s);
+                ansibleManager.removeAnsiblePaths(s);
             }
             serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(s));
             if (EntitlementManager.MONITORING.equals(ent)) {

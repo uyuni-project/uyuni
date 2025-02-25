@@ -272,7 +272,7 @@ public class AnsibleHandler extends BaseHandler {
         String path = getFieldValue(props, "path");
 
         try {
-            return AnsibleManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
+            return ansibleManager.createAnsiblePath(typeLabel, controlNodeId, path, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(controlNodeId);
@@ -303,7 +303,7 @@ public class AnsibleHandler extends BaseHandler {
     public AnsiblePath updateAnsiblePath(User loggedInUser, Integer pathId, Map<String, Object> props) {
         try {
             String newPath = getFieldValue(props, "path");
-            return AnsibleManager.updateAnsiblePath(pathId, newPath, loggedInUser);
+            return ansibleManager.updateAnsiblePath(pathId, newPath, loggedInUser);
         }
         catch (LookupException e) {
             throw new EntityNotExistsFaultException(pathId);
@@ -329,7 +329,7 @@ public class AnsibleHandler extends BaseHandler {
      */
     public int removeAnsiblePath(User loggedInUser, Integer pathId) {
         try {
-            AnsibleManager.removeAnsiblePath(pathId, loggedInUser);
+            ansibleManager.removeAnsiblePath(pathId, loggedInUser);
             return 1;
         }
         catch (LookupException e) {
