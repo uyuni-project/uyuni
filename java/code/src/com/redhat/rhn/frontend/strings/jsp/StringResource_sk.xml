@@ -6751,21 +6751,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="grouplist.jsp.security" xml:space="preserve">
         <source>Security updates needed</source>
-        <target/>
+        <target state="translated">Potrebné bezpečnostné aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates" xml:space="preserve">
         <source>Updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata" xml:space="preserve">
         <source>No applicable updates</source>
-        <target/>
+        <target state="translated">Žiadne príslušné aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
@@ -6773,42 +6773,42 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection" xml:space="preserve">
         <source>Work With Intersection</source>
-        <target/>
+        <target state="translated">Práca s krížením</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.union" xml:space="preserve">
         <source>Work With Union</source>
-        <target/>
+        <target state="translated">Práca so spojením</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.header" xml:space="preserve">
         <source>System Reboot Confirmation</source>
-        <target/>
+        <target state="translated">Potvrdenie reštartu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.summary" xml:space="preserve">
         <source>This will schedule a reboot of this system.</source>
-        <target/>
+        <target state="translated">Týmto sa naplánuje reštart tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.widgetsummary" xml:space="preserve">
         <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may schedule the reboot to take place after a specified time:</source>
-        <target/>
+        <target state="translated">Ak ste si &lt;strong&gt;istí&lt;/strong&gt;, že to chcete urobiť, môžete naplánovať reštart tak, aby sa uskutočnil po určitom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.confirm" xml:space="preserve">
         <source>Reboot system</source>
-        <target/>
+        <target state="translated">Reštartovať systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
@@ -6816,7 +6816,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--- System Duplicates pages -->
       <trans-unit id="duplicates.jsp.header" xml:space="preserve">
         <source>Duplicate Systems</source>
-        <target/>
+        <target state="translated">Duplicitné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
