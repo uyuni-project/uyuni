@@ -21,10 +21,12 @@ import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,17 +42,17 @@ public class SystemUnentitler {
 
     private static final Logger LOG = LogManager.getLogger(SystemUnentitler.class);
 
+    private final AnsibleManager ansibleManager;
     private final MonitoringManager monitoringManager;
     private final ServerGroupManager serverGroupManager;
 
     /**
-     * @param monitoringManagerIn instance for handling monitoring configuration.
-     * @param serverGroupManagerIn
+     * @param saltApiIn
      */
-    public SystemUnentitler(MonitoringManager monitoringManagerIn,
-                            ServerGroupManager serverGroupManagerIn) {
-        this.monitoringManager = monitoringManagerIn;
-        this.serverGroupManager = serverGroupManagerIn;
+    public SystemUnentitler(SaltApi saltApiIn) {
+        this.ansibleManager = new AnsibleManager(saltApiIn);
+        this.monitoringManager = new FormulaMonitoringManager(saltApiIn);
+        this.serverGroupManager = new ServerGroupManager(saltApiIn);
     }
 
     /**
