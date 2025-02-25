@@ -104,7 +104,7 @@ public class SystemEntitler {
 
         server.asMinionServer().ifPresent(minion -> {
             if (EntitlementManager.ANSIBLE_CONTROL_NODE.equals(ent)) {
-                AnsibleManager.createDefaultPaths(minion);
+                ansibleManager.createDefaultPaths(minion);
             }
 
             serverGroupManager.updatePillarAfterGroupUpdateForServers(Arrays.asList(minion));

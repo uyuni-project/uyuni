@@ -142,7 +142,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or server not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
+    public AnsiblePath createAnsiblePath(String typeLabel, long minionServerId, String path, User user) {
         MinionServer minionServer = lookupAnsibleControlNode(minionServerId, user);
         return createAnsiblePath(typeLabel, minionServer, path);
     }
@@ -157,7 +157,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or server not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer, String path) {
+    public AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer, String path) {
         validateAnsiblePath(path, of(typeLabel), empty(), minionServer.getId());
 
         AnsiblePath ansiblePath;
@@ -190,7 +190,7 @@ public class AnsibleManager extends BaseManager {
             // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(minionServer, false,
                     MinionPillarManager.PillarSubset.GENERAL);
-            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionServer.getMinionId()));
+            saltApi.refreshPillar(new MinionList(minionServer.getMinionId()));
         }
 
         return ansiblePath;
@@ -206,7 +206,7 @@ public class AnsibleManager extends BaseManager {
      * @throws LookupException if the user does not have permissions or existing path not found
      * @throws ValidatorException if the validation fails
      */
-    public static AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
+    public AnsiblePath updateAnsiblePath(long existingPathId, String newPath, User user) {
         AnsiblePath existing = lookupAnsiblePathById(existingPathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + existingPathId + " not found."));
         if (existing.getPath().toString().equals(newPath)) {
@@ -231,7 +231,7 @@ public class AnsibleManager extends BaseManager {
             // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(existing.getMinionServer(), false,
                     MinionPillarManager.PillarSubset.GENERAL);
-            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(existing.getMinionServer().getMinionId()));
+            saltApi.refreshPillar(new MinionList(existing.getMinionServer().getMinionId()));
         }
         else {
             AnsibleFactory.saveAnsiblePath(existing);
@@ -295,7 +295,7 @@ public class AnsibleManager extends BaseManager {
      * @param user the user performing the action
      * @throws LookupException if the user does not have permissions or if entity does not exist
      */
-    public static void removeAnsiblePath(long pathId, User user) {
+    public void removeAnsiblePath(long pathId, User user) {
         AnsiblePath path = lookupAnsiblePathById(pathId, user)
                 .orElseThrow(() -> new LookupException("Ansible path id " + pathId + " not found."));
 
@@ -307,7 +307,7 @@ public class AnsibleManager extends BaseManager {
             // Refresh inotify beacon
             MinionPillarManager.INSTANCE.generatePillar(path.getMinionServer(), false,
                     MinionPillarManager.PillarSubset.GENERAL);
-            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(path.getMinionServer().getMinionId()));
+            saltApi.refreshPillar(new MinionList(path.getMinionServer().getMinionId()));
         }
         else {
             AnsibleFactory.removeAnsiblePath(path);
@@ -319,7 +319,7 @@ public class AnsibleManager extends BaseManager {
      *
      * @param minionServer the minion server
      */
-    public static void removeAnsiblePaths(MinionServer minionServer) {
+    public void removeAnsiblePaths(MinionServer minionServer) {
         List<AnsiblePath> paths = AnsibleFactory.listAnsiblePaths(minionServer.getId());
         Set<Server> systemsToRemove = new HashSet<>();
         paths.forEach(p -> {
@@ -335,7 +335,7 @@ public class AnsibleManager extends BaseManager {
             updateAnsibleManagedSystems(new HashSet<>(), systemsToRemove);
         }
         MinionPillarManager.INSTANCE.generatePillar(minionServer, false, MinionPillarManager.PillarSubset.GENERAL);
-        GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionServer.getMinionId()));
+        saltApi.refreshPillar(new MinionList(minionServer.getMinionId()));
     }
 
     /**
@@ -574,19 +574,17 @@ public class AnsibleManager extends BaseManager {
      *
      * @param minionServer the minion server
      */
-    public static void createDefaultPaths(MinionServer minionServer) {
+    public void createDefaultPaths(MinionServer minionServer) {
         String inventory = "/etc/ansible/hosts";
         String playbook = "/etc/ansible/playbooks";
         try {
-            AnsibleManager.createAnsiblePath(
-                    AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
+            createAnsiblePath(AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
         }
         catch (ValidatorException e) {
             log.info("Inventory path: '" + inventory + "' already exists. Skipping...");
         }
         try {
-            AnsibleManager.createAnsiblePath(
-                    AnsiblePath.Type.PLAYBOOK.getLabel(), minionServer, playbook);
+            createAnsiblePath(AnsiblePath.Type.PLAYBOOK.getLabel(), minionServer, playbook);
         }
         catch (ValidatorException e) {
             log.info("Playbook path: '" + playbook + "' already exists. Skipping...");
