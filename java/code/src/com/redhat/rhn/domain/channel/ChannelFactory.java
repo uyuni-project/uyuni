@@ -1356,6 +1356,16 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list of all custom channels (org is not null)
+     * @return the list of custom channels
+     */
+    public static List<Channel> listCustomChannels() {
+        return getSession()
+                .createQuery("FROM Channel c WHERE c.org IS NOT NULL", Channel.class)
+                .getResultList();
+    }
+
+    /**
      * List all custom channels (org is not null) with at least one repository
      *
      * @return list of vendor channels
@@ -1703,7 +1713,12 @@ public class ChannelFactory extends HibernateFactory {
         channel.setSummary(channelInfo.getSummary());
         channel.setDescription(channelInfo.getDescription());
 
-        channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        if (StringUtils.isNotEmpty(channelInfo.getProductNameLabel())) {
+            channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        }
+        else {
+            channel.setProductName(null);
+        }
 
         channel.setGPGCheck(channelInfo.isGpgCheck());
         channel.setGPGKeyUrl(channelInfo.getGpgKeyUrl());
@@ -1713,8 +1728,11 @@ public class ChannelFactory extends HibernateFactory {
         channel.setEndOfLife(channelInfo.getEndOfLifeDate());
         channel.setChecksumType(checksumType);
 
-        channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
-                channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        if (StringUtils.isNotEmpty(channelInfo.getChannelProductProduct()) &&
+                StringUtils.isNotEmpty(channelInfo.getChannelProductVersion())) {
+            channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                    channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        }
 
         channel.setAccess(channelInfo.getChannelAccess());
         channel.setMaintainerName(channelInfo.getMaintainerName());
