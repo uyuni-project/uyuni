@@ -11572,6 +11572,90 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
+        <source>Unable to invoke the remote server {0}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.tokenType.issued" xml:space="preserve">
+        <source>Issued</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
+        <source>Consumed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
+        <source>Server {0} has been successfully registered as peripheral</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_request" xml:space="preserve">
+        <source>The request to perform the operation was rejected. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
+        <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
+        <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_issue_token" xml:space="preserve">
+        <source>Unable to issue a token for the remote server. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_parse_token" xml:space="preserve">
+        <source>The token received from the remote server is not valid. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
+        <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
+        <source>Invalid response received from the remote server. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
+        <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unexpected_error" xml:space="preserve">
+        <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_token_id" xml:space="preserve">
+        <source>The specified access token does not exist.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.invalid_token_state" xml:space="preserve">
+        <source>The specified access token is in an invalid state.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_delete_token" xml:space="preserve">
+        <source>Unable to delete a token with the specified id</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
+        <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
+        <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
+        <source>Unable to store the token. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.cannot_find_server" xml:space="preserve">
+        <source>Cannot find a remote server with the specified id.</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
+        <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
