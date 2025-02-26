@@ -6352,28 +6352,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.configfiles" xml:space="preserve">
         <source>Config Diffs</source>
-        <target/>
+        <target state="translated">Konfiguračné rozdiely</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.packages" xml:space="preserve">
         <source>Packages</source>
-        <target/>
+        <target state="translated">Balíky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.last_checked_in" xml:space="preserve">
         <source>Last Checked in</source>
-        <target/>
+        <target state="translated">Naposledy prihlásený</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.system" xml:space="preserve">
         <source>System</source>
-        <target/>
+        <target state="translated">Systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6381,7 +6381,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.channel" xml:space="preserve">
         <source>Base Channel</source>
-        <target/>
+        <target state="translated">Základný kanál</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6389,14 +6389,14 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.entitlement" xml:space="preserve">
         <source>System Type</source>
-        <target/>
+        <target state="translated">Typ systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemlist.jsp.nosystems" xml:space="preserve">
         <source>No Systems</source>
-        <target/>
+        <target state="translated">Žiadne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6404,7 +6404,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.unentitled" xml:space="preserve">
         <source>System without System Type</source>
-        <target/>
+        <target state="translated">Systém bez typu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6412,7 +6412,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.notcheckingin" xml:space="preserve">
         <source>System not checking in with @@PRODUCT_NAME@@</source>
-        <target/>
+        <target state="translated">Systém sa neprihlasuje s @@PRODUCT_NAME@@</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6420,7 +6420,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.locked" xml:space="preserve">
         <source>System locked</source>
-        <target/>
+        <target state="translated">Systém uzamknutý</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6428,7 +6428,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.kickstart" xml:space="preserve">
         <source>Autoinstallation in progress</source>
-        <target/>
+        <target state="translated">Prebieha automatická inštalácia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6436,7 +6436,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.bootstrap" xml:space="preserve">
         <source>Unprovisioned System</source>
-        <target/>
+        <target state="translated">Neposkytnutý systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6449,7 +6449,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.virthost" xml:space="preserve">
         <source>Virtual Host</source>
-        <target/>
+        <target state="translated">Virtuálny hostiteľ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6462,7 +6462,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.virtguest" xml:space="preserve">
         <source>Virtual Guest</source>
-        <target/>
+        <target state="translated">Virtuálny hosť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6475,7 +6475,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.nonvirt" xml:space="preserve">
         <source>Non-Virtual System</source>
-        <target/>
+        <target state="translated">Nevirtuálny systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6488,7 +6488,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.isproxy" xml:space="preserve">
         <source>Proxy</source>
-        <target/>
+        <target state="translated">Proxy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Overview</context>
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
@@ -6501,7 +6501,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.up2date" xml:space="preserve">
         <source>System is up to date</source>
-        <target/>
+        <target state="translated">Systém je aktuálny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6509,7 +6509,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.updatesscheduled" xml:space="preserve">
         <source>All updates scheduled</source>
-        <target/>
+        <target state="translated">Všetky aktualizácie naplánované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6517,7 +6517,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.actionsscheduled" xml:space="preserve">
         <source>Actions scheduled</source>
-        <target/>
+        <target state="translated">Akcie naplánované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6525,7 +6525,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.critical" xml:space="preserve">
         <source>Critical updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú kritické aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6533,7 +6533,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemlist.jsp.updates" xml:space="preserve">
         <source>Updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemList</context>
           <context context-type="sourcefile">/systems/SystemEntitlements</context>
@@ -6541,28 +6541,28 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="outofdatelist.jsp.header" xml:space="preserve">
         <source>Out of Date Systems</source>
-        <target/>
+        <target state="translated">Zastarané systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/OutOfDate</context>
         </context-group>
       </trans-unit>
       <trans-unit id="unentitledlist.jsp.header" xml:space="preserve">
         <source>Systems without System Type</source>
-        <target/>
+        <target state="translated">Systémy bez typu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Unentitled</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ungroupedlist.jsp.header" xml:space="preserve">
         <source>Ungrouped Systems</source>
-        <target/>
+        <target state="translated">Nezoskupené systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Ungrouped</context>
         </context-group>
       </trans-unit>
       <trans-unit id="requiringrebootlist.jsp.header" xml:space="preserve">
         <source>Systems Requiring Reboot</source>
-        <target/>
+        <target state="translated">Systémy vyžadujúce reštart</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/RequiringReboot</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6570,7 +6570,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="extrapackagessystemslist.jsp.header" xml:space="preserve">
         <source>Non Compliant Systems</source>
-        <target/>
+        <target state="translated">Nevyhovujúce systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ExtraPackagesSystems.do</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6578,7 +6578,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="inactivelist.jsp.header" xml:space="preserve">
         <source>Inactive Systems</source>
-        <target/>
+        <target state="translated">Neaktívne systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Inactive</context>
           <context context-type="sourcefile">/rhn/systems/YourRhn.do</context>
@@ -6586,7 +6586,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="registeredlist.jsp.header" xml:space="preserve">
         <source>Recently Registered Systems</source>
-        <target/>
+        <target state="translated">Nedávno registrované systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6594,7 +6594,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="registeredlist.jsp.date" xml:space="preserve">
         <source>Date Registered</source>
-        <target/>
+        <target state="translated">Dátum registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6602,7 +6602,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="registeredlist.jsp.user" xml:space="preserve">
         <source>Registered by</source>
-        <target/>
+        <target state="translated">Registrované</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6610,21 +6610,21 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="registeredlist.jsp.view" xml:space="preserve">
         <source>View systems registered: </source>
-        <target/>
+        <target state="translated">Zobraziť registrované systémy: </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/Registered.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="proxylist.jsp.header" xml:space="preserve">
         <source>Proxy Servers</source>
-        <target/>
+        <target state="translated">Proxy servery</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ProxyList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.header" xml:space="preserve">
         <source>System Currency Report</source>
-        <target/>
+        <target state="translated">Správa o systémovej mene</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
@@ -6632,140 +6632,140 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.critical" xml:space="preserve">
         <source>Security (Critical)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Kritické)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.important" xml:space="preserve">
         <source>Security (Important)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Dôležité)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.moderate" xml:space="preserve">
         <source>Security (Moderate)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Stredné)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.low" xml:space="preserve">
         <source>Security (Low)</source>
-        <target/>
+        <target state="translated">Bezpečnosť (Nízke)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.bug" xml:space="preserve">
         <source>Bug Fixes</source>
-        <target/>
+        <target state="translated">Opravy chýb</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.enhancement" xml:space="preserve">
         <source>Enhancements</source>
-        <target/>
+        <target state="translated">Zlepšenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemcurrency.jsp.score" xml:space="preserve">
         <source>Score</source>
-        <target/>
+        <target state="translated">Skóre</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemCurrency.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.header" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target state="translated">Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.nogroups" xml:space="preserve">
         <source>No system groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.name" xml:space="preserve">
         <source>Group Name</source>
-        <target/>
+        <target state="translated">Názov skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="extgrouplist.jsp.name" xml:space="preserve">
         <source>External Group Name</source>
-        <target/>
+        <target state="translated">Názov externej skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership" xml:space="preserve">
         <source>Membership</source>
-        <target/>
+        <target state="translated">Členstvo v skupine</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership.current" xml:space="preserve">
         <source>Current Profile Only</source>
-        <target/>
+        <target state="translated">Len súčasný profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.groupmembership.snapshot" xml:space="preserve">
         <source>Snapshot Profile Only</source>
-        <target/>
+        <target state="translated">Len profil snímky</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/history/snapshots/Groups</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.status" xml:space="preserve">
         <source>Updates</source>
-        <target/>
+        <target state="translated">Aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.systems" xml:space="preserve">
         <source>Systems</source>
-        <target/>
+        <target state="translated">Systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.use" xml:space="preserve">
         <source>Use in SSM</source>
-        <target/>
+        <target state="translated">Použiť v SSM</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.security" xml:space="preserve">
         <source>Security updates needed</source>
-        <target/>
+        <target state="translated">Potrebné bezpečnostné aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.updates" xml:space="preserve">
         <source>Updates available</source>
-        <target/>
+        <target state="translated">K dispozícii sú aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata" xml:space="preserve">
         <source>No applicable updates</source>
-        <target/>
+        <target state="translated">Žiadne príslušné aktualizácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
@@ -6773,42 +6773,42 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection" xml:space="preserve">
         <source>Work With Intersection</source>
-        <target/>
+        <target state="translated">Práca s krížením</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="grouplist.jsp.union" xml:space="preserve">
         <source>Work With Union</source>
-        <target/>
+        <target state="translated">Práca so spojením</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.header" xml:space="preserve">
         <source>System Reboot Confirmation</source>
-        <target/>
+        <target state="translated">Potvrdenie reštartu systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.summary" xml:space="preserve">
         <source>This will schedule a reboot of this system.</source>
-        <target/>
+        <target state="translated">Týmto sa naplánuje reštart tohto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.widgetsummary" xml:space="preserve">
         <source>If you are &lt;strong&gt;certain&lt;/strong&gt; you wish to do this, you may schedule the reboot to take place after a specified time:</source>
-        <target/>
+        <target state="translated">Ak ste si &lt;strong&gt;istí&lt;/strong&gt;, že to chcete urobiť, môžete naplánovať reštart tak, aby sa uskutočnil po určitom čase:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
       </trans-unit>
       <trans-unit id="reboot.jsp.confirm" xml:space="preserve">
         <source>Reboot system</source>
-        <target/>
+        <target state="translated">Reštartovať systém</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/RebootSystem</context>
         </context-group>
@@ -6816,7 +6816,7 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--- System Duplicates pages -->
       <trans-unit id="duplicates.jsp.header" xml:space="preserve">
         <source>Duplicate Systems</source>
-        <target/>
+        <target state="translated">Duplicitné systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
@@ -28714,8 +28714,8 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
-        <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
-        <target/>
+        <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>

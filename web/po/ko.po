@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"POT-Creation-Date: 2025-02-26 13:49+0100\n"
 "PO-Revision-Date: 2025-02-13 21:50+0000\n"
 "Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
@@ -187,6 +187,7 @@ msgid "Environment Type"
 msgstr "환경 유형"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
+#: ../html/src/components/hub/TokenTable.tsx:89
 #: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "생성됨"
@@ -196,7 +197,7 @@ msgid "Last modified"
 msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:80
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:87
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
@@ -213,6 +214,7 @@ msgid "Attestation time"
 msgstr "증명 시간"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
+#: ../html/src/components/hub/TokenTable.tsx:103
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
@@ -288,6 +290,7 @@ msgstr "프로세스 출력"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
+#: ../html/src/components/large-text-attachment.tsx:176
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
@@ -366,6 +369,8 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 #: ../html/src/components/dialog/DangerDialog.tsx:62
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
+#: ../html/src/components/hub/AddTokenButton.tsx:154
+#: ../html/src/components/large-text-attachment.tsx:169
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
@@ -383,7 +388,13 @@ msgstr "선택한 {name}을(를) {action}하시겠습니까?({name} {count}개 �
 msgid "Cancel"
 msgstr "취소"
 
+#. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
+#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:184
+#: ../html/src/components/hub/TokenTable.tsx:228
+#: ../html/src/components/large-text-attachment.tsx:187
+#: ../html/src/components/large-text-attachment.tsx:200
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
@@ -465,6 +476,528 @@ msgstr "비밀번호 표시/숨기기"
 msgid "Toggle section visibility"
 msgstr "섹션 표시 여부 전환"
 
+#: ../html/src/components/hub/AddTokenButton.tsx:66
+#: ../html/src/components/hub/AddTokenButton.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:120
+#, fuzzy
+#| msgid "Issue date"
+msgid "Issue a new token"
+msgstr "발급 날짜"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:77
+#: ../html/src/components/hub/AddTokenButton.tsx:101
+#: ../html/src/components/hub/AddTokenButton.tsx:120
+msgid "Store an external token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:84
+#, fuzzy
+#| msgid "Add to:"
+msgid "Add token"
+msgstr "추가 위치:"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:86
+msgid "Add a new access token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:128
+msgid "Server FQDN"
+msgstr "서버 FQDN"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:130
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
+#, fuzzy
+#| msgid "e.g., server.domain.com"
+msgid "e.g. server.domain.com"
+msgstr "예: server.domain.com"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:134
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:163
+#: ../html/src/manager/proxy/container-config.tsx:206
+#: ../html/src/manager/proxy/container-config.tsx:217
+msgid "Has to be a valid FQDN address"
+msgstr "유효한 FQDN 주소여야 함"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:139
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
+msgid "Token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:161
+#, fuzzy
+#| msgid "Issued"
+msgid "Issue"
+msgstr "발급됨"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:161
+#, fuzzy
+#| msgid "Store URI"
+msgid "Store"
+msgstr "저장소 URI"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:179
+#, fuzzy
+#| msgid "Schedule successfully updated."
+msgid "New token successfully issued"
+msgstr "일정을 업데이트했습니다."
+
+#: ../html/src/components/hub/AddTokenButton.tsx:186
+msgid ""
+"The new token was generated successfully. Make sure to copy it now as you "
+"will not be able to see this again."
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:200
+msgid "Copy"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
+msgid "Close"
+msgstr "닫기"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:252
+msgid "Access token copied to the clipboard"
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:38
+#: ../html/src/components/hub/DeregisterServer.tsx:47
+#: ../html/src/components/hub/PeripheralsList.tsx:51
+#, fuzzy
+#| msgid "Persistent"
+msgid "Deregister"
+msgstr "영구"
+
+#: ../html/src/components/hub/DeregisterServer.tsx:39
+msgid "Deregister from the hub"
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:44
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm deregistration"
+msgstr "삭제 확인"
+
+#: ../html/src/components/hub/DeregisterServer.tsx:64
+msgid ""
+"Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
+"longer receive data from it."
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:70
+msgid ""
+"Are you sure you want to derigester peripheral {fqdn}? All the current "
+"configuration will be lost."
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:86
+msgid "The server {fqdn} has been successfully deregistered."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:36
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Server FQDN:"
+msgstr "서버 FQDN"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:44
+#, fuzzy
+#| msgid "Attestation time"
+msgid "Registration date:"
+msgstr "증명 시간"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:54
+#, fuzzy
+#| msgid "Last modified"
+msgid "Last modified:"
+msgstr "마지막으로 수정된 날짜"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:64
+msgid "Root Certificate Authority:"
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:70
+msgid ""
+"A customized Root Certificate Authority is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:71
+msgid "This hub is currently using the default Root Certificate Authority."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:72
+#, fuzzy
+#| msgid "SSL Certificate data"
+msgid "Root Certificate Authority"
+msgstr "SSL 인증서 데이터"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:74
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:77
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:83
+msgid "Root Certificate Authority successfully modified."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:98
+#, fuzzy
+#| msgid "Schedule successfully updated."
+msgid "Root Certificate Authority successfully updated."
+msgstr "일정을 업데이트했습니다."
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:115
+msgid "GPG Public Key:"
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:121
+msgid "A customized GPG key is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:122
+msgid "This hub is currently not using a custom GPG key."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:131
+#, fuzzy
+#| msgid "Use credentials"
+msgid "Mirror credentials:"
+msgstr "자격 증명 사용"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:29
+#, fuzzy
+#| msgid "Filter by name"
+msgid "Filter by FQDN"
+msgstr "이름을 기준으로 필터링"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:31
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Peripheral FQDN"
+msgstr "서버 FQDN"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:35
+#, fuzzy
+#| msgid "SUSE Channels"
+msgid "N. of Sync Channels"
+msgstr "SUSE 채널"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:41
+msgid "N. of Sync Orgs"
+msgstr ""
+
+#: ../html/src/components/hub/PeripheralsList.tsx:46
+#, fuzzy
+#| msgid "Download CSV"
+msgid "Download Root CA"
+msgstr "CSV 다운로드"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
+#, fuzzy
+#| msgid "System is not a peripheral server"
+msgid "Register a new peripheral server"
+msgstr "시스템이 주변기기 서버가 아닙니다."
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
+#, fuzzy
+#| msgid ""
+#| "Generation of the proxy configuration in progress: waiting for a "
+#| "response..."
+msgid "Peripheral registration in progress: waiting for a response..."
+msgstr "프록시 구성 생성 진행 중: 응답을 기다리는 중..."
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
+#, fuzzy
+#| msgid "Peripheral Server"
+msgid "Peripheral Server FQDN"
+msgstr "주변기기 서버"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+msgid ""
+"The unique, DNS-resolvable fully-qualified domain name of the server to "
+"register."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
+#, fuzzy
+#| msgid "Permission mode"
+msgid "Registration mode"
+msgstr "권한 모드"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+msgid "Define how to connect to the remote server to initiate the registration"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
+msgid "Existing token"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+msgid "Administrator User/Password"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+msgid ""
+"The token that grant access to the remote server to establish the connection."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
+#: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
+msgid "Username"
+msgstr "사용자 이름"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+msgid "The username of {productName} Administrator of the remote server."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
+#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
+msgid "Password"
+msgstr "비밀번호"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+msgid "The password of the specified user."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
+#, fuzzy
+#| msgid "CA certificate"
+msgid "Root CA certificate"
+msgstr "CA 인증서"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
+msgid ""
+"The Root certificate authority of the remote server, that must be trusted to "
+"establish a secure connection."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
+#, fuzzy
+#| msgid "Not affected"
+msgid "Not needed"
+msgstr "적용되지 않음"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+#: ../html/src/components/large-text-attachment.tsx:136
+msgid "Upload a file"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#, fuzzy
+#| msgid "Proxy certificate"
+msgid "Paste a PEM certificate"
+msgstr "프록시 인증서"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
+#, fuzzy
+#| msgid "CA certificate"
+msgid "Certificate File"
+msgstr "CA 인증서"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
+#, fuzzy
+#| msgid "CA file in PEM format"
+msgid "Certificate file, in PEM format"
+msgstr "PEM 형식의 CA 파일"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
+#, fuzzy
+#| msgid "CA certificate"
+msgid "PEM Certificate"
+msgstr "CA 인증서"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#, fuzzy
+#| msgid "To sign the SSL certificate in PEM format"
+msgid "The text representing the certificate, in PEM format"
+msgstr "PEM 형식의 SSL 인증서에 서명"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
+#, fuzzy
+#| msgid "Registered Days"
+msgid "Register"
+msgstr "등록 기간"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
+#: ../html/src/manager/images/image-import.tsx:314
+#: ../html/src/manager/images/image-profile-edit.tsx:481
+#: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:390
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+msgid "Clear fields"
+msgstr "필드 지우기"
+
+#: ../html/src/components/hub/TokenTable.tsx:54
+#, fuzzy
+#| msgid "No modules available"
+msgid "No tokens available"
+msgstr "사용할 수 있는 모듈 없음"
+
+#: ../html/src/components/hub/TokenTable.tsx:61
+#, fuzzy
+#| msgid "Action type"
+msgid "Token type"
+msgstr "작업 유형"
+
+#: ../html/src/components/hub/TokenTable.tsx:68
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Server"
+msgstr "서버 FQDN"
+
+#: ../html/src/components/hub/TokenTable.tsx:75
+msgid "Valid"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:36
+msgid "Yes"
+msgstr "예"
+
+#: ../html/src/components/hub/TokenTable.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:37
+msgid "No"
+msgstr "아니요"
+
+#: ../html/src/components/hub/TokenTable.tsx:82
+msgid "Expired"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:96
+#: ../html/src/manager/images/image-view.tsx:675
+msgid "Last Modified"
+msgstr "마지막으로 수정된 날짜"
+
+#: ../html/src/components/hub/TokenTable.tsx:113
+msgid "No, never expires"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:121
+msgid "Yes, expired <expiration></expiration>"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:121
+msgid "No, expires <expiration></expiration>"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:145
+#: ../html/src/components/hub/TokenTable.tsx:160
+#, fuzzy
+#| msgid "Invalid data"
+msgid "Invalidate"
+msgstr "유효하지 않은 데이터"
+
+#: ../html/src/components/hub/TokenTable.tsx:145
+#: ../html/src/components/hub/TokenTable.tsx:160
+#, fuzzy
+#| msgid "Invalid data"
+msgid "Validate"
+msgstr "유효하지 않은 데이터"
+
+#: ../html/src/components/hub/TokenTable.tsx:151
+#, fuzzy
+#| msgid "Confirm Attestation Execution"
+msgid "Confirm access token modification"
+msgstr "증명 실행 확인"
+
+#: ../html/src/components/hub/TokenTable.tsx:155
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
+msgid "Confirm if you want to proceed."
+msgstr "계속 진행할지 여부를 확인하십시오."
+
+#: ../html/src/components/hub/TokenTable.tsx:180
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm access token deletion"
+msgstr "삭제 확인"
+
+#: ../html/src/components/hub/TokenTable.tsx:181
+#, fuzzy
+#| msgid "Are you sure you want to delete this schedule?"
+msgid "Are you sure you want to delete this token. It is currently not used."
+msgstr "이 일정을 삭제하시겠습니까?"
+
+#: ../html/src/components/hub/TokenTable.tsx:220
+msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:224
+msgid ""
+"This access token cannot be deleted. It is currently used by peripheral "
+"{fqdn}"
+msgstr ""
+
+#. token issued for another server currently valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:235
+msgid ""
+"Invalidating this access token will prevent the hub {fqdn} from accesssing."
+msgstr ""
+
+#. token issued for another server currently valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:238
+msgid ""
+"Invalidating this access token will prevent the peripheral {fqdn} from "
+"accesssing."
+msgstr ""
+
+#. token issued for another server currently not valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:241
+msgid "Enabling this access token will grant access to the hub {fqdn}."
+msgstr ""
+
+#. token issued for another server currently not valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:244
+msgid "Enabling this access token will grant access to the peripheral {fqdn}."
+msgstr ""
+
+#. token received from another server currently valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:247
+msgid "Invalidating this access token will prevent access to the hub {fqdn}."
+msgstr ""
+
+#. token received from another server currently valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:250
+msgid ""
+"Invalidating this access token will prevent access to the peripheral {fqdn}."
+msgstr ""
+
+#. token received from another server currently not valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:253
+msgid "Enabling this access token will restore access to the hub {fqdn}."
+msgstr ""
+
+#. token received from another server currently not valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:256
+msgid ""
+"Enabling this access token will restore access to the peripheral {fqdn}."
+msgstr ""
+
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -539,22 +1072,10 @@ msgstr "로그인"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 msgid "Name"
 msgstr "이름"
-
-#: ../html/src/components/input/password/Password.stories.tsx:23
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:99
-#: ../html/src/manager/login/uyuni/login.tsx:90
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-msgid "Password"
-msgstr "비밀번호"
 
 #: ../html/src/components/input/password/Password.stories.tsx:25
 msgid "Minimum 4 characters"
@@ -618,6 +1139,75 @@ msgstr "특징"
 #: ../html/src/components/input/select/custom.stories.tsx:35
 msgid "No flavors"
 msgstr "특징 없음"
+
+#: ../html/src/components/large-text-attachment.tsx:62
+#, fuzzy
+#| msgid "Data is refreshed every "
+msgid "Data is present."
+msgstr "데이터 새로 고침: 매 "
+
+#: ../html/src/components/large-text-attachment.tsx:63
+msgid "Data is not present."
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:64
+#: ../html/src/components/large-text-attachment.tsx:103
+#: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
+#: ../html/src/manager/images/image-profiles.tsx:204
+#: ../html/src/manager/images/image-stores.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:324
+#: ../html/src/manager/images/image-view-overview.tsx:349
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+msgid "Edit"
+msgstr "편집"
+
+#: ../html/src/components/large-text-attachment.tsx:93
+#, fuzzy
+#| msgid "Download CSV"
+msgid "Download"
+msgstr "CSV 다운로드"
+
+#: ../html/src/components/large-text-attachment.tsx:103
+msgid "Add"
+msgstr "추가"
+
+#: ../html/src/components/large-text-attachment.tsx:127
+#: ../html/src/components/large-text-attachment.tsx:128
+#, fuzzy
+#| msgid "Edit store"
+msgid "Edit method"
+msgstr "저장소 편집"
+
+#: ../html/src/components/large-text-attachment.tsx:129
+msgid "Define how to provide the new value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:137
+msgid "Paste the new value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:143
+msgid "File"
+msgstr "파일"
+
+#: ../html/src/components/large-text-attachment.tsx:153
+msgid "New value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
+msgid "Confirm Deletion"
+msgstr "삭제 확인"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -786,25 +1376,6 @@ msgstr "표시할 항목이 없습니다."
 msgid "Configuration Channel: {name}"
 msgstr "구성 채널: {name}"
 
-#: ../html/src/components/salt-state-popup.tsx:60
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
-#: ../html/src/manager/images/image-profiles.tsx:204
-#: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:324
-#: ../html/src/manager/images/image-view-overview.tsx:349
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-msgid "Edit"
-msgstr "편집"
-
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
 msgstr "구성 채널 편집"
@@ -921,7 +1492,7 @@ msgstr "채널 레이블"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:74
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:81
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
@@ -988,7 +1559,7 @@ msgid "Proxy"
 msgstr "프록시"
 
 #: ../html/src/components/systems.tsx:45
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:77
 msgid "Peripheral Server"
 msgstr "주변기기 서버"
 
@@ -1387,28 +1958,64 @@ msgstr "인스턴스 SSH 연결 데이터"
 msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:59
+#: ../html/src/manager/admin/hub/hub-details.tsx:24
+#, fuzzy
+#| msgid "Details"
+msgid "Hub Details"
+msgstr "세부 사항"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:44
+msgid "No hub is currently configured for this server. "
+msgstr ""
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:53
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgstr ""
+
+#: ../html/src/manager/admin/hub/list-tokens.tsx:20
+msgid "Access Tokens"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:16
+#, fuzzy
+#| msgid "Configuration"
+msgid "Peripherals Configuration"
+msgstr "구성"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:25
+#, fuzzy
+#| msgid "Peripheral Server"
+msgid "Add Peripheral"
+msgstr "주변기기 서버"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:57
+msgid ""
+"This server is configured as a Peripheral server in a Hub configuration. "
+"Managing PAYG Connections is disabled."
+msgstr ""
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
 msgid "Filter by any value"
 msgstr "값을 기준으로 필터링"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:64
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "호스트"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:88
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:95
 msgid "Last Update Status"
 msgstr "최신 업데이트 상태"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:89
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:96
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
 msgid "never"
 msgstr "안 함"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:107
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:115
 msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
 
@@ -1655,9 +2262,13 @@ msgstr ""
 "하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
+#, fuzzy
+#| msgid ""
+#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
+#| "Products can only be managed on the ISS master."
 msgid ""
-"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-"Products can only be managed on the ISS master."
+"This server is configured as a Peripheral server in a Hub configuration. "
+"Products can only be managed on the Hub server."
 msgstr ""
 "이 서버는 ISS(Inter-Server Synchronisation) 슬레이브로 구성되었습니다. ISS 마"
 "스터에서만 제품을 관리할 수 있습니다."
@@ -1799,13 +2410,6 @@ msgstr "예: <code>example.com:8080</code> 또는 <code>192.0.2.0:8080</code>"
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
 msgstr "HTTP 프록시 사용자명"
-
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
-#: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:88
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-msgid "Username"
-msgstr "사용자 이름"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
@@ -2627,7 +3231,7 @@ msgstr "에포크"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:379
 #: ../html/src/manager/images/image-view.tsx:644
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:87
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:88
 msgid "Version"
 msgstr "버전"
 
@@ -3503,15 +4107,6 @@ msgstr "이미지 버전은 필수입니다."
 msgid "Import"
 msgstr "가져오기"
 
-#: ../html/src/manager/images/image-import.tsx:314
-#: ../html/src/manager/images/image-profile-edit.tsx:481
-#: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
-msgid "Clear fields"
-msgstr "필드 지우기"
-
 #: ../html/src/manager/images/image-profile-edit.tsx:278
 msgid "Target Image Store"
 msgstr "대상 이미지 저장소"
@@ -4009,10 +4604,6 @@ msgstr "(사용되지 않음)"
 msgid "Updates"
 msgstr "업데이트"
 
-#: ../html/src/manager/images/image-view.tsx:675
-msgid "Last Modified"
-msgstr "마지막으로 수정된 날짜"
-
 #: ../html/src/manager/images/image-view.tsx:736
 msgid "Delete Selected Image(s)"
 msgstr "선택한 이미지 삭제"
@@ -4297,10 +4888,6 @@ msgstr "달력 새로 고침 확인"
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "달력을 새로 고치면 영향을 받는 모든 작업의 일정이 조정됩니다."
-
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
-msgid "Confirm if you want to proceed."
-msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
@@ -4909,11 +5496,6 @@ msgstr "이 프록시의 고유한 DNS 확인 FQDN입니다."
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "예: proxy.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:206
-#: ../html/src/manager/proxy/container-config.tsx:217
-msgid "Has to be a valid FQDN address"
-msgstr "유효한 FQDN 주소여야 함"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
@@ -5549,11 +6131,6 @@ msgstr "시스템 유형"
 msgid "Error Details"
 msgstr "오류 세부 정보"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
-msgid "Close"
-msgstr "닫기"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
@@ -5685,18 +6262,6 @@ msgstr "부트스트랩을 진행하는 동안 이 페이지를 닫으시겠습�
 msgid "Confidential Computing Capability"
 msgstr "기밀 컴퓨팅 성능"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:36
-msgid "Yes"
-msgstr "예"
-
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:37
-msgid "No"
-msgstr "아니요"
-
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "정리 시간이 초과되었습니다. 머신에 연결할 수 있는지 확인하십시오."
@@ -5726,34 +6291,36 @@ msgstr "알 수 없는 시스템"
 msgid "System is not a peripheral server"
 msgstr "시스템이 주변기기 서버가 아닙니다."
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:50
-msgid "New password generated and action for peripheral server scheduled"
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:33
+msgid "Setting new credentials for the report database failed"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:51
+#, fuzzy
+#| msgid "New password generated and action for peripheral server scheduled"
+msgid "New password generated and changed on the peripheral server"
 msgstr "새 비밀번호가 생성되고 주변기기 서버에 대한 작업이 예약됨"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
 msgstr "데이터베이스 이름 보고"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:96
 msgid "Report Database Host"
 msgstr "데이터베이스 호스트 보고"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:102
 msgid "Report Database User"
 msgstr "데이터베이스 사용자 보고"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:106
 msgid "Report Database Last Synced"
 msgstr "데이터베이스 마지막 동기화 시간 보고"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:114
 msgid "Regenerate Reporting Database Password"
 msgstr "데이터베이스 비밀번호 보고 생성"
-
-#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
-msgid "Confirm Deletion"
-msgstr "삭제 확인"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
@@ -6388,9 +6955,6 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "Bus"
 #~ msgstr "버스"
 
-#~ msgid "File"
-#~ msgstr "파일"
-
 #~ msgid "Format"
 #~ msgstr "형식"
 
@@ -6449,9 +7013,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Autostart"
 #~ msgstr "자동 시작"
-
-#~ msgid "Persistent"
-#~ msgstr "영구"
 
 #~ msgid "Bridge"
 #~ msgstr "브리지"
@@ -6809,9 +7370,6 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "GID is a numeric value"
 #~ msgstr "GID는 숫자 값입니다."
 
-#~ msgid "Permission mode"
-#~ msgstr "권한 모드"
-
 #~ msgid "target directory permissions in octal form, like 0775"
 #~ msgstr "0775와 같은 8진수 형식의 대상 디렉토리 권한"
 
@@ -7028,9 +7586,6 @@ msgstr "HTTP 오류 코드 "
 #~ msgid "The FQDN of the machine where the containers are hosted"
 #~ msgstr "컨테이너가 호스팅되는 시스템의 FQDN"
 
-#~ msgid "Server FQDN"
-#~ msgstr "서버 FQDN"
-
 #~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
 #~ msgstr "PEM 형식의 SSL 인증서에 서명하기 위해 사용할 CA 인증서"
 
@@ -7054,9 +7609,6 @@ msgstr "HTTP 오류 코드 "
 
 #~ msgid "Add cluster"
 #~ msgstr "클러스터 추가"
-
-#~ msgid "Add"
-#~ msgstr "추가"
 
 #~ msgid "Name:"
 #~ msgstr "이름:"
