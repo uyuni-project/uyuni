@@ -16,7 +16,7 @@ import com.redhat.rhn.domain.channel.Channel;
 import java.util.Date;
 import java.util.Objects;
 
-public class ModifyCustomChannelInfoJson {
+public class ModifyChannelInfoJson {
 
     private final String label;
 
@@ -49,7 +49,7 @@ public class ModifyCustomChannelInfoJson {
      *
      * @param labelIn The channel label
      */
-    public ModifyCustomChannelInfoJson(String labelIn) {
+    public ModifyChannelInfoJson(String labelIn) {
         label = labelIn;
 
         gpgCheck = true;
@@ -382,7 +382,7 @@ public class ModifyCustomChannelInfoJson {
         if (oIn == null || getClass() != oIn.getClass()) {
             return false;
         }
-        ModifyCustomChannelInfoJson that = (ModifyCustomChannelInfoJson) oIn;
+        ModifyChannelInfoJson that = (ModifyChannelInfoJson) oIn;
         return Objects.equals(getLabel(), that.getLabel()) &&
                 Objects.equals(getPeripheralOrgId(), that.getPeripheralOrgId()) &&
                 Objects.equals(getOriginalChannelLabel(), that.getOriginalChannelLabel()) &&
@@ -421,8 +421,8 @@ public class ModifyCustomChannelInfoJson {
         sb.append("label='").append(label).append('\'');
         sb.append(", peripheralOrgId=").append(peripheralOrgId);
         sb.append(", originalChannelLabel='").append(originalChannelLabel).append('\'');
-        sb.append(", baseDir='").append(baseDir).append('\'');
         sb.append(", name='").append(name).append('\'');
+        sb.append(", baseDir='").append(baseDir).append('\'');
         sb.append(", summary='").append(summary).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", productNameLabel='").append(productNameLabel).append('\'');
@@ -445,7 +445,7 @@ public class ModifyCustomChannelInfoJson {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ModifyCustomChannelInfoJson{");
+        final StringBuilder sb = new StringBuilder("ModifyChannelInfoJson{");
         sb.append(toStringCore());
         sb.append('}');
         return sb.toString();
