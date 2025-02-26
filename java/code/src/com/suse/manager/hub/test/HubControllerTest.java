@@ -25,14 +25,11 @@ import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
-import com.redhat.rhn.domain.channel.test.ChannelFamilyFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
@@ -48,11 +45,11 @@ import com.redhat.rhn.testing.UserTestUtils;
 import com.suse.manager.hub.HubController;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.ChannelInfoJson;
-import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.CreateChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
+import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -126,8 +123,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
                 Arguments.of(HttpMethod.post, "/hub/removeReportDbCredentials", IssRole.HUB),
                 Arguments.of(HttpMethod.get, "/hub/listAllPeripheralOrgs", IssRole.HUB),
                 Arguments.of(HttpMethod.get, "/hub/listAllPeripheralChannels", IssRole.HUB),
-                Arguments.of(HttpMethod.post, "/hub/addVendorChannels", IssRole.HUB),
-                Arguments.of(HttpMethod.post, "/hub/addCustomChannels", IssRole.HUB),
+                Arguments.of(HttpMethod.post, "/hub/addChannels", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/modifyCustomChannels", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/channelfamilies", IssRole.HUB),
                 Arguments.of(HttpMethod.post, "/hub/sync/products", IssRole.HUB),
@@ -475,26 +471,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals(TEST_ERROR_MESSAGE, jsonObj.get("messages").getAsJsonArray().get(1).getAsString());
     }
 
-    private Channel utilityCreateVendorBaseChannel(String name, String label) throws Exception {
-        Org nullOrg = null;
-        ChannelFamily cfam = ChannelFamilyFactoryTest.createNullOrgTestChannelFamily();
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
-        return ChannelFactoryTest.createTestChannel(name, label, nullOrg, arch, cfam);
-    }
-
-    private Channel utilityCreateVendorChannel(String name, String label, Channel vendorBaseChannel) throws Exception {
-        Channel vendorChannel = utilityCreateVendorBaseChannel(name, label);
-        vendorChannel.setParentChannel(vendorBaseChannel);
-        vendorChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha512"));
-        ChannelFactory.save(vendorChannel);
-        return vendorChannel;
-    }
-
     private static Stream<Arguments> allBaseAndVendorChannelAlreadyPresentCombinations() {
         return Stream.of(Arguments.of(false, false),
-                Arguments.of(true, false),
-                Arguments.of(true, true)
+                Arguments.of(true, false)
         );
     }
 
@@ -502,19 +481,49 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("allBaseAndVendorChannelAlreadyPresentCombinations")
     public void checkApiAddVendorChannel(boolean baseChannelAlreadyPresentInPeripheral,
                                          boolean channelAlreadyPresentInPeripheral) throws Exception {
-        String apiUnderTest = "/hub/addVendorChannels";
+        String apiUnderTest = "/hub/addChannels";
 
         //SUSE Linux Enterprise Server 11 SP3 x86_64
         String vendorBaseChannelTemplateName = "SLES11-SP3-Pool for x86_64";
         String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64";
         String vendorChannelTemplateName = "SLES11-SP3-Updates for x86_64";
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
+        boolean testIsGpgCheck = true;
+        boolean testIssInstallerUpdates = false;
+        String testArchLabel = "channel-x86_64";
+        String testChecksumLabel = "sha256";
 
-        String answer = testUtils.createTestVendorChannels(user, DUMMY_SERVER_FQDN,
-                vendorBaseChannelTemplateName, vendorBaseChannelTemplateLabel,
-                baseChannelAlreadyPresentInPeripheral,
-                vendorChannelTemplateName, vendorChannelTemplateLabel,
-                channelAlreadyPresentInPeripheral);
+        Date endOfLifeDate = testUtils.createDateUtil(2096, 10, 22);
+
+        //create peripheral vendor Channels
+        List<CreateChannelInfoJson> vendorChannelInfoListIn = new ArrayList<>();
+        Channel vendorCh = null;
+        if (baseChannelAlreadyPresentInPeripheral) {
+            vendorCh = testUtils.createVendorBaseChannel(vendorBaseChannelTemplateName, vendorBaseChannelTemplateLabel);
+        }
+        else {
+            CreateChannelInfoJson vendorBaseChInfo = testUtils.createChannelInfoJson(null,
+                    vendorBaseChannelTemplateLabel, "", "",
+                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+            vendorBaseChInfo.setName(vendorBaseChannelTemplateName);
+            vendorChannelInfoListIn.add(vendorBaseChInfo);
+        }
+
+        if (channelAlreadyPresentInPeripheral) {
+            testUtils.createVendorChannel(vendorChannelTemplateName, vendorChannelTemplateLabel, vendorCh);
+        }
+        else {
+            CreateChannelInfoJson vendorChInfo = testUtils.createChannelInfoJson(null,
+                    vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "",
+                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+            vendorChInfo.setName(vendorChannelTemplateName);
+            vendorChannelInfoListIn.add(vendorChInfo);
+        }
+
+
+        String answer = (String) testUtils.testAddChannelsApiCall(DUMMY_SERVER_FQDN, vendorChannelInfoListIn);
+        List<ChannelInfoJson> peripheralCreatedVendorChInfo =
+                Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
 
         int expectedNumOfPeripheralCreatedChannels = 2;
         if (baseChannelAlreadyPresentInPeripheral) {
@@ -583,8 +592,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     public void checkApiAddCustomChannel(boolean testIncludeTestChannelInChain) throws Exception {
         boolean testIsGpgCheck = true;
         boolean testIssInstallerUpdates = true;
-        String testArchLabel = "channel-s390";
-        String testChecksumLabel = "sha256";
+        String testArchLabel = "channel-x86_64";
+        String testChecksumLabel = "sha512";
 
         Date endOfLifeDate = testUtils.createDateUtil(2096, 10, 22);
 
@@ -600,36 +609,56 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         String vendorBaseChannelTemplateLabel = "sles11-sp3-pool-x86_64"; //SUSE Linux Enterprise Server 11 SP3 x86_64
         String vendorChannelTemplateLabel = "sles11-sp3-updates-x86_64";
 
-        CustomChannelInfoJson cloneBaseChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
-                "cloneBaseCh", "", vendorBaseChannelTemplateLabel,
+        CreateChannelInfoJson vendorBaseChInfo = testUtils.createChannelInfoJson(null,
+                vendorBaseChannelTemplateLabel, "", "",
                 testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
-        CustomChannelInfoJson cloneDevelChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
-                "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel,
+        CreateChannelInfoJson vendorChInfo = testUtils.createChannelInfoJson(null,
+                vendorChannelTemplateLabel, vendorBaseChannelTemplateLabel, "",
                 testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
 
-        CustomChannelInfoJson cloneTestChInfo = null;
-        String originalOfProdCh = "cloneDevelCh";
-        if (testIncludeTestChannelInChain) {
-            cloneTestChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
-                    "cloneTestCh", "", "cloneDevelCh",
-                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
-            originalOfProdCh = "cloneTestCh";
-        }
 
-        CustomChannelInfoJson cloneProdChInfo = testUtils.createCustomChannelInfoJson(testPeripheralOrgId,
-                "cloneProdCh", "", originalOfProdCh,
-                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+        //create peripheral vendor Channels
+        List<CreateChannelInfoJson> vendorChannelInfoListIn = new ArrayList<>();
+        vendorChannelInfoListIn.add(vendorBaseChInfo);
+        vendorChannelInfoListIn.add(vendorChInfo);
 
-        testUtils.createTestVendorChannels(user, DUMMY_SERVER_FQDN);
+        String answer = (String) testUtils.testAddChannelsApiCall(DUMMY_SERVER_FQDN, vendorChannelInfoListIn);
+        List<ChannelInfoJson> peripheralCreatedVendorChInfo =
+                Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
+        assertEquals(2, peripheralCreatedVendorChInfo.size());
 
         Channel vendorBaseCh = ChannelFactory.lookupByLabel(vendorBaseChannelTemplateLabel);
         assertNotNull(vendorBaseCh);
         Channel vendorCh = ChannelFactory.lookupByLabel(vendorChannelTemplateLabel);
         assertNotNull(vendorCh);
 
+
+        CreateChannelInfoJson cloneBaseChInfo = testUtils.createChannelInfoJson(testPeripheralOrgId,
+                "cloneBaseCh", "", vendorBaseChannelTemplateLabel,
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+
+        CreateChannelInfoJson cloneDevelChInfo = testUtils.createChannelInfoJson(testPeripheralOrgId,
+                "cloneDevelCh", "cloneBaseCh", vendorChannelTemplateLabel,
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+
+        CreateChannelInfoJson cloneTestChInfo = null;
+        String originalOfProdCh = "cloneDevelCh";
+        if (testIncludeTestChannelInChain) {
+            cloneTestChInfo = testUtils.createChannelInfoJson(testPeripheralOrgId,
+                    "cloneTestCh", "", "cloneDevelCh",
+                    testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+            originalOfProdCh = "cloneTestCh";
+        }
+
+        CreateChannelInfoJson cloneProdChInfo = testUtils.createChannelInfoJson(testPeripheralOrgId,
+                "cloneProdCh", "", originalOfProdCh,
+                testIsGpgCheck, testIssInstallerUpdates, testArchLabel, testChecksumLabel, endOfLifeDate);
+
+
+
         //create peripheral vendorCh custom cloned channels
-        List<CustomChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
+        List<CreateChannelInfoJson> customChannelInfoListIn = new ArrayList<>();
         customChannelInfoListIn.add(cloneBaseChInfo);
         customChannelInfoListIn.add(cloneDevelChInfo);
         if (testIncludeTestChannelInChain) {
@@ -637,7 +666,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         }
         customChannelInfoListIn.add(cloneProdChInfo);
 
-        String answer = (String) testUtils.testAddCustomChannelsApiCall(DUMMY_SERVER_FQDN, customChannelInfoListIn);
+        answer = (String) testUtils.testAddChannelsApiCall(DUMMY_SERVER_FQDN, customChannelInfoListIn);
         List<ChannelInfoJson> peripheralCreatedCustomChInfo =
                 Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
 
@@ -721,14 +750,14 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureNotThrowingWhenDataIsValid() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
 
         testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, List.of(customChInfo));
     }
 
     @Test
     public void ensureThrowsWhenMissingPeriperhalOrg() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setPeripheralOrgId(75842L);
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No org id");
@@ -736,7 +765,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenMissingChannelArch() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setChannelArchLabel("channel-dummy-arch");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No channel arch");
@@ -744,7 +773,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenMissingChecksumType() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setChecksumTypeLabel("sha123456");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No checksum type");
@@ -752,7 +781,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenMissingParentChannel() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
         customChInfo.setParentChannelLabel("missingParentChannelLabel");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN, List.of(customChInfo), "No parent channel");
@@ -760,9 +789,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureNotThrowingWhenParentChannelIsCreatedBefore() throws Exception {
-        CustomChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
+        CreateChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
 
-        CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
+        CreateChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
         customChildChInfo.setParentChannelLabel("parentChannel");
 
         testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
@@ -771,9 +800,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenParentChannelIsCreatedAfter() throws Exception {
-        CustomChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
+        CreateChannelInfoJson customParentChInfo = testUtils.createValidCustomChInfo("parentChannel");
 
-        CustomChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
+        CreateChannelInfoJson customChildChInfo = testUtils.createValidCustomChInfo("childChannel");
         customChildChInfo.setParentChannelLabel("parentChannel");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
@@ -782,9 +811,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenMissingOriginalChannelInClonedChannels() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo();
 
-        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
+        CreateChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
         clonedCustomChInfo.setOriginalChannelLabel(customChInfo.getLabel() + "MISSING");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
@@ -793,9 +822,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureNotThrowingWhenOriginalChannelIsCreatedBefore() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
 
-        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
+        CreateChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
         clonedCustomChInfo.setOriginalChannelLabel("originalCustomCh");
 
         testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
@@ -804,9 +833,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenOriginalChannelIsCreatedAfter() throws Exception {
-        CustomChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
+        CreateChannelInfoJson customChInfo = testUtils.createValidCustomChInfo("originalCustomCh");
 
-        CustomChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
+        CreateChannelInfoJson clonedCustomChInfo = testUtils.createValidCustomChInfo("clonedCustomCh");
         clonedCustomChInfo.setOriginalChannelLabel("originalCustomCh");
 
         testUtils.checkAddCustomChannelsApiThrows(DUMMY_SERVER_FQDN,
@@ -845,7 +874,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         Channel productionCh = ChannelFactory.lookupById((long) productionChId);
         productionCh.setProduct(testCh.getProduct());
 
-        CustomChannelInfoJson testChInfo = ChannelFactory.toCustomChannelInfo(testCh,
+        CreateChannelInfoJson testChInfo = ChannelFactory.toChannelInfo(testCh,
                 peripheralUser.getOrg().getId(), Optional.empty());
 
         assertEquals(localUser.getOrg().getId(), testCh.getOrg().getId());
@@ -858,7 +887,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("sha512", testChInfo.getChecksumTypeLabel());
         assertEquals("sles11-sp3-updates-x86_64", testChInfo.getOriginalChannelLabel());
 
-        CustomChannelInfoJson productionChInfo = ChannelFactory.toCustomChannelInfo(productionCh,
+        CreateChannelInfoJson productionChInfo = ChannelFactory.toChannelInfo(productionCh,
                 peripheralUser.getOrg().getId(), Optional.empty());
 
         assertEquals(localUser.getOrg().getId(), productionCh.getOrg().getId());
@@ -875,12 +904,12 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void checkModifyCustomChannels() throws Exception {
         // cloneDevelCh -> cloneTestCh -> cloneProdCh
-        CustomChannelInfoJson cloneDevelChInfo = testUtils.createValidCustomChInfo("cloneDevelCh");
+        CreateChannelInfoJson cloneDevelChInfo = testUtils.createValidCustomChInfo("cloneDevelCh");
 
-        CustomChannelInfoJson cloneTestChInfo = testUtils.createValidCustomChInfo("cloneTestCh");
+        CreateChannelInfoJson cloneTestChInfo = testUtils.createValidCustomChInfo("cloneTestCh");
         cloneTestChInfo.setOriginalChannelLabel("cloneDevelCh");
 
-        CustomChannelInfoJson cloneProdChInfo = testUtils.createValidCustomChInfo("cloneProdCh");
+        CreateChannelInfoJson cloneProdChInfo = testUtils.createValidCustomChInfo("cloneProdCh");
         cloneProdChInfo.setOriginalChannelLabel("cloneTestCh");
 
         testUtils.checkAddCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN,
@@ -898,7 +927,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         User anotherPeripheralUser = UserTestUtils.findNewUser(
                 "another_peripheral_user_", "another_peripheral_org_", true);
 
-        ModifyCustomChannelInfoJson modifyInfo = new ModifyCustomChannelInfoJson("cloneProdCh");
+        ModifyChannelInfoJson modifyInfo = new ModifyChannelInfoJson("cloneProdCh");
         modifyInfo.setPeripheralOrgId(anotherPeripheralUser.getOrg().getId());
         modifyInfo.setOriginalChannelLabel("cloneDevelCh");
 
@@ -935,7 +964,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureNotThrowingWhenModifyingDataIsValid() throws Exception {
-        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        ModifyChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
         testUtils.createTestChannel(modifyInfo, user);
 
         testUtils.checkModifyCustomChannelsApiNotThrowing(DUMMY_SERVER_FQDN, List.of(modifyInfo));
@@ -943,7 +972,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenModifyingMissingPeriperhalOrg() throws Exception {
-        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        ModifyChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
         testUtils.createTestChannel(modifyInfo, user);
 
         modifyInfo.setPeripheralOrgId(75842L);
@@ -953,7 +982,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void ensureThrowsWhenModifyingMissingOriginalChannelInClonedChannels() throws Exception {
-        ModifyCustomChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
+        ModifyChannelInfoJson modifyInfo = testUtils.createValidModifyCustomChInfo("customCh");
         testUtils.createTestChannel(modifyInfo, user);
 
         modifyInfo.setOriginalChannelLabel(modifyInfo.getLabel() + "MISSING");
