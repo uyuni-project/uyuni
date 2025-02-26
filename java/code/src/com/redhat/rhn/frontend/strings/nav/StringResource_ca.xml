@@ -1255,6 +1255,34 @@
         <source>List Attestations</source>
         <target state="translated">Llista d'atestacions</target>
       </trans-unit>
-    </body>
+    <trans-unit id="Hub Configuration" xml:space="preserve">
+        <source>Hub Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Hub Details" xml:space="preserve">
+        <source>Hub Details</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Peripherals Configuration" xml:space="preserve">
+        <source>Peripherals Configuration</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="Access Tokens" xml:space="preserve">
+        <source>Access Tokens</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
