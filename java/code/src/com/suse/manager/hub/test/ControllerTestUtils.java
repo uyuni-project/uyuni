@@ -377,9 +377,8 @@ public class ControllerTestUtils {
             assertFalse(result.isSuccess(),
                     "syncChannels API not failing when creating peripheral channel with " +
                             errorStartsWith);
-            assertEquals("Internal Server Error", result.getMessages().get(0));
-            assertTrue(result.getMessages().get(1).startsWith(errorStartsWith),
-                    "Wrong expected start of error message: [" + result.getMessages().get(1) + "]");
+            assertTrue(result.getMessages().get(0).startsWith(errorStartsWith),
+                    "Wrong expected start of error message: [" + result.getMessages().get(0) + "]");
         }
         catch (IllegalArgumentException e) {
             fail("syncChannels API should not throw");

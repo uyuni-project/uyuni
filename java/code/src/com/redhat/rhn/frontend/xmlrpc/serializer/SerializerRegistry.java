@@ -169,6 +169,9 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(AppStreamModuleResponseSerializer.class);
         SERIALIZER_CLASSES.add(AppStreamSerializer.class);
         SERIALIZER_CLASSES.add(UserNotificationSerializer.class);
+        SERIALIZER_CLASSES.add(ManagerInfoJsonSerializer.class);
+        SERIALIZER_CLASSES.add(ChannelInfoJsonSerializer.class);
+        SERIALIZER_CLASSES.add(OrgInfoJsonSerializer.class);
     }
 
     /**
