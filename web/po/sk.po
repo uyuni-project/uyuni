@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-17 16:22+0000\n"
+"PO-Revision-Date: 2025-02-26 18:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -497,10 +497,8 @@ msgid "Store an external token"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
-#, fuzzy
-#| msgid "Add to:"
 msgid "Add token"
-msgstr "Pridať k:"
+msgstr "Pridať token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
 msgid "Add a new access token"
@@ -542,10 +540,8 @@ msgid "Store"
 msgstr "URI úložiska"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:179
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "New token successfully issued"
-msgstr "Naplánované úspešne."
+msgstr "Úspešne vydaný nový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
 msgid ""
@@ -602,22 +598,16 @@ msgid "The server {fqdn} has been successfully deregistered."
 msgstr ""
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server FQDN:"
-msgstr "Server FQDN"
+msgstr "Server FQDN:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:44
-#, fuzzy
-#| msgid "Attestation time"
 msgid "Registration date:"
-msgstr "Čas atestácie"
+msgstr "Dátum registrácie:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:54
-#, fuzzy
-#| msgid "Last modified"
 msgid "Last modified:"
-msgstr "Naposledy zmenené"
+msgstr "Naposledy zmenené:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
 msgid "Root Certificate Authority:"
@@ -673,10 +663,8 @@ msgid "This hub is currently not using a custom GPG key."
 msgstr ""
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Mirror credentials:"
-msgstr "Použiť prihlasovanie údaje"
+msgstr "Zrkadlové prihlasovanie údaje:"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:29
 #, fuzzy
@@ -944,10 +932,8 @@ msgid "Confirm access token deletion"
 msgstr "Potvrdiť vymazanie"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
-#, fuzzy
-#| msgid "Are you sure you want to delete this schedule?"
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr "Naozaj chcete vymazať tento plán?"
+msgstr "Určite chcete tento token vymazať. V súčasnosti sa nepoužíva."
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
@@ -1147,10 +1133,8 @@ msgid "No flavors"
 msgstr "Žiadne druhy"
 
 #: ../html/src/components/large-text-attachment.tsx:62
-#, fuzzy
-#| msgid "Data is refreshed every "
 msgid "Data is present."
-msgstr "Dáta sa obnovujú každých "
+msgstr "Údaje sú prítomné."
 
 #: ../html/src/components/large-text-attachment.tsx:63
 msgid "Data is not present."
