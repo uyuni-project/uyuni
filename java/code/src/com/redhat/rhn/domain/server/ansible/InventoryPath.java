@@ -18,6 +18,7 @@ package com.redhat.rhn.domain.server.ansible;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
@@ -40,7 +41,9 @@ public class InventoryPath extends AnsiblePath {
     /**
      * Standard constructor
      */
-    public InventoryPath() { }
+    public InventoryPath() {
+        inventoryServers = new HashSet<>();
+    }
 
     /**
      * Standard constructor
@@ -48,6 +51,7 @@ public class InventoryPath extends AnsiblePath {
      */
     public InventoryPath(MinionServer minionServer) {
         super(minionServer);
+        inventoryServers = new HashSet<>();
     }
 
     @Override
