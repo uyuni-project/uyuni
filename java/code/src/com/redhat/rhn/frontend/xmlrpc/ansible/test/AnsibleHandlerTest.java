@@ -159,7 +159,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         AnsiblePath playbookPath = handler.createAnsiblePath(
@@ -203,7 +203,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("path", "/tmp/new-location"));
@@ -220,7 +220,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         try {
@@ -241,7 +241,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         int result = handler.removeAnsiblePath(admin, inventoryPath.getId().intValue());
