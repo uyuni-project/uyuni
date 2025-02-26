@@ -1,0 +1,77 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# TODO: Download CSV
+
+# Patch List
+
+,/errata/RelevantErrata.do,GET,W,t,patches.list,R
+,/errata/RelevantErrata.do,POST,W,t,patches.list,R
+,/errata/RelevantBugErrata.do,GET,W,t,patches.list,R
+,/errata/RelevantBugErrata.do,POST,W,t,patches.list,R
+,/errata/RelevantEnhancementErrata.do,GET,W,t,patches.list,R
+,/errata/RelevantEnhancementErrata.do,POST,W,t,patches.list,R
+,/errata/RelevantSecurityErrata.do,GET,W,t,patches.list,R
+,/errata/RelevantSecurityErrata.do,POST,W,t,patches.list,R
+
+,/errata/AllErrata.do,GET,W,t,patches.list,R
+,/errata/AllErrata.do,POST,W,t,patches.list,R
+,/errata/AllBugErrata.do,GET,W,t,patches.list,R
+,/errata/AllBugErrata.do,POST,W,t,patches.list,R
+,/errata/AllEnhancementErrata.do,GET,W,t,patches.list,R
+,/errata/AllEnhancementErrata.do,POST,W,t,patches.list,R
+,/errata/AllSecurityErrata.do,GET,W,t,patches.list,R
+,/errata/AllSecurityErrata.do,POST,W,t,patches.list,R
+
+# Patch Details
+
+,/errata/details/Details.do,GET,W,t,patches.details.overview,R
+,/errata/details/Packages.do,GET,W,t,patches.details.packages,R
+,/errata/details/SystemsAffected.do,GET,W,t,patches.details.systems,R
+,/errata/details/SystemsAffected.do,POST,W,t,patches.details.systems,R
+,/errata/details/ErrataConfirm.do,GET,W,t,patches.details.systems,W
+,/errata/details/ErrataConfirmSubmit.do,POST,W,t,patches.details.systems,W
+
+# Search
+
+,/errata/Search.do,GET,W,t,patches.search,R
+,/errata/Search.do,POST,W,t,patches.search,R
+
+# Manage Patches
+
+,/errata/manage/Errata.do,GET,W,t,patches.manage.list,R
+,/errata/manage/Errata.do,POST,W,t,patches.manage.list,R
+
+,/errata/manage/Create.do,GET,W,t,patches.manage.details,W
+,/errata/manage/CreateSubmit.do,POST,W,t,patches.manage.details,W
+,/errata/manage/Edit.do,GET,W,t,patches.manage.details,R
+,/errata/manage/Edit.do,POST,W,t,patches.manage.details,W
+,/errata/manage/DeleteBug.do,GET,W,t,patches.manage.details,W
+,/errata/manage/Notify.do,GET,W,t,patches.manage.notify,W
+,/errata/manage/NotifySubmit.do,POST,W,t,patches.manage.notify,W
+,/errata/manage/Delete.do,GET,W,t,patches.manage.delete,W
+,/errata/manage/PublishedDeleteConfirm.do,GET,W,t,patches.manage.delete,W
+,/errata/manage/PublishedDeleteConfirmSubmit.do,POST,W,t,patches.manage.delete,W
+,/errata/manage/Channels.do,GET,W,t,patches.manage.details,R
+,/errata/manage/ChannelsSubmit.do,POST,W,t,patches.manage.details,R
+
+,/errata/manage/Packages.do,GET,W,t,patches.manage.details,R
+,/errata/manage/ListPackages.do,GET,W,t,patches.manage.details,R
+,/errata/manage/ListPackages.do,POST,W,t,patches.manage.details,R
+
+,/errata/manage/AddPackages.do,GET,W,t,patches.manage.details,W
+,/errata/manage/AddPackages.do,POST,W,t,patches.manage.details,W
+,/errata/manage/AddPackagesConfirm.do,GET,W,t,patches.manage.details,W
+,/errata/manage/AddPackagesConfirm.do,POST,W,t,patches.manage.details,W
+,/errata/manage/AddPackagePackagePush.do,GET,W,t,patches.manage.details,W
+,/errata/manage/AddPackagePackagePushSubmit.do,POST,W,t,patches.manage.details,W
+,/errata/manage/RemovePackages.do,GET,W,t,patches.manage.details,W
+,/errata/manage/RemovePackages.do,POST,W,t,patches.manage.details,W
+,/errata/manage/AddChannelPackagePush.do,GET,W,t,patches.manage.details,W
+,/errata/manage/AddChannelPackagePushSubmit.do,POST,W,t,patches.manage.details,W
+
+# Clone Patches
+
+,/errata/manage/CloneErrata.do,GET,W,t,patches.clone,W
+,/errata/manage/CloneErrata.do,POST,W,t,patches.clone,W
+,/errata/manage/CloneConfirm.do,GET,W,t,patches.clone,W
+,/errata/manage/CloneConfirmSubmit.do,POST,W,t,patches.clone,W
