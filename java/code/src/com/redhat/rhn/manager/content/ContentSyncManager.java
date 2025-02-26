@@ -1009,53 +1009,60 @@ public class ContentSyncManager {
     }
 
     private void refreshCustomRepoAuthentication(List<SCCRepositoryJson> customReposIn, SCCCredentials creds) {
-        refreshCustomRepo(customReposIn, creds.getIssHub());
+        for (SCCRepositoryJson repo : customReposIn) {
+            Channel customChannel = ChannelFactory.lookupByLabel(repo.getName());
+            if (!isValidCustomChannel(repo, customChannel)) {
+                LOG.error("Invalid custom repo/channel {} - {}", repo, customChannel);
+                return;
+            }
+            refreshOrCreateRepository(repo, customChannel, creds.getIssHub());
+        }
     }
 
     /**
-     * refreshes custom repositories
+     * refresh or create a repositories when connected to a Hub
      *
-     * @param customReposIn list of SCCRepositoryJson objects {@link SCCRepositoryJson}
-     * @param issHub        {@link IssHub} to use
+     * @param repository SCCRepositoryJson objects {@link SCCRepositoryJson}
+     * @param channel the channel for the repo
+     * @param issHub {@link IssHub} to use
      */
-    public void refreshCustomRepo(List<SCCRepositoryJson> customReposIn, IssHub issHub) {
+    public void refreshOrCreateRepository(SCCRepositoryJson repository, Channel channel, IssHub issHub) {
         if (issHub == null) {
             LOG.debug("Only Peripheral server manage custom channels via SCC API");
             return;
         }
         boolean metadataSigned = StringUtils.isNotBlank(issHub.getGpgKey());
-        for (SCCRepositoryJson repo : customReposIn) {
-            Channel customChannel = ChannelFactory.lookupByLabel(repo.getName());
-            if (!isValidCustomChannel(repo, customChannel)) {
-                LOG.error("Invalid custom repo/channel {} - {}", repo, customChannel);
-                continue;
+        Set<ContentSource> css = channel.getSources();
+        if (css.isEmpty() && null == channel.getOrg()) {
+            ContentSource vcss = ChannelFactory.findVendorContentSourceByRepo(repository.getUrl());
+            if (vcss != null) {
+                css.add(vcss);
             }
-            Set<ContentSource> css = customChannel.getSources();
-            if (css.isEmpty()) {
-                // new channel; need to add the source
-                ContentSource source = new ContentSource();
-                source.setLabel(customChannel.getLabel());
-                source.setOrg(customChannel.getOrg());
-                source.setSourceUrl(repo.getUrl());
-                source.setType(ChannelManager.findCompatibleContentSourceType(customChannel.getChannelArch()));
-                source.setMetadataSigned(metadataSigned);
-                ChannelFactory.save(source);
+        }
+        if (css.isEmpty()) {
+            // new channel; need to add the source
+            ContentSource source = new ContentSource();
+            source.setLabel(channel.getLabel());
+            source.setOrg(channel.getOrg());
+            source.setSourceUrl(repository.getUrl());
+            source.setType(ChannelManager.findCompatibleContentSourceType(channel.getChannelArch()));
+            source.setMetadataSigned(metadataSigned);
+            ChannelFactory.save(source);
 
-                css.add(source);
-                customChannel.setSources(css);
-                ChannelFactory.save(customChannel);
-            }
-            else if (css.size() == 1) {
-                // found the repo; update the URL
-                ContentSource source = css.iterator().next();
-                source.setSourceUrl(repo.getUrl());
-                source.setMetadataSigned(metadataSigned);
-                ChannelFactory.save(source);
-            }
-            else {
-                LOG.error("Multiple repositories not allowed for this custom channel {}. Skipping",
-                        customChannel.getName());
-            }
+            css.add(source);
+            channel.setSources(css);
+            ChannelFactory.save(channel);
+        }
+        else if (css.size() == 1) {
+            // found the repo; update the URL
+            ContentSource source = css.iterator().next();
+            source.setSourceUrl(repository.getUrl());
+            source.setMetadataSigned(metadataSigned);
+            ChannelFactory.save(source);
+        }
+        else {
+            LOG.error("Multiple repositories not allowed for this channel {}. Skipping",
+                    channel.getName());
         }
     }
 
