@@ -34,11 +34,11 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
 
 import com.suse.manager.model.hub.ChannelInfoJson;
-import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.CreateChannelInfoJson;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
+import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
@@ -117,10 +117,8 @@ public class HubController {
                 asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralOrgs))));
         get("/hub/listAllPeripheralChannels",
                 asJson(usingTokenAuthentication(onlyFromHub(this::listAllPeripheralChannels))));
-        post("/hub/addVendorChannels",
-                asJson(usingTokenAuthentication(onlyFromHub(this::addVendorChannels))));
-        post("/hub/addCustomChannels",
-                asJson(usingTokenAuthentication(onlyFromHub(this::addCustomChannels))));
+        post("/hub/addChannels",
+                asJson(usingTokenAuthentication(onlyFromHub(this::addChannels))));
         post("/hub/modifyCustomChannels",
                 asJson(usingTokenAuthentication(onlyFromHub(this::modifyCustomChannels))));
         post("/hub/sync/channelfamilies",
@@ -313,52 +311,29 @@ public class HubController {
         return success(response, allChannelsInfo);
     }
 
-    private String addVendorChannels(Request request, Response response, IssAccessToken token) {
+    private String addChannels(Request request, Response response, IssAccessToken token) {
         Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
 
-        if ((null == requestList) || (!requestList.containsKey("vendorchannellabellist"))) {
-            return badRequest(response, "Invalid data: missing vendorchannellabellist entry");
+        if ((null == requestList) || (!requestList.containsKey("channellist"))) {
+            return badRequest(response, "Invalid data: missing channellist entry");
         }
 
-        List<String> vendorChannelLabelList = GSON.fromJson(requestList.get("vendorchannellabellist"), List.class);
-        if (vendorChannelLabelList == null || vendorChannelLabelList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid invalid vendor channel label list");
-            return badRequest(response, "Invalid data: invalid vendor channel label list");
+        List<CreateChannelInfoJson> channelInfoList = Arrays.asList(
+                GSON.fromJson(requestList.get("channellist"), CreateChannelInfoJson[].class));
+
+        if (channelInfoList.isEmpty()) {
+            LOGGER.error("Bad Request: invalid channels list");
+            return badRequest(response, "Invalid data: invalid channels list");
         }
 
-        List<ChannelInfoJson> createdVendorChannelInfoList =
-                hubManager.addVendorChannels(token, vendorChannelLabelList)
+        List<ChannelInfoJson> createdChannelsInfoList =
+                hubManager.addChannels(token, channelInfoList)
                         .stream()
                         .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
                                 ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
                                 (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
                         .toList();
-        return success(response, createdVendorChannelInfoList);
-    }
-
-    private String addCustomChannels(Request request, Response response, IssAccessToken token) {
-        Map<String, String> requestList = GSON.fromJson(request.body(), Map.class);
-
-        if ((null == requestList) || (!requestList.containsKey("customchannellist"))) {
-            return badRequest(response, "Invalid data: missing customchannellist entry");
-        }
-
-        List<CustomChannelInfoJson> customChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("customchannellist"), CustomChannelInfoJson[].class));
-
-        if (customChannelInfoList.isEmpty()) {
-            LOGGER.error("Bad Request: invalid custom channels list");
-            return badRequest(response, "Invalid data: invalid custom channels list");
-        }
-
-        List<ChannelInfoJson> createdCustomChannelsInfoList =
-                hubManager.addCustomChannels(token, customChannelInfoList)
-                        .stream()
-                        .map(ch -> new ChannelInfoJson(ch.getId(), ch.getName(), ch.getLabel(), ch.getSummary(),
-                                ((null == ch.getOrg()) ? null : ch.getOrg().getId()),
-                                (null == ch.getParentChannel()) ? null : ch.getParentChannel().getId()))
-                        .toList();
-        return success(response, createdCustomChannelsInfoList);
+        return success(response, createdChannelsInfoList);
     }
 
     private String modifyCustomChannels(Request request, Response response, IssAccessToken token) {
@@ -368,8 +343,8 @@ public class HubController {
             return badRequest(response, "Invalid data: missing modifycustomchannellist entry");
         }
 
-        List<ModifyCustomChannelInfoJson> modifyCustomChannelInfoList = Arrays.asList(
-                GSON.fromJson(requestList.get("modifycustomchannellist"), ModifyCustomChannelInfoJson[].class));
+        List<ModifyChannelInfoJson> modifyCustomChannelInfoList = Arrays.asList(
+                GSON.fromJson(requestList.get("modifycustomchannellist"), ModifyChannelInfoJson[].class));
 
         if (modifyCustomChannelInfoList.isEmpty()) {
             LOGGER.error("Bad Request: invalid modify custom channels list");

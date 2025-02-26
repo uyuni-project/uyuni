@@ -23,8 +23,6 @@ import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
-import com.redhat.rhn.domain.product.ChannelTemplate;
-import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
@@ -32,7 +30,6 @@ import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
@@ -45,7 +42,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
-import com.suse.manager.model.hub.CustomChannelInfoJson;
+import com.suse.manager.model.hub.CreateChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -53,7 +50,7 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
+import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
@@ -934,77 +931,16 @@ public class HubManager {
     }
 
     /**
-     * add vendor channel to peripheral
-     *
-     * @param accessToken            the access token
-     * @param vendorChannelLabelList the vendor channel label list
-     * @return returns a list of the vendor channel that have been added {@link Channel}
-     * the possible return cases are:
-     * 1) empty list: the vendor channel and its base channel were already present in the peripheral (nothing created)
-     * 2) one-channel list: if only the vendor channel was created while the base channel was already present
-     * 3) two-channel list: if both the vendor and the base channel were added to the peripheral
-     */
-    public List<Channel> addVendorChannels(IssAccessToken accessToken, List<String> vendorChannelLabelList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidVendorChannels(vendorChannelLabelList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> addedVendorChannelLabels = new ArrayList<>();
-        for (String vendorChannelLabel : vendorChannelLabelList) {
-            //retrieve vendor channel template
-            Optional<ChannelTemplate> vendorChannelTemplate = SUSEProductFactory
-                    .lookupByChannelLabelFirst(vendorChannelLabel);
-
-            if (vendorChannelTemplate.isEmpty()) {
-                throw new InvalidChannelLabelException(vendorChannelLabel,
-                        InvalidChannelLabelException.Reason.IS_MISSING,
-                        "Invalid data: vendor channel label not found", vendorChannelLabel);
-            }
-
-            // get base channel of target channel
-            if (!vendorChannelTemplate.get().isRoot()) {
-                String vendorBaseChannelLabel = vendorChannelTemplate.get().getParentChannelLabel();
-
-                // check if base channel is already added
-                if (!ChannelFactory.doesChannelLabelExist(vendorBaseChannelLabel)) {
-                    // if not, add base channel
-                    addedVendorChannelLabels.add(vendorBaseChannelLabel);
-                }
-            }
-
-            // check if channel is already added
-            if (!ChannelFactory.doesChannelLabelExist(vendorChannelLabel)) {
-                //add target channel
-                addedVendorChannelLabels.add(vendorChannelLabel);
-            }
-        }
-
-        //add target channels
-        addedVendorChannelLabels.forEach(l -> csm.addChannel(l, mirrorUrl));
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> addedVendorChannelLabels.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * add custom channels to peripheral
+     * add channels to peripheral
      *
      * @param accessToken               the access token
-     * @param customChannelInfoJsonList the list of custom channel info to add
-     * @return returns a list of the custom channels {@link Channel} that have been added
+     * @param createChannelInfoJsonListIn the list of channel info to add
+     * @return returns a list of the channels {@link Channel} that have been added
      */
-    public List<Channel> addCustomChannels(IssAccessToken accessToken,
-                                           List<CustomChannelInfoJson> customChannelInfoJsonList) {
+    public List<Channel> addChannels(IssAccessToken accessToken,
+                                     List<CreateChannelInfoJson> createChannelInfoJsonListIn) {
         ensureValidToken(accessToken);
-        ChannelFactory.ensureValidCustomChannels(customChannelInfoJsonList);
+        ChannelFactory.ensureValidChannelInfo(createChannelInfoJsonListIn);
 
         String mirrorUrl = null;
 
@@ -1014,9 +950,9 @@ public class HubManager {
         }
 
         List<String> addedChannelsLabelList = new ArrayList<>();
-        for (CustomChannelInfoJson customChannelInfo : customChannelInfoJsonList) {
+        for (CreateChannelInfoJson channelInfo : createChannelInfoJsonListIn) {
             // Create the channel
-            Channel customChannel = ChannelFactory.toCustomChannel(customChannelInfo);
+            Channel customChannel = ChannelFactory.toChannel(channelInfo);
             ChannelFactory.save(customChannel);
 
             addedChannelsLabelList.add(customChannel.getLabel());
@@ -1036,7 +972,7 @@ public class HubManager {
      * @return returns a list of the custom channel that have been added {@link Channel}
      */
     public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
-                                              List<ModifyCustomChannelInfoJson> modifyCustomChannelList) {
+                                              List<ModifyChannelInfoJson> modifyCustomChannelList) {
         ensureValidToken(accessToken);
         ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
 
@@ -1048,7 +984,7 @@ public class HubManager {
         }
 
         List<String> modifiedChannelsLabelList = new ArrayList<>();
-        for (ModifyCustomChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
+        for (ModifyChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
             // modify the channel
             Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
             ChannelFactory.save(customChannel);

@@ -15,7 +15,7 @@ import com.suse.scc.model.SCCRepositoryJson;
 
 import java.util.Objects;
 
-public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
+public class CreateChannelInfoJson extends ModifyChannelInfoJson {
 
     private String parentChannelLabel;
     private String channelArchLabel;
@@ -27,7 +27,7 @@ public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
      *
      * @param labelIn The channel label
      */
-    public CustomChannelInfoJson(String labelIn) {
+    public CreateChannelInfoJson(String labelIn) {
         super(labelIn);
         repositoryInfo = new SCCRepositoryJson();
     }
@@ -96,7 +96,7 @@ public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
         if (!super.equals(oIn)) {
             return false;
         }
-        CustomChannelInfoJson that = (CustomChannelInfoJson) oIn;
+        CreateChannelInfoJson that = (CreateChannelInfoJson) oIn;
         return Objects.equals(getParentChannelLabel(), that.getParentChannelLabel()) &&
                 Objects.equals(getChannelArchLabel(), that.getChannelArchLabel()) &&
                 Objects.equals(getChecksumTypeLabel(), that.getChecksumTypeLabel()) &&
@@ -111,7 +111,7 @@ public class CustomChannelInfoJson extends ModifyCustomChannelInfoJson {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CustomChannelInfoJson{");
+        final StringBuilder sb = new StringBuilder("CreateChannelInfoJson{");
         sb.append(toStringCore());
         sb.append("parentChannelLabel='").append(parentChannelLabel).append('\'');
         sb.append(", channelArchLabel='").append(channelArchLabel).append('\'');
