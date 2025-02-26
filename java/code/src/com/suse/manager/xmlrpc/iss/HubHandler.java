@@ -156,19 +156,19 @@ public class HubHandler extends BaseHandler {
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(ex.getMessage());
         }
         catch (TokenBuildingException ex) {
             LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IOException ex) {
             LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IllegalStateException ex) {
             LOGGER.error("Illegal state", ex);
@@ -234,23 +234,23 @@ public class HubHandler extends BaseHandler {
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(ex.getMessage());
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (TokenBuildingException ex) {
             LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IOException ex) {
             LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (TaskomaticApiException ex) {
             LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IllegalStateException ex) {
             LOGGER.error("Illegal state", ex);
@@ -309,23 +309,23 @@ public class HubHandler extends BaseHandler {
         }
         catch (CertificateException ex) {
             LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(ex.getMessage());
         }
         catch (TokenParsingException ex) {
             LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (TokenBuildingException ex) {
             LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IOException ex) {
             LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (TaskomaticApiException ex) {
             LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IllegalStateException ex) {
             LOGGER.error("Illegal state", ex);
@@ -376,7 +376,7 @@ public class HubHandler extends BaseHandler {
         }
         catch (CertificateException ex) {
             LOGGER.error("De-registration failed for {} ", fqdn, ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(ex.getMessage());
         }
         catch (IOException ex) {
             throw new ServerInvocationException(fqdn, ex);
