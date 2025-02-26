@@ -177,7 +177,7 @@ Feature: Manage a group of systems
     Given I am on the Systems overview page of this "sle_minion"
     When I follow "Groups"
     And I check "new-systems-group" in the list
-    And I click on "Leave Selected Groups"
+    And I click on "Leave Groups"
     Then I should see a "1 system groups removed." text
 
   # Red Hat-like minion is intentionally not removed from group
