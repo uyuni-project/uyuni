@@ -1,5 +1,4 @@
 FROM localhost:5002/opensuse/leap:15.4
-MAINTAINER Admin User "noemail@example.com"
 
 ARG repo
 ARG cert

@@ -3,7 +3,6 @@
 # VERSION               1.0.0
 
 FROM localhost:5001/cucutest/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
-MAINTAINER Michael Calmer "mc@suse.com"
 
 ARG repo
 ARG cert
