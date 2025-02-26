@@ -14,6 +14,7 @@ package com.suse.manager.hub;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -684,6 +685,13 @@ public class HubManager {
             internalApi.scheduleProductRefresh();
         }
         catch (Exception ex) {
+            // cleanup the local side: explicit rollback
+            // HubManager.createServer has already created an ISSPeripheral object
+            //
+            // Explicit rollback is needed since SparkApplicationHelper.setupHibernateSessionFilter sets Spark.after
+            // which in turn calls HibernateFactory.commitTransaction() if there's an ongoing transaction
+            HibernateFactory.rollbackTransaction();
+
             // cleanup the remote side
             internalApi.deregister();
             throw ex;

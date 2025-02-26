@@ -15,14 +15,21 @@ import static org.jmock.AbstractExpectations.returnValue;
 import static org.jmock.AbstractExpectations.throwException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.FaultException;
+import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.hub.DefaultHubInternalClient;
+import com.suse.manager.hub.HubClientFactory;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
@@ -44,6 +51,9 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.Optional;
+
+import javax.net.ssl.SSLHandshakeException;
 
 @ExtendWith(JUnit5Mockery.class)
 public class HubHandlerTest extends BaseHandlerTestCase {
@@ -298,5 +308,44 @@ public class HubHandlerTest extends BaseHandlerTestCase {
 
         assertThrows(FaultException.class,
                 () -> newHubHandler.setDetails(satAdmin, "dummy-server.dev.local", "HUB", null));
+    }
+
+    @Test
+    public void registerPeripheralWithTokenCorreclyRemovesPeripheralRegistration() throws Exception {
+        TaskomaticApi mockTaskomaticApi = context.mock(TaskomaticApi.class);
+        HubClientFactory mockHubClientFactory = context.mock(HubClientFactory.class);
+        DefaultHubInternalClient mockDefaultHubInternalClient = context.mock(DefaultHubInternalClient.class);
+        HubFactory hubFactory = new HubFactory();
+        HubManager newHubManager = new HubManager(hubFactory, mockHubClientFactory,
+                new MirrorCredentialsManager(), mockTaskomaticApi, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+        HubHandler newHubHandler = new HubHandler(newHubManager);
+
+        String sshFailureErrorString = "unable to find valid certification path to target";
+
+        context.checking(new Expectations() {{
+            allowing(mockTaskomaticApi).scheduleSingleRootCaCertUpdate(
+                    with(any(String.class)), with(any(String.class)));
+
+            allowing(mockHubClientFactory).newInternalClient(
+                    with(any(String.class)), with(any(String.class)), with(any(String.class)));
+            will(returnValue(mockDefaultHubInternalClient));
+
+            allowing(mockDefaultHubInternalClient).registerHub(
+                    with(any(String.class)), with(aNull(String.class)), with(aNull(String.class)));
+            will(throwException(new SSLHandshakeException(sshFailureErrorString)));
+
+            allowing(mockDefaultHubInternalClient).deregister();
+        }});
+
+        String dummyToken = newHubHandler.generateAccessToken(satAdmin, ConfigDefaults.get().getHostname());
+        String dummyFqdn = "dummy-server.dev.local";
+
+        Throwable exFirstCall = assertThrows(TokenExchangeFailedException.class,
+                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn,
+                        dummyToken, ""));
+        assertTrue(exFirstCall.getMessage().equals(sshFailureErrorString));
+
+        Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(dummyFqdn);
+        assertTrue(!issPeripheral.isPresent());
     }
 }
