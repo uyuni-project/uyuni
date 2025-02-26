@@ -24,6 +24,12 @@ import com.suse.manager.api.SerializedApiResponse;
 /**
  * OrgSerializer is a custom serializer for the XMLRPC library.
  * It converts an Org to an XMLRPC &lt;struct&gt;.
+ *
+ * @apidoc.doc
+ *  #struct_begin("script result")
+ *      #prop_desc("long", "id", "ID of the Org")
+ *      #prop_desc("string", "name", "name of the Org")
+ *  #struct_end()
  */
 public class OrgSerializer extends ApiResponseSerializer<Org> {
 
