@@ -290,7 +290,9 @@ public class HubManager {
     }
 
     private void deletePeripheral(IssPeripheral peripheral) {
-        CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        if (null != peripheral.getMirrorCredentials()) {
+            CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        }
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
     }

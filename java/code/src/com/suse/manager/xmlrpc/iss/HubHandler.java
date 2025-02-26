@@ -15,7 +15,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
-import com.redhat.rhn.frontend.xmlrpc.ServerInvocationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
@@ -379,7 +378,8 @@ public class HubHandler extends BaseHandler {
             throw new InvalidCertificateException(ex.getMessage());
         }
         catch (IOException ex) {
-            throw new ServerInvocationException(fqdn, ex);
+            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
+            throw new TokenExchangeFailedException(ex.getMessage());
         }
         catch (IllegalStateException ex) {
             LOGGER.error("Illegal state", ex);

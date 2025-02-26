@@ -14,6 +14,7 @@ package com.suse.manager.xmlrpc.iss.test;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.jmock.AbstractExpectations.throwException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -347,5 +348,18 @@ public class HubHandlerTest extends BaseHandlerTestCase {
 
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(dummyFqdn);
         assertTrue(!issPeripheral.isPresent());
+    }
+
+    @Test
+    public void ensureDeregisterPeripheralWithNullMirrorCredentialsDoesNotThrow() {
+        String dummyFqdn = "dummy-server.dev.local";
+        HubHandler newHubHandler = new HubHandler();
+
+        HubFactory newHubFactory = new HubFactory();
+        IssPeripheral peripheral = new IssPeripheral(dummyFqdn, "");
+        newHubFactory.save(peripheral);
+
+        assertNull(peripheral.getMirrorCredentials());
+        assertDoesNotThrow(() -> newHubHandler.deregister(satAdmin, dummyFqdn, true));
     }
 }
