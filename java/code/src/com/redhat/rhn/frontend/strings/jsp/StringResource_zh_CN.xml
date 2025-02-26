@@ -28893,8 +28893,8 @@ given channel.</source>
         <target>与这些身份凭证相关的订阅</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
-        <source>This server is configured as an Inter-Server Synchronisation (ISS) slave. Credentials can only be managed on the ISS master.</source>
-        <target>此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理身份凭证。</target>
+        <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
+        <target state="needs-adaptation">此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理身份凭证。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>

@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"POT-Creation-Date: 2025-02-26 13:49+0100\n"
 "PO-Revision-Date: 2025-02-18 10:28+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
@@ -183,6 +183,7 @@ msgid "Environment Type"
 msgstr "环境类型"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:83
+#: ../html/src/components/hub/TokenTable.tsx:89
 #: ../html/src/manager/notifications/notification-messages.tsx:512
 msgid "Created"
 msgstr "创建日期"
@@ -192,7 +193,7 @@ msgid "Last modified"
 msgstr "上次修改时间"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:97
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:80
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:87
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:18
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:226
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:369
@@ -209,6 +210,7 @@ msgid "Attestation time"
 msgstr "认证时间"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:110
+#: ../html/src/components/hub/TokenTable.tsx:103
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:406
 #: ../html/src/manager/images/image-profiles.tsx:190
 #: ../html/src/manager/images/image-stores.tsx:192
@@ -284,6 +286,7 @@ msgstr "流程输出"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:293
+#: ../html/src/components/large-text-attachment.tsx:176
 #: ../html/src/components/panels/CreatorPanel.tsx:125
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:199
@@ -362,6 +365,8 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 #: ../html/src/components/dialog/DangerDialog.tsx:62
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:53
 #: ../html/src/components/dialog/LegacyDangerDialog.tsx:54
+#: ../html/src/components/hub/AddTokenButton.tsx:154
+#: ../html/src/components/large-text-attachment.tsx:169
 #: ../html/src/components/panels/CreatorPanel.tsx:114
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:34
@@ -379,7 +384,13 @@ msgstr "您确定要{action}选定的 {name} 吗？（已选择 {count} 个 {nam
 msgid "Cancel"
 msgstr "取消"
 
+#. both the peripheral and the hub are null means the token is not used and we can delete it
 #: ../html/src/components/dialog/DeleteDialog.tsx:29
+#: ../html/src/components/hub/TokenTable.tsx:175
+#: ../html/src/components/hub/TokenTable.tsx:184
+#: ../html/src/components/hub/TokenTable.tsx:228
+#: ../html/src/components/large-text-attachment.tsx:187
+#: ../html/src/components/large-text-attachment.tsx:200
 #: ../html/src/components/panels/CreatorPanel.tsx:97
 #: ../html/src/components/table/Table.tsx:139
 #: ../html/src/manager/admin/payg/payg.tsx:73
@@ -460,6 +471,528 @@ msgstr "显示/隐藏口令"
 msgid "Toggle section visibility"
 msgstr "切换部分可见性"
 
+#: ../html/src/components/hub/AddTokenButton.tsx:66
+#: ../html/src/components/hub/AddTokenButton.tsx:93
+#: ../html/src/components/hub/AddTokenButton.tsx:120
+#, fuzzy
+#| msgid "Issue date"
+msgid "Issue a new token"
+msgstr "颁发日期"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:77
+#: ../html/src/components/hub/AddTokenButton.tsx:101
+#: ../html/src/components/hub/AddTokenButton.tsx:120
+msgid "Store an external token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:84
+#, fuzzy
+#| msgid "Add to:"
+msgid "Add token"
+msgstr "添加到："
+
+#: ../html/src/components/hub/AddTokenButton.tsx:86
+msgid "Add a new access token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:128
+msgid "Server FQDN"
+msgstr "服务器 FQDN"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:130
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
+#, fuzzy
+#| msgid "e.g., server.domain.com"
+msgid "e.g. server.domain.com"
+msgstr "例如 server.domain.com"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:134
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:163
+#: ../html/src/manager/proxy/container-config.tsx:206
+#: ../html/src/manager/proxy/container-config.tsx:217
+msgid "Has to be a valid FQDN address"
+msgstr "必须为有效的 FQDN 地址"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:139
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
+msgid "Token"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:161
+#, fuzzy
+#| msgid "Issued"
+msgid "Issue"
+msgstr "颁发日期"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:161
+#, fuzzy
+#| msgid "Store URI"
+msgid "Store"
+msgstr "存储区 URI"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:179
+#, fuzzy
+#| msgid "Schedule successfully updated."
+msgid "New token successfully issued"
+msgstr "成功更新日程安排。"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:186
+msgid ""
+"The new token was generated successfully. Make sure to copy it now as you "
+"will not be able to see this again."
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:200
+msgid "Copy"
+msgstr ""
+
+#: ../html/src/components/hub/AddTokenButton.tsx:220
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
+msgid "Close"
+msgstr "关闭"
+
+#: ../html/src/components/hub/AddTokenButton.tsx:252
+msgid "Access token copied to the clipboard"
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:38
+#: ../html/src/components/hub/DeregisterServer.tsx:47
+#: ../html/src/components/hub/PeripheralsList.tsx:51
+#, fuzzy
+#| msgid "Persistent"
+msgid "Deregister"
+msgstr "持久"
+
+#: ../html/src/components/hub/DeregisterServer.tsx:39
+msgid "Deregister from the hub"
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:44
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm deregistration"
+msgstr "确认删除"
+
+#: ../html/src/components/hub/DeregisterServer.tsx:64
+msgid ""
+"Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
+"longer receive data from it."
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:70
+msgid ""
+"Are you sure you want to derigester peripheral {fqdn}? All the current "
+"configuration will be lost."
+msgstr ""
+
+#: ../html/src/components/hub/DeregisterServer.tsx:86
+msgid "The server {fqdn} has been successfully deregistered."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:36
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Server FQDN:"
+msgstr "服务器 FQDN"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:44
+#, fuzzy
+#| msgid "Attestation time"
+msgid "Registration date:"
+msgstr "认证时间"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:54
+#, fuzzy
+#| msgid "Last modified"
+msgid "Last modified:"
+msgstr "上次修改时间"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:64
+msgid "Root Certificate Authority:"
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:70
+msgid ""
+"A customized Root Certificate Authority is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:71
+msgid "This hub is currently using the default Root Certificate Authority."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:72
+#, fuzzy
+#| msgid "SSL Certificate data"
+msgid "Root Certificate Authority"
+msgstr "SSL 证书数据"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:74
+msgid ""
+"Ensure the certificate you are providing is correct before proceeding. A "
+"wrong value will break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:77
+msgid ""
+"Are you sure you want to delete the current Root Certificate Authority? This "
+"change may break the connection with the hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:83
+msgid "Root Certificate Authority successfully modified."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:98
+#, fuzzy
+#| msgid "Schedule successfully updated."
+msgid "Root Certificate Authority successfully updated."
+msgstr "成功更新日程安排。"
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:115
+msgid "GPG Public Key:"
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:121
+msgid "A customized GPG key is currently configured for this hub."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:122
+msgid "This hub is currently not using a custom GPG key."
+msgstr ""
+
+#: ../html/src/components/hub/HubDetailsForm.tsx:131
+#, fuzzy
+#| msgid "Use credentials"
+msgid "Mirror credentials:"
+msgstr "使用身份凭证"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:29
+#, fuzzy
+#| msgid "Filter by name"
+msgid "Filter by FQDN"
+msgstr "按名称过滤"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:31
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Peripheral FQDN"
+msgstr "服务器 FQDN"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:35
+#, fuzzy
+#| msgid "SUSE Channels"
+msgid "N. of Sync Channels"
+msgstr "SUSE 通道"
+
+#: ../html/src/components/hub/PeripheralsList.tsx:41
+msgid "N. of Sync Orgs"
+msgstr ""
+
+#: ../html/src/components/hub/PeripheralsList.tsx:46
+#, fuzzy
+#| msgid "Download CSV"
+msgid "Download Root CA"
+msgstr "下载 CSV"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
+#, fuzzy
+#| msgid "System is not a peripheral server"
+msgid "Register a new peripheral server"
+msgstr "系统不是外设服务器"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
+#, fuzzy
+#| msgid ""
+#| "Generation of the proxy configuration in progress: waiting for a "
+#| "response..."
+msgid "Peripheral registration in progress: waiting for a response..."
+msgstr "正在生成代理配置：正在等待响应..."
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
+#, fuzzy
+#| msgid "Peripheral Server"
+msgid "Peripheral Server FQDN"
+msgstr "外设服务器"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
+msgid ""
+"The unique, DNS-resolvable fully-qualified domain name of the server to "
+"register."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
+#, fuzzy
+#| msgid "Permission mode"
+msgid "Registration mode"
+msgstr "权限模式"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
+msgid "Define how to connect to the remote server to initiate the registration"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
+msgid "Existing token"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
+msgid "Administrator User/Password"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
+msgid ""
+"The token that grant access to the remote server to establish the connection."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
+#: ../html/src/manager/images/image-store-edit.tsx:171
+#: ../html/src/manager/login/susemanager/login.tsx:88
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
+msgid "Username"
+msgstr "用户名"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+msgid "The username of {productName} Administrator of the remote server."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
+#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
+#: ../html/src/manager/images/image-store-edit.tsx:180
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:90
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
+msgid "Password"
+msgstr "口令"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
+msgid "The password of the specified user."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
+#, fuzzy
+#| msgid "CA certificate"
+msgid "Root CA certificate"
+msgstr "CA 证书"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
+msgid ""
+"The Root certificate authority of the remote server, that must be trusted to "
+"establish a secure connection."
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
+#, fuzzy
+#| msgid "Not affected"
+msgid "Not needed"
+msgstr "不受影响"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
+#: ../html/src/components/large-text-attachment.tsx:136
+msgid "Upload a file"
+msgstr ""
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
+#, fuzzy
+#| msgid "Proxy certificate"
+msgid "Paste a PEM certificate"
+msgstr "代理证书"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
+#, fuzzy
+#| msgid "CA certificate"
+msgid "Certificate File"
+msgstr "CA 证书"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
+#, fuzzy
+#| msgid "CA file in PEM format"
+msgid "Certificate file, in PEM format"
+msgstr "PEM 格式的 CA 文件"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
+#, fuzzy
+#| msgid "CA certificate"
+msgid "PEM Certificate"
+msgstr "CA 证书"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
+#, fuzzy
+#| msgid "To sign the SSL certificate in PEM format"
+msgid "The text representing the certificate, in PEM format"
+msgstr "为 PEM 格式的 SSL 证书签名"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
+#, fuzzy
+#| msgid "Registered Days"
+msgid "Register"
+msgstr "已注册天数"
+
+#: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
+#: ../html/src/manager/images/image-import.tsx:314
+#: ../html/src/manager/images/image-profile-edit.tsx:481
+#: ../html/src/manager/images/image-store-edit.tsx:202
+#: ../html/src/manager/proxy/container-config.tsx:390
+#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
+msgid "Clear fields"
+msgstr "清除字段"
+
+#: ../html/src/components/hub/TokenTable.tsx:54
+#, fuzzy
+#| msgid "No modules available"
+msgid "No tokens available"
+msgstr "无可用模块"
+
+#: ../html/src/components/hub/TokenTable.tsx:61
+#, fuzzy
+#| msgid "Action type"
+msgid "Token type"
+msgstr "操作类型"
+
+#: ../html/src/components/hub/TokenTable.tsx:68
+#, fuzzy
+#| msgid "Server FQDN"
+msgid "Server"
+msgstr "服务器 FQDN"
+
+#: ../html/src/components/hub/TokenTable.tsx:75
+msgid "Valid"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:36
+msgid "Yes"
+msgstr "是"
+
+#: ../html/src/components/hub/TokenTable.tsx:76
+#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
+#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
+#: ../html/src/manager/systems/list-filter.tsx:37
+msgid "No"
+msgstr "否"
+
+#: ../html/src/components/hub/TokenTable.tsx:82
+msgid "Expired"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:96
+#: ../html/src/manager/images/image-view.tsx:675
+msgid "Last Modified"
+msgstr "上次修改时间"
+
+#: ../html/src/components/hub/TokenTable.tsx:113
+msgid "No, never expires"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:121
+msgid "Yes, expired <expiration></expiration>"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:121
+msgid "No, expires <expiration></expiration>"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:145
+#: ../html/src/components/hub/TokenTable.tsx:160
+#, fuzzy
+#| msgid "Invalid data"
+msgid "Invalidate"
+msgstr "无效数据"
+
+#: ../html/src/components/hub/TokenTable.tsx:145
+#: ../html/src/components/hub/TokenTable.tsx:160
+#, fuzzy
+#| msgid "Invalid data"
+msgid "Validate"
+msgstr "无效数据"
+
+#: ../html/src/components/hub/TokenTable.tsx:151
+#, fuzzy
+#| msgid "Confirm Attestation Execution"
+msgid "Confirm access token modification"
+msgstr "确认认证执行"
+
+#: ../html/src/components/hub/TokenTable.tsx:155
+#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
+msgid "Confirm if you want to proceed."
+msgstr "请确认是否继续。"
+
+#: ../html/src/components/hub/TokenTable.tsx:180
+#, fuzzy
+#| msgid "Confirm Deletion"
+msgid "Confirm access token deletion"
+msgstr "确认删除"
+
+#: ../html/src/components/hub/TokenTable.tsx:181
+#, fuzzy
+#| msgid "Are you sure you want to delete this schedule?"
+msgid "Are you sure you want to delete this token. It is currently not used."
+msgstr "您确定要删除此日程安排吗？"
+
+#: ../html/src/components/hub/TokenTable.tsx:220
+msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
+msgstr ""
+
+#: ../html/src/components/hub/TokenTable.tsx:224
+msgid ""
+"This access token cannot be deleted. It is currently used by peripheral "
+"{fqdn}"
+msgstr ""
+
+#. token issued for another server currently valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:235
+msgid ""
+"Invalidating this access token will prevent the hub {fqdn} from accesssing."
+msgstr ""
+
+#. token issued for another server currently valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:238
+msgid ""
+"Invalidating this access token will prevent the peripheral {fqdn} from "
+"accesssing."
+msgstr ""
+
+#. token issued for another server currently not valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:241
+msgid "Enabling this access token will grant access to the hub {fqdn}."
+msgstr ""
+
+#. token issued for another server currently not valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:244
+msgid "Enabling this access token will grant access to the peripheral {fqdn}."
+msgstr ""
+
+#. token received from another server currently valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:247
+msgid "Invalidating this access token will prevent access to the hub {fqdn}."
+msgstr ""
+
+#. token received from another server currently valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:250
+msgid ""
+"Invalidating this access token will prevent access to the peripheral {fqdn}."
+msgstr ""
+
+#. token received from another server currently not valid and linked to a hub
+#: ../html/src/components/hub/TokenTable.tsx:253
+msgid "Enabling this access token will restore access to the hub {fqdn}."
+msgstr ""
+
+#. token received from another server currently not valid and linked to a peripheral
+#: ../html/src/components/hub/TokenTable.tsx:256
+msgid ""
+"Enabling this access token will restore access to the peripheral {fqdn}."
+msgstr ""
+
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
@@ -534,22 +1067,10 @@ msgstr "登录"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:44
 #: ../html/src/manager/images/image-view.tsx:643
 #: ../html/src/manager/salt/keys/key-management.tsx:160
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:83
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:84
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:78
 msgid "Name"
 msgstr "名称"
-
-#: ../html/src/components/input/password/Password.stories.tsx:23
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
-#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
-#: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:99
-#: ../html/src/manager/login/uyuni/login.tsx:90
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
-msgid "Password"
-msgstr "口令"
 
 #: ../html/src/components/input/password/Password.stories.tsx:25
 msgid "Minimum 4 characters"
@@ -613,6 +1134,75 @@ msgstr "风格"
 #: ../html/src/components/input/select/custom.stories.tsx:35
 msgid "No flavors"
 msgstr "无风格"
+
+#: ../html/src/components/large-text-attachment.tsx:62
+#, fuzzy
+#| msgid "Data is refreshed every "
+msgid "Data is present."
+msgstr "数据每隔 "
+
+#: ../html/src/components/large-text-attachment.tsx:63
+msgid "Data is not present."
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:64
+#: ../html/src/components/large-text-attachment.tsx:103
+#: ../html/src/components/salt-state-popup.tsx:60
+#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
+#: ../html/src/manager/images/image-profiles.tsx:204
+#: ../html/src/manager/images/image-stores.tsx:198
+#: ../html/src/manager/images/image-view-overview.tsx:324
+#: ../html/src/manager/images/image-view-overview.tsx:349
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
+#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
+#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
+#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
+#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
+#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
+msgid "Edit"
+msgstr "编辑"
+
+#: ../html/src/components/large-text-attachment.tsx:93
+#, fuzzy
+#| msgid "Download CSV"
+msgid "Download"
+msgstr "下载 CSV"
+
+#: ../html/src/components/large-text-attachment.tsx:103
+msgid "Add"
+msgstr "添加"
+
+#: ../html/src/components/large-text-attachment.tsx:127
+#: ../html/src/components/large-text-attachment.tsx:128
+#, fuzzy
+#| msgid "Edit store"
+msgid "Edit method"
+msgstr "编辑存储区"
+
+#: ../html/src/components/large-text-attachment.tsx:129
+msgid "Define how to provide the new value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:137
+msgid "Paste the new value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:143
+msgid "File"
+msgstr "文件"
+
+#: ../html/src/components/large-text-attachment.tsx:153
+msgid "New value"
+msgstr ""
+
+#: ../html/src/components/large-text-attachment.tsx:195
+#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
+msgid "Confirm Deletion"
+msgstr "确认删除"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:98
 msgid "Unable to clear selection"
@@ -781,25 +1371,6 @@ msgstr "没有可显示的项。"
 msgid "Configuration Channel: {name}"
 msgstr "配置通道：{name}"
 
-#: ../html/src/components/salt-state-popup.tsx:60
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:60
-#: ../html/src/manager/images/image-profiles.tsx:204
-#: ../html/src/manager/images/image-stores.tsx:198
-#: ../html/src/manager/images/image-view-overview.tsx:324
-#: ../html/src/manager/images/image-view-overview.tsx:349
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:36
-#: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:39
-#: ../html/src/manager/maintenance/list/calendar-list.tsx:78
-#: ../html/src/manager/maintenance/list/schedule-list.tsx:63
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:209
-#: ../html/src/manager/recurring/recurring-actions-details.tsx:212
-#: ../html/src/manager/recurring/recurring-actions-list.tsx:213
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:125
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:127
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:84
-msgid "Edit"
-msgstr "编辑"
-
 #: ../html/src/components/salt-state-popup.tsx:61
 msgid "Edit Configuration Channel"
 msgstr "编辑配置通道"
@@ -915,7 +1486,7 @@ msgstr "通道标签"
 
 #: ../html/src/components/states-picker.tsx:453
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:73
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:74
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:81
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:23
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:14
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
@@ -982,7 +1553,7 @@ msgid "Proxy"
 msgstr "代理"
 
 #: ../html/src/components/systems.tsx:45
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:76
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:77
 msgid "Peripheral Server"
 msgstr "外设服务器"
 
@@ -1365,28 +1936,64 @@ msgstr "实例 SSH 连接数据"
 msgid "Bastion SSH connection data"
 msgstr "堡垒 SSH 连接数据"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:59
+#: ../html/src/manager/admin/hub/hub-details.tsx:24
+#, fuzzy
+#| msgid "Details"
+msgid "Hub Details"
+msgstr "细节"
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:44
+msgid "No hub is currently configured for this server. "
+msgstr ""
+
+#: ../html/src/manager/admin/hub/hub-details.tsx:53
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
+msgstr ""
+
+#: ../html/src/manager/admin/hub/list-tokens.tsx:20
+msgid "Access Tokens"
+msgstr ""
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:16
+#, fuzzy
+#| msgid "Configuration"
+msgid "Peripherals Configuration"
+msgstr "配置"
+
+#: ../html/src/manager/admin/hub/peripherals.tsx:25
+#, fuzzy
+#| msgid "Peripheral Server"
+msgid "Add Peripheral"
+msgstr "外设服务器"
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:57
+msgid ""
+"This server is configured as a Peripheral server in a Hub configuration. "
+"Managing PAYG Connections is disabled."
+msgstr ""
+
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
 msgid "Filter by any value"
 msgstr "按任意值过滤"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:64
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:15
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:476
 msgid "Host"
 msgstr "主机"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:88
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:95
 msgid "Last Update Status"
 msgstr "上次更新状态"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:89
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:96
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:117
 msgid "never"
 msgstr "从不"
 
-#: ../html/src/manager/admin/list-payg/list-payg.tsx:107
+#: ../html/src/manager/admin/list-payg/list-payg.tsx:115
 msgid "Add PAYG Connection"
 msgstr "添加 PAYG 连接"
 
@@ -1626,9 +2233,13 @@ msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
+#, fuzzy
+#| msgid ""
+#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
+#| "Products can only be managed on the ISS master."
 msgid ""
-"This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-"Products can only be managed on the ISS master."
+"This server is configured as a Peripheral server in a Hub configuration. "
+"Products can only be managed on the Hub server."
 msgstr ""
 "此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
 "品。"
@@ -1770,13 +2381,6 @@ msgstr "例如：<code>example.com:8080</code> 或 <code>192.0.2.0:8080</code>"
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
 msgstr "HTTP 代理用户名"
-
-#: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
-#: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:88
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:170
-msgid "Username"
-msgstr "用户名"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
@@ -2579,7 +3183,7 @@ msgstr "纪元"
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties.utils.ts:4
 #: ../html/src/manager/images/image-build.tsx:379
 #: ../html/src/manager/images/image-view.tsx:644
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:87
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:88
 msgid "Version"
 msgstr "版本"
 
@@ -3440,15 +4044,6 @@ msgstr "映像版本是必填的。"
 msgid "Import"
 msgstr "导入"
 
-#: ../html/src/manager/images/image-import.tsx:314
-#: ../html/src/manager/images/image-profile-edit.tsx:481
-#: ../html/src/manager/images/image-store-edit.tsx:202
-#: ../html/src/manager/proxy/container-config.tsx:390
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:406
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:186
-msgid "Clear fields"
-msgstr "清除字段"
-
 #: ../html/src/manager/images/image-profile-edit.tsx:278
 msgid "Target Image Store"
 msgstr "目标映像存储区"
@@ -3946,10 +4541,6 @@ msgstr "（过时）"
 msgid "Updates"
 msgstr "更新"
 
-#: ../html/src/manager/images/image-view.tsx:675
-msgid "Last Modified"
-msgstr "上次修改时间"
-
 #: ../html/src/manager/images/image-view.tsx:736
 msgid "Delete Selected Image(s)"
 msgstr "删除选定的映像"
@@ -4221,10 +4812,6 @@ msgstr "确认日历刷新"
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Refreshing the calendar will reschedule all affected actions."
 msgstr "刷新日历会重安排所有受影响的操作。"
-
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
-msgid "Confirm if you want to proceed."
-msgstr "请确认是否继续。"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:41
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
@@ -4825,11 +5412,6 @@ msgstr "此代理的唯一且可由 DNS 解析的完全限定域名。"
 #: ../html/src/manager/proxy/container-config.tsx:202
 msgid "e.g., proxy.domain.com"
 msgstr "例如 proxy.domain.com"
-
-#: ../html/src/manager/proxy/container-config.tsx:206
-#: ../html/src/manager/proxy/container-config.tsx:217
-msgid "Has to be a valid FQDN address"
-msgstr "必须为有效的 FQDN 地址"
 
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "Parent FQDN"
@@ -5456,11 +6038,6 @@ msgstr "系统类型"
 msgid "Error Details"
 msgstr "错误细节"
 
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
-#: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:94
-msgid "Close"
-msgstr "关闭"
-
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:328
 msgid ""
 "Request interrupted or invalid response received from the server. Please "
@@ -5588,18 +6165,6 @@ msgstr "正在进行引导，您确定要关闭此页面吗？"
 msgid "Confidential Computing Capability"
 msgstr "机密计算功能"
 
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:36
-msgid "Yes"
-msgstr "是"
-
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
-#: ../html/src/manager/systems/coco/ssm-settings.tsx:74
-#: ../html/src/manager/systems/list-filter.tsx:37
-msgid "No"
-msgstr "否"
-
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "Cleanup timed out. Please check if the machine is reachable."
 msgstr "清理操作超时。请检查计算机是否可访问。"
@@ -5629,34 +6194,36 @@ msgstr "未知系统"
 msgid "System is not a peripheral server"
 msgstr "系统不是外设服务器"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:50
-msgid "New password generated and action for peripheral server scheduled"
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:33
+msgid "Setting new credentials for the report database failed"
+msgstr ""
+
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:51
+#, fuzzy
+#| msgid "New password generated and action for peripheral server scheduled"
+msgid "New password generated and changed on the peripheral server"
 msgstr "已生成新口令并为外设服务器安排了操作"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:91
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
 msgstr "报告数据库名称"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:95
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:96
 msgid "Report Database Host"
 msgstr "报告数据库主机"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:101
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:102
 msgid "Report Database User"
 msgstr "报告数据库用户"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:105
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:106
 msgid "Report Database Last Synced"
 msgstr "报告数据库上次同步"
 
-#: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
+#: ../html/src/manager/systems/details/mgr-server-info.tsx:114
 msgid "Regenerate Reporting Database Password"
 msgstr "重新生成报告数据库口令"
-
-#: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
-msgid "Confirm Deletion"
-msgstr "确认删除"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
@@ -6279,9 +6846,6 @@ msgstr "HTTP 错误代码 "
 #~ msgid "Bus"
 #~ msgstr "总线"
 
-#~ msgid "File"
-#~ msgstr "文件"
-
 #~ msgid "Format"
 #~ msgstr "格式"
 
@@ -6339,9 +6903,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Autostart"
 #~ msgstr "自动启动"
-
-#~ msgid "Persistent"
-#~ msgstr "持久"
 
 #~ msgid "Bridge"
 #~ msgstr "网桥"
@@ -6696,9 +7257,6 @@ msgstr "HTTP 错误代码 "
 #~ msgid "GID is a numeric value"
 #~ msgstr "GID 是一个数字值"
 
-#~ msgid "Permission mode"
-#~ msgstr "权限模式"
-
 #~ msgid "target directory permissions in octal form, like 0775"
 #~ msgstr "八进制格式（例如 0775）的目标目录权限"
 
@@ -6913,9 +7471,6 @@ msgstr "HTTP 错误代码 "
 #~ msgid "The FQDN of the machine where the containers are hosted"
 #~ msgstr "托管容器的计算机的 FQDN"
 
-#~ msgid "Server FQDN"
-#~ msgstr "服务器 FQDN"
-
 #~ msgid "CA certificate to use to sign the SSL certificate in PEM format"
 #~ msgstr "用于为 PEM 格式的 SSL 证书签名的 CA 证书"
 
@@ -6939,9 +7494,6 @@ msgstr "HTTP 错误代码 "
 
 #~ msgid "Add cluster"
 #~ msgstr "添加群集"
-
-#~ msgid "Add"
-#~ msgstr "添加"
 
 #~ msgid "Name:"
 #~ msgstr "名称："
