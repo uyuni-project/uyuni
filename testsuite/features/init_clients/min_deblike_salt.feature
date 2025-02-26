@@ -1,4 +1,4 @@
-# Copyright (c) 2016-2022 SUSE LLC
+# Copyright (c) 2016-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Debian-like minion
