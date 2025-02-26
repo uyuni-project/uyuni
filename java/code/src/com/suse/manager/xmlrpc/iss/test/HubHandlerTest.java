@@ -16,6 +16,7 @@ import static org.jmock.AbstractExpectations.throwException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.redhat.rhn.FaultException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
@@ -23,6 +24,9 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.HubFactory;
+import com.suse.manager.model.hub.IssHub;
+import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -253,5 +257,46 @@ public class HubHandlerTest extends BaseHandlerTestCase {
             TokenExchangeFailedException.class,
             () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
         );
+    }
+
+    @Test
+    public void throwsCorrectExceptionWhenReplaceTokensFailsCausedByIllegalStateException() {
+        HubHandler newHubHandler = new HubHandler();
+        assertThrows(FaultException.class,
+                () -> newHubHandler.replaceTokens(satAdmin, "uyuni-server.dev.local"));
+    }
+
+    @Test
+    public void throwsCorrectExceptionWhenRegisterPeripheralWithTokenFailsCausedByIllegalStateException() {
+        String dummyFqdn = "dummy-server.dev.local";
+        HubHandler newHubHandler = new HubHandler();
+
+        HubFactory newHubFactory = new HubFactory();
+        IssPeripheral peripheral = new IssPeripheral(dummyFqdn, "");
+        newHubFactory.save(peripheral);
+
+        assertThrows(FaultException.class,
+                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, "token", null));
+    }
+
+    @Test
+    public void yetThrowsCorrectExceptionWhenRegisterPeripheralWithTokenFailsCausedByIllegalStateException() {
+        String dummyFqdn = "dummy-server.dev.local";
+        HubHandler newHubHandler = new HubHandler();
+
+        HubFactory newHubFactory = new HubFactory();
+        IssHub hub = new IssHub(dummyFqdn, "");
+        newHubFactory.save(hub);
+
+        assertThrows(FaultException.class,
+                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, "token", null));
+    }
+
+    @Test
+    public void throwsCorrectExceptionWhenSetDetailsFailsCausedByIllegalStateException() {
+        HubHandler newHubHandler = new HubHandler();
+
+        assertThrows(FaultException.class,
+                () -> newHubHandler.setDetails(satAdmin, "dummy-server.dev.local", "HUB", null));
     }
 }

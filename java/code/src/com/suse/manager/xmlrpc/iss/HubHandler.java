@@ -170,6 +170,10 @@ public class HubHandler extends BaseHandler {
             LOGGER.error("Unable to parse the specified token", ex);
             throw new TokenExchangeFailedException(ex);
         }
+        catch (IllegalStateException ex) {
+            LOGGER.error("Illegal state", ex);
+            throw new InvalidParameterException(ex.getMessage());
+        }
         return 1;
     }
 
@@ -248,6 +252,10 @@ public class HubHandler extends BaseHandler {
             LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
             throw new TokenExchangeFailedException(ex);
         }
+        catch (IllegalStateException ex) {
+            LOGGER.error("Illegal state", ex);
+            throw new InvalidParameterException(ex.getMessage());
+        }
 
         return 1;
     }
@@ -319,7 +327,10 @@ public class HubHandler extends BaseHandler {
             LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
             throw new TokenExchangeFailedException(ex);
         }
-
+        catch (IllegalStateException ex) {
+            LOGGER.error("Illegal state", ex);
+            throw new InvalidParameterException(ex.getMessage());
+        }
         return 1;
     }
 
@@ -370,7 +381,10 @@ public class HubHandler extends BaseHandler {
         catch (IOException ex) {
             throw new ServerInvocationException(fqdn, ex);
         }
-
+        catch (IllegalStateException ex) {
+            LOGGER.error("Illegal state", ex);
+            throw new InvalidParameterException(ex.getMessage());
+        }
         return 1;
     }
     /**
@@ -396,7 +410,13 @@ public class HubHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
         ensureSatAdmin(loggedInUser);
-        hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        try {
+            hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        }
+        catch (IllegalArgumentException ex) {
+            LOGGER.error("Illegal state", ex);
+            throw new InvalidParameterException(ex.getMessage());
+        }
         return 1;
     }
 }
