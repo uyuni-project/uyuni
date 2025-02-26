@@ -63,6 +63,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.stream.Collectors;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -105,7 +106,7 @@ public class ErrataFactory extends HibernateFactory {
         DataResult<ErrataPackageFile> dr = executeSelectMode(
                 "ErrataCache_queries",
                 "package_associated_to_errata_and_channel", params);
-        return dr.stream().map(file -> file.getPackageId()).toList();
+        return dr.stream().map(file -> file.getPackageId()).collect(Collectors.toList());
     }
 
 
@@ -541,7 +542,7 @@ public class ErrataFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         return result.stream()
                 .map(row -> session.load(Errata.class, (Long) row.get("id")))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -751,7 +752,7 @@ public class ErrataFactory extends HibernateFactory {
     public static List<Tuple2<Long, Long>> retractedPackages(List<Long> pids, List<Long> sids) {
         List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackages",
                 Map.of("pids", pids, "sids", sids));
-        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).toList();
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
     /**
@@ -769,7 +770,7 @@ public class ErrataFactory extends HibernateFactory {
         }
         List<Object[]> results = singleton.listObjectsByNamedQuery("Errata.retractedPackagesByNevra",
                 Map.of("nevras", nevras, "sids", sids));
-        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).toList();
+        return results.stream().map(r -> new Tuple2<>((long)r[0], (long)r[1])).collect(Collectors.toList());
     }
 
     /**

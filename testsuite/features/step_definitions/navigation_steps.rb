@@ -431,7 +431,14 @@ end
 Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
   node = get_target(host)
   system_id = get_system_id(node)
-  visit("/rhn/systems/details/Overview.do?sid=#{system_id}")
+  overview_page = "/rhn/systems/details/Overview.do?sid=#{system_id}"
+  visit(overview_page)
+  # An automated refresh from the software might return another page (race condition)
+  # In that case, visit again the page
+  unless current_url.end_with? overview_page
+    log "Requested #{overview_page}, got #{current_url}"
+    visit(overview_page)
+  end
 end
 
 Given(/^I navigate to the Systems overview page of this "([^"]*)"$/) do |host|

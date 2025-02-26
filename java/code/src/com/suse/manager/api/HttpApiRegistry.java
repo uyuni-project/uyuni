@@ -122,10 +122,13 @@ public class HttpApiRegistry {
      * Contains the endpoints that should be exposed without requiring any authentication.
      * @return a Set containing the URL to the public endpoints
      */
+    // TODO: Revisit (unnecessary now)
     public static Set<String> getUnautenticatedRoutes() {
         return Set.of(
             "/rhn/manager/api/api/getVersion",
+            "/rhn/manager/api/api/getApiCallList",
             "/rhn/manager/api/api/systemVersion",
+            "/rhn/manager/api/api/getApiNamespaces",
             "/rhn/manager/api/api/productName",
             "/rhn/manager/api/org/createFirst"
         );
@@ -136,7 +139,7 @@ public class HttpApiRegistry {
      */
     private void registerAuthEndpoints() {
         registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", LoginController::apiLogin);
-        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
+        registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
     }
 
     /**

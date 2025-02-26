@@ -34,7 +34,6 @@ import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorResult;
@@ -121,11 +120,10 @@ import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateDriver;
 import com.redhat.rhn.taskomatic.task.systems.SystemsOverviewUpdateWorker;
 
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
-import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessage;
 import com.suse.manager.reactor.messaging.ChannelsChangedEventMessageAction;
-import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.ssl.SSLCertData;
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
@@ -167,6 +165,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -225,7 +224,7 @@ public class SystemManager extends BaseManager {
         List<SystemIDInfo> systemIDInfos =
                 this.serverFactory.lookupSystemsVisibleToUserWithEntitlement(user, entitlement);
 
-        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).toList();
+        List<Long> systemIDs = systemIDInfos.stream().map(SystemIDInfo::getSystemID).collect(Collectors.toList());
 
         Map<Long, List<SystemGroupID>> managedGroupsPerServer =
                 this.serverGroupFactory.lookupManagedSystemGroupsForSystems(systemIDs);
@@ -233,7 +232,7 @@ public class SystemManager extends BaseManager {
         return systemIDInfos.stream()
                 .map(s -> new SystemGroupsDTO(s.getSystemID(),
                         managedGroupsPerServer.getOrDefault(s.getSystemID(), new ArrayList<>())))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -245,7 +244,7 @@ public class SystemManager extends BaseManager {
         if (!Config.get().getBoolean(ConfigDefaults.TAKE_SNAPSHOTS)) {
             return;
         }
-        List<Long> serverIds = servers.stream().map(Server::getId).toList();
+        List<Long> serverIds = servers.stream().map(Server::getId).collect(Collectors.toList());
         List<Long> snapshottableServerIds = filterServerIdsWithFeature(serverIds, "ftr_snapshotting");
 
         // If the server is null or doesn't have the snapshotting feature, don't bother.
@@ -502,11 +501,11 @@ public class SystemManager extends BaseManager {
         Set<String> hwAddrs = hwAddress.map(Collections::singleton).orElse(emptySet());
         List<MinionServer> matchingProfiles = findMatchingEmptyProfiles(hostname, hwAddrs);
         if (!matchingProfiles.isEmpty()) {
-            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).toList());
+            throw new SystemsExistException(matchingProfiles.stream().map(Server::getId).collect(Collectors.toList()));
         }
 
         String uniqueId = SystemManagerUtils.createUniqueId(
-                Arrays.asList(hwAddress, hostname).stream().flatMap(Opt::stream).toList());
+                Stream.of(hwAddress, hostname).flatMap(Opt::stream).collect(Collectors.toList()));
 
         MinionServer server = new MinionServer();
         server.setName(systemName);
@@ -1702,7 +1701,7 @@ public class SystemManager extends BaseManager {
         params.put("feature", feat);
 
         DataResult<Map<String, Long>> result = m.execute(params, sids);
-        return result.stream().map(Map::values).flatMap(Collection::stream).toList();
+        return result.stream().map(Map::values).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     /**
@@ -2919,7 +2918,7 @@ public class SystemManager extends BaseManager {
         SelectMode mode = ModeFactory.getMode("System_queries", "system_ids");
         Map<String, Object> params = new HashMap<>();
         DataResult<Map<String, Object>> dr = mode.execute(params);
-        return dr.stream().map(data -> (Long)data.get("id")).toList();
+        return dr.stream().map(data -> (Long)data.get("id")).collect(Collectors.toList());
     }
 
     /**
@@ -3806,92 +3805,35 @@ public class SystemManager extends BaseManager {
     /**
      * Update MgrServerInfo with current grains data
      *
-     * @param minion the minion which is a Mgr Server
-     * @param grains grains from the minion
+     * @param server the server which is a Mgr Server
+     * @param info info from peripheral server
+     * @return return true when the report db infos where changed
      */
-    public static void updateMgrServerInfo(MinionServer minion, ValueMap grains) {
+    public static boolean updateMgrServerInfo(Server server, ManagerInfoJson info) {
         // Check for Uyuni Server and create basic info
-        if (grains.getOptionalAsBoolean("is_mgr_server").orElse(false)) {
-            MgrServerInfo serverInfo = Optional.ofNullable(minion.getMgrServerInfo()).orElse(new MgrServerInfo());
+        if (info != null) {
+            MgrServerInfo serverInfo = Optional.ofNullable(server.getMgrServerInfo()).orElse(new MgrServerInfo());
             String oldHost = serverInfo.getReportDbHost();
             String oldName = serverInfo.getReportDbName();
 
             serverInfo.setVersion(PackageEvrFactory.lookupOrCreatePackageEvr(null,
-                    grains.getOptionalAsString("version").orElse("0"),
-                    "1", minion.getPackageType()));
-            serverInfo.setReportDbName(grains.getValueAsString("report_db_name"));
-            serverInfo.setReportDbHost(grains.getValueAsString("report_db_host"));
-            serverInfo.setReportDbPort((grains.getValueAsLong("report_db_port").orElse(5432L)).intValue());
-            serverInfo.setServer(minion);
-            minion.setMgrServerInfo(serverInfo);
+                    info.getVersion(), "1", server.getPackageType()));
+            serverInfo.setReportDbName(info.getReportDbName());
+            serverInfo.setReportDbHost(info.getReportDbHost());
+            serverInfo.setReportDbPort(info.getReportDbPort());
+            serverInfo.setServer(server);
+            server.setMgrServerInfo(serverInfo);
 
-            if (!StringUtils.isAnyBlank(oldHost, oldName) &&
+            // something changed, we better reset the user
+            return StringUtils.isAnyBlank(oldHost, oldName) ||
                     !(oldHost.equals(serverInfo.getReportDbHost()) &&
-                            oldName.equals(serverInfo.getReportDbName()))) {
-                // something changed, we better reset the user
-                setReportDbUser(minion, false);
-            }
+                            oldName.equals(serverInfo.getReportDbName()));
         }
         else {
-            ServerFactory.dropMgrServerInfo(minion);
+            ServerFactory.dropMgrServerInfo(server);
             // Should we try to drop the credentials on the reportdb?
         }
-    }
-
-    /**
-     * Set the User and Password for the report database in MgrServerInfo.
-     * It trigger also a state apply to set this user in the report database.
-     *
-     * @param minion the Mgr Server
-     * @param forcePwChange force a password change
-     */
-    public static void setReportDbUser(MinionServer minion, boolean forcePwChange) {
-        // Create a report db user when system is a mgr server
-        if (!minion.isMgrServer()) {
-            return;
-        }
-        // create default user with random password
-        MgrServerInfo mgrServerInfo = minion.getMgrServerInfo();
-        if (StringUtils.isAnyBlank(mgrServerInfo.getReportDbName(), mgrServerInfo.getReportDbHost())) {
-            // no reportdb configured
-            return;
-        }
-
-        String password = RandomStringUtils.random(24, 0, 0, true, true, null, new SecureRandom());
-        ReportDBCredentials credentials = Optional.ofNullable(mgrServerInfo.getReportDbCredentials())
-            .map(existingCredentials -> {
-                if (forcePwChange) {
-                    existingCredentials.setPassword(password);
-                    CredentialsFactory.storeCredentials(existingCredentials);
-                }
-
-                return existingCredentials;
-            })
-            .orElseGet(() -> {
-                String randomSuffix = RandomStringUtils.random(8, 0, 0, true, false, null, new SecureRandom());
-                // Ensure the username is stored lowercase in the database, since the script uyuni-setup-reportdb-user
-                // will convert it to lowercase anyway
-                String username = "hermes_" + randomSuffix.toLowerCase();
-
-                ReportDBCredentials reportCredentials = CredentialsFactory.createReportCredentials(username, password);
-                CredentialsFactory.storeCredentials(reportCredentials);
-
-                return reportCredentials;
-            });
-
-        mgrServerInfo.setReportDbCredentials(credentials);
-
-        Map<String, Object> pillar = new HashMap<>();
-        pillar.put("report_db_user", credentials.getUsername());
-        pillar.put("report_db_password", credentials.getPassword());
-
-        MessageQueue.publish(new ApplyStatesEventMessage(
-                minion.getId(),
-                minion.getCreator() != null ? minion.getCreator().getId() : null,
-                        false,
-                        pillar,
-                        ApplyStatesEventMessage.REPORTDB_USER
-                ));
+        return false;
     }
 
     /**

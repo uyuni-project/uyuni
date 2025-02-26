@@ -647,7 +647,7 @@ public class ActionFactory extends HibernateFactory {
             List<Action> results = findDependentActions.list();
             returnSet.addAll(results);
             // Reset list of actions for the next hierarchy level:
-            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).toList();
+            actionsAtHierarchyLevel = results.stream().map(a -> a.getId()).collect(Collectors.toList());
         }
         while (!actionsAtHierarchyLevel.isEmpty());
 

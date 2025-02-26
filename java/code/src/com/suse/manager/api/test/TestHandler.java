@@ -19,12 +19,12 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 
 import com.suse.manager.api.ReadOnly;
 
-import org.apache.commons.lang3.StringUtils;
-
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * API handler with multiple methods for unit testing
@@ -50,7 +50,7 @@ public class TestHandler extends BaseHandler {
     public Map<String, Object> basicTypes(Integer myInteger, String myString, Boolean myBoolean) {
         return Map.of(
                 "myInteger", myInteger,
-                "myString", StringUtils.defaultString(myString, "-empty-"),
+                "myString", Objects.toString(myString, "-empty-"),
                 "myBoolean", myBoolean);
     }
 
@@ -95,7 +95,7 @@ public class TestHandler extends BaseHandler {
      * @return the sorted list of longs
      */
     public List<Long> sortLongList(List<Long> myList) {
-        return myList.stream().sorted().toList();
+        return myList.stream().sorted().collect(Collectors.toList());
     }
 
     /**
@@ -104,7 +104,7 @@ public class TestHandler extends BaseHandler {
      * @return the sorted list of strings
      */
     public List<String> sortStringList(List<String> myList) {
-        return myList.stream().sorted().toList();
+        return myList.stream().sorted().collect(Collectors.toList());
     }
 
     /**
@@ -150,7 +150,7 @@ public class TestHandler extends BaseHandler {
      */
     @ReadOnly
     public List<Object> listOfMaps(List<Map<String, Object>> myList) {
-        return myList.stream().flatMap(m -> m.values().stream()).toList();
+        return myList.stream().flatMap(m -> m.values().stream()).collect(Collectors.toList());
     }
 
     /**

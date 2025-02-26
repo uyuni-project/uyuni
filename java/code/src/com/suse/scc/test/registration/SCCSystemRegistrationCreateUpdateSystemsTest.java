@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
 import com.suse.scc.model.SCCRegisterSystemJson;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.Test;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
@@ -204,8 +206,13 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
      * @throws URISyntaxException
      */
     public TestSCCWebClient getDefaultTestSCCWebClient() throws URISyntaxException {
-        TestSCCWebClient sccWebClient = new TestSCCWebClient(new SCCConfig(
-                new URI("https://localhost"), "username", "password", "uuid")) {
+        SCCConfig sccConfig = new SCCConfigBuilder()
+                .setUrl(new URI("https://localhost"))
+                .setUsername("username")
+                .setPassword("password")
+                .setUuid("uuid")
+                .createSCCConfig();
+        return new TestSCCWebClient(sccConfig) {
             @Override
             public SCCOrganizationSystemsUpdateResponse createUpdateSystems(
                     List<SCCRegisterSystemJson> systems, String username, String password
@@ -216,11 +223,10 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
                                 .map(system ->
                                         new SCCSystemCredentialsJson(system.getLogin(), system.getPassword(), 12345L)
                                 )
-                                .toList()
+                                .collect(Collectors.toList())
                 );
             }
         };
-        return sccWebClient;
     }
 
 }

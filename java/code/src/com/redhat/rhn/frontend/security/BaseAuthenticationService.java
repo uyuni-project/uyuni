@@ -25,7 +25,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 public abstract class BaseAuthenticationService implements AuthenticationService {
 
-    protected boolean requestURIRequiresAuthentication(final HttpServletRequest request) {
+    /**
+     * {@inheritDoc}
+     */
+    public boolean requestURIRequiresAuthentication(final HttpServletRequest request) {
         return !CollectionUtils.exists(getUnprotectedURIs(), uri -> request.getRequestURI().startsWith(uri.toString()));
     }
 

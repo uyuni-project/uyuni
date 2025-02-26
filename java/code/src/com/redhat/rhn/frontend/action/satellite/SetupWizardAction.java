@@ -21,6 +21,8 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
+import com.suse.manager.model.hub.HubFactory;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -61,11 +63,10 @@ public class SetupWizardAction extends RhnAction {
     /**
      * @param mapping the Action mapping object
      * @param request current request object
-     * @throws Exception if parsing of navigation XML fails
      */
-    private void setAttributes(ActionMapping mapping, HttpServletRequest request)
-        throws Exception {
-        request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null);
+    private void setAttributes(ActionMapping mapping, HttpServletRequest request) {
+        HubFactory hubFactory = new HubFactory();
+        request.setAttribute(ISS_MASTER, IssFactory.getCurrentMaster() == null && !hubFactory.isISSPeripheral());
         ContentSyncManager csm = new ContentSyncManager();
         request.setAttribute(REFRESH_NEEDED, csm.isRefreshNeeded(null));
 

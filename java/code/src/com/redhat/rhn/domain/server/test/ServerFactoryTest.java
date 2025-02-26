@@ -128,6 +128,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * ServerFactoryTest
@@ -1141,7 +1142,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
-        List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).toList();
+        List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
 
         Map<LocalCall<?>, List<MinionSummary>> localCallListMap =
                 SALT_SERVER_ACTION_SERVICE.errataAction(minionSummaries, Collections.singleton(e1.getId()), false);

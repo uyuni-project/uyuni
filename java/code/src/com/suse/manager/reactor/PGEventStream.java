@@ -51,6 +51,7 @@ import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 import java.util.stream.Stream;
@@ -76,7 +77,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
                     .namingPattern(i == 0 ? "salt-global-event-thread-%d" : String.format("salt-event-thread-%d", i))
                     .build()
         )
-    ).toList();
+    ).collect(Collectors.toList());
 
 
     /**
@@ -141,7 +142,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
 
                         List<Long> missingJobs = IntStream.range(0, allJobs.size())
                             .mapToObj(i -> executorServices.get(i).getActiveCount() > 0 ? 0 : allJobs.get(i))
-                            .toList();
+                            .collect(Collectors.toList());
 
                         if (missingJobs.stream().mapToLong(l -> l).sum() > 0) {
                             LOG.warn("Found {} events without a job. Scheduling...", missingJobs);
@@ -171,7 +172,7 @@ public class PGEventStream extends AbstractEventStream implements PGNotification
     public void notification(int processId, String channelName, String payload) {
         List<Long> counts = Arrays.stream(payload.split(","))
                 .map(Long::valueOf)
-                .toList();
+                .collect(Collectors.toList());
         notification(counts);
     }
 

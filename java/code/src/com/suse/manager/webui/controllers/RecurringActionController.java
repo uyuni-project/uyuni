@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -171,7 +172,7 @@ public class RecurringActionController {
                     type, id, user, pc, PagedSqlQueryBuilder::parseFilterAsText);
             return json(response, members.stream()
                     .map(SimpleMinionJson::getId)
-                    .toList());
+                    .collect(Collectors.toList()));
         }
 
         members = RecurringActionManager.listEntityMembers(
@@ -276,7 +277,7 @@ public class RecurringActionController {
         return actions
                 .stream()
                 .map(RecurringActionScheduleJson::new)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     private static RecurringActionDetailsDto actionToDetailsDto(RecurringAction action) {
@@ -352,7 +353,7 @@ public class RecurringActionController {
         List<String> mods = configs.stream()
                 .sorted(Comparator.comparingLong(RecurringStateConfig::getPosition))
                 .map(RecurringStateConfig::getStateName)
-                .toList();
+                .collect(Collectors.toList());
 
         try {
             Action a = ActionManager.scheduleApplyStates(user,

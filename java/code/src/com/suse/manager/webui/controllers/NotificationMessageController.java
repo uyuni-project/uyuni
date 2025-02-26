@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -158,7 +159,7 @@ public class NotificationMessageController {
         List<UserNotification> notifications = messageIds.stream()
                 .map(id -> UserNotificationFactory.lookupByUserAndMessageId(id, user))
                 .flatMap(Optional::stream)
-                .toList();
+                .collect(Collectors.toList());
 
         UserNotificationFactory.delete(notifications);
 
@@ -295,6 +296,6 @@ public class NotificationMessageController {
     public List<NotificationMessageJson> getJSONNotificationMessages(List<UserNotification> list, User user) {
         return list.stream()
                 .map(un -> new NotificationMessageJson(un.getMessage(), un.getRead()))
-                .toList();
+                .collect(Collectors.toList());
     }
 }

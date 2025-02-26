@@ -764,7 +764,7 @@ public class SaltService implements SystemQuery, SaltApi {
             return result.entrySet().stream()
                     .filter(e -> e.getValue().result().isPresent() && Boolean.TRUE.equals(e.getValue().result().get()))
                     .map(Entry::getKey)
-                    .toList();
+                    .collect(Collectors.toList());
         }
         catch (SaltException e) {
             throw new RhnRuntimeException(e);

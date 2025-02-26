@@ -134,7 +134,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             SystemEntitlementManager systemEntitlementManager,
             User creator, String proxyName, Set<String> fqdns, Integer port, String sshPublicKey
     ) {
-        Optional<Server> existing = findByAnyFqdn(fqdns);
+        Optional<Server> existing = ServerFactory.findByAnyFqdn(fqdns);
         if (existing.isPresent()) {
             Server server = existing.get();
             if (!(server.hasEntitlement(EntitlementManager.FOREIGN) ||
@@ -229,15 +229,5 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         }
 
         return new String(serverServer.getProxyInfo().getSshPublicKey());
-    }
-
-    private Optional<Server> findByAnyFqdn(Set<String> fqdns) {
-        for (String fqdn : fqdns) {
-            Optional<Server> server = ServerFactory.findByFqdn(fqdn);
-            if (server.isPresent()) {
-                return server;
-            }
-        }
-        return Optional.empty();
     }
 }

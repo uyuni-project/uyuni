@@ -366,7 +366,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void addServersToGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).toList();
+                .map(Server::getId).collect(Collectors.toList());
 
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -449,7 +449,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static void removeServersFromGroup(Collection<Server> servers, ServerGroup serverGroup) {
         List<Long> serverIdsToAdd = servers.stream().filter(s -> s.getOrgId().equals(serverGroup.getOrgId()))
-                .map(Server::getId).toList();
+                .map(Server::getId).collect(Collectors.toList());
 
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
@@ -539,7 +539,7 @@ public class ServerFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public static List<Long> findSystemsPendingRebootActions(List<SystemOverview> systems) {
-        List<Long> sids = systems.stream().map(SystemOverview::getId).toList();
+        List<Long> sids = systems.stream().map(SystemOverview::getId).collect(Collectors.toList());
         Session session = HibernateFactory.getSession();
         Query<Long> query = session.getNamedQuery("Server.findServersPendingRebootAction");
         query.setParameter("systemIds", sids);
@@ -627,7 +627,7 @@ public class ServerFactory extends HibernateFactory {
         DataResult<Map<String, Object>> dr = mode.execute(params);
 
         return dr.stream().map(m -> new SystemIDInfo((Long) m.get("id"), (String) m.get("name")))
-                .toList();
+                .collect(Collectors.toList());
     }
 
     /**
@@ -1033,6 +1033,21 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<String> listFqdns(Long sid) {
         return SINGLETON.listObjectsByNamedQuery("Server.listFqdns", Map.of("sid", sid));
+    }
+
+    /**
+     * Find Server by a set of possible FQDNs
+     * @param fqdns the set of FQDNs
+     * @return return the first Server found if any
+     */
+    public static Optional<Server> findByAnyFqdn(Set<String> fqdns) {
+        for (String fqdn : fqdns) {
+            Optional<Server> server = findByFqdn(fqdn);
+            if (server.isPresent()) {
+                return server;
+            }
+        }
+        return Optional.empty();
     }
 
     /**
@@ -1572,16 +1587,16 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Remove MgrServerInfo from minion
      *
-     * @param minion the minion
+     * @param server the minion
      */
-    public static void dropMgrServerInfo(MinionServer minion) {
-        MgrServerInfo serverInfo = minion.getMgrServerInfo();
+    public static void dropMgrServerInfo(Server server) {
+        MgrServerInfo serverInfo = server.getMgrServerInfo();
         if (serverInfo == null) {
             return;
         }
         ReportDBCredentials credentials = serverInfo.getReportDbCredentials();
         CredentialsFactory.removeCredentials(credentials);
         SINGLETON.removeObject(serverInfo);
-        minion.setMgrServerInfo(null);
+        server.setMgrServerInfo(null);
     }
 }

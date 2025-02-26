@@ -32,6 +32,7 @@ import com.suse.cloud.CloudPaygManager;
 import com.suse.scc.SCCSystemRegistrationManager;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfig;
+import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCSubscriptionJson;
 
@@ -94,7 +95,7 @@ public class MirrorCredentialsManager {
                             Comparator.comparing(MirrorCredentialsDto::isPrimary).reversed()
                                 .thenComparing(MirrorCredentialsDto::getId)
                         )
-                        .toList();
+                        .collect(Collectors.toList());
         if (log.isDebugEnabled()) {
             log.debug("Found {} mirror credentials", credsList.size());
         }
@@ -209,7 +210,12 @@ public class MirrorCredentialsManager {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
             String uuid = ContentSyncManager.getUUID();
-            SCCConfig sccConfig = new SCCConfig(url, "", "", uuid);
+            SCCConfig sccConfig = new SCCConfigBuilder()
+                    .setUrl(url)
+                    .setUsername("")
+                    .setPassword("")
+                    .setUuid(uuid)
+                    .createSCCConfig();
             SCCClient sccClient = new SCCWebClient(sccConfig);
             SCCSystemRegistrationManager sccRegManager = new SCCSystemRegistrationManager(sccClient);
             sccRegManager.deregister(itemList, true);

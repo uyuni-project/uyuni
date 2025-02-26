@@ -308,7 +308,7 @@ public class MaintenanceScheduleController {
 
         if ("id".equals(pageHelper.getFunction())) {
             // Return only IDs for "select all" function
-            return json(response, systems.stream().map(SystemScheduleDto::getId).toList(),
+            return json(response, systems.stream().map(SystemScheduleDto::getId).collect(Collectors.toList()),
                     new TypeToken<>() { });
         }
 
@@ -431,7 +431,7 @@ public class MaintenanceScheduleController {
     }
 
     private static List<MaintenanceScheduleJson> schedulesToJson(List<MaintenanceSchedule> schedules) {
-        return schedules.stream().map(MaintenanceScheduleController::scheduleToJson).toList();
+        return schedules.stream().map(MaintenanceScheduleController::scheduleToJson).collect(Collectors.toList());
     }
 
     private static MaintenanceScheduleJson scheduleToJson(MaintenanceSchedule schedule) {

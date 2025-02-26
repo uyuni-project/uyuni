@@ -18,6 +18,7 @@ import static java.util.Optional.of;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -28,6 +29,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -71,6 +73,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.security.auth.login.LoginException;
 
@@ -146,6 +149,62 @@ public class UserManager extends BaseManager {
          * and we will end up with an empty DataResult object.
          */
         return (!dr.isEmpty());
+    }
+
+    /**
+     * Get a concatenated stream of namespaces granted direct (to the user)
+     * or indirect (via access groups) access.
+     * @param user the user
+     * @return the stream of permitted namespaces
+     */
+    public static Stream<Namespace> getPermittedNamespaces(User user) {
+        return Stream.concat(user.getNamespaces().stream(),
+                user.getAccessGroups().stream().flatMap(g -> g.getNamespaces().stream()));
+    }
+
+    /**
+     * Ensures that the current user is permitted access to a namespace with the specified access mode
+     * @param user the user
+     * @param namespace the namespace
+     * @param mode the access mode (view/modify)
+     * @throws PermissionException if the user is not permitted to access the specified namespace
+     */
+    public static void ensureRoleBasedAccess(User user, String namespace, Namespace.AccessMode mode) {
+        if (!verifyRoleBasedAccess(user, namespace, mode)) {
+            if (user == null) {
+                log.debug("Access restricted for unauthenticated user to namespace '{}' [{}]", namespace, mode);
+            }
+            else {
+                log.debug("Access restricted for user '{}' to namespace '{}' [{}]",
+                        user.getLogin(), namespace, mode);
+            }
+            if (ConfigDefaults.get().isRbacEnabled()) {
+                throw new PermissionException("You don't have the necessary permissions to access this resource.");
+            }
+        }
+    }
+
+    /**
+     * Returns {@code true} if the current user is permitted access to a namespace with the specified access mode
+     * @param user the user
+     * @param namespace the namespace string
+     * @param mode the access mode (view/modify)
+     * @return {@code true} if the user is permitted access to the specified namespace
+     */
+    private static boolean verifyRoleBasedAccess(User user, String namespace, Namespace.AccessMode mode) {
+        if (user == null) {
+            return false;
+        }
+
+        if (user.hasRole(RoleFactory.SAT_ADMIN)) {
+            return true;
+        }
+
+        // Search through a concatenated stream of namespaces granted direct (to the user)
+        // and indirect (via access groups) access.
+        return getPermittedNamespaces(user)
+                .filter(ns -> namespace.equals(ns.getNamespace()))
+                .anyMatch(ns -> mode == null || ns.getAccessMode().equals(mode));
     }
 
     /**
