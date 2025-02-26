@@ -336,12 +336,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/leap/15.4
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/leap/15.5
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
-          context: ./testsuite/dockerfiles/opensuse/leap/15.4
+          context: ./testsuite/dockerfiles/opensuse/leap/15.5
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
