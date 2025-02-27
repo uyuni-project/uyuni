@@ -85,11 +85,7 @@
                 </tbody>
             </table></div></div>
 
-<<<<<<< HEAD
             <div id="action-chain-save-input" class="form-group">
-=======
-            <div id="action-chain-save-input" class="form-group" hidden>
->>>>>>> 998ff4aad6d (Fixed whitespace issue in java files, removed less files)
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button class="btn btn-primary" id="save"><bean:message key="actionchain.jsp.save"/></button>
                     <button class="btn btn-default" id="cancel"><bean:message key="actionchain.jsp.cancel"/></button>
