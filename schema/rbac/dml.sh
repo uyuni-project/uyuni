@@ -1,11 +1,8 @@
 #!/bin/bash
 #
-# Generate rbac data DML and execute on container server
+# Generate RBAC data DML and execute on container server
 
-set +x
-
-python3 generate_dml.py data/endpoints/* > generated.sql
-
-mgrctl cp ./generated.sql server:generated.sql
-mgrctl exec -ti -- "spacewalk-sql -i < generated.sql"
-rm generated.sql
+cat <(python3 generate_dml.py data/endpoints/*) \
+    <(echo "call access.grant_access(34, '%');") \
+    | mgrctl exec -i -- spacewalk-sql -i \
+    && echo "RBAC data inserted."
