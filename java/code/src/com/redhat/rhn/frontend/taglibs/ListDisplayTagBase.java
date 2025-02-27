@@ -320,6 +320,7 @@ public class ListDisplayTagBase extends BodyTagSupport {
         HtmlTag btn = new HtmlTag("button");
         btn.setAttribute("class", "btn btn-default spacewalk-button-filter");
         btn.setAttribute("type", "submit");
+        btn.setAttribute("title", ls.getMessage(RequestContext.FILTER_KEY));
         btn.setAttribute("name", FILTER_DISPATCH);
         btn.setAttribute("value", ls.getMessage(RequestContext.FILTER_KEY));
 

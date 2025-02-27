@@ -290,7 +290,13 @@ class FormulaSelection extends React.Component<Props, State> {
                 className="btn-default"
                 handler={this.resetChanges}
               />
-              <AsyncButton id="save-btn" icon="fa-floppy-o" action={this.saveRequest} text={t("Save")} />
+              <AsyncButton
+                className="btn-primary"
+                id="save-btn"
+                icon="fa-floppy-o"
+                action={this.saveRequest}
+                text={t("Save")}
+              />
             </span>
           </div>
         </SectionToolbar>
