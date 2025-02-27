@@ -1896,6 +1896,12 @@ public class SaltUtils {
     }
 
     private void handleInventoryRefresh(Action action, ServerAction serverAction, JsonElement jsonResult) {
+        if (jsonResult == null) {
+            serverAction.setStatus(ActionFactory.STATUS_FAILED);
+            serverAction.setResultMsg(
+                    "Error while requesting inventory data from target system: Got no result from system");
+            return;
+        }
         String inventoryPath = ((InventoryAction) action).getDetails().getInventoryPath();
         if (serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED)) {
             try {
