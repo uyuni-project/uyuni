@@ -562,7 +562,7 @@ public class HubManager {
                     },
                     () -> {
                         LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
+                        throw new IllegalArgumentException("Server %s not found with role %s".formatted(fqdn, role));
                     });
             case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn).ifPresentOrElse(issPeripheral -> {
                         if (data.containsKey("root_ca")) {
@@ -572,11 +572,11 @@ public class HubManager {
                     },
                     ()-> {
                         LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
+                        throw new IllegalArgumentException("Server %s not found with role %s".formatted(fqdn, role));
                     });
             default -> {
                 LOG.error("Unknown role {}", role);
-                throw new IllegalArgumentException("Unknown role");
+                throw new IllegalArgumentException("Unknown role %s".formatted(role));
             }
         }
     }

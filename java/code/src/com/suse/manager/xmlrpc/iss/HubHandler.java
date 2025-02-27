@@ -15,6 +15,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
@@ -396,7 +397,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "fqdn", "The FDN of Hub or Periperal server to lookup details for.")
      * @apidoc.param #param_desc("string", "role", "The role which should be updated. Either 'HUB' or 'PERIPHERAL'.")
      * @apidoc.param
-     *      #struct_begin("details")
+     *      #struct_begin("data")
      *          #prop_desc("string", "root_ca", "The root ca")
      *          #prop_desc("string", "gpg_key", "The root gpg key - only for role HUB")
      *      #struct_end()
@@ -404,6 +405,7 @@ public class HubHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
         ensureSatAdmin(loggedInUser);
+        ensureValidRole(role);
         try {
             hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
         }
@@ -411,5 +413,15 @@ public class HubHandler extends BaseHandler {
             throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
+    }
+
+    private void ensureValidRole(String role) throws PermissionCheckFailureException {
+        try {
+            IssRole.valueOf(role);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logGetErrorString(
+                    role, "Invalid role, must either be HUB or PERIPHERAL"));
+        }
     }
 }
