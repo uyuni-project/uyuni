@@ -15,8 +15,13 @@
 package com.redhat.rhn.domain.server;
 
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 /**
  * A ServerGroup that corresponds to an entitlement.
  */
+@Entity
+@DiscriminatorValue("not null")
 public class EntitlementServerGroup extends ServerGroup {
 }

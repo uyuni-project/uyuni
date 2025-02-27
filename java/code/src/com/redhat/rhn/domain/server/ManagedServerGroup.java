@@ -21,14 +21,22 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 
 /**
  * This class represents the User Managed Server Groups
  * i.e. the types
  */
+@Entity
+@DiscriminatorValue("null")
 public class ManagedServerGroup extends ServerGroup {
 
+    @Transient
     private Set<User> associatedAdmins = new HashSet<>();
+    @Transient
     private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**

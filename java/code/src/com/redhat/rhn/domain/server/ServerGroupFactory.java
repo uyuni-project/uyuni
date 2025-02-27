@@ -35,6 +35,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -327,7 +328,11 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the org.
      */
     public static List<EntitlementServerGroup> listEntitlementGroups(Org org) {
-        return listServerGroups(org, "ServerGroup.lookupEntitlementGroupsByOrg");
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT sg.*
+                        FROM rhnServerGroup sg WHERE sg.org_id = :org AND sg.group_type IS NOT NULL
+                """, EntitlementServerGroup.class)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG).getResultList();
     }
 
     /**
@@ -337,7 +342,11 @@ public class ServerGroupFactory extends HibernateFactory {
      *                      the org.
      */
     public static List<ManagedServerGroup> listManagedGroups(Org org) {
-        return listServerGroups(org, "ServerGroup.lookupManagedGroupsByOrg");
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT sg.*
+                        FROM rhnServerGroup sg WHERE sg.org_id = :org AND sg.group_type IS NULL
+                """, ManagedServerGroup.class)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG).getResultList();
     }
 
     private static <T> List<T> listServerGroups(Org org, String queryName) {

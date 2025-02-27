@@ -3,65 +3,30 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.ServerGroup" table="rhnServerGroup">
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-                <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                    <param name="sequence_name">rhn_server_group_id_seq</param>
-                    <param name="increment_size">1</param>
-                </generator>
-        </id>
-        <discriminator column = "group_type" type="string"/>
-
-        <property name="name" column="name" type="string" length="64" />
-        <property name="description" column="description" type="string" length="1024" />
-
-        <property name="created" column="created" type="timestamp" insert="false" update="false"/>
-        <property name="modified" column="modified" type="timestamp" insert="false" update="false"/>
-
-        <many-to-one name="groupType" class="com.redhat.rhn.domain.server.ServerGroupType"
-                     column="group_type" cascade="none" insert="false" update="false" lazy="false"/>
-
-        <many-to-one name="org" class="com.redhat.rhn.domain.org.Org" column="org_id"/>
-
-        <set name="pillars" lazy="true" inverse="true" cascade="all-delete-orphan" access="field">
-            <key column="group_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
-        </set>
-
-        <subclass name="com.redhat.rhn.domain.server.ManagedServerGroup" discriminator-value="null">
-            <set name="associatedAdmins" lazy="true" table="rhnUserServerGroupPerms" cascade="save-update">
-                <key column="server_group_id"/>
-                <many-to-many class="com.redhat.rhn.domain.user.legacy.UserImpl" column="user_id"/>
-            </set>
-        </subclass>
-
-        <subclass name="com.redhat.rhn.domain.server.EntitlementServerGroup" discriminator-value="not null">
-        </subclass>
-    </class>
-
-    <query name="ServerGroup.lookupByIdAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.server.ServerGroup as s where s.id = :id
-                 and s.org = :org and (s.groupType is null)]]>
-    </query>
-
-    <query name="ServerGroup.lookupByNameAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.server.ServerGroup as s where s.name = :name
-                 and s.org = :org and (s.groupType is null)]]>
-    </query>
-
-    <query name="ServerGroup.lookupByTypeAndOrg">
-        <![CDATA[from com.redhat.rhn.domain.server.ServerGroup as s where s.groupType = :groupType
-                 and s.org = :org]]>
-    </query>
-
-    <query name="ServerGroup.lookupByTypeLabelAndOrg">
-        <![CDATA[ from com.redhat.rhn.domain.server.ServerGroup as s where
-                 s.groupType.label = :label
-                 and s.org = :org
-            ]]>
-    </query>
-
+    
+    <sql-query name="ServerGroup.lookupByIdAndOrg">
+        <![CDATA[SELECT * FROM rhnServerGroup sg
+            WHERE sg.id = :id AND sg.org_id = :org AND sg.group_type IS NULL ]]>
+        <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+    
+    <sql-query name="ServerGroup.lookupByNameAndOrg">
+        <![CDATA[SELECT * FROM rhnServerGroup sg 
+	WHERE sg.name = :name AND sg.org_id = :org AND sg.group_type IS NULL]]>
+        <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+    
+    <sql-query name="ServerGroup.lookupByTypeAndOrg">
+        <![CDATA[SELECT * FROM rhnServerGroup sg WHERE sg.group_type = :groupType AND sg.org_id = :org]]>
+        <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+    
+    <sql-query name="ServerGroup.lookupByTypeLabelAndOrg">
+            <![CDATA[SELECT sg.* FROM rhnServerGroup sg JOIN rhnServerGroupType sgt ON sg.group_type = sgt.id
+            WHERE sg.org_id = :org and sgt.label = label]]>
+        <return alias="sg" class="com.redhat.rhn.domain.server.ServerGroup"/>
+    </sql-query>
+    
     <sql-query name="ServerGroup.lookupAdministeredServerGroups">
         <![CDATA[ select {sg.*}
                                         from rhnServerGroup SG,
@@ -131,16 +96,6 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                                 where id = :sgid
                    ]]>
     </sql-query>
-
-    <query name="ServerGroup.lookupEntitlementGroupsByOrg">
-        <![CDATA[from com.redhat.rhn.domain.server.EntitlementServerGroup as s where
-                                 s.org = :org and (s.groupType is not null)]]>
-    </query>
-
-    <query name="ServerGroup.lookupManagedGroupsByOrg">
-        <![CDATA[from com.redhat.rhn.domain.server.ManagedServerGroup as s where
-                                 s.org = :org and (s.groupType is null)]]>
-    </query>
 
     <sql-query name="ServerGroup.lookupActiveServerIds">
         <return-scalar type="long" column="id"/>
