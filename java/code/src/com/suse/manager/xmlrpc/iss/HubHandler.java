@@ -63,6 +63,19 @@ public class HubHandler extends BaseHandler {
         this.hubManager = hubManagerIn;
     }
 
+    private String logGetErrorString(Throwable ex, String... args) {
+        return logGetErrorString(ex.getMessage(), args);
+    }
+
+    private String logGetErrorString(String message, String... args) {
+        String fullMessageString = String.join(" ", args);
+        if (!StringUtils.isEmpty(message)) {
+            fullMessageString += ": " + message;
+        }
+        LOGGER.error(fullMessageString, message);
+        return fullMessageString;
+    }
+
     /**
      * Generate a new access token for ISS for accessing this system
      * @param loggedInUser the user logged in. It must have the sat admin role.
@@ -78,19 +91,18 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             return hubManager.issueAccessToken(loggedInUser, fqdn);
         }
         catch (TokenException ex) {
-            LOGGER.error("Unable to issue a token for {}", fqdn, ex);
-            throw new TokenCreationException();
+            throw new TokenCreationException(logGetErrorString(ex, "Unable to issue a token for", fqdn));
         }
         catch (ConstraintViolationException ex) {
-            LOGGER.error("Unable to issue a token, it already exists for {}", fqdn, ex);
-            throw new TokenAlreadyExistsException();
+            throw new TokenAlreadyExistsException(logGetErrorString(ex,
+                    "Unable to issue a token, it already exists for", fqdn));
         }
     }
 
@@ -111,23 +123,22 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(token)) {
-            throw new InvalidParameterException("No token specified");
+            throw new InvalidParameterException(logGetErrorString("No token specified"));
         }
 
         try {
             hubManager.storeAccessToken(loggedInUser, fqdn, token);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to process the token from {}", fqdn, ex);
-            throw new InvalidTokenException();
+            throw new InvalidTokenException(logGetErrorString(ex, "Unable to process the token from", fqdn));
         }
         catch (ConstraintViolationException ex) {
-            LOGGER.error("Unable to store token, it already exists for {}", fqdn, ex);
-            throw new TokenAlreadyExistsException();
+            throw new TokenAlreadyExistsException(logGetErrorString(ex,
+                    "Unable to store token, it already exists for", fqdn));
         }
         return 1;
     }
@@ -147,31 +158,26 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             hubManager.replaceTokensHub(loggedInUser, fqdn);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex.getMessage());
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
         }
         catch (IllegalStateException ex) {
-            LOGGER.error("Illegal state", ex);
-            throw new InvalidParameterException(ex.getMessage());
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
     }
@@ -221,39 +227,35 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            throw new InvalidParameterException("No credentials specified");
+            throw new InvalidParameterException(logGetErrorString("No credentials specified"));
         }
 
         try {
             hubManager.register(loggedInUser, fqdn, username, password, rootCA);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex.getMessage());
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to connect to remote server", fqdn));
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to schedule root CA certificate update", fqdn));
         }
         catch (IllegalStateException ex) {
-            LOGGER.error("Illegal state", ex);
-            throw new InvalidParameterException(ex.getMessage());
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
 
         return 1;
@@ -296,39 +298,34 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(token)) {
-            throw new InvalidParameterException("No token");
+            throw new InvalidParameterException(logGetErrorString("No token"));
         }
 
         try {
             hubManager.register(loggedInUser, fqdn, token, rootCA);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex.getMessage());
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to schedule root CA certificate update", fqdn));
         }
         catch (IllegalStateException ex) {
-            LOGGER.error("Illegal state", ex);
-            throw new InvalidParameterException(ex.getMessage());
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
     }
@@ -367,23 +364,20 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             hubManager.deregister(loggedInUser, fqdn, onlyLocal);
         }
         catch (CertificateException ex) {
-            LOGGER.error("De-registration failed for {} ", fqdn, ex);
-            throw new InvalidCertificateException(ex.getMessage());
+            throw new InvalidCertificateException(logGetErrorString(ex, "De-registration failed for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex.getMessage());
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
         catch (IllegalStateException ex) {
-            LOGGER.error("Illegal state", ex);
-            throw new InvalidParameterException(ex.getMessage());
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
     }
@@ -414,8 +408,7 @@ public class HubHandler extends BaseHandler {
             hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
         }
         catch (IllegalArgumentException ex) {
-            LOGGER.error("Illegal state", ex);
-            throw new InvalidParameterException(ex.getMessage());
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
     }
