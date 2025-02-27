@@ -6,118 +6,99 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 <hibernate-mapping>
         <import class="com.redhat.rhn.domain.server.GuestAndNonVirtHostView"/>
 
-    <class name="com.redhat.rhn.domain.server.VirtualInstance" table="RhnVirtualInstance">
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">rhn_vi_id_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-
-        <property name="uuid" column="UUID" type="string" length="128"/>
-        <property name="confirmed" column="CONFIRMED" type="long"/>
-        <property name="created" column="CREATED" type="timestamp" insert="false" update="false"/>
-        <property name="modified" column="MODIFIED" type="timestamp" insert="false" update="false"/>
-
-        <many-to-one name="guestSystem"
-                     column="virtual_system_id "
-                     class="com.redhat.rhn.domain.server.Server"
-                     cascade="save-update"/>
-
-        <many-to-one name="hostSystem"
-                     column="host_system_id"
-                     class="com.redhat.rhn.domain.server.Server"
-                     cascade="save-update"/>
-
-        <one-to-one name="instanceInfo"
-                    class="com.redhat.rhn.domain.server.VirtualInstanceInfo"
-                    cascade="all"/>
-    </class>
-
-    <query name="VirtualInstance.lookupGuestBySidAndOrg">
+   <sql-query name="VirtualInstance.lookupGuestBySidAndOrg">
         <![CDATA[
-          from VirtualInstance guest
-          where guest.guestSystem.id = :sid and guest.guestSystem.org = :org
-        ]]>
-    </query>
-
-    <query name="VirtualInstance.lookupGuestBySid">
-        <![CDATA[
-          from VirtualInstance guest
-          where guest.guestSystem.id = :sid
-        ]]>
-    </query>
-
-    <query name="VirtualInstance.lookupVirtualInstanceByUuid">
-        <![CDATA[
-          from VirtualInstance guestVI
-          where guestVI.uuid = :uuid
-        ]]>
-    </query>
-
-    <query name="VirtualInstance.lookupHostVirtInstanceByHostId">
-        <![CDATA[
-          from VirtualInstance hostVI
-          where
-             hostVI.uuid is null
-             and hostVI.hostSystem.id = :hostId
-        ]]>
-    </query>
-
-    <query name="VirtualInstance.lookupHostVirtInstanceByHostIdAndUuid">
-        <![CDATA[
-          from VirtualInstance guestVI
-          where
-             guestVI.uuid = :uuid
-             and guestVI.hostSystem.id = :hostId
-        ]]>
-    </query>
-
-    <query name="VirtualInstance.isOutdatedVirtualInstance">
-        <![CDATA[
-        from VirtualInstance guest where guest = :guest
-            and guest.modified < (select max(guest2.modified) from VirtualInstance guest2
-                where guest2.uuid = guest.uuid)
-        ]]>
-    </query>
-
-    <sql-query name="VirtualInstance.findGuestsWithNonVirtHostByOrg">
-        <![CDATA[
-          select
-                guest.id as guest_id,
-                guest.org_id as guest_org_id,
-                guest.name as guest_name,
-                host.org_id as host_org_id,
-                host.id as host_id,
-                host.name as host_name
-          from
-            RhnVirtualInstance vi
-                inner join rhnServer guest on vi.virtual_system_id = guest.id
-                inner join rhnServer host on vi.host_system_id = host.id
-          where
-            guest.org_id = :org_id and
-            (host.org_id != :org_id  or
-            not exists (
-              select 1 from rhnServerGroupMembers sgm
-                        inner join rhnServerGroup sg on sgm.server_group_id = sg.id
-                        inner join rhnServerGroupType sgt on sg.group_type = sgt.id
-               where
-                    sgt.label = 'virtualization_host'
-                    and sgm.server_id = host.id
-            ))
+            SELECT vi.*
+            FROM RhnVirtualInstance vi
+            JOIN rhnServer guest ON vi.virtual_system_id = guest.id
+            JOIN rhnOrganization org ON guest.org_id = org.id  -- Assuming org is directly related to server
+            WHERE guest.id = :sid AND org.id = :orgId
         ]]>
     </sql-query>
 
-    <query name="VirtualInstance.findGuestsWithoutAHostByOrg">
+    <sql-query name="VirtualInstance.lookupGuestBySid">
         <![CDATA[
-          select
-            new GuestAndNonVirtHostView(guest.id, guest.org.id, guest.name)
-          from
-            VirtualInstance virtualInstance join virtualInstance.guestSystem guest
-          where
-            virtualInstance.hostSystem is null and
-            guest.org = :org
+            SELECT vi.*
+            FROM RhnVirtualInstance vi
+            JOIN rhnServer guest ON vi.virtual_system_id = guest.id
+            WHERE guest.id = :sid
         ]]>
-    </query>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.lookupVirtualInstanceByUuid">
+        <![CDATA[
+            SELECT *  -- Or specify columns if needed
+            FROM RhnVirtualInstance
+            WHERE uuid = :uuid
+        ]]>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.lookupHostVirtInstanceByHostId">
+        <![CDATA[
+            SELECT vi.*
+            FROM RhnVirtualInstance vi
+            JOIN rhnServer host ON vi.host_system_id = host.id
+            WHERE vi.uuid IS NULL AND host.id = :hostId
+        ]]>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.lookupHostVirtInstanceByHostIdAndUuid">
+        <![CDATA[
+            SELECT vi.*
+            FROM RhnVirtualInstance vi
+            JOIN rhnServer host ON vi.host_system_id = host.id
+            WHERE vi.uuid = :uuid AND host.id = :hostId
+        ]]>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.isOutdatedVirtualInstance">
+        <![CDATA[
+            SELECT vi1.*
+            FROM RhnVirtualInstance vi1
+            WHERE vi1.id = :guestId  -- You'll need to provide the guest's ID
+              AND vi1.modified < (
+                  SELECT MAX(vi2.modified)
+                  FROM RhnVirtualInstance vi2
+                  WHERE vi2.uuid = vi1.uuid
+              )
+        ]]>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.findGuestsWithNonVirtHostByOrg">
+        <![CDATA[
+            SELECT
+                guest.id AS guest_id,
+                guest.org_id AS guest_org_id,
+                guest.name AS guest_name,
+                host.org_id AS host_org_id,
+                host.id AS host_id,
+                host.name AS host_name
+            FROM
+                RhnVirtualInstance vi
+                INNER JOIN rhnServer guest ON vi.virtual_system_id = guest.id
+                INNER JOIN rhnServer host ON vi.host_system_id = host.id
+            WHERE
+                guest.org_id = :org_id AND
+                (host.org_id != :org_id OR
+                NOT EXISTS (
+                    SELECT 1 
+                    FROM rhnServerGroupMembers sgm
+                        INNER JOIN rhnServerGroup sg ON sgm.server_group_id = sg.id
+                        INNER JOIN rhnServerGroupType sgt ON sg.group_type = sgt.id
+                    WHERE
+                        sgt.label = 'virtualization_host' AND
+                        sgm.server_id = host.id
+                ))
+        ]]>
+    </sql-query>
+
+    <sql-query name="VirtualInstance.findGuestsWithoutAHostByOrg">
+        <![CDATA[
+        SELECT guest.id, guest.org_id, guest.name
+        FROM RhnVirtualInstance vi
+        JOIN rhnServer guest ON vi.virtual_system_id = guest.id
+        WHERE vi.host_system_id IS NULL AND guest.org_id = :org_id
+        ]]>
+    </sql-query>
+
 </hibernate-mapping>

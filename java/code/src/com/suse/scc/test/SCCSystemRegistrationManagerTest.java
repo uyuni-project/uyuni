@@ -347,7 +347,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         Server host = ServerTestUtils.createVirtHostWithGuests(user, 2, true, sysEntMgr);
         host.setHostname("LibVirtHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getVirtualGuest().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("qemu")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -437,7 +437,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         sysEntMgr.setBaseEntitlement(host, EntitlementManager.FOREIGN);
         host.setHostname("VMwareHost");
         host.setCpu(CPUTest.createTestCpu(host));
-        host.getGuests().stream()
+        host.getVirtualGuest().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("vmware")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()
@@ -541,7 +541,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         cpu.setNrThread(0L);
         host.setCpu(cpu);
         host.setRam(0L);
-        host.getGuests().stream()
+        host.getVirtualGuest().stream()
                 .forEach(vi -> vi.setType(VirtualInstanceFactory.getInstance().getVirtualInstanceType("aws_nitro")));
 
         SCCConfig sccConfig = new SCCConfigBuilder()

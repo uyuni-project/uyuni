@@ -174,7 +174,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 
         <one-to-one name="virtualInstance"
                     class="com.redhat.rhn.domain.server.VirtualInstance"
-                    property-ref="guestSystem"
+                    property-ref="guest"
                     cascade="save-update" lazy="proxy"/>
 
         <set name="history" cascade="all" lazy="true" inverse="true">

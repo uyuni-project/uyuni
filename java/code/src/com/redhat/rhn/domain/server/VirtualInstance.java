@@ -16,9 +16,22 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.util.Objects;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * VirtualInstance represents a virtual guest system. When the guest is
@@ -30,21 +43,35 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * being implemented in the RHN 500 release.
  *
  */
+@Entity
+@Table(name = "rhnVirtualInstance")
 public class VirtualInstance extends BaseDomainHelper {
 
     private static final VirtualInstanceInfo NULL_INFO = new VirtualInstanceInfo();
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vi_seq")
+    @SequenceGenerator(name = "vi_seq", sequenceName = "rhn_vi_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "virtual_system_id")
     private Server guest;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "host_system_id")
     private Server host;
-    private String uuid;
-    private Long confirmed;
-    private VirtualInstanceInfo info;
+    @Column(name = "UUID", length = 128)
+    private String uuid = "";
+    @Column(name = "CONFIRMED")
+    private Long confirmed = 0L;
+    @OneToOne(mappedBy = "parent", cascade =
+            {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
+    private VirtualInstanceInfo info = NULL_INFO;
 
     /**
      * Default constructor
      */
     public VirtualInstance() {
+        initInfo();
     }
 
     /**
@@ -294,40 +321,25 @@ public class VirtualInstance extends BaseDomainHelper {
         initInfo().setState(state);
     }
 
-    /**
-     * Two virtual instancess are considered equal when they share the same
-     * UUID.
-     *
-     * @param object The object to test against
-     *
-     * @return <code>true</code> if <code>object</code> is a VirtualInstance
-     * and has the same uuid as this VirtualInstance, <code>false</code>
-     * otherwise.
-     */
     @Override
-    public boolean equals(Object object) {
-        if (object == null || object.getClass() != getClass()) {
-            return false;
-        }
-
-        VirtualInstance that = (VirtualInstance) object;
-
-        return new EqualsBuilder()
-                .append(this.getUuid(), that.getUuid())
-                .append(this.getHostSystem(), that.getHostSystem())
-                .isEquals();
-    }
-
     /**
-     *
      * {@inheritDoc}
      */
+    public boolean equals(Object oIn) {
+        if (!(oIn instanceof VirtualInstance that)) {
+            return false;
+        }
+        return Objects.equals(id, that.id) && Objects.equals(guest, that.guest) &&
+                Objects.equals(host, that.host) && Objects.equals(uuid, that.uuid) &&
+                Objects.equals(confirmed, that.confirmed) && Objects.equals(info, that.info);
+    }
+
     @Override
+    /**
+     * {@inheritDoc}
+     */
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(getUuid())
-                .append(getHostSystem())
-                .toHashCode();
+        return Objects.hash(id, guest, host, uuid, confirmed, info);
     }
 
     /**

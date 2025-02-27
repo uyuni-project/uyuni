@@ -60,7 +60,7 @@ public class SCCVirtualizationHostJson {
         identifier = identifierIn;
         groupName = s.getName();
         properties = new SCCVirtualizationHostPropertiesJson(s);
-        systems = s.getGuests().stream()
+        systems = s.getVirtualGuest().stream()
                 .filter(guest -> guest.isRegisteredGuest())
                 .map(guest -> new SCCVirtualizationHostSystemsJson(guest))
                 .collect(Collectors.toList());

@@ -16,10 +16,19 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.Label;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 /**
  * VirtualInstanceState
  */
+@Entity
+@Table(name = "rhnVirtualInstanceState")
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class VirtualInstanceState extends Label {
 
     VirtualInstanceState() {

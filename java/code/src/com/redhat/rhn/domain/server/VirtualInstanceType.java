@@ -19,10 +19,17 @@ import com.redhat.rhn.domain.Label;
 
 import java.util.Optional;
 
+import javax.persistence.Cacheable;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 
 /**
  * VirtualInstanceType
  */
+@Entity
+@Table(name = "RhnVirtualInstanceType")
+@Cacheable
 public class VirtualInstanceType extends Label {
 
     /**

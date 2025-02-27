@@ -19,18 +19,42 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
 
 /**
  * VirtualInstanceInfo
  */
+@Entity
+@Table(name = "rhnVirtualInstanceInfo")
 public class VirtualInstanceInfo extends BaseDomainHelper {
-
+    @Id
+    @Column(name = "instance_id")
     private Long id;
+    @Column(name = "NAME", length = 128)
     private String name;
+    @Column(name = "memory_size")
     private Long totalMemory;
+    @Column(name = "VCPUS")
     private Integer virtualCPUs;
+    @OneToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @MapsId
+    @JoinColumn(name = "instance_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "rhn_vii_viid_fk"))
     private VirtualInstance parent;
-    private VirtualInstanceType type;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "instance_type", referencedColumnName = "id", foreignKey = @ForeignKey(name = "rhn_vii_it_fk"))
+    private VirtualInstanceType type = new VirtualInstanceType();
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "state", referencedColumnName = "id", foreignKey = @ForeignKey(name = "rhn_vii_state_fk"))
     private VirtualInstanceState state;
 
     private Long getId() {
