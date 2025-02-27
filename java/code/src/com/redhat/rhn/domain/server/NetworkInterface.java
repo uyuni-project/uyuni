@@ -23,41 +23,72 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.Session;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 /**
  * NetworkInterface
  */
-public class NetworkInterface extends BaseDomainHelper implements
-Serializable {
+@Entity
+@Table(name = "rhnServerNetInterface", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"server_id", "name"}, name = "rhn_srv_net_iface_sid_name_uq")
+})
+public class NetworkInterface extends BaseDomainHelper {
 
     private static final long serialVersionUID = 1L;
-    private Long interfaceId;
-    private Server server;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_srv_net_iface_id_seq")
+    @SequenceGenerator(name = "rhn_srv_net_iface_id_seq", sequenceName = "rhn_srv_net_iface_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private long interfaceId;
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id")
+    private Server server = new Server();
+    @Column(name = "name", length = 32)
     private String name;
+    @Column(name = "hw_addr", length = 96)
     private String hwaddr;
+    @Column(name = "module", length = 128)
     private String module;
-    private ArrayList<ServerNetAddress4> sa4 = null;
-    private ArrayList<ServerNetAddress6> sa6 = null;
+    @Column(name = "is_primary", length = 2)
+    private String primary;
+    @Transient
+    private List<ServerNetAddress4> sa4 = null;
+    @Transient
+    private List<ServerNetAddress6> sa6 = null;
+    @Transient
     private static final String IPV6_REGEX = "^(((?=(?>.*?::)(?!.*::)))(::)?" +
             "([0-9A-F]{1,4}::?){0,5}|([0-9A-F]{1,4}:){6})(\\2([0-9A-F]{1,4}(::?|$)){0,2}" +
             "|((25[0-5]|(2[0-4]|1\\d|[1-9])?\\d)(\\.|$)){4}|[0-9A-F]{1,4}:[0-9A-F]{1,4})" +
             "(?<![^:]:|\\.)\\z";
-    private String primary;
 
     /**
      * @return Returns the interfaceid.
      */
-    public Long getInterfaceId() {
+    public long getInterfaceId() {
         return interfaceId;
     }
 
     /**
      * @param id The interfaceId to set.
      */
-    public void setInterfaceId(Long id) {
+    public void setInterfaceId(long id) {
         this.interfaceId = id;
     }
 
@@ -151,55 +182,24 @@ Serializable {
     public String toString() {
         return "NetworkInterface - name: " + this.getName();
     }
-
-
-    /**
-     * findServerNetAddress4
-     * @param id Id of the network interface to search on.
-     */
-    private void findServerNetAddress4(Long id) {
-        if (sa4 != null) {
-            return;
-        }
-
-        Session session = HibernateFactory.getSession();
-        sa4 = (ArrayList<ServerNetAddress4>) session.getNamedQuery("ServerNetAddress4.lookup")
-                .setParameter("interface_id", this.interfaceId)
-                .list();
-    }
-
     /**
      * findServerNetAddress6ByScope
      * @param scope Address scope to search for.
      * @return Returns list of IPv6 addresses of the given scope for the given interface.
      */
-    private ArrayList<String> findServerNetAddress6ByScope(String scope) {
-        Session session = HibernateFactory.getSession();
-        ArrayList<ServerNetAddress6> ad6 = (ArrayList<ServerNetAddress6>)
-                session.getNamedQuery("ServerNetAddress6.lookup_by_scope_and_id")
-                .setParameter("interface_id", this.interfaceId)
-                .setParameter("scope", scope)
-                .list();
-
-        if (ad6 == null) {
-            return null;
-        }
-        ArrayList<String> addresses = new ArrayList<>();
-
-        for (ServerNetAddress6 a : ad6) {
-            addresses.add(a.getAddress());
-        }
-        return addresses;
+    private List<String> findServerNetAddress6ByScope(String scope) {
+        List<ServerNetAddress6> ad6 = ServerNetworkFactory.findServerNetAddress6(this.interfaceId, scope);
+        return ad6.stream().map(ServerNetAddress6::getAddress).collect(Collectors.toList());
     }
 
     /**
      * @return If available, returns list of global IPv6 addresses for a given interface.
      */
-    public ArrayList<String> getGlobalIpv6Addresses() {
-        ArrayList<String> addresses = findServerNetAddress6ByScope("universe");
+    public List<String> getGlobalIpv6Addresses() {
+        List<String> addresses = findServerNetAddress6ByScope("universe");
         // RHEL-5 registration may return "global" rather than "universe"
         // for global addresses (a libnl thing).
-        if (addresses == null || addresses.isEmpty()) {
+        if (addresses.isEmpty()) {
             addresses = findServerNetAddress6ByScope("global");
         }
         return addresses;
@@ -338,12 +338,10 @@ Serializable {
      * Retrieve list of IPv4 addresses
      * @return List of ServerNetAddress4 objects
      */
-    public ArrayList<ServerNetAddress4> getIPv4Addresses() {
+    public List<ServerNetAddress4> getIPv4Addresses() {
         if (sa4 == null) {
             Session session = HibernateFactory.getSession();
-            sa4 = (ArrayList<ServerNetAddress4>)
-                    session.getNamedQuery("ServerNetAddress4.lookup")
-                    .setParameter("interface_id", this.interfaceId).list();
+            sa4 = ServerNetworkFactory.findServerNetAddress4(this.interfaceId);
         }
 
         return sa4;
@@ -361,12 +359,9 @@ Serializable {
      * Retrieve list of IPv6 addresses
      * @return List of ServerNetAddress6 objects
      */
-    public ArrayList<ServerNetAddress6> getIPv6Addresses() {
+    public List<ServerNetAddress6> getIPv6Addresses() {
         if (sa6 == null) {
-            Session session = HibernateFactory.getSession();
-            sa6 = (ArrayList<ServerNetAddress6>)
-                    session.getNamedQuery("ServerNetAddress6.lookup_by_id")
-                    .setParameter("interface_id", this.interfaceId).list();
+            sa6 = ServerNetworkFactory.findServerNetAddress6(this.interfaceId);
         }
 
         return sa6;
@@ -406,7 +401,7 @@ Serializable {
      * @return Returns first most global ipv6 address
      */
     public String getGlobalIpv6Addr() {
-        ArrayList<String> addrs = getGlobalIpv6Addresses();
+        List<String> addrs = getGlobalIpv6Addresses();
         if (addrs == null) {
             addrs = findServerNetAddress6ByScope("site");
         }

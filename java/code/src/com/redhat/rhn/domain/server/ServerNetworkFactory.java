@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 
@@ -44,10 +45,12 @@ public class ServerNetworkFactory extends HibernateFactory {
      * if there is more than one matching result
      */
     public static List<ServerNetAddress4> findServerNetAddress4(Long interfaceId) {
-        return (List<ServerNetAddress4>) HibernateFactory.getSession()
-                .getNamedQuery("ServerNetAddress4.lookup")
-                .setParameter("interface_id", interfaceId)
-                .list();
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM rhnServerNetAddress4 where interface_id = :interfaceId ORDER BY address
+                        """,
+                        ServerNetAddress4.class)
+                .setParameter("interfaceId", interfaceId, StandardBasicTypes.LONG)
+                .getResultList();
     }
 
     /**
@@ -58,11 +61,33 @@ public class ServerNetworkFactory extends HibernateFactory {
      * if there is more than one matching result
      */
     public static List<ServerNetAddress6> findServerNetAddress6(Long interfaceId) {
-        return (List<ServerNetAddress6>) HibernateFactory.getSession()
-                .getNamedQuery("ServerNetAddress6.lookup_by_id")
-                .setParameter("interface_id", interfaceId)
-                .list();
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM rhnServerNetAddress6 where interface_id = :interfaceId ORDER BY scope,address
+                        """,
+                        ServerNetAddress6.class)
+                .setParameter("interfaceId", interfaceId, StandardBasicTypes.LONG)
+                .getResultList();
     }
+
+    /**
+     * Find a list of {@link ServerNetAddress6} for the given interface.
+     * @param interfaceId the id of the {@link NetworkInterface}
+     * @param scope the scope
+     * @return a list of {@link ServerNetAddress6} or null
+     * @throws org.hibernate.NonUniqueResultException
+     * if there is more than one matching result
+     */
+    public static List<ServerNetAddress6> findServerNetAddress6(Long interfaceId, String scope) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM rhnServerNetAddress6 where interface_id = :interfaceId and scope = :scope
+                        ORDER BY scope,address
+                        """,
+                        ServerNetAddress6.class)
+                .setParameter("interfaceId", interfaceId, StandardBasicTypes.LONG)
+                .setParameter("scope", scope, StandardBasicTypes.STRING)
+                .getResultList();
+    }
+
 
     /**
      * Save ServerNetAddress4
