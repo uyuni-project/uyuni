@@ -17,6 +17,7 @@ import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -34,6 +35,7 @@ import org.apache.http.entity.StringEntity;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.util.Date;
 import java.util.Map;
@@ -133,7 +135,10 @@ public class DefaultHubInternalClient implements HubInternalClient {
         int statusCode = response.getStatusLine().getStatusCode();
         // Ensure we get a valid response
         if (statusCode != HttpStatus.SC_OK) {
-            throw new InvalidResponseException("Unexpected response code %d".formatted(statusCode));
+            String responseBody = new String(response.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
+            ResultJson<?> responseJson = GSON.fromJson(responseBody, ResultJson.class);
+            String errorMessage = String.join(", ", responseJson.getMessages());
+            throw new InvalidResponseException("Unexpected response code %d %s".formatted(statusCode, errorMessage));
         }
 
         // Parse the response object, if specified
