@@ -91,6 +91,7 @@ function IconTag(props: Props) {
     "item-enabled": "fa fa-check text-success",
     "item-enabled-pending": "fa fa-hand-o-right text-success",
     "item-import": "fa fa-level-down",
+    "item-proxy-convert": "fa fa-arrow-up",
     "item-search": "fa fa-eye",
     "item-ssm-add": "fa fa-plus-circle",
     "item-ssm-del": "fa fa-minus-circle",
