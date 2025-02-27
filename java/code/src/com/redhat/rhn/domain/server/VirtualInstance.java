@@ -20,6 +20,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * VirtualInstance represents a virtual guest system. When the guest is
  * registered, there is an associated {@link Server} that contains additional
@@ -30,21 +42,34 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  * being implemented in the RHN 500 release.
  *
  */
+@Entity
+@Table(name = "rhnVirtualInstance")
 public class VirtualInstance extends BaseDomainHelper {
 
     private static final VirtualInstanceInfo NULL_INFO = new VirtualInstanceInfo();
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "vi_seq")
+    @SequenceGenerator(name = "vi_seq", sequenceName = "rhn_vi_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "virtual_system_id")
     private Server guest;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "host_system_id")
     private Server host;
+    @Column(name = "UUID", length = 128)
     private String uuid;
+    @Column(name = "CONFIRMED")
     private Long confirmed;
-    private VirtualInstanceInfo info;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private VirtualInstanceInfo info = new VirtualInstanceInfo();
 
     /**
      * Default constructor
      */
     public VirtualInstance() {
+        initInfo();
     }
 
     /**

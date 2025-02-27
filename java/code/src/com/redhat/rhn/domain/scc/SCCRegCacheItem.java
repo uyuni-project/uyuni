@@ -95,9 +95,9 @@ import javax.persistence.Transient;
                         "     OR rci.registrationErrorTime < :retryTime) " +
                         "AND EXISTS (SELECT distinct 1 " +
                         "              FROM VirtualInstance vi" +
-                        "             WHERE vi.hostSystem = s" +
+                        "             WHERE vi.host = s" +
                         "               AND vi.uuid IS NOT NULL" +
-                        "               AND vi.guestSystem IS NOT NULL)"),
+                        "               AND vi.guest IS NOT NULL)"),
 })
 public class SCCRegCacheItem extends BaseDomainHelper {
 
