@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
 import com.suse.scc.model.SCCRepositoryJson;
@@ -531,8 +532,11 @@ import javax.persistence.NoResultException;
     @SuppressWarnings("unchecked")
     public static void initNewSystemsToForward() {
 
-        List<Server> newServer = getSession()
-                .getNamedQuery("SCCRegCache.newServersRequireRegistration")
+        List<Server> newServer = getSession().createNativeQuery("""
+                       SELECT s.*, 0 as clazz_ FROM rhnServer s WHERE s.id NOT IN
+                       (SELECT rci.server_id FROM suseSCCRegCache rci WHERE rci.server_id IS NOT NULL)
+                       ORDER BY s.id ASC
+                       """, Server.class)
                 .getResultList();
         newServer.stream()
                 .forEach(s -> {
@@ -553,8 +557,12 @@ import javax.persistence.NoResultException;
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().getNamedQuery("SCCRegCache.serversRequireRegistration")
-                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+        return getSession().createNativeQuery("""
+                            SELECT rci.* FROM suseSCCRegCache rci JOIN rhnServer s ON rci.server_id = s.id
+                            WHERE rci.scc_reg_required = 'Y' AND (rci.scc_regerror_timestamp IS NULL
+                            OR rci.scc_regerror_timestamp < :retryTime) ORDER BY s.id ASC
+                """, SCCRegCacheItem.class)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()), StandardBasicTypes.DATE)
                 .getResultList();
     }
 
@@ -569,8 +577,12 @@ import javax.persistence.NoResultException;
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().getNamedQuery("SCCRegCache.listDeRegisterItems")
-                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
+        return getSession().createNativeQuery("""
+                            SELECT rci.* FROM suseSCCRegCache rci WHERE rci.server_id IS NULL
+                            AND (rci.scc_regerror_timestamp IS NULL OR rci.scc_regerror_timestamp < :retryTime)
+                            ORDER BY rci.scc_id ASC
+                """, SCCRegCacheItem.class)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()), StandardBasicTypes.DATE)
                 .getResultList();
     }
 
@@ -584,8 +596,11 @@ import javax.persistence.NoResultException;
     @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listRegItemsByCredentials(Credentials cred) {
 
-        return getSession().getNamedQuery("SCCRegCache.listRegItemsByCredentials")
-                .setParameter("creds", cred)
+        return getSession().createNativeQuery("""
+                                SELECT rci.* FROM suseSCCRegCache rci WHERE rci.creds_id = :creds
+                                ORDER BY rci.scc_id ASC
+                                """, SCCRegCacheItem.class)
+                .setParameter("creds", cred.getId())
                 .getResultList();
     }
 
@@ -652,8 +667,24 @@ import javax.persistence.NoResultException;
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
-        return getSession().createNamedQuery("SCCRegCache.hypervisorInfo", SCCVirtualizationHostJson.class)
-                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
-                .getResultList();
+        List<VirtualInstance> virtual = getSession().createNativeQuery("""
+                        SELECT DISTINCT * FROM rhnVirtualInstance
+                        """, VirtualInstance.class).getResultList();
+        List<Object[]> rows = getSession().createNativeQuery("""
+                                SELECT rci.scc_login, s.* FROM suseSCCRegCache rci
+                                JOIN rhnServer s ON rci.server_id = s.id WHERE rci.scc_reg_required = 'Y'
+                                AND (rci.scc_regerror_timestamp IS NULL OR rci.scc_regerror_timestamp < :retryTime)
+                                AND EXISTS (SELECT DISTINCT 1 FROM rhnVirtualInstance vi WHERE vi.host_system_id = s.id
+                                AND vi.uuid IS NOT NULL AND vi.virtual_system_id IS NOT NULL)
+                                """)
+                .setParameter("retryTime", new Date(retryTime.getTimeInMillis()), StandardBasicTypes.DATE)
+                .list();
+        return rows.stream()
+                .map(row -> {
+                    String sccLogin = (String) row[0];
+                    Server server = getSession().get(Server.class, ((Number) row[1]).longValue());
+                    return new SCCVirtualizationHostJson(sccLogin, server);
+                })
+                .collect(Collectors.toList());
     }
 }
