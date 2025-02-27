@@ -169,7 +169,7 @@ class VirtualHostManagerEdit extends React.Component<Props, State> {
   };
 
   renderButtons() {
-    var buttons = [
+    const buttons = [
       <Button
         id="clear-btn"
         key="clear-btn"
