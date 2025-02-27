@@ -14,6 +14,7 @@ def process_csv_files(csv_files):
     # Print schema creation and search_path setting
     print("""
 SET search_path TO access, public;
+BEGIN;
     """)
 
     for csv_file in csv_files:
@@ -62,6 +63,7 @@ SET search_path TO access, public;
                     """
                     print(endpoint_namespace_insert)
 
+    print("COMMIT;")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
