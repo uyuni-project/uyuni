@@ -31,19 +31,55 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Server - Class representation of the table rhnServer.
  *
  */
+@Entity
+@Table(name = "rhnServerGroup")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "group_type", discriminatorType = DiscriminatorType.STRING)
 public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
 
     public static final long UNLIMITED = Long.MAX_VALUE;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_group_seq")
+    @SequenceGenerator(name = "server_group_seq", sequenceName = "rhn_server_group_id_seq", allocationSize = 1)
     private Long id;
-    private String name;
-    private String description;
+
+    @Column(name = "name", length = 64)
+    private String name = "";
+
+    @Column(name = "description", length = 1024)
+    private String description = "";
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_type", insertable = false, updatable = false)
     private ServerGroupType groupType;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "org_id")
     private Org org;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Pillar> pillars = new HashSet<>();
 
     /**
