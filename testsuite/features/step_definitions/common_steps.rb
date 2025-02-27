@@ -180,7 +180,7 @@ When(/^I wait (\d+) seconds until the event is picked up and (\d+) seconds until
     And I follow first "#{event}"
     And I wait until I see "This action will be executed after" text
     And I wait until I see "#{event}" text
-    And I wait at most #{complete_timeout} seconds until the event is completed, refreshing the page
+    And I wait at most #{complete_timeout} seconds until the "#{event}" is completed, refreshing the page
   )
 end
 
