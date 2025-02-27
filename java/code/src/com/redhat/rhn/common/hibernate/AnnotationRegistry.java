@@ -10,6 +10,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.AbstractLabelNameHelper;
+import com.redhat.rhn.domain.Label;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
@@ -79,6 +81,7 @@ import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
@@ -139,8 +142,14 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceInfo;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -192,6 +201,7 @@ public class AnnotationRegistry {
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
             // do not add class at the end, but keep the alphabetical order
+            AbstractLabelNameHelper.class,
             AccessGroup.class,
             AccessToken.class,
             ActionChain.class,
@@ -226,7 +236,9 @@ public class AnnotationRegistry {
             ContentProjectHistoryEntry.class,
             CryptoKey.class,
             CryptoKeyType.class,
+            CustomDataKey.class,
             CustomDataValue.class,
+            CustomDataValue.ServerCustomDataValueKey.class,
             DeltaImageInfo.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
@@ -256,6 +268,7 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             KiwiProfile.class,
+            Label.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
@@ -332,6 +345,11 @@ public class AnnotationRegistry {
             ServerGroupManager.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
+            ServerInfo.class,
+            ServerNetAddress4.class,
+            ServerNetAddress4.ServerNetAddress4Id.class,
+            ServerNetAddress6.class,
+            ServerNetAddress6.ServerNetAddress6Id.class,
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
@@ -355,6 +373,9 @@ public class AnnotationRegistry {
             UserInfo.class,
             UserNotification.class,
             VHMCredentials.class,
+            VirtualInstance.class,
+            VirtualInstanceType.class,
+            VirtualInstanceInfo.class,
             VirtualHostManagerNodeInfo.class,
             XccdfTestResult.class,
             WebEndpoint.class
