@@ -687,16 +687,25 @@ public class HubManager {
             internalApi.scheduleProductRefresh();
         }
         catch (Exception ex) {
-            // cleanup the local side: explicit rollback
-            // HubManager.createServer has already created an ISSPeripheral object
-            //
-            // Explicit rollback is needed since SparkApplicationHelper.setupHibernateSessionFilter sets Spark.after
-            // which in turn calls HibernateFactory.commitTransaction() if there's an ongoing transaction
-            HibernateFactory.rollbackTransaction();
-
-            // cleanup the remote side
-            internalApi.deregister();
+            cleanup(internalApi);
             throw ex;
+        }
+    }
+
+    private void cleanup(HubInternalClient internalApi) {
+        // cleanup the local side: explicit rollback
+        // HubManager.createServer has already created an ISSPeripheral object
+        //
+        // Explicit rollback is needed since SparkApplicationHelper.setupHibernateSessionFilter sets Spark.after
+        // which in turn calls HibernateFactory.commitTransaction() if there's an ongoing transaction
+        HibernateFactory.rollbackTransaction();
+
+        try {
+            // try to cleanup the remote side
+            internalApi.deregister();
+        }
+        catch (Exception ex) {
+            //
         }
     }
 
