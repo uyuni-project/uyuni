@@ -39,14 +39,8 @@ Feature: Setup containerized proxy
   Scenario: Wait until the proxy host appears
     When I wait until onboarding is completed for "proxy"
 
-   # WORKAROUND: Disable until https://bugzilla.suse.com/show_bug.cgi?id=1235692 is fixed
-#  Scenario: Upgrade mgrpxy tool
-#    Then I upgrade "proxy" with the last "mgrpxy" version using spacecmd
-#    And I reboot the "proxy" minion through the web UI
-
-  # WORKAROUND: Remove once https://bugzilla.suse.com/show_bug.cgi?id=1235692 is fixed
   Scenario: Upgrade mgrpxy tool
-    When I install package "mgrpxy" on this "proxy"
+    Then I upgrade "proxy" with the last "mgrpxy" version using spacecmd
     And I reboot the "proxy" minion through the web UI
     
   Scenario: Generate containerized proxy configuration
