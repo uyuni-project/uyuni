@@ -1,0 +1,102 @@
+.progress-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 124px); /* Ensures full height */
+  margin-bottom: -4em;
+}
+
+.progress-bar-container{
+  flex-grow: 1;
+}
+
+.steps-container {
+  display: flex;
+  gap: 0.5em;
+  position: sticky;
+  top: 0;
+  padding: 15px 0 10px 0;
+  background-color: $white;
+
+  .steps {
+    flex-basis: 100%;
+    display: inline-flex;
+    gap: 0.5em;
+    align-items: center;
+    
+    .step-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 10px;
+      border: 2px solid $eos-bc-gray-500;
+      text-align: center;
+      font-size: 12px;
+      line-height: 16px;
+    }
+    .step-title{
+      font-weight: bold;
+      color: $eos-bc-gray-900;
+    }
+    .step-line {
+      flex-grow: 1;
+      height: 2px;
+      background-color: $eos-bc-gray-300;
+      span {
+        height: 2px;
+        width: 0;
+        display: flex;
+      }
+    }
+
+    &.active {
+      .step-circle {
+        border: 4px solid $eos-bc-gray-900;
+        transition: all 0.5s ease-in;
+      }
+      .step-title{
+        color: $eos-bc-gray-1000;
+      }
+      .step-line span {
+        background-color: $eos-bc-green-500;
+        width: 0;
+        transition: width 0.5s linear;
+      }
+    }
+
+    &.completed {
+      .step-circle {
+        background-color: $eos-bc-green-500;
+        border-color: $eos-bc-green-500;
+
+        &:before {
+          font-family: "FontAwesome";
+          content: "\f00c";
+          color: $white;
+        }
+      }
+      .step-title{
+        color: $eos-bc-gray-1000;
+      }
+      .step-line span {
+        background-color: $eos-bc-green-500;
+        width: 100%;
+        transition: width 0.5s linear;
+      }
+    }
+  }
+}
+
+.progress-bar-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background: $white;
+  padding: 10px;
+  // display: inline-flex;
+  justify-content: space-between;
+  border-top: 1px solid $eos-bc-gray-300;
+}
+
+.main-content {
+  margin: 50px 0;
+  background-color: $eos-bc-gray-100;
+}
