@@ -2179,13 +2179,6 @@ public class SaltServerActionService {
 
                         sa.fail("An unexpected error has occurred. Please check the server logs.");
 
-                        ActionFactory.save(sa);
-                        // When we throw the exception again, the current transaction
-                        // will be set to rollback-only, so we explicitly commit the
-                        // transaction here
-                        HibernateFactory.commitTransaction();
-
-                        // We don't actually want to catch any exceptions
                         throw e;
                     }
                 });
