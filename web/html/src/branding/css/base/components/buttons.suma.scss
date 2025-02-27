@@ -31,7 +31,7 @@
   }
 
   // Branding hover effect
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     // background: #686565;
     border: 2px solid transparent;
     bottom: -2px;
@@ -108,7 +108,7 @@
       border-color: $eos-bc-pine-500;
       color: $eos-bc-pine-500;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-pine-500;
       }
     }
@@ -127,7 +127,7 @@
       border-color: $eos-bc-white;
       color: $eos-bc-white;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-white;
       }
     }
@@ -146,7 +146,7 @@
       border-color: $eos-bc-persimmon-500;
       color: $eos-bc-gray-1000;
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-gray-900;
       }
     }
@@ -171,7 +171,7 @@
         border-color: $eos-bc-red-900;
       }
 
-      &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+      &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
         background: $eos-bc-gray-900;
       }
     }
@@ -184,7 +184,7 @@
   height: $input-height;
   z-index: 100;
 
-  &:not(:disabled):not(.disabled):not(.text-muted):hover::before {
+  &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     border-width: 1px;
     bottom: -1px;
     left: -1px;
