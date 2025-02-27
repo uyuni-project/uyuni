@@ -16,15 +16,38 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 /**
  * Represents the amount of ram on a particular server.
  */
+@Entity
+@Table(name = "rhnRam")
 public class Ram extends BaseDomainHelper {
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_ram_id_seq")
+    @SequenceGenerator(name = "rhn_ram_id_seq", sequenceName = "rhn_ram_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    protected Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
-    private long ram;
-    private long swap;
+
+    @Column(name = "ram")
+    private Long ram = 0L;
+
+    @Column(name = "swap")
+    private Long swap = 0L;
 
     /**
      * Represents a servers memory information.

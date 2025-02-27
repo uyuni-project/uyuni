@@ -18,16 +18,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 public class RamTest extends RhnBaseTestCase {
 
@@ -56,23 +55,12 @@ public class RamTest extends RhnBaseTestCase {
     }
 
 
-    private void verifyInDb(Long serverId, long ram, long swap) {
-        HibernateFactory.getSession().doWork(connection -> {
-            ResultSet rs = null;
-            PreparedStatement ps = null;
-            try {
-                ps = connection.prepareStatement("SELECT id, ram, swap FROM rhnRam " +
-                   "  WHERE server_id = " + serverId);
-                rs = ps.executeQuery();
-                rs.next();
-
-                assertEquals(ram, rs.getLong("RAM"));
-                assertEquals(swap, rs.getLong("SWAP"));
-            }
-            finally {
-                rs.close();
-                ps.close();
-            }
-        });
+    private void verifyInDb(Long serverId, long ramSize, long swapSize) {
+        Ram ram = HibernateFactory.getSession().createNativeQuery("""
+                SELECT * FROM rhnRam WHERE server_id = :server
+                """, Ram.class).setParameter("server", serverId, StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
+        assertEquals(ramSize, ram.getRam());
+        assertEquals(swapSize, ram.getSwap());
     }
 }
