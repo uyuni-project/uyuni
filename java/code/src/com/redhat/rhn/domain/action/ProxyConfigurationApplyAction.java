@@ -53,6 +53,7 @@ public class ProxyConfigurationApplyAction extends Action {
      */
     public ProxyConfigurationApplyAction(Pillar pillarIn, Map<String, Object> proxyConfigFilesIn, Org orgIn) {
         this.setActionType(ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY);
+        this.setName("Apply Proxy Configuration");
         this.setId(ActionFactory.TYPE_PROXY_CONFIGURATION_APPLY.getId().longValue());
         this.pillar = pillarIn;
         this.proxyConfigFiles = proxyConfigFilesIn;
