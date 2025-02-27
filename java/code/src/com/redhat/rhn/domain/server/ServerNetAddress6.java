@@ -21,58 +21,130 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * ServerNetAddress6
  */
-
+@Entity
+@Table(name = "rhnServerNetAddress6")
 public class ServerNetAddress6 extends BaseDomainHelper implements Serializable {
 
-    private Long interfaceId;
-    private String address;
+    @Embeddable
+    public static class ServerNetAddress6Id implements Serializable {
+
+        @Column(name = "interface_id")
+        private Long interfaceId;
+
+        @Column(name = "address", length = 45)
+        private String address;
+
+        @Column(name = "scope", length = 64)
+        private String scope;
+
+        // Getters and setters for interfaceId, address, and scope
+
+        public Long getInterfaceId() {
+            return interfaceId;
+        }
+
+        public void setInterfaceId(Long interfaceIdIn) {
+            this.interfaceId = interfaceIdIn;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String addressIn) {
+            this.address = addressIn;
+        }
+
+        public String getScope() {
+            return scope;
+        }
+
+        public void setScope(String scopeIn) {
+            this.scope = scopeIn;
+        }
+
+        @Override
+        public boolean equals(Object oIn) {
+            if (!(oIn instanceof ServerNetAddress6Id that)) {
+                return false;
+            }
+            return Objects.equals(interfaceId, that.interfaceId) &&
+                    Objects.equals(address, that.address) &&
+                    Objects.equals(scope, that.scope);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(interfaceId, address, scope);
+        }
+    }
+
+    @EmbeddedId
+    private ServerNetAddress6Id id = new ServerNetAddress6.ServerNetAddress6Id();
+
+    @Column(name = "netmask", length = 49)
     private String netmask;
-    private String scope;
+
+    public ServerNetAddress6Id getId() {
+        return id;
+    }
+
+    public void setId(ServerNetAddress6Id idIn) {
+        id = idIn;
+    }
+
 
     /**
      * @return Returns the interfaceId.
      */
     public Long getInterfaceId() {
-        return interfaceId;
+        return this.id.getInterfaceId();
     }
 
     /**
-     * @param id Set the interfaceId.
+     * @param idIn Set the interfaceId.
      */
-    public void setInterfaceId(Long id) {
-        this.interfaceId = id;
+    public void setInterfaceId(Long idIn) {
+        this.id.setInterfaceId(idIn);
     }
 
     /**
      * @return Returns the address.
      */
     public String getAddress() {
-        return address;
+        return this.id.getAddress();
     }
 
     /**
      * @param i The address to set.
      */
     public void setAddress(String i) {
-        this.address = i;
+        this.id.setAddress(i);
     }
 
     /**
      * @return Returns the scope.
      */
     public String getScope() {
-        return scope;
+        return this.id.getScope();
     }
 
     /**
      * @param s The scope to set.
      */
     public void setScope(String s) {
-        this.scope = s;
+        this.id.setScope(s);
     }
 
     /**
