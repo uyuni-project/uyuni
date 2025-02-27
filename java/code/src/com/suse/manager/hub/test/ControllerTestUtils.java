@@ -38,13 +38,12 @@ import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
-import com.suse.manager.model.hub.CreateChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
-import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
@@ -80,7 +79,7 @@ public class ControllerTestUtils {
     private Instant authBearerTokenExpiration;
     private IssRole role;
     private boolean addBearerTokenToHeaders;
-    private Map<String, String> bodyMap;
+    private String bodyString;
 
     public ControllerTestUtils() {
         apiEndpoint = null;
@@ -90,7 +89,7 @@ public class ControllerTestUtils {
         authBearerTokenExpiration = null;
         role = null;
         addBearerTokenToHeaders = false;
-        bodyMap = null;
+        bodyString = null;
     }
 
     public ControllerTestUtils withServerFqdn(String serverFqdnIn)
@@ -122,8 +121,8 @@ public class ControllerTestUtils {
         return this;
     }
 
-    public ControllerTestUtils withBody(Map<String, String> bodyMapIn) {
-        bodyMap = bodyMapIn;
+    public ControllerTestUtils withBody(String bodyIn) {
+        bodyString = bodyIn;
         return this;
     }
 
@@ -149,8 +148,6 @@ public class ControllerTestUtils {
                     throw new IllegalArgumentException("unsupported role " + role.getLabel());
             }
         }
-
-        String bodyString = (null == bodyMap) ? null : Json.GSON.toJson(bodyMap, Map.class);
 
         return simulateApiEndpointCall(apiEndpoint, httpMethod,
                 addBearerTokenToHeaders ? authBearerToken : null, bodyString);
@@ -245,16 +242,16 @@ public class ControllerTestUtils {
         return (dateIn.getTime() - nowDate.getTime() < 24L * 60L * 60L * 1000L);
     }
 
-    public CreateChannelInfoJson createChannelInfoJson(Long orgId,
-                                                       String channelLabel,
-                                                       String parentChannelLabel,
-                                                       String originalChannelLabel,
-                                                       boolean isGpgCheck,
-                                                       boolean isInstallerUpdates,
-                                                       String archLabel,
-                                                       String checksumLabel,
-                                                       Date endOfLifeDate) {
-        CreateChannelInfoJson info = new CreateChannelInfoJson(channelLabel);
+    public ChannelInfoDetailsJson createChannelInfoDetailsJson(Long orgId,
+                                                               String channelLabel,
+                                                               String parentChannelLabel,
+                                                               String originalChannelLabel,
+                                                               boolean isGpgCheck,
+                                                               boolean isInstallerUpdates,
+                                                               String archLabel,
+                                                               String checksumLabel,
+                                                               Date endOfLifeDate) {
+        ChannelInfoDetailsJson info = new ChannelInfoDetailsJson(channelLabel);
 
         info.setPeripheralOrgId(orgId);
         info.setParentChannelLabel(parentChannelLabel);
@@ -335,158 +332,66 @@ public class ControllerTestUtils {
         assertEquals("channelProductVersion", ch.getProduct().getVersion());
     }
 
-    public CreateChannelInfoJson createValidCustomChInfo() {
+    public ChannelInfoDetailsJson createValidCustomChInfo() {
         return createValidCustomChInfo("customCh");
     }
 
-    public CreateChannelInfoJson createValidCustomChInfo(String channelLabel) {
+    public ChannelInfoDetailsJson createValidCustomChInfo(String channelLabel) {
         User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
-        return createChannelInfoJson(testPeripheralUser.getOrg().getId(),
+        return createChannelInfoDetailsJson(testPeripheralUser.getOrg().getId(),
                 channelLabel, "", "",
                 true, true, "channel-s390", "sha256",
                 createDateUtil(2096, 10, 22));
     }
 
-    public Object testAddChannelsApiCall(String serverFqdnIn,
-                                         List<CreateChannelInfoJson> channelInfoListIn) throws Exception {
-        String apiUnderTest = "/hub/addChannels";
-
-        Map<String, String> bodyMapIn = new HashMap<>();
-        bodyMapIn.put("channellist", Json.GSON.toJson(channelInfoListIn));
+    public Object testSyncChannelsApiCall(String serverFqdnIn,
+                                          List<ChannelInfoDetailsJson> channelInfoListIn) throws Exception {
+        String apiUnderTest = "/hub/syncChannels";
 
         return withServerFqdn(serverFqdnIn)
                 .withApiEndpoint(apiUnderTest)
                 .withHttpMethod(HttpMethod.post)
                 .withRole(IssRole.HUB)
                 .withBearerTokenInHeaders()
-                .withBody(bodyMapIn)
+                .withBody(Json.GSON.toJson(channelInfoListIn))
                 .simulateControllerApiCall();
     }
 
-    public void checkAddCustomChannelsApiNotThrowing(String serverFqdnIn,
-                                                     List<CreateChannelInfoJson> customChannelInfoListIn)
+    public void checkSyncChannelsApiNotThrowing(String serverFqdnIn,
+                                                List<ChannelInfoDetailsJson> channelInfoListIn)
             throws Exception {
+
         try {
-            String answer = (String) testAddChannelsApiCall(serverFqdnIn, customChannelInfoListIn);
+            String answer = (String) testSyncChannelsApiCall(serverFqdnIn, channelInfoListIn);
 
             List<ChannelInfoJson> peripheralCreatedCustomChInfo =
                     Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
 
             assertNotNull(peripheralCreatedCustomChInfo,
-                    "addChannels API failing when creating peripheral channel");
+                    "syncChannels API failing when creating peripheral channel");
+
         }
         catch (IllegalArgumentException e) {
-            fail("addChannels API should not throw");
+            fail("syncChannels API should not throw");
         }
     }
 
-    public void checkAddCustomChannelsApiThrows(String serverFqdnIn,
-                                                List<CreateChannelInfoJson> customChannelInfoListIn,
-                                                String errorStartsWith) throws Exception {
+    public void checkSyncChannelsApiThrows(String serverFqdnIn,
+                                           List<ChannelInfoDetailsJson> channelInfoListIn,
+                                           String errorStartsWith) throws Exception {
         try {
-            String answer = (String) testAddChannelsApiCall(serverFqdnIn, customChannelInfoListIn);
+            String answer = (String) testSyncChannelsApiCall(serverFqdnIn, channelInfoListIn);
 
             ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
             assertFalse(result.isSuccess(),
-                    "addChannels API not failing when creating peripheral channel with " +
+                    "syncChannels API not failing when creating peripheral channel with " +
                             errorStartsWith);
             assertEquals("Internal Server Error", result.getMessages().get(0));
             assertTrue(result.getMessages().get(1).startsWith(errorStartsWith),
                     "Wrong expected start of error message: [" + result.getMessages().get(1) + "]");
         }
         catch (IllegalArgumentException e) {
-            fail("addChannels API should not throw");
-        }
-    }
-
-    public ModifyChannelInfoJson createValidModifyCustomChInfo() {
-        return createValidModifyCustomChInfo("customCh");
-    }
-
-    public ModifyChannelInfoJson createValidModifyCustomChInfo(String channelLabel) {
-        User testPeripheralUser = UserTestUtils.findNewUser("peripheral_user_", "peripheral_org_", true);
-        boolean isGpgCheck = true;
-        boolean isInstallerUpdates = true;
-        ModifyChannelInfoJson info = new ModifyChannelInfoJson(channelLabel);
-
-        info.setPeripheralOrgId(testPeripheralUser.getOrg().getId());
-        info.setOriginalChannelLabel("");
-
-        info.setBaseDir("baseDir_" + channelLabel);
-        info.setName("name_" + channelLabel);
-        info.setSummary("summary_" + channelLabel);
-        info.setDescription("description_" + channelLabel);
-        info.setProductNameLabel("productNameLabel");
-        info.setGpgCheck(isGpgCheck);
-        info.setGpgKeyUrl("gpgKeyUrl_" + channelLabel);
-        info.setGpgKeyId("gpgKeyId");
-        info.setGpgKeyFp("gpgKeyFp_" + channelLabel);
-        info.setEndOfLifeDate(createDateUtil(2096, 10, 22));
-        info.setChannelProductProduct("channelProductProduct");
-        info.setChannelProductVersion("channelProductVersion");
-        info.setChannelAccess("chAccess"); // max 10
-        info.setMaintainerName("maintainerName_" + channelLabel);
-        info.setMaintainerEmail("maintainerEmail_" + channelLabel);
-        info.setMaintainerPhone("maintainerPhone_" + channelLabel);
-        info.setSupportPolicy("supportPolicy_" + channelLabel);
-        info.setUpdateTag("updateTag_" + channelLabel);
-        info.setInstallerUpdates(isInstallerUpdates);
-
-        return info;
-    }
-
-    public Object testModifyCustomChannelsApiCall(String serverFqdnIn,
-                                                  List<ModifyChannelInfoJson> modifyCustomChannelInfoListIn)
-            throws Exception {
-        String apiUnderTest = "/hub/modifyCustomChannels";
-
-        Map<String, String> bodyMapIn = new HashMap<>();
-        bodyMapIn.put("modifycustomchannellist", Json.GSON.toJson(modifyCustomChannelInfoListIn));
-
-        return withServerFqdn(serverFqdnIn)
-                .withApiEndpoint(apiUnderTest)
-                .withHttpMethod(HttpMethod.post)
-                .withRole(IssRole.HUB)
-                .withBearerTokenInHeaders()
-                .withBody(bodyMapIn)
-                .simulateControllerApiCall();
-    }
-
-    public void checkModifyCustomChannelsApiNotThrowing(String serverFqdnIn,
-                                                        List<ModifyChannelInfoJson> modifyCustomChannelInfoListIn)
-            throws Exception {
-
-        try {
-            String answer = (String) testModifyCustomChannelsApiCall(serverFqdnIn, modifyCustomChannelInfoListIn);
-
-            List<ChannelInfoJson> peripheralCreatedCustomChInfo =
-                    Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
-
-            assertNotNull(peripheralCreatedCustomChInfo,
-                    "addChannels API failing when creating peripheral channel");
-
-        }
-        catch (IllegalArgumentException e) {
-            fail("modifyCustomChannels API should not throw");
-        }
-    }
-
-    public void checkModifyCustomChannelsApiThrows(String serverFqdnIn,
-                                                   List<ModifyChannelInfoJson> modifyCustomChannelInfoListIn,
-                                                   String errorStartsWith) throws Exception {
-        try {
-            String answer = (String) testModifyCustomChannelsApiCall(serverFqdnIn, modifyCustomChannelInfoListIn);
-
-            ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
-            assertFalse(result.isSuccess(),
-                    "modifyCustomChannels API not failing when creating peripheral channel with " +
-                            errorStartsWith);
-            assertEquals("Internal Server Error", result.getMessages().get(0));
-            assertTrue(result.getMessages().get(1).startsWith(errorStartsWith),
-                    "Wrong expected start of error message: [" + result.getMessages().get(1) + "]");
-        }
-        catch (IllegalArgumentException e) {
-            fail("modifyCustomChannels API should not throw");
+            fail("syncChannels API should not throw");
         }
     }
 
@@ -507,15 +412,15 @@ public class ControllerTestUtils {
         void checkCompatible(Object modified, Object pristine);
     }
 
-    public void checkEqualModifications(ModifyChannelInfoJson modifyInfo, Channel ch) {
+    public void checkEqualModifications(ChannelInfoDetailsJson modifyInfo, Channel ch) {
         checkModifications(modifyInfo, ch, ControllerTestUtils::checkEqualIfModified);
     }
 
-    public void checkDifferentModifications(ModifyChannelInfoJson modifyInfo, Channel ch) {
+    public void checkDifferentModifications(ChannelInfoDetailsJson modifyInfo, Channel ch) {
         checkModifications(modifyInfo, ch, ControllerTestUtils::checkDifferentIfModified);
     }
 
-    private void checkModifications(ModifyChannelInfoJson modifyInfo, Channel ch, CheckMethod checkMethod) {
+    private void checkModifications(ChannelInfoDetailsJson modifyInfo, Channel ch, CheckMethod checkMethod) {
         assertEquals(modifyInfo.getLabel(), ch.getLabel());
 
         if (null != modifyInfo.getPeripheralOrgId()) {
@@ -546,7 +451,7 @@ public class ControllerTestUtils {
         checkMethod.checkCompatible(modifyInfo.isInstallerUpdates(), ch.isInstallerUpdates());
     }
 
-    public void createTestChannel(ModifyChannelInfoJson modifyInfo, User userIn) throws Exception {
+    public void createTestChannel(ChannelInfoDetailsJson modifyInfo, User userIn) throws Exception {
         ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily();
         String query = "ChannelArch.findById";
         ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
