@@ -16,21 +16,47 @@ package com.redhat.rhn.domain.org;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+
 /**
  * CustomDataKey
  */
+@Entity
+@Table(name = "rhnCustomDataKey")
 public class CustomDataKey extends BaseDomainHelper {
-
-    private Long id;
-    private Org org;
-    private String label;
-    private String description;
-    private User creator;
-    private User lastModifier;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CDATAKEY_ID_SEQ")
+    @SequenceGenerator(name = "RHN_CDATAKEY_ID_SEQ", sequenceName = "RHN_CDATAKEY_ID_SEQ", allocationSize = 1)
+    private long id;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id", nullable = false)
+    private Org org = new Org();
+    @Column(name = "label", nullable = false, length = 64)
+    private String label = "";
+    @Column(name = "description", nullable = false, length = 4000)
+    private String description = "";
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = UserImpl.class)
+    @JoinColumn(name = "created_by")
+    private User creator = new UserImpl();
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY,  optional = true, targetEntity = UserImpl.class)
+    @JoinColumn(name = "last_modified_by")
+    private User lastModifier = new UserImpl();
 
     /**
      * @return Returns the creator.
@@ -43,6 +69,7 @@ public class CustomDataKey extends BaseDomainHelper {
      */
     public void setCreator(User creatorIn) {
         this.creator = creatorIn;
+        this.lastModifier = this.creator;
     }
     /**
      * @return Returns the description.
