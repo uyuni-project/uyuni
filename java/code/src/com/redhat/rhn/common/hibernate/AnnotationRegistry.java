@@ -125,6 +125,7 @@ import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -231,6 +232,7 @@ public class AnnotationRegistry {
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
             ErrataFilter.class,
+            Feature.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
             ImageFile.class,
