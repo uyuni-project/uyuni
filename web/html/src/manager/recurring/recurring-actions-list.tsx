@@ -101,7 +101,7 @@ class RecurringActionsList extends React.Component<Props, State> {
         <Button
           className="btn-primary"
           icon="fa-plus"
-          text={t("Create")}
+          text={t("Create Recurring Action")}
           title="Schedule a new Recurring Action"
           handler={() => this.props.onActionChanged("create")}
         />
