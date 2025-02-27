@@ -56,14 +56,22 @@ function execute_lint() {
 }
 
 function get_all_py_files() {
-  # Filter added, copied, modified, and renamed files
+  # Filter added, copied, modified, and renamed Python files
   echo "$(git diff --name-only --diff-filter=ACMR HEAD)" | grep '\.py' | tr '\n' ' '
+}
+
+function get_all_files_with_python_shebang() {
+  # Filter added, copied, modified, and renamed files containing Python shebang on it
+  LIST_OF_FILES=$(git diff --name-only --diff-filter=ACMR HEAD)
+  if [ ! -z "$LIST_OF_FILES" ]; then
+    egrep '^#!/usr/bin/python|^#!/usr/bin/env python' $LIST_OF_FILES | cut -d":" -f1 | sort -u | tr '\n' ' '
+  fi
 }
 
 function main() {
   ensure_latest_container_image
   if [[ "${CHECK_ALL_FILES}" == "true" ]]; then
-    files="$(get_all_py_files)"
+    files="$(get_all_py_files) $(get_all_files_with_python_shebang)"
     echo "Linting and formatting: $files"
     execute_black $files
     execute_lint $files

@@ -502,7 +502,7 @@ Some more irrelevant data
 
         err = str(exc.value)
         assert err.startswith(
-            "Unhandled exception occurred while decompressing Packages.gz:"
+            "Unhandled exception during decompressing of pkg index 'Packages.gz':"
         )
         assert "symlinks" in err
 
@@ -534,7 +534,7 @@ Some more irrelevant data
 
         err = str(exc.value)
         assert err.startswith(
-            "Unhandled exception occurred while decompressing Packages.xz:"
+            "Unhandled exception during decompressing of pkg index 'Packages.xz':"
         )
         assert "Software" in err
 
@@ -563,7 +563,11 @@ Some more irrelevant data
 
         assert not zdcmp.called
         assert xdcmp.called
-        assert "/dev/null" in str(exc.value)
+        # exc.value is the exception object. The code uses
+        # raise GeneralRepoException from exc
+        # this `from exc` sets the original exception as the
+        # __cause__ of the GeneralRepoException
+        assert "/dev/null" in str(exc.value.__cause__)
 
     @patch(
         "spacewalk.common.repo.DpkgRepo.get_pkg_index_raw",
@@ -588,7 +592,11 @@ Some more irrelevant data
 
         assert not xdcmp.called
         assert zdcmp.called
-        assert "hot" in str(exc.value)
+        # exc.value is the exception object. The code uses
+        # raise GeneralRepoException from exc
+        # this `from exc` sets the original exception as the
+        # __cause__ of the GeneralRepoException
+        assert "hot" in str(exc.value.__cause__)
 
     def test_append_index_file_to_url(self):
         """
