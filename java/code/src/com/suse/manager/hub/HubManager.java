@@ -30,8 +30,6 @@ import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
-import com.redhat.rhn.manager.content.ContentSyncException;
-import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
@@ -42,7 +40,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
-import com.suse.manager.model.hub.CreateChannelInfoJson;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -50,7 +48,6 @@ import com.suse.manager.model.hub.IssPeripheral;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
-import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
@@ -70,10 +67,12 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Business logic to manage ISSv3 Sync
@@ -931,70 +930,25 @@ public class HubManager {
     }
 
     /**
-     * add channels to peripheral
-     *
-     * @param accessToken               the access token
-     * @param createChannelInfoJsonListIn the list of channel info to add
-     * @return returns a list of the channels {@link Channel} that have been added
+     * Synchornize channels from the hub on this peripheral server
+     * @param accessToken the access token
+     * @param channelInfo a set of channel information to create or update the channels
+     * @return list of created or updated channels
      */
-    public List<Channel> addChannels(IssAccessToken accessToken,
-                                     List<CreateChannelInfoJson> createChannelInfoJsonListIn) {
+    public List<Channel> syncChannels(IssAccessToken accessToken, List<ChannelInfoDetailsJson> channelInfo) {
         ensureValidToken(accessToken);
-        ChannelFactory.ensureValidChannelInfo(createChannelInfoJsonListIn);
+        ChannelFactory.ensureValidChannelInfo(channelInfo);
 
-        String mirrorUrl = null;
+        Set<String> syncFinished = new HashSet<>();
+        Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
+                .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
 
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
+        for (ChannelInfoDetailsJson info : channelInfo) {
+            ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
-
-        List<String> addedChannelsLabelList = new ArrayList<>();
-        for (CreateChannelInfoJson channelInfo : createChannelInfoJsonListIn) {
-            // Create the channel
-            Channel customChannel = ChannelFactory.toChannel(channelInfo);
-            ChannelFactory.save(customChannel);
-
-            addedChannelsLabelList.add(customChannel.getLabel());
-        }
-
         return ChannelFactory.listAllChannels()
                 .stream()
-                .filter(e -> addedChannelsLabelList.contains(e.getLabel()))
-                .toList();
-    }
-
-    /**
-     * modify a peripheral custom channel
-     *
-     * @param accessToken             the access token
-     * @param modifyCustomChannelList the list of custom channels modifications
-     * @return returns a list of the custom channel that have been added {@link Channel}
-     */
-    public List<Channel> modifyCustomChannels(IssAccessToken accessToken,
-                                              List<ModifyChannelInfoJson> modifyCustomChannelList) {
-        ensureValidToken(accessToken);
-        ChannelFactory.ensureValidModifyCustomChannels(modifyCustomChannelList);
-
-        String mirrorUrl = null;
-
-        ContentSyncManager csm = new ContentSyncManager();
-        if (csm.isRefreshNeeded(mirrorUrl)) {
-            throw new ContentSyncException("Product Data refresh needed. Please call mgr-sync refresh.");
-        }
-
-        List<String> modifiedChannelsLabelList = new ArrayList<>();
-        for (ModifyChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
-            // modify the channel
-            Channel customChannel = ChannelFactory.modifyCustomChannel(modifyCustomChannelInfo);
-            ChannelFactory.save(customChannel);
-
-            modifiedChannelsLabelList.add(customChannel.getLabel());
-        }
-
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> modifiedChannelsLabelList.contains(e.getLabel()))
+                .filter(e -> syncFinished.contains(e.getLabel()))
                 .toList();
     }
 
