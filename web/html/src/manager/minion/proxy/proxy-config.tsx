@@ -1,7 +1,5 @@
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
-
-import { debounce } from "lodash";
+import { useEffect, useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
@@ -14,117 +12,19 @@ import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
+import { useDebounce } from "utils/hooks";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./proxy-config-messages";
-
-// See java/code/src/com/suse/manager/webui/templates/proxy/proxy-config.jade
-enum UseCertsMode {
-  Replace = "replace",
-  Keep = "keep",
-}
-
-enum SourceMode {
-  Registry = "registry",
-  RPM = "rpm",
-}
-
-enum RegistryMode {
-  Simple = "simple",
-  Advanced = "advanced",
-}
-
-type ProxyConfigModel = {
-  rootCA: string;
-  proxyCertificate: string;
-  proxyKey: string;
-  intermediateCAs?: string[];
-  proxyAdminEmail: string;
-  maxSquidCacheSize: string;
-  parentFQDN: string;
-  proxyPort: string;
-  useCertsMode: UseCertsMode;
-  sourceMode: SourceMode;
-  registryMode: RegistryMode;
-  registryBaseURL: string;
-  registryBaseTag: string;
-  registryHttpdURL: string;
-  registryHttpdTag: string;
-  registrySaltbrokerURL: string;
-  registrySaltbrokerTag: string;
-  registrySquidURL: string;
-  registrySquidTag: string;
-  registrySshURL: string;
-  registrySshTag: string;
-  registryTftpdURL: string;
-  registryTftpdTag: string;
-};
-
-const modelDefaults = {
-  rootCA: "",
-  proxyCertificate: "",
-  proxyKey: "",
-  proxyAdminEmail: "",
-  maxSquidCacheSize: "",
-  parentFQDN: "",
-  proxyPort: "8022",
-  useCertsMode: UseCertsMode.Replace,
-  sourceMode: SourceMode.Registry,
-  registryMode: RegistryMode.Simple,
-  registryBaseURL: "",
-  registryBaseTag: "",
-  registryHttpdURL: "",
-  registryHttpdTag: "",
-  registrySaltbrokerURL: "",
-  registrySaltbrokerTag: "",
-  registrySquidURL: "",
-  registrySquidTag: "",
-  registrySshURL: "",
-  registrySshTag: "",
-  registryTftpdURL: "",
-  registryTftpdTag: "",
-};
-
-interface Parent {
-  id: number;
-  name: string;
-  selected: boolean;
-  disabled: boolean;
-}
-
-interface ProxyConfigProps {
-  serverId: string;
-  isUyuni: boolean;
-  parents: Parent[];
-  currentConfig: ProxyConfigModel;
-  initFailMessage?: string;
-}
-
-type TagOptions = {
-  registryBaseURL?: string[];
-  registryHttpdURL?: string[];
-  registrySaltbrokerURL?: string[];
-  registrySquidURL?: string[];
-  registrySshURL?: string[];
-  registryTftpdURL?: string[];
-};
-
-const imageNames = [
-  "registryHttpdURL",
-  "registrySaltbrokerURL",
-  "registrySquidURL",
-  "registrySshURL",
-  "registryTftpdURL",
-];
-
-const tagMapping = {
-  registryBaseURL: "registryBaseTag",
-  registryHttpdURL: "registryHttpdTag",
-  registrySaltbrokerURL: "registrySaltbrokerTag",
-  registrySquidURL: "registrySquidTag",
-  registrySshURL: "registrySshTag",
-  registryTftpdURL: "registryTftpdTag",
-};
+import { ProxyConfigProps, RegistryMode, SourceMode, TagOptions, UseCertsMode } from "./proxy-config-types";
+import {
+  getRegistryData,
+  imageNames,
+  modelDefaults,
+  readFileFields,
+  restoreRegistryInputs,
+  retrieveRegistryTags,
+} from "./proxy-config-utils";
 
 export function ProxyConfig({
   serverId,
@@ -155,13 +55,13 @@ export function ProxyConfig({
   useEffect(() => {
     if (currentConfig.sourceMode === SourceMode.RPM) {
       //work-around to trigger validation for filled forms using RPM
-      retrieveRegistryTags(currentConfig, null);
+      retrieveRegistryTags(currentConfig, "", setErrors, setTagOptions, setModel);
     } else if (currentConfig.registryBaseURL) {
-      retrieveRegistryTags(currentConfig, "registryBaseURL");
+      retrieveRegistryTags(currentConfig, "registryBaseURL", setErrors, setTagOptions, setModel);
     } else {
       imageNames.forEach((url) => {
         if (currentConfig[url]) {
-          retrieveRegistryTags(currentConfig, url);
+          retrieveRegistryTags(currentConfig, url, setErrors, setTagOptions, setModel);
         }
       });
     }
@@ -177,34 +77,7 @@ export function ProxyConfig({
     setMessages([]);
     setLoading(true);
 
-    const fileFields = ["rootCA", "intermediateCAs", "proxyCertificate", "proxyKey"];
-
-    const fileReaders = Object.keys(model)
-      .filter((key) => {
-        const matcher = /^([a-zA-Z\d]*[A-Za-z])\d*$/.exec(key);
-        const fieldName = matcher ? matcher[1] : key;
-        return fileFields.includes(fieldName);
-      })
-      .map((fieldName) => {
-        const field = document.getElementById(fieldName) as HTMLInputElement;
-        if (field?.files?.[0]) {
-          const file = field.files[0];
-          return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              if (e.target?.result instanceof ArrayBuffer) {
-                // Should never happen since we call readAsText, just quiets tsc
-                resolve(undefined);
-              } else {
-                resolve({ [fieldName]: e.target?.result });
-              }
-            };
-            reader.readAsText(file);
-          });
-        }
-        return undefined;
-      })
-      .filter((promise) => promise !== undefined);
+    const fileReaders = readFileFields(model);
 
     Promise.all(fileReaders).then((values) => {
       const commonData = {
@@ -217,28 +90,7 @@ export function ProxyConfig({
         registryMode: model.registryMode,
         useCertsMode: model.useCertsMode,
       };
-      const registryData =
-        model.sourceMode === SourceMode.Registry
-          ? {
-              ...(model.registryMode === RegistryMode.Simple
-                ? {
-                    registryBaseURL: model.registryBaseURL,
-                    registryBaseTag: model.registryBaseTag,
-                  }
-                : {
-                    registryHttpdURL: model.registryHttpdURL,
-                    registryHttpdTag: model.registryHttpdTag,
-                    registrySaltbrokerURL: model.registrySaltbrokerURL,
-                    registrySaltbrokerTag: model.registrySaltbrokerTag,
-                    registrySquidURL: model.registrySquidURL,
-                    registrySquidTag: model.registrySquidTag,
-                    registrySshURL: model.registrySshURL,
-                    registrySshTag: model.registrySshTag,
-                    registryTftpdURL: model.registryTftpdURL,
-                    registryTftpdTag: model.registryTftpdTag,
-                  }),
-            }
-          : {};
+      const registryData = getRegistryData(model);
 
       const formData = unflattenModel(Object.assign({}, commonData, registryData, ...values));
       Network.post("/rhn/manager/systems/details/proxy-config", formData).then(
@@ -291,93 +143,32 @@ export function ProxyConfig({
     };
   };
 
-  /**
-   * Restore registry inputs
-   */
-  const restoreRegistryInputs = () => {
-    setModel({
-      ...model,
-      registryMode: originalConfig.registryMode,
-      registryBaseURL: originalConfig.registryBaseURL,
-      registryBaseTag: originalConfig.registryBaseTag,
-      registryHttpdURL: originalConfig.registryHttpdURL,
-      registryHttpdTag: originalConfig.registryHttpdTag,
-      registrySaltbrokerURL: originalConfig.registrySaltbrokerURL,
-      registrySaltbrokerTag: originalConfig.registrySaltbrokerTag,
-      registrySquidURL: originalConfig.registrySquidURL,
-      registrySquidTag: originalConfig.registrySquidTag,
-      registrySshURL: originalConfig.registrySshURL,
-      registrySshTag: originalConfig.registrySshTag,
-      registryTftpdURL: originalConfig.registryTftpdURL,
-      registryTftpdTag: originalConfig.registryTftpdTag,
-    });
-  };
-
   const onChangeSourceMode = (e, v) => {
     if (SourceMode.Registry === v && SourceMode.Registry === originalConfig.sourceMode) {
-      restoreRegistryInputs();
+      restoreRegistryInputs(model, setModel, originalConfig);
     }
   };
 
   const onChangeRegistryMode = (e, v) => {
     if (originalConfig.registryMode === v && Object.keys(originalConfig).length > 0) {
-      restoreRegistryInputs();
+      restoreRegistryInputs(model, setModel, originalConfig);
     }
   };
 
-  const useDebounce = (callback: (...args: any) => any, timeoutMs: number) =>
-    useCallback(debounce(callback, timeoutMs), []);
-
-  const asyncValidate = useDebounce(async (newModel: typeof model) => {
+  const asyncValidate = useDebounce<typeof retrieveRegistryTags>(async (newModel) => {
     setErrors({});
     if (newModel.registryMode === RegistryMode.Simple) {
       if (newModel.registryBaseURL && !tagOptions.registryBaseURL?.length) {
-        retrieveRegistryTags(newModel, "registryBaseURL");
+        retrieveRegistryTags(newModel, "registryBaseURL", setErrors, setTagOptions, setModel);
       }
     } else if (newModel.registryMode === RegistryMode.Advanced) {
       imageNames.forEach((property) => {
         if (newModel[property] && !tagOptions[property]?.length) {
-          retrieveRegistryTags(newModel, property);
+          retrieveRegistryTags(newModel, property, setErrors, setTagOptions, setModel);
         }
       });
     }
   }, 500);
-
-  const retrieveRegistryTags = async (newModel: typeof model, name) => {
-    const registryUrl = newModel[name];
-    if (!registryUrl) {
-      setErrors((prev) => ({ ...prev, [name]: [] }));
-      setTagOptions((prev) => ({ ...prev, [name]: [] }));
-      return;
-    }
-
-    try {
-      const response = await Network.post("/rhn/manager/systems/details/proxy-config/registry-url", {
-        registryUrl: registryUrl,
-        isExact: name !== "registryBaseURL",
-      });
-
-      if (response?.success) {
-        setErrors((prev) => ({ ...prev, [name]: [] }));
-        setTagOptions((prev) => ({ ...prev, [name]: response.data || [] }));
-
-        // Check if the current tag is still in the new options
-        const currentTag = newModel[tagMapping[name]];
-        if (currentTag && !response.data.includes(currentTag)) {
-          setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
-        }
-      } else {
-        const errorMessage = response?.messages?.join(", ") || "Validation Failed";
-        setErrors((prev) => ({ ...prev, [name]: errorMessage }));
-        setTagOptions((prev) => ({ ...prev, [name]: [] }));
-        setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
-      }
-    } catch (error) {
-      setErrors((prev) => ({ ...prev, [name]: "Error during validation" }));
-      setTagOptions((prev) => ({ ...prev, [name]: [] }));
-      setModel((prev) => ({ ...prev, [tagMapping[name]]: "" }));
-    }
-  };
 
   return (
     <TopPanel
@@ -458,20 +249,18 @@ export function ProxyConfig({
             />
           )}
           {Object.keys(currentConfig).length > 0 && model.useCertsMode === UseCertsMode.Keep && (
-            <>
-              <div className="offset-md-3 col-md-6">
-                <Messages
-                  items={[
-                    {
-                      severity: "info",
-                      text: t(
-                        "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
-                      ),
-                    },
-                  ]}
-                />
-              </div>
-            </>
+            <div className="offset-md-3 col-md-6">
+              <Messages
+                items={[
+                  {
+                    severity: "info",
+                    text: t(
+                      "Keeping the current certificates means no changes will be made to the Root CA, Intermediate CAs, Proxy certificate, or Proxy SSL private key."
+                    ),
+                  },
+                ]}
+              />
+            </div>
           )}
           {(currentConfig === undefined || model.useCertsMode === UseCertsMode.Replace) && (
             <>
