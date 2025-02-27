@@ -6,6 +6,6 @@
 
 <c:if test="${requestScope.subscriptionwarning}">
   <div class="alert alert-warning">
-    <bean:message key="notification.subscriptionwarning.details" />
+    <bean:message key="notification.subscriptionwarning.detail" />
   </div>
 </c:if>

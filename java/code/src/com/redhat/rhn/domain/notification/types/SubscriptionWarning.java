@@ -57,6 +57,6 @@ public class SubscriptionWarning implements NotificationData {
 
     @Override
     public String getDetails() {
-        return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.details");
+        return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.detail");
     }
 }
