@@ -78,7 +78,7 @@ public class ProxyConfigUpdateApplySaltState implements ProxyConfigUpdateContext
                                     return applyResults;
                                 }));
 
-        if (stringApplyResultMap.isEmpty()) {
+        if (stringApplyResultMap.isEmpty() && !context.getErrorReport().hasErrors()) {
             context.getErrorReport().register(FAIL_APPLY_MESSAGE);
             LOG.error(FAIL_APPLY_MESSAGE + " No apply results.");
         }
