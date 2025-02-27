@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-26 18:50+0000\n"
+"PO-Revision-Date: 2025-02-27 16:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -528,8 +528,6 @@ msgid "Token"
 msgstr ""
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Issued"
 msgid "Issue"
 msgstr "Vydané"
 
