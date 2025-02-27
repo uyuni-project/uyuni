@@ -517,9 +517,7 @@ public class AnsibleManager extends BaseManager {
 
         if (!inventories.isEmpty()) {
             Map<String, Object> files = new HashMap<>();
-            inventories.forEach(i -> {
-                files.put(i.getPath().toString(), Map.of("mask", List.of("modify")));
-            });
+            inventories.forEach(i -> files.put(i.getPath().toString(), Map.of("mask", List.of("modify"))));
             beacon.add(Map.of("files", files));
             beacon.add(Map.of("interval", 5));
             beacon.add(Map.of("disable_during_state_run", true));
@@ -581,13 +579,13 @@ public class AnsibleManager extends BaseManager {
             createAnsiblePath(AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
         }
         catch (ValidatorException e) {
-            log.info("Inventory path: '" + inventory + "' already exists. Skipping...");
+            log.info(String.format("Inventory path: '%s' already exists. Skipping...", inventory));
         }
         try {
             createAnsiblePath(AnsiblePath.Type.PLAYBOOK.getLabel(), minionServer, playbook);
         }
         catch (ValidatorException e) {
-            log.info("Playbook path: '" + playbook + "' already exists. Skipping...");
+            log.info(String.format("Playbook path: '%s' already exists. Skipping...", playbook));
         }
     }
 
