@@ -17,8 +17,9 @@ package com.suse.proxy.update;
 
 
 import static com.suse.utils.Predicates.isAbsent;
-import static com.suse.utils.Predicates.isProvided;
 import static java.lang.String.format;
+
+import com.redhat.rhn.common.RhnErrorReport;
 
 import com.suse.manager.ssl.SSLCertGenerationException;
 import com.suse.manager.ssl.SSLCertManager;
@@ -35,17 +36,29 @@ import java.util.Map;
  */
 public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContextHandler {
 
-    private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateFileAcquisitor.class);
-    private static final Map<String, String[]> EXPECTED_FILE_CONFIGURATIONS = Map.of(
-            "server", new String[]{},
-            "ca_crt", new String[]{},
-            "proxy_fqdn", new String[]{},
-            "max_cache_size_mb", new String[]{},
-            "server_version", new String[]{},
-            "email", new String[]{},
-            "httpd", new String[]{"system_id", "server_crt", "server_key"},
-            "ssh", new String[]{"server_ssh_key_pub", "server_ssh_push", "server_ssh_push_pub"}
+    public static final Map<String, Object> EXPECTED_FILE_CONFIGURATIONS = Map.of(
+            "server", String.class,
+            "ca_crt", String.class,
+            "proxy_fqdn", String.class,
+            "max_cache_size_mb", String.class,
+            "server_version", String.class,
+            "email", String.class,
+            "httpd", Map.of(
+                    "system_id", String.class,
+                    "server_crt", String.class,
+                    "server_key", String.class
+            ),
+            "ssh", Map.of(
+                    "server_ssh_key_pub", String.class,
+                    "server_ssh_push", String.class,
+                    "server_ssh_push_pub", String.class
+            )
     );
+    private static final Logger LOG = LogManager.getLogger(ProxyConfigUpdateFileAcquisitor.class);
+    private static final String ERROR_MESSAGE_MISSING_ENTRY =
+            "proxy container configuration did not generate required entry: %s";
+    private static final String ERROR_MESSAGE_UNEXPECTED_VALUE =
+            "proxy container configuration generated an unexpected value for entry: %s";
 
     @Override
     public void handle(ProxyConfigUpdateContext context) {
@@ -66,44 +79,74 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
                             null, null, null, new SSLCertManager())
             );
 
-            if (isAbsent(context.getProxyConfigFiles())) {
-                context.getErrorReport().register("proxy container configuration files were not created");
-                LOG.error("proxy container configuration files were not created");
-                return;
-            }
-
-            for (Map.Entry<String, String[]> e : EXPECTED_FILE_CONFIGURATIONS.entrySet()) {
-                String firstLevelEntry = e.getKey();
-                if (!context.getProxyConfigFiles().containsKey(firstLevelEntry)) {
-                    String format = format(
-                            "proxy container configuration did not generate required entry: %s",
-                            firstLevelEntry
-                    );
-                    context.getErrorReport().register(format);
-                    LOG.error(format);
-                    continue;
-                }
-
-                String[] secondLevelEntries = e.getValue();
-                if (isProvided(secondLevelEntries)) {
-                    Map<String, String> secondLevelMap =
-                            (Map<String, String>) context.getProxyConfigFiles().get(firstLevelEntry);
-                    for (String secondLevelEntry : secondLevelEntries) {
-                        if (!secondLevelMap.containsKey(secondLevelEntry)) {
-                            String format = format(
-                                    "proxy container configuration did not generate required entry: %s > %s",
-                                    firstLevelEntry, secondLevelEntry
-                            );
-                            context.getErrorReport().register(format);
-                            LOG.error(format);
-                        }
-                    }
-                }
-            }
         }
         catch (SSLCertGenerationException e) {
             LOG.error("Failed to create proxy container configuration", e);
             context.getErrorReport().register("Failed to create proxy container configuration");
+            return;
+        }
+
+        Map<String, Object> proxyConfigFiles = context.getProxyConfigFiles();
+        if (isAbsent(proxyConfigFiles)) {
+            context.getErrorReport().register("proxy container configuration files were not created");
+            LOG.error("proxy container configuration files were not created");
+            return;
+        }
+        validateProxyConfigFiles(proxyConfigFiles, EXPECTED_FILE_CONFIGURATIONS, "", context.getErrorReport());
+    }
+
+
+    /**
+     * Recursively validates the structure of the proxy configuration files
+     *
+     * @param map               the map to validate
+     * @param expectedStructure the expected structure of the map
+     * @param parentKey         the parent key of the map
+     * @param rhnErrorReport    the error report to register errors
+     */
+    public void validateProxyConfigFiles(
+            Map<String, Object> map,
+            Map<String, Object> expectedStructure,
+            String parentKey,
+            RhnErrorReport rhnErrorReport
+    ) {
+        for (Map.Entry<String, Object> entry : expectedStructure.entrySet()) {
+            String key = entry.getKey();
+            Object expectedValue = entry.getValue();
+            String fullKey = parentKey.isEmpty() ? key : parentKey + "." + key;
+
+            if (!map.containsKey(key)) {
+                logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_MISSING_ENTRY, fullKey);
+                continue;
+            }
+
+            Object actualValue = map.get(key);
+            if (expectedValue instanceof Class) {
+                if (!expectedValue.equals(actualValue.getClass())) {
+                    logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
+                }
+            }
+            else if (expectedValue instanceof Map) {
+                if (!(actualValue instanceof Map)) {
+                    logAndRegisterError(rhnErrorReport, ERROR_MESSAGE_UNEXPECTED_VALUE, fullKey);
+                }
+                else {
+                    validateProxyConfigFiles(
+                            (Map<String, Object>) actualValue,
+                            (Map<String, Object>) expectedValue,
+                            fullKey,
+                            rhnErrorReport
+                    );
+                }
+            }
         }
     }
+
+
+    private void logAndRegisterError(RhnErrorReport rhnErrorReport, String message, Object... args) {
+        String formattedMessage = format(message, args);
+        rhnErrorReport.register(formattedMessage);
+        LOG.error(formattedMessage);
+    }
+
 }
