@@ -2,6 +2,8 @@ import "./formula-form.css";
 
 import * as React from "react";
 
+import { productName } from "core/user-preferences";
+
 import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
 import HelpIcon from "components/utils/HelpIcon";
@@ -20,8 +22,6 @@ const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
 const deepCopy = Utils.deepCopy;
 // circular dependencies are bad
-
-const productName = Utils.getProductName();
 
 type EditGroupProps = {
   id: string;

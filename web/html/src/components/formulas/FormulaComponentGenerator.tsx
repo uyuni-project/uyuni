@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { default as Jexl } from "jexl";
 
+import { productName } from "core/user-preferences";
+
 import { SectionState } from "components/FormulaForm";
 import HelpIcon from "components/utils/HelpIcon";
 
@@ -472,7 +474,7 @@ export function text(txt) {
   }
   // replace variables
   if (typeof txt === "string" || txt instanceof String) {
-    txt = txt.replace(/\${productName}/g, Utils.getProductName());
+    txt = txt.replace(/\${productName}/g, productName);
   }
   return txt;
 }

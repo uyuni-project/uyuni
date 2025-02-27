@@ -1,8 +1,8 @@
 @mixin onSuma {
-  @if $theme == "susemanager-light" {
+  @if $theme == "suse-light" {
     @content;
   }
-  @if $theme == "susemanager-dark" {
+  @if $theme == "suse-dark" {
     @content;
   }
 }

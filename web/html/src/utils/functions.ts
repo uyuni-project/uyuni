@@ -171,10 +171,6 @@ function deepCopy(e) {
   return e;
 }
 
-function getProductName(): string {
-  return window._IS_UYUNI ? "Uyuni" : "SUSE Manager";
-}
-
 const Utils = {
   cancelable,
   sortById,
@@ -186,7 +182,6 @@ const Utils = {
   capitalize,
   generatePassword,
   deepCopy,
-  getProductName,
 };
 
 const Formulas = {

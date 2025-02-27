@@ -10,7 +10,7 @@ module.exports = {
   head: {
     // Some of these will currently fail due to CORS, but will be obsolete once we move branding into web
     links: [
-      `/css/susemanager-light.css?cb=${noCache}`,
+      `/css/suse-light.css?cb=${noCache}`,
       `/fonts/font-awesome/css/font-awesome.css?cb=${noCache}`,
       `/fonts/font-spacewalk/css/spacewalk-font.css?cb=${noCache}`,
       `/css/jquery.timepicker.css?cb=${noCache}`,

@@ -17,7 +17,6 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdm
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -102,7 +101,6 @@ public class AdminViewsController {
      */
     public static ModelAndView showMonitoring(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        data.put("isUyuni", ConfigDefaults.get().isUyuni());
         return new ModelAndView(data, "controllers/admin/templates/monitoring.jade");
     }
 

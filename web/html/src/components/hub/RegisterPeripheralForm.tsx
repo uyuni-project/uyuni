@@ -1,12 +1,13 @@
 import * as React from "react";
 
+import { productName } from "core/user-preferences";
+
 import { AsyncButton, SubmitButton } from "components/buttons";
 import { Form, Password, Radio, Text, TextArea } from "components/input";
 import { Messages, MessageType } from "components/messages/messages";
 import { TopPanel } from "components/panels";
 import Validation from "components/validation";
 
-import { Utils } from "utils/functions";
 import Network from "utils/network";
 
 import { HubRegisterRequest } from "./types";
@@ -130,7 +131,6 @@ export class RegisterPeripheralForm extends React.Component<Props, State> {
   }
 
   public render(): React.ReactNode {
-    const productName = Utils.getProductName();
     return (
       <TopPanel title={t("Register a new peripheral server")} icon="fa fa-plus">
         {this.state.loading && (

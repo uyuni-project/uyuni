@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { productName } from "core/user-preferences";
+
 import { AsyncButton } from "components/buttons";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
@@ -22,7 +24,9 @@ const typeMap = {
   STATE: t("State channel"),
   CONFIG: t("Config channel"),
   FORMULA: t("Formula"),
-  INTERNAL: window._IS_UYUNI ? "Uyuni " : "SUSE Manager " + t("internal"),
+  INTERNAL: t("{productName} internal", {
+    productName,
+  }),
 };
 
 export default function HighstateSummary({ minionId }) {

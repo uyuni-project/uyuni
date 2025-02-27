@@ -9681,10 +9681,10 @@ For a detailed analysis, please refer to the log files.
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials.</source>
+        <source>Registration of '{0}' on SUSE Multi-Linux Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials.</source>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <source>Registration of '{0}' on SUSE Multi-Linux Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin => Setup Wizard => Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
       </trans-unit>
       <trans-unit id="coco.environment.none.description">
         <source>None</source>
