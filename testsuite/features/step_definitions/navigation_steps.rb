@@ -81,12 +81,17 @@ When(/^I wait at most "([^"]*)" seconds until I do not see "([^"]*)" text$/) do 
   end
 end
 
-When(/^I wait at most (\d+) seconds until the event is completed, refreshing the page$/) do |timeout|
+When(/^I wait at most (\d+) seconds until the "([^"]*)" is completed, refreshing the page$/) do |timeout, event|
   last = Time.now
   next if has_content?('This action\'s status is: Completed.', wait: 3)
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
+
+    if has_content?('Minion is down or could not be contacted.', wait: 3)
+      find(:xpath, "//input[@value='Reschedule']").click
+      step %(I wait 30 seconds until the event is picked up and #{timeout} seconds until the event "#{event}" is completed)
+    end
     raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
 
     current = Time.now
