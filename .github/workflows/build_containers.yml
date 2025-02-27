@@ -339,7 +339,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/opensuse/leap/15.5
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./testsuite/dockerfiles/opensuse/leap/15.5
           push: true
@@ -370,7 +370,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/uyuni-master-testsuite
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: ./testsuite/dockerfiles/uyuni-master-testsuite
           push: true
