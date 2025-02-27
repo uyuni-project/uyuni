@@ -1753,7 +1753,7 @@ public class SaltServerActionService {
         InventoryActionDetails details = action.getDetails();
         String inventoryPath = details.getInventoryPath();
 
-        return new LocalCall<>("ansible.targets", empty(), of(Map.of("inventory", inventoryPath)),
+        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
                 new TypeToken<>() { });
     }
 

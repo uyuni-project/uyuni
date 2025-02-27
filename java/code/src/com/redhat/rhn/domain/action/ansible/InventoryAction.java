@@ -16,6 +16,9 @@ package com.redhat.rhn.domain.action.ansible;
 
 import com.redhat.rhn.domain.action.Action;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * InventoryAction - Action class representing the execution of an Ansible inventory refresh
  */
@@ -40,5 +43,24 @@ public class InventoryAction extends Action {
             detailsIn.setParentAction(this);
         }
         this.details = detailsIn;
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (!(oIn instanceof InventoryAction that)) {
+            return false;
+        }
+        return new EqualsBuilder().appendSuper(super.equals(oIn)).append(details, that.details).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(details)
+                .toHashCode();
     }
 }
