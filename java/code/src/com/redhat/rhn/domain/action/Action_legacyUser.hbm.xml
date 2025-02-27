@@ -371,9 +371,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         </subclass>
 
     </class>
-    <query name="Action.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
-    </query>
+    <sql-query name="Action.findByIdandOrgId">
+        <![CDATA[
+            SELECT * FROM rhnAction WHERE id = :aid AND org_id = :orgId
+        ]]>
+    <return class="com.redhat.rhn.domain.action.Action" />
+    </sql-query>
 
     <sql-query name="Action.getServerActionCountByStatus">
         <return-scalar type="int" column="count"/>
@@ -382,10 +385,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
     </sql-query>
 
 
-
-    <query name="Action.findDependentActions"><![CDATA[
-                from Action a where a.prerequisite.id in (:action_ids)
-    ]]></query>
+    <sql-query name="Action.findDependentActions">
+    <![CDATA[
+        SELECT * FROM rhnAction WHERE prerequisite IN (:action_ids)
+    ]]>
+    <return class="com.redhat.rhn.domain.action.Action" />
+    </sql-query>
 
    <sql-query name="Action.findLastActionByServerIdAndActionTypeIdAndUserId">
         <![CDATA[
@@ -408,77 +413,66 @@ select {ra.*}
         <return alias="ra" class="com.redhat.rhn.domain.action.Action" />
     </sql-query>
 
-    <query name="Action.findByServerAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.action.Action as a
-            left join fetch a.serverActions as sa
-            where org_id = :orgId and
-            sa.server = :server]]>
-    </query>
+    <sql-query name="Action.findByServerAndOrgId">
+    <![CDATA[
+        SELECT * FROM rhnAction a
+        LEFT JOIN rhnServerAction sa ON a.id = sa.action_id
+        WHERE a.org_id = :orgId AND sa.server_id = :server
+    ]]>
+    <return class="com.redhat.rhn.domain.action.Action" />
+    </sql-query>
 
+     <sql-query name="Action.rescheduleFailedActions">
+       <![CDATA[UPDATE rhnServerAction sa SET status = :queued, remaining_tries = :tries,
+                pickup_time = NULL, completion_time = NULL, result_code = NULL,
+                result_msg = NULL where sa.status = :failed and sa.action_id = :action ]]>
+    </sql-query>
 
-     <query name="Action.rescheduleFailedActions">
-       <![CDATA[ update  com.redhat.rhn.domain.action.server.ServerAction sa
-                                        set sa.status = :queued, sa.remainingTries = :tries,
-                                            sa.pickupTime = null, sa.completionTime = null,
-                                            resultCode = null, resultMsg = null
-                                        where sa.status = :failed and
-                                                        sa.parentAction = :action ]]>
-    </query>
-
-     <query name="Action.rescheduleAllActions">
-       <![CDATA[ update  com.redhat.rhn.domain.action.server.ServerAction sa
-                                        set sa.status = :queued, sa.remainingTries = :tries,
-                                            sa.pickupTime = null, sa.completionTime = null,
-                                            resultCode = null, resultMsg = null
-                                        where sa.parentAction = :action ]]>
-    </query>
+    <sql-query name="Action.rescheduleAllActions">
+    <![CDATA[
+        UPDATE rhnServerAction sa
+        SET status = :queued,
+            remaining_tries = :tries,
+            pickup_time = NULL,
+            completion_time = NULL,
+            result_code = NULL,
+            result_msg = NULL
+        WHERE sa.action_id = :action
+    ]]>
+    </sql-query>
     
-    <query name="Action.rescheduleSingleServerAction">
-       <![CDATA[ update  com.redhat.rhn.domain.action.server.ServerAction sa
-                                        set sa.status = :queued, sa.remainingTries = :tries,
-                                            sa.pickupTime = null, sa.completionTime = null,
-                                            resultCode = null, resultMsg = null
-                                        where sa.parentAction = :action and
-                                                              sa.serverId = :server ]]>
-    </query>
-
-    <query name="Action.findMinionIds">
-    <![CDATA[
-    SELECT sa.server.id
-        FROM ServerAction sa
-        JOIN sa.server s
-        WHERE type(s) = com.redhat.rhn.domain.server.MinionServer AND action_id = :id
-    ]]>
-    </query>
+    <sql-query name="Action.rescheduleSingleServerAction">
+        <![CDATA[
+            UPDATE rhnServerAction sa
+            SET status = :queued,
+                remaining_tries = :tries,
+                pickup_time = NULL,
+                completion_time = NULL,
+                result_code = NULL,
+                result_msg = NULL
+            WHERE sa.action_id = :action AND sa.server_id = :server
+        ]]>
+    </sql-query>
     
-    <query name="Action.findTradClientServerActions">
-    <![CDATA[
-        SELECT sa
-            FROM ServerAction AS sa
-                JOIN sa.server AS s
-            WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
-                AND action_id = :id
-    ]]>
-    </query>
+    <sql-query name="Action.findMinionIds">
+        <![CDATA[
+            SELECT sa.server_id
+            FROM rhnServerAction sa
+            JOIN rhnServer s ON sa.server_id = s.id
+            WHERE s.type = 'MinionServer' AND sa.action_id = :id
+        ]]>
+    <return class="com.redhat.rhn.domain.action.server.ServerAction" />
+    </sql-query>
 
-    <query name="Action.findMinionSummaries">
-    <![CDATA[
-        SELECT new com.redhat.rhn.domain.server.MinionSummary(
-                    sa.server.id,
-                    s.minionId,
-                    s.digitalServerId,
-                    s.machineId,
-                    c.label,
-                    s.os
-               )
-            FROM ServerAction AS sa
-                JOIN sa.server AS s
-                JOIN s.contactMethod AS c
-            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
-                AND action_id = :id
-                AND sa.status IN (:allowedStatues)
-    ]]>
-    </query>
+    <sql-query name="Action.findTradClientServerActions">
+        <![CDATA[
+            SELECT sa.*
+            FROM rhnServerAction sa
+            JOIN rhnServer s ON sa.server_id = s.id
+            WHERE s.type != 'MinionServer' AND sa.action_id = :id
+        ]]>
+        <return class="com.redhat.rhn.domain.action.server.ServerAction" />
+    </sql-query>
     
    <sql-query name="Action.findServerIds">
         <![CDATA[

@@ -34,25 +34,67 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
 /**
  * MinionServer
  */
+@Entity
+@Table(name = "suseMinionInfo")
+@PrimaryKeyJoinColumn(name = "server_id", referencedColumnName = "id") // Maps to the superclass ID
 public class MinionServer extends Server implements SaltConfigurable {
 
-    private String minionId;
-    private String kernelLiveVersion;
-    private Integer sshPushPort;
+    @Column(name = "minion_id", length = 256, nullable = false, unique = true)
+    private String minionId = "";
+    @Column(name = "kernel_live_version", length = 255)
+    private String kernelLiveVersion = "";
+    @Column(name = "ssh_push_port")
+    private Integer sshPushPort = 0;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "minion", orphanRemoval = true)
     private Set<AccessToken> accessTokens = new HashSet<>();
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "minion", orphanRemoval = true)
     private Set<Pillar> pillars = new HashSet<>();
-    private Date rebootRequiredAfter;
-    private String containerRuntime;
-    private String uname;
+    @Column(name = "reboot_required_after", columnDefinition = "timestamp")
+    private Date rebootRequiredAfter = new Date();
+    @Column(name = "os_family", length = 64)
+    private String osFamily = "";
+
+    @Column(name = "container_runtime")
+    private String containerRuntime = "";
+    @Column(name = "uname")
+    private String uname = "";
 
     /**
      * Constructs a MinionServer instance.
      */
     public MinionServer() {
         super();
+    }
+
+    /**
+     * Constructs a MinionServer instance for result map
+     * @param serverId id
+     * @param minionIdIn minionIdIn
+     * @param osFamilyIn osFamilyIn
+     * @param kernelLiveVersionIn kernelLiveVersionIn
+     * @param sshPushPortIn sshPushPortIn
+     * @param rebootRequiredAfterIn rebootRequiredAfterIn
+     */
+    public MinionServer(Long serverId, String minionIdIn, String osFamilyIn, String kernelLiveVersionIn,
+                        Integer sshPushPortIn, Date rebootRequiredAfterIn) {
+        super();
+        this.setId(serverId);
+        this.setOsFamily(osFamilyIn);
+        this.minionId = minionIdIn;
+        this.kernelLiveVersion = kernelLiveVersionIn;
+        this.sshPushPort = sshPushPortIn;
+        this.rebootRequiredAfter = rebootRequiredAfterIn;
     }
 
     /**
@@ -78,6 +120,22 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     public void setMinionId(String minionIdIn) {
         this.minionId = minionIdIn;
+    }
+
+    /**
+     * @return the os family
+     */
+    @Override
+    public String getOsFamily() {
+        return osFamily;
+    }
+
+    /**
+     * @param osFamilyIn the os family id to set
+     */
+    @Override
+    public void setOsFamily(String osFamilyIn) {
+        osFamily = osFamilyIn;
     }
 
     /**

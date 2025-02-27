@@ -23,10 +23,12 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Optional;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,13 +38,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 
 /**
  * MaintenanceSchedule - store maintenance schedule objects
  */
 @Entity
-@Table(name = "suseMaintenanceSchedule")
+@Table(name = "suseMaintenanceSchedule",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"org_id", "name"}))
+@SequenceGenerator(name = "suse_mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
 @NamedQueries
 ({
     @NamedQuery(name = "MaintenanceSchedule.lookupByUserAndName",
@@ -50,10 +54,21 @@ import javax.persistence.Transient;
                 "where s.org.id = :orgId and s.name = :name")
 })
 public class MaintenanceSchedule extends BaseDomainHelper {
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
+    @SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
     private Long id;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "org_id", nullable = false)
     private Org org;
-    private String name;
-    private ScheduleType scheduleType;
+    @Column(name = "name", length = 128)
+    private String name = "";
+    @Column(name = "sched_type")
+    @Enumerated(EnumType.STRING)
+    private ScheduleType scheduleType = ScheduleType.SINGLE;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ical_id", nullable = true)
     private MaintenanceCalendar calendar;
 
     public enum ScheduleType {
@@ -95,10 +110,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the maintenance schedule id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "mtsched_seq")
-    @SequenceGenerator(name = "mtsched_seq", sequenceName = "suse_mtsched_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -106,8 +117,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the organization
      */
-    @ManyToOne()
-    @JoinColumn(name = "org_id", nullable = false)
     public Org getOrg() {
         return org;
     }
@@ -115,7 +124,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the schedule name
      */
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -123,8 +131,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the schedule type
      */
-    @Column(name = "sched_type")
-    @Enumerated(EnumType.STRING)
     public ScheduleType getScheduleType() {
         return scheduleType;
     }
@@ -132,8 +138,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the calendar
      */
-    @ManyToOne()
-    @JoinColumn(name = "ical_id", nullable = true)
     protected MaintenanceCalendar getCalendar() {
         return calendar;
     }
@@ -141,7 +145,6 @@ public class MaintenanceSchedule extends BaseDomainHelper {
     /**
      * @return the calendar as optional
      */
-    @Transient
     public Optional<MaintenanceCalendar> getCalendarOpt() {
         return Optional.ofNullable(calendar);
     }

@@ -136,11 +136,13 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupMember;
 import com.redhat.rhn.domain.server.ServerGroupType;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
@@ -149,6 +151,7 @@ import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceInfo;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
 import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
@@ -269,6 +272,7 @@ public class AnnotationRegistry {
             IssPeripheralChannels.class,
             KiwiProfile.class,
             Label.class,
+            ManagedServerGroup.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
@@ -311,6 +315,7 @@ public class AnnotationRegistry {
             PlaybookPath.class,
             ProfileCustomDataValue.class,
             ProjectSource.class,
+            ProxyInfo.class,
             ProvisionState.class,
             PtfFilter.class,
             Ram.class,
@@ -343,6 +348,8 @@ public class AnnotationRegistry {
             ServerCoCoAttestationReport.class,
             ServerGroup.class,
             ServerGroupManager.class,
+            ServerGroupMember.class,
+            ServerGroupMember.ServerGroupMemberId.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
             ServerInfo.class,
@@ -374,6 +381,7 @@ public class AnnotationRegistry {
             UserNotification.class,
             VHMCredentials.class,
             VirtualInstance.class,
+            VirtualInstanceState.class,
             VirtualInstanceType.class,
             VirtualInstanceInfo.class,
             VirtualHostManagerNodeInfo.class,

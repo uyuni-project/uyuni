@@ -100,15 +100,29 @@ import javax.persistence.Transient;
                         "               AND vi.guest IS NOT NULL)"),
 })
 public class SCCRegCacheItem extends BaseDomainHelper {
-
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccregcache_seq")
+    @SequenceGenerator(name = "sccregcache_seq", sequenceName = "suse_sccregcache_id_seq",
+            allocationSize = 1)
     private Long id;
+    @Column(name = "scc_id")
     private Long sccId;
+    @Column(name = "scc_reg_required")
+    @Type(type = "yes_no")
     private boolean sccRegistrationRequired;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "server_id", nullable = true)
     private Server server;
+    @Column(name = "scc_login")
     private String sccLogin;
+    @Column(name = "scc_passwd")
     private String sccPasswd;
+    @ManyToOne
+    @JoinColumn(name = "creds_id")
     private SCCCredentials credentials;
-    private Date registrationErrorTime;
+    @Column(name = "scc_regerror_timestamp")
+    private Date registrationErrorTime = new Date();
 
     /**
      * Constructor
@@ -131,11 +145,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return the id
      */
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccregcache_seq")
-    @SequenceGenerator(name = "sccregcache_seq", sequenceName = "suse_sccregcache_id_seq",
-                       allocationSize = 1)
     public Long getId() {
         return id;
     }
@@ -143,7 +152,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return the sccId
      */
-    @Column(name = "scc_id")
     protected Long getSccId() {
         return sccId;
     }
@@ -160,8 +168,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
      * Get the mirror credentials.
      * @return the credentials
      */
-    @ManyToOne
-    @JoinColumn(name = "creds_id")
     protected SCCCredentials getCredentials() {
         return credentials;
     }
@@ -178,8 +184,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return true when updating the registration at SCC is required, otherwise false
      */
-    @Column(name = "scc_reg_required")
-    @Type(type = "yes_no")
     public boolean isSccRegistrationRequired() {
         return sccRegistrationRequired;
     }
@@ -187,8 +191,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return Returns the server.
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "server_id", nullable = true)
     protected Server getServer() {
         return server;
     }
@@ -204,7 +206,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return Returns the sccLogin.
      */
-    @Column(name = "scc_login")
     protected String getSccLogin() {
         return sccLogin;
     }
@@ -220,7 +221,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return Returns the sccPasswd.
      */
-    @Column(name = "scc_passwd")
     protected String getSccPasswd() {
         return sccPasswd;
     }
@@ -236,7 +236,6 @@ public class SCCRegCacheItem extends BaseDomainHelper {
     /**
      * @return the time when the last registration failed or NULL when it did not fail
      */
-    @Column(name = "scc_regerror_timestamp")
     protected Date getRegistrationErrorTime() {
         return registrationErrorTime;
     }

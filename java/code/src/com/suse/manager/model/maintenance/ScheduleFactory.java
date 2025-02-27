@@ -16,9 +16,11 @@
 package com.suse.manager.model.maintenance;
 
 import static java.util.Collections.emptySet;
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
@@ -58,14 +60,13 @@ public class ScheduleFactory extends HibernateFactory {
      * @return the list of Schedules
      */
     public List<MaintenanceSchedule> listByUserAndCalendar(User user, MaintenanceCalendar calendar) {
-        return getSession()
-                .createQuery(
-                        "FROM MaintenanceSchedule " +
-                                "WHERE org = :org and calendar = :calendar " +
-                                "ORDER BY name ASC",
-                        MaintenanceSchedule.class)
-                .setParameter("org", user.getOrg())
-                .setParameter("calendar", calendar)
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org AND ical_id = :calendar
+                ORDER BY name ASC
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
+                .setParameter("calendar", calendar.getId())
                 .getResultList();
     }
 
@@ -75,10 +76,12 @@ public class ScheduleFactory extends HibernateFactory {
      * @return a list of Schedule names
      */
     public List<String> listScheduleNamesByUser(User user) {
-        return getSession()
-                .createQuery("SELECT name FROM MaintenanceSchedule WHERE org = :org", String.class)
-                .setParameter("org", user.getOrg())
-                .list();
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
+                .getResultList().stream().map(MaintenanceSchedule::getName).collect(toList());
     }
 
     /**
@@ -87,9 +90,11 @@ public class ScheduleFactory extends HibernateFactory {
      * @return a list of Maintenance Schedules
      */
     public List<MaintenanceSchedule> listByUser(User user) {
-        return getSession()
-                .createQuery("FROM MaintenanceSchedule WHERE org = :org", MaintenanceSchedule.class)
-                .setParameter("org", user.getOrg())
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
                 .list();
     }
 
@@ -100,12 +105,12 @@ public class ScheduleFactory extends HibernateFactory {
      * @return a list of MaintenanceSchedules
      */
     public List<MaintenanceSchedule> listByCalendar(User user, MaintenanceCalendar calendar) {
-        return getSession()
-                .createQuery(
-                        "FROM MaintenanceSchedule WHERE org = :org and calendar = :calendar",
-                        MaintenanceSchedule.class)
-                .setParameter("org", user.getOrg())
-                .setParameter("calendar", calendar)
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org AND ical_id = :calendar
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
+                .setParameter("calendar", calendar.getId())
                 .list();
     }
 
@@ -116,8 +121,11 @@ public class ScheduleFactory extends HibernateFactory {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupByUserAndName(User user, String name) {
-        return getSession().createNamedQuery("MaintenanceSchedule.lookupByUserAndName", MaintenanceSchedule.class)
-                .setParameter("orgId", user.getOrg().getId())
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org AND name = :name
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
                 .setParameter("name", name)
                 .uniqueResultOptional();
     }
@@ -129,11 +137,11 @@ public class ScheduleFactory extends HibernateFactory {
      * @return Optional Maintenance Schedule
      */
     public Optional<MaintenanceSchedule> lookupByUserAndId(User user, Long id) {
-        return getSession()
-                .createQuery(
-                        "FROM MaintenanceSchedule WHERE org = :org AND id = :id",
-                        MaintenanceSchedule.class)
-                .setParameter("org", user.getOrg())
+        return getSession().createNativeQuery("""
+                SELECT * FROM suseMaintenanceSchedule
+                WHERE org_id = :org AND id = :id
+                """, MaintenanceSchedule.class)
+                .setParameter("org", user.getOrg().getId())
                 .setParameter("id", id)
                 .uniqueResultOptional();
     }
@@ -145,10 +153,12 @@ public class ScheduleFactory extends HibernateFactory {
      * @return List of System IDs
      */
     public List<Long> listSystemIdsWithSchedule(MaintenanceSchedule schedule) {
-        return getSession()
-                .createQuery("SELECT s.id from Server s WHERE s.maintenanceSchedule = :schedule", Long.class)
-                .setParameter("schedule", schedule)
-                .list();
+        return getSession().createNativeQuery("""
+                SELECT id FROM rhnServer
+                WHERE maintenance_schedule_id = :schedule
+                """, Server.class)
+                .setParameter("schedule", schedule.getId())
+                .getResultList().stream().map(Server::getId).collect(toList());
     }
 
     /**
@@ -162,13 +172,11 @@ public class ScheduleFactory extends HibernateFactory {
             return emptySet();
         }
 
-        return  HibernateFactory.getSession()
-                .createQuery(
-                        "SELECT s.maintenanceSchedule " +
-                                "FROM Server s " +
-                                "WHERE s.maintenanceSchedule IS NOT NULL " +
-                                "AND s.id IN (:systemIds)",
-                        MaintenanceSchedule.class)
+        return getSession().createNativeQuery("""
+                SELECT DISTINCT s.* FROM suseMaintenanceSchedule s
+                JOIN rhnServer r ON s.id = r.maintenance_schedule_id
+                WHERE r.id IN (:systemIds)
+                """, MaintenanceSchedule.class)
                 .setParameter("systemIds", systemIds)
                 .stream()
                 .collect(toSet());

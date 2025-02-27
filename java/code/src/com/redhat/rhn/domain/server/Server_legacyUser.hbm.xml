@@ -3,312 +3,119 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.Server" table="rhnServer">
-        <id name="id" type="long" column="id">
-            <meta attribute="scope-set">protected</meta>
-            <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
-                <param name="sequence_name">rhn_server_id_seq</param>
-                <param name="increment_size">1</param>
-            </generator>
-        </id>
-
-        <property name="digitalServerId" column="digital_server_id" type="string"
-            length="1024"/>
-        <property name="os" column="os" type="string" length="64"/>
-        <property name="cpe" column="cpe" type="string" length="64"/>
-        <property name="release" column="release" type="string" length="64"/>
-        <property name="name" column="name" type="string" length="128"/>
-        <property name="description" column="description" type="string"
-            length="256"/>
-        <property name="info" column="info" type="string" length="128"/>
-        <property name="secret" column="secret" type="string" length="64"/>
-        <property name="created" column="created" type="timestamp"
-            insert="false" update="false"/>
-        <property name="modified" column="modified" type="timestamp"
-            insert="false" update="false"/>
-        <property name="autoUpdate" column="auto_update" type="string" length="1"/>
-        <property name="runningKernel" column="running_kernel" type="string"
-            length="64"/>
-        <property name="lastBoot" column="last_boot" type="long"/>
-        <property name="channelsChanged" column="channels_changed" type="date"/>
-        <property name="cobblerId" column="cobbler_id"  type="string" length="64" />
-        <property name="machineId" column="machine_id"  type="string" length="256" />
-        <property name="hostname" column="hostname" type="string" length="128" />
-        <property name="payg" column="PAYG" type="yes_no"/>
-
-        <set name="notes" cascade="all-delete-orphan" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.Note"/>
-        </set>
-
-        <set name="devices" cascade="all" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.Device"/>
-        </set>
-
-        <set name="networkInterfaces" cascade="all-delete-orphan" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.NetworkInterface"/>
-        </set>
-
-        <set name="customDataValues" cascade="all" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.CustomDataValue"/>
-        </set>
-
-        <set name="channels" lazy="true" table="rhnServerChannel" cascade="all">
-            <key column="server_id"/>
-            <many-to-many class="com.redhat.rhn.domain.channel.Channel"
-                column="channel_id"/>
-        </set>
-
-        <set name="fqdns" cascade="all-delete-orphan" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.ServerFQDN"/>
-        </set>
-
-        <list  name="configChannelsHibernate" lazy="true" table="rhnServerConfigChannel"
-             cascade="all" where="(position > 0)"
-         collection-type="com.redhat.rhn.common.hibernate.ForceRecreationListType">
-             <key column="server_id"/>
-            <list-index column="position" base="1"/>
-            <many-to-many class="com.redhat.rhn.domain.config.ConfigChannel"
-                column="config_channel_id"/>
-        </list>
-
-        <set  name="localChannels" lazy="true" table="rhnServerConfigChannel"
-             cascade="all" where="(position is null)">
-             <key column="server_id"/>
-             <many-to-many class="com.redhat.rhn.domain.config.ConfigChannel"
-                column="config_channel_id"/>
-        </set>
-
-        <set name="virtualGuests" inverse="true" lazy="true" outer-join="true"
-            cascade="all">
-                <key column="host_system_id"/>
-                <one-to-many class="com.redhat.rhn.domain.server.VirtualInstance"/>
-        </set>
-
-        <set name="groups" table="rhnServerGroupMembers" inverse="true" lazy="true">
-            <key column="server_id"/>
-            <many-to-many column="server_group_id" class="com.redhat.rhn.domain.server.ServerGroup"/>
-        </set>
-
-        <set name="capabilities" lazy="true" inverse="true" table="rhnClientCapability" cascade="all-delete-orphan">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.ClientCapability"/>
-        </set>
-
-        <set name="sapWorkloads" lazy="true" inverse="true" table="suseServerSAPWorkload" cascade="all-delete-orphan">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.SAPWorkload"/>
-        </set>
-
-        <many-to-one name="org" class="com.redhat.rhn.domain.org.Org"
-            column="org_id" lazy="proxy"/>
-
-        <many-to-one name="creator" class="com.redhat.rhn.domain.user.legacy.UserImpl"
-            column="creator_id" lazy="proxy"/>
-
-        <many-to-one name="serverArch"
-            class="com.redhat.rhn.domain.server.ServerArch"
-            column="server_arch_id" lazy="proxy"/>
-
-        <many-to-one name="contactMethod"
-            class="com.redhat.rhn.domain.server.ContactMethod"
-            column="contact_method_id" lazy="proxy"/>
-
-        <many-to-one name="provisionState"
-            class="com.redhat.rhn.domain.common.ProvisionState"
-            column="provision_state_id" cascade="save-update" lazy="proxy"/>
-
-        <many-to-one name="maintenanceSchedule"
-            class="com.suse.manager.model.maintenance.MaintenanceSchedule"
-            column="maintenance_schedule_id" lazy="proxy"/>
-
-        <one-to-one name="serverInfo"
-            class="com.redhat.rhn.domain.server.ServerInfo" cascade="all" lazy="proxy"/>
-
-        <set name="serverPaths" cascade="all-delete-orphan" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.ServerPath"/>
-        </set>
-
-        <one-to-one name="cpu" class="com.redhat.rhn.domain.server.CPU"
-            property-ref="server" cascade="all" lazy="proxy"/>
-
-        <one-to-one name="lock" class="com.redhat.rhn.domain.server.ServerLock"
-                    cascade="all" lazy="proxy"/>
-
-        <one-to-one name="serverUuid" class="com.redhat.rhn.domain.server.ServerUuid"
-                    cascade="all" lazy="proxy"/>
-
-        <one-to-one name="proxyInfo" class="com.redhat.rhn.domain.server.ProxyInfo"
-                    cascade="all" lazy="proxy"/>
-
-        <one-to-one name="mgrServerInfo" class="com.redhat.rhn.domain.server.MgrServerInfo"
-                    cascade="all" lazy="proxy"/>
-
-        <one-to-one name="pushClient" class="com.redhat.rhn.domain.server.PushClient"
-                    property-ref="server" lazy="proxy" />
-
-        <!--
-        we want to access the ram object via the field directly.
-        The setRam method is used to set the total amount of ram on
-        a server with a long.  I don't want th users to have to
-        create a RAM object on a server.
-        -->
-        <one-to-one name="ram" class="com.redhat.rhn.domain.server.Ram"
-            property-ref="server" cascade="all" access="field" lazy="proxy"/>
-        <one-to-one name="dmi" class="com.redhat.rhn.domain.server.Dmi"
-            property-ref="server" cascade="all" lazy="proxy"/>
-        <one-to-one name="location" class="com.redhat.rhn.domain.server.Location"
-            property-ref="server" cascade="all" lazy="proxy" />
-
-        <one-to-one name="cocoAttestationConfig" class="com.suse.manager.model.attestation.ServerCoCoAttestationConfig"
-                    property-ref="server" cascade="all" lazy="proxy"/>
-        <set name="cocoAttestationReports" inverse="true" cascade="all">
-            <key column="server_id"/>
-            <one-to-many class="com.suse.manager.model.attestation.ServerCoCoAttestationReport"/>
-        </set>
-
-        <one-to-one name="virtualInstance"
-                    class="com.redhat.rhn.domain.server.VirtualInstance"
-                    property-ref="guest"
-                    cascade="save-update" lazy="proxy"/>
-
-        <set name="history" cascade="all" lazy="true" inverse="true">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.ServerHistoryEvent" />
-        </set>
-
-        <set name="packages" inverse="true" cascade="all-delete-orphan">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.InstalledPackage"/>
-        </set>
-
-        <set name="installedProducts" table="suseServerInstalledProduct"
-             lazy="true" cascade="save-update">
-            <key column="rhn_server_id"/>
-            <many-to-many column="suse_installed_product_id" class="com.redhat.rhn.domain.server.InstalledProduct"/>
-        </set>
-
-        <set name="appStreams" table="suseServerAppstream" inverse="true" cascade="all-delete-orphan">
-            <key column="server_id"/>
-            <one-to-many class="com.redhat.rhn.domain.server.ServerAppStream"/>
-        </set>
-
-        <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
-                         table="suseMinionInfo">
-            <key column="server_id"/>
-            <property name="minionId" column="minion_id" />
-            <property name="uname" column="uname" type="string" />
-            <property name="containerRuntime" column="container_runtime" type="string" />
-            <property name="rebootRequiredAfter" column="reboot_required_after" type="timestamp" />
-            <property name="osFamily" column="os_family"  type="string" length="32" />
-            <property name="kernelLiveVersion" column="kernel_live_version"  type="string" length="255" />
-            <property name="sshPushPort" column="ssh_push_port" access="field"/>
-            <set name="accessTokens" lazy="true" inverse="true">
-                <key column="minion_id"/>
-                <one-to-many class="com.redhat.rhn.domain.channel.AccessToken"/>
-            </set>
-
-            <set name="pillars" lazy="true" inverse="true" cascade="all" access="field">
-                <key column="server_id"/>
-                <one-to-many class="com.redhat.rhn.domain.server.Pillar"/>
-            </set>
-        </joined-subclass>
-    </class>
-
-    <query name="Server.findByIdandOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id = :sid and ORG_ID = :orgId]]>
-    </query>
-
-    <query name="Server.findByIdsAndOrgId">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where ORG_ID = :orgId and s.id in (:serverIds)]]>
-    </query>
-
-    <query name="Server.findByIds">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where s.id in (:serverIds)]]>
-    </query>
-
-    <query name="Server.findMinionsByServerIds">
-        <![CDATA[from com.redhat.rhn.domain.server.MinionServer as s where s.id in (:serverIds)]]>
-    </query>
+    <sql-query name="Server.findByIdsAndOrgId">
+        <![CDATA[SELECT * FROM rhnServer WHERE org_id = :orgId AND id IN (:serverIds)]]>
+        <return class="com.redhat.rhn.domain.server.Server" />
+    </sql-query>
     
-     <query name="Server.listRedHatSystems">
-        <![CDATA[ select s.id
-                                        from com.redhat.rhn.domain.server.Server as s
-                                        where s.id in (:sids) and s.serverArch.archType.label != 'sysv-solaris']]>
-    </query>
+    <sql-query name="Server.findByIds">
+        <![CDATA[SELECT * FROM rhnServer WHERE id IN (:serverIds)]]>
+        <return class="com.redhat.rhn.domain.server.Server" />
+    </sql-query>
 
-    <query name="Server.listOrgSystems">
-        <![CDATA[from com.redhat.rhn.domain.server.Server as s where ORG_ID = :orgId]]>
-    </query>
-
-     <query name="Server.listConfigEnabledSystems">
-        <![CDATA[ select s
-                                 from com.redhat.rhn.domain.server.Server as s
-                                         inner join s.groups as sg
-                                         inner join sg.groupType.features as f
-                                         inner join s.capabilities as c
-                                        where (sg.groupType is not null) and f.label='ftr_config' and c.id.capability.name like 'configfiles%']]>
-    </query>
-
-    <query name="Server.listMinionsByChannel">
-        <![CDATA[ select ms
-                                 from com.redhat.rhn.domain.server.MinionServer as ms
-                                         inner join ms.channels as c
-                                        where c.id = :cid]]>
-    </query>
-
-    <query name="Server.listFqdns">
-        <![CDATA[ select name
-                  from com.redhat.rhn.domain.server.ServerFQDN as fqdn
-                  where fqdn.server.id = :sid]]>
-    </query>
-
-    <query name="Server.findByFqdn">
-        <![CDATA[ select s
-                  from com.redhat.rhn.domain.server.Server as s
-                  join s.fqdns as fqdn
-                  where LOWER(fqdn.name) = LOWER(:name)
+    <sql-query name="Server.listRedHatSystems">
+        <![CDATA[
+            SELECT s.id 
+            FROM rhnServer s
+            INNER JOIN rhnServerArch sa ON s.server_arch_id = sa.id
+            INNER JOIN rhnArchType at ON sa.arch_type_id = at.id
+            WHERE s.id IN (:sids) AND at.label != 'sysv-solaris'
         ]]>
-    </query>
-
-     <query name="Server.listConfigDiffEnabledSystems">
-        <![CDATA[ select s
-                      from com.redhat.rhn.domain.server.Server as s
-                          inner join s.groups as sg
-                          inner join sg.groupType.features as f
-                          inner join s.capabilities as c
-                      where (sg.groupType is not null) and f.label='ftr_config' and c.id.capability.name = 'configfiles.diff'
-                      order by s.id asc
+        <return class="com.redhat.rhn.domain.server.Server" />
+    </sql-query>
+    
+    <sql-query name="Server.listOrgSystems">
+        <![CDATA[SELECT * FROM rhnServer WHERE org_id = :orgId]]>
+        <return class="com.redhat.rhn.domain.server.Server" />
+    </sql-query>
+    
+    <sql-query name="Server.listConfigEnabledSystems">
+        <![CDATA[
+            SELECT s.*
+            FROM rhnServer s
+            INNER JOIN rhnServerGroupMembers sg ON s.id = sg.server_id
+            INNER JOIN rhnServerGroup g ON sg.server_group_id = g.id
+            INNER JOIN rhnServerGroupType gt ON g.group_type = gt.id
+            INNER JOIN rhnServerGroupTypeFeature gtf ON gt.id = gtf.server_group_type_id
+            INNER JOIN rhnFeature f ON gtf.feature_id = f.id
+            INNER JOIN rhnClientCapability c ON s.id = c.server_id
+            INNER JOIN rhnClientCapabilityName cap ON c.capability_name_id = cap.id
+            WHERE gt.id IS NOT NULL 
+              AND f.label = 'ftr_config' 
+              AND cap.name LIKE 'configfiles%'
         ]]>
-    </query>
-
-    <query name="Server.findNonZypperTradClientsIds">
-        <![CDATA[SELECT s.id
-                 FROM Server s
-                 WHERE type(s) != com.redhat.rhn.domain.server.MinionServer
-                     AND s.id in (:serverIds)
-                     AND NOT EXISTS (SELECT 1
-                                     FROM com.redhat.rhn.domain.server.InstalledPackage as p
-                                     JOIN p.name as n 
-                                     JOIN p.server as s2
-                                     WHERE s.id = s2.id
-                                         AND n.name = 'zypper')
+        <return class="com.redhat.rhn.domain.server.Server" />
+    </sql-query>
+    
+    <sql-query name="Server.listMinionsByChannel">
+        <![CDATA[
+            SELECT ms.* 
+            FROM suseMinionInfo ms
+            INNER JOIN rhnServerChannel sc ON ms.server_id = sc.server_id
+            WHERE sc.channel_id = :cid
         ]]>
-    </query>
-
-    <query name="Server.findZypperEvr">
-        <![CDATA[SELECT p.evr
-                   FROM com.redhat.rhn.domain.server.InstalledPackage as p
-                            JOIN p.name as n
-                            JOIN p.server as s
-                  WHERE s.id = :sid AND n.name = 'zypper'
+    </sql-query>
+    
+    <sql-query name="Server.listFqdns">
+        <![CDATA[
+            SELECT fqdn.name
+            FROM rhnServerFQDN fqdn
+            WHERE fqdn.server_id = :sid
         ]]>
-    </query>
+    </sql-query>
+    
+    <sql-query name="Server.findByFqdn">
+        <![CDATA[
+            SELECT s.* 
+            FROM rhnServer s
+            INNER JOIN rhnServerFQDN fqdn ON s.id = fqdn.server_id
+            WHERE LOWER(fqdn.name) = LOWER(:name)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Server.listConfigDiffEnabledSystems">
+        <![CDATA[
+            SELECT s.*
+            FROM rhnServer s
+            INNER JOIN rhnServerGroupMembers sg ON s.id = sg.server_id
+            INNER JOIN rhnServerGroup g ON sg.server_group_id = g.id
+            INNER JOIN rhnServerGroupType gt ON g.group_type_id = gt.id
+            INNER JOIN rhnServerGroupTypeFeature gtf ON gt.id = gtf.server_group_type_id
+            INNER JOIN rhnFeature f ON gtf.feature_id = f.id
+            INNER JOIN rhnClientCapability c ON s.id = c.server_id
+            INNER JOIN rhnClientCapabilityName cap ON c.capability_name_id = cap.id
+            WHERE gt.id IS NOT NULL 
+              AND f.label = 'ftr_config' 
+              AND cap.name = 'configfiles.diff'
+            ORDER BY s.id ASC
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Server.findNonZypperTradClientsIds">
+        <![CDATA[
+            SELECT s.id
+            FROM rhnServer s
+            WHERE s.id IN (:serverIds)
+              AND NOT EXISTS (
+                  SELECT 1 
+                  FROM rhnServerPackage p
+                  INNER JOIN rhnPackageName n ON p.name_id = n.id
+                  WHERE p.server_id = s.id
+                    AND n.name = 'zypper'
+              )
+              AND s.id NOT IN (SELECT server_id FROM suseMinionInfo)
+        ]]>
+    </sql-query>
+    
+    <sql-query name="Server.findZypperEvr">
+        <![CDATA[
+            SELECT p.evr
+            FROM rhnServerPackage p
+            INNER JOIN rhnPackageName n ON p.name_id = n.id
+            WHERE p.server_id = :sid 
+              AND n.name = 'zypper'
+        ]]>
+    </sql-query>
 
     <sql-query name="Server.findUnscheduledErrataByServerIds">
         <return-scalar column="serverId" type="long"/>
@@ -339,22 +146,22 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
 
-    <query name="MinionServer.listSSHMinionsIdsAndContactMethods">
-        <![CDATA[ select s.minionId, m.label
-           from com.redhat.rhn.domain.server.MinionServer as s
-           inner join s.contactMethod as m
-           where m.label in ('ssh-push', 'ssh-push-tunnel')
+    <sql-query name="MinionServer.listSSHMinionsIdsAndContactMethods">
+        <![CDATA[
+            SELECT m.minion_id, c.label
+            FROM rhnServer s
+            INNER JOIN suseMinionInfo m ON s.id = m.server_id
+            INNER JOIN suseServerContactMethod c ON s.contact_method_id = c.id
+            WHERE c.label IN ('ssh-push', 'ssh-push-tunnel')
         ]]>
-    </query>
+    </sql-query>
 
-    <query name="Server.findServerIdsByMinionIds">
-    <![CDATA[
-        SELECT s.minionId, s.id
-            FROM Server AS s
-            WHERE type(s) = com.redhat.rhn.domain.server.MinionServer
-                AND s.minionId IN (:minionIds)
+    <sql-query name="Server.findServerIdsByMinionIds">
+    <![CDATA[ SELECT m.minion_id, s.id FROM rhnServer s
+           JOIN suseMinionInfo m ON s.id = m.server_id
+           WHERE m.minion_id IN (:minionIds);
     ]]>
-    </query>
+    </sql-query>
 
     <sql-query name="Server.listMinionIdMappings">
         <return-scalar column="minion_id" type="string"/>
@@ -502,25 +309,21 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         ]]>
     </sql-query>
     
-    <query name="Server.setMaintenanceScheduleToSystems">
-        <![CDATA[UPDATE Server s
-                    SET s.maintenanceSchedule = :schedule
-                  WHERE s.id IN (:systemIds)]]>
-    </query>
+    <sql-query name="Server.setMaintenanceScheduleToSystems">
+        <![CDATA[UPDATE rhnServer SET maintenance_schedule_id = :schedule WHERE id IN (:systemIds)]]>
+    </sql-query>
 
 
-    <query name="Server.findServersPendingRebootAction">
-        <![CDATA[SELECT distinct(sa.server.id) FROM ServerAction sa
-                      WHERE sa.server.id IN (:systemIds)
-                        AND sa.parentAction.actionType.label = 'reboot.reboot'
-                        AND status in ( 0, 1 )]]>
-    </query>
+    <sql-query name="Server.findServersPendingRebootAction">
+        <![CDATA[SELECT DISTINCT sa.server_id FROM rhnServerAction sa
+		JOIN rhnAction parentAction ON sa.action_id = parentAction.id
+		WHERE sa.server_id IN (:systemIds)
+  		AND parentAction.actionType = 'reboot.reboot'
+  		AND sa.status IN (0, 1)]]>
+    </sql-query>
 
-    <query name="Server.listAllServerIds">
-        <![CDATA[SELECT s.id
-                   FROM com.redhat.rhn.domain.server.Server AS s
-               ORDER BY s.id
-        ]]>
-    </query>
+    <sql-query name="Server.listAllServerIds">
+        <![CDATA[SELECT id FROM rhnServer ORDER BY id]]>
+    </sql-query>
 
 </hibernate-mapping>

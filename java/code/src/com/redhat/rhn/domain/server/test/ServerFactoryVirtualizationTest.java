@@ -51,9 +51,10 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
                 virtualInstanceFactory.newRegisteredGuestWithHost();
         Server host = virtualInstance.getHostSystem();
         ServerFactory.save(host);
-        flushAndEvict(host);
 
         Server retrievedHost = ServerFactory.lookupById(host.getId());
+
+        assertEquals(host, retrievedHost);
 
         assertTrue(retrievedHost.getGuests().contains(virtualInstance));
 
@@ -78,7 +79,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         host.addGuest(virtualInstanceFactory.newRegisteredGuestWithoutHost());
 
         ServerFactory.save(host);
-        flushAndEvict(host);
 
         VirtualInstance virtualInstance = (VirtualInstance)CollectionUtils.get(
                 host.getGuests(), 0);
@@ -87,7 +87,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         virtualInstance.setUuid(uuid);
 
         ServerFactory.save(host);
-        flushAndEvict(host);
 
         Server retrievedHost = ServerFactory.lookupById(host.getId());
 
@@ -105,7 +104,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         Server guest = virtualInstance.getGuestSystem();
 
         ServerFactory.save(guest);
-        flushAndEvict(guest);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
 
@@ -122,8 +120,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         Server host = virtualInstance.getHostSystem();
 
         ServerFactory.save(guest);
-        flushAndEvict(guest);
-        flushAndEvict(host);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
         Server retrievedHost = ServerFactory.lookupById(host.getId());
@@ -141,8 +137,6 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         Server guest = virtualInstance.getGuestSystem();
 
         ServerFactory.save(guest);
-        flushAndEvict(guest);
-        flushAndEvict(virtualInstance);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
         retrievedGuest.setName("the_guest");

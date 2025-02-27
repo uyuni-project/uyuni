@@ -79,6 +79,9 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
     @JoinColumn(name = "org_id")
     private Org org;
 
+    @OneToMany(mappedBy = "serverGroup", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private Set<ServerGroupMember> serverGroupMembers;
+
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Set<Pillar> pillars = new HashSet<>();
 
@@ -244,6 +247,15 @@ public class ServerGroup extends BaseDomainHelper implements SaltConfigurable  {
     public Optional<Pillar> getPillarByCategory(String category) {
         return pillars.stream().filter(pillar -> pillar.getCategory().equals(category)).findFirst();
     }
+
+    public void setServerGroupMembers(Set<ServerGroupMember> serverGroupMembersIn) {
+        serverGroupMembers = serverGroupMembersIn;
+    }
+
+    public Set<ServerGroupMember> getServerGroupMembers() {
+        return serverGroupMembers;
+    }
+
 
     /**
      * {@inheritDoc}

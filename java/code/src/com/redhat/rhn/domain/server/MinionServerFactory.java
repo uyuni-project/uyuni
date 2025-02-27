@@ -27,8 +27,6 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.math.BigDecimal;
@@ -269,13 +267,20 @@ public class MinionServerFactory extends HibernateFactory {
      * @return a list minion summaries of the minions involved in the given Action in one of the specified statuses
      */
     private static List<MinionSummary> findMinionSummariesInStatus(Long actionId, List<ActionStatus> allowedStatues) {
-        Session session = HibernateFactory.getSession();
-
-        Query<MinionSummary> query = session.createNamedQuery("Action.findMinionSummaries", MinionSummary.class)
-                                            .setParameter("id", actionId)
-                                            .setParameter("allowedStatues", allowedStatues);
-
-        return query.getResultList();
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT s.id as serverId, m.minion_id as minionId, s.digital_server_id as digitalServerId,
+                            s.machine_id as machineId,
+                            c.label as contactMethodLabel, s.os, 0 as transactionalUpdate
+                        FROM rhnServerAction sa
+                        JOIN rhnServer s ON sa.server_id = s.id
+                        JOIN suseMinionInfo m ON m.server_id = s.id
+                        JOIN suseServerContactMethod c ON s.contact_method_id = c.id
+                        WHERE sa.action_id = :id
+                        AND sa.status IN (:allowedStatuses);
+                """, MinionSummary.class)
+                .setParameter("id", actionId, StandardBasicTypes.LONG)
+                .setParameterList("allowedStatuses",
+                        allowedStatues.stream().map(ActionStatus::getId).collect(Collectors.toList())).getResultList();
     }
 
     /**
@@ -285,8 +290,13 @@ public class MinionServerFactory extends HibernateFactory {
      * @return a list of minions
      */
     public static List<MinionServer> findMinionsByServerIds(List<Long> serverIds) {
-        return !serverIds.isEmpty() ?
-                ServerFactory.lookupByServerIds(serverIds, "Server.findMinionsByServerIds") : emptyList();
+        if (serverIds.isEmpty()) {
+            return List.of();
+        }
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM suseMinionInfo WHERE server_id IN (:serverIds)
+                        """, MinionServer.class).setParameterList("serverIds", serverIds)
+                        .stream().collect(Collectors.toList());
     }
 
     /**
