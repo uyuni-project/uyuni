@@ -72,7 +72,6 @@ import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.HashMap;
@@ -81,7 +80,6 @@ import java.util.List;
 /**
  * Tests for the {@link ProxyConfigUpdateAcquisitor} class
  */
-@ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
 
     public static final String DUMMY_REPLACE_ROOT_CA = "replace_rootCA";
