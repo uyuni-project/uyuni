@@ -36,9 +36,8 @@ import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.content.MgrSyncUtils;
 import com.redhat.rhn.manager.ssm.SsmChannelDto;
 
-import com.suse.manager.model.hub.CreateChannelInfoJson;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.HubFactory;
-import com.suse.manager.model.hub.ModifyChannelInfoJson;
 import com.suse.scc.SCCEndpoints;
 import com.suse.scc.model.SCCRepositoryJson;
 
@@ -1551,10 +1550,10 @@ public class ChannelFactory extends HibernateFactory {
      *                                   instead of the pristine one
      * @return CreateChannelInfoJson the converted info of the channel
      */
-    public static CreateChannelInfoJson toChannelInfo(Channel channel, long peripheralOrgId,
-                                                      Optional<String> forcedOriginalChannelLabel) {
+    public static ChannelInfoDetailsJson toChannelInfo(Channel channel, long peripheralOrgId,
+                                                       Optional<String> forcedOriginalChannelLabel) {
 
-        CreateChannelInfoJson channelInfo = new CreateChannelInfoJson(channel.getLabel());
+        ChannelInfoDetailsJson channelInfo = new ChannelInfoDetailsJson(channel.getLabel());
 
         if (channel.getOrg() == null) {
             channelInfo.setPeripheralOrgId(null);
@@ -1632,12 +1631,47 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Synchronize a channel. Either create or update from the given the info
+     * @param info the info about the channel
+     * @param channelInfoByLabel all channel info by label
+     * @param syncFinished list of finished channel labels
+     */
+    public static void syncChannel(ChannelInfoDetailsJson info, Map<String, ChannelInfoDetailsJson> channelInfoByLabel,
+                                   Set<String> syncFinished) {
+
+        String parentChannelLabel = info.getParentChannelLabel();
+        if (parentChannelLabel != null && !syncFinished.contains(parentChannelLabel)) {
+            ChannelInfoDetailsJson parentInfo = channelInfoByLabel.get(parentChannelLabel);
+            if (parentInfo != null) {
+                syncChannel(channelInfoByLabel.get(parentChannelLabel), channelInfoByLabel, syncFinished);
+            }
+            // we ensured that we either have all parents as channel info or they exist already
+        }
+        String clonedFromLabel = info.getOriginalChannelLabel();
+        if (clonedFromLabel != null && !syncFinished.contains(clonedFromLabel)) {
+            ChannelInfoDetailsJson clonedInfo = channelInfoByLabel.get(clonedFromLabel);
+            if (null != clonedInfo) {
+                syncChannel(clonedInfo, channelInfoByLabel, syncFinished);
+            }
+            // we ensured that we either have all clonedFrom as channel info or they exist already
+        }
+        if (lookupByLabel(info.getLabel()) == null) {
+            toChannel(info);
+        }
+        else if (info.getPeripheralOrgId() != null) {
+            // we modify only custom channels. Vendor channels are updated during sync
+            modifyCustomChannel(info);
+        }
+        syncFinished.add(info.getLabel());
+    }
+
+    /**
      * Converts a channel info structure to a channel
      *
      * @param channelInfo the channel info to be converted
      * @return {@link Channel} converted from channel info
      */
-    public static Channel toChannel(CreateChannelInfoJson channelInfo) {
+    public static Channel toChannel(ChannelInfoDetailsJson channelInfo) {
         Org org = Optional.ofNullable(channelInfo.getPeripheralOrgId())
                 .map(OrgFactory::lookupById)
                 .orElse(null);
@@ -1697,44 +1731,44 @@ public class ChannelFactory extends HibernateFactory {
     /**
      * Ensures that the channels json info structure is valid, as well as all consequent data
      *
-     * @param createChannelInfoJsonListIn list of channel info structures to be checked
+     * @param channelInfoByLabel list of channel info structures to be checked
      * @throws IllegalArgumentException if something is wrong
      */
-    public static void ensureValidChannelInfo(List<CreateChannelInfoJson> createChannelInfoJsonListIn) {
-        for (CreateChannelInfoJson channelInfo : createChannelInfoJsonListIn) {
+    public static void ensureValidChannelInfo(List<ChannelInfoDetailsJson> channelInfoByLabel) {
+        ensureValidOrgIds(channelInfoByLabel);
 
-            if (ChannelFactory.doesChannelLabelExist(channelInfo.getLabel())) {
-                throw new IllegalArgumentException("Channel already found with the same label " +
-                        "for channel [" + channelInfo.getLabel() + "]");
-            }
-        }
-        ensureValidOrgIds(createChannelInfoJsonListIn);
+        ensureExistingOrAboutToCreate(channelInfoByLabel, false, "channel arch",
+                ChannelInfoDetailsJson::getChannelArchLabel, ChannelFactory::findArchByLabel, null);
 
-        ensureExistingOrAboutToCreate(createChannelInfoJsonListIn, false, "channel arch",
-                CreateChannelInfoJson::getChannelArchLabel, ChannelFactory::findArchByLabel, null);
+        ensureExistingOrAboutToCreate(channelInfoByLabel, false, "checksum type",
+                ChannelInfoDetailsJson::getChecksumTypeLabel, ChannelFactory::findChecksumTypeByLabel, null);
 
-        ensureExistingOrAboutToCreate(createChannelInfoJsonListIn, false, "checksum type",
-                CreateChannelInfoJson::getChecksumTypeLabel, ChannelFactory::findChecksumTypeByLabel, null);
+        ensureExistingOrAboutToCreate(channelInfoByLabel, true, "parent channel",
+                ChannelInfoDetailsJson::getParentChannelLabel, ChannelFactory::lookupByLabel,
+                ChannelInfoDetailsJson::getLabel);
 
-        ensureExistingOrAboutToCreate(createChannelInfoJsonListIn, true, "parent channel",
-                CreateChannelInfoJson::getParentChannelLabel, ChannelFactory::lookupByLabel,
-                CreateChannelInfoJson::getLabel);
-
-        ensureExistingOrAboutToCreate(createChannelInfoJsonListIn, true, "original channel",
-                CreateChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
-                CreateChannelInfoJson::getLabel);
+        ensureExistingOrAboutToCreate(channelInfoByLabel, true, "original channel",
+                ChannelInfoDetailsJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
+                ChannelInfoDetailsJson::getLabel);
 
     }
 
-    private static <T extends ModifyChannelInfoJson>
-    void ensureExistingOrAboutToCreate(List<T> channelInfoJsonList,
+    private static <T extends ChannelInfoDetailsJson>
+    void ensureExistingOrAboutToCreate(List<T> channelInfoList,
                                        boolean emptyIsAllowed, String informationTypeString,
                                        Function<T, String> searchLabelMethod,
                                        Function<String, Object> lookupLabelMethod,
                                        Function<T, String> accumulateFollowingMethod) {
         Set<String> accumulationSet = new HashSet<>();
 
-        for (T channelInfo : channelInfoJsonList) {
+        //when looking to a parent or original channel, this channel can be a parent/original of the following ones
+        if (null != accumulateFollowingMethod) {
+            for (T channelInfo : channelInfoList) {
+                accumulationSet.add(accumulateFollowingMethod.apply(channelInfo));
+            }
+        }
+
+        for (T channelInfo : channelInfoList) {
             String searchLabel = searchLabelMethod.apply(channelInfo);
             boolean isEmptySearchLabel = StringUtils.isEmpty(searchLabel);
 
@@ -1750,18 +1784,13 @@ public class ChannelFactory extends HibernateFactory {
                 }
                 accumulationSet.add(searchLabel);
             }
-
-            //when looking to a parent or original channel, this channel can be a parent/original of the following ones
-            if (null != accumulateFollowingMethod) {
-                accumulationSet.add(accumulateFollowingMethod.apply(channelInfo));
-            }
         }
     }
 
-    private static <T extends ModifyChannelInfoJson> void ensureValidOrgIds(List<T> channelInfoJsonList) {
+    private static <T extends ChannelInfoDetailsJson> void ensureValidOrgIds(List<T> channelInfoList) {
         Set<Long> orgSet = new HashSet<>();
 
-        for (T channelInfo : channelInfoJsonList) {
+        for (T channelInfo : channelInfoList) {
             Long orgId = channelInfo.getPeripheralOrgId();
 
             if (null == orgId) {
@@ -1780,27 +1809,6 @@ public class ChannelFactory extends HibernateFactory {
         }
     }
 
-    /**
-     * Ensures that the custom channels json modify info structure is valid, as well as all consequent data
-     *
-     * @param modifyCustomChannelList list of custom channel info structures to be checked
-     * @throws IllegalArgumentException if something is wrong
-     */
-    public static void ensureValidModifyCustomChannels(List<ModifyChannelInfoJson> modifyCustomChannelList) {
-        for (ModifyChannelInfoJson modifyCustomChannelInfo : modifyCustomChannelList) {
-
-            if (!ChannelFactory.doesChannelLabelExist(modifyCustomChannelInfo.getLabel())) {
-                throw new IllegalArgumentException("Channel to modify not found for custom channel [" +
-                        modifyCustomChannelInfo.getLabel() + "]");
-            }
-        }
-        ensureValidOrgIds(modifyCustomChannelList);
-
-        ensureExistingOrAboutToCreate(modifyCustomChannelList, true, "original channel",
-                ModifyChannelInfoJson::getOriginalChannelLabel, ChannelFactory::lookupByLabel,
-                ModifyChannelInfoJson::getLabel);
-    }
-
     private static <T> void setValueIfNotNull(Channel channelIn, T valueIn,
                                               BiConsumer<Channel, T> channelSetValueMethod) {
         if (null != valueIn) {
@@ -1814,7 +1822,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param modifyCustomChannelInfo the custom channel info with the info on how to modify the custom channel
      * @return customChannel the modified custom channel
      */
-    public static Channel modifyCustomChannel(ModifyChannelInfoJson modifyCustomChannelInfo) {
+    public static Channel modifyCustomChannel(ChannelInfoDetailsJson modifyCustomChannelInfo) {
 
         Channel customChannel = ChannelFactory.lookupByLabel(modifyCustomChannelInfo.getLabel());
         if (null == customChannel) {
