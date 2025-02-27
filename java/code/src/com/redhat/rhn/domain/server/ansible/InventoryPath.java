@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.server.ansible;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -82,5 +85,25 @@ public class InventoryPath extends AnsiblePath {
      */
     public void setInventoryServers(Set<Server> inventoryServersIn) {
         inventoryServers = inventoryServersIn;
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (!(oIn instanceof InventoryPath that)) {
+            return false;
+        }
+        return new EqualsBuilder().appendSuper(super.equals(oIn))
+                .append(inventoryServers, that.inventoryServers).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(inventoryServers)
+                .toHashCode();
     }
 }
