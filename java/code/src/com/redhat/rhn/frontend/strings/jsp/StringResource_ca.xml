@@ -28896,7 +28896,7 @@ canal indicat.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="needs-adaptation">Aquest servidor està configurat com un esclau de sincronització entre servidors (ISS). Les credencials només es poden gestionar en el màster de l'ISS.</target>
+        <target state="translated">Aquest servidor està configurat com a servidor perifèric en una configuració de concentrador. Les credencials només es poden gestionar al servidor concentrador.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
