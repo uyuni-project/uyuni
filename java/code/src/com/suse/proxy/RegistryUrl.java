@@ -19,6 +19,9 @@ import static com.suse.utils.Predicates.isProvided;
 
 import com.redhat.rhn.common.RhnRuntimeException;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -124,5 +127,25 @@ public class RegistryUrl {
                 "url=" + url +
                 ", tag='" + tag + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+
+        if (oIn == null || getClass() != oIn.getClass()) {
+            return false;
+        }
+
+        RegistryUrl that = (RegistryUrl) oIn;
+
+        return new EqualsBuilder().append(url, that.url).append(tag, that.tag).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(url).append(tag).toHashCode();
     }
 }

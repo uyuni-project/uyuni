@@ -41,16 +41,13 @@ import com.suse.proxy.update.ProxyConfigUpdateContext;
 import com.suse.proxy.update.ProxyConfigUpdateValidation;
 import com.suse.utils.Json;
 
-import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 /**
  * Tests for the {@link ProxyConfigUpdateValidation} class
  * These will assume the previous step in the chain of responsibility {@link ProxyConfigUpdateAcquisitor}
  * has been executed and, no errors have been added to the context.
  */
-@ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
 
     public static final String UNKNOWN = "unknown";

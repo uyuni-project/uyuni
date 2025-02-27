@@ -38,9 +38,7 @@ import com.suse.proxy.update.ProxyConfigUpdateValidation;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.junit5.JUnit5Mockery;
 import org.junit.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -51,7 +49,6 @@ import java.util.Map;
  * {@link ProxyConfigUpdateValidation} have been executed and, no errors have been added to the context.
  */
 @SuppressWarnings({"java:S1171", "java:S3599"})
-@ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCase {
 
     /**
