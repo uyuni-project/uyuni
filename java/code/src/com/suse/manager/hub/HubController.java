@@ -42,17 +42,20 @@ import com.suse.manager.model.hub.ModifyCustomChannelInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
+import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
@@ -143,7 +146,8 @@ public class HubController {
     }
 
     private String setHubDetails(Request request, Response response, IssAccessToken accessToken) {
-        Map<String, String> data = GSON.fromJson(request.body(), Map.class);
+        Type mapType = new TypeToken<Map<String, String>>() { }.getType();
+        UpdatableServerData data = new UpdatableServerData(GSON.fromJson(request.body(), mapType));
 
         try {
             hubManager.updateServerData(accessToken, accessToken.getServerFqdn(), IssRole.HUB, data);
@@ -151,6 +155,10 @@ public class HubController {
         catch (IllegalArgumentException ex) {
             LOGGER.error("Invalid data provided: ", ex);
             return badRequest(response, "Invalid data");
+        }
+        catch (TaskomaticApiException ex) {
+            LOGGER.error("Unable to schedule Taskomatic execution to refresh the root ca: ", ex);
+            return internalServerError(response, "Unable to schedule refresh of the root CA certificate");
         }
         return success(response);
     }

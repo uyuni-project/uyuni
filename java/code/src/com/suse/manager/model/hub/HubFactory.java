@@ -36,19 +36,12 @@ public class HubFactory extends HibernateFactory {
 
     /**
      * Save a {@link IssHub} object
-     * @param issHubIn object to save
+     * @param issServer object to save
      */
-    public void save(IssHub issHubIn) {
-        saveObject(issHubIn);
+    public void save(IssServer issServer) {
+        saveObject(issServer);
     }
 
-    /**
-     * Save a {@link IssPeripheral} object
-     * @param issPeripheralIn object to save
-     */
-    public void save(IssPeripheral issPeripheralIn) {
-        saveObject(issPeripheralIn);
-    }
 
     /**
      * Save a {@link IssPeripheralChannels} object
