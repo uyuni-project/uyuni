@@ -17,7 +17,6 @@ import yaml
 import json
 
 import http.server
-import socketserver
 
 import static_metrics
 from static_metrics import metrics_config
@@ -571,7 +570,7 @@ def main():
 
     collector = SupportConfigMetricsCollector(supportconfig_path)
     collector.write_metrics()
-    with socketserver.TCPServer(("", port), Handler) as httpd:
+    with http.server.ThreadingHTTPServer(("", port), Handler) as httpd:
         print("serving at port", port)
         httpd.serve_forever()
 
