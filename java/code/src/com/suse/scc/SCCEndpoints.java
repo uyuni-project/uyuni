@@ -193,7 +193,7 @@ public class SCCEndpoints {
      * @param token the token
      * @return return {@link SCCRepositoryJson} object for a Hub vendor repository
      */
-    private static SCCRepositoryJson buildVendorRepoJson(ChannelTemplate channelTemplate, String hostname,
+    public static SCCRepositoryJson buildVendorRepoJson(ChannelTemplate channelTemplate, String hostname,
                                                         String token) {
         SCCRepository repository = channelTemplate.getRepository();
         SCCRepositoryJson json = new SCCRepositoryJson();

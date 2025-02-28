@@ -13,15 +13,21 @@ package com.suse.manager.model.hub;
 
 import com.redhat.rhn.domain.channel.Channel;
 
+import com.suse.scc.model.SCCRepositoryJson;
+
 import java.util.Date;
 import java.util.Objects;
 
-public class ModifyCustomChannelInfoJson {
+public class ChannelInfoDetailsJson {
 
     private final String label;
 
     private Long peripheralOrgId;
     private String originalChannelLabel;
+
+    private String parentChannelLabel;
+    private String channelArchLabel;
+    private String checksumTypeLabel;
 
     private String baseDir;
     private String name;
@@ -44,12 +50,14 @@ public class ModifyCustomChannelInfoJson {
     private String updateTag;
     private Boolean installerUpdates;
 
+    private SCCRepositoryJson repositoryInfo;
+
     /**
      * Constructor
      *
      * @param labelIn The channel label
      */
-    public ModifyCustomChannelInfoJson(String labelIn) {
+    public ChannelInfoDetailsJson(String labelIn) {
         label = labelIn;
 
         gpgCheck = true;
@@ -109,6 +117,49 @@ public class ModifyCustomChannelInfoJson {
     public void setOriginalChannelLabel(String originalChannelLabelIn) {
         originalChannelLabel = originalChannelLabelIn;
     }
+
+    /**
+     * @return Returns the parentChannel.
+     */
+    public String getParentChannelLabel() {
+        return parentChannelLabel;
+    }
+
+    /**
+     * @param p The parentChannel to set.
+     */
+    public void setParentChannelLabel(String p) {
+        this.parentChannelLabel = p;
+    }
+
+    /**
+     * @return Returns the channelArch id
+     */
+    public String getChannelArchLabel() {
+        return channelArchLabel;
+    }
+
+    /**
+     * @param c The channelArch label to set.
+     */
+    public void setChannelArchLabel(String c) {
+        this.channelArchLabel = c;
+    }
+
+    /**
+     * @return Returns the checksum type label
+     */
+    public String getChecksumTypeLabel() {
+        return checksumTypeLabel;
+    }
+
+    /**
+     * @param checksumTypeLabelIn The checksum type label to set.
+     */
+    public void setChecksumTypeLabel(String checksumTypeLabelIn) {
+        this.checksumTypeLabel = checksumTypeLabelIn;
+    }
+
 
     /**
      * @return Returns the baseDir.
@@ -235,7 +286,6 @@ public class ModifyCustomChannelInfoJson {
     public void setGpgKeyFp(String k) {
         gpgKeyFp = k;
     }
-
 
     /**
      * @return Returns the endOfLife.
@@ -377,15 +427,32 @@ public class ModifyCustomChannelInfoJson {
         installerUpdates = installerUpdatesIn;
     }
 
+    /**
+     * @return SCCRepositoryJson object with repository info
+     */
+    public SCCRepositoryJson getRepositoryInfo() {
+        return repositoryInfo;
+    }
+
+    /**
+     * @param repositoryInfoIn The SCCRepositoryJson object with repository info
+     */
+    public void setRepositoryInfo(SCCRepositoryJson repositoryInfoIn) {
+        repositoryInfo = repositoryInfoIn;
+    }
+
     @Override
     public boolean equals(Object oIn) {
         if (oIn == null || getClass() != oIn.getClass()) {
             return false;
         }
-        ModifyCustomChannelInfoJson that = (ModifyCustomChannelInfoJson) oIn;
+        ChannelInfoDetailsJson that = (ChannelInfoDetailsJson) oIn;
         return Objects.equals(getLabel(), that.getLabel()) &&
                 Objects.equals(getPeripheralOrgId(), that.getPeripheralOrgId()) &&
                 Objects.equals(getOriginalChannelLabel(), that.getOriginalChannelLabel()) &&
+                Objects.equals(getParentChannelLabel(), that.getParentChannelLabel()) &&
+                Objects.equals(getChannelArchLabel(), that.getChannelArchLabel()) &&
+                Objects.equals(getChecksumTypeLabel(), that.getChecksumTypeLabel()) &&
                 Objects.equals(getBaseDir(), that.getBaseDir()) &&
                 Objects.equals(getName(), that.getName()) &&
                 Objects.equals(getSummary(), that.getSummary()) &&
@@ -404,49 +471,30 @@ public class ModifyCustomChannelInfoJson {
                 Objects.equals(getMaintainerPhone(), that.getMaintainerPhone()) &&
                 Objects.equals(getSupportPolicy(), that.getSupportPolicy()) &&
                 Objects.equals(getUpdateTag(), that.getUpdateTag()) &&
-                Objects.equals(isInstallerUpdates(), that.isInstallerUpdates());
+                Objects.equals(isInstallerUpdates(), that.isInstallerUpdates()) &&
+                Objects.equals(getRepositoryInfo(), that.getRepositoryInfo());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getLabel(), getPeripheralOrgId(), getOriginalChannelLabel(), getBaseDir(), getName(),
+        return Objects.hash(getLabel(), getPeripheralOrgId(), getOriginalChannelLabel(), getParentChannelLabel(),
+                getChannelArchLabel(), getChecksumTypeLabel(), getBaseDir(), getName(),
                 getSummary(), getDescription(), getProductNameLabel(), isGpgCheck(), getGpgKeyUrl(), getGpgKeyId(),
                 getGpgKeyFp(), getEndOfLifeDate(), getChannelProductProduct(), getChannelProductVersion(),
                 getChannelAccess(), getMaintainerName(), getMaintainerEmail(), getMaintainerPhone(),
-                getSupportPolicy(), getUpdateTag(), isInstallerUpdates());
-    }
-
-    protected String toStringCore() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("label='").append(label).append('\'');
-        sb.append(", peripheralOrgId=").append(peripheralOrgId);
-        sb.append(", originalChannelLabel='").append(originalChannelLabel).append('\'');
-        sb.append(", baseDir='").append(baseDir).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", summary='").append(summary).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", productNameLabel='").append(productNameLabel).append('\'');
-        sb.append(", gpgCheck=").append(gpgCheck);
-        sb.append(", gpgKeyUrl='").append(gpgKeyUrl).append('\'');
-        sb.append(", gpgKeyId='").append(gpgKeyId).append('\'');
-        sb.append(", gpgKeyFp='").append(gpgKeyFp).append('\'');
-        sb.append(", endOfLifeDate=").append(endOfLifeDate);
-        sb.append(", channelProductProduct='").append(channelProductProduct).append('\'');
-        sb.append(", channelProductVersion='").append(channelProductVersion).append('\'');
-        sb.append(", channelAccess='").append(channelAccess).append('\'');
-        sb.append(", maintainerName='").append(maintainerName).append('\'');
-        sb.append(", maintainerEmail='").append(maintainerEmail).append('\'');
-        sb.append(", maintainerPhone='").append(maintainerPhone).append('\'');
-        sb.append(", supportPolicy='").append(supportPolicy).append('\'');
-        sb.append(", updateTag='").append(updateTag).append('\'');
-        sb.append(", installerUpdates=").append(installerUpdates);
-        return sb.toString();
+                getSupportPolicy(), getUpdateTag(), isInstallerUpdates(), getRepositoryInfo());
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ModifyCustomChannelInfoJson{");
-        sb.append(toStringCore());
+        final StringBuilder sb = new StringBuilder("ChannelInfoJson{");
+        sb.append("label='").append(label).append('\'');
+        sb.append(", peripheralOrgId=").append(peripheralOrgId);
+        sb.append(", originalChannelLabel='").append(originalChannelLabel).append('\'');
+        sb.append(", parentChannelLabel='").append(parentChannelLabel).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", channelArchLabel='").append(channelArchLabel).append('\'');
+        sb.append(", repositoryInfo=").append(repositoryInfo);
         sb.append('}');
         return sb.toString();
     }
