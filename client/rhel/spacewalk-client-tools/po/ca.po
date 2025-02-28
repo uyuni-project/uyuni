@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-24 15:21+0100\n"
-"PO-Revision-Date: 2024-02-22 13:42+0000\n"
+"POT-Creation-Date: 2025-02-28 10:35+0100\n"
+"PO-Revision-Date: 2025-02-28 09:19+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacewalk-"
 "client-tools-4-3/ca/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: ../src/up2date_client/capabilities.py:94
 #, python-format
@@ -232,7 +232,7 @@ msgstr "Avís"
 #: ../src/up2date_client/rhnregGui.py:171
 #: ../src/up2date_client/rhnreg_constants.py:244
 msgid "Warning"
-msgstr "Advertència"
+msgstr "Avís"
 
 #: ../src/up2date_client/rhnregGui.py:272
 msgid "There was an error while applying your choice."
@@ -467,7 +467,7 @@ msgstr "Paquet"
 
 #: ../src/up2date_client/rhnregGui.py:1214
 msgid "Arch"
-msgstr "Arquitectura"
+msgstr "Arc"
 
 #: ../src/up2date_client/rhnregGui.py:1221
 msgid "Building a list of RPM packages installed on your system.  Please wait."
@@ -1296,7 +1296,7 @@ msgstr "Següent"
 
 #: ../src/up2date_client/rhnreg_constants.py:308
 msgid "Back"
-msgstr "Anterior"
+msgstr "Enrere"
 
 #: ../src/up2date_client/rhnreg_constants.py:309
 msgid "Cancel"
@@ -1867,7 +1867,7 @@ msgstr "Versió de Red Hat Linux:"
 
 #: ../data/rh_register.glade.h:22
 msgid "Hostname:"
-msgstr "Nom d'amfitrió:"
+msgstr "Nom de l'ordinador:"
 
 #: ../data/rh_register.glade.h:23
 msgid "IP Address:"
