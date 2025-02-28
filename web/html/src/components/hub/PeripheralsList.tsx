@@ -32,25 +32,14 @@ export class PeripheralsList extends React.Component<Props> {
         <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
         <Column
           columnKey="nChannelsSync"
-          sortable={false}
           header={t("N. of Sync Channels")}
           cell={(row: PeripheralListData) => row.nChannelsSync}
         />
-        <Column
-          columnKey="nOrgs"
-          header={t("N. of Sync Orgs")}
-          sortable={false}
-          cell={(row: PeripheralListData) => row.nSyncOrgs}
-        />
-        <Column
-          header={t("Download Root CA")}
-          sortable={false}
-          cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)}
-        />
+        <Column columnKey="nOrgs" header={t("N. of Sync Orgs")} cell={(row: PeripheralListData) => row.nSyncOrgs} />
+        <Column header={t("Download Root CA")} cell={(row: PeripheralListData) => this.renderDownloadRootCA(row)} />
         <Column
           columnKey="remove"
           header={t("Deregister")}
-          sortable={false}
           cell={(row: PeripheralListData) => this.renderDeregister(row)}
         />
       </Table>
