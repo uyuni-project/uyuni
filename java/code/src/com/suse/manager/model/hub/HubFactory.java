@@ -13,12 +13,15 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -179,6 +182,18 @@ public class HubFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM IssPeripheralChannels WHERE channel = :channel", IssPeripheralChannels.class)
                 .setParameter("channel", channelIn)
+                .list();
+    }
+
+    /**
+     * List {@link IssPeripheralChannels} objects for the given {@link IssPeripheral} server
+     * @param peripheralIn the peripheral server
+     * @return return a list of all {@link IssPeripheralChannels} for the peripheral server
+     */
+    public List<IssPeripheralChannels> listIssPeripheralChannels(IssPeripheral peripheralIn) {
+        return getSession()
+                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral", IssPeripheralChannels.class)
+                .setParameter("peripheral", peripheralIn)
                 .list();
     }
 
@@ -360,5 +375,30 @@ public class HubFactory extends HibernateFactory {
                 tuple.get("peripheral_id", Long.class)
             ))
             .toList();
+    }
+
+    /**
+     * Return list of {@link ChannelInfoDetailsJson} for a given {@link IssPeripheral} server
+     * @param peripheral the peripheral server
+     * @return return a list of ChannelInfoDetails for synchronization with the peripheral
+     */
+    public List<ChannelInfoDetailsJson> listChannelInfoForPeripheral(IssPeripheral peripheral) {
+        List<ChannelInfoDetailsJson> result = new ArrayList<>();
+        List<IssPeripheralChannels> peripheralChannels = listIssPeripheralChannels(peripheral);
+        List<Channel> channels = peripheralChannels.stream().map(IssPeripheralChannels::getChannel).toList();
+        for (IssPeripheralChannels pc : peripheralChannels) {
+            // find first original channel which should be synced as well
+            Channel search = pc.getChannel();
+            Optional<String> originalChannelLabel = Optional.empty();
+            while (search.isCloned()) {
+                search = search.asCloned().map(ClonedChannel::getOriginal).orElse(search);
+                if (channels.contains(search)) {
+                    originalChannelLabel = Optional.of(search.getLabel());
+                    break;
+                }
+            }
+            result.add(ChannelFactory.toChannelInfo(pc.getChannel(), pc.getPeripheralOrgId(), originalChannelLabel));
+        }
+        return result;
     }
 }
