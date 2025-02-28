@@ -6,6 +6,7 @@ export default {
   "admin/setup/payg": () => import("./payg/payg.renderer"),
   "admin/setup/create-payg": () => import("./create-payg/create-payg.renderer"),
   "admin/config/password-policy": () => import("./password-policy/password-policy.renderer"),
+  "admin/config/access-group": () => import("./access-group/access-group.renderer"),
   "admin/setup/proxy": () => import("./setup/proxy/proxy.renderer"),
   "admin/hub/register-peripheral": () => import("./hub/register-peripheral.renderer"),
   "admin/hub/migrate-from-v1": () => import("./hub/migrate-from-v1.renderer"),

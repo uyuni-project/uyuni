@@ -9,8 +9,7 @@ type Step = {
 };
 
 export type StepsProgressBarProps = {
-  id?: string;
-  /** The css className for the 'modal-dialog' div */
+  /** The css className for the 'step progress bar' div */
   className?: string;
   /** steps title and contents */
   steps: Step[];
@@ -22,13 +21,14 @@ const StepsProgressBar = ({ steps, classNames = {} }) => {
   const [validate, setValidate] = useState(steps[currentStep].validate);
 
   const nextStep = () => {
-
+    console.log("Next")
     if (validate && currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     }
   };
 
   const prevStep = () => {
+    console.log("back")
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
@@ -52,7 +52,7 @@ const StepsProgressBar = ({ steps, classNames = {} }) => {
           ))}
         </div>
         <div className="main-content">
-          <div className="section pueple">{steps[currentStep]?.content}</div>
+          <div className="content-section">{steps[currentStep]?.content}</div>
         </div>
       </div>
       <div className="progress-bar-footer">
