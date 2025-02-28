@@ -22,7 +22,6 @@ def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
 
     build_grafana_image(image, verbose)
     grafana_cfg = config.get_config_dir_path("grafana")
-    console.log("GRAFANA CFG DIR: ", grafana_cfg)
     grafana_dasthboard_template = config.get_json_template_filepath(
         "grafana_dashboard/supportconfig_with_logs.template.json"
     )
@@ -77,5 +76,5 @@ def render_grafana_dashboard_cfg(
         data["time"]["from"] = from_datetime
         data["time"]["to"] = to_datetime
         config.write_config(
-            "grafana", "dashboards/supportconfig_with_logs.json", data, is_json=True
+            "grafana/dashboards", "supportconfig_with_logs.json", data, is_json=True
         )

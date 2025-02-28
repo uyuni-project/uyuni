@@ -57,7 +57,8 @@ def run_command(cmd: List[str], verbose=False, raise_exc=True) -> List:
 def _handle_text_from_process(verbose: bool, *objs: str):
     if verbose:
         for obj in objs:
-            console.log(Text.from_ansi(obj.strip()))
+            if obj.strip():
+                console.log(Text.from_ansi(obj.strip()))
 
 
 def _check_retcode(retcode: int):

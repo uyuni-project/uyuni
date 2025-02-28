@@ -1,4 +1,4 @@
-FROM docker.io/grafana/grafana:latest
+FROM opensuse/grafana:11.5.1
 
 ENV GF_PATHS_PROVISIONING=/etc/grafana/provisioning
 ENV GF_AUTH_ANONYMOUS_ENABLED=true

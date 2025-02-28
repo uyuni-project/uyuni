@@ -29,7 +29,7 @@ homepage = "https://github.com/uyuni-project/uyuni"
 tracker =  "https://github.com/uyuni-project/uyuni/issues"
 
 [project.scripts]
-health-check = "health_check.main:main"
+uyuni-health-check = "health_check.main:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
