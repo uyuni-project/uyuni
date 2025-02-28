@@ -14,6 +14,7 @@ package com.suse.manager.hub;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -289,7 +290,9 @@ public class HubManager {
     }
 
     private void deletePeripheral(IssPeripheral peripheral) {
-        CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        if (null != peripheral.getMirrorCredentials()) {
+            CredentialsFactory.removeCredentials(peripheral.getMirrorCredentials());
+        }
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
     }
@@ -521,6 +524,17 @@ public class HubManager {
     }
 
     /**
+     * Collect data about a Manager Server
+     *
+     * @param user The current user
+     * @return return {@link ManagerInfoJson}
+     */
+    public ManagerInfoJson collectManagerInfo(User user) {
+        ensureSatAdmin(user);
+        return collectManagerInfo();
+    }
+
+    /**
      * Set server details
      *
      * @param token the access token
@@ -559,7 +573,7 @@ public class HubManager {
                     },
                     () -> {
                         LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
+                        throw new IllegalArgumentException("Server %s not found with role %s".formatted(fqdn, role));
                     });
             case PERIPHERAL -> hubFactory.lookupIssPeripheralByFqdn(fqdn).ifPresentOrElse(issPeripheral -> {
                         if (data.containsKey("root_ca")) {
@@ -569,11 +583,11 @@ public class HubManager {
                     },
                     ()-> {
                         LOG.error("Server {} not found with role {}", fqdn, role);
-                        throw new IllegalArgumentException("Server not found");
+                        throw new IllegalArgumentException("Server %s not found with role %s".formatted(fqdn, role));
                     });
             default -> {
                 LOG.error("Unknown role {}", role);
-                throw new IllegalArgumentException("Unknown role");
+                throw new IllegalArgumentException("Unknown role %s".formatted(role));
             }
         }
     }
@@ -684,9 +698,25 @@ public class HubManager {
             internalApi.scheduleProductRefresh();
         }
         catch (Exception ex) {
-            // cleanup the remote side
-            internalApi.deregister();
+            cleanup(internalApi);
             throw ex;
+        }
+    }
+
+    private void cleanup(HubInternalClient internalApi) {
+        // cleanup the local side: explicit rollback
+        // HubManager.createServer has already created an ISSPeripheral object
+        //
+        // Explicit rollback is needed since SparkApplicationHelper.setupHibernateSessionFilter sets Spark.after
+        // which in turn calls HibernateFactory.commitTransaction() if there's an ongoing transaction
+        HibernateFactory.rollbackTransaction();
+
+        try {
+            // try to cleanup the remote side
+            internalApi.deregister();
+        }
+        catch (Exception ex) {
+            //
         }
     }
 
@@ -904,6 +934,17 @@ public class HubManager {
     }
 
     /**
+     * Collect data about all organizations
+     *
+     * @param user The current user
+     * @return return list of {@link Org}
+     */
+    public List<Org> collectAllOrgs(User user) {
+        ensureSatAdmin(user);
+        return OrgFactory.lookupAllOrgs();
+    }
+
+    /**
      * Collect data about all channels
      *
      * @param accessToken the accesstoken
@@ -911,6 +952,17 @@ public class HubManager {
      */
     public List<Channel> collectAllChannels(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
+        return ChannelFactory.listAllChannels();
+    }
+
+    /**
+     * Collect data about all channels
+     *
+     * @param user The current user
+     * @return return list of {@link Channel}
+     */
+    public List<Channel> collectAllChannels(User user) {
+        ensureSatAdmin(user);
         return ChannelFactory.listAllChannels();
     }
 
@@ -1076,6 +1128,17 @@ public class HubManager {
     }
 
     /**
+     * Trigger a synchronization of Channel Families on the peripheral
+     *
+     * @param user The current user
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeChannelFamilies(User user) {
+        ensureSatAdmin(user);
+        return ProductsController.doSynchronizeChannelFamilies();
+    }
+
+    /**
      * Trigger a synchronization of Products on the peripheral
      *
      * @param accessToken the access token
@@ -1083,6 +1146,17 @@ public class HubManager {
      */
     public boolean synchronizeProducts(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeProducts();
+    }
+
+    /**
+     * Trigger a synchronization of Products on the peripheral
+     *
+     * @param user The current user
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeProducts(User user) {
+        ensureSatAdmin(user);
         return ProductsController.doSynchronizeProducts();
     }
 
@@ -1098,6 +1172,16 @@ public class HubManager {
     }
 
     /**
+     * Trigger a synchronization of Repositories on the peripheral
+     *
+     * @param user The current user
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeRepositories(User user) {
+        ensureSatAdmin(user);
+        return ProductsController.doSynchronizeRepositories();
+    }
+    /**
      * Trigger a synchronization of Subscriptions on the peripheral
      *
      * @param accessToken the access token
@@ -1105,6 +1189,17 @@ public class HubManager {
      */
     public boolean synchronizeSubscriptions(IssAccessToken accessToken) {
         ensureValidToken(accessToken);
+        return ProductsController.doSynchronizeSubscriptions();
+    }
+
+    /**
+     * Trigger a synchronization of Subscriptions on the peripheral
+     *
+     * @param user The current user
+     * @return a boolean flag of the success/failed result
+     */
+    public boolean synchronizeSubscriptions(User user) {
+        ensureSatAdmin(user);
         return ProductsController.doSynchronizeSubscriptions();
     }
 }

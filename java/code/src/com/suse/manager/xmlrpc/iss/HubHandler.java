@@ -11,18 +11,23 @@
 
 package com.suse.manager.xmlrpc.iss;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
-import com.redhat.rhn.frontend.xmlrpc.ServerInvocationException;
+import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -35,6 +40,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,6 +70,20 @@ public class HubHandler extends BaseHandler {
         this.hubManager = hubManagerIn;
     }
 
+    private String logGetErrorString(Throwable ex, String... args) {
+        return logGetErrorString(ex.getMessage(), args);
+    }
+
+    private String logGetErrorString(String message, String... args) {
+        String fullMessageString = String.join(" ", args);
+        if (!StringUtils.isEmpty(message) && !StringUtils.isEmpty(fullMessageString)) {
+            fullMessageString += ": ";
+        }
+        fullMessageString += message;
+        LOGGER.error(fullMessageString, message);
+        return fullMessageString;
+    }
+
     /**
      * Generate a new access token for ISS for accessing this system
      * @param loggedInUser the user logged in. It must have the sat admin role.
@@ -79,19 +99,18 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             return hubManager.issueAccessToken(loggedInUser, fqdn);
         }
         catch (TokenException ex) {
-            LOGGER.error("Unable to issue a token for {}", fqdn, ex);
-            throw new TokenCreationException();
+            throw new TokenCreationException(logGetErrorString(ex, "Unable to issue a token for", fqdn));
         }
         catch (ConstraintViolationException ex) {
-            LOGGER.error("Unable to issue a token, it already exists for {}", fqdn, ex);
-            throw new TokenAlreadyExistsException();
+            throw new TokenAlreadyExistsException(logGetErrorString(ex,
+                    "Unable to issue a token, it already exists for", fqdn));
         }
     }
 
@@ -112,23 +131,22 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(token)) {
-            throw new InvalidParameterException("No token specified");
+            throw new InvalidParameterException(logGetErrorString("No token specified"));
         }
 
         try {
             hubManager.storeAccessToken(loggedInUser, fqdn, token);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to process the token from {}", fqdn, ex);
-            throw new InvalidTokenException();
+            throw new InvalidTokenException(logGetErrorString(ex, "Unable to process the token from", fqdn));
         }
         catch (ConstraintViolationException ex) {
-            LOGGER.error("Unable to store token, it already exists for {}", fqdn, ex);
-            throw new TokenAlreadyExistsException();
+            throw new TokenAlreadyExistsException(logGetErrorString(ex,
+                    "Unable to store token, it already exists for", fqdn));
         }
         return 1;
     }
@@ -148,27 +166,26 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             hubManager.replaceTokensHub(loggedInUser, fqdn);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
+        }
+        catch (IllegalStateException ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
         return 1;
     }
@@ -218,35 +235,35 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
-            throw new InvalidParameterException("No credentials specified");
+            throw new InvalidParameterException(logGetErrorString("No credentials specified"));
         }
 
         try {
             hubManager.register(loggedInUser, fqdn, username, password, rootCA);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to connect to remote server", fqdn));
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to schedule root CA certificate update", fqdn));
+        }
+        catch (IllegalStateException ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
         }
 
         return 1;
@@ -289,37 +306,35 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         if (StringUtils.isEmpty(token)) {
-            throw new InvalidParameterException("No token");
+            throw new InvalidParameterException(logGetErrorString("No token"));
         }
 
         try {
             hubManager.register(loggedInUser, fqdn, token, rootCA);
         }
         catch (CertificateException ex) {
-            LOGGER.error("Unable to load the provided certificate", ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(logGetErrorString(ex, "Unable to load the provided certificate"));
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the specified token", ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to parse the specified token"));
         }
         catch (TokenBuildingException ex) {
-            LOGGER.error("Unable to create a token for {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to create a token for", fqdn));
         }
         catch (IOException ex) {
-            LOGGER.error("Unable to connect to remote server {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", fqdn, ex);
-            throw new TokenExchangeFailedException(ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex,
+                    "Unable to schedule root CA certificate update", fqdn));
         }
-
+        catch (IllegalStateException ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
+        }
         return 1;
     }
 
@@ -357,22 +372,24 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
 
         if (StringUtils.isEmpty(fqdn)) {
-            throw new InvalidParameterException("No FQDN specified");
+            throw new InvalidParameterException(logGetErrorString("No FQDN specified"));
         }
 
         try {
             hubManager.deregister(loggedInUser, fqdn, onlyLocal);
         }
         catch (CertificateException ex) {
-            LOGGER.error("De-registration failed for {} ", fqdn, ex);
-            throw new InvalidCertificateException(ex);
+            throw new InvalidCertificateException(logGetErrorString(ex, "De-registration failed for", fqdn));
         }
         catch (IOException ex) {
-            throw new ServerInvocationException(fqdn, ex);
+            throw new TokenExchangeFailedException(logGetErrorString(ex, "Unable to connect to remote server", fqdn));
         }
-
+        catch (IllegalStateException ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
+        }
         return 1;
     }
+
     /**
      * Set server details
      *
@@ -388,7 +405,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "fqdn", "The FDN of Hub or Periperal server to lookup details for.")
      * @apidoc.param #param_desc("string", "role", "The role which should be updated. Either 'HUB' or 'PERIPHERAL'.")
      * @apidoc.param
-     *      #struct_begin("details")
+     *      #struct_begin("data")
      *          #prop_desc("string", "root_ca", "The root ca")
      *          #prop_desc("string", "gpg_key", "The root gpg key - only for role HUB")
      *      #struct_end()
@@ -396,7 +413,159 @@ public class HubHandler extends BaseHandler {
      */
     public int setDetails(User loggedInUser, String fqdn, String role, Map<String, String> data) {
         ensureSatAdmin(loggedInUser);
-        hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        ensureValidRole(role);
+        try {
+            hubManager.updateServerData(loggedInUser, fqdn, IssRole.valueOf(role), data);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Illegal state"));
+        }
+        return 1;
+    }
+
+    private void ensureValidRole(String role) throws PermissionCheckFailureException {
+        try {
+            IssRole.valueOf(role);
+        }
+        catch (IllegalArgumentException ex) {
+            throw new InvalidParameterException(logGetErrorString(
+                    role, "Invalid role, must either be HUB or PERIPHERAL"));
+        }
+    }
+
+    /**
+     * Collect data about a Manager Server
+     *
+     * @param loggedInUser the user
+     * @return a {@link ManagerInfoJson} on success, exception otherwise
+     * @apidoc.doc Get manager info.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype $ManagerInfoJsonSerializer
+     */
+    @ReadOnly
+    public ManagerInfoJson getManagerInfo(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectManagerInfo(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Error while collecting manager info"));
+        }
+    }
+
+    /**
+     * Collect data about all peripheral organizations
+     *
+     * @param loggedInUser the user
+     * @return a list of {@link Org} on success, exception otherwise
+     * @apidoc.doc Collect data about all peripheral organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          $OrgSerializer
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Org> listAllPeripheralOrgs(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectAllOrgs(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex,
+                    "Error while collecting all peripheral organization"));
+        }
+    }
+
+    /**
+     * Collect data about all peripheral channels
+     *
+     * @param loggedInUser the user
+     * @return a list of {@link Channel} on success, exception otherwise
+     * @apidoc.doc Collect data about all peripheral channels.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          $ChannelSerializer
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Channel> listAllPeripheralChannels(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectAllChannels(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex,
+                    "Error while collecting all peripheral channels"));
+        }
+    }
+
+    /**
+     * Trigger a synchronization of channel families on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, exception otherwise
+     * @apidoc.doc Trigger a synchronization of channel families on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeChannelFamilies(User loggedInUser) {
+        if (!hubManager.synchronizeChannelFamilies(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing channel families on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of products on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of products on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeProducts(User loggedInUser) {
+        if (!hubManager.synchronizeProducts(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing products on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of repositories on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of repositories on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeRepositories(User loggedInUser) {
+        if (!hubManager.synchronizeRepositories(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing repositories on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of subscriptions on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of subscriptions on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeSubscriptions(User loggedInUser) {
+        if (!hubManager.synchronizeSubscriptions(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing subscriptions on the peripheral"));
+        }
         return 1;
     }
 }
