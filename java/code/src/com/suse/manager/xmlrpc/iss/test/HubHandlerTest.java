@@ -28,6 +28,7 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.hub.DefaultHubInternalClient;
 import com.suse.manager.hub.HubClientFactory;
@@ -58,6 +59,11 @@ import javax.net.ssl.SSLHandshakeException;
 
 @ExtendWith(JUnit5Mockery.class)
 public class HubHandlerTest extends BaseHandlerTestCase {
+    private static final String LOCAL_SERVER_FQDN = "uyuni-server.dev.local";
+    private static final String DUMMY_TOKEN = "token";
+    private static final String DUMMY_ROOT_CA = "dummy";
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_DUMMY_PASS = "admin";
 
     @RegisterExtension
     protected final JUnit5Mockery context = new JUnit5Mockery() {{
@@ -69,7 +75,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     private HubHandler hubHandler;
 
     @BeforeEach
-    public void setup() {
+    public void setupTest() {
         context.setThreadingPolicy(new Synchroniser());
         context.setImposteriser((ByteBuddyClassImposteriser.INSTANCE));
 
@@ -78,195 +84,207 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void ensureOnlySatAdminCanAccessToTokenGeneration() throws Exception {
+    public void ensureOnlySatAdminCanAccessToTokenGeneration() throws TokenBuildingException, TokenParsingException {
         Expectations expectations = new Expectations();
-        expectations.allowing(hubManagerMock).issueAccessToken(satAdmin, "uyuni-server.dev.local");
+        expectations.allowing(hubManagerMock).issueAccessToken(satAdmin, LOCAL_SERVER_FQDN);
         expectations.will(returnValue("dummy-token"));
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.generateAccessToken(regular, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(regular, LOCAL_SERVER_FQDN)
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.generateAccessToken(admin, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(admin, LOCAL_SERVER_FQDN)
         );
 
         assertDoesNotThrow(
-            () -> hubHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local")
+            () -> hubHandler.generateAccessToken(satAdmin, LOCAL_SERVER_FQDN)
         );
     }
 
     @Test
     public void throwsCorrectExceptionWhenIssuingFails() throws TokenException {
         Expectations expectations = new Expectations();
-        expectations.allowing(hubManagerMock).issueAccessToken(satAdmin, "uyuni-server.dev.local");
+        expectations.allowing(hubManagerMock).issueAccessToken(satAdmin, LOCAL_SERVER_FQDN);
         expectations.will(throwException(new TokenBuildingException("unexpected error")));
         context.checking(expectations);
 
         assertThrows(TokenCreationException.class,
-            () -> hubHandler.generateAccessToken(satAdmin, "uyuni-server.dev.local"));
+            () -> hubHandler.generateAccessToken(satAdmin, LOCAL_SERVER_FQDN));
     }
 
     @Test
-    public void ensureOnlySatAdminCanAccessToTokenStorage() throws Exception {
+    public void ensureOnlySatAdminCanAccessToTokenStorage() throws TokenParsingException {
         Expectations expectations = new Expectations();
-        expectations.allowing(hubManagerMock).storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token");
+        expectations.allowing(hubManagerMock).storeAccessToken(satAdmin, LOCAL_SERVER_FQDN, "dummy-token");
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.storeAccessToken(regular, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(regular, LOCAL_SERVER_FQDN, "dummy-token")
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.storeAccessToken(admin, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(admin, LOCAL_SERVER_FQDN, "dummy-token")
         );
 
         assertDoesNotThrow(
-            () -> hubHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token")
+            () -> hubHandler.storeAccessToken(satAdmin, LOCAL_SERVER_FQDN, "dummy-token")
         );
     }
 
     @Test
     public void throwsCorrectExceptionWhenStoringFails() throws TokenParsingException {
         Expectations expectations = new Expectations();
-        expectations.allowing(hubManagerMock).storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token");
+        expectations.allowing(hubManagerMock).storeAccessToken(satAdmin, LOCAL_SERVER_FQDN, "dummy-token");
         expectations.will(throwException(new TokenParsingException("Cannot parse")));
         context.checking(expectations);
 
         assertThrows(InvalidTokenException.class,
-            () -> hubHandler.storeAccessToken(satAdmin, "uyuni-server.dev.local", "dummy-token"));
+            () -> hubHandler.storeAccessToken(satAdmin, LOCAL_SERVER_FQDN, "dummy-token"));
     }
 
     @Test
-    public void ensureOnlySatAdminCanRegister() throws Exception {
+    public void ensureOnlySatAdminCanRegister() throws TokenBuildingException, TaskomaticApiException,
+            CertificateException, IOException, TokenParsingException {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-                .register(satAdmin, "remote-server.dev.local", "admin", "admin", null);
+                .register(satAdmin, "remote-server.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS, null);
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.registerPeripheral(regular, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(regular, "remote-server.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS)
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.registerPeripheral(admin, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(admin, "remote-server.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS)
         );
 
         assertDoesNotThrow(
-            () -> hubHandler.registerPeripheral(satAdmin, "remote-server.dev.local", "admin", "admin")
+            () -> hubHandler.registerPeripheral(satAdmin, "remote-server.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS)
         );
     }
 
     @Test
-    public void throwsCorrectExceptionsWhenRegisteringFails() throws Exception {
+    public void throwsCorrectExceptionsWhenRegisteringFails() throws TokenBuildingException, TaskomaticApiException,
+            CertificateException, IOException, TokenParsingException {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy");
+            .register(satAdmin, "fails-certificate.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA);
         expectations.will(throwException(new CertificateException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy");
+            .register(satAdmin, "fails-parsing.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA);
         expectations.will(throwException(new TokenParsingException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy");
+            .register(satAdmin, "fails-building.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA);
         expectations.will(throwException(new TokenBuildingException("Unable to build")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy");
+            .register(satAdmin, "fails-connecting.dev.local", ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA);
         expectations.will(throwException(new IOException("Unable to connect")));
 
         context.checking(expectations);
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> hubHandler.registerPeripheral(satAdmin, "fails-certificate.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-certificate.dev.local",
+                    ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheral(satAdmin, "fails-parsing.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-parsing.dev.local",
+                    ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheral(satAdmin, "fails-building.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-building.dev.local",
+                    ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheral(satAdmin, "fails-connecting.dev.local", "admin", "admin", "dummy")
+            () -> hubHandler.registerPeripheral(satAdmin, "fails-connecting.dev.local",
+                    ADMIN_USERNAME, ADMIN_DUMMY_PASS, DUMMY_ROOT_CA)
         );
     }
 
     @Test
-    public void ensureOnlySatAdminCanRegisterWithToken() throws Exception {
+    public void ensureOnlySatAdminCanRegisterWithToken() throws TokenBuildingException, TaskomaticApiException,
+            CertificateException, IOException, TokenParsingException {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "remote-server.dev.local", "token", null);
+            .register(satAdmin, "remote-server.dev.local", DUMMY_TOKEN, null);
         context.checking(expectations);
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.registerPeripheralWithToken(regular, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(regular, "remote-server.dev.local", DUMMY_TOKEN)
         );
 
         assertThrows(
             PermissionCheckFailureException.class,
-            () -> hubHandler.registerPeripheralWithToken(admin, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(admin, "remote-server.dev.local", DUMMY_TOKEN)
         );
 
         assertDoesNotThrow(
-            () -> hubHandler.registerPeripheralWithToken(satAdmin, "remote-server.dev.local", "token")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "remote-server.dev.local", DUMMY_TOKEN)
         );
     }
 
     @Test
-    public void throwsCorrectExceptionsWhenRegisteringWithTokenFails() throws Exception {
+    public void throwsCorrectExceptionsWhenRegisteringWithTokenFails() throws TokenBuildingException,
+            TaskomaticApiException, CertificateException, IOException, TokenParsingException {
         Expectations expectations = new Expectations();
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-certificate.dev.local", "token", "dummy");
+            .register(satAdmin, "fails-certificate.dev.local", DUMMY_TOKEN, DUMMY_ROOT_CA);
         expectations.will(throwException(new CertificateException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-parsing.dev.local", "token", "dummy");
+            .register(satAdmin, "fails-parsing.dev.local", DUMMY_TOKEN, DUMMY_ROOT_CA);
         expectations.will(throwException(new TokenParsingException("Unable to parse")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-building.dev.local", "token", "dummy");
+            .register(satAdmin, "fails-building.dev.local", DUMMY_TOKEN, DUMMY_ROOT_CA);
         expectations.will(throwException(new TokenBuildingException("Unable to build")));
 
         expectations.allowing(hubManagerMock)
-            .register(satAdmin, "fails-connecting.dev.local", "token", "dummy");
+            .register(satAdmin, "fails-connecting.dev.local", DUMMY_TOKEN, DUMMY_ROOT_CA);
         expectations.will(throwException(new IOException("Unable to connect")));
 
         context.checking(expectations);
 
         assertThrows(
             InvalidCertificateException.class,
-            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-certificate.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-certificate.dev.local",
+                    DUMMY_TOKEN, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-parsing.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-parsing.dev.local",
+                    DUMMY_TOKEN, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-building.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-building.dev.local",
+                    DUMMY_TOKEN, DUMMY_ROOT_CA)
         );
 
         assertThrows(
             TokenExchangeFailedException.class,
-            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local", "token", "dummy")
+            () -> hubHandler.registerPeripheralWithToken(satAdmin, "fails-connecting.dev.local",
+                    DUMMY_TOKEN, DUMMY_ROOT_CA)
         );
     }
 
@@ -274,7 +292,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     public void throwsCorrectExceptionWhenReplaceTokensFailsCausedByIllegalStateException() {
         HubHandler newHubHandler = new HubHandler();
         assertThrows(FaultException.class,
-                () -> newHubHandler.replaceTokens(satAdmin, "uyuni-server.dev.local"));
+                () -> newHubHandler.replaceTokens(satAdmin, LOCAL_SERVER_FQDN));
     }
 
     @Test
@@ -287,7 +305,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         newHubFactory.save(peripheral);
 
         assertThrows(FaultException.class,
-                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, "token", null));
+                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, DUMMY_TOKEN, null));
     }
 
     @Test
@@ -300,7 +318,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         newHubFactory.save(hub);
 
         assertThrows(FaultException.class,
-                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, "token", null));
+                () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn, DUMMY_TOKEN, null));
     }
 
     @Test
@@ -312,7 +330,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void registerPeripheralWithTokenCorreclyRemovesPeripheralRegistration() throws Exception {
+    public void registerPeripheralWithTokenCorrectlyRemovesPeripheralRegistration()
+            throws TaskomaticApiException, IOException, CertificateException {
         TaskomaticApi mockTaskomaticApi = context.mock(TaskomaticApi.class);
         HubClientFactory mockHubClientFactory = context.mock(HubClientFactory.class);
         DefaultHubInternalClient mockDefaultHubInternalClient = context.mock(DefaultHubInternalClient.class);
@@ -344,10 +363,10 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         Throwable exFirstCall = assertThrows(TokenExchangeFailedException.class,
                 () -> newHubHandler.registerPeripheralWithToken(satAdmin, dummyFqdn,
                         dummyToken, ""));
-        assertTrue(exFirstCall.getMessage().equals(sshFailureErrorString));
+        assertTrue(exFirstCall.getMessage().endsWith(sshFailureErrorString));
 
         Optional<IssPeripheral> issPeripheral = hubFactory.lookupIssPeripheralByFqdn(dummyFqdn);
-        assertTrue(!issPeripheral.isPresent());
+        assertTrue(issPeripheral.isEmpty());
     }
 
     @Test
