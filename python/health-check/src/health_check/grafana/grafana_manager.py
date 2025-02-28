@@ -76,5 +76,5 @@ def render_grafana_dashboard_cfg(
         data["time"]["from"] = from_datetime
         data["time"]["to"] = to_datetime
         config.write_config(
-            "grafana", "dashboards/supportconfig_with_logs.json", data, is_json=True
+            "grafana/dashboards", "supportconfig_with_logs.json", data, is_json=True
         )
