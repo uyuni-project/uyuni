@@ -22,6 +22,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
@@ -127,7 +128,7 @@ public class RestHubExternalClient implements HubExternalClient {
             return;
         }
 
-        HttpPost request = createPostRequest("auth", "logout");
+        HttpGet request = createGetRequest("auth", "logout");
         HttpResponse response = httpClientAdapter.executeRequest(request);
         int statusCode = response.getStatusLine().getStatusCode();
         if (statusCode != HttpStatus.SC_OK) {
@@ -156,5 +157,10 @@ public class RestHubExternalClient implements HubExternalClient {
         }
 
         return request;
+    }
+
+    private HttpGet createGetRequest(String namespace, String method) {
+        String url = "https://%s/rhn/manager/api/%s/%s".formatted(remoteHost, namespace.replace(".", "/"), method);
+        return new HttpGet(url);
     }
 }
