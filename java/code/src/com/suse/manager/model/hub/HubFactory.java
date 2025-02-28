@@ -13,6 +13,8 @@ package com.suse.manager.model.hub;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.DatabaseEnumType;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.frontend.listview.PageControl;
 
 import org.apache.logging.log4j.LogManager;
@@ -24,6 +26,8 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Tuple;
 
@@ -180,6 +184,18 @@ public class HubFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM IssPeripheralChannels WHERE channel = :channel", IssPeripheralChannels.class)
                 .setParameter("channel", channelIn)
+                .list();
+    }
+
+    /**
+     * List {@link IssPeripheralChannels} objects for the given {@link IssPeripheral} server
+     * @param peripheralIn the peripheral server
+     * @return return a list of all {@link IssPeripheralChannels} for the peripheral server
+     */
+    public List<IssPeripheralChannels> listIssPeripheralChannels(IssPeripheral peripheralIn) {
+        return getSession()
+                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral", IssPeripheralChannels.class)
+                .setParameter("peripheral", peripheralIn)
                 .list();
     }
 
@@ -361,6 +377,42 @@ public class HubFactory extends HibernateFactory {
                 tuple.get("peripheral_id", Long.class)
             ))
             .toList();
+    }
+
+    /**
+     * Return list of {@link ChannelInfoDetailsJson} for a given {@link IssPeripheral} server
+     * @param peripheral the peripheral server
+     * @return return a list of ChannelInfoDetails for synchronization with the peripheral
+     */
+    public List<ChannelInfoDetailsJson> listChannelInfoForPeripheral(IssPeripheral peripheral) {
+        List<IssPeripheralChannels> peripheralChannels = listIssPeripheralChannels(peripheral);
+        Set<Long> channelIds = peripheralChannels.stream()
+                .map(IssPeripheralChannels::getChannel)
+                .map(Channel::getId)
+                .collect(Collectors.toSet());
+        return peripheralChannels.stream()
+                .map(pc -> ChannelFactory.toChannelInfo(
+                        pc.getChannel(),
+                        pc.getPeripheralOrgId(),
+                        findOriginalChannelLabel(pc.getChannel(), channelIds)))
+                .toList();
+    }
+
+    /**
+     * Traverses the chain of cloned channels to find the first "original" channel in the given set
+     * @param channel the starting channel
+     * @param channelIds the set of valid channel IDs
+     * @return an Optional containing the original channel's label if found, or empty if not
+     */
+    private Optional<String> findOriginalChannelLabel(Channel channel, Set<Long> channelIds) {
+        Channel search = channel;
+        while (search.isCloned()) {
+            search = search.asCloned().map(ClonedChannel::getOriginal).orElse(search);
+            if (channelIds.contains(search.getId())) {
+                return Optional.of(search.getLabel());
+            }
+        }
+        return Optional.empty();
     }
 
     private static <T> Query<T> buildQueryFromPageControl(String entityName, Class<T> resultClass, PageControl pc) {
