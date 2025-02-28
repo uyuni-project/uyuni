@@ -1250,13 +1250,6 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   get_target('server').run(command)
 end
 
-# WORKAROUND
-# Work around issue https://github.com/SUSE/spacewalk/issues/10360
-# Remove as soon as the issue is fixed
-When(/^I let Kiwi build from external repositories$/) do
-  get_target('server').run('sed -i \'s/--ignore-repos-used-for-build//\' /usr/share/susemanager/salt/images/kiwi-image-build.sls')
-end
-
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|
   node = get_system_name(client)
   get_target('server').run('spacecmd -u admin -p admin clear_caches')

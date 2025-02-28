@@ -2722,16 +2722,21 @@ def _buildDatabaseValue(row, fieldsHash):
 def _buildExternalValue(dict, entry, tableObj):
     # updates dict with values from entry
     # entry is a hash-like object (non-db)
-    for f, datatype in list(tableObj.getFields().items()):
-        if f in dict:
+    for field, datatype in list(tableObj.getFields().items()):
+        if field in dict:
             # initialized somewhere else
             continue
         # Get the attribute's name
-        attr = tableObj.getObjectAttribute(f)
+        attr = tableObj.getObjectAttribute(field)
         # Sanitize the value according to its datatype
         if attr not in entry:
             entry[attr] = None
-        dict[f] = sanitizeValue(entry[attr], datatype)
+        try:
+            dict[field] = sanitizeValue(entry[attr], datatype)
+        except ValueError as e:
+            raise ValueError(
+                f"Cannot sanitize value from {field}={entry[attr]} to {type(datatype)}"
+            ) from e
 
 
 def computeDiff(hash1, hash2, diffHash, diffobj, prefix=None):
