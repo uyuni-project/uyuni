@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-01-24 15:21+0100\n"
-"PO-Revision-Date: 2025-02-28 08:57+0000\n"
+"PO-Revision-Date: 2025-02-28 09:19+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "spacewalk-client-tools-4-3/ca/>\n"
@@ -1867,7 +1867,7 @@ msgstr "Versió de Red Hat Linux:"
 
 #: ../data/rh_register.glade.h:22
 msgid "Hostname:"
-msgstr "Nom d'amfitrió:"
+msgstr "Nom de l'ordinador:"
 
 #: ../data/rh_register.glade.h:23
 msgid "IP Address:"
