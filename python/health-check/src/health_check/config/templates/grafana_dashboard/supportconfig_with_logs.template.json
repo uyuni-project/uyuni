@@ -26,7 +26,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 2,
   "links": [],
   "panels": [
     {
@@ -407,9 +407,10 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "count"
+            "lastNotNull"
           ],
-          "fields": "/^id \\(count\\)$/",
+          "fields": "/^count$/",
+          "limit": 25,
           "values": true
         },
         "showUnfilled": true,
@@ -443,30 +444,13 @@
       "title": "Top 25 most common Salt Jobs",
       "transformations": [
         {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "fun": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "id": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              }
-            }
-          }
-        },
-        {
           "id": "sortBy",
           "options": {
             "fields": {},
             "sort": [
               {
                 "desc": true,
-                "field": "id (count)"
+                "field": "count"
               }
             ]
           }
@@ -1061,6 +1045,6 @@
   "timezone": "",
   "title": "Supportconfig with Logs",
   "uid": "AvmqWWUik",
-  "version": 4,
+  "version": 3,
   "weekStart": ""
 }

@@ -439,9 +439,10 @@ class SupportConfigMetricsCollector:
         for i, key_type in enumerate(key_types):
             prop = {
                 "name": key_type,
-                "value": parsed[i].strip().split("\n") if parsed[i].strip() else [],
             }
-            prop["length"] = len(prop["value"])
+            prop["length"] = len(
+                parsed[i].strip().split("\n") if parsed[i].strip() else []
+            )
             ret.append(prop)
         return ret
 
@@ -456,21 +457,21 @@ class SupportConfigMetricsCollector:
             encoding="UTF-8",
         ) as f:
             content = f.read()
-        res = []
+        jobs_totals = {}
         job_matches = re.findall(
             r"^'([0-9]+)':[\s\S]*?Function:\s+([\w.]+)[\s\S]*?StartTime:\s+(\d{4},\s\w{3}\s\d{2}\s\d{2}:\d{2}:\d{2}\.\d{6})",
             content,
             re.MULTILINE,
         )
+
         for job_match in job_matches:
-            res.append(
-                {
-                    "id": job_match[0],
-                    "fun": job_match[1],
-                    "start_time": job_match[2],
-                }
-            )
-        return res
+            _, fun_, _ = job_match[0], job_match[1], job_match[2]
+            if fun_ in jobs_totals:
+                jobs_totals[fun_] += 1
+            else:
+                jobs_totals[fun_] = 1
+
+        return [{"fun": k, "count": v} for k, v in jobs_totals.items()]
 
     def get_static_metrics(self):
         for name, static_metric in self.static_metrics_collection.items():
