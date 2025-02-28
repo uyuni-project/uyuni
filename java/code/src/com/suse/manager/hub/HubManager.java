@@ -917,22 +917,23 @@ public class HubManager {
     /**
      * Count the registered peripherals on "this" hub
      * @param user the SatAdmin
+     * @param pc the page control object
      * @return the count of registered peripherals entities
      */
-    public Long countRegisteredPeripherals(User user) {
+    public Long countRegisteredPeripherals(User user, PageControl pc) {
         ensureSatAdmin(user);
-        return hubFactory.countPeripherals();
+        return hubFactory.countPeripherals(pc);
     }
 
     /**
-     * List the peripherals with pagination //TODO: and search
+     * List the peripherals with pagination and filtering, based on the give page control.
      * @param user the SatAdmin
-     * @param pc the PageControl
+     * @param pc the page control object
      * @return a List of Peripherals entities
      */
     public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
         ensureSatAdmin(user);
-        return hubFactory.listPaginatedPeripherals(pc.getStart() - 1, pc.getPageSize());
+        return hubFactory.listPaginatedPeripherals(pc);
     }
 
     /**
