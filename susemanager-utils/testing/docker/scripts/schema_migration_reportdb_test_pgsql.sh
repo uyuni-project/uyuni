@@ -66,11 +66,11 @@ if [ -d /etc/sysconfig/rhn/postgres -a ! -e /usr/share/susemanager/db/postgres ]
     ln -s /etc/sysconfig/rhn/reportdb /usr/share/susemanager/db/reportdb
 fi
 
+# We need SUPERUSER role to install the old schema as they add extensions.
+# This basically reproduces the upgrade from an existing DB setup.
+su - postgres -c "echo 'ALTER ROLE pythia WITH SUPERUSER;' | psql -d reportdb"
 
-# this command will fail with certificate error. This is ok, so ignore the error
-spacewalk-setup --skip-initial-configuration --skip-fqdn-test --skip-ssl-cert-generation --skip-ssl-vhost-setup --skip-services-check --clear-db --answer-file=clear-db-answers-pgsql.txt ||:
-/manager/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb remove --db reportdb --user pythia ||:
-/manager/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb create --db reportdb --user pythia --password spacewalk --local
+spacewalk-sql --reportdb /usr/share/susemanager/db/reportdb/main.sql
 
 # this copy the latest schema from the git into the system
 ./build-reportdb-schema.sh

@@ -12,7 +12,7 @@ if [ -z "${UYUNI_VERSION}" ];then
 fi
 
 echo "Killing old containers"
-containers="auth_registry buildhost deblike_minion rhlike_minion sle_minion opensusessh server controller"
+containers="auth_registry buildhost deblike_minion rhlike_minion sle_minion opensusessh server controller uyuni-db"
 for i in ${containers};do
     sudo -i podman kill ${i}
 done
@@ -23,7 +23,6 @@ for i in ${containers};do
 done
 
 echo "Force remove containers"
-containers="auth_registry buildhost deblike_minion rhlike_minion sle_minion opensusessh server controller"
 for i in ${containers};do
     sudo -i podman rm ${i}
 done
@@ -61,5 +60,13 @@ sudo -i podman volume rm etc-sssd
 
 echo "Remove network"
 sudo -i podman network rm network
+
+echo "Remove secrets"
+for secret in $(sudo -i podman secret ls --format '{{.Name}}' | grep '^uyuni-'); do
+    sudo -i podman secret rm $secret
+done
+
+echo "Remove temporary directories"
+sudo -i rm -rf /tmp/{testing,ssl}
 
 sleep 10

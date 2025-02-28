@@ -329,11 +329,6 @@ rpm -qa | sort > $DIR/rpm-manifest-clean
 echo "    * querying schema version, database charactersets and database"
 /usr/bin/rhn-schema-version > $DIR/database-schema-version
 /usr/bin/rhn-charsets > $DIR/database-character-sets
-if [ "$(spacewalk-cfg-get externaldb)" = "0" ] ; then
-    if [ -f /usr/bin/smdba ] ; then
-        /usr/bin/smdba space-overview > $DIR/db-control-report
-    fi
-fi
 
 if [ -f /usr/bin/spacewalk-sql ] ; then
     USERS_TZ_LC_SQL="""

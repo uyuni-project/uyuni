@@ -32,7 +32,7 @@ for my $dir (@dirs) {
                         my $generic = $name;
                         my $db = 'common';
                         if ($generic =~ /\.(oracle|postgresql)$/) {
-                                die "Found DB specific files in [upgrade] dir"
+                                die "Found DB specific files in [upgrade] dir: $generic"
                         }
                         $files{$db}{$generic} = $name;
                 } else {

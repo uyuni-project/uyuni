@@ -55,12 +55,6 @@ if ($reportdb) {
         $options{$n} = $options{'report_'.$n} if (defined $options{'report_'.$n});
     }
 }
-if ($options{'externaldb_admin_user'}) {
-        $options{'db_user'} = $options{'externaldb_admin_user'}
-}
-if ($options{'externaldb_admin_password'}) {
-        $options{'db_password'} = $options{'externaldb_admin_password'}
-}
 my @missing;
 for my $n (qw( db_backend db_name db_user db_password )) {
         if (not defined $options{$n}) {
