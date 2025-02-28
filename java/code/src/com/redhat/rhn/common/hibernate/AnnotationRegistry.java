@@ -142,6 +142,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
@@ -345,6 +346,7 @@ public class AnnotationRegistry {
             ServerGroupManager.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
+            ServerHistoryEvent.class,
             ServerInfo.class,
             ServerNetAddress4.class,
             ServerNetAddress4.ServerNetAddress4Id.class,

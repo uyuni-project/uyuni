@@ -24,18 +24,40 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 
 /**
  * Class representation of the rhnserverhistory table
  * ServerHistoryEvent
  */
+@Entity
+@Table(name = "rhnserverhistory")
 public class ServerHistoryEvent extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_event_id_seq")
+    @SequenceGenerator(name = "rhn_event_id_seq", sequenceName = "rhn_event_id_seq", allocationSize = 1)
+    @Column(name = "id")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "server_id", nullable = false)
     private Server server;
-    private String summary;
-    private String details;
-    private Date created;
+
+    @Column(name = "summary")
+    private String summary = "";
+
+    @Column(name = "details")
+    private String details = "";
 
     /**
      * Constructor for ServerHistoryEvent
@@ -43,7 +65,6 @@ public class ServerHistoryEvent extends BaseDomainHelper {
     public ServerHistoryEvent() {
 
     }
-
 
     /**
      * Getter for details
@@ -115,7 +136,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      */
     @Override
     public Date getCreated() {
-        return created;
+        return super.getCreated();
     }
 
     /**
@@ -123,7 +144,7 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      */
     @Override
     public void setCreated(Date createdIn) {
-        this.created = createdIn;
+        super.setCreated(createdIn);
     }
 
     /**
@@ -131,12 +152,12 @@ public class ServerHistoryEvent extends BaseDomainHelper {
      */
     public void setCreated(String createdIn) {
         if (createdIn == null) {
-            this.created = null;
+            super.setCreated(null);
         }
         else {
             try {
-                this.created = new SimpleDateFormat(
-                        LocalizationService.RHN_DB_DATEFORMAT).parse(createdIn);
+                super.setCreated(new SimpleDateFormat(
+                        LocalizationService.RHN_DB_DATEFORMAT).parse(createdIn));
             }
             catch (ParseException e) {
                 throw new IllegalArgumentException("lastCheckin must be of the: [" +
