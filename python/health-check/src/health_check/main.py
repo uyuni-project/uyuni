@@ -62,7 +62,7 @@ def cli(ctx: click.Context, supportconfig_path: str, verbose: bool):
     callback=utils.validate_date,
 )
 @click.pass_context
-def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
+def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     """
     Start execution of Health Check
 
@@ -76,8 +76,12 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
         console.log("[red bold] Supportconfig path not accessible, exitting")
         exit(1)
 
-    if not from_datetime and not to_datetime:
-        from_datetime, to_datetime = utils.get_dates(since)
+    period_start, period_end = utils.get_dates(since)
+
+    if not from_datetime:
+        from_datetime = period_start
+    if not to_datetime:
+        to_datetime = period_end
 
     try:
         with console.status(status=None):
@@ -105,7 +109,7 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 
 @cli.command()
 @click.pass_context
-def clean(ctx: click.Context):
+def stop(ctx: click.Context):
     verbose = ctx.obj["verbose"]
     clean_containers(verbose=verbose)
     console.print(Markdown("# Execution Finished"))
