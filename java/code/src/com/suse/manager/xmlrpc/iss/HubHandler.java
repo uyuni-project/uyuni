@@ -11,8 +11,11 @@
 
 package com.suse.manager.xmlrpc.iss;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
+import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -21,8 +24,10 @@ import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.api.ReadOnly;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.IssRole;
+import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -35,6 +40,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,9 +76,10 @@ public class HubHandler extends BaseHandler {
 
     private String logGetErrorString(String message, String... args) {
         String fullMessageString = String.join(" ", args);
-        if (!StringUtils.isEmpty(message)) {
-            fullMessageString += ": " + message;
+        if (!StringUtils.isEmpty(message) && !StringUtils.isEmpty(fullMessageString)) {
+            fullMessageString += ": ";
         }
+        fullMessageString += message;
         LOGGER.error(fullMessageString, message);
         return fullMessageString;
     }
@@ -382,6 +389,7 @@ public class HubHandler extends BaseHandler {
         }
         return 1;
     }
+
     /**
      * Set server details
      *
@@ -423,5 +431,141 @@ public class HubHandler extends BaseHandler {
             throw new InvalidParameterException(logGetErrorString(
                     role, "Invalid role, must either be HUB or PERIPHERAL"));
         }
+    }
+
+    /**
+     * Collect data about a Manager Server
+     *
+     * @param loggedInUser the user
+     * @return a {@link ManagerInfoJson} on success, exception otherwise
+     * @apidoc.doc Get manager info.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype $ManagerInfoJsonSerializer
+     */
+    @ReadOnly
+    public ManagerInfoJson getManagerInfo(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectManagerInfo(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex, "Error while collecting manager info"));
+        }
+    }
+
+    /**
+     * Collect data about all peripheral organizations
+     *
+     * @param loggedInUser the user
+     * @return a list of {@link Org} on success, exception otherwise
+     * @apidoc.doc Collect data about all peripheral organizations.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          $OrgSerializer
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Org> listAllPeripheralOrgs(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectAllOrgs(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex,
+                    "Error while collecting all peripheral organization"));
+        }
+    }
+
+    /**
+     * Collect data about all peripheral channels
+     *
+     * @param loggedInUser the user
+     * @return a list of {@link Channel} on success, exception otherwise
+     * @apidoc.doc Collect data about all peripheral channels.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          $ChannelSerializer
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Channel> listAllPeripheralChannels(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        try {
+            return hubManager.collectAllChannels(loggedInUser);
+        }
+        catch (Exception ex) {
+            throw new InvalidParameterException(logGetErrorString(ex,
+                    "Error while collecting all peripheral channels"));
+        }
+    }
+
+    /**
+     * Trigger a synchronization of channel families on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, exception otherwise
+     * @apidoc.doc Trigger a synchronization of channel families on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeChannelFamilies(User loggedInUser) {
+        if (!hubManager.synchronizeChannelFamilies(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing channel families on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of products on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of products on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeProducts(User loggedInUser) {
+        if (!hubManager.synchronizeProducts(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing products on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of repositories on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of repositories on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeRepositories(User loggedInUser) {
+        if (!hubManager.synchronizeRepositories(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing repositories on the peripheral"));
+        }
+        return 1;
+    }
+
+    /**
+     * Trigger a synchronization of subscriptions on the peripheral
+     *
+     * @param loggedInUser the user
+     * @return 1 on success, 0 or exception otherwise
+     * @apidoc.doc Trigger a synchronization of subscriptions on the peripheral
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int synchronizeSubscriptions(User loggedInUser) {
+        if (!hubManager.synchronizeSubscriptions(loggedInUser)) {
+            throw new ContentSyncException(logGetErrorString(
+                    "Error while synchronizing subscriptions on the peripheral"));
+        }
+        return 1;
     }
 }
