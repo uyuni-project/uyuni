@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri Feb 28 11:52:19 CET 2025 - rosuna@suse.com
+
+- version 5.1.7-0
+  * Increase complexity for generated passwords (bsc#1231983)
+  * Fix recurring states popup height
+  * Branding updates, integrate the new SUSE font
+  * Simplify HTTP proxy setup in setup wizard (bsc#1235527)
+  * Disable some pages when new Hub Online Synchronization is
+    configured
+  * Allow translation to wrap strings as weblate forces it
+  * Password policy restrictions and functions first release
+
+-------------------------------------------------------------------
 Fri Jan 24 14:46:12 CET 2025 - marina.latini@suse.com
 
 - version 5.1.6-0
