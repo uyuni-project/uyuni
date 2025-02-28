@@ -3,6 +3,8 @@
 import click
 import os
 from rich.markdown import Markdown
+from rich.panel import Panel
+from rich.text import Text
 
 from health_check.grafana.grafana_manager import prepare_grafana
 import health_check.utils as utils
@@ -84,6 +86,15 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
             exporter.prepare_exporter(supportconfig_path, verbose)
             prepare_grafana(from_datetime, to_datetime, verbose)
 
+        console.print(
+            Panel(
+                Text(
+                    "You can visit now the Grafana dashboard to see metrics and relevant errors at http://localhost:3000/d/AvmqWWUik/",
+                    justify="center",
+                )
+            ),
+            style="italic green",
+        )
         console.print(Markdown("# Execution Finished"))
 
     except HealthException as err:
@@ -101,7 +112,7 @@ def clean(ctx: click.Context):
 
 
 def main():
-    console.print(Markdown("# Health Check"))
+    console.print(Markdown("# Uyuni Health Check"))
     cli()  # pylint: disable=no-value-for-parameter
 
 
