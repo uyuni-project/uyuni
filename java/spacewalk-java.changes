@@ -1,4 +1,33 @@
 -------------------------------------------------------------------
+Fri Feb 28 11:49:49 CET 2025 - rosuna@suse.com
+
+- version 5.1.9-0
+  * Create a task (root-ca-cert-update) in taskomatic to store
+    ca-certificates in the trusted certificate path
+  * Fix several pages returning 500 status
+  * RBAC backend implementation
+  * Branding updates, integrate the new SUSE font
+  * Simplify HTTP proxy setup in setup wizard (bsc#1235527)
+  * Fix issue preventing OES products from showing up (bsc#1236268)
+  * Added API for registering ISS hub/peripherals
+  * Added basic API for token authentication
+  * Added entities to handle token authentication
+  * Use StandardBasicTypes for queries paramaters
+  * Remove Hibernate Query Language
+  * Initial changes to remove deprecated relationship from hbm
+  * Fix API namespace for AdminPaygHandler
+  * Bump API version to 28 while removing deprecated functions
+  * Add API to configure report database access for the hub
+  * Change releasenotes URL for SUSE Multi-Linux Manager 5.1
+  * Set a send date when preparing emails
+  * Add option to set kernel and post kernel options
+    on provisioning via API
+  * Proxy server FQDN merge java filter (bsc#1236011)
+  * Password policy restrictions and functions first release
+  * Better logs on SP migration
+  * Send additional data to SCC (jsc#SUMA-406)
+
+-------------------------------------------------------------------
 Wed Jan 29 15:40:55 CET 2025 - marina.latini@suse.com
 
 - version 5.1.8-0
