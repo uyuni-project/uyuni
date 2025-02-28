@@ -53,7 +53,7 @@ groups:
                 type: threshold
           noDataState: OK
           execErrState: Error
-          for: 10s
+          for: 0s
           annotations:
             summary: We detected more than 10 `SaltReqTimeout` errors in the logs in the past 1 month. This is likely indicative of Salt performance issues.
           labels:
@@ -105,7 +105,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 10s
+          for: 0s
           annotations:
             summary: "We found more than 150 of \"an extra return was detected\", \"the public keys did not match\", \"Event with bad payload received\", or \"Received minion error from\" messages in the logs over the past month. \n\nThese issues might be decreasing Salt performance."
           labels:
@@ -195,7 +195,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 10s
+          for: 0s
           isPaused: false
         - uid: de95ua0ku5zb4f
           title: Insufficient RAM (master)
@@ -279,7 +279,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The total RAM is below minimum spec of 16GB for a master server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: min_spec
@@ -366,7 +366,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The total RAM is below minimum spec of 16GB for a proxy server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: min_spec
@@ -455,7 +455,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The total RAM is below recommended value of 32GB for a master server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: recommended_spec
@@ -544,7 +544,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The total RAM is below recommended value of 8GB for a proxy server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: recommended_spec
@@ -636,7 +636,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: "When client count reaches several thousands and actions are not executed quickly enough, increase the java.salt_batch_size property. \n\nSee the performance tuning guide for more information."
           labels:
@@ -688,7 +688,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 There are more requests than the maximum number of HTTP requests served simultaneously by Apache httpd.
@@ -783,7 +783,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 The MaxClients and ServerLimit properties should have identical values. If you adjusted one, adjust the other one property to the same value.
@@ -876,7 +876,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 The number of Tomcat threads dedicated to serving HTTP requests should be the same as the Apache httpd MaxClients configuration.
@@ -931,7 +931,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 The connectionTimeout and keepAliveTimeout properties might be incorrectly set.
@@ -999,7 +999,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 The number of queued Salt events is greater than 10. Tweaking java.salt_event_thread_pool_size might help to process the queue faster.
@@ -1055,7 +1055,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 Salt clients do not respond in time before timeout. Increasing the java.salt_presence_ping_timeout and java.salt_presence_ping_gather_job_timeout properties can give slower clients enough time to respond.
@@ -1148,7 +1148,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 The channel count might be too high for the number of available repodata workers. Increasing the  java.taskomatic_channel_repodata_workers property might speed up channel operations.
@@ -1243,7 +1243,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 Increasing the number of Taskomatic worker threads allows Taskomatic to serve more clients in parallel. Consider increasing the org.quartz.threadPool.threadCount property.
@@ -1338,7 +1338,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 Cycle time for Taskomatic. Consider decreasing org.quartz.scheduler.idleWaitTime to lower the latency of Taskomatic.
@@ -1428,7 +1428,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 In large installations (client count in the thousands), consider increasing the taskomatic.minion_action_executor.parallel_threads parameter. This is the number of Taskomatic threads dedicated to sending commands to Salt clients as a result of actions being executed.
@@ -1496,7 +1496,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 shared_buffers controls the amount of memory reserved for PostgreSQL shared buffers, which contain caches of database tables and index data.
@@ -1617,7 +1617,7 @@ groups:
                 type: math
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 thread_pool is the number of worker threads serving Salt API HTTP requests.
@@ -1675,7 +1675,7 @@ groups:
                 type: threshold
           noDataState: OK
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 worker_threads configures the number of salt-master worker threads that process commands and replies from minions and the Salt API. Consider increasing this value.
@@ -1756,7 +1756,7 @@ groups:
                 type: math
           noDataState: OK
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 pub_hwm sets the maximum number of outstanding messages sent by salt-master. If more than this number of messages need to be sent concurrently, communication with clients slows down, potentially resulting in timeout errors during load peaks.
@@ -1822,7 +1822,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: |-
                 One or multiple of the memory partitions might not meet minimal requirements.
@@ -1888,7 +1888,7 @@ groups:
                 type: threshold
           noDataState: NoData
           execErrState: Error
-          for: 1m
+          for: 0s
           annotations:
             summary: The utilization of one or multiple of memory partitions is above 90%.
           labels:
@@ -1979,7 +1979,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The CPU count is below minimum value of 4 for a master server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: min_spec
@@ -2068,7 +2068,7 @@ groups:
           execErrState: Error
           annotations:
             summary: The CPU count is below minimum value of 2 for a proxy server.
-          for: 10s
+          for: 0s
           labels:
             component: hw
             issue: min_spec
