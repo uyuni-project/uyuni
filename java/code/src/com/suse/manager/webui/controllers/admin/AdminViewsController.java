@@ -94,6 +94,8 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
+        get("/manager/admin/config/access-group",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showAccessGroup))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
@@ -258,6 +260,11 @@ public class AdminViewsController {
      */
     public static ModelAndView createPayg(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/payg_create.jade");
+    }
+
+
+    public static ModelAndView showAccessGroup(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group.jade");
     }
 
     /**
