@@ -38,7 +38,7 @@ import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
-import com.suse.manager.webui.controllers.admin.beans.PeripheralResponse;
+import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
 import com.suse.manager.webui.utils.FlashScopeHelper;
@@ -218,10 +218,11 @@ public class HubApiController {
         PageControl pc = pageHelper.getPageControl();
         long totalSize = hubManager.countRegisteredPeripherals(satAdmin, pc);
 
-        List<PeripheralResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
-            .map(PeripheralResponse::fromIssEntity).toList();
+        List<PeripheralListData> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
+            .map(PeripheralListData::new)
+            .toList();
 
-        TypeToken<PagedDataResultJson<PeripheralResponse, Long>> type = new TypeToken<>() { };
+        TypeToken<PagedDataResultJson<PeripheralListData, Long>> type = new TypeToken<>() { };
         return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
     }
 
