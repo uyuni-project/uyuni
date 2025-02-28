@@ -18,19 +18,43 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
 /**
  * ConfigChannelType - Class representation of the table rhnConfigChannelType.
  */
+@Entity
+@Table(name = "rhnConfigChannelType")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ConfigChannelType extends BaseDomainHelper {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
-    private String label;
-    private String name;
-    private Long priority;
+
+    @Column(name = "label", length = 64)
+    private String label = "";
+
+    @Column(name = "name", length = 64)
+    private String name = "";
+
+    @Column(name = "priority")
+    private Long priority = 0L;
 
     public static final String NORMAL = "normal";
     public static final String LOCAL = "local_override";

@@ -14,18 +14,43 @@
  */
 package com.redhat.rhn.domain.server;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * ServerInfo - Class representation of the table rhnServerInfo
  */
+@Entity
+@Table(name = "rhnServerInfo")
 public class ServerInfo implements Serializable {
 
+    @Id
+    @Column(name = "server_id")
     private Long id;
+
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
+    @MapsId
+    @JoinColumn(name = "server_id", referencedColumnName = "id", insertable = true, updatable = true)
     private Server server;
-    private Date checkin;
-    private Long checkinCounter;
+
+    @Column(name = "checkin")
+    @CreationTimestamp
+    private Date checkin  = new Date();
+
+    @Column(name = "checkin_counter")
+    private Long checkinCounter = 0L;
 
     /**
      * @return Returns the id.
@@ -69,6 +94,21 @@ public class ServerInfo implements Serializable {
     public Server getServer() {
         return server;
     }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (!(oIn instanceof ServerInfo that)) {
+            return false;
+        }
+        return Objects.equals(id, that.id) && Objects.equals(server, that.server) &&
+                Objects.equals(checkin, that.checkin) && Objects.equals(checkinCounter, that.checkinCounter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, server, checkin, checkinCounter);
+    }
+
     /**
      * @param serverIn The server to set.
      */

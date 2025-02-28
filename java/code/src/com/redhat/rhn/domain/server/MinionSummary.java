@@ -20,11 +20,16 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 /**
  * This class represents a summary of a minion.
  */
+@Entity
 public class MinionSummary {
 
+    @Id
     private final Long serverId;
     private final String minionId;
     private final String digitalServerId;
@@ -32,6 +37,20 @@ public class MinionSummary {
     private final String os;
     private final String contactMethodLabel;
     private final boolean transactionalUpdate;
+
+    /**
+     * Default Constructor.
+     *
+     */
+    public MinionSummary() {
+        this.transactionalUpdate = false;
+        this.serverId = 0L;
+        this.minionId = "";
+        this.digitalServerId = "";
+        this.machineId = "";
+        this.os = "";
+        this.contactMethodLabel = "";
+    }
 
     /**
      * Convenience constructor from a MinionServer instance.
