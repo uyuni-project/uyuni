@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2024 SUSE LLC.
+# Copyright (c) 2014-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -1214,13 +1214,6 @@ When(/^I schedule apply configchannels for "([^"]*)"$/) do |host|
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
   command = "spacecmd -y -u admin -p admin -- system_scheduleapplyconfigchannels  #{system_name}"
   get_target('server').run(command)
-end
-
-# WORKAROUND
-# Work around issue https://github.com/SUSE/spacewalk/issues/10360
-# Remove as soon as the issue is fixed
-When(/^I let Kiwi build from external repositories$/) do
-  get_target('server').run('sed -i \'s/--ignore-repos-used-for-build//\' /usr/share/susemanager/salt/images/kiwi-image-build.sls')
 end
 
 When(/^I refresh packages list via spacecmd on "([^"]*)"$/) do |client|

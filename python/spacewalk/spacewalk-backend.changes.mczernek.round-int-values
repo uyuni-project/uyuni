@@ -1,0 +1,1 @@
+- Cast float pkg metadata to int (gh#uyuni-project/uyuni#9613)
