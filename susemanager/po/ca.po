@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2024-10-18 13:48+0000\n"
+"PO-Revision-Date: 2025-02-28 08:28+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "susemanager-5-0/ca/>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.1\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
@@ -45,7 +45,7 @@ msgstr "Organització"
 
 #: ../yast/susemanager_cert.rb:45
 msgid "Organization Unit"
-msgstr "Unitat d'Organització"
+msgstr "Unitat d'organització"
 
 #: ../yast/susemanager_cert.rb:47
 msgid "City"
