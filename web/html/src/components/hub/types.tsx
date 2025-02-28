@@ -43,8 +43,8 @@ export type PeripheralListData = {
   id: number;
   fqdn: string;
   rootCA: string | null;
-  nChannelsSync: number;
-  nSyncOrgs: number;
+  nSyncedChannels: number;
+  nSyncedOrgs: number;
 };
 
 export type HubDetailData = {
