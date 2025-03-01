@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-27 16:50+0000\n"
+"PO-Revision-Date: 2025-03-01 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -485,16 +485,14 @@ msgstr "Prepnúť viditeľnosť sekcie"
 #: ../html/src/components/hub/AddTokenButton.tsx:66
 #: ../html/src/components/hub/AddTokenButton.tsx:93
 #: ../html/src/components/hub/AddTokenButton.tsx:120
-#, fuzzy
-#| msgid "Issue date"
 msgid "Issue a new token"
-msgstr "Dátum vydania"
+msgstr "Vystaviť nový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:77
 #: ../html/src/components/hub/AddTokenButton.tsx:101
 #: ../html/src/components/hub/AddTokenButton.tsx:120
 msgid "Store an external token"
-msgstr ""
+msgstr "Uložiť externý token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
 msgid "Add token"
@@ -502,7 +500,7 @@ msgstr "Pridať token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
 msgid "Add a new access token"
-msgstr ""
+msgstr "Pridať nový prístupový token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
 msgid "Server FQDN"
@@ -510,8 +508,6 @@ msgstr "Server FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
-#, fuzzy
-#| msgid "e.g., server.domain.com"
 msgid "e.g. server.domain.com"
 msgstr "napr. server.domain.com"
 
@@ -525,17 +521,15 @@ msgstr "Musí to byť platná adresa FQDN"
 #: ../html/src/components/hub/AddTokenButton.tsx:139
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
 msgid "Issue"
 msgstr "Vydané"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Store URI"
 msgid "Store"
-msgstr "URI úložiska"
+msgstr "Úložisko"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:179
 msgid "New token successfully issued"
@@ -564,20 +558,16 @@ msgstr ""
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
 #: ../html/src/components/hub/PeripheralsList.tsx:51
-#, fuzzy
-#| msgid "Persistent"
 msgid "Deregister"
-msgstr "Trvalé"
+msgstr "Zrušiť registráciu"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
 msgid "Deregister from the hub"
 msgstr ""
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm deregistration"
-msgstr "Potvrdiť vymazanie"
+msgstr "Potvrdiť zrušenie registrácie"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
 msgid ""
@@ -621,10 +611,8 @@ msgid "This hub is currently using the default Root Certificate Authority."
 msgstr ""
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
-#, fuzzy
-#| msgid "SSL Certificate data"
 msgid "Root Certificate Authority"
-msgstr "Dáta certifikátu SSL"
+msgstr "Koreňová certifikačná autorita"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:74
 msgid ""
@@ -643,10 +631,8 @@ msgid "Root Certificate Authority successfully modified."
 msgstr ""
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "Root Certificate Authority successfully updated."
-msgstr "Naplánované úspešne."
+msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
 msgid "GPG Public Key:"
