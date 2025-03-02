@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-01 15:56+0000\n"
+"PO-Revision-Date: 2025-03-02 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -651,52 +651,36 @@ msgid "Mirror credentials:"
 msgstr "Zrkadlové prihlasovanie údaje:"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:29
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by FQDN"
-msgstr "Filtrovať podľa názvu"
+msgstr "Filtrovať podľa FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:31
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Peripheral FQDN"
-msgstr "Server FQDN"
+msgstr "Periférne FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:35
-#, fuzzy
-#| msgid "SUSE Channels"
 msgid "N. of Sync Channels"
-msgstr "Kanály SUSE"
+msgstr "Počet synchronizovaných kanálov"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of Sync Orgs"
 msgstr ""
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download Root CA"
-msgstr "Stiahnuť CSV"
+msgstr "Stiahnuť koreňovú CA"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
-#, fuzzy
-#| msgid "System is not a peripheral server"
 msgid "Register a new peripheral server"
-msgstr "Systém nie je periférny server"
+msgstr "Zaregistrovať nový periférny server"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
-#, fuzzy
-#| msgid ""
-#| "Generation of the proxy configuration in progress: waiting for a "
-#| "response..."
 msgid "Peripheral registration in progress: waiting for a response..."
-msgstr "Prebieha generovanie konfigurácie proxy: čaká sa na odpoveď..."
+msgstr "Prebieha registrácia periférie: čaká sa na odpoveď..."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Peripheral Server FQDN"
-msgstr "Periférny server"
+msgstr "FQDN periférneho servera"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid ""
@@ -706,10 +690,8 @@ msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#, fuzzy
-#| msgid "Permission mode"
 msgid "Registration mode"
-msgstr "Režim oprávnení"
+msgstr "Režim registrácie"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Define how to connect to the remote server to initiate the registration"
@@ -759,10 +741,8 @@ msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Root CA certificate"
-msgstr "CA certifikát"
+msgstr "Certifikát koreňovej CA"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
 msgid ""
@@ -771,10 +751,8 @@ msgid ""
 msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-#, fuzzy
-#| msgid "Not affected"
 msgid "Not needed"
-msgstr "Neovplyvnené"
+msgstr "Nie je potrebné"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 #: ../html/src/components/large-text-attachment.tsx:136
