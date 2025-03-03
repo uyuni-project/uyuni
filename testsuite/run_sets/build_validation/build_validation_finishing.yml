@@ -5,6 +5,7 @@
 # IMMUTABLE ORDER
 
 # these features are needed for gathering log/debug info
+- features/build_validation/finishing/srv_selinux.feature
 - features/build_validation/finishing/srv_debug.feature
 - features/build_validation/finishing/allcli_debug.feature
 
