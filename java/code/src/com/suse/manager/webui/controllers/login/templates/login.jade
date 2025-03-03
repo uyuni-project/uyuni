@@ -17,6 +17,7 @@ html(lang=window.preferredLocale.replace("_", "-"))
         script(type='text/javascript').
             window.preferredLocale = "#{preferredLocale}";
             window.docsLocale = "#{docsLocale}";
+            window.isUyuni = #{isUyuni};
         script(src='/javascript/jquery.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/login.js?cb=#{webBuildtimestamp}')
         script(src='/javascript/bootstrap.js?cb=#{webBuildtimestamp}')
@@ -45,13 +46,11 @@ html(lang=window.preferredLocale.replace("_", "-"))
                     module.renderer(
                       'login',
                       {
-                          isUyuni: JSON.parse("#{isUyuni}"),
                           theme: '!{webTheme}',
                           urlBounce: document.getElementById('init_data_url_bounce').textContent,
                           validationErrors: JSON.parse('!{validationErrors}'),
                           schemaUpgradeRequired: JSON.parse('!{schemaUpgradeRequired}'),
                           webVersion: '!{webVersion}',
-                          productName: '!{productName}',
                           customHeader: '!{customHeader}',
                           customFooter: '!{customFooter}',
                           legalNote: '!{legalNote}',

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { docsLocale } from "core/user-preferences";
+import { docsLocale, productName } from "core/user-preferences";
 
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
@@ -40,7 +40,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
               <p>
                 {t("Learn more about {productName}:", {
-                  productName: product.key,
+                  productName: product.productName,
                 })}
                 <a href={product.url} className={styles.learnMore} target="_blank" rel="noopener noreferrer">
                   {t("View website")}
@@ -117,8 +117,12 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
             </div>
             <div>
-              {`${props.productName} release `}
-              <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+              {t("{productName} release {versionNumber}", {
+                productName,
+                versionNumber: (
+                  <a href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>{props.webVersion}</a>
+                ),
+              })}
             </div>
             {props.customFooter ? <div>{props.customFooter}</div> : null}
             <a href="https://www.suse.com/" target="_blank" rel="noopener noreferrer" className={styles.logoLink}>
