@@ -1550,7 +1550,7 @@ public class ChannelFactory extends HibernateFactory {
      *                                   instead of the pristine one
      * @return CreateChannelInfoJson the converted info of the channel
      */
-    public static ChannelInfoDetailsJson toChannelInfo(Channel channel, long peripheralOrgId,
+    public static ChannelInfoDetailsJson toChannelInfo(Channel channel, Long peripheralOrgId,
                                                        Optional<String> forcedOriginalChannelLabel) {
 
         ChannelInfoDetailsJson channelInfo = new ChannelInfoDetailsJson(channel.getLabel());
@@ -1661,11 +1661,12 @@ public class ChannelFactory extends HibernateFactory {
             }
         }
         if (lookupByLabel(info.getLabel()) == null) {
-            toChannel(info);
+            Channel channel = toChannel(info);
+            ChannelFactory.save(channel);
         }
-        else if (info.getPeripheralOrgId() != null) {
-            // we modify only custom channels. Vendor channels are updated during sync
-            modifyCustomChannel(info);
+        else {
+            Channel channel = modifyChannel(info);
+            ChannelFactory.save(channel);
         }
         syncFinished.add(info.getLabel());
     }
@@ -1805,83 +1806,89 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Modifies a custom channel according to the info structure
+     * Modifies a channel according to the info structure
      *
-     * @param modifyCustomChannelInfo the custom channel info with the info on how to modify the custom channel
-     * @return customChannel the modified custom channel
+     * @param modifyChannelInfo the channel info with the info on how to modify the channel
+     * @return the modified channel
      */
-    public static Channel modifyCustomChannel(ChannelInfoDetailsJson modifyCustomChannelInfo) {
+    public static Channel modifyChannel(ChannelInfoDetailsJson modifyChannelInfo) {
 
-        Channel customChannel = ChannelFactory.lookupByLabel(modifyCustomChannelInfo.getLabel());
-        if (null == customChannel) {
-            throw new IllegalArgumentException("No existing custom channel to modify with label [" +
-                    modifyCustomChannelInfo.getLabel() + "]");
+        Channel channel = ChannelFactory.lookupByLabel(modifyChannelInfo.getLabel());
+        if (null == channel) {
+            throw new IllegalArgumentException("No existing channel to modify with label [" +
+                    modifyChannelInfo.getLabel() + "]");
         }
 
         Org org = null;
-        if (null != modifyCustomChannelInfo.getPeripheralOrgId()) {
-            org = OrgFactory.lookupById(modifyCustomChannelInfo.getPeripheralOrgId());
-            if ((null != modifyCustomChannelInfo.getPeripheralOrgId()) && (null == org)) {
+        if (null != modifyChannelInfo.getPeripheralOrgId()) {
+            org = OrgFactory.lookupById(modifyChannelInfo.getPeripheralOrgId());
+            if ((null != modifyChannelInfo.getPeripheralOrgId()) && (null == org)) {
                 throw new IllegalArgumentException("No org id to modify [" +
-                        modifyCustomChannelInfo.getPeripheralOrgId() +
-                        "] for custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+                        modifyChannelInfo.getPeripheralOrgId() +
+                        "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
         }
 
-        if (StringUtils.isNotEmpty(modifyCustomChannelInfo.getOriginalChannelLabel())) {
+        if (StringUtils.isNotEmpty(modifyChannelInfo.getOriginalChannelLabel())) {
             Channel originalChannel =
-                    ChannelFactory.lookupByLabel(modifyCustomChannelInfo.getOriginalChannelLabel());
+                    ChannelFactory.lookupByLabel(modifyChannelInfo.getOriginalChannelLabel());
 
             if (null == originalChannel) {
                 throw new IllegalArgumentException("No original channel to modify as original [" +
-                        modifyCustomChannelInfo.getOriginalChannelLabel() +
-                        "] for custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+                        modifyChannelInfo.getOriginalChannelLabel() +
+                        "] for channel [" + modifyChannelInfo.getLabel() + "]");
             }
 
-            if (customChannel.asCloned().isEmpty()) {
+            if (channel.asCloned().isEmpty()) {
                 throw new IllegalArgumentException("Cannot set original channel " +
-                        "for not cloned custom channel [" + modifyCustomChannelInfo.getLabel() + "]");
+                        "for not cloned channel [" + modifyChannelInfo.getLabel() + "]");
             }
 
-            customChannel.asCloned().get().setOriginal(originalChannel);
+            channel.asCloned().get().setOriginal(originalChannel);
         }
 
         //null field = do not modify
-        if (null != modifyCustomChannelInfo.getPeripheralOrgId()) {
-            customChannel.setOrg(org);
+        if (null != modifyChannelInfo.getPeripheralOrgId()) {
+            channel.setOrg(org);
         }
 
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getBaseDir(), Channel::setBaseDir);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getName(), Channel::setName);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getSummary(), Channel::setSummary);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getDescription(), Channel::setDescription);
+        setValueIfNotNull(channel, modifyChannelInfo.getBaseDir(), Channel::setBaseDir);
+        setValueIfNotNull(channel, modifyChannelInfo.getName(), Channel::setName);
+        setValueIfNotNull(channel, modifyChannelInfo.getSummary(), Channel::setSummary);
+        setValueIfNotNull(channel, modifyChannelInfo.getDescription(), Channel::setDescription);
 
-        if (null != modifyCustomChannelInfo.getProductNameLabel()) {
-            customChannel.setProductName(
-                    MgrSyncUtils.findOrCreateProductName(modifyCustomChannelInfo.getProductNameLabel()));
+        if (null != modifyChannelInfo.getProductNameLabel()) {
+            channel.setProductName(
+                    MgrSyncUtils.findOrCreateProductName(modifyChannelInfo.getProductNameLabel()));
         }
 
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.isGpgCheck(), Channel::setGPGCheck);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyUrl(), Channel::setGPGKeyUrl);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyId(), Channel::setGPGKeyId);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getEndOfLifeDate(), Channel::setEndOfLife);
+        setValueIfNotNull(channel, modifyChannelInfo.isGpgCheck(), Channel::setGPGCheck);
+        setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyUrl(), Channel::setGPGKeyUrl);
+        setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyId(), Channel::setGPGKeyId);
+        setValueIfNotNull(channel, modifyChannelInfo.getGpgKeyFp(), Channel::setGPGKeyFp);
+        setValueIfNotNull(channel, modifyChannelInfo.getEndOfLifeDate(), Channel::setEndOfLife);
 
-        if ((null != modifyCustomChannelInfo.getChannelProductProduct()) &&
-                (null != modifyCustomChannelInfo.getChannelProductVersion())) {
-            customChannel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
-                    modifyCustomChannelInfo.getChannelProductProduct(),
-                    modifyCustomChannelInfo.getChannelProductVersion()));
+        if ((null != modifyChannelInfo.getChannelProductProduct()) &&
+                (null != modifyChannelInfo.getChannelProductVersion())) {
+            channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                    modifyChannelInfo.getChannelProductProduct(),
+                    modifyChannelInfo.getChannelProductVersion()));
         }
 
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getChannelAccess(), Channel::setAccess);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerName(), Channel::setMaintainerName);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getSupportPolicy(), Channel::setSupportPolicy);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.getUpdateTag(), Channel::setUpdateTag);
-        setValueIfNotNull(customChannel, modifyCustomChannelInfo.isInstallerUpdates(), Channel::setInstallerUpdates);
+        setValueIfNotNull(channel, modifyChannelInfo.getChannelAccess(), Channel::setAccess);
+        setValueIfNotNull(channel, modifyChannelInfo.getMaintainerName(), Channel::setMaintainerName);
+        setValueIfNotNull(channel, modifyChannelInfo.getMaintainerEmail(), Channel::setMaintainerEmail);
+        setValueIfNotNull(channel, modifyChannelInfo.getMaintainerPhone(), Channel::setMaintainerPhone);
+        setValueIfNotNull(channel, modifyChannelInfo.getSupportPolicy(), Channel::setSupportPolicy);
+        setValueIfNotNull(channel, modifyChannelInfo.getUpdateTag(), Channel::setUpdateTag);
+        setValueIfNotNull(channel, modifyChannelInfo.isInstallerUpdates(), Channel::setInstallerUpdates);
 
-        return customChannel;
+        if (null != modifyChannelInfo.getRepositoryInfo()) {
+            ContentSyncManager csm = new ContentSyncManager();
+            HubFactory hubFactory = new HubFactory();
+            csm.refreshOrCreateRepository(modifyChannelInfo.getRepositoryInfo(), channel,
+                    hubFactory.lookupIssHub().orElse(null));
+        }
+        return channel;
     }
 }

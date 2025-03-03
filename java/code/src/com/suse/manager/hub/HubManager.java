@@ -933,9 +933,8 @@ public class HubManager {
      * Synchornize channels from the hub on this peripheral server
      * @param accessToken the access token
      * @param channelInfo a set of channel information to create or update the channels
-     * @return list of created or updated channels
      */
-    public List<Channel> syncChannels(IssAccessToken accessToken, List<ChannelInfoDetailsJson> channelInfo) {
+    public void syncChannels(IssAccessToken accessToken, List<ChannelInfoDetailsJson> channelInfo) {
         ensureValidToken(accessToken);
         ChannelFactory.ensureValidChannelInfo(channelInfo);
 
@@ -946,10 +945,6 @@ public class HubManager {
         for (ChannelInfoDetailsJson info : channelInfo) {
             ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
-        return ChannelFactory.listAllChannels()
-                .stream()
-                .filter(e -> syncFinished.contains(e.getLabel()))
-                .toList();
     }
 
     /**
