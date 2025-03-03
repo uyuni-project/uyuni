@@ -147,27 +147,31 @@ const ListPlaceholder = (props) => {
 };
 
 const HelpPanel = () => {
-  const docsDirectory = isUyuni ? "/uyuni" : "/suse-manager";
   return (
     <div className="col-sm-3 hidden-xs" id="wizard-faq">
       <h4>{t("Server Monitoring")}</h4>
       <p>
-        {t("The server uses ")}
-        <a href="https://prometheus.io" target="_blank" rel="noopener noreferrer">
-          {t("Prometheus")}
-        </a>
-        {t(" exporters to expose metrics about your environment.")}
+        {t("The server uses <link>Prometheus</link> exporters to expose metrics about your environment.", {
+          link: (str: string) => (
+            <a href="https://prometheus.io" target="_blank" rel="noopener noreferrer" key={str}>
+              {str}
+            </a>
+          ),
+        })}
       </p>
       <p>
-        {t("Refer to the ")}
-        <a
-          href={"/docs/" + docsLocale + docsDirectory + "/administration/monitoring.html"}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {t("documentation")}
-        </a>
-        {t(" to learn how to consume these metrics.")}
+        {t("Refer to the <link>documentation</link> to learn how to consume these metrics.", {
+          link: (str: string) => (
+            <a
+              href={"/docs/" + docsLocale + "/administration/monitoring.html"}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={str}
+            >
+              {str}
+            </a>
+          ),
+        })}
       </p>
     </div>
   );
