@@ -271,6 +271,7 @@ end
 When(/^I create an activation key including custom channels for "([^"]*)" via API$/) do |client|
   # Create a key with the base channel for this client
   id = description = "#{client}_key"
+  client = 'proxy_nontransactional' if client == 'proxy' and not $is_transactional_server
   base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
   base_channel_label = LABEL_BY_BASE_CHANNEL[product][base_channel]
   key = $api_test.activationkey.create(id, description, base_channel_label, 100)
