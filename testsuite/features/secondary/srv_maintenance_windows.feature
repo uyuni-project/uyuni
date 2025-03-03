@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # skip if container because we do not have a domain name and the
@@ -124,7 +124,7 @@ Feature: Maintenance windows
     Then I should see a "Maintenance schedule has been cleared" text
 
   Scenario: Cleanup: cancel all scheduled actions
-    When I cancel all scheduled actions
+    When I cancel all scheduled actions via API
 
   Scenario: Delete maintenance schedules
     When I follow the left menu "Schedule > Maintenance Windows > Schedules"
