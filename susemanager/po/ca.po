@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-03-22 15:15+0100\n"
-"PO-Revision-Date: 2025-03-01 10:56+0000\n"
+"PO-Revision-Date: 2025-03-03 10:49+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "susemanager-4-3/ca/>\n"
@@ -123,7 +123,7 @@ msgstr "Configuració completada"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr "Usuari de la base de dades"
+msgstr "&Usuari de la base de dades"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
