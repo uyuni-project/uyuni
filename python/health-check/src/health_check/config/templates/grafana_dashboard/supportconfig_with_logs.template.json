@@ -1100,7 +1100,7 @@
               }
             ]
           },
-          "unit": "deckbytes"
+          "unit": "kbytes"
         },
         "overrides": []
       },
