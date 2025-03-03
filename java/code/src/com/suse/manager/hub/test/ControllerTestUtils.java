@@ -14,7 +14,6 @@ package com.suse.manager.hub.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -39,7 +38,6 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.hub.ChannelInfoDetailsJson;
-import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
@@ -50,11 +48,11 @@ import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
+import com.suse.scc.SCCEndpoints;
 import com.suse.scc.model.SCCRepositoryJson;
 import com.suse.utils.Json;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -217,8 +215,7 @@ public class ControllerTestUtils {
     public Channel createVendorBaseChannel(String name, String label) throws Exception {
         Org nullOrg = null;
         ChannelFamily cfam = ChannelFamilyFactoryTest.createNullOrgTestChannelFamily();
-        String query = "ChannelArch.findById";
-        ChannelArch arch = (ChannelArch) TestUtils.lookupFromCacheById(500L, query);
+        ChannelArch arch = ChannelFactory.lookupArchByLabel("channel-x86_64");
         return ChannelFactoryTest.createTestChannel(name, label, nullOrg, arch, cfam);
     }
 
@@ -279,9 +276,7 @@ public class ControllerTestUtils {
 
         info.setOriginalChannelLabel(originalChannelLabel);
 
-        SCCRepositoryJson repo = new SCCRepositoryJson();
-        repo.setUrl("https://hub.domain.top/rhn/manager/download/channel_" + channelLabel);
-        repo.setName(channelLabel);
+        SCCRepositoryJson repo = SCCEndpoints.buildCustomRepoJson(channelLabel, "hub.domain.top", "123456789abcdef");
         info.setRepositoryInfo(repo);
 
         return info;
@@ -364,12 +359,8 @@ public class ControllerTestUtils {
         try {
             String answer = (String) testSyncChannelsApiCall(serverFqdnIn, channelInfoListIn);
 
-            List<ChannelInfoJson> peripheralCreatedCustomChInfo =
-                    Arrays.asList(Json.GSON.fromJson(answer, ChannelInfoJson[].class));
-
-            assertNotNull(peripheralCreatedCustomChInfo,
-                    "syncChannels API failing when creating peripheral channel");
-
+            ResultJson<?> result = Json.GSON.fromJson(answer, ResultJson.class);
+            assertTrue(result.isSuccess(), "Failed: " + answer);
         }
         catch (IllegalArgumentException e) {
             fail("syncChannels API should not throw");
