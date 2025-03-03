@@ -23,22 +23,34 @@
       }
     ]
   },
-  "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 2,
   "links": [],
   "panels": [
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 114,
+      "panels": [],
+      "title": "Alerts",
+      "type": "row"
+    },
+    {
       "fieldConfig": {
         "defaults": {},
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 6,
+        "h": 5,
+        "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 108,
       "options": {
@@ -48,6 +60,7 @@
         "groupBy": [],
         "groupMode": "default",
         "maxItems": 20,
+        "showInactiveAlerts": false,
         "sortOrder": 1,
         "stateFilter": {
           "error": true,
@@ -58,8 +71,8 @@
         },
         "viewMode": "list"
       },
-      "pluginVersion": "11.3.1",
-      "title": "Alerts",
+      "pluginVersion": "11.5.1",
+      "title": "",
       "type": "alertlist"
     },
     {
@@ -70,10 +83,765 @@
         "x": 0,
         "y": 6
       },
+      "id": 71,
+      "panels": [],
+      "title": "Server configuration and Salt",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "neutral": 0
+          },
+          "mappings": [],
+          "max": 1022,
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 7
+      },
+      "id": 102,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_configuration[name=\"worker_threads\"]",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Worker Threads",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 128,
+          "min": 20,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 3,
+        "y": 7
+      },
+      "id": 101,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_configuration[name=\"sock_pool_size\"]",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Socket Pool Size",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineWidth": 1,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 5000
+              },
+              {
+                "color": "red",
+                "value": 10000
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 8,
+        "x": 6,
+        "y": 7
+      },
+      "id": 112,
+      "options": {
+        "barRadius": 0,
+        "barWidth": 0.97,
+        "fullHighlight": false,
+        "groupWidth": 0.7,
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "orientation": "auto",
+        "showValue": "auto",
+        "stacking": "none",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        },
+        "xTickLabelRotation": 0,
+        "xTickLabelSpacing": 0
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [
+            {
+              "selector": "length",
+              "text": "",
+              "type": "number"
+            },
+            {
+              "selector": "name",
+              "text": "",
+              "type": "string"
+            }
+          ],
+          "computed_columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "hide": false,
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_keys",
+          "source": "url",
+          "summarizeExpression": "",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Salt Minion keys",
+      "type": "barchart"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 10,
+        "x": 14,
+        "y": 7
+      },
+      "id": 91,
+      "options": {
+        "displayMode": "basic",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 14,
+        "minVizWidth": 0,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^count$/",
+          "limit": 25,
+          "values": true
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "text": {},
+        "valueMode": "color"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_jobs",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Top 25 most common Salt Jobs",
+      "transformations": [
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": {},
+            "sort": [
+              {
+                "desc": true,
+                "field": "count"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "neutral": 0
+          },
+          "mappings": [],
+          "max": 1022,
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 12
+      },
+      "id": 113,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_configuration[name=\"timeout\"]",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Timeout",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "max": 1024,
+          "min": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 3,
+        "y": 12
+      },
+      "id": 103,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": true
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "salt_configuration[name=\"gather_job_timeout\"]",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Gather Job Timeout",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 11,
+        "x": 0,
+        "y": 17
+      },
+      "id": 115,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "config",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Java settings",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 13,
+        "x": 11,
+        "y": 17
+      },
+      "id": 119,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": false
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "misc",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Miscellaneous",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 24
+      },
       "id": 109,
       "panels": [],
-      "title": "Memory",
+      "title": "Hardware, Memory and Disk Space",
       "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "max": 32,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 4
+              },
+              {
+                "color": "green",
+                "value": 8
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 3,
+        "x": 0,
+        "y": 25
+      },
+      "id": 116,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "hw",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Number of CPUs",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -125,10 +893,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 0,
-        "y": 7
+        "h": 10,
+        "w": 8,
+        "x": 3,
+        "y": 25
       },
       "id": 110,
       "options": {
@@ -143,7 +911,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "columns": [],
@@ -173,7 +941,7 @@
           }
         }
       ],
-      "title": "RAM",
+      "title": "RAM detailed",
       "type": "table"
     },
     {
@@ -237,10 +1005,10 @@
         ]
       },
       "gridPos": {
-        "h": 8,
-        "w": 9,
-        "x": 6,
-        "y": 7
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 25
       },
       "id": 111,
       "options": {
@@ -256,7 +1024,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "columns": [],
@@ -302,19 +1070,6 @@
       "type": "table"
     },
     {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 15
-      },
-      "id": 71,
-      "panels": [],
-      "title": "Uyuni and Salt Health",
-      "type": "row"
-    },
-    {
       "datasource": {
         "type": "yesoreyeram-infinity-datasource",
         "uid": "infinity"
@@ -322,23 +1077,30 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "fixedColor": "semi-dark-green",
             "mode": "thresholds"
           },
           "fieldMinMax": false,
           "mappings": [],
-          "max": 128,
-          "min": 1,
+          "max": 128000000,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 16000000
+              },
+              {
+                "color": "green",
+                "value": 32000000
               }
             ]
           },
-          "unit": "none"
+          "unit": "kbytes"
         },
         "overrides": []
       },
@@ -346,9 +1108,9 @@
         "h": 5,
         "w": 3,
         "x": 0,
-        "y": 16
+        "y": 30
       },
-      "id": 100,
+      "id": 118,
       "options": {
         "minVizHeight": 75,
         "minVizWidth": 75,
@@ -357,14 +1119,14 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "/^value$/",
-          "values": true
+          "fields": "",
+          "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
+        "showThresholdMarkers": true,
         "sizing": "auto"
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "columns": [],
@@ -372,12 +1134,13 @@
             "type": "yesoreyeram-infinity-datasource",
             "uid": "infinity"
           },
+          "filterExpression": "name == \"mem_total\"",
           "filters": [],
           "format": "table",
           "global_query_id": "",
           "parser": "backend",
           "refId": "A",
-          "root_selector": "salt_configuration[name=\"worker_threads\"]",
+          "root_selector": "memory",
           "source": "url",
           "type": "json",
           "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
@@ -387,808 +1150,8 @@
           }
         }
       ],
-      "title": "Worker Threads",
+      "title": "RAM total",
       "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 128,
-          "min": 20,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 3,
-        "y": 16
-      },
-      "id": 101,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^value$/",
-          "values": true
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_configuration[name=\"sock_pool_size\"]",
-          "source": "url",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Socket Pool Size",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 10000,
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 1500
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 6,
-        "y": 16
-      },
-      "id": 97,
-      "options": {
-        "displayMode": "basic",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/^A$/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "computed_columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "json_options": {
-            "columnar": false,
-            "root_is_not_array": false
-          },
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_keys[name=\"accepted\"].value",
-          "source": "url",
-          "summarizeExpression": "",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Accepted Salt Keys",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 10000,
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 1500
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 13,
-        "y": 16
-      },
-      "id": 106,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "computed_columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "json_options": {
-            "columnar": false,
-            "root_is_not_array": false
-          },
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_keys[name=\"rejected\"].value",
-          "source": "url",
-          "summarizeExpression": "",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Rejected Salt Keys",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "neutral": 0
-          },
-          "mappings": [],
-          "max": 1022,
-          "min": 1,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 0,
-        "y": 21
-      },
-      "id": 102,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^value$/",
-          "values": true
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_configuration[name=\"timeout\"]",
-          "source": "url",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Timeout",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "max": 1024,
-          "min": 1,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 3,
-        "x": 3,
-        "y": 21
-      },
-      "id": 103,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "/^value$/",
-          "values": true
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "sizing": "auto"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_configuration[name=\"gather_job_timeout\"]",
-          "source": "url",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Gather Job Timeout",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 10000,
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 1500
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 6,
-        "y": 21
-      },
-      "id": 105,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/^A$/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "computed_columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "json_options": {
-            "columnar": false,
-            "root_is_not_array": false
-          },
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_keys[name=\"unaccepted\"].value",
-          "source": "url",
-          "summarizeExpression": "",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Unaccepted Salt Keys",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "fieldMinMax": false,
-          "mappings": [],
-          "max": 10000,
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 1500
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 13,
-        "y": 21
-      },
-      "id": 104,
-      "options": {
-        "displayMode": "gradient",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/.*/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "computed_columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "json_options": {
-            "columnar": false,
-            "root_is_not_array": false
-          },
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_keys[name=\"denied\"].value",
-          "source": "url",
-          "summarizeExpression": "",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Denied Salt Keys",
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 10,
-        "x": 0,
-        "y": 26
-      },
-      "id": 91,
-      "options": {
-        "displayMode": "basic",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/^id \\(count\\)$/",
-          "values": true
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "text": {},
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_jobs",
-          "source": "url",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Top 25 most common Salt Jobs",
-      "transformations": [
-        {
-          "id": "groupBy",
-          "options": {
-            "fields": {
-              "fun": {
-                "aggregations": [],
-                "operation": "groupby"
-              },
-              "id": {
-                "aggregations": [
-                  "count"
-                ],
-                "operation": "aggregate"
-              }
-            }
-          }
-        },
-        {
-          "id": "sortBy",
-          "options": {
-            "fields": {},
-            "sort": [
-              {
-                "desc": true,
-                "field": "id (count)"
-              }
-            ]
-          }
-        }
-      ],
-      "type": "bargauge"
-    },
-    {
-      "datasource": {
-        "type": "yesoreyeram-infinity-datasource",
-        "uid": "infinity"
-      },
-      "description": "",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "none"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 5,
-        "w": 7,
-        "x": 10,
-        "y": 26
-      },
-      "id": 107,
-      "options": {
-        "displayMode": "basic",
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
-        },
-        "maxVizHeight": 300,
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "count"
-          ],
-          "fields": "/^id$/",
-          "values": false
-        },
-        "showUnfilled": true,
-        "sizing": "auto",
-        "text": {},
-        "valueMode": "color"
-      },
-      "pluginVersion": "11.3.1",
-      "targets": [
-        {
-          "columns": [],
-          "datasource": {
-            "type": "yesoreyeram-infinity-datasource",
-            "uid": "infinity"
-          },
-          "filters": [],
-          "format": "table",
-          "global_query_id": "",
-          "parser": "backend",
-          "refId": "A",
-          "root_selector": "salt_jobs",
-          "source": "url",
-          "type": "json",
-          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
-          "url_options": {
-            "data": "",
-            "method": "GET"
-          }
-        }
-      ],
-      "title": "Total Salt Jobs",
-      "type": "bargauge"
     },
     {
       "collapsed": false,
@@ -1278,11 +1241,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1317,6 +1281,7 @@
       "id": 67,
       "options": {
         "dedupStrategy": "none",
+        "enableInfiniteScrolling": false,
         "enableLogDetails": true,
         "prettifyLogMessage": false,
         "showCommonLabels": false,
@@ -1325,7 +1290,7 @@
         "sortOrder": "Descending",
         "wrapLogMessage": true
       },
-      "pluginVersion": "11.3.1",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -1350,11 +1315,9 @@
     "list": [
       {
         "current": {
-          "text": [
-            "salt"
-          ],
+          "text": "All",
           "value": [
-            "salt"
+            "$__all"
           ]
         },
         "datasource": {
@@ -1387,6 +1350,6 @@
   "timezone": "",
   "title": "Supportconfig with Logs",
   "uid": "AvmqWWUik",
-  "version": 5,
+  "version": 1,
   "weekStart": ""
 }

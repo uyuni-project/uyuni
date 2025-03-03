@@ -3,6 +3,8 @@
 import click
 import os
 from rich.markdown import Markdown
+from rich.panel import Panel
+from rich.text import Text
 
 from health_check.grafana.grafana_manager import prepare_grafana
 import health_check.utils as utils
@@ -60,7 +62,7 @@ def cli(ctx: click.Context, supportconfig_path: str, verbose: bool):
     callback=utils.validate_date,
 )
 @click.pass_context
-def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
+def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     """
     Start execution of Health Check
 
@@ -74,8 +76,12 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
         console.log("[red bold] Supportconfig path not accessible, exitting")
         exit(1)
 
-    if not from_datetime and not to_datetime:
-        from_datetime, to_datetime = utils.get_dates(since)
+    period_start, period_end = utils.get_dates(since)
+
+    if not from_datetime:
+        from_datetime = period_start
+    if not to_datetime:
+        to_datetime = period_end
 
     try:
         with console.status(status=None):
@@ -84,6 +90,15 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
             exporter.prepare_exporter(supportconfig_path, verbose)
             prepare_grafana(from_datetime, to_datetime, verbose)
 
+        console.print(
+            Panel(
+                Text(
+                    "You can visit now the Grafana dashboard to see metrics and relevant errors at http://localhost:3000/d/AvmqWWUik/",
+                    justify="center",
+                )
+            ),
+            style="italic green",
+        )
         console.print(Markdown("# Execution Finished"))
 
     except HealthException as err:
@@ -94,7 +109,7 @@ def run(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 
 @cli.command()
 @click.pass_context
-def clean(ctx: click.Context):
+def stop(ctx: click.Context):
     verbose = ctx.obj["verbose"]
     clean_containers(verbose=verbose)
     console.print(Markdown("# Execution Finished"))
