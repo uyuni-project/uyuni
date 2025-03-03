@@ -34,7 +34,7 @@ const products = {
     productName: "Uyuni",
     headerTitle: "Uyuni",
     bodyTitle: "Uyuni",
-    url: "http://www.uyuni-project.org/",
+    url: "https://www.uyuni-project.org/",
     title: "Uyuni login page",
   },
 };
