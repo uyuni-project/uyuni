@@ -15,7 +15,6 @@ import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
-import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
@@ -460,6 +459,7 @@ public class HubHandler extends BaseHandler {
      * Collect data about all peripheral organizations
      *
      * @param loggedInUser the user
+     * @param fqdn the FQDN identifying the Hub or Peripheral Server
      * @return a list of {@link Org} on success, exception otherwise
      * @apidoc.doc Collect data about all peripheral organizations.
      * @apidoc.param #session_key()
@@ -469,10 +469,10 @@ public class HubHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List<Org> listAllPeripheralOrgs(User loggedInUser) {
+    public List<Org> listAllPeripheralOrgs(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
         try {
-            return hubManager.collectAllOrgs(loggedInUser);
+            return hubManager.listAllPeripheralOrgs(loggedInUser, fqdn);
         }
         catch (Exception ex) {
             throw new InvalidParameterException(logGetErrorString(ex,
@@ -484,6 +484,7 @@ public class HubHandler extends BaseHandler {
      * Collect data about all peripheral channels
      *
      * @param loggedInUser the user
+     * @param fqdn the FQDN identifying the Hub or Peripheral Server
      * @return a list of {@link Channel} on success, exception otherwise
      * @apidoc.doc Collect data about all peripheral channels.
      * @apidoc.param #session_key()
@@ -493,82 +494,14 @@ public class HubHandler extends BaseHandler {
      *      #array_end()
      */
     @ReadOnly
-    public List<Channel> listAllPeripheralChannels(User loggedInUser) {
+    public List<Channel> listAllPeripheralChannels(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
         try {
-            return hubManager.collectAllChannels(loggedInUser);
+            return hubManager.listAllPeripheralChannels(loggedInUser, fqdn);
         }
         catch (Exception ex) {
             throw new InvalidParameterException(logGetErrorString(ex,
                     "Error while collecting all peripheral channels"));
         }
-    }
-
-    /**
-     * Trigger a synchronization of channel families on the peripheral
-     *
-     * @param loggedInUser the user
-     * @return 1 on success, exception otherwise
-     * @apidoc.doc Trigger a synchronization of channel families on the peripheral
-     * @apidoc.param #session_key()
-     * @apidoc.returntype #return_int_success()
-     */
-    public int synchronizeChannelFamilies(User loggedInUser) {
-        if (!hubManager.synchronizeChannelFamilies(loggedInUser)) {
-            throw new ContentSyncException(logGetErrorString(
-                    "Error while synchronizing channel families on the peripheral"));
-        }
-        return 1;
-    }
-
-    /**
-     * Trigger a synchronization of products on the peripheral
-     *
-     * @param loggedInUser the user
-     * @return 1 on success, 0 or exception otherwise
-     * @apidoc.doc Trigger a synchronization of products on the peripheral
-     * @apidoc.param #session_key()
-     * @apidoc.returntype #return_int_success()
-     */
-    public int synchronizeProducts(User loggedInUser) {
-        if (!hubManager.synchronizeProducts(loggedInUser)) {
-            throw new ContentSyncException(logGetErrorString(
-                    "Error while synchronizing products on the peripheral"));
-        }
-        return 1;
-    }
-
-    /**
-     * Trigger a synchronization of repositories on the peripheral
-     *
-     * @param loggedInUser the user
-     * @return 1 on success, 0 or exception otherwise
-     * @apidoc.doc Trigger a synchronization of repositories on the peripheral
-     * @apidoc.param #session_key()
-     * @apidoc.returntype #return_int_success()
-     */
-    public int synchronizeRepositories(User loggedInUser) {
-        if (!hubManager.synchronizeRepositories(loggedInUser)) {
-            throw new ContentSyncException(logGetErrorString(
-                    "Error while synchronizing repositories on the peripheral"));
-        }
-        return 1;
-    }
-
-    /**
-     * Trigger a synchronization of subscriptions on the peripheral
-     *
-     * @param loggedInUser the user
-     * @return 1 on success, 0 or exception otherwise
-     * @apidoc.doc Trigger a synchronization of subscriptions on the peripheral
-     * @apidoc.param #session_key()
-     * @apidoc.returntype #return_int_success()
-     */
-    public int synchronizeSubscriptions(User loggedInUser) {
-        if (!hubManager.synchronizeSubscriptions(loggedInUser)) {
-            throw new ContentSyncException(logGetErrorString(
-                    "Error while synchronizing subscriptions on the peripheral"));
-        }
-        return 1;
     }
 }

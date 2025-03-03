@@ -12,6 +12,8 @@
 package com.suse.manager.hub;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.org.Org;
 
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
@@ -38,6 +40,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.Certificate;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -102,6 +105,16 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public void deregister() throws IOException {
         invokePost("hub/sync", "deregister", null);
+    }
+
+    @Override
+    public List<Org> listAllPeripheralOrgs() throws IOException {
+        return invokeGet("hub", "listAllPeripheralOrgs", List.class);
+    }
+
+    @Override
+    public List<Channel> listAllPeripheralChannels() throws IOException {
+        return invokeGet("hub", "listAllPeripheralChannels", List.class);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)

@@ -11,9 +11,13 @@
 
 package com.suse.manager.hub;
 
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.org.Org;
+
 import com.suse.manager.model.hub.ManagerInfoJson;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Hub Inter-Server-Sync Client to connect a remote server and invoke the private server-to-server Rest-like API
@@ -72,4 +76,18 @@ public interface HubInternalClient {
      * @throws IOException when the communication fails
      */
     void scheduleProductRefresh() throws IOException;
+
+    /**
+     * Collect data about all organizations on the remote peripheral server
+     *
+     * @return return list of {@link Org}
+     */
+    List<Org> listAllPeripheralOrgs() throws IOException;
+
+    /**
+     * Collect data about all channels on the remote peripheral server
+     *
+     * @return return list of {@link Channel}
+     */
+    List<Channel> listAllPeripheralChannels() throws IOException;
 }
