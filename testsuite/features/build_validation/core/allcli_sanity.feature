@@ -370,20 +370,6 @@ Feature: Sanity checks
     And "ubuntu2404_ssh_minion" should communicate with the server using public interface
     And the clock from "ubuntu2404_ssh_minion" should be exact
 
-@debian11_minion
-  Scenario: The Debian 11 minion is healthy
-    Then "debian11_minion" should have a FQDN
-    And reverse resolution should work for "debian11_minion"
-    And "debian11_minion" should communicate with the server using public interface
-    And the clock from "debian11_minion" should be exact
-
-@debian11_ssh_minion
-  Scenario: The Debian 11 Salt SSH minion is healthy
-    Then "debian11_ssh_minion" should have a FQDN
-    And reverse resolution should work for "debian11_ssh_minion"
-    And "debian11_ssh_minion" should communicate with the server using public interface
-    And the clock from "debian11_ssh_minion" should be exact
-
 @debian12_minion
   Scenario: The Debian 12 minion is healthy
     Then "debian12_minion" should have a FQDN
