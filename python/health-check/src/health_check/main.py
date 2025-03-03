@@ -116,7 +116,7 @@ def stop(ctx: click.Context):
 
 
 def main():
-    console.print(Markdown("# Uyuni Health Check"))
+    console.print(Markdown("# Health Check"))
     cli()  # pylint: disable=no-value-for-parameter
 
 
