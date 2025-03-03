@@ -33,7 +33,7 @@ import javax.persistence.Table;
 public class IssPeripheralChannels extends BaseDomainHelper {
     private Long id;
     private IssPeripheral peripheral;
-    private Integer peripheralOrgId;
+    private Long peripheralOrgId;
     private Channel channel;
 
     protected IssPeripheralChannels() {
@@ -57,7 +57,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * @param channelIn the channel to be synchronized
      * @param peripheralOrgIdIn the custom peripheral org id the channel should be assigned to
      */
-    public IssPeripheralChannels(IssPeripheral peripheralIn, Channel channelIn, int peripheralOrgIdIn) {
+    public IssPeripheralChannels(IssPeripheral peripheralIn, Channel channelIn, long peripheralOrgIdIn) {
         peripheral = peripheralIn;
         channel = channelIn;
         peripheralOrgId = peripheralOrgIdIn;
@@ -99,7 +99,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
      * @return the peripheral organization id or NULL
      */
     @Column(name = "peripheral_org_id")
-    public Integer getPeripheralOrgId() {
+    public Long getPeripheralOrgId() {
         return peripheralOrgId;
     }
 
@@ -127,7 +127,7 @@ public class IssPeripheralChannels extends BaseDomainHelper {
     /**
      * @param peripheralOrgIdIn the peripheral organization id
      */
-    public void setPeripheralOrgId(Integer peripheralOrgIdIn) {
+    public void setPeripheralOrgId(Long peripheralOrgIdIn) {
         peripheralOrgId = peripheralOrgIdIn;
     }
 
