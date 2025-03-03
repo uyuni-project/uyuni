@@ -1,0 +1,1 @@
+- Allow both GET and POST requests for /auth/logout API endpoint
