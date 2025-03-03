@@ -409,15 +409,8 @@ end
 # @param [Node] node The node object representing the system.
 # @return [String] The system ID.
 def get_system_id(node)
-  # TODO: Remove this retrying code when this issue https://github.com/SUSE/spacewalk/issues/24084 is fixed:
-  result = []
-  repeat_until_timeout(message: "The API can't see the system id for '#{node.full_hostname}'", timeout: 10) do
-    result = $api_test.system.search_by_name(node.full_hostname)
-    break if result.any?
-
-    sleep 1
-  end
-  result.first['id']
+  result = $api_test.system.search_by_name(node.full_hostname)
+  result.any? ? result.first['id'] : nil
 end
 
 # Checks if a host has shut down within a specified timeout period.
