@@ -110,6 +110,10 @@ def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 @cli.command()
 @click.pass_context
 def stop(ctx: click.Context):
+    """
+    Stop execution of Health Check and clean containers
+
+    """
     verbose = ctx.obj["verbose"]
     clean_containers(verbose=verbose)
     console.print(Markdown("# Execution Finished"))
