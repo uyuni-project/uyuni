@@ -85,7 +85,7 @@
       },
       "id": 71,
       "panels": [],
-      "title": "Uyuni Server and Salt",
+      "title": "Server configuration and Salt",
       "type": "row"
     },
     {
@@ -1343,8 +1343,8 @@
     ]
   },
   "time": {
-    "from": "now-30d",
-    "to": "now"
+    "from": "",
+    "to": ""
   },
   "timepicker": {},
   "timezone": "",
