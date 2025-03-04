@@ -278,6 +278,17 @@ When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
   raise ScriptError, 'Vendor change option not found in logs' unless return_code.zero?
 end
 
+When(/^I (start|stop|restart|reload|enable|disable) the "([^"]*)" container$/) do |action, service|
+  node = get_target("server")
+  node.run_local("systemctl #{action} #{service}.service", check_errors: true, verbose: true)
+end
+
+When(/^I wait until "([^"]*)" container is active$/) do |service|
+  node = get_target("server")
+  cmd = "systemctl is-active #{service}"
+  node.run_local_until_ok(cmd)
+end
+
 When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
   node = get_target(host)
   cmd = "systemctl is-active #{service}"
