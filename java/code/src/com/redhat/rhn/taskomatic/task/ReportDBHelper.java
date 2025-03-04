@@ -22,7 +22,12 @@ import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
+import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
+import com.redhat.rhn.common.util.StringUtil;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 
@@ -31,6 +36,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -38,6 +44,8 @@ public class ReportDBHelper {
 
     /** The mgm_id used in the reporting database to indicate the data local which belong to the local server. */
     public static final long LOCAL_MGM_ID = 1;
+
+    private static final Log LOG = LogFactory.getLog(ReportDBHelper.class);
 
     public static final ReportDBHelper INSTANCE = new ReportDBHelper();
 
@@ -238,9 +246,14 @@ public class ReportDBHelper {
      * @param password the new password to set
      */
     public void changeDBPassword(Session session, String username, String password) {
-        final String sql = "ALTER USER %1$s PASSWORD '%2$s'".formatted(username, password);
-        var i = new GeneratedWriteMode("alter.user", session, sql, Collections.emptyList());
-        i.executeUpdate(Collections.emptyMap());
+        if (!Pattern.compile("^[a-zA-Z_]\\w*$").matcher(username).matches()) {
+            LOG.error("Invalid database username, not changing its password: " + StringUtil.sanitizeLogInput(username));
+            return;
+        }
+
+        // PostgreSQL doesn't accept identifiers and passwords as parameters
+        var sql = "ALTER USER %1$s PASSWORD '%2$s'".formatted(username, password.replace("'", "''"));
+        session.createNativeQuery(sql).executeUpdate();
     }
 
     /**
@@ -256,11 +269,24 @@ public class ReportDBHelper {
             throw new IllegalArgumentException("Forbidden to drop restricted user: " + username);
         }
 
-        final String sql = """
-            DROP OWNED BY %1$s;
-            DROP ROLE %1$s;
-            """.formatted(username);
+        // Change the password of the user to drop
+        var password = RandomStringUtils.randomAlphanumeric(12);
+        changeDBPassword(session, username, password);
 
+        // Drop the objects owned by user as only him can do it
+        var reportdbUrl = ConfigDefaults.get().getReportingJdbcConnectionString();
+        var userConnManager = ConnectionManagerFactory.reportingConnectionManager(username, password, reportdbUrl);
+        userConnManager.initialize();
+        try {
+            userConnManager.getSession().createNativeQuery("DROP OWNED BY current_user;").executeUpdate();
+        }
+        finally {
+            userConnManager.closeSession();
+            userConnManager.close();
+        }
+
+        // Drop the role has it doesn't own anything anymore
+        final String sql = "DROP ROLE %1$s;".formatted(username);
         var i = new GeneratedWriteMode("drop.user", session, sql, Collections.emptyList());
         i.executeUpdate(Collections.emptyMap());
     }
