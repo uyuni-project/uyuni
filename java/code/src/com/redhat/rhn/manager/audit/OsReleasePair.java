@@ -42,7 +42,7 @@ public class OsReleasePair {
     }
 
     /**
-     * Derives an {@link com.redhat.rhn.manager.audit.CVEAuditManagerOVAL.OVALProduct} object based on the server's
+     * Derives an {@link CVEAuditManagerOVAL.OVALOsProduct} object based on the server's
      * information, including the operating system name and release version. Used by the OVAL synchronization process
      * to identify the installed product and synchronize OVAL data for it.
      *
@@ -50,7 +50,7 @@ public class OsReleasePair {
      * OVAL synchronization and {@code Optional.empty} otherwise
      * (for example product maintainers don't produce OVAL data)
      * */
-    public Optional<CVEAuditManagerOVAL.OVALProduct> toOVALProduct() {
+    public Optional<CVEAuditManagerOVAL.OVALOsProduct> toOVALOsProduct() {
         return OsFamily.fromOsName(os).flatMap(serverOsFamily -> {
             String serverOsRelease = getOsRelease();
             if (serverOsFamily == OsFamily.REDHAT_ENTERPRISE_LINUX ||
@@ -60,9 +60,9 @@ public class OsReleasePair {
                 serverOsRelease = serverOsRelease.replaceFirst("\\..*$", "");
             }
 
-            CVEAuditManagerOVAL.OVALProduct ovalProduct = null;
+            CVEAuditManagerOVAL.OVALOsProduct ovalProduct = null;
             if (serverOsFamily.isSupportedRelease(serverOsRelease)) {
-                ovalProduct = new CVEAuditManagerOVAL.OVALProduct(serverOsFamily, serverOsRelease);
+                ovalProduct = new CVEAuditManagerOVAL.OVALOsProduct(serverOsFamily, serverOsRelease);
             }
 
             return Optional.ofNullable(ovalProduct);
