@@ -1603,8 +1603,7 @@ public class ChannelFactory extends HibernateFactory {
         channelInfo.setInstallerUpdates(channel.isInstallerUpdates());
 
         String originalChannelLabel = channel.asCloned()
-                .map(clonedChannel ->
-                        forcedOriginalChannelLabel.orElseGet(() -> clonedChannel.getOriginal().getLabel()))
+                .flatMap(clonedChannel -> forcedOriginalChannelLabel)
                 .orElse(null);
         channelInfo.setOriginalChannelLabel(originalChannelLabel);
 
