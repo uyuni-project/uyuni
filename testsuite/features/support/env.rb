@@ -311,19 +311,6 @@ Before('@skip_known_issue') do
   raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
 end
 
-# Create a user for each feature
-Before do |scenario|
-  feature_path = scenario.location.file
-  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
-  next if get_context('user_created') == true
-
-  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
-  unless feature_path.match?(/core|reposync|finishing|build_validation/)
-    step %(I create a user with name "#{$feature_filename}" and password "linux")
-    add_context('user_created', true)
-  end
-end
-
 # do some tests only if the corresponding node exists
 Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
