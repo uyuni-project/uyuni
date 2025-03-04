@@ -894,7 +894,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles15-sp5-pool-s390x
         sle-product-sles15-sp5-updates-s390x
       ],
-    'res7' => # TODO Client tools not there anymore for RES only LTSS
+    'res7' => # TODO: Client tools not there anymore for RES only LTSS
       %w[
         rhel-x86_64-server-7
         res7-x86_64
@@ -927,7 +927,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_6-x86_64-backports-updates
         opensuse_leap15_6-x86_64-sle-updates
       ],
-    'leap15.5-aarch64' => # TODO Client tools not there anymore, product EoL, missing in UI
+    'leap15.5-aarch64' => # TODO: Client tools not there anymore, product EoL, missing in UI
       %w[
         opensuse-backports-15.5-updates-aarch64
         opensuse-leap-15.5-pool-aarch64
