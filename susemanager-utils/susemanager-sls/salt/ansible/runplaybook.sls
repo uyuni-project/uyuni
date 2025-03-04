@@ -13,11 +13,11 @@
 #
 
 run_ansible_playbook:
-  ansible.playbooks:
-    - name: {{ pillar["playbook_path"] }}
+  mgrcompat.module_run:
+    - name: ansible.playbooks
+    - playbook: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
-    - ansible_kwargs:
-        flush_cache: {{ pillar["flush_cache"] }}
+    - flush_cache: {{ pillar["flush_cache"] }}
 {%- if "inventory_path" in pillar %}
-        inventory: {{ pillar["inventory_path"] }}
+    - inventory: {{ pillar["inventory_path"] }}
 {% endif %}
