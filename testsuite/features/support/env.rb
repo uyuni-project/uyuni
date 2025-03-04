@@ -20,6 +20,7 @@ require_relative 'code_coverage'
 require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
+require 'net/http'
 
 $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
@@ -73,6 +74,10 @@ $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') !=
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
 $api_protocol = ENV.fetch('API_PROTOCOL', nil) if ENV['API_PROTOCOL'] # force the API protocol to be used. You can use 'http' or 'xmlrpc'
+
+# Define a global counter to track consecutive ReadTimeout errors
+$timeout_failure_count = 0
+$timeout_threshold = 10  # Set the threshold for stopping the suite
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -131,24 +136,78 @@ $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 # Define the current feature scope
 Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
+  if $timeout_failure_count >= $timeout_threshold
+    warn "Timeout failure threshold reached, stopping test suite."
+    exit(1)
+  end
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
+  next if get_context('user_created') == true
+
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context('user_created', true)
+  end
 end
 
-# Embed a screenshot after each failed scenario
+# After hook to handle scenario failures and dump feature code coverage into Redis DB
 After do |scenario|
+  # Handle timeout failure threshold
+  if $timeout_failure_count >= $timeout_threshold
+    warn "Timeout failure threshold reached, stopping test suite."
+    exit(1)
+  end
+
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+
+  # Check if the scenario failed due to a Net::ReadTimeout
   if scenario.failed?
-    begin
-      if web_session_is_active?
-        handle_screenshot_and_relog(scenario, current_epoch)
-      else
-        warn 'There is no active web session; unable to take a screenshot or relog.'
+    if scenario.exception.is_a?(Net::ReadTimeout)
+      $timeout_failure_count += 1
+      warn "Net::ReadTimeout detected! Consecutive ReadTimeouts: #{$timeout_failure_count}"
+      log_server_response_time
+    else
+      begin
+        if web_session_is_active?
+          handle_screenshot_and_relog(scenario, current_epoch)
+        else
+          warn 'There is no active web session; unable to take a screenshot or relog.'
+        end
+      ensure
+        print_server_logs
       end
-    ensure
-      print_server_logs
     end
   end
+
+  # Check if we need to dump code coverage into Redis DB
+  next unless $code_coverage_mode
+  next unless $feature_path != scenario.location.file
+
+  process_code_coverage
+  $feature_path = scenario.location.file
+
+  # Check if the consecutive timeout threshold is reached
+  if $timeout_failure_count >= $timeout_threshold
+    warn "Reached the timeout failure threshold of #{$timeout_threshold} consecutive ReadTimeouts. Stopping the test suite."
+    exit(1)
+  end
+
   page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
+end
+
+# Method to check server response time (could be using an HTTP request or ping)
+def log_server_response_time
+  begin
+    start_time = Time.now
+    uri = URI.parse("https://#{ENV.fetch('SERVER', nil)}")
+    Net::HTTP.get_response(uri)
+    response_time = Time.now - start_time
+    log "Server response time: #{response_time} seconds"
+  rescue => e
+    warn "Error checking server response time: #{e.message}"
+  end
 end
 
 # Test is web session is open
@@ -198,6 +257,7 @@ def relog_and_visit_previous_url
     end
   rescue Timeout::Error
     warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
+    $timeout_failure_count += 1
   rescue StandardError => e
     warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
   end
@@ -210,15 +270,6 @@ def process_code_coverage
   feature_filename = $feature_path.split(%r{(\.feature|/)})[-2]
   $code_coverage.jacoco_dump(feature_filename)
   $code_coverage.push_feature_coverage(feature_filename)
-end
-
-# Dump feature code coverage into a Redis DB
-After do |scenario|
-  next unless $code_coverage_mode
-  next unless $feature_path != scenario.location.file
-
-  process_code_coverage
-  $feature_path = scenario.location.file
 end
 
 # Dump feature code coverage into a Redis DB, for the last feature
