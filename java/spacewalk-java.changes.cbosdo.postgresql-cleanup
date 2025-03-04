@@ -1,1 +1,1 @@
-- Minor code cleanup
+- Adjust report DB API to unprivileged user
