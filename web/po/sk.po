@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-04 19:14+0000\n"
+"PO-Revision-Date: 2025-03-04 21:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -794,22 +794,16 @@ msgid "Clear fields"
 msgstr "Vymazať polia"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
-#, fuzzy
-#| msgid "No modules available"
 msgid "No tokens available"
-msgstr "Žiadne dostupné moduly"
+msgstr "Žiadne dostupné tokeny"
 
 #: ../html/src/components/hub/TokenTable.tsx:61
-#, fuzzy
-#| msgid "Action type"
 msgid "Token type"
-msgstr "Typ akcie"
+msgstr "Typ tokenu"
 
 #: ../html/src/components/hub/TokenTable.tsx:68
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server"
-msgstr "Server FQDN"
+msgstr "Server"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
@@ -852,10 +846,8 @@ msgstr ""
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Invalidate"
-msgstr "Neplatné dáta"
+msgstr "Zrušiť platnosť"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
