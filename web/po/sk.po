@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-02 15:56+0000\n"
+"PO-Revision-Date: 2025-03-04 19:14+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -760,40 +760,28 @@ msgid "Upload a file"
 msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#, fuzzy
-#| msgid "Proxy certificate"
 msgid "Paste a PEM certificate"
-msgstr "Proxy certifikát"
+msgstr "Vložiť certifikát PEM"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificate File"
-msgstr "CA certifikát"
+msgstr "Súbor certifikátu"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-#, fuzzy
-#| msgid "CA file in PEM format"
 msgid "Certificate file, in PEM format"
-msgstr "Súbor CA vo formáte PEM"
+msgstr "Súbor certifikátu, vo formáte PEM"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
-#, fuzzy
-#| msgid "CA certificate"
 msgid "PEM Certificate"
-msgstr "CA certifikát"
+msgstr "Certifikát PEM"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "The text representing the certificate, in PEM format"
-msgstr "Podpísanie certifikátu SSL vo formáte PEM"
+msgstr "Text reprezentujúci certifikát, vo formáte PEM"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
-#, fuzzy
-#| msgid "Registered Days"
 msgid "Register"
-msgstr "Registrované dni"
+msgstr "Registrovať"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
 #: ../html/src/manager/images/image-import.tsx:314
