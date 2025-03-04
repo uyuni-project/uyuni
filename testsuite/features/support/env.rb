@@ -76,9 +76,6 @@ $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
 $beta_enabled = (ENV.fetch('BETA_ENABLED', 'False') == 'True')
 $api_protocol = ENV.fetch('API_PROTOCOL', nil) if ENV['API_PROTOCOL'] # force the API protocol to be used. You can use 'http' or 'xmlrpc'
 
-# Define a global counter to track consecutive ReadTimeout errors
-$timeout_failure_count = 0
-
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
 if File.exist?(custom_repos_path)
