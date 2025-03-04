@@ -57,6 +57,7 @@ $current_user = 'admin'
 $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
+add_context('timeout_failure_counter', 0)
 $timeout_threshold = 10  # Set the threshold for stopping the suite
 
 # maximal wait before giving up
@@ -135,28 +136,12 @@ $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 # Define the current feature scope
 Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
-  if $timeout_failure_count >= $timeout_threshold
-    warn "Timeout failure threshold reached, stopping test suite."
-    exit(1)
-  end
-  feature_path = scenario.location.file
-  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
-  next if get_context('user_created') == true
-
-  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
-  unless feature_path.match?(/core|reposync|finishing|build_validation/)
-    step %(I create a user with name "#{$feature_filename}" and password "linux")
-    add_context('user_created', true)
-  end
+  check_read_timeout_threshold
 end
 
 # After hook to handle scenario failures and dump feature code coverage into Redis DB
 After do |scenario|
-  # Handle timeout failure threshold
-  if $timeout_failure_count >= $timeout_threshold
-    warn "Timeout failure threshold reached, stopping test suite."
-    exit(1)
-  end
+  check_read_timeout_threshold
 
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
@@ -164,8 +149,7 @@ After do |scenario|
   # Check if the scenario failed due to a Net::ReadTimeout
   if scenario.failed?
     if scenario.exception.is_a?(Net::ReadTimeout)
-      $timeout_failure_count += 1
-      warn "Net::ReadTimeout detected! Consecutive ReadTimeouts: #{$timeout_failure_count}"
+      increase_read_timeout_count
       log_server_response_time
     else
       begin
@@ -180,19 +164,6 @@ After do |scenario|
     end
   end
 
-  # Check if we need to dump code coverage into Redis DB
-  next unless $code_coverage_mode
-  next unless $feature_path != scenario.location.file
-
-  process_code_coverage
-  $feature_path = scenario.location.file
-
-  # Check if the consecutive timeout threshold is reached
-  if $timeout_failure_count >= $timeout_threshold
-    warn "Reached the timeout failure threshold of #{$timeout_threshold} consecutive ReadTimeouts. Stopping the test suite."
-    exit(1)
-  end
-
   page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
 end
 
@@ -201,6 +172,21 @@ def web_session_is_active?
   return false unless Capybara::Session.instance_created?
 
   page.has_selector?('header') || page.has_selector?('#username-field')
+end
+
+def check_read_timeout_threshold
+  # Check if the consecutive timeout threshold is reached
+  if get_context('timeout_failure_counter').to_i >= $timeout_threshold
+    warn "Timeout failure threshold reached, stopping test suite."
+    exit(1)
+  end
+end
+
+def increase_read_timeout_count
+  timeout_failure_count = get_context('timeout_failure_counter').to_i + 1
+  add_context('timeout_failure_counter', timeout_failure_count)
+
+  warn "Net::ReadTimeout detected! Consecutive ReadTimeouts: #{timeout_failure_count}"
 end
 
 # Take a screenshot and try to log back at suse manager server
@@ -243,7 +229,7 @@ def relog_and_visit_previous_url
     end
   rescue Timeout::Error
     warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
-    $timeout_failure_count += 1
+    increase_read_timeout_count
   rescue StandardError => e
     warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
   end
@@ -256,6 +242,16 @@ def process_code_coverage
   feature_filename = $feature_path.split(%r{(\.feature|/)})[-2]
   $code_coverage.jacoco_dump(feature_filename)
   $code_coverage.push_feature_coverage(feature_filename)
+end
+
+# Dump feature code coverage into a Redis DB
+After do |scenario|
+  check_read_timeout_threshold
+  next unless $code_coverage_mode
+  next unless $feature_path != scenario.location.file
+
+  process_code_coverage
+  $feature_path = scenario.location.file
 end
 
 # Dump feature code coverage into a Redis DB, for the last feature
@@ -295,6 +291,20 @@ end
 
 Before('@skip_known_issue') do
   raise Core::Test::Result::Failed, 'This scenario is known to fail, skipping it'
+end
+
+# Create a user for each feature
+Before do |scenario|
+  check_read_timeout_threshold
+  feature_path = scenario.location.file
+  $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
+  next if get_context('user_created') == true
+
+  # Create own user based on feature filename. Exclude core, reposync, finishing and build_validation features.
+  unless feature_path.match?(/core|reposync|finishing|build_validation/)
+    step %(I create a user with name "#{$feature_filename}" and password "linux")
+    add_context('user_created', true)
+  end
 end
 
 # do some tests only if the corresponding node exists

@@ -492,9 +492,7 @@ end
 # @param key [Symbol] The key to retrieve the value for.
 # @return [Object, nil] The value associated with the key, or nil if the key is not found.
 def get_context(key)
-  return unless $context.key?($feature_scope)
-
-  $context[$feature_scope][key]
+  $context.dig($feature_scope, key)
 end
 
 # Define or replace a key-value in the current feature scope context
@@ -502,8 +500,8 @@ end
 # @param key [Object] The key to be added to the context hash.
 # @param value [Object] The value to be associated with the key in the context hash.
 def add_context(key, value)
-  $context[$feature_scope] = {} unless $context.key?($feature_scope)
-  $context[$feature_scope].merge!({ key => value })
+  $context[$feature_scope] ||= {}
+  $context[$feature_scope][key] = value
 end
 
 # This function gets the system name, as displayed in systems list
