@@ -20,7 +20,6 @@ require_relative 'code_coverage'
 require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
-require 'net/http'
 
 $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
@@ -58,6 +57,7 @@ $current_user = 'admin'
 $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
+$timeout_threshold = 10  # Set the threshold for stopping the suite
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -77,7 +77,6 @@ $api_protocol = ENV.fetch('API_PROTOCOL', nil) if ENV['API_PROTOCOL'] # force th
 
 # Define a global counter to track consecutive ReadTimeout errors
 $timeout_failure_count = 0
-$timeout_threshold = 10  # Set the threshold for stopping the suite
 
 # QAM and Build Validation pipelines will provide a json file including all custom (MI) repositories
 custom_repos_path = "#{File.dirname(__FILE__)}/../upload_files/custom_repositories.json"
@@ -195,19 +194,6 @@ After do |scenario|
   end
 
   page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
-end
-
-# Method to check server response time (could be using an HTTP request or ping)
-def log_server_response_time
-  begin
-    start_time = Time.now
-    uri = URI.parse("https://#{ENV.fetch('SERVER', nil)}")
-    Net::HTTP.get_response(uri)
-    response_time = Time.now - start_time
-    log "Server response time: #{response_time} seconds"
-  rescue => e
-    warn "Error checking server response time: #{e.message}"
-  end
 end
 
 # Test is web session is open
