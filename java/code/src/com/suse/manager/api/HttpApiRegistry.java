@@ -139,6 +139,7 @@ public class HttpApiRegistry {
      */
     private void registerAuthEndpoints() {
         registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", LoginController::apiLogin);
+        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
         registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
     }
 
