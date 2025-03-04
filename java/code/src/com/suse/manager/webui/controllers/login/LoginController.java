@@ -24,6 +24,8 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -121,6 +123,7 @@ public class LoginController {
             model.put("url_bounce", urlBounce);
             model.put("request_method", reqMethod);
         }
+        RhnConfigurationFactory conf = RhnConfigurationFactory.getSingleton();
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
         model.put("title", ConfigDefaults.get().getProductName() + " - Sign In");
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
@@ -131,7 +134,7 @@ public class LoginController {
         model.put("customFooter", Config.get().getString("java.custom_footer"));
         model.put("legalNote", Config.get().getString("java.legal_note"));
         model.put("loginLength", Config.get().getString("max_user_len"));
-        model.put("passwordLength", Config.get().getString("max_passwd_len"));
+        model.put("passwordLength", conf.getLongConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue());
         model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());

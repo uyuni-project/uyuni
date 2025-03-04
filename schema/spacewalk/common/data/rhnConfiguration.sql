@@ -1,5 +1,28 @@
-INSERT INTO rhnConfiguration (key, description) VALUES ('extauth_default_orgid', 'Organization id, where externally authenticated users will be created.');
-INSERT INTO rhnConfiguration (key, description, default_value) VALUES ('extauth_use_orgunit', 'Use Org. Unit IPA setting as organization name to create externally authenticated users in.', 'false');
-INSERT INTO rhnConfiguration (key, description, default_value) VALUES ('extauth_keep_temproles', 'Keep temporary user roles granted due to the external authentication setup for subsequent logins using password.', 'false');
 INSERT INTO rhnConfiguration (key, description, value, default_value)
-VALUES ('system_checkin_threshold', 'Number of days before reporting a system as inactive', null, 1);
+VALUES ('extauth_default_orgid', 'Organization id, where externally authenticated users will be created.', null, null);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('extauth_use_orgunit', 'Use Org. Unit IPA setting as organization name to create externally authenticated users in.', 'false', 'false');
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('extauth_keep_temproles', 'Keep temporary user roles granted due to the external authentication setup for subsequent logins using password.', 'false', 'false');
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('system_checkin_threshold', 'Number of days before reporting a system as inactive', 1, 1);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_length_min', 'Minimum number of characters in local user passwords', 4, 4);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_length_max', 'Maximum number of characters in local user passwords', 32, 32);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_lower_char_flag', 'psw has to have at least one lower alpha character', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_upper_char_flag', 'Password has to have at least one upper alpha character', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_digit_flag', 'Password has to have at least one digit', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_consecutive_char_flag', 'Password has to have no consecutive characters', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_special_char_flag', 'Password has to have at least a special character', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_restricted_occurrence_flag', 'Password has to have no repeating characters', 0, 0);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_max_occurrence', 'Maximum number of valid occurrence of a character', 2, 2);
+INSERT INTO rhnConfiguration (key, description, value, default_value)
+VALUES ('psw_check_special_characters', 'List of special characters to check in a password', '!$%&()*+,./:;<=>?[]^_{|}~', '!$%&()*+,./:;<=>?[]^_{|}~');

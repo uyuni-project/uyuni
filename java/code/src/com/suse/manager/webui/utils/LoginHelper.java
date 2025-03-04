@@ -25,7 +25,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.common.util.StringUtil;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.org.usergroup.OrgUserExtGroup;
@@ -132,8 +133,9 @@ public class LoginHelper {
             }
             catch (LookupException le) {
                 Org newUserOrg = null;
-                Boolean useOrgUnit = SatConfigFactory.getSatConfigBooleanValue(
-                        SatConfigFactory.EXT_AUTH_USE_ORGUNIT);
+                RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+                Boolean useOrgUnit =
+                        factory.getBooleanConfiguration(RhnConfiguration.KEYS.extauth_use_orgunit).getValue();
                 if (useOrgUnit) {
                     String orgUnitString =
                             (String) request.getAttribute("REMOTE_USER_ORGUNIT");
@@ -143,8 +145,8 @@ public class LoginHelper {
                     }
                 }
                 if (newUserOrg == null) {
-                    Long defaultOrgId = SatConfigFactory.getSatConfigLongValue(
-                            SatConfigFactory.EXT_AUTH_DEFAULT_ORGID, 1L);
+                    Long defaultOrgId =
+                            factory.getLongConfiguration(RhnConfiguration.KEYS.extauth_default_orgid).getValue();
                     if (defaultOrgId != null) {
                         newUserOrg = OrgFactory.lookupById(defaultOrgId);
                         if (newUserOrg == null) {

@@ -15,7 +15,8 @@
 
 package com.redhat.rhn.common.util;
 
-import com.redhat.rhn.common.conf.UserDefaults;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -122,7 +123,10 @@ public class CryptHelper {
         // we set use pam authentication, yet the password field
         // in the database is NOT NULL.  So we have to create this
         // stupid HACK!  Actually this is beyond HACK.
-        return RandomStringUtils.random(UserDefaults.get().getMaxPasswordLength(), 0, 0,
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        return RandomStringUtils.random(
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue(),
+                0, 0,
                 true, true, null, new SecureRandom());
     }
 }
