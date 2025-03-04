@@ -1,4 +1,4 @@
-FROM opensuse/grafana:11.5.1
+FROM registry.opensuse.org/opensuse/grafana:11.5.1
 
 ENV GF_PATHS_PROVISIONING=/etc/grafana/provisioning
 ENV GF_AUTH_ANONYMOUS_ENABLED=true
