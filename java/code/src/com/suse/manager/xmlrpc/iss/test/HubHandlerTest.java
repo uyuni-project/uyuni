@@ -14,6 +14,7 @@ package com.suse.manager.xmlrpc.iss.test;
 import static org.jmock.AbstractExpectations.returnValue;
 import static org.jmock.AbstractExpectations.throwException;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -53,6 +54,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.net.ssl.SSLHandshakeException;
@@ -64,6 +67,18 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     private static final String DUMMY_ROOT_CA = "dummy";
     private static final String ADMIN_USERNAME = "admin";
     private static final String ADMIN_DUMMY_PASS = "admin";
+
+    static class HubHandlerMock extends HubHandler {
+        @Override
+        public String logAndGetErrorMessage(Throwable ex, String message, Object... args) {
+            return super.logAndGetErrorMessage(ex, message, args);
+        }
+
+        @Override
+        public String logAndGetErrorMessage(String message, Object... args) {
+            return super.logAndGetErrorMessage(message, args);
+        }
+    }
 
     @RegisterExtension
     protected final JUnit5Mockery context = new JUnit5Mockery() {{
@@ -325,8 +340,13 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     public void throwsCorrectExceptionWhenSetDetailsFailsCausedByIllegalStateException() {
         HubHandler newHubHandler = new HubHandler();
 
+        //server not found
         assertThrows(FaultException.class,
                 () -> newHubHandler.setDetails(satAdmin, "dummy-server.dev.local", "HUB", null));
+
+        Map<String, String> dataMap = new HashMap<>();
+        assertThrows(FaultException.class,
+                () -> newHubHandler.setDetails(satAdmin, "dummy-server.dev.local", "HUB", dataMap));
     }
 
     @Test
@@ -380,5 +400,36 @@ public class HubHandlerTest extends BaseHandlerTestCase {
 
         assertNull(peripheral.getMirrorCredentials());
         assertDoesNotThrow(() -> newHubHandler.deregister(satAdmin, dummyFqdn, true));
+    }
+
+    @Test
+    public void testFormattingErrorMessages() {
+        HubHandlerMock hubHandlerMock = new HubHandlerMock();
+        TokenCreationException ex = new TokenCreationException("ex_error_message");
+
+        assertEquals("main_error_message: ex_error_message",
+                hubHandlerMock.logAndGetErrorMessage(ex, "main_error_message"));
+        assertEquals("main_error_message argument1: ex_error_message",
+                hubHandlerMock.logAndGetErrorMessage(ex, "main_error_message {}", "argument1"));
+        assertEquals("main_error_message argument1 argument2: ex_error_message",
+                hubHandlerMock.logAndGetErrorMessage(ex, "main_error_message {} {}", "argument1", "argument2"));
+
+        TokenCreationException ex2 = new TokenCreationException("");
+        assertEquals("main_error_message",
+                hubHandlerMock.logAndGetErrorMessage(ex2, "main_error_message"));
+        assertEquals("main_error_message argument1",
+                hubHandlerMock.logAndGetErrorMessage(ex2, "main_error_message {}", "argument1"));
+
+        assertEquals("",
+                hubHandlerMock.logAndGetErrorMessage(""));
+        assertEquals("secondary_msg",
+                hubHandlerMock.logAndGetErrorMessage("secondary_msg"));
+        assertEquals("secondary_msg argument1",
+                hubHandlerMock.logAndGetErrorMessage("secondary_msg {}", "argument1"));
+        assertEquals("secondary_msg argument1 argument2",
+                hubHandlerMock.logAndGetErrorMessage("secondary_msg {} {}", "argument1", "argument2"));
+        assertEquals("secondary_msg argument1 argument2 argument3",
+                hubHandlerMock.logAndGetErrorMessage("secondary_msg {} {} {}",
+                        "argument1", "argument2", "argument3"));
     }
 }

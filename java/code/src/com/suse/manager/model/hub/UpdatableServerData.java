@@ -27,10 +27,18 @@ public class UpdatableServerData {
      * @param dataMap the map containing the new values. null as value is supported.
      */
     public UpdatableServerData(Map<String, String> dataMap) {
-        this.rootCADefined = dataMap.containsKey("root_ca");
-        this.rootCA = dataMap.get("root_ca");
-        this.gpgKeyDefined = dataMap.containsKey("gpg_key");
-        this.gpgKey = dataMap.get("gpg_key");
+        if (null != dataMap) {
+            this.rootCADefined = dataMap.containsKey("root_ca");
+            this.rootCA = dataMap.get("root_ca");
+            this.gpgKeyDefined = dataMap.containsKey("gpg_key");
+            this.gpgKey = dataMap.get("gpg_key");
+        }
+        else {
+            this.rootCADefined = false;
+            this.rootCA = null;
+            this.gpgKeyDefined = false;
+            this.gpgKey = null;
+        }
     }
 
     /**
