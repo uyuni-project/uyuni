@@ -21,7 +21,7 @@ export function useDebounce<T extends (...args: any[]) => any>(
   timeoutMs: number
 ): (...args: Parameters<T>) => void {
   const debouncedFn = useRef(
-    debounce((...args: Parameters<T>) => {callback(...args), timeoutMs, { leading: false, trailing: true })
+    debounce((...args: Parameters<T>) => callback(...args), timeoutMs, { leading: false, trailing: true })
   ).current;
 
   return debouncedFn;
