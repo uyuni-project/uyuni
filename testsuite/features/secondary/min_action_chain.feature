@@ -43,7 +43,7 @@ Feature: Action chains on Salt minions
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Create a custom action chain for the Salt minion
-    When I call actionchain.create_chain() with chain label "salt_minion_action_chain"
+    When I create an action chain with label "salt_minion_action_chain" via API 
     And I follow the left menu "Schedule > Action Chains"
     Then I should see a "salt_minion_action_chain" text
 
@@ -176,8 +176,8 @@ Feature: Action chains on Salt minions
 
   Scenario: Execute the action chain from the web UI on Salt minion
     Given I am authorized for the "Admin" section
-    And I am on the Systems overview page of this "sle_minion"
-    When I follow "Schedule"
+    When I am on the Systems overview page of this "sle_minion"
+    And I follow "Schedule"
     And I follow "Action Chains"
     And I follow "salt_minion_action_chain"
     And I click on "Save and Schedule"
@@ -187,7 +187,7 @@ Feature: Action chains on Salt minions
 
   # previous, completed, action chain will no longer be available
   Scenario: Create a custom action chain for the Salt minion
-    When I call actionchain.create_chain() with chain label "salt_minion_action_chain_to_delete"
+    When I create an action chain with label "salt_minion_action_chain_to_delete" via API
     And I follow the left menu "Schedule > Action Chains"
     Then I should see a "salt_minion_action_chain_to_delete" text
 
@@ -231,30 +231,30 @@ Feature: Action chains on Salt minions
 
   Scenario: Add operations to the action chain via API for Salt minions
     Given I want to operate on this "sle_minion"
-    When I call actionchain.create_chain() with chain label "salt_minion_api_chain"
-    And I call actionchain.add_package_install()
-    And I call actionchain.add_package_removal()
-    And I call actionchain.add_package_upgrade()
-    And I call actionchain.add_script_run() with the script "exit 1;"
-    And I call actionchain.add_system_reboot()
-    Then I should be able to see all these actions in the action chain
-    When I call actionchain.remove_action() on each action within the chain
+    When I create an action chain with label "salt_minion_api_chain" via API 
+    And I add a package install to the action chain via API
+    And I add a package removal to the action chain via API
+    And I add a package upgrade to the action chain via API
+    And I add the script "exit 1;" to the action chain via API
+    And I add a system reboot to the action chain via API
+    Then I should be able to see all these actions in the action chain via API
+    When I remove each action within the chain via API
     Then the current action chain should be empty
-    And I delete the action chain
+    And I delete the action chain via API
 
   Scenario: Run an action chain via API on Salt minion
     Given I want to operate on this "sle_minion"
-    When I call actionchain.create_chain() with chain label "salt_minion_multiple_scripts"
-    And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
-    Then I should be able to see all these actions in the action chain
-    When I schedule the action chain
-    And I wait until there are no more action chains
+    When I create an action chain with label "salt_minion_multiple_scripts" via API
+    And I add the script "echo -n 1 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "echo -n 2 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "echo -n 3 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "touch /tmp/action_chain_done" to the action chain via API
+    Then I should be able to see all these actions in the action chain via API
+    When I schedule the action chain via API
+    And I wait until there are no more action chains listed via API
     And I wait until file "/tmp/action_chain_done" exists on "sle_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "sle_minion"
-    When I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions listed via API
 
   Scenario: Cleanup: remove Salt minion from configuration channel
     When I follow the left menu "Configuration > Channels"

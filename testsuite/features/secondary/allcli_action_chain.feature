@@ -53,7 +53,7 @@ Feature: Action chains on several systems at once
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Create a custom action chain for two systems
-    When I call actionchain.create_chain() with chain label "two_systems_action_chain"
+    When I create an action chain with label "two_systems_action_chain" via API
     And I follow the left menu "Schedule > Action Chains"
     Then I should see a "two_systems_action_chain" text
 
@@ -87,7 +87,7 @@ Feature: Action chains on several systems at once
 
   Scenario: Verify action chain for two systems
     Given I am on the Systems overview page of this "sle_minion"
-    And I follow "Schedule"
+    When I follow "Schedule"
     And I follow "Action Chains"
     And I follow "two_systems_action_chain"
     And I should see a "1. Install or update andromeda-dummy on 2 systems" text
