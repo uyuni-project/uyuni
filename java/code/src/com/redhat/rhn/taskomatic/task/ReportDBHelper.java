@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.GeneratedWriteMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.util.StringUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -240,6 +239,23 @@ public class ReportDBHelper {
     }
 
     /**
+     * Revoke privileges to a user in the given database.
+     * @param session the session
+     * @param dbName the db name
+     * @param username the new username
+     */
+    public void revokeDBUser(Session session, String dbName, String username) {
+        final String sql = """
+                REVOKE CONNECT ON DATABASE %2$s FROM %1$s;
+                REVOKE USAGE ON SCHEMA public FROM %1$s;
+                REVOKE SELECT ON ALL TABLES IN SCHEMA public FROM %1$s;
+                REVOKE SELECT ON ALL SEQUENCES IN SCHEMA public FROM %1$s;
+                """.formatted(username, dbName);
+        var i = new GeneratedWriteMode("revoke.permissions", session, sql, Collections.emptyList());
+        i.executeUpdate(Collections.emptyMap());
+    }
+
+    /**
      * Change the password for the given username
      * @param session the session
      * @param username the username
@@ -269,25 +285,18 @@ public class ReportDBHelper {
             throw new IllegalArgumentException("Forbidden to drop restricted user: " + username);
         }
 
+        var dbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
         // Change the password of the user to drop
         var password = RandomStringUtils.randomAlphanumeric(12);
         changeDBPassword(session, username, password);
 
-        // Drop the objects owned by user as only him can do it
-        var reportdbUrl = ConfigDefaults.get().getReportingJdbcConnectionString();
-        var userConnManager = ConnectionManagerFactory.reportingConnectionManager(username, password, reportdbUrl);
-        userConnManager.initialize();
-        try {
-            userConnManager.getSession().createNativeQuery("DROP OWNED BY current_user;").executeUpdate();
-        }
-        finally {
-            userConnManager.closeSession();
-            userConnManager.close();
-        }
+        //just to be sure that user doesn't have any permission, because in that case the drop role might fails
+        revokeDBUser(session, dbName, username);
 
-        // Drop the role has it doesn't own anything anymore
-        final String sql = "DROP ROLE %1$s;".formatted(username);
-        var i = new GeneratedWriteMode("drop.user", session, sql, Collections.emptyList());
-        i.executeUpdate(Collections.emptyMap());
+        session.createNativeQuery(("GRANT %1$s TO current_user").formatted(username)).executeUpdate();
+        session.createNativeQuery("REASSIGN OWNED BY %1$s TO current_user".formatted(username)).executeUpdate();
+        session.createNativeQuery("DROP OWNED BY %1$s".formatted(username)).executeUpdate();
+        session.createNativeQuery("DROP ROLE %1$s".formatted(username)).executeUpdate();
+
     }
 }
