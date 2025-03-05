@@ -59,10 +59,8 @@ import com.suse.proxy.model.ProxyConfigImage;
 
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.jmock.junit5.JUnit5Mockery;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.HashMap;
 import java.util.List;
@@ -73,7 +71,6 @@ import java.util.Optional;
  * Test class for {@link ProxyConfigUtils}
  */
 @SuppressWarnings({"squid:S3599", "java:S1171"}) //jmock
-@ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUtilsTest extends MockObjectTestCase {
     public static final String DUMMY_TAG_2 = "anotherTag";
 
