@@ -16,7 +16,14 @@ import { useDebounce } from "utils/hooks";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./proxy-config-messages";
-import { ProxyConfigProps, RegistryMode, SourceMode, TagOptions, UseCertsMode } from "./proxy-config-types";
+import {
+  ProxyConfigModel,
+  ProxyConfigProps,
+  RegistryMode,
+  SourceMode,
+  TagOptions,
+  UseCertsMode,
+} from "./proxy-config-types";
 import {
   getRegistryData,
   imageNames,
@@ -155,7 +162,7 @@ export function ProxyConfig({
     }
   };
 
-  const asyncValidate = useDebounce<typeof retrieveRegistryTags>(async (newModel) => {
+  const asyncValidate = useDebounce<(newModel: ProxyConfigModel) => void>(async (newModel) => {
     setErrors({});
     if (newModel.registryMode === RegistryMode.Simple) {
       if (newModel.registryBaseURL && !tagOptions.registryBaseURL?.length) {
@@ -168,7 +175,7 @@ export function ProxyConfig({
         }
       });
     }
-  }, 500);
+  }, 3000);
 
   return (
     <TopPanel
