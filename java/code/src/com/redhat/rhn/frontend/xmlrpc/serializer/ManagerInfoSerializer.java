@@ -16,6 +16,18 @@ import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 import com.suse.manager.model.hub.ManagerInfoJson;
 
+/**
+ * Converts a ManagerInfoJson to an XMLRPC &lt;struct&gt;.
+ *
+ * @apidoc.doc
+ *  #struct_begin("manager info")
+ *      #prop_desc("string", "version", "version")
+ *      #prop_desc("boolean", "reportDb", "true if there is a report database")
+ *      #prop_desc("string", "reportDbName", "name of the report database")
+ *      #prop_desc("string", "reportDbHost", "hostname of the report database")
+ *      #prop_desc("int", "reportDbPort", "port of the report database")
+ *  #struct_end()
+ */
 public class ManagerInfoSerializer extends ApiResponseSerializer<ManagerInfoJson> {
 
     @Override

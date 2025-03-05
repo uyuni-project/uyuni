@@ -442,7 +442,7 @@ public class HubHandler extends BaseHandler {
      * @return a {@link ManagerInfoJson} on success, exception otherwise
      * @apidoc.doc Get manager info.
      * @apidoc.param #session_key()
-     * @apidoc.returntype $ManagerInfoJsonSerializer
+     * @apidoc.returntype $ManagerInfoSerializer
      */
     @ReadOnly
     public ManagerInfoJson getManagerInfo(User loggedInUser) {
