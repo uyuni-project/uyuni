@@ -87,7 +87,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
 
     private static Mode getModeInternal(Session session, String name, String mode) {
         Map<String, ParsedMode> modes = (Map<String, ParsedMode>)factory.getObject(name);
-        ParsedMode pm = (ParsedMode)modes.get(mode);
+        ParsedMode pm = modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
                               "Could not find mode " + mode + " in " + name);
@@ -112,7 +112,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
 
     private static SelectMode getSelectMode(Session session, String name, String mode) {
         Map<String, ParsedMode> modes = (Map<String, ParsedMode>) factory.getObject(name);
-        ParsedMode pm = (ParsedMode) modes.get(mode);
+        ParsedMode pm = modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
                               "Could not find mode " + mode + " in " + name);
