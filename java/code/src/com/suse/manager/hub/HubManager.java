@@ -246,7 +246,7 @@ public class HubManager {
         IssRole remoteRole = hubFactory.isISSPeripheral() ? IssRole.HUB : IssRole.PERIPHERAL;
         IssServer server = findServer(user, fqdn, remoteRole);
 
-        if (!onlyLocal) {
+        if (!onlyLocal && (null != server)) {
             IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(server.getFqdn());
             var internalClient = clientFactory.newInternalClient(fqdn, accessToken.getToken(), server.getRootCa());
             internalClient.deregister();
