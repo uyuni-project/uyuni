@@ -72,7 +72,7 @@ public class AdminViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -147,6 +147,22 @@ public class AdminViewsController {
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
     }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        long peripheralId = Long.parseLong(request.params("id"));
+        data.put("detailsData", GSON.toJson(null));
+        data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+        return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
+    }
+
 
     /**
      * show list of saved payg ssh connection data
