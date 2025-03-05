@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -27,6 +28,7 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -38,6 +40,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.query.Query;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -283,6 +288,185 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         tokens = hubFactory.listAccessToken(4, 1);
         assertEquals(1, tokens.size());
         assertEquals(tokenZero.getId(), tokens.get(0).getId());
+    }
+
+    private static Stream<Arguments> allCloneSyncVariants() {
+        return Stream.of(
+                Arguments.of(true, true, true, true),
+                Arguments.of(true, true, true, false),
+                Arguments.of(true, true, false, true),
+                Arguments.of(true, true, false, false),
+                Arguments.of(true, false, true, true),
+                Arguments.of(true, false, true, false),
+                Arguments.of(true, false, false, true),
+                Arguments.of(true, false, false, false),
+                Arguments.of(false, true, true, true),
+                Arguments.of(false, true, true, false),
+                Arguments.of(false, true, false, true),
+                Arguments.of(false, true, false, false),
+                Arguments.of(false, false, true, true),
+                Arguments.of(false, false, true, false),
+                Arguments.of(false, false, false, true),
+                Arguments.of(false, false, false, false)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("allCloneSyncVariants")
+    public void canCreateChannelInfoFromPeripheralChannels(boolean peripheralSyncProd, boolean peripheralSyncTest,
+                                                           boolean peripheralSyncDev, boolean peripheralSyncVendor)
+            throws Exception {
+        HubSCCCredentials sccCredentials = CredentialsFactory.createHubSCCCredentials("U123", "not so secret", "fqdn");
+        CredentialsFactory.storeCredentials(sccCredentials);
+
+        IssPeripheral peripheral = new IssPeripheral("peripheral1.example.com");
+        peripheral.setRootCa("----- BEGIN CA -----");
+        peripheral.setMirrorCredentials(sccCredentials);
+        hubFactory.save(peripheral);
+
+        Channel vendorBaseChannel = ChannelFactoryTest.createBaseChannel(user);
+        vendorBaseChannel.setOrg(null);
+        Channel vendorChildChannel = ChannelFactoryTest.createTestChannel(user);
+        vendorChildChannel.setOrg(null);
+        vendorChildChannel.setParentChannel(vendorBaseChannel);
+        ChannelFactory.save(vendorBaseChannel);
+        ChannelFactory.save(vendorChildChannel);
+
+        Channel devBaseChannel = ChannelFactoryTest.createTestClonedChannel(vendorBaseChannel, user,
+                "dev-", "-base", "DEV ", " Base", null);
+        Channel devChildChannel = ChannelFactoryTest.createTestClonedChannel(vendorChildChannel, user,
+                "dev-", "-child", "DEV ", " Child", devBaseChannel);
+        ChannelFactory.save(devBaseChannel);
+        ChannelFactory.save(devChildChannel);
+
+        Channel testBaseChannel = ChannelFactoryTest.createTestClonedChannel(devBaseChannel, user,
+                "test-", "-base", "TEST ", " Base", null);
+        Channel testChildChannel = ChannelFactoryTest.createTestClonedChannel(devChildChannel, user,
+                "test-", "-child", "TEST ", " Child", testBaseChannel);
+        ChannelFactory.save(testBaseChannel);
+        ChannelFactory.save(testChildChannel);
+
+        Channel prodBaseChannel = ChannelFactoryTest.createTestClonedChannel(testBaseChannel, user,
+                "prod-", "-base", "PROD ", " Base", null);
+        Channel prodChildChannel = ChannelFactoryTest.createTestClonedChannel(testChildChannel, user,
+                "prod-", "-child", "PROD ", " Child", prodBaseChannel);
+        ChannelFactory.save(prodBaseChannel);
+        ChannelFactory.save(prodChildChannel);
+
+        int expectedChannelsSynced = 0;
+        if (peripheralSyncProd) {
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, prodChildChannel, 1));
+            expectedChannelsSynced += 2;
+        }
+
+        if (peripheralSyncTest) {
+            hubFactory.save(new IssPeripheralChannels(peripheral, testBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, testChildChannel, 1));
+            expectedChannelsSynced += 2;
+        }
+
+        if (peripheralSyncDev) {
+            hubFactory.save(new IssPeripheralChannels(peripheral, devBaseChannel, 1));
+            hubFactory.save(new IssPeripheralChannels(peripheral, devChildChannel, 1));
+            expectedChannelsSynced += 2;
+        }
+
+        if (peripheralSyncVendor) {
+            hubFactory.save(new IssPeripheralChannels(peripheral, vendorBaseChannel));
+            hubFactory.save(new IssPeripheralChannels(peripheral, vendorChildChannel));
+            expectedChannelsSynced += 2;
+        }
+
+        List<ChannelInfoDetailsJson> infos = hubFactory.listChannelInfoForPeripheral(peripheral);
+        assertEquals(expectedChannelsSynced, infos.size());
+
+        for (ChannelInfoDetailsJson info : infos) {
+            String label = info.getLabel();
+            if (label.equals(vendorBaseChannel.getLabel())) {
+                assertNull(info.getOriginalChannelLabel());
+                assertNull(info.getParentChannelLabel());
+            }
+            else if (label.equals(vendorChildChannel.getLabel())) {
+                assertNull(info.getOriginalChannelLabel());
+                assertEquals(vendorBaseChannel.getLabel(), info.getParentChannelLabel());
+            }
+            else if (label.equals(devBaseChannel.getLabel())) {
+                if (peripheralSyncVendor) {
+                    assertEquals(vendorBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertNull(info.getParentChannelLabel());
+            }
+            else if (label.equals(devChildChannel.getLabel())) {
+                if (peripheralSyncVendor) {
+                    assertEquals(vendorChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertEquals(devBaseChannel.getLabel(), info.getParentChannelLabel());
+            }
+            else if (label.equals(testBaseChannel.getLabel())) {
+                if (peripheralSyncDev) {
+                    assertEquals(devBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncVendor) {
+                    assertEquals(vendorBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertNull(info.getParentChannelLabel());
+            }
+            else if (label.equals(testChildChannel.getLabel())) {
+                if (peripheralSyncDev) {
+                    assertEquals(devChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncVendor) {
+                    assertEquals(vendorChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertEquals(testBaseChannel.getLabel(), info.getParentChannelLabel());
+            }
+            else if (label.equals(prodBaseChannel.getLabel())) {
+                if (peripheralSyncTest) {
+                    assertEquals(testBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncDev) {
+                    assertEquals(devBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncVendor) {
+                    assertEquals(vendorBaseChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertNull(info.getParentChannelLabel());
+            }
+            else if (label.equals(prodChildChannel.getLabel())) {
+                if (peripheralSyncTest) {
+                    assertEquals(testChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncDev) {
+                    assertEquals(devChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else if (peripheralSyncVendor) {
+                    assertEquals(vendorChildChannel.getLabel(), info.getOriginalChannelLabel());
+                }
+                else {
+                    assertNull(info.getOriginalChannelLabel());
+                }
+                assertEquals(prodBaseChannel.getLabel(), info.getParentChannelLabel());
+            }
+            else {
+                fail("Unexpected channel");
+            }
+        }
     }
 
     private static String getRandomFqdn() {
