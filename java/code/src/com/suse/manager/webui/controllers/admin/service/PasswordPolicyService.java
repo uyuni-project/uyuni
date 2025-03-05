@@ -34,7 +34,10 @@ public class PasswordPolicyService {
      * Public explicit constructor for password policy service
      * enforces composition pattern
      */
-    public PasswordPolicyService() { }
+    public PasswordPolicyService() {
+        //Public explicit constructor for password policy service
+        //enforces composition pattern
+        }
 
     /**
      * Validate the password policy
@@ -58,22 +61,22 @@ public class PasswordPolicyService {
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         List<RhnConfiguration> configs = new ArrayList<>();
         // Build configurations using the buildConfiguration method and add them to the configs list
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_length_min, passwordPolicyIn.getMinLength()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_length_max, passwordPolicyIn.getMaxLength()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_digit_flag, passwordPolicyIn.isDigitFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_lower_char_flag,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MIN, passwordPolicyIn.getMinLength()));
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX, passwordPolicyIn.getMaxLength()));
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_DIGIT_FLAG, passwordPolicyIn.isDigitFlag()));
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LOWER_CHAR_FLAG,
                 passwordPolicyIn.isLowerCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_upper_char_flag,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_UPPER_CHAR_FLAG,
                 passwordPolicyIn.isUpperCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_consecutive_char_flag,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_CONSECUTIVE_CHAR_FLAG,
                 passwordPolicyIn.isConsecutiveCharsFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_special_char_flag,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHAR_FLAG,
                 passwordPolicyIn.isSpecialCharFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_restricted_occurrence_flag,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_RESTRICTED_OCCURRENCE_FLAG,
                 passwordPolicyIn.isRestrictedOccurrenceFlag()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_max_occurrence,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_MAX_OCCURRENCE,
                 passwordPolicyIn.getMaxCharacterOccurrence()));
-        configs.add(buildConfiguration(RhnConfiguration.KEYS.psw_check_special_characters,
+        configs.add(buildConfiguration(RhnConfiguration.KEYS.PSW_CHECK_SPECIAL_CHARACTERS,
                 passwordPolicyIn.getSpecialChars()));
         // Perform bulk update
         factory.bulkUpdate(configs);

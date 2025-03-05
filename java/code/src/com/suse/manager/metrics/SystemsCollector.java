@@ -81,7 +81,7 @@ public class SystemsCollector extends Collector {
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
+        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
         long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)

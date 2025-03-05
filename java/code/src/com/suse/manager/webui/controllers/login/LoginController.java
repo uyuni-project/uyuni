@@ -134,7 +134,7 @@ public class LoginController {
         model.put("customFooter", Config.get().getString("java.custom_footer"));
         model.put("legalNote", Config.get().getString("java.legal_note"));
         model.put("loginLength", Config.get().getString("max_user_len"));
-        model.put("passwordLength", conf.getLongConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue());
+        model.put("passwordLength", conf.getLongConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue());
         model.put("preferredLocale", ConfigDefaults.get().getDefaultLocale());
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());

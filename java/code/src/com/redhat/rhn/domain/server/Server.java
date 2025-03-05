@@ -1882,7 +1882,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         Date lastCheckin = this.getLastCheckin();
         long millisInDay = (1000 * 60 * 60 * 24);
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.system_checkin_threshold).getValue();
+        long threshold = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue();
         Date yesterday = new Timestamp(System.currentTimeMillis() -
                 (millisInDay * threshold));
         return lastCheckin.before(yesterday);

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PasswordValidationException extends IllegalArgumentException {
-    private final List<PasswordPolicyCheckFail> validationErrors;
+    private final transient List<PasswordPolicyCheckFail> validationErrors;
 
     /**
      * Exception class for password validation

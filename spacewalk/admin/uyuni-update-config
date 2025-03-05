@@ -52,24 +52,24 @@ def move_config_to_db():
     with cfg_component("server") as CFG:
         if CFG.has_key("server.max_passwd_len"):
             move_configuration(
-                "psw_check_length_max",
+                "PSW_CHECK_LENGTH_MAX",
                 CFG.max_passwd_len,
                 oldkey="server.max_passwd_len",
             )
         elif CFG.has_key("max_passwd_len"):
             move_configuration(
-                "psw_check_length_max", CFG.max_passwd_len, oldkey="max_passwd_len"
+                "PSW_CHECK_LENGTH_MAX", CFG.max_passwd_len, oldkey="max_passwd_len"
             )
 
         if CFG.has_key("server.min_passwd_len"):
             move_configuration(
-                "psw_check_length_min",
+                "PSW_CHECK_LENGTH_MIN",
                 CFG.max_passwd_len,
                 oldkey="server.min_passwd_len",
             )
         elif CFG.has_key("min_passwd_len"):
             move_configuration(
-                "psw_check_length_min", CFG.max_passwd_len, oldkey="min_passwd_len"
+                "PSW_CHECK_LENGTH_MIN", CFG.min_passwd_len, oldkey="min_passwd_len"
             )
 
 

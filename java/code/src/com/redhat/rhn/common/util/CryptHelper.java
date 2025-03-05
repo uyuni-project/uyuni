@@ -125,7 +125,7 @@ public class CryptHelper {
         // stupid HACK!  Actually this is beyond HACK.
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return RandomStringUtils.random(
-                factory.getIntegerConfiguration(RhnConfiguration.KEYS.psw_check_length_max).getValue(),
+                factory.getIntegerConfiguration(RhnConfiguration.KEYS.PSW_CHECK_LENGTH_MAX).getValue(),
                 0, 0,
                 true, true, null, new SecureRandom());
     }
