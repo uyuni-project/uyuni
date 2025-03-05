@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 import { debounce } from "lodash";
 
@@ -20,8 +20,9 @@ export function useDebounce<T extends (...args: any[]) => any>(
   callback: T,
   timeoutMs: number
 ): (...args: Parameters<T>) => void {
-  return useCallback(
-    debounce((...args: Parameters<T>) => callback(...args), timeoutMs),
-    [callback, timeoutMs]
-  );
+  const debouncedFn = useRef(
+    debounce((...args: Parameters<T>) => {callback(...args), timeoutMs, { leading: false, trailing: true })
+  ).current;
+
+  return debouncedFn;
 }
