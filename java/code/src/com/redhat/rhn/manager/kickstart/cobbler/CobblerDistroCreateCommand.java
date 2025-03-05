@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import java.util.List;
 
@@ -87,7 +86,7 @@ public class CobblerDistroCreateCommand extends CobblerDistroCommand {
                 createProfile(profile);
             }
         }
-        return new CobblerSyncCommand(user).store();
+        return null;
     }
 
     private void createProfile(KickstartData profile) {
