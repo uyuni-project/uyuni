@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFormatter;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionFormatter;
 import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.Server;
@@ -107,6 +108,12 @@ public class SystemHistoryEventAction extends RhnAction {
         boolean typeDistUpgradeDryRun = action.getActionType().equals(ActionFactory.TYPE_DIST_UPGRADE) &&
                         ((DistUpgradeAction) action).getDetails().isDryRun();
         request.setAttribute("typeDistUpgradeDryRun", typeDistUpgradeDryRun);
+        boolean typePlaybook = action.getActionType().equals(ActionFactory.TYPE_PLAYBOOK);
+        request.setAttribute("typePlaybook", typePlaybook);
+        if (typePlaybook) {
+            request.setAttribute("inventory", new PlaybookActionFormatter(action).getTargetedSystems(
+                    server, requestContext.getCurrentUser()));
+        }
         if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
                 !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
             request.setAttribute("referrerLink", "Pending.do");
