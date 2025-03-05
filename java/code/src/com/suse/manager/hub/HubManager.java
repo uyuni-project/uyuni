@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFQDN;
@@ -304,7 +305,13 @@ public class HubManager {
     }
 
     private void deleteHub(IssHub hub) {
-        CredentialsFactory.removeCredentials(hub.getMirrorCredentials());
+        SCCCredentials mirrorCredentials = hub.getMirrorCredentials();
+        if (null != mirrorCredentials) {
+            // Clear Repository Authentications
+            SCCCachingFactory.lookupRepositoryAuthByCredential(mirrorCredentials)
+                    .forEach(SCCCachingFactory::deleteRepositoryAuth);
+            CredentialsFactory.removeCredentials(mirrorCredentials);
+        }
         hubFactory.remove(hub);
         hubFactory.removeAccessTokensFor(hub.getFqdn());
     }
