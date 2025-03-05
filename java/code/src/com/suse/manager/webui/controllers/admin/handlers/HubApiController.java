@@ -39,7 +39,6 @@ import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
 import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
-import com.suse.manager.webui.controllers.admin.beans.IssV3PeripheralsResponse;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
 import com.suse.manager.webui.controllers.admin.beans.UpdateRootCARequest;
 import com.suse.manager.webui.controllers.admin.beans.ValidityRequest;
@@ -194,33 +193,6 @@ public class HubApiController {
     private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
         return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
     }
-
-    private String listPaginatedPeripherals(Request request, Response response, User satAdmin) {
-        PageControlHelper pageHelper = new PageControlHelper(request);
-        PageControl pc = pageHelper.getPageControl();
-        long totalSize = hubManager.countRegisteredPeripherals(satAdmin);
-        List<IssV3PeripheralsResponse> peripherals = hubManager.listRegisteredPeripherals(satAdmin, pc).stream()
-                .map(IssV3PeripheralsResponse::fromIssEntity).toList();
-        TypeToken<PagedDataResultJson<IssV3PeripheralsResponse, Long>> type = new TypeToken<>() { };
-        return json(GSON, response, new PagedDataResultJson<>(peripherals, totalSize, Collections.emptySet()), type);
-    }
-
-    private String deletePeripheral(Request request, Response response, User satAdmin) {
-        long peripheralId = Long.parseLong(request.params("id"));
-        try {
-            hubManager.deregister(satAdmin, peripheralId);
-        }
-        catch (CertificateException eIn) {
-            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
-            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
-        }
-        catch (IOException eIn) {
-            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
-            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
-        }
-        return success(response);
-    }
-
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
         HubRegisterRequest issRequest;
