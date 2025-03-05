@@ -27,6 +27,7 @@ import com.suse.proxy.get.formdata.ProxyConfigGetFormDataAcquisitor;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContext;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataContextHandler;
 import com.suse.proxy.get.formdata.ProxyConfigGetFormDataProxyInitializer;
+import com.suse.proxy.get.formdata.ProxyConfigGetFormDefaults;
 import com.suse.proxy.model.ProxyConfig;
 import com.suse.utils.Json;
 
@@ -47,6 +48,7 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
     public ProxyConfigGetFacadeImpl() {
         this.getFormDataContextHandlerChain.addAll(asList(
                 new ProxyConfigGetFormDataProxyInitializer(),
+                new ProxyConfigGetFormDefaults(),
                 new ProxyConfigGetFormDataAcquisitor()
         ));
     }
@@ -81,8 +83,14 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
         ProxyConfigGetFormDataContext context =
                 new ProxyConfigGetFormDataContext(user, server, this.getProxyConfig(server));
 
-        for (ProxyConfigGetFormDataContextHandler handler : getFormDataContextHandlerChain) {
-            handler.handle(context);
+        // only sort of validation required ad this point
+        if (server != null) {
+            for (ProxyConfigGetFormDataContextHandler handler : getFormDataContextHandlerChain) {
+                handler.handle(context);
+            }
+        }
+        else {
+            context.setInitFailMessage("Server not found");
         }
 
         Map<String, Object> data = new HashMap<>();
@@ -93,7 +101,6 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
 
         return data;
     }
-
 
 
 }

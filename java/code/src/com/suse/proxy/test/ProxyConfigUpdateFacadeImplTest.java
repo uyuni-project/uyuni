@@ -25,10 +25,8 @@ import com.suse.proxy.update.ProxyConfigUpdateContext;
 import com.suse.proxy.update.ProxyConfigUpdateContextHandler;
 import com.suse.proxy.update.ProxyConfigUpdateFacadeImpl;
 
-import org.jmock.junit5.JUnit5Mockery;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -37,7 +35,6 @@ import java.util.List;
 /**
  * Tests for the ProxyConfigUpdate class
  */
-@ExtendWith(JUnit5Mockery.class)
 public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
 
     /**
@@ -134,6 +131,5 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
         Field field = ProxyConfigUpdateFacadeImpl.class.getDeclaredField("contextHandlerChain");
         field.setAccessible(true);
         field.set(proxyConfigUpdate, handlers);
-        field.get(proxyConfigUpdate);
     }
 }

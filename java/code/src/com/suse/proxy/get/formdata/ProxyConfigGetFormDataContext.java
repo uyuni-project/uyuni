@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.user.User;
 
 import com.suse.proxy.model.ProxyConfig;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,8 +35,8 @@ public class ProxyConfigGetFormDataContext {
     private final Server server;
     private final ProxyConfig proxyConfig;
 
-    private Map<String, Object> proxyConfigAsMap;
-    private List<String> electableParentsFqdn;
+    private final Map<String, Object> proxyConfigAsMap = new HashMap<>();
+    private final List<String> electableParentsFqdn = new ArrayList<>();
     private String initFailMessage;
 
     /**
@@ -62,21 +64,12 @@ public class ProxyConfigGetFormDataContext {
         return proxyConfigAsMap;
     }
 
-    public void setProxyConfigAsMap(Map<String, Object> proxyConfigAsMapIn) {
-        proxyConfigAsMap = proxyConfigAsMapIn;
-    }
-
     public List<String> getElectableParentsFqdn() {
         return electableParentsFqdn;
     }
 
-    public void setElectableParentsFqdn(List<String> electableParentsFqdnIn) {
-        electableParentsFqdn = electableParentsFqdnIn;
-    }
-
     public boolean isUyuni() {
         return ConfigDefaults.get().isUyuni();
-
     }
 
     public void setInitFailMessage(String initFailMessageIn) {
