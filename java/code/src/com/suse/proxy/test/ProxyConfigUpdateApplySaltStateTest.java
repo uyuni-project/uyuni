@@ -45,7 +45,7 @@ import java.util.Optional;
 /**
  * Tests for ProxyConfigUpdateApplySaltState
  */
-@SuppressWarnings("java:S3599")
+@SuppressWarnings({"java:S3599", "java:S1171"})
 public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
     private static final String[] DEFAULT_EXPECTED_ERROR_MESSAGES = {"Failed to apply proxy configuration salt state."};
     private final ProxyConfigUpdateApplySaltState handler = new ProxyConfigUpdateApplySaltState();
@@ -66,6 +66,7 @@ public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
      * @throws NoSuchFieldException   if the field is not found
      * @throws IllegalAccessException if the field is not accessible
      */
+    @SuppressWarnings("java:S3011")
     private static State.ApplyResult getStateApplyResult(boolean result)
             throws NoSuchFieldException, IllegalAccessException {
         State.ApplyResult applyResult = new State.ApplyResult();
@@ -129,7 +130,6 @@ public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
      */
     @Test
     public void handleFailureWhenNoStateReturns() {
-
         ProxyConfigUpdateContext proxyConfigUpdateContext = getProxyConfigUpdateContext();
 
         context.checking(new Expectations() {{
