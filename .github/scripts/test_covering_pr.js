@@ -25,7 +25,7 @@ const main = async () => {
         console.log(Array.from(tests).join(','));
     } catch (error) {
         console.error('Error:', error);
-        process.exit(1);
+        process.exitCode = 1;
     } finally {
         await redis.quit();
     }
@@ -33,5 +33,5 @@ const main = async () => {
 
 main().catch(error => {
     console.error('Unexpected error:', error);
-    process.exit(1);
+    process.exitCode = 1;
 });
