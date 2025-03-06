@@ -481,7 +481,10 @@ class SupportConfigMetricsCollector:
 
     def merge_metrics(self):
         ret = {
+            "java_config": [],
             "config": [],
+            "apache": [],
+            "postgresql": [],
             "hw": [],
             "memory": [],
             "disk": self.disk_layout,
@@ -491,10 +494,10 @@ class SupportConfigMetricsCollector:
             "misc": self.roles,
         }
         self._append_static_properties(ret)
-        self._append_value_to_dict(ret, "config", "max_clients")
-        self._append_value_to_dict(ret, "config", "server_limit")
+        self._append_value_to_dict(ret, "apache", "max_clients")
+        self._append_value_to_dict(ret, "apache", "server_limit")
         self._append_value_to_dict(ret, "misc", "num_of_channels")
-        self._append_value_to_dict(ret, "config", "shared_buffers_to_mem_ratio")
+        self._append_value_to_dict(ret, "postgresql", "shared_buffers_to_mem_ratio")
         self._append_value_to_dict(ret, "memory", "fs_mount_insufficient")
         self._append_value_to_dict(ret, "memory", "fs_mount_out_of_space")
 
