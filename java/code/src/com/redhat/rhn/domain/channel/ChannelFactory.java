@@ -1713,8 +1713,11 @@ public class ChannelFactory extends HibernateFactory {
         channel.setEndOfLife(channelInfo.getEndOfLifeDate());
         channel.setChecksumType(checksumType);
 
-        channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
-                channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        if (StringUtils.isNotEmpty(channelInfo.getChannelProductProduct()) &&
+                StringUtils.isNotEmpty(channelInfo.getChannelProductVersion())) {
+            channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                    channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        }
 
         channel.setAccess(channelInfo.getChannelAccess());
         channel.setMaintainerName(channelInfo.getMaintainerName());
