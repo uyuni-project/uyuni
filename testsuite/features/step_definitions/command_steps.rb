@@ -279,12 +279,12 @@ When(/^vendor change should be enabled for [^"]* on "([^"]*)"$/) do |host|
 end
 
 When(/^I (start|stop|restart|reload|enable|disable) the "([^"]*)" container$/) do |action, service|
-  node = get_target("server")
+  node = get_target('server')
   node.run_local("systemctl #{action} #{service}.service", check_errors: true, verbose: true)
 end
 
 When(/^I wait until "([^"]*)" container is active$/) do |service|
-  node = get_target("server")
+  node = get_target('server')
   cmd = "systemctl is-active #{service}"
   node.run_local_until_ok(cmd)
 end
