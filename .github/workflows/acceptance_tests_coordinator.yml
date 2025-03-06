@@ -87,15 +87,15 @@ jobs:
   skip_recommended_tests:
     name: Skip Recommended Tests
     needs: trigger_recommended
-    if: ${{ needs.trigger_recommended.outputs.run_secondary == 'true' }}
+    if: ${{ needs.trigger_recommended.outputs.run_acceptance_tests == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "Skipping recommended tests, running full suite."
 
-  skip_secondary_parallel:
-    name: Skip Secondary and Parallel Tests
+  skip_acceptance_tests:
+    name: Skip Acceptance and Additional Tests
     needs: trigger_recommended
-    if: ${{ needs.trigger_recommended.outputs.run_secondary == 'false' }}
+    if: ${{ needs.trigger_recommended.outputs.run_acceptance_tests == 'false' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Skipping secondary and parallel tests, running recommended tests."
+      - run: echo "Skipping acceptance and additional tests, running recommended tests."
