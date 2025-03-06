@@ -1,9 +1,16 @@
 name: Recommended Tests
-
 on:
-  pull_request_target:
-    paths:
-      - '**.java'
+  workflow_call:
+    outputs:
+      recommended_tests:
+        description: "The recommended tests to run"
+        value: ${{ jobs.generate_recommended_tests.outputs.recommended_tests }}
+      run_acceptance_tests:
+        description: "Whether to run the acceptance and additional tests"
+        value: ${{ jobs.generate_recommended_tests.outputs.run_acceptance_tests }}
+      recommended_count:
+        description: "Number of recommended tests"
+        value: ${{ jobs.generate_recommended_tests.outputs.recommended_count }}
 
 jobs:
   generate_recommended_tests:
@@ -47,6 +54,7 @@ jobs:
     outputs:
       recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
       run_acceptance_tests: ${{ steps.determine_run_acceptance_tests.outputs.run_acceptance_tests }}
+      recommended_count: ${{ steps.determine_run_secondary.outputs.recommended_count }}
 
   run_recommended_tests:
     name: Recommended tests
@@ -58,19 +66,3 @@ jobs:
       tests: "19_run_recommended_tests.sh"
       server_id: "secondary_f"
       recommended_tests: ${{ needs.generate_recommended_tests.outputs.recommended_tests }}
-
-  dummy_acceptance_tests:
-    name: Dummy Acceptance tests status
-    needs: generate_recommended_tests
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Dummy Acceptance tests passed (skipped)"
-
-  dummy_additional_tests:
-    name: Dummy Additional tests status
-    needs: generate_recommended_tests
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Dummy Additional tests passed (skipped)"
