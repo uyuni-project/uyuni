@@ -53,7 +53,7 @@ jobs:
     needs: generate_recommended_tests
     # Only run if the full acceptance tests are skipped
     if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
-    uses: ./.github/workflows/acceptance_tests_base.yml@${{ github.head_ref }}
+    uses: ./.github/workflows/acceptance_tests_base.yml@refs/heads/${{ github.ref_name }}
     with:
       tests: "19_run_recommended_tests.sh"
       server_id: "secondary_f"

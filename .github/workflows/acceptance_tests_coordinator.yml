@@ -58,7 +58,7 @@ jobs:
   run_recommended_tests:
     needs: determine_tests
     if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'false' }}
-    uses: ./.github/workflows/acceptance_tests_base.yml@${{ github.head_ref }}
+    uses: ./.github/workflows/acceptance_tests_base.yml@refs/heads/${{ github.ref_name }}
     with:
       tests: "19_run_recommended_tests.sh"
       server_id: "secondary_f"
@@ -67,14 +67,14 @@ jobs:
   run_acceptance_tests:
     needs: determine_tests
     if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
-    uses: ./.github/workflows/acceptance_tests_sequential.yml@${{ github.head_ref }}
+    uses: ./.github/workflows/acceptance_tests_sequential.yml@refs/heads/${{ github.ref_name }}
     with:
       run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
 
   run_additional_tests:
     needs: determine_tests
     if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
-    uses: ./.github/workflows/acceptance_tests_parallel.yml@${{ github.head_ref }}
+    uses: ./.github/workflows/acceptance_tests_parallel.yml@refs/heads/${{ github.ref_name }}
     with:
       run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
 

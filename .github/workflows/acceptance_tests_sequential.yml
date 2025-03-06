@@ -11,7 +11,7 @@ jobs:
   acceptance-tests:
     name: "0"
     if: ${{ github.event_name == 'repository_dispatch' || inputs.run_acceptance_tests == 'true' }}
-    uses: ./.github/workflows/acceptance_tests_base.yml@${{ github.head_ref }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
     with:
       tests: "18_run_secondary_tests.sh"
       server_id: "secondary"
