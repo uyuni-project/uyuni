@@ -1,0 +1,50 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# TODO: websocket
+
+# CLM Projects
+,/manager/contentmanagement/projects,GET,W,t,clm.project.list,R
+,/manager/contentmanagement/project/:label,GET,W,t,clm.project.details,R
+,/manager/api/contentmanagement/projects/:projectId,GET,W,t,clm.project.details,R
+
+# Create & delete projects
+,/manager/contentmanagement/project,GET,W,t,clm.project.details,W
+,/manager/api/contentmanagement/projects,POST,W,t,clm.project.details,W
+,/manager/api/contentmanagement/projects/:projectId,DELETE,W,t,clm.project.details,W
+
+# Edit project props
+,/manager/api/contentmanagement/projects/:projectId/properties,PUT,W,t,clm.project.details,W
+
+# Edit project sources
+,/manager/api/channels,GET,W,t,clm.project.sources,W
+,/manager/api/admin/mandatoryChannels,POST,W,t,clm.project.sources,W
+,/manager/api/contentmanagement/projects/:projectId/softwaresources,PUT,W,t,clm.project.sources,W
+
+# Edit project filters
+,/manager/api/contentmanagement/filters,GET,W,t,clm.project.filters,W
+,/manager/api/contentmanagement/projects/:projectId/filters,PUT,W,t,clm.project.filters,W
+
+# Edit project environments
+,/manager/api/contentmanagement/projects/:projectId/environments,POST,W,t,clm.project.environments,W
+,/manager/api/contentmanagement/projects/:projectId/environments,PUT,W,t,clm.project.environments,W
+,/manager/api/contentmanagement/projects/:projectId/environments,DELETE,W,t,clm.project.environments,W
+
+# Build & promote projects
+,/manager/api/contentmanagement/projects/:projectId/build,POST,W,t,clm.project.build,W
+,/manager/api/contentmanagement/projects/:projectId/promote,POST,W,t,clm.project.build,W
+
+# CLM Filters
+,/manager/contentmanagement/filters,GET,W,t,clm.filter.list,R
+,/manager/api/contentmanagement/filters,POST,W,t,clm.filter.list,W
+,/manager/api/contentmanagement/filters/:filterId,PUT,W,t,clm.filter.list,W
+,/manager/api/contentmanagement/filters/:filterId,DELETE,W,t,clm.filter.list,W
+
+# Filter templates
+,/manager/api/contentmanagement/appstreams/:channelId,GET,W,t,clm.filter.list,W
+,/manager/api/channels/modular,GET,W,t,clm.filter.list,W
+
+# Live patching filter templates
+,/manager/api/contentmanagement/livepatching/products,GET,W,t,clm.filter.list,W
+,/manager/api/contentmanagement/livepatching/systems,GET,W,t,clm.filter.list,W
+,/manager/api/contentmanagement/livepatching/kernels/product/:productId,GET,W,t,clm.filter.list,W
+,/manager/api/contentmanagement/livepatching/kernels/system/:systemId,GET,W,t,clm.filter.list,W
