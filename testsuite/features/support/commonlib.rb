@@ -346,7 +346,7 @@ end
 # Extracts logs from a given node.
 #
 # @param [Node] node - The node from which to extract the logs.
-# @param [Host] - The host from which to extract the logs.
+# @param [Host] host - The host from which to extract the logs.
 # @raise [ScriptError] if the download of the log archive fails.
 def extract_logs_from_node(node, host)
   begin
