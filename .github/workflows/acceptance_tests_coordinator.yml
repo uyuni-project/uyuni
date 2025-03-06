@@ -45,7 +45,7 @@ jobs:
       - name: Determine if the acceptance tests should run
         id: determine_run_acceptance_tests
         run: |
-          recommended_count=$(echo "${{ steps.tests_covering_pr.outputs.recommended_tests }}" | jq length)
+          recommended_count=$(echo "${{ steps.tests_covering_pr.outputs.recommended_tests }}" | tr ',' '\n' | jq -s length)
           if [[ "$recommended_count" -gt 30 || "$recommended_count" -eq 0 ]]; then
             echo "run_acceptance_tests=true" >> $GITHUB_OUTPUT
           else
