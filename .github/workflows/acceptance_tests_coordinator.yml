@@ -54,34 +54,48 @@ jobs:
     outputs:
       recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
       run_acceptance_tests: ${{ steps.determine_run_acceptance_tests.outputs.run_acceptance_tests }}
+      recommended_count: ${{ steps.determine_run_secondary.outputs.recommended_count }}
+
+  trigger_recommended:
+    needs: determine_tests
+    uses: ./.github/workflows/recommended_tests.yml
+    secrets: inherit  # VERY IMPORTANT: Pass secrets to the called workflow.
 
   run_recommended_tests:
-    needs: determine_tests
-    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'false' }}
+    needs: trigger_recommended
+    if: ${{ needs.trigger_recommended.outputs.run_acceptance_tests == 'false' }}
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
       tests: "19_run_recommended_tests.sh"
       server_id: "secondary_f"
-      recommended_tests: ${{ needs.determine_tests.outputs.recommended_tests }}
+      recommended_tests: ${{ needs.trigger_recommended.outputs.recommended_tests }}
 
   run_acceptance_tests:
-    needs: determine_tests
-    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
+    needs: trigger_recommended
+    if: ${{ needs.trigger_recommended.outputs.run_acceptance_tests == 'true' }}
     uses: ./.github/workflows/acceptance_tests_sequential.yml
     with:
-      run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
+      run_acceptance_tests: ${{ needs.trigger_recommended.outputs.run_acceptance_tests }}
 
   run_additional_tests:
-    needs: determine_tests
-    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
+    needs: trigger_recommended
+    if: ${{ needs.trigger_recommended.outputs.run_acceptance_tests == 'true' }}
     uses: ./.github/workflows/acceptance_tests_parallel.yml
     with:
-      run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
+      run_acceptance_tests: ${{ needs.trigger_recommended.outputs.run_acceptance_tests }}
 
-  dummy_recommended_tests:
-    name: Dummy Recommended Status
-    needs: determine_tests
-    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
+  skip_recommended_tests:
+    name: Skip Recommended Tests
+    needs: trigger_recommended
+    if: ${{ needs.trigger_recommended.outputs.run_secondary == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Dummy recommended tests passed (skipped)"
+      - run: echo "Skipping recommended tests, running full suite."
+
+  skip_secondary_parallel:
+    name: Skip Secondary and Parallel Tests
+    needs: trigger_recommended
+    if: ${{ needs.trigger_recommended.outputs.run_secondary == 'false' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Skipping secondary and parallel tests, running recommended tests."

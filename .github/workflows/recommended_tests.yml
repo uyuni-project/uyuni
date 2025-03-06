@@ -20,8 +20,10 @@ jobs:
       - name: Checkout Pull Request code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          # Use the PR *target* branch and repo for checkout. This allows
+          # access to secrets.
+          ref: ${{ github.event.pull_request.base.ref }}
+          repository: ${{ github.event.pull_request.base.repo.full_name }}
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
@@ -31,6 +33,8 @@ jobs:
         uses: Ana06/get-changed-files@v2.3.0
         with:
           filter: '*.java'
+          #This is important.  We need to get the changed files *relative to the target branch*.
+          base: ${{ github.event.pull_request.base.sha }}
       - id: tests_covering_pr
         name: Tests covering PR
         env:
@@ -60,7 +64,7 @@ jobs:
     name: Recommended tests
     needs: generate_recommended_tests
     # Only run if the full acceptance tests are skipped
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
+    if: ${{ needs.generate_recommended_tests.outputs.run_secondary == 'false' && needs.generate_recommended_tests.outputs.recommended_count != '0' }}
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
       tests: "19_run_recommended_tests.sh"
