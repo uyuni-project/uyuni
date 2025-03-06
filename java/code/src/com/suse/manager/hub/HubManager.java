@@ -94,7 +94,7 @@ public class HubManager {
 
     private final SystemEntitlementManager systemEntitlementManager;
 
-    private TaskomaticApi taskomaticApi;
+    private final TaskomaticApi taskomaticApi;
 
     private static final Logger LOG = LogManager.getLogger(HubManager.class);
 
@@ -937,16 +937,6 @@ public class HubManager {
     }
 
     /**
-     * Get the Hub for "this" peripheral
-     * @param user the SatAdmin
-     * @return the IssHub entity
-     */
-    public Optional<IssHub> getHub(User user) {
-        ensureSatAdmin(user);
-        return hubFactory.lookupIssHub();
-    }
-
-    /**
      * Get the Peripheral Organizations
      * @param user the SatAdmin
      * @param peripheralId the Peripheral ID
@@ -1096,7 +1086,7 @@ public class HubManager {
         Predicate<String> hubFilter = filterFunction.apply(peripheralLabels);
         return hubChannels.stream()
                 .filter(hub -> hubFilter.test(hubLabelExtractor.apply(hub)))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     /**
