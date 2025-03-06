@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -42,6 +43,7 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskoQuartzHelper;
@@ -125,6 +127,8 @@ public class RecurringActionManager extends BaseManager {
                 return new RecurringHighstate(false);
             case CUSTOMSTATE:
                 return new RecurringState(false);
+            case PLAYBOOK:
+                return new RecurringPlaybook(false);
             default:
                 throw new UnsupportedOperationException("type not supported");
         }
@@ -141,6 +145,10 @@ public class RecurringActionManager extends BaseManager {
                                                                      long minionId, User user) {
         MinionServer minion = MinionServerFactory.lookupById(minionId)
                 .orElseThrow(() -> new EntityNotExistsException(MinionServer.class, minionId));
+        if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK) &&
+                !minion.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE)) {
+            throw new UnsupportedOperationException("Playbook actions can only be created on Ansible control nodes");
+        }
         return new MinionRecurringAction(createRecurringActionType(actionType), true, minion, user);
     }
 
@@ -153,6 +161,9 @@ public class RecurringActionManager extends BaseManager {
      */
     private static GroupRecurringAction createGroupRecurringAction(RecurringActionType.ActionType actionType,
                                                                    long groupId, User user) {
+        if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK)) {
+            throw new UnsupportedOperationException("Playbook action cannot be of entity type: group");
+        }
         ServerGroup group = ServerGroupFactory.lookupByIdAndOrg(groupId, user.getOrg());
         if (group == null) {
             throw new EntityNotExistsException(ServerGroup.class, groupId);
@@ -169,6 +180,9 @@ public class RecurringActionManager extends BaseManager {
      */
     private static OrgRecurringAction createOrgRecurringAction(RecurringActionType.ActionType actionType,
                                                                long orgId, User user) {
+        if (actionType.equals(RecurringActionType.ActionType.PLAYBOOK)) {
+            throw new UnsupportedOperationException("Playbook action cannot be of entity type: org");
+        }
         Org org = OrgFactory.lookupById(orgId);
         if (org == null) {
             throw new EntityNotExistsException(Org.class, orgId);
