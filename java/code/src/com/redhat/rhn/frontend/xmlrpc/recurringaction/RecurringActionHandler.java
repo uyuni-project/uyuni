@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -141,6 +142,9 @@ public class RecurringActionHandler extends BaseHandler {
         catch (EntityNotExistsException e) {
             throw new EntityNotExistsFaultException(e.getMessage());
         }
+        catch (UnsupportedOperationException e) {
+            throw new InvalidArgsException(e.getMessage());
+        }
         action.setName((String) actionProps.get("name"));
         action.setCronExpr((String) actionProps.get("cron_expr"));
         if (actionProps.containsKey("test")) {
@@ -152,6 +156,9 @@ public class RecurringActionHandler extends BaseHandler {
             }
             else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType)) {
                 ((RecurringState) recurringActionType).setTestMode(testMode);
+            }
+            else if (RecurringActionType.ActionType.PLAYBOOK.equals(actionType)) {
+                ((RecurringPlaybook) recurringActionType).setTestMode(testMode);
             }
         }
         return action;
@@ -181,6 +188,9 @@ public class RecurringActionHandler extends BaseHandler {
                 }
                 else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType.getActionType())) {
                     ((RecurringState) action.getRecurringActionType()).setTestMode(testMode);
+                }
+                else if (RecurringActionType.ActionType.PLAYBOOK.equals(actionType.getActionType())) {
+                    ((RecurringPlaybook) action.getRecurringActionType()).setTestMode(testMode);
                 }
             }
         }
