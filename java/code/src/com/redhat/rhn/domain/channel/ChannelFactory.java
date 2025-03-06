@@ -1703,7 +1703,12 @@ public class ChannelFactory extends HibernateFactory {
         channel.setSummary(channelInfo.getSummary());
         channel.setDescription(channelInfo.getDescription());
 
-        channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        if (StringUtils.isNotEmpty(channelInfo.getProductNameLabel())) {
+            channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        }
+        else {
+            channel.setProductName(null);
+        }
 
         channel.setGPGCheck(channelInfo.isGpgCheck());
         channel.setGPGKeyUrl(channelInfo.getGpgKeyUrl());

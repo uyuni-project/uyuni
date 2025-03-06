@@ -15,6 +15,7 @@ import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.RegisterJson;
 import com.suse.manager.model.hub.SCCCredentialsJson;
@@ -23,6 +24,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpResponse;
@@ -117,6 +119,11 @@ public class DefaultHubInternalClient implements HubInternalClient {
         return invokeGet("hub", "listAllPeripheralChannels", List.class);
     }
 
+    @Override
+    public void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException {
+        invokePost("hub", "syncChannels", channelInfo);
+    }
+
     private <R> R invokeGet(String namespace, String apiMethod, Class<R> responseClass)
             throws IOException {
         return invoke(HttpGet.METHOD_NAME, namespace, apiMethod, null, responseClass);
@@ -149,8 +156,14 @@ public class DefaultHubInternalClient implements HubInternalClient {
         // Ensure we get a valid response
         if (statusCode != HttpStatus.SC_OK) {
             String responseBody = new String(response.getEntity().getContent().readAllBytes(), StandardCharsets.UTF_8);
-            ResultJson<?> responseJson = GSON.fromJson(responseBody, ResultJson.class);
-            String errorMessage = String.join(", ", responseJson.getMessages());
+            String errorMessage = "";
+            try {
+                ResultJson<?> responseJson = GSON.fromJson(responseBody, ResultJson.class);
+                errorMessage = String.join(", ", responseJson.getMessages());
+            }
+            catch (JsonSyntaxException ex) {
+                //
+            }
             throw new InvalidResponseException("Unexpected response code %d %s".formatted(statusCode, errorMessage));
         }
 

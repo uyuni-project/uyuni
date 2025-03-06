@@ -14,6 +14,7 @@ package com.suse.manager.hub;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
 
 import java.io.IOException;
@@ -90,4 +91,12 @@ public interface HubInternalClient {
      * @return return list of {@link Channel}
      */
     List<Channel> listAllPeripheralChannels() throws IOException;
+
+    /**
+     * Synchronizes all channels on the remote peripheral server
+     *
+     * @param channelInfo a list of {@link ChannelInfoDetailsJson} objects
+     * @throws IOException when the communication fails
+     */
+    void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException;
 }

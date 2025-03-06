@@ -316,8 +316,20 @@ public class HubController {
             return success(response);
         }
 
-        hubManager.syncChannels(token, channelInfoList);
-        return success(response);
+        try {
+            hubManager.syncChannels(token, channelInfoList);
+            return success(response);
+        }
+        catch (IllegalArgumentException ex) {
+            HibernateTemporaryPatch.rollback();
+            LOGGER.error("Illegal arguments in syncChannels", ex);
+            return badRequest(response, ex.getMessage());
+        }
+        catch (Exception e) {
+            HibernateTemporaryPatch.rollback();
+            LOGGER.error("Internal server error in syncChannels", e);
+            return internalServerError(response, e.getMessage());
+        }
     }
 
     private String synchronizeChannelFamilies(Request request, Response response, IssAccessToken token) {
