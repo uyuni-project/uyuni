@@ -136,7 +136,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         <span>
           <h3>{t("Available Channels")}</h3>
         </span>
-        <HierarchicalChannelTable channels={availableChannels} onSelectionChange={this.onChannelToSyncSelect} />
+        <HierarchicalChannelTable data={availableChannels} />
       </>
     );
 
