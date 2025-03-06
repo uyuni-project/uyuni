@@ -48,7 +48,7 @@ class CoCoAttestationTable extends React.Component<Props> {
                 header={t("Attestation")}
                 cell={(row) => (
                   <Button
-                    className="btn btn-link"
+                    className="btn-tertiary"
                     handler={() => this.props.onReportDetails(row)}
                     text={t("Attestation #{identifier} run on {date} at {time}", {
                       identifier: row.id,

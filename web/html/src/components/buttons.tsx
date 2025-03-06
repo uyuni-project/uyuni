@@ -10,7 +10,6 @@ type BaseProps = {
   text?: React.ReactNode;
   /** Text to display on the button. */
   children?: React.ReactNode;
-
   /**
    * FontAwesome icon class of the button. Can also include additional FA classes
    * (sizing, animation etc.).
@@ -159,12 +158,14 @@ export type ButtonProps = BaseProps & {
 export class Button extends _ButtonBase<ButtonProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     return (
       <button
         id={this.props.id}
         type="button"
         title={this.props.title}
-        className={"btn " + (this.props.className ?? "")}
+        className={cssClasses}
         onClick={this.props.handler}
         disabled={this.props.disabled}
       >
@@ -195,6 +196,8 @@ type LinkProps = BaseProps & {
 export class LinkButton extends _ButtonBase<LinkProps> {
   render() {
     const text = this.props.text ?? this.props.children;
+    const cssClasses = "btn " + (this.props.className ?? "btn-default");
+
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
@@ -208,7 +211,7 @@ export class LinkButton extends _ButtonBase<LinkProps> {
       <a
         id={this.props.id}
         title={this.props.title}
-        className={"btn " + this.props.className}
+        className={cssClasses}
         href={this.props.href}
         onClick={this.props.handler}
         download={this.props.download}

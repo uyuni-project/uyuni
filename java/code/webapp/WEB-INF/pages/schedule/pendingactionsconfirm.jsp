@@ -24,7 +24,7 @@
         <div class="action-button-wrapper">
              <input type="submit"
                name="dispatch"
-               class="btn btn-danger"
+               class="btn btn-primary"
                value='<bean:message key="actions.jsp.confirmcancelactions"/>'/>
          </div>
      </div>
