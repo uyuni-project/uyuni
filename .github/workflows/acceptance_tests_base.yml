@@ -1,8 +1,8 @@
-name: acceptance-tests-common
+name: acceptance-tests-base
 on:
   workflow_call:
     inputs:
-      secondary_tests:
+      tests:
         required: true
         type: string
       server_id:
@@ -19,7 +19,6 @@ env:
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
   AUTH_REGISTRY: "auth_registry"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
-  skip: false
 jobs:
   filter-paths:
     runs-on: ubuntu-latest
@@ -76,96 +75,72 @@ jobs:
       - name: Create Podman network
         run: ./testsuite/podman_runner/02_setup_network.sh
       - name: Start controller, registry and build host
-        run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh 
+        run: ./testsuite/podman_runner/03_run_controller_and_registry_and_buildhost.sh
       - name: Create SSH configuration in controller
         run: ./testsuite/podman_runner/04_setup_ssh_controller.sh
       - name: Parse recommended tests coming from the input as XML
         if: ${{ inputs.recommended_tests != '' }}
         run: python .github/scripts/get_tests.py '${{ inputs.recommended_tests }}' > testsuite/run_sets/filter.yml
       - name: Generate recommended tests as YAML
-        if: ${{ inputs.recommended_tests != '' }}
-        run: |
-          ./testsuite/podman_runner/19_generate_recommended_tests_yml.sh
-          ROW_COUNT=$(wc -l < ./testsuite/run_sets/recommended_tests.yml)
-          if [ "$ROW_COUNT" -eq 0 ] || [ "$ROW_COUNT" -gt 30 ]; then
-            echo "⚠️ WARNING: $ROW_COUNT recommended tests found. Look at the results of the full test suite instead."
-            # gh pr edit ${{ github.event.pull_request.number }} --add-label "run-full-testsuite"
-            echo "skip=true" >> $GITHUB_ENV # Skip the rest of the steps
-          fi
+        if: ${{ inputs.recommended_tests != ''}}
+        run: ./testsuite/podman_runner/19_generate_recommended_tests_yml.sh
       - name: Install gems in controller
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/05_install_gems_in_controller.sh
       - name: Collect and tag flaky tests in controller
         # Until we refactor the usage of the secret, it only runs on uyuni-project/uyuni repository branches
-        if: ${{ github.repository == 'uyuni-project/uyuni' && env.skip == 'false' }}
+        if: ${{ github.repository == 'uyuni-project/uyuni' }}
         run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
       - name: Setup server container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/07_server_setup.sh
       - name: Start server container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/08_start_server.sh
       - name: Build server code
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/09_build_server_code.sh
-#     - name: copy_ca
-#     run: podman exec server bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
-#     - name: update_ca_in_controller
-#       run: podman exec controller bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
+      #     - name: copy_ca
+      #     run: podman exec server bash -c "cp /etc/pki/tls/certs/spacewalk.crt /tmp"
+      #     - name: update_ca_in_controller
+      #       run: podman exec controller bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
       - name: Run SSH minion container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/10_run_sshminion.sh
       - name: Test access to server from controller
-        if: ${{ env.skip != 'true' }}
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
       - name: Test access to server from SSH minion
-        if: ${{ env.skip != 'true' }}
         run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
       - name: Configure SSHD in controller, server, build host and SSH minion
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/11_setup_sshd.sh
       - name: Run and configure Salt Minion container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/12_run_salt_sle_minion.sh
       - name: Run and configure RH-Like Minion container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/13_run_salt_rhlike_minion.sh
       - name: Run and configure Deb-Like Minion container
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/14_run_salt_deblike_minion.sh
       - name: Run Core tests
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/15_run_core_tests.sh
       - name: Accept all keys
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/16_accept_all_keys.sh
       - name: Run init clients
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/17_run_init_clients_tests.sh
       - name: Split tests into multiple YAML files
-        if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/19_split_secondary_p_tests.sh
       - name: Run acceptance tests
-        if: ${{ env.skip != 'true' }}
-        run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
+        run: ./testsuite/podman_runner/${{ inputs.tests }}
       - name: Get server logs
-        if: ${{ failure() && env.skip != 'true' }}
+        if: ${{ failure() }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
       - name: Get client logs
-        if: ${{ failure() && env.skip != 'true' }}
+        if: ${{ failure() }}
         run: ./testsuite/podman_runner/21_get_client_logs.sh ${{ inputs.server_id }}
       - name: Upload server log artifacts
-        if: ${{ failure() && env.skip != 'true' }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/testing/server-logs/${{ inputs.server_id }}
       - name: Upload client log artifacts
-        if: ${{ failure() && env.skip != 'true' }}
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs
-

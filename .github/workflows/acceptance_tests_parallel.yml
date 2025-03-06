@@ -1,0 +1,21 @@
+name: Additional Tests
+on:
+  workflow_call:
+    inputs:
+      run_acceptance_tests:
+        required: true
+        type: string
+  repository_dispatch:
+    types: [run-additional-tests]
+jobs:
+  additional-acceptance-tests:
+    name: ${{ matrix.set }}
+    if: ${{ github.event_name == 'repository_dispatch' || inputs.run_acceptance_tests == 'true' }}
+    uses: acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      tests: "19_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "secondary_parallel_${{ matrix.set }}"

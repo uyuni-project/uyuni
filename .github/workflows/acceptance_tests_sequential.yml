@@ -1,0 +1,17 @@
+name: Acceptance Tests
+on:
+  workflow_call:
+    inputs:
+      run_acceptance_tests:
+        required: true
+        type: string
+  repository_dispatch:
+    types: [run-acceptance-tests]
+jobs:
+  acceptance-tests:
+    name: "0"
+    if: ${{ github.event_name == 'repository_dispatch' || inputs.run_acceptance_tests == 'true' }}
+    uses: acceptance_tests_base.yml
+    with:
+      tests: "18_run_secondary_tests.sh"
+      server_id: "secondary"
