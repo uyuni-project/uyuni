@@ -11,7 +11,7 @@ jobs:
   additional-acceptance-tests:
     name: ${{ matrix.set }}
     if: ${{ github.event_name == 'repository_dispatch' || inputs.run_acceptance_tests == 'true' }}
-    uses: acceptance_tests_base.yml
+    uses: ./.github/workflows/acceptance_tests_base.yml@${{ github.head_ref }}
     strategy:
       fail-fast: false
       matrix:
