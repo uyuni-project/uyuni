@@ -77,7 +77,11 @@ def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
         supportconfig_path = os.path.abspath(os.path.expanduser(supportconfig_path))
 
     if not supportconfig_path or not os.path.exists(supportconfig_path):
-        console.log("[red bold] Supportconfig path not accessible, exitting")
+        console.log("[red bold]Supportconfig path not accessible, exitting")
+        exit(1)
+
+    if not os.path.exists(os.path.join(supportconfig_path, "basic-environment.txt")):
+        console.log("[red bold]A valid supportconfig cannot be found in the provided path, exitting")
         exit(1)
 
     period_start, period_end = utils.get_dates(since)
