@@ -100,27 +100,36 @@ public class HubApiController {
         this.hubManager = hubManagerIn;
     }
 
-    private String pass(Request request, Response response, User satAdmin) {
-        throw new NotImplementedException();
-    }
-
     /**
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub management
-        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
-        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
-        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
-        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+        // Peripherals management
         get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
+
+        // Peripheral channels management
+        get("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::syncChannelsToPeripheral));
+        delete("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::desyncChannelsToPeripheral));
+
+        // Hub management
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
         post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
         delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
+
+        // Token management
+        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
+        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
+        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+
     }
 
     private String deleteHub(Request request, Response response, User user) {
@@ -440,6 +449,10 @@ public class HubApiController {
             .orElseThrow(() -> new JsonSyntaxException("rootCA is empty"));
 
         return request;
+    }
+
+    private String pass(Request request, Response response, User satAdmin) {
+        throw new NotImplementedException();
     }
 
 }

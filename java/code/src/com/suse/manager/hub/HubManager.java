@@ -17,6 +17,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
@@ -66,6 +67,8 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -968,17 +971,9 @@ public class HubManager {
             throws CertificateException {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        return issPeripheral.getPeripheralChannels().stream().map(
-                entity -> new IssV3ChannelResponse(
-                        entity.getChannel().getId(),
-                        entity.getChannel().getName(),
-                        entity.getChannel().getLabel(),
-                        entity.getChannel().getChannelArch().getName(),
-                        entity.getChannel().getOrg() != null ?
-                                new IssV3ChannelResponse.ChannelOrgResponse(
-                                        entity.getChannel().getOrg().getId(), entity.getChannel().getOrg().getName()) :
-                                null)
-        ).collect(Collectors.toSet());
+        return issPeripheral.getPeripheralChannels().stream()
+                .map(entity -> buildIssV3ChannelResponse(entity.getChannel()))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -988,12 +983,11 @@ public class HubManager {
      */
     public Set<IssV3ChannelResponse> getHubCustomChannels(User user) {
         ensureSatAdmin(user);
-        return ChannelFactory.listCustomChannels().stream()
-                .map(ch -> new IssV3ChannelResponse(
-                        ch.getId(), ch.getName(), ch.getLabel(), ch.getChannelArch().getName(),
-                        new IssV3ChannelResponse.ChannelOrgResponse(ch.getOrg().getId(), ch.getOrg().getName())
-                )).collect(Collectors.toSet());
+        return ChannelFactory.listCustomBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
     }
+
     /**
      * Get the vendor channels of the hub
      * @param user The SatAdmin
@@ -1001,10 +995,42 @@ public class HubManager {
      */
     public Set<IssV3ChannelResponse> getHubVendorChannels(User user) {
         ensureSatAdmin(user);
-        return ChannelFactory.listVendorChannels().stream()
-                .map(ch -> new IssV3ChannelResponse(
-                        ch.getId(), ch.getName(), ch.getLabel(), ch.getChannelArch().getName(), null
-                )).collect(Collectors.toSet());
+        return ChannelFactory.listRedHatBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
+    }
+
+    private IssV3ChannelResponse buildIssV3ChannelResponse(Channel channel) {
+        List<IssV3ChannelResponse> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .toList();
+        List<IssV3ChannelResponse> clones = channel.getClonedChannels() == null ?
+                List.of() :
+                channel.getClonedChannels().stream()
+                        .map(this::buildIssV3ChannelResponse)
+                        .toList();
+        String originalLabel = null;
+        if (channel.getClonedChannels() != null && !channel.getClonedChannels().isEmpty()) {
+            ClonedChannel cloned = channel.getClonedChannels().iterator().next();
+            if (cloned.getOriginal() != null) {
+                originalLabel = cloned.getOriginal().getLabel();
+            }
+        }
+        String parentLabel = channel.getParentChannel() != null ? channel.getParentChannel().getLabel() : null;
+        return new IssV3ChannelResponse(
+                channel.getId(),
+                channel.getName(),
+                channel.getLabel(),
+                channel.getChannelArch().getName(),
+                channel.getOrg() != null ?
+                        new IssV3ChannelResponse.ChannelOrgResponse(
+                                channel.getOrg().getId(), channel.getOrg().getName()) :
+                        null,
+                parentLabel,
+                originalLabel,
+                children,
+                clones
+        );
     }
 
     /**
@@ -1107,17 +1133,26 @@ public class HubManager {
                 accessToken.getToken(),
                 issPeripheral.getRootCa()
         );
-        List<String> channelsLabel = new ArrayList<>();
-        Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
-        channels.forEach(ch -> {
-            IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
-            peripheralChannels.add(issPeripheralChannel);
-            channelsLabel.add(ch.getLabel());
-            hubFactory.save(issPeripheralChannel);
-        });
-        issPeripheral.setPeripheralChannels(peripheralChannels);
-        hubFactory.save(issPeripheral);
-        internalApi.syncVendorChannels(channelsLabel);
+        Transaction transaction = HubFactory.getSession().getTransaction();
+        try {
+            List<String> channelsLabel = new ArrayList<>();
+            Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+            transaction.begin();
+            channels.forEach(ch -> {
+                IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
+                peripheralChannels.add(issPeripheralChannel);
+                channelsLabel.add(ch.getLabel());
+                hubFactory.save(issPeripheralChannel);
+            });
+            issPeripheral.setPeripheralChannels(peripheralChannels);
+            hubFactory.save(issPeripheral);
+            internalApi.syncVendorChannels(channelsLabel);
+            transaction.commit();
+        }
+        catch (IOException e) {
+            transaction.rollback();
+            throw e;
+        }
     }
 
     /**

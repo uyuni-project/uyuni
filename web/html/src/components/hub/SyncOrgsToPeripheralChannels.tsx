@@ -9,23 +9,10 @@ import { showSuccessToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-// Types for organization and channel.
-export type Org = {
-  orgId: number;
-  orgName: string;
-};
+import { HierarchicalChannelTable } from "./HierarchicalChannelTable";
+import { Channel, Org } from "./types";
 
-//TODO: logic for parent and clone channels
-export type Channel = {
-  channelId: number;
-  channelName: string;
-  channelLabel: string;
-  channelArch: string;
-  // null channelOrg means is a Vendor Channel
-  channelOrg: Org | null;
-};
-
-export type SyncPeripheralsProps = {
+type SyncPeripheralsProps = {
   peripheralId: number;
   availableOrgs: Org[];
   availableCustomChannels: Channel[];
@@ -143,30 +130,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const modalContent = (
       <>
         <span>
-          <h4>Select an organizzation from the Peripheral to Sync your channels to: //TODO: SelectBox</h4>
+          <h4>Select an organization from the Peripheral to Sync your channels to: //TODO: SelectBox</h4>
         </span>
         <span>(Vendor channels are automatically synced to SUSE Organization)</span>
         <span>
           <h3>{t("Available Channels")}</h3>
         </span>
-        <Table
-          data={availableChannels}
-          identifier={(row: Channel) => row.channelId}
-          selectable={true}
-          onSelect={this.onChannelToSyncSelect}
-          selectedItems={modalSelectedChannels}
-          initialSortColumnKey="name"
-          searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
-        >
-          <Column columnKey="name" header={t("Name")} cell={(row: Channel) => <span>{row.channelName}</span>} />
-          <Column columnKey="label" header={t("Label")} cell={(row: Channel) => <span>{row.channelLabel}</span>} />
-          <Column columnKey="arch" header={t("Arch")} cell={(row: Channel) => <span>{row.channelArch}</span>} />
-          <Column
-            columnKey="orgName"
-            header={t("Org")}
-            cell={(row: Channel) => <span>{row.channelOrg ? row.channelOrg.orgName : "SUSE"}</span>}
-          />
-        </Table>
+        <HierarchicalChannelTable channels={availableChannels} onSelectionChange={this.onChannelToSyncSelect} />
       </>
     );
 
@@ -190,6 +160,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         </div>
       </>
     );
+
     return (
       <div className="container mt-4">
         <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
