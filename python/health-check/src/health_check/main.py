@@ -72,6 +72,10 @@ def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
     verbose: bool = ctx.obj["verbose"]
     supportconfig_path: str | None = ctx.obj["supportconfig_path"]
 
+    # Try to resolve an absolute path to the supportconfig
+    if supportconfig_path:
+        supportconfig_path = os.path.abspath(os.path.expanduser(supportconfig_path))
+
     if not supportconfig_path or not os.path.exists(supportconfig_path):
         console.log("[red bold] Supportconfig path not accessible, exitting")
         exit(1)
@@ -110,6 +114,10 @@ def start(ctx: click.Context, from_datetime: str, to_datetime: str, since: int):
 @cli.command()
 @click.pass_context
 def stop(ctx: click.Context):
+    """
+    Stop execution of Health Check and clean containers
+
+    """
     verbose = ctx.obj["verbose"]
     clean_containers(verbose=verbose)
     console.print(Markdown("# Execution Finished"))

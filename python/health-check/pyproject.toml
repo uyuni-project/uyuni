@@ -42,3 +42,5 @@ requires = [
 ]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools.dynamic]
+version = {attr = "health_check.__version__"}

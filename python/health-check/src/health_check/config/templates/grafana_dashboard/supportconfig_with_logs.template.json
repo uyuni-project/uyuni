@@ -102,14 +102,22 @@
             "neutral": 0
           },
           "mappings": [],
-          "max": 1022,
+          "max": 64,
           "min": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 7
+              },
+              {
+                "color": "#EAB839",
+                "value": 9
               }
             ]
           },
@@ -136,7 +144,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
+        "showThresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.5.1",
@@ -177,13 +185,21 @@
           },
           "mappings": [],
           "max": 128,
-          "min": 20,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 20
+              },
+              {
+                "color": "yellow",
+                "value": 40
               }
             ]
           },
@@ -210,7 +226,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
+        "showThresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.5.1",
@@ -369,7 +385,7 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-GrYlRd"
           },
           "mappings": [],
           "thresholds": {
@@ -471,14 +487,22 @@
             "neutral": 0
           },
           "mappings": [],
-          "max": 1022,
-          "min": 1,
+          "max": 300,
+          "min": -1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "yellow",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 60
+              },
+              {
+                "color": "#EAB839",
+                "value": 180
               }
             ]
           },
@@ -505,7 +529,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
+        "showThresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.5.1",
@@ -545,14 +569,22 @@
             "mode": "thresholds"
           },
           "mappings": [],
-          "max": 1024,
+          "max": 300,
           "min": 1,
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "yellow",
                 "value": null
+              },
+              {
+                "color": "green",
+                "value": 60
+              },
+              {
+                "color": "yellow",
+                "value": 180
               }
             ]
           },
@@ -579,7 +611,7 @@
           "values": true
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false,
+        "showThresholdMarkers": true,
         "sizing": "auto"
       },
       "pluginVersion": "11.5.1",
@@ -639,7 +671,7 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 11,
+        "w": 12,
         "x": 0,
         "y": 17
       },
@@ -687,12 +719,92 @@
           "color": {
             "mode": "thresholds"
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 4,
+        "x": 12,
+        "y": 17
+      },
+      "id": 119,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "vertical",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^value$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "text": {},
+        "textMode": "name",
+        "wideLayout": true
+      },
+      "pluginVersion": "11.5.1",
+      "targets": [
+        {
+          "columns": [],
+          "computed_columns": [],
+          "filterExpression": "name != \"num_of_channels\" && value == 1",
+          "filters": [],
+          "format": "table",
+          "global_query_id": "",
+          "parser": "backend",
+          "refId": "A",
+          "root_selector": "misc",
+          "source": "url",
+          "type": "json",
+          "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
+          "url_options": {
+            "data": "",
+            "method": "GET"
+          }
+        }
+      ],
+      "title": "Supportconfig server type",
+      "transformations": [
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "boolean",
+                "targetField": "value"
+              }
+            ],
+            "fields": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
           },
           "mappings": [],
           "thresholds": {
@@ -709,33 +821,40 @@
       },
       "gridPos": {
         "h": 7,
-        "w": 13,
-        "x": 11,
+        "w": 8,
+        "x": 16,
         "y": 17
       },
-      "id": 119,
+      "id": 120,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
           ],
-          "show": false
+          "fields": "",
+          "values": false
         },
-        "showHeader": false
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
       },
       "pluginVersion": "11.5.1",
       "targets": [
         {
           "columns": [],
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "infinity"
+          },
           "filters": [],
           "format": "table",
           "global_query_id": "",
           "parser": "backend",
           "refId": "A",
-          "root_selector": "misc",
+          "root_selector": "misc[\"num_of_channels\"]",
           "source": "url",
           "type": "json",
           "url": "http://health_check_supportconfig_exporter:9000/metrics.json",
@@ -745,8 +864,8 @@
           }
         }
       ],
-      "title": "Miscellaneous",
-      "type": "table"
+      "title": "Total Software Channels",
+      "type": "gauge"
     },
     {
       "collapsed": false,
