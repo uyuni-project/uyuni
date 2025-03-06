@@ -32,7 +32,7 @@ RES9 = [
     "venv-salt-minion",
 ]
 
-OPENEULER2203 = [
+OPENEULER = [
     "venv-salt-minion",
 ]
 
@@ -1355,12 +1355,31 @@ DATA = {
     },
     "openeuler22.03-x86_64-uyuni": {
         "BASECHANNEL": "openeuler2203-x86_64",
-        "PKGLIST": OPENEULER2203,
+        "PKGLIST": OPENEULER,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/22.03/bootstrap/",
     },
     "openeuler22.03-aarch64-uyuni": {
         "BASECHANNEL": "openeuler2203-aarch64",
-        "PKGLIST": OPENEULER2203,
+        "PKGLIST": OPENEULER,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/22.03/bootstrap/",
+    },
+    "openeuler24.03-SP1-x86_64": {
+        "PDID": [-49, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": OPENEULER,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/24.03/bootstrap/",
+    },
+    "openeuler24.03-SP1-aarch64": {
+        "PDID": [-50, 3040],
+        "BETAPDID": [3042],
+        "PKGLIST": OPENEULER,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/24.03/bootstrap/",
+    },
+    "raspberrypios12-arm64": {
+        "PDID": [-48, 3029],
+        "BETAPDID": [3031],
+        "PKGLIST": PKGLISTRASPBERRYPIOS12,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
+        "TYPE": "deb",
     },
 }
