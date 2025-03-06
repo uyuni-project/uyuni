@@ -957,7 +957,7 @@ public class HubManager {
     public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
             throws CertificateException, IOException {
         ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
         var internalApi = clientFactory.newInternalClient(
                 issPeripheral.getFqdn(),
@@ -977,7 +977,7 @@ public class HubManager {
     public Set<IssV3ChannelResponse> getPeripheralChannels(User user, Long peripheralId)
             throws CertificateException {
         ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
         return issPeripheral.getPeripheralChannels().stream().map(
                 entity -> new IssV3ChannelResponse(
                         entity.getChannel().getId(),
@@ -1108,7 +1108,7 @@ public class HubManager {
     public void syncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId)
             throws CertificateException, IOException {
         ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
         //TODO: check for parents, ask sync for parents if not already synced
         List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
@@ -1139,7 +1139,7 @@ public class HubManager {
     public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId) {
         ensureSatAdmin(user);
         //TODO: check for children, desync children is parent is desynced
-        IssPeripheral issPeripheral = hubFactory.findPeripheral(peripheralId);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
         List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
         Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
         channels.forEach(ch -> peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch)));
