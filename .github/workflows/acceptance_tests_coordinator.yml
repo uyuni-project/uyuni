@@ -1,17 +1,24 @@
-name: Recommended Tests
+name: Acceptance Tests Coordinator
 
 on:
-  pull_request_target:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
     paths:
       - '**.java'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/master' }}
+
 jobs:
-  generate_recommended_tests:
-    name: Generate
+  determine_tests:
     runs-on: ubuntu-latest
+    name: Determine Acceptance Tests to run
     steps:
-      - name: Checkout Pull Request code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
@@ -49,28 +56,32 @@ jobs:
       run_acceptance_tests: ${{ steps.determine_run_acceptance_tests.outputs.run_acceptance_tests }}
 
   run_recommended_tests:
-    name: Recommended tests
-    needs: generate_recommended_tests
-    # Only run if the full acceptance tests are skipped
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
+    needs: determine_tests
+    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'false' }}
     uses: acceptance_tests_base.yml
     with:
       tests: "19_run_recommended_tests.sh"
       server_id: "secondary_f"
-      recommended_tests: ${{ needs.generate_recommended_tests.outputs.recommended_tests }}
+      recommended_tests: ${{ needs.determine_tests.outputs.recommended_tests }}
 
-  dummy_acceptance_tests:
-    name: Dummy Acceptance tests status
-    needs: generate_recommended_tests
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
+  run_acceptance_tests:
+    needs: determine_tests
+    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
+    uses: acceptance_tests_sequential.yml
+    with:
+      run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
+
+  run_additional_tests:
+    needs: determine_tests
+    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
+    uses: acceptance_tests_parallel.yml
+    with:
+      run_acceptance_tests: ${{ needs.determine_tests.outputs.run_acceptance_tests }}
+
+  dummy_recommended_tests:
+    name: Dummy Recommended Status
+    needs: determine_tests
+    if: ${{ needs.determine_tests.outputs.run_acceptance_tests == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Dummy Acceptance tests passed (skipped)"
-
-  dummy_additional_tests:
-    name: Dummy Additional tests status
-    needs: generate_recommended_tests
-    if: ${{ needs.generate_recommended_tests.outputs.run_acceptance_tests == 'false' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Dummy Additional tests passed (skipped)"
+      - run: echo "Dummy recommended tests passed (skipped)"
