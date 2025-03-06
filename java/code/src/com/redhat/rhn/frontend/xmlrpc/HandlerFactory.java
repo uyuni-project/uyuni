@@ -60,6 +60,7 @@ import com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringActionHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringCustomStateHandler;
 import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringHighstateHandler;
+import com.redhat.rhn.frontend.xmlrpc.recurringaction.RecurringPlaybookHandler;
 import com.redhat.rhn.frontend.xmlrpc.saltkey.SaltKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.schedule.ScheduleHandler;
 import com.redhat.rhn.frontend.xmlrpc.subscriptionmatching.PinnedSubscriptionHandler;
@@ -208,6 +209,7 @@ public class HandlerFactory {
         factory.addHandler("recurring", new RecurringActionHandler());
         factory.addHandler("recurring.highstate", new RecurringHighstateHandler());
         factory.addHandler("recurring.custom", new RecurringCustomStateHandler());
+        factory.addHandler("recurring.playbook", new RecurringPlaybookHandler());
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
