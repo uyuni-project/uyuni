@@ -57,9 +57,7 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 # TODO: systems/details/ProxyClients.do
 # TODO: systems/details/mgr-server-info
 # TODO: systems/details/packages/VerifyPackages.do
-# TODO: systems/details/appstreams
 # TODO: systems/details/ptf/...
-# TODO: systems/details/ansible
 
 ,/manager/systems/:id,GET,W,t,systems.details.overview,R
 ,/systems/details/Overview.do,GET,W,t,systems.details.overview,R
@@ -133,6 +131,10 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/SPMigration.do,GET,W,t,systems.software.migration,W
 ,/systems/details/SPMigration.do,POST,W,t,systems.software.migration,W
 
+,/manager/systems/details/appstreams,GET,W,t,systems.software.appstreams,R
+,/manager/api/appstreams/:channelId/:appstream/packages,GET,W,t,systems.software.appstreams,R
+,/manager/api/appstreams/save,POST,W,t,systems.software.appstreams,W
+
 # TODO: CSV download should be split and grouped together with the list namespaces(OR always allow CSV via list page)
 # ,/CSVDownloadAction.do,GET,W,t,?,?
 
@@ -185,6 +187,20 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/api/formulas/form/:targetType/:id/:formula_id,GET,W,t,systems.formulas,R
 ,/manager/api/formulas/select,POST,W,t,systems.formulas,W
 ,/manager/api/formulas/save,POST,W,t,systems.formulas,W
+
+# Ansible
+# TODO: Add/review new endpoints
+,/manager/systems/details/ansible/control-node,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/paths/:minionServerId,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/paths/delete,POST,W,t,systems.ansible,W
+,/manager/api/systems/details/ansible/paths/save,POST,W,t,systems.ansible,W
+,/manager/systems/details/ansible/playbooks,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/paths/:pathType/:minionServerId,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/discover-playbooks/:pathId,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/paths/playbook-contents,POST,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/schedule-playbook,POST,W,t,systems.ansible,W
+,/manager/systems/details/ansible/inventories,GET,W,t,systems.ansible,R
+,/manager/api/systems/details/ansible/introspect-inventory/:pathId,GET,W,t,systems.ansible,R
 
 # Recurring actions
 ,/manager/systems/details/recurring-actions,GET,W,t,systems.recurring,R
@@ -270,4 +286,4 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 # TODO: Virtual host managers
 
 # TODO: Systems API
-# TODO: upcoming-windows in datetimepicker (should require permission for maintenance windows) (maybe also for action chains?) ADD TO EVERY NEEDED NAMESPACE
+# TODO: upcoming-windows in datetimepicker (should require permission for maintenance windows) (maybe also for action chains?) ADD TO EVERY NEEDED NAMESPACE?
