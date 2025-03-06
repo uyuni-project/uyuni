@@ -28,6 +28,12 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/ChannelPackages.do,POST,W,t,software.details.packages,R
 ,/channels/ChannelSubscribers.do,GET,W,t,software.details.systems,R
 ,/channels/ChannelSubscribers.do,POST,W,t,software.details.systems,R
+,/channels/TargetSystems.do,GET,W,t,software.details.systems,R
+,/channels/TargetSystems.do,POST,W,t,software.details.systems,R
+,/channels/ConfirmTargetSystems.do,GET,W,t,software.details.systems,W
+,/channels/ConfirmTargetSystems.do,POST,W,t,software.details.systems,W
+,/channels/AppStreams.do,GET,W,t,software.details.appstreams,R
+,/channels/AppStreams.do,POST,W,t,software.details.appstreams,R
 
 # Package Search
 
