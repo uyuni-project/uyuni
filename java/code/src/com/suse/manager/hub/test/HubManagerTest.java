@@ -659,8 +659,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             TokenParsingException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createHubRegistration(fqdn, null, null);
-        hubManager.deleteIssServerLocal(token, fqdn);
+        IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
 
+        assertEquals(IssRole.HUB, remoteRole);
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
@@ -672,8 +673,9 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             TokenParsingException {
         String fqdn = LOCAL_SERVER_FQDN;
         IssAccessToken token = createPeripheralRegistration(fqdn, null);
-        hubManager.deleteIssServerLocal(token, fqdn);
+        IssRole remoteRole = hubManager.deleteIssServerLocal(token, fqdn);
 
+        assertEquals(IssRole.PERIPHERAL, remoteRole);
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
