@@ -11,7 +11,6 @@
 package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 /**
  * Notification data for channel sync finish.
@@ -49,8 +48,8 @@ public class ChannelSyncFinished implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.INFO;
+    public NotificationSeverity getSeverity() {
+        return NotificationSeverity.INFO;
     }
 
     /**

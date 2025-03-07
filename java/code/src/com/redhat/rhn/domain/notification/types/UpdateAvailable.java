@@ -15,7 +15,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.common.util.download.DownloadUtils;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,8 +58,8 @@ public class UpdateAvailable implements NotificationData, Serializable {
     }
 
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.WARNING;
+    public NotificationSeverity getSeverity() {
+        return NotificationSeverity.WARNING;
     }
 
     @Override
