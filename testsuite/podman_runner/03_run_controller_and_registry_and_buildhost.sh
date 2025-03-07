@@ -77,7 +77,7 @@ sudo tee -a /etc/docker/daemon.json <<EOF
 }
 EOF
 
-cd /etc/nginx/sites-enabled && ln -s /etc/nginx/sites-available/registry
+cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
 
 sudo systemctl restart nginx
 
