@@ -1,0 +1,1 @@
+- Ensure postgresql has PID1 to have clean container stops
