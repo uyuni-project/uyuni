@@ -4309,23 +4309,23 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">已将 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包添加到补丁 &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve">
+      <trans-unit id="errata.edit.packages.remove.success.plural" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中去除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
+        <target state="final">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中去除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
       </trans-unit>
-      <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve">
+      <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target state="translated">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中去除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
+        <target state="final">已从补丁 &lt;strong&gt;{1}&lt;/strong&gt; 中去除 &lt;strong&gt;{0}&lt;/strong&gt; 个软件包</target>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary" xml:space="preserve">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
@@ -7938,53 +7938,53 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="translated">操作已成功添加到操作链 &lt;a href="/rhn/schedule/ActionChain.do?id={0}"&gt;{1}&lt;/a&gt; 中。</target>
       </trans-unit>
-      <trans-unit id="message.packageremoval" xml:space="preserve">
+      <trans-unit id="message.packageremoval" xml:space="preserve" approved="yes">
         <source>{0} package removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
       </trans-unit>
-      <trans-unit id="message.packageremovals" xml:space="preserve">
+      <trans-unit id="message.packageremovals" xml:space="preserve" approved="yes">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
       </trans-unit>
-      <trans-unit id="message.packageupgrade" xml:space="preserve">
+      <trans-unit id="message.packageupgrade" xml:space="preserve" approved="yes">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
       </trans-unit>
-      <trans-unit id="message.packageupgrades" xml:space="preserve">
+      <trans-unit id="message.packageupgrades" xml:space="preserve" approved="yes">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
       </trans-unit>
-      <trans-unit id="message.packageinstall" xml:space="preserve">
+      <trans-unit id="message.packageinstall" xml:space="preserve" approved="yes">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
       </trans-unit>
-      <trans-unit id="message.packageinstalls" xml:space="preserve">
+      <trans-unit id="message.packageinstalls" xml:space="preserve" approved="yes">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -7993,42 +7993,42 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/software/packages/TargetSystemsConfirm.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="message.packageverify" xml:space="preserve">
+      <trans-unit id="message.packageverify" xml:space="preserve" approved="yes">
         <source>{0} package verification has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
       </trans-unit>
-      <trans-unit id="message.packageverifys" xml:space="preserve">
+      <trans-unit id="message.packageverifys" xml:space="preserve" approved="yes">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
       </trans-unit>
-      <trans-unit id="message.patchremoval" xml:space="preserve">
+      <trans-unit id="message.patchremoval" xml:space="preserve" approved="yes">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
       </trans-unit>
-      <trans-unit id="message.patchremovals" xml:space="preserve">
+      <trans-unit id="message.patchremovals" xml:space="preserve" approved="yes">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
       </trans-unit>
-      <trans-unit id="message.patchinstall" xml:space="preserve">
+      <trans-unit id="message.patchinstall" xml:space="preserve" approved="yes">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
       <trans-unit id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -8037,12 +8037,12 @@ organization. You may grant or remove the organization administrator role in the
         </context-group>
         <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
       </trans-unit>
-      <trans-unit id="message.xccdfeval" xml:space="preserve">
+      <trans-unit id="message.xccdfeval" xml:space="preserve" approved="yes">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        <target state="translated">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt; XCCDF 扫描</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;安排&lt;/a&gt; XCCDF 扫描</target>
       </trans-unit>
       <trans-unit id="message.xccdfeval.ssm" xml:space="preserve">
         <source>XCCDF scan has been scheduled successfully.</source>
@@ -12994,19 +12994,19 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">警告探测</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.nocriticalprobes" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.nocriticalprobes" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;No critical probes.&lt;/strong&gt;&lt;p&gt;None of the probes assigned to your systems are in a critical state. You can view a list of all the probes in your system at &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;All &gt; Probes&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;没有关键探测。&lt;/strong&gt;&lt;p&gt;指派到您系统的所有探测都不处于关键状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
+        <target state="final">&lt;strong&gt;没有关键探测。&lt;/strong&gt;&lt;p&gt;指派到您系统的所有探测都不处于关键状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.nowarningprobes" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.nowarningprobes" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;No warning probes.&lt;/strong&gt;&lt;p&gt;None of the probes assigned to your systems are in a warning state. You can view a list of all the probes in your system at &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;All &gt; Probes&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
-        <target state="translated">&lt;strong&gt;没有警告探测。&lt;/strong&gt;&lt;p&gt;指派到您系统的所有探测都不处于警告状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
+        <target state="final">&lt;strong&gt;没有警告探测。&lt;/strong&gt;&lt;p&gt;指派到您系统的所有探测都不处于警告状态。您可以通过 &lt;strong&gt;&lt;a href="/rhn/monitoring/ProbeList.do"&gt;所有 &gt; 探测&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;查看系统中所有探测的列表</target>
       </trans-unit>
       <trans-unit id="yourrhn.jsp.systems" xml:space="preserve">
         <source>System(s)</source>
@@ -13043,9 +13043,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">查看所有系统组</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.nogroups" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.nogroups" xml:space="preserve" approved="yes">
         <source>&lt;strong&gt;You have no system groups.&lt;/strong&gt;&lt;p&gt;You can create a system group at &lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;Systems &gt; System Set Manager &gt; Groups &gt; create group&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;</source>
-        <target>&lt;strong&gt;您没有系统组。&lt;/strong&gt;&lt;p&gt;您可以通过&lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;系统 &gt; 系统集管理器 &gt; 组 &gt; 创建组&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;创建系统组</target>
+        <target state="final">&lt;strong&gt;您没有系统组。&lt;/strong&gt;&lt;p&gt;您可以通过&lt;a href="/rhn/groups/EditGroup.do"&gt;&lt;strong&gt;系统 &gt; 系统集管理器 &gt; 组 &gt; 创建组&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;创建系统组</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -18033,7 +18033,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target state="translated">找不到要删除的修订版。</target>
       </trans-unit>
       <!-- filedetails.jsp -->
-      <trans-unit id="filedetails.header.jspf.label" xml:space="preserve">
+      <trans-unit id="filedetails.header.jspf.label" xml:space="preserve" approved="yes">
         <source>Revision {1} of {0} from channel &lt;a href="{3}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/FileDetails.do</context>
@@ -18041,7 +18041,7 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
             Revision 7 of /etc/sysconfig/rhn/up2date from channel _@@PRODUCT_NAME@@Config_
           </context>
         </context-group>
-        <target state="translated">通道 &lt;a href="{3}"&gt;{2}&lt;/a&gt; 中 {0} 的修订版 {1}</target>
+        <target state="final">通道 &lt;a href="{3}"&gt;{2}&lt;/a&gt; 中 {0} 的修订版 {1}</target>
       </trans-unit>
       <!-- Tips -->
       <trans-unit id="filedetails.jsp.tip.ownership" xml:space="preserve">
@@ -18279,13 +18279,13 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         </context-group>
         <target state="translated">符号链接</target>
       </trans-unit>
-      <trans-unit id="filedetails.manage_header.jspf.label" xml:space="preserve">
+      <trans-unit id="filedetails.manage_header.jspf.label" xml:space="preserve" approved="yes">
         <source>{0} from channel &lt;a href="{2}"&gt;{1}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
           <context context-type="paramnotes">2 days ago by UserX</context>
         </context-group>
-        <target state="translated">通道 &lt;a href="{2}"&gt;{1}&lt;/a&gt; 中的 {0}</target>
+        <target state="final">通道 &lt;a href="{2}"&gt;{1}&lt;/a&gt; 中的 {0}</target>
       </trans-unit>
       <!-- add_details.jspf -->
       <trans-unit id="filedetails.add_details.jspf.header2" xml:space="preserve">
@@ -18761,13 +18761,13 @@ any of these revisions.  Are you sure you want to do this?</source>
         </context-group>
         <target state="translated">1 个通道</target>
       </trans-unit>
-      <trans-unit id="managedsystems.jsp.global" xml:space="preserve">
+      <trans-unit id="managedsystems.jsp.global" xml:space="preserve" approved="yes">
         <source>{0} from &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/system/ManagedSystems.do</context>
           <context context-type="paramnotes">12 files from _4 config channels_</context>
         </context-group>
-        <target state="translated">&lt;a href="{1}"&gt;{2}&lt;/a&gt; 中的 {0}</target>
+        <target state="final">&lt;a href="{1}"&gt;{2}&lt;/a&gt; 中的 {0}</target>
       </trans-unit>
       <!-- overview.jsp (in configuration) -->
       <trans-unit id="configoverview.jsp.toolbar" xml:space="preserve">
@@ -23264,9 +23264,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">选择自动安装配置文件</target>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve">
+      <trans-unit id="virtualization.provision.first.jsp.summary1" xml:space="preserve" approved="yes">
         <source>Please fill out the form below to create a new virtual system to be hosted on &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;</source>
-        <target>请填写以下表单，以创建要托管在 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; 上的新虚拟系统</target>
+        <target state="final">请填写以下表单，以创建要托管在 &lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt; 上的新虚拟系统</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -29902,14 +29902,14 @@ given channel.</source>
         </context-group>
         <target state="final">这是 Pay-as-you-go 服务器</target>
       </trans-unit>
-    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
