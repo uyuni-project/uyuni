@@ -58,11 +58,6 @@ public class UpdateAvailable implements NotificationData, Serializable {
     }
 
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.WARNING;
-    }
-
-    @Override
     public String getSummary() {
         return LOCALIZATION_SERVICE.getMessage("notification.updateavailable.summary");
     }
