@@ -37,10 +37,10 @@ import org.quartz.JobExecutionContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 
@@ -64,8 +64,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
             if (lastNotification == null || lastNotification.getCreated().before(DateUtils.addMonths(new Date(), -3))) {
                 NotificationMessage notificationMessage =
                         UserNotificationFactory.createNotificationMessage(new SCCOptOutWarning());
-                UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                        Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+                UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.ORG_ADMIN));
             }
 
             if (GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&
