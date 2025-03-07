@@ -11516,170 +11516,170 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;オプトアウトの理由を共有して、サービス向上にご協力ください&lt;/a&gt;
         </target>
       </trans-unit>
-    <trans-unit id="Password Policy" xml:space="preserve">
+      <trans-unit id="Password Policy" xml:space="preserve" approved="yes">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
+        <target state="final">パスワードポリシー</target>
+      </trans-unit>
+      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve" approved="yes">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
+        <target state="final">フィールド {0} は0以下にはできません。</target>
+      </trans-unit>
+      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve" approved="yes">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">フィールド {0} はフィールド {1} より大きくも等しくもできません。</target>
+      </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.spacesinpassword" xml:space="preserve">
+        <target state="translated">パスワードに許容される最大文字数は、0以下にできません。</target>
+      </trans-unit>
+      <trans-unit id="error.spacesinpassword" xml:space="preserve" approved="yes">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
+        <target state="final">パスワードにタブまたは改行文字が含まれています。</target>
+      </trans-unit>
+      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve" approved="yes">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.nodigitspassword" xml:space="preserve">
+        <target state="final">パスワードに連続文字が含まれています。</target>
+      </trans-unit>
+      <trans-unit id="error.nodigitspassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.nouppercasepassword" xml:space="preserve">
+        <target state="final">パスワードには少なくとも1つの数字を含める必要があります。</target>
+      </trans-unit>
+      <trans-unit id="error.nouppercasepassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.nolowercasepassword" xml:space="preserve">
+        <target state="final">パスワードには、少なくとも1つの大文字を含める必要があります。</target>
+      </trans-unit>
+      <trans-unit id="error.nolowercasepassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
+        <target state="final">パスワードには、少なくとも1つの小文字を含める必要があります。</target>
+      </trans-unit>
+      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
+        <target state="final">パスワードには少なくとも1つの特殊文字を含める必要があります。使用可能な特殊文字は {0} です。</target>
+      </trans-unit>
+      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve" approved="yes">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
+        <target state="final">パスワードの文字数が最大許容数 {0} を超えています。</target>
+      </trans-unit>
+      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve" approved="yes">
         <source>Unable to invoke the remote server {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.tokenType.issued" xml:space="preserve">
+        <target state="final">リモートサーバー {0} を起動できません</target>
+      </trans-unit>
+      <trans-unit id="hub.tokenType.issued" xml:space="preserve" approved="yes">
         <source>Issued</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
+        <target state="final">発行済み</target>
+      </trans-unit>
+      <trans-unit id="hub.tokenType.consumed" xml:space="preserve" approved="yes">
         <source>Consumed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
+        <target state="final">使用済み</target>
+      </trans-unit>
+      <trans-unit id="hub.register_peripheral_success" xml:space="preserve" approved="yes">
         <source>Server {0} has been successfully registered as peripheral</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_request" xml:space="preserve">
+        <target state="final">サーバ {0} は周辺機器として正常に登録されました</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_request" xml:space="preserve" approved="yes">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
+        <target state="final">操作の実行要求は拒否されました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_root_ca" xml:space="preserve" approved="yes">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
+        <target state="final">提供された証明書は有効なPEM形式&gt;ではありません。&lt;br/&gt;証明書がBase64エンコードされたASCIIファイルとして正しくエンコードされ、&lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt;および&lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt;タグで囲まれていることを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve" approved="yes">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_issue_token" xml:space="preserve">
+        <target state="final">ルート証明書の処理中に予期しないエラーが発生しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_issue_token" xml:space="preserve" approved="yes">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_parse_token" xml:space="preserve">
+        <target state="final">リモートサーバのトークンを発行できません。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_parse_token" xml:space="preserve" approved="yes">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
+        <target state="final">リモートサーバから受信したトークンは無効です。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve" approved="yes">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
+        <target state="final">リモートサーバとのセキュアな接続を確立できません。正しいルート証明書を指定していることを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_remote_response" xml:space="preserve" approved="yes">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
+        <target state="final">リモートサーバから無効な応答を受信しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.error_connecting_remote" xml:space="preserve" approved="yes">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unexpected_error" xml:space="preserve">
+        <target state="final">リモートサーバへの登録を試行中にエラーが発生しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unexpected_error" xml:space="preserve" approved="yes">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_token_id" xml:space="preserve">
+        <target state="final">予期しないエラーにより、リモートサーバの登録に失敗しました。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_token_id" xml:space="preserve" approved="yes">
         <source>The specified access token does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.invalid_token_state" xml:space="preserve">
+        <target state="final">指定されたアクセストークンは存在しません。</target>
+      </trans-unit>
+      <trans-unit id="hub.invalid_token_state" xml:space="preserve" approved="yes">
         <source>The specified access token is in an invalid state.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_delete_token" xml:space="preserve">
+        <target state="final">指定されたアクセストークンは無効な状態です。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_delete_token" xml:space="preserve" approved="yes">
         <source>Unable to delete a token with the specified id</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
+        <target state="final">指定されたIDのトークンを削除できません。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve" approved="yes">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
+        <target state="final">指定されたサーバの新しいトークンを発行できません。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve" approved="yes">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
+        <target state="final">提供されたトークンを解析できません。トークンが正しいこと、およびこのサーバ用に生成されたことを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_store_token" xml:space="preserve" approved="yes">
         <source>Unable to store the token. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.cannot_find_server" xml:space="preserve">
+        <target state="final">トークンを保存できません。サーバログを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="hub.cannot_find_server" xml:space="preserve" approved="yes">
         <source>Cannot find a remote server with the specified id.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
+        <target state="final">指定されたIDのリモートサーバが見つかりません。</target>
+      </trans-unit>
+      <trans-unit id="hub.unable_to_deregister" xml:space="preserve" approved="yes">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">登録解除できません: リモートサーバに接続中に予期しないエラーが発生しました。サーバログを確認してください。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
