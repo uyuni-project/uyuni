@@ -10,54 +10,65 @@ metrics_config = {
     "tomcat_xmx_size": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/conf.d/tomcat_java_opts.conf",
         "pattern": r"-Xmx(\d)+([kKmMgG])",
+        "label": "java_config",
     },
-    "max_threads": {
+    "maxThreads": {
         "filepath": "spacewalk-debug/conf/tomcat/tomcat/server.xml",
         "pattern": r'<Connector[^>]*address="127\.0\.0\.1"[^>]*maxThreads="(\d+)"[^>]*\/>',
+        "label": "java_config",
     },
     "queued_salt_events": {
         "filepath": "plugin-susemanager.txt",
         "pattern": r"(?s)select count\(\*\) from susesaltevent.*?(\d+)",
+        "label": "misc",
     },
-    "java_salt_batch_size": {
+    "java.salt_batch_size": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^java.salt_batch_size\s*=\s*(\d+)\s*$",
         "default": 200,
+        "label": "java_config",
     },
-    "taskomatic_channel_repodata_workers": {
+    "java.taskomatic_channel_repodata_workers": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^java.taskomatic_channel_repodata_workers\s*=\s*(\d+)\s*$",
         "default": 2,
+        "label": "java_config",
     },
-    "org_quartz_threadpool_threadcount": {
+    "org.quartz.threadPool.threadCount": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^org.quartz.threadPool.threadCount\s*=\s*(\d+)\s*$",
         "default": 20,
+        "label": "java_config",
     },
-    "org_quartz_scheduler_idlewaittime": {
+    "org.quartz.scheduler.idleWaitTime": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^org.quartz.scheduler.idleWaitTime\s*=\s*(\d+)\s*$",
         "default": 5000,
+        "label": "java_config",
     },
-    "taskomatic_minion_action_executor_parallel_threads": {
+    "taskomatic.minion_action_executor.parallel_threads": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^taskomatic.minion_action_executor.parallel_threads\s*=\s*(\d+)\s*$",
         "default": 1,
+        "label": "java_config",
     },
-    "java_message_queue_thread_pool_size": {
+    "java.message_queue_thread_pool_size": {
         "filepath": "spacewalk-debug/conf/rhn/rhn/rhn.conf",
         "pattern": r"^java.message_queue_thread_pool_size\s*=\s*(\d+)\s*$",
         "default": 5,
+        "label": "java_config",
     },
-    "salt_thread_pool": {
+    "thread_pool": {
         "filepath": "plugin-saltconfiguration.txt",
         "pattern": r"^thread_pool\s*:\s*(\d+)\s*$",
         "default": 100,
+        "label": "salt_configuration",
     },
-    "salt_pub_hwm": {
+    "pub_hwm": {
         "filepath": "plugin-saltconfiguration.txt",
         "pattern": r"^pub_hwm\s*:\s*(\d+)\s*$",
         "default": 1000,
+        "label": "salt_configuration",
     },
     "cpu_count": {
         "filepath": "hardware.txt",
@@ -97,6 +108,7 @@ metrics_config = {
     "major_version": {
         "filepath": "basic-environment.txt",
         "pattern": r"^SUSE Manager release (\d)",
+        "label": "misc",
     },
 }
 
