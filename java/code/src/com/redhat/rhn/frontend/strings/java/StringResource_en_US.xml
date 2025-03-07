@@ -9523,6 +9523,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
       </trans-unit>
+      <trans-unit id="hubregistrationchanged" xml:space="preserve">
+        <source>Hub Registration Changed</source>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
       </trans-unit>
@@ -9703,6 +9706,24 @@ For a detailed analysis, please refer to the log files.</source>
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
+        <source>This server is now a peripheral of {0}</source>
+      </trans-unit>
+      <trans-unit id="notification.hub.registered.details" xml:space="preserve">
+        <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
+        <source>This server is no longer a peripheral of {0}</source>
+      </trans-unit>
+      <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
+        <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
+        <source>Server {0} is no longer a peripheral.</source>
+      </trans-unit>
+      <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
+        <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
       </trans-unit>
       <trans-unit id="task.action.rejection.reason">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
