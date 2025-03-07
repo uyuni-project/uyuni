@@ -2,15 +2,16 @@ name: Additional Tests
 on:
   workflow_call:
     inputs:
-      run_acceptance_tests:
+      skip:
         required: true
-        type: string
+        type: boolean
   repository_dispatch:
     types: [run-additional-tests]
+
 jobs:
-  additional-acceptance-tests:
+  additional-tests:
     name: ${{ matrix.set }}
-    if: ${{ github.event_name == 'repository_dispatch' || inputs.run_acceptance_tests == 'true' }}
+    if: ${{ github.event_name == 'repository_dispatch' }}
     uses: ./.github/workflows/acceptance_tests_base.yml
     strategy:
       fail-fast: false
@@ -19,3 +20,4 @@ jobs:
     with:
       tests: "19_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
       server_id: "secondary_parallel_${{ matrix.set }}"
+      skip: ${{ inputs.skip }}

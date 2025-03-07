@@ -1,19 +1,23 @@
-name: Acceptance Tests
+name: Recommended Tests
 on:
   workflow_call:
     inputs:
       skip:
         required: true
         type: boolean
+      recommended_tests:
+        required: true
+        type: string
   repository_dispatch:
     types: [run-acceptance-tests]
 
 jobs:
-  acceptance-tests:
-    name: "0"
+  recommended-tests:
+    name: "recommended"
     if: ${{ github.event_name == 'repository_dispatch' }}
     uses: ./.github/workflows/acceptance_tests_base.yml
     with:
-      tests: "18_run_secondary_tests.sh"
+      tests: "19_run_recommended_tests.sh"
       server_id: "secondary"
+      recommended_tests: ${{ inputs.recommended_tests }}
       skip: ${{ inputs.skip }}
