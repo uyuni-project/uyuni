@@ -54,6 +54,7 @@ import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
@@ -441,6 +442,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
             retval = new AppStreamAction();
+        }
+        else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
+            retval = new SupportDataAction();
         }
         else {
             retval = new Action();
@@ -1273,8 +1277,15 @@ public class ActionFactory extends HibernateFactory {
     public static final ActionType TYPE_INVENTORY = lookupActionTypeByLabel("ansible.inventory");
 
     /**
+     * The constant representing "Support Data Get" [ID:526]
+     */
+    public static final ActionType TYPE_SUPPORTDATA_GET =
+            lookupActionTypeByLabel("supportdata.get");
+
+    /**
      * The constant representing "Refresh Virtual Machine list" [ID:527]
      */
     public static final ActionType TYPE_VIRT_PROFILE_REFRESH = lookupActionTypeByLabel("virt.refresh_list");
+
 }
 
