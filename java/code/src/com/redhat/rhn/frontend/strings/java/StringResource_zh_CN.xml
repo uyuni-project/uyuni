@@ -1872,7 +1872,7 @@
         </context-group>
         <target state="translated">地址记录：</target>
       </trans-unit>
-      <trans-unit id="message.defaultSystemGroups" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
@@ -7311,7 +7311,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将立即更新。</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -10231,7 +10231,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
         <target>&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;已安排&lt;/a&gt;将此系统迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。</target>
       </trans-unit>
-      <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
         <target state="final">已安排将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
       </trans-unit>
@@ -10466,7 +10466,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Stores</source>
         <target>存储区</target>
       </trans-unit>
-      <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
         <target state="final">&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;通道状态自动应用</target>
         <context-group name="ctx">
@@ -10628,7 +10628,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error generating bootstrap repo for: {0}</source>
         <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
-      <trans-unit id="notification.stateapplyfailed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
         <target state="final">在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
       </trans-unit>
