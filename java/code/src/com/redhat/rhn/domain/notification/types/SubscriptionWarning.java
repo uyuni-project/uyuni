@@ -36,11 +36,6 @@ public class SubscriptionWarning implements NotificationData {
     }
 
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.WARNING;
-    }
-
-    @Override
     public String getSummary() {
          return LOCALIZATION_SERVICE.getMessage("notification.subscriptionwarning.summary");
     }
