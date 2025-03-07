@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -302,7 +302,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I click on "Create Filter"
     And I wait at most 10 seconds until I see modal containing "Create a new filter" text
     Then I should see a "Create a new filter" text
-    When I enter "virgo-patch" as "filter_name"
+    When I enter "key" as "filter_name"
     And I select "Patch (Advisory Type)" from "type"
     And I select "equals" from "matcher"
     And I check radio button "Security Advisory"
@@ -553,7 +553,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I enter "ruby" as "moduleName"
     And I enter "2.7" as "moduleStream"
     And I click on "Save" in "Create a new filter" modal
-    Then I should see a "ruby 2.7 module" text
+    Then I should see a "Filter created successfully" text
 
   Scenario: Create CLM filter that allows Product Temporary Fix (All)
     When I follow the left menu "Content Lifecycle > Filters"
@@ -579,7 +579,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I click on "Save" in "Create a new filter" modal
     Then I should see a "Filter created successfully" text
 
-    Scenario: Create CLM filter of type Product Temporary Fix (Number) that allows packages of a version lower than a specific one
+  Scenario: Create CLM filter of type Product Temporary Fix (Number) that allows packages of a version lower than a specific one
     When I follow the left menu "Content Lifecycle > Filters"
     And I click on "Create Filter"
     And I wait at most 10 seconds until I see modal containing "Create a new filter" text
@@ -629,46 +629,47 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
 
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click the "remove fonts packages" item delete button
-    And I click the "ruby 2.7 module" item delete button
-    And I click the "virgo-patch" item delete button
-    And I click the "africa-patch" item delete button
-    And I click the "andromeda-patch" item delete button
-    And I click the "Antennae-patch" item delete button
-    And I click the "aries-patch" item delete button
-    And I click the "eurasia-patch" item delete button
-    And I click the "asia-patch" item delete button
-    And I click the "cereal" item delete button
-    And I click the "cherry" item delete button
-    And I click the "drummer" item delete button
-    And I click the "earth-patch" item delete button
-    And I click the "galaxy-patch" item delete button
-    And I click the "hat-patch" item delete button
-    And I click the "Hubble-patch" item delete button
-    And I click the "mars-patch" item delete button
-    And I click the "mars" item delete button
-    And I click the "mercury-patch" item delete button
-    And I click the "mercury" item delete button
-    And I click the "milkyway-patch" item delete button
-    And I click the "moon-patch" item delete button
-    And I click the "Pinwheel-patch" item delete button
-    And I click the "pluto-patch" item delete button
-    And I click the "solar" item delete button
-    And I click the "Sunflower-patch" item delete button
-    And I click the "Triangulum-patch" item delete button
-    And I click the "venus" item delete button
-    And I click the "Whirlpool-patch" item delete button
-    And I click the "geminis-patch" item delete button
-    And I click the "jupiter-patch" item delete button
-    And I click the "potato" item delete button
+    And I click the "africa-patch" item delete button if exists
+    And I click the "andromeda-patch" item delete button if exists
+    And I click the "Antennae-patch" item delete button if exists
+    And I click the "aries-patch" item delete button if exists
+    And I click the "eurasia-patch" item delete button if exists
+    And I click the "asia-patch" item delete button if exists
+    And I click the "cereal" item delete button if exists
+    And I click the "comet-patch" item delete button if exists
+    And I click the "cherry" item delete button if exists
+    And I click the "drummer" item delete button if exists
+    And I click the "earth-patch" item delete button if exists
+    And I click the "galaxy-patch" item delete button if exists
+    And I click the "geminis-patch" item delete button if exists
+    And I click the "hat-patch" item delete button if exists
+    And I click the "Hubble-patch" item delete button if exists
+    And I click the "jupiter-patch" item delete button if exists
+    And I click the "key" item delete button if exists
+    And I click the "mars-patch" item delete button if exists
+    And I click the "mars" item delete button if exists
+    And I click the "mercury-patch" item delete button if exists
+    And I click the "mercury" item delete button if exists
+    And I click the "milkyway-patch" item delete button if exists
+    And I click the "moon-patch" item delete button if exists
+    And I click the "Pinwheel-patch" item delete button if exists
+    And I click the "pluto-patch" item delete button if exists
+    And I click the "potato" item delete button if exists
+    And I click the "ruby 2.7 module" item delete button if exists
+    And I click the "solar" item delete button if exists
+    And I click the "remove fonts packages" item delete button if exists
+    And I click the "Sunflower-patch" item delete button if exists
+    And I click the "Triangulum-patch" item delete button if exists
+    And I click the "venus" item delete button if exists
+    And I click the "Whirlpool-patch" item delete button if exists
     Then I should not see a "remove fonts packages" text
-    And I should not see a "ruby 2.7 module" text
     And I should not see a "africa-patch" text
     And I should not see a "andromeda-patch" text
     And I should not see a "Antennae-patch" text
     And I should not see a "aries-patch" text
     And I should not see a "asia-patch" text
     And I should not see a "cereal" text
+    And I should not see a "comet-patch" text
     And I should not see a "cherry" text
     And I should not see a "drummer" text
     And I should not see a "earth-patch" text
@@ -682,7 +683,6 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I should not see a "moon-patch" text
     And I should not see a "Pinwheel-patch" text
     And I should not see a "pluto-patch" text
-    And I should not see a "ruby 2.7 module" text
     And I should not see a "solar" text
     And I should not see a "Sunflower-patch" text
     And I should not see a "Triangulum-patch" text
@@ -690,7 +690,7 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I should not see a "Whirlpool-patch" text
     And I should not see a "remove fonts packages" text
     And I should not see a "ruby 2.7 module" text
-    And I should not see a "virgo-patch" text
+    And I should not see a "key" text
 
 @susemanager
   Scenario: Cleanup: remove the created channels
