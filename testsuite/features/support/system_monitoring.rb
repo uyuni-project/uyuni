@@ -113,3 +113,16 @@ def channel_synchronization_duration(channel)
 
   duration
 end
+
+# Method to check server response time (could be using an HTTP request or ping)
+def log_server_response_time
+  begin
+    start_time = Time.now
+    uri = URI.parse("https://#{ENV.fetch('SERVER', nil)}")
+    Net::HTTP.get_response(uri)
+    response_time = Time.now - start_time
+    log "Server response time: #{response_time} seconds"
+  rescue => e
+    warn "Error checking server response time: #{e.message}"
+  end
+end
