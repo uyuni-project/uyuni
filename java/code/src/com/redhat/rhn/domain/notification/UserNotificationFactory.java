@@ -182,9 +182,28 @@ public class UserNotificationFactory extends HibernateFactory {
      * Stores a notification visible for users that match both the given roles and org.
      *
      * @param notificationMessageIn notification to store
-     * @param rolesIn roles to determin which users should see the notification.
-     * @param org org users need to be in to see the notification.
      */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn) {
+        storeNotificationMessageFor(notificationMessageIn, Set.of(), Optional.empty());
+    }
+
+    /**
+     * Stores a notification visible for users that match both the given roles and org.
+     *
+     * @param notificationMessageIn notification to store
+     * @param rolesIn roles to determin which users should see the notification.
+     */
+    public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn, Set<Role> rolesIn) {
+        storeNotificationMessageFor(notificationMessageIn, rolesIn, Optional.empty());
+    }
+
+        /**
+         * Stores a notification visible for users that match both the given roles and org.
+         *
+         * @param notificationMessageIn notification to store
+         * @param rolesIn roles to determin which users should see the notification.
+         * @param org org users need to be in to see the notification.
+         */
     public static void storeNotificationMessageFor(NotificationMessage notificationMessageIn,
                                                    Set<Role> rolesIn, Optional<Org> org) {
         // only users in the current Org
