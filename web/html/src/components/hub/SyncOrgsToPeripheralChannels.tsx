@@ -61,7 +61,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
   onChannelSyncConfirm = (event) => {
     const { peripheralId, modalSelectedChannels } = this.state;
-    const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/channels`;
+    const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/sync-channels`;
 
     const syncChannels = () =>
       Network.post(endpoint, modalSelectedChannels).then(() => {

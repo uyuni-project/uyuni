@@ -39,7 +39,6 @@ public class ChannelSyncModel {
             List<IssV3ChannelResponse> availableCustomChannelsIn,
             List<IssV3ChannelResponse> availableVendorChannelsIn) {
         this.peripheralOrgs = peripheralOrgsIn;
-        // Group synced custom channels by orgId.
         this.syncedPeripheralCustomChannels = syncedPeripheralCustomChannelsIn;
         this.syncedPeripheralVendorChannels = syncedPeripheralVendorChannelsIn;
         this.availableCustomChannels = availableCustomChannelsIn;

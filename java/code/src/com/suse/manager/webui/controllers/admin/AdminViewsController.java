@@ -88,10 +88,10 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Hub))), jade);
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
-        get("/manager/admin/hub/peripherals/details/:id",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/peripherals/register",
-            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+                withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/peripherals/:id",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }

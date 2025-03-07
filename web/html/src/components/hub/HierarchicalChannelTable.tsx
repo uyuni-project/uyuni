@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import { Form, Select } from "components/input";
 import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
 
@@ -84,7 +85,7 @@ export class HierarchicalChannelTable extends React.Component<
           identifier={(ch: Channel) => ch.channelId}
           loading={loading}
           initialItemsPerPage={25}
-          searchField={<SearchField placeholder={t("Filter by name or arch")} filter={this.filterChannels} />}
+          searchField={<SearchField placeholder={t("Filter by name")} filter={this.filterChannels} />}
         >
           <table className="table table-hover table-striped">
             <thead>
@@ -97,6 +98,8 @@ export class HierarchicalChannelTable extends React.Component<
                 <th>{t("Name")}</th>
                 {/* Architecture column */}
                 <th style={{ width: "10em" }}>{t("Arch")}</th>
+                {/* Organization column */}
+                <th style={{ width: "10em" }}>{t("Org")}</th>
               </tr>
             </thead>
             <tbody>{this.renderRows(data, 0)}</tbody>
@@ -126,7 +129,6 @@ export class HierarchicalChannelTable extends React.Component<
           <td>
             <input type="checkbox" checked={isSelected} onChange={() => this.toggleSelect(channel)} />
           </td>
-
           {/* Expand/collapse column (only if children exist) */}
           <td>
             {hasChildren && (
@@ -136,14 +138,14 @@ export class HierarchicalChannelTable extends React.Component<
               />
             )}
           </td>
-
           {/* Name column, with indentation */}
           <td>
             <div style={{ marginLeft: depth * 20 }}>{channel.channelName}</div>
           </td>
-
           {/* Architecture column */}
           <td>{channel.channelArch || ""}</td>
+          {/* Organization column */}
+          <td>{channel.channelOrg?.orgName || "SUSE"}</td>
         </tr>
       );
 
