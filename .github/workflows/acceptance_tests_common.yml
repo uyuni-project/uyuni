@@ -15,9 +15,9 @@ on:
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
-  NO_AUTH_REGISTRY: no_auth_registry
+  NO_AUTH_REGISTRY: "noauthregistry.lab"
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY: "authregistry.lab"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
   skip: false
 jobs:

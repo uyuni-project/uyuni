@@ -2,6 +2,85 @@
 set -ex
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
+
+# TODO: extract this into a script
+# When we run docker inside podman, we will use the docker daemon from
+# the ubuntu runner.
+# So, when we run docker build or docker pull, this commands will
+# contact the docker daemon in the ubuntu runner.
+# From the ubuntu runner, we can't access the registries, because
+# they are in the "podman network".
+# Thus, we need to expose the ports from the registries into "localhost"
+# and connect to localhost. This is why we need the registry hostnames to resolve
+# into localhost.
+# Moreover, because of a known bug in python-docker, we can't use the port
+# number when doing a docker build. This is why we have an nginx, to act as a proxy
+# and redirect the requests to the port, depending on the hostname.
+# Then, when we build the docker containers, those containers need to resolve the
+# server hostname, because the container tries to setup the repos from the server.
+# In order to do that, we need to use the podman dns when using docker.
+
+echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
+echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
+echo "127.0.0.1 server" | sudo tee -a /etc/hosts
+
+sudo apt -y install nginx
+sudo tee -a /etc/nginx/sites-available/registry <<EOF
+server {
+        listen 80;
+        server_name authregistry.lab;
+        
+        location / {
+                proxy_pass http://localhost:5001;
+                proxy_set_header Host $host;
+        }
+        client_max_body_size 0;
+}
+
+server {
+        listen 80;
+        server_name noauthregistry.lab;
+        
+        location / {
+                proxy_pass http://localhost:5002;
+                proxy_set_header Host $host;
+        }
+        client_max_body_size 0;
+}
+
+server {
+        listen 80;
+        server_name server;
+        
+        location / {
+                proxy_pass http://localhost:8080;
+                proxy_set_header Host $host;
+        }
+        client_max_body_size 0;
+}
+
+server {
+        listen 443;
+        server_name server; 
+
+        location / {
+                proxy_pass https://localhost:8443;
+                proxy_set_header Host $host;
+        }
+        client_max_body_size 0;
+}
+EOF
+
+sudo tee -a /etc/docker/daemon.json <<EOF
+{
+  "dns": ["10.89.0.1"]
+}
+EOF
+
+cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
+
+sudo systemctl restart nginx
+
 echo buildhostproductuuid > /tmp/buildhost_product_uuid
 
 AUTH_REGISTRY_USER=$(echo "$AUTH_REGISTRY_CREDENTIALS"| cut -d\| -f1)
