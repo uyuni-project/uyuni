@@ -10,6 +10,10 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
+import static com.redhat.rhn.domain.notification.types.NotificationSeverity.ERROR;
+import static com.redhat.rhn.domain.notification.types.NotificationSeverity.INFO;
+import static com.redhat.rhn.domain.notification.types.NotificationSeverity.WARNING;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.Labeled;
 
@@ -22,27 +26,30 @@ import java.util.function.Function;
  */
 public enum NotificationType implements Labeled {
     // Keep the alphabetical order
-    CHANNEL_SYNC_FAILED(ChannelSyncFailed.class, "channelsyncfailed"),
-    CHANNEL_SYNC_FINISHED(ChannelSyncFinished.class, "channelsyncfinished"),
-    CREATE_BOOTSTRAP_REPO_FAILED(CreateBootstrapRepoFailed.class, "createbootstraprepofailed"),
-    END_OF_LIFE_PERIOD(EndOfLifePeriod.class, "endoflifeperiod"),
-    ONBOARDING_FAILED(OnboardingFailed.class, "onboardingfailed"),
-    PAYG_AUTHENTICATION_UPDATE_FAILED(PaygAuthenticationUpdateFailed.class, "paygauthenticationupdatefailed"),
-    PAYG_NOT_COMPLIANT_WARNING(PaygNotCompliantWarning.class, "paygnotcompliantwarning"),
-    SCC_OPT_OUT_WARNING(SCCOptOutWarning.class, "sccoptoutwarning"),
-    STATE_APPLY_FAILED(StateApplyFailed.class, "stateapplyfailed"),
-    SUBSCRIPTION_WARNING(SubscriptionWarning.class, "subscriptionwarning"),
-    UPDATE_AVAILABLE(UpdateAvailable.class, "updateavailable");
+    CHANNEL_SYNC_FAILED(ChannelSyncFailed.class, ERROR, "channelsyncfailed"),
+    CHANNEL_SYNC_FINISHED(ChannelSyncFinished.class, INFO, "channelsyncfinished"),
+    CREATE_BOOTSTRAP_REPO_FAILED(CreateBootstrapRepoFailed.class, ERROR, "createbootstraprepofailed"),
+    END_OF_LIFE_PERIOD(EndOfLifePeriod.class, WARNING, "endoflifeperiod"),
+    ONBOARDING_FAILED(OnboardingFailed.class, ERROR, "onboardingfailed"),
+    PAYG_AUTHENTICATION_UPDATE_FAILED(PaygAuthenticationUpdateFailed.class, ERROR, "paygauthenticationupdatefailed"),
+    PAYG_NOT_COMPLIANT_WARNING(PaygNotCompliantWarning.class, WARNING, "paygnotcompliantwarning"),
+    SCC_OPT_OUT_WARNING(SCCOptOutWarning.class, WARNING, "sccoptoutwarning"),
+    STATE_APPLY_FAILED(StateApplyFailed.class, ERROR, "stateapplyfailed"),
+    SUBSCRIPTION_WARNING(SubscriptionWarning.class, WARNING, "subscriptionwarning"),
+    UPDATE_AVAILABLE(UpdateAvailable.class, WARNING, "updateavailable");
 
     private final String label;
 
     private final String description;
 
+    private final NotificationSeverity defaultSeverity;
+
     private final Class<? extends NotificationData> dataClass;
 
-    NotificationType(Class<? extends NotificationData> clazz, String descriptionId) {
+    NotificationType(Class<? extends NotificationData> clazz, NotificationSeverity severity,  String descriptionId) {
         this.label = clazz.getSimpleName();
         this.description = LocalizationService.getInstance().getMessage(descriptionId);
+        this.defaultSeverity = severity;
         this.dataClass = clazz;
     }
 
@@ -61,6 +68,16 @@ public enum NotificationType implements Labeled {
      */
     public String getDescription() {
         return description;
+    }
+
+    /**
+     * Retrieves the default severity of this notification type. The actual severity associated with a notification
+     * may differ, thus use {@link NotificationData#getSeverity()} to retrieve the exact value for a specific
+     * notification data instance.
+     * @return the default {@link NotificationSeverity} associated with this type.
+     */
+    public NotificationSeverity getDefaultSeverity() {
+        return defaultSeverity;
     }
 
     /**
