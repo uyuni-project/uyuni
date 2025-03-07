@@ -24,20 +24,49 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 import java.util.SortedSet;
+import java.util.TreeSet;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 /**
  * ConfigChannel - Class representation of the table rhnConfigChannel.
  */
+@Entity
+@Table(name = "rhnConfigChannel")
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
+    @Id
+    @Column(name = "id")
     private Long id;
-    private Org org;
-    private String name;
-    private String label;
-    private String description;
 
+    @Column(name = "name", length = 128)
+    private String name = "";
+
+    @Column(name = "label", length = 64)
+    private String label = "";
+
+    @Column(name = "description", length = 1024)
+    private String description = "";
+
+    @ManyToOne
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @ManyToOne
+    @JoinColumn(name = "confchan_type_id")
     private ConfigChannelType configChannelType;
 
-    private SortedSet<ConfigFile> configFiles;
+    @OneToMany(mappedBy = "configChannel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("fileType ASC")
+    private SortedSet<ConfigFile> configFiles = new TreeSet<>();
+
 
     /**
      * Protected constructor

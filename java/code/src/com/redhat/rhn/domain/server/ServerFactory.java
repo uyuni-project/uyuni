@@ -99,16 +99,17 @@ public class ServerFactory extends HibernateFactory {
      */
     protected static CustomDataValue getCustomDataValue(CustomDataKey key,
             Server server) {
-        // Make sure we didn't recieve any nulls
+        // Make sure we didn't receive any nulls
         if (key == null || server == null) {
             return null;
         }
 
-        return (CustomDataValue) HibernateFactory.getSession().getNamedQuery("CustomDataValue.findByServerAndKey")
-                .setParameter("server", server)
-                .setParameter("key", key)
-                .setCacheable(true)
-                .uniqueResult();
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM rhnServerCustomDataValue WHERE server_id = :s AND key_id = :key
+                        """, CustomDataValue.class)
+                .setParameter("s", server.getId(), StandardBasicTypes.LONG)
+                .setParameter("key", key.getId(), StandardBasicTypes.LONG)
+                .setCacheable(true).uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -578,9 +579,18 @@ public class ServerFactory extends HibernateFactory {
         }
 
         if (ServerConstants.SLES.equals(server.getOs())) {
-            PackageEvr zypperEvr = getSession().createNamedQuery("Server.findZypperEvr", PackageEvr.class)
+            InstalledPackage pkg = getSession().createNativeQuery("""
+                           SELECT p.* FROM rhnServerPackage p INNER JOIN rhnPackageName n ON p.name_id = n.id
+                           WHERE p.server_id = :sid AND n.name = 'zypper'
+                           """, InstalledPackage.class)
                                                .setParameter("sid", server.getId())
-                                               .uniqueResult();
+                    .uniqueResultOptional().orElse(null);
+
+            if (pkg == null) {
+                return false;
+            }
+
+            PackageEvr zypperEvr = pkg.getEvr();
             if (zypperEvr == null) {
                 return false;
             }
@@ -607,7 +617,11 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return SINGLETON.lookupObjectByNamedQuery("Server.findByIdandOrgId", Map.of("sid", id, "orgId", orgIn.getId()));
+        return HibernateFactory.getSession().createNativeQuery("""
+                SELECT *, 0 as clazz_ FROM rhnServer WHERE id = :sid AND org_id = :orgId
+                """, Server.class).setParameter("sid", id, StandardBasicTypes.LONG)
+                .setParameter("orgId", orgIn.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -734,7 +748,11 @@ public class ServerFactory extends HibernateFactory {
      * @return the Server found
      */
     public static Server lookupById(Long id) {
-        return HibernateFactory.getSession().get(Server.class, id);
+        return HibernateFactory.getSession().createNativeQuery(
+                """
+                        SELECT *, 0 as clazz_ from rhnServer WHERE id = :id
+                        """, Server.class).setParameter("id", id , StandardBasicTypes.LONG)
+                .uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -785,11 +803,11 @@ public class ServerFactory extends HibernateFactory {
      * @return The ServerGroupType
      */
     public static ServerGroupType lookupServerGroupTypeByLabel(String label) {
-        return (ServerGroupType) HibernateFactory.getSession().getNamedQuery("ServerGroupType.findByLabel")
+        return HibernateFactory.getSession().createNativeQuery("""
+                        SELECT * FROM rhnServerGroupType WHERE label = :label
+                        """, ServerGroupType.class)
                 .setParameter("label", label, StandardBasicTypes.STRING)
-                .setCacheable(true)
-                .uniqueResult();
-
+                .setCacheable(true).uniqueResultOptional().orElse(null);
     }
 
     /**
@@ -1405,12 +1423,14 @@ public class ServerFactory extends HibernateFactory {
      * @return the stream of EVRs of every installed kernel on the system
      */
     public static Stream<PackageEvr> getInstalledKernelVersions(Server server) {
-        return HibernateFactory.getSession().createQuery(
-                "SELECT DISTINCT pkg.evr FROM InstalledPackage pkg " +
-                "WHERE pkg.name.name LIKE 'kernel-default%' " +
-                "AND pkg.server = :server", PackageEvr.class)
-                .setParameter("server", server)
-                .getResultStream();
+        return HibernateFactory.getSession().createNativeQuery(
+                """
+                SELECT DISTINCT rp.* FROM rhnServerPackage rp JOIN rhnPackageName pn ON rp.name_id = pn.id
+                WHERE pn.name LIKE 'kernel-default%'
+                AND rp.server_id = :server
+                """, InstalledPackage.class)
+                .setParameter("server", server.getId(), StandardBasicTypes.LONG).getResultList()
+                .stream().map(InstalledPackage::getEvr);
     }
 
     /**

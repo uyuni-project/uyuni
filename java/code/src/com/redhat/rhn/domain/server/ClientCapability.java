@@ -18,16 +18,26 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.Immutable;
+
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * ClientCapability
  */
+@Entity
+@Table(name = "rhnClientCapability")
+@Immutable
 public class ClientCapability extends BaseDomainHelper {
 
+    @EmbeddedId
     private ClientCapabilityId id;
 
-    private long version;
-
+    @Column(name = "version", nullable = false)
+    private Long version = 0L;
     /**
      * No arg constructor needed by Hibernate.
      */
@@ -61,14 +71,14 @@ public class ClientCapability extends BaseDomainHelper {
     /**
      * @return the version
      */
-    public long getVersion() {
+    public Long getVersion() {
         return version;
     }
 
     /**
      * @param versionIn set the version
      */
-    public void setVersion(long versionIn) {
+    public void setVersion(Long versionIn) {
         this.version = versionIn;
     }
 
