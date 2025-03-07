@@ -185,12 +185,4 @@ public class NotificationMessage implements Serializable {
             .append("data", getData())
             .toString();
     }
-
-
-    /**
-     * The enum type for a {@link NotificationMessage}
-     */
-    public enum NotificationMessageSeverity {
-        INFO, WARNING, ERROR
-    }
 }
