@@ -10,8 +10,6 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
-import com.redhat.rhn.domain.notification.NotificationMessage;
-
 /**
  * Interface for all notification specific data.
  */
@@ -21,7 +19,7 @@ public interface NotificationData {
      *
      * @return severity of this notification
      */
-    NotificationMessage.NotificationMessageSeverity getSeverity();
+    NotificationSeverity getSeverity();
 
     /**
      * Gets the {@link NotificationType} associated with this notification. Default implementation uses
