@@ -103,10 +103,8 @@ public final class HubSparkHelper {
                 return internalServerError(response, "Internal Server Error", e.getMessage());
             }
             finally {
-                if (HibernateTemporaryPatch.doInvalidate()) {
-                    var authenticationService = AuthenticationServiceFactory.getInstance().getAuthenticationService();
-                    authenticationService.invalidate(request.raw(), response.raw());
-                }
+                var authenticationService = AuthenticationServiceFactory.getInstance().getAuthenticationService();
+                authenticationService.invalidate(request.raw(), response.raw());
             }
         };
     }

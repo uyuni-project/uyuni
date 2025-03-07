@@ -24,11 +24,12 @@ import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.api.ReadOnly;
-import com.suse.manager.hub.HibernateTemporaryPatch;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
@@ -473,14 +474,14 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Remotely collect data about peripheral organizations
      * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
-     * $OrgSerializer
+     * $OrgInfoJsonSerializer
      * #array_end()
      */
     @ReadOnly
-    public List<Org> remoteListPeripheralOrgs(User loggedInUser, String fqdn) {
+    public List<OrgInfoJson> getAllPeripheralOrgs(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
         try {
-            return hubManager.remoteListPeripheralOrgs(loggedInUser, fqdn);
+            return hubManager.getAllPeripheralOrgs(loggedInUser, fqdn);
         }
         catch (Exception ex) {
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
@@ -497,14 +498,14 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Remotely collect data about peripheral channels
      * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin()
-     * $ChannelSerializer
+     * $ChannelInfoJsonSerializer
      * #array_end()
      */
     @ReadOnly
-    public List<Channel> remoteListPeripheralChannels(User loggedInUser, String fqdn) {
+    public List<ChannelInfoJson> getAllPeripheralChannels(User loggedInUser, String fqdn) {
         ensureSatAdmin(loggedInUser);
         try {
-            return hubManager.remoteListPeripheralChannels(loggedInUser, fqdn);
+            return hubManager.getAllPeripheralChannels(loggedInUser, fqdn);
         }
         catch (Exception ex) {
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
@@ -533,12 +534,10 @@ public class HubHandler extends BaseHandler {
             hubManager.addPeripheralChannelsToSync(loggedInUser, fqdn, channelLabels, null);
         }
         catch (IllegalArgumentException ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Invalid parameter while adding peripheral channels to sync for {}", fqdn));
         }
         catch (Exception ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while adding peripheral channels to sync for {}", fqdn));
         }
@@ -552,30 +551,30 @@ public class HubHandler extends BaseHandler {
      * @param loggedInUser  The current user
      * @param fqdn          the FQDN identifying the peripheral Server
      * @param channelLabels a list of labels of the channels to be added
-     * @param peripheralOrgId the peripheral org to be forces
+     * @param peripheralOrgIdWhenCustomChannel the peripheral org to be set in custom channels
      * @return 1 on success, exception otherwise
-     * @apidoc.doc Add peripheral channels to synchronize on a peripheral server, forcing the peripheral org
+     * @apidoc.doc
+     * Add peripheral channels to synchronize on a peripheral server, forcing the peripheral org in custom channels
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc(" string ", " fqdn ", " The FQDN identifying the peripheral server ")
-     * @apidoc.param #prop_array_begin(" channelLabels ")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
+     * @apidoc.param #prop_array_begin("channelLabels")
      * #prop_desc("string", "label", "The channel label")
      * #array_end()
-     * @apidoc.param #prop_desc(" long ", " peripheralOrgId ", " ID of the peripheral Org to be forced to the channel ")
+     * @apidoc.param #prop_desc("long", "peripheralOrgIdWhenCustomChannel",
+     * "ID of the peripheral Org to be set in custom channels")
      * @apidoc.returntype #return_int_success()
      */
     public int addPeripheralChannelsToSync(User loggedInUser, String fqdn, List<String> channelLabels,
-                                           long peripheralOrgId) {
+                                           long peripheralOrgIdWhenCustomChannel) {
         ensureSatAdmin(loggedInUser);
         try {
-            hubManager.addPeripheralChannelsToSync(loggedInUser, fqdn, channelLabels, peripheralOrgId);
+            hubManager.addPeripheralChannelsToSync(loggedInUser, fqdn, channelLabels, peripheralOrgIdWhenCustomChannel);
         }
         catch (IllegalArgumentException ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Invalid parameter while adding peripheral channels to sync for {}", fqdn));
         }
         catch (Exception ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while adding peripheral channels to sync for {}", fqdn));
         }
@@ -603,12 +602,10 @@ public class HubHandler extends BaseHandler {
             hubManager.removePeripheralChannelsToSync(loggedInUser, fqdn, channelLabels);
         }
         catch (IllegalArgumentException ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Invalid parameter while removing peripheral channels to sync for {}", fqdn));
         }
         catch (Exception ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while removing peripheral channels to sync for {}", fqdn));
         }
@@ -636,12 +633,10 @@ public class HubHandler extends BaseHandler {
             return issPeripheralChannels.stream().map(e -> e.getChannel().getLabel()).toList();
         }
         catch (IllegalArgumentException ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Invalid parameter while listing peripheral channels to sync for {}", fqdn));
         }
         catch (Exception ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while listing peripheral channels to sync for {}", fqdn));
         }
@@ -667,12 +662,10 @@ public class HubHandler extends BaseHandler {
             hubManager.syncPeripheralChannels(loggedInUser, fqdn);
         }
         catch (IllegalArgumentException ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Invalid parameter while synchronizing peripheral channels for {}", fqdn));
         }
         catch (Exception ex) {
-            HibernateTemporaryPatch.rollback();
             throw new InvalidParameterException(logAndGetErrorMessage(ex,
                     "Error while synchronizing channels for {}", fqdn));
         }

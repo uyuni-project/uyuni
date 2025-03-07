@@ -1356,6 +1356,16 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * Return a list of all custom channels (org is not null)
+     * @return the list of custom channels
+     */
+    public static List<Channel> listCustomChannels() {
+        return getSession()
+                .createQuery("FROM Channel c WHERE c.org IS NOT NULL", Channel.class)
+                .getResultList();
+    }
+
+    /**
      * List all custom channels (org is not null) with at least one repository
      *
      * @return list of vendor channels

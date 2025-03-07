@@ -28,7 +28,7 @@ import com.suse.manager.model.hub.ManagerInfoJson;
  *      #prop_desc("int", "reportDbPort", "port of the report database")
  *  #struct_end()
  */
-public class ManagerInfoSerializer extends ApiResponseSerializer<ManagerInfoJson> {
+public class ManagerInfoJsonSerializer extends ApiResponseSerializer<ManagerInfoJson> {
 
     @Override
     public Class<ManagerInfoJson> getSupportedClass() {

@@ -54,6 +54,15 @@ public class Translator extends Translations {
     }
 
     /**
+     * Convert an Long object into a String
+     * @param i the long to convert
+     * @return Returns the string representation of i
+     */
+    public static String long2String(Long i) {
+        return (i == null) ? "" : i.toString();
+    }
+
+    /**
      * Convert an Integer object into a list containing the integer
      * @param i The integer to add to the list
      * @return Returns a list containing i

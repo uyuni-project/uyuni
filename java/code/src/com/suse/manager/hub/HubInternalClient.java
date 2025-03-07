@@ -11,11 +11,10 @@
 
 package com.suse.manager.hub;
 
-import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.org.Org;
-
 import com.suse.manager.model.hub.ChannelInfoDetailsJson;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 
 import java.io.IOException;
 import java.util.List;
@@ -65,6 +64,20 @@ public interface HubInternalClient {
     void deregister() throws IOException;
 
     /**
+     * Return all the peripheral organizations
+     * @return the organizations
+     * @throws IOException
+     */
+    List<OrgInfoJson> getAllPeripheralOrgs() throws IOException;
+
+    /**
+     * Return all the peripheral channels
+     * @return the channels
+     * @throws IOException
+     */
+    List<ChannelInfoJson> getAllPeripheralChannels() throws IOException;
+
+    /**
      * Replace the hub token on the remote peripheral server and get a new peripheral token back
      * @param newHubToken the new hub token
      * @return return the new peripheral token
@@ -73,24 +86,18 @@ public interface HubInternalClient {
     String replaceTokens(String newHubToken) throws IOException;
 
     /**
+     * Sync a list of vendor channels by label
+     * @param channelsLabelIn the list of vendor channels label, order is not important as it's assured by the peripheral
+     * @return a list with minimal info about the synced channels
+     * @throws IOException when the communication fails
+     */
+    List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException;
+
+    /**
      * Schedule a product refresh on the remote peripheral server
      * @throws IOException when the communication fails
      */
     void scheduleProductRefresh() throws IOException;
-
-    /**
-     * Collect data about all organizations on the remote peripheral server
-     *
-     * @return return list of {@link Org}
-     */
-    List<Org> listAllPeripheralOrgs() throws IOException;
-
-    /**
-     * Collect data about all channels on the remote peripheral server
-     *
-     * @return return list of {@link Channel}
-     */
-    List<Channel> listAllPeripheralChannels() throws IOException;
 
     /**
      * Synchronizes all channels on the remote peripheral server
