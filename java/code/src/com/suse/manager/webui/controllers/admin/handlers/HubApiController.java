@@ -36,6 +36,7 @@ import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
 import com.suse.manager.webui.controllers.admin.beans.CreateTokenRequest;
 import com.suse.manager.webui.controllers.admin.beans.HubRegisterRequest;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralListData;
@@ -55,11 +56,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
@@ -101,19 +104,32 @@ public class HubApiController {
      * initialize all the API Routes for the ISSv3 support
      */
     public void initRoutes() {
-        // Hub management
-        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
-        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
-        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
-        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+        // Peripherals management
         get("/manager/api/admin/hub/peripherals", withProductAdmin(this::listPaginatedPeripherals));
         post("/manager/api/admin/hub/peripherals", withProductAdmin(this::registerPeripheral));
         get("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         patch("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::pass));
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
+
+        // Peripheral channels management
+        get("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::getPeripheralChannelSyncStatus));
+        post("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::syncChannelsToPeripheral));
+        delete("/manager/api/admin/hub/peripherals/:id/channels-sync",
+                withProductAdmin(this::desyncChannelsToPeripheral));
+
+        // Hub management
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
         post("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::updateHubRootCA));
         delete("/manager/api/admin/hub/:id/root-ca", withProductAdmin(this::removeHubRootCA));
+
+        // Token management
+        get("/manager/api/admin/hub/access-tokens", withProductAdmin(this::listTokens));
+        post("/manager/api/admin/hub/access-tokens", withProductAdmin(this::createToken));
+        post("/manager/api/admin/hub/access-tokens/:id/validity", withProductAdmin(this::setAccessTokenValidity));
+        delete("/manager/api/admin/hub/access-tokens/:id", withProductAdmin(this::deleteAccessToken));
+
     }
 
     private String deleteHub(Request request, Response response, User user) {
@@ -144,6 +160,47 @@ public class HubApiController {
     private String removeHubRootCA(Request request, Response response, User user) {
         // Perform the update using null as value
         return updateServerRootCA(request, response, user, IssRole.HUB, null);
+    }
+
+    private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+        return json(response, GSON.toJson(syncModel));
+    }
+
+    // Define a functional interface that allows throwing CertificateException
+    @FunctionalInterface
+    private interface ChannelsOperation {
+        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException, IOException;
+    }
+
+    // Common helper method to process the request
+    private String processChannelsOperation(
+            Request request, Response response, User satAdmin, ChannelsOperation operation
+    ) {
+        long peripheralId = Long.parseLong(request.params("id"));
+        Type listType = new TypeToken<List<Long>>() { }.getType();
+        List<Long> channelsId = GSON.fromJson(request.body(), listType);
+        try {
+            operation.apply(satAdmin, peripheralId, channelsId);
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
+        return success(response);
+    }
+
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::syncChannelsByIdForPeripheral);
+    }
+
+    private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
+        return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {
@@ -394,7 +451,8 @@ public class HubApiController {
         return request;
     }
 
-    private String pass(Request request, Response response, User user) {
-        return success(response, ResultJson.success(request.requestMethod() + ": " + request.uri()));
+    private String pass(Request request, Response response, User satAdmin) {
+        throw new NotImplementedException();
     }
+
 }

@@ -17,6 +17,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
@@ -45,12 +46,16 @@ import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.IssServer;
 import com.suse.manager.model.hub.ManagerInfoJson;
+import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.TokenType;
 import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.webui.controllers.ProductsController;
+import com.suse.manager.webui.controllers.admin.beans.ChannelSyncModel;
+import com.suse.manager.webui.controllers.admin.beans.IssV3ChannelResponse;
 import com.suse.manager.webui.utils.token.IssTokenBuilder;
 import com.suse.manager.webui.utils.token.Token;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -62,16 +67,21 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -87,7 +97,7 @@ public class HubManager {
 
     private final SystemEntitlementManager systemEntitlementManager;
 
-    private TaskomaticApi taskomaticApi;
+    private final TaskomaticApi taskomaticApi;
 
     private static final Logger LOG = LogManager.getLogger(HubManager.class);
 
@@ -930,6 +940,239 @@ public class HubManager {
     }
 
     /**
+     * Get the Peripheral Organizations
+     * @param user the SatAdmin
+     * @param peripheralId the Peripheral ID
+     * @return a List of Organization from the Peripheral
+     * @throws CertificateException Wrong CA
+     * @throws IOException Internal API Call has gone wrong
+     */
+    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                accessToken.getToken(),
+                issPeripheral.getRootCa()
+        );
+        return internalApi.getAllPeripheralOrgs();
+    }
+
+    /**
+     * Get the Peripheral Channels
+     * @param user the SatAdmin
+     * @param peripheralId the Peripheral ID
+     * @return a Set of Channels from the Peripheral
+     * @throws CertificateException Wrong CA
+     */
+    public Set<IssV3ChannelResponse> getPeripheralChannels(User user, Long peripheralId)
+            throws CertificateException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        return issPeripheral.getPeripheralChannels().stream()
+                .map(entity -> buildIssV3ChannelResponse(entity.getChannel()))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the custom channels of the hub
+     * @param user The SatAdmin
+     * @return a Set of Channels
+     */
+    public Set<IssV3ChannelResponse> getHubCustomChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listCustomBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Get the vendor channels of the hub
+     * @param user The SatAdmin
+     * @return a Set of Channels
+     */
+    public Set<IssV3ChannelResponse> getHubVendorChannels(User user) {
+        ensureSatAdmin(user);
+        return ChannelFactory.listRedHatBaseChannels(user).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .collect(Collectors.toSet());
+    }
+
+    private IssV3ChannelResponse buildIssV3ChannelResponse(Channel channel) {
+        List<IssV3ChannelResponse> children = ChannelFactory.listAllChildrenForChannel(channel).stream()
+                .map(this::buildIssV3ChannelResponse)
+                .toList();
+        List<IssV3ChannelResponse> clones = channel.getClonedChannels() == null ?
+                List.of() :
+                channel.getClonedChannels().stream()
+                        .map(this::buildIssV3ChannelResponse)
+                        .toList();
+        String originalLabel = null;
+        if (channel.getClonedChannels() != null && !channel.getClonedChannels().isEmpty()) {
+            ClonedChannel cloned = channel.getClonedChannels().iterator().next();
+            if (cloned.getOriginal() != null) {
+                originalLabel = cloned.getOriginal().getLabel();
+            }
+        }
+        String parentLabel = channel.getParentChannel() != null ? channel.getParentChannel().getLabel() : null;
+        return new IssV3ChannelResponse(
+                channel.getId(),
+                channel.getName(),
+                channel.getLabel(),
+                channel.getChannelArch().getName(),
+                channel.getOrg() != null ?
+                        new IssV3ChannelResponse.ChannelOrgResponse(
+                                channel.getOrg().getId(), channel.getOrg().getName()) :
+                        null,
+                parentLabel,
+                originalLabel,
+                children,
+                clones
+        );
+    }
+
+    /**
+     * Returns the available and synced channels and a list of organization from the peripheral
+     * @param user the SatAdmin
+     * @param peripheralId the Peripheral ID
+     * @return the Sync Channel operations model
+     */
+    public ChannelSyncModel getChannelSyncModelForPeripheral(User user, Long peripheralId) {
+        List<OrgInfoJson> peripheralOrgs;
+        Set<IssV3ChannelResponse> syncedCustomChannels;
+        Set<IssV3ChannelResponse> syncedVendorChannels;
+        Set<IssV3ChannelResponse> hubVendorChannels;
+        Set<IssV3ChannelResponse> hubCustomChannels;
+        try {
+            // Can't page this, we need everything.
+            peripheralOrgs = getPeripheralOrgs(user, peripheralId);
+            Set<IssV3ChannelResponse> syncedPeripheralChannels = getPeripheralChannels(user, peripheralId);
+            // Partition here so we don't go inside the list two times
+            Map<Boolean, List<IssV3ChannelResponse>> partitioned = syncedPeripheralChannels.stream()
+                    .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg() != null));
+            syncedCustomChannels = new HashSet<>(partitioned.get(true));
+            syncedVendorChannels = new HashSet<>(partitioned.get(false));
+            hubVendorChannels = getHubVendorChannels(user);
+            hubCustomChannels = getHubCustomChannels(user);
+        }
+        catch (CertificateException | IOException eIn) {
+            throw new RuntimeException(eIn);
+        }
+        // Utility filter lambdas.
+        Function<Set<String>, Predicate<String>> availableFilter = peripheralLabels ->
+                hubLabel -> !peripheralLabels.contains(hubLabel);
+        // Channels that are not synced
+        List<IssV3ChannelResponse> availableCustomChannels = filterHubChannelsByPeripheral(
+                hubCustomChannels,
+                syncedCustomChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                IssV3ChannelResponse::getChannelLabel,
+                availableFilter
+        );
+        List<IssV3ChannelResponse> availableVendorChannels = filterHubChannelsByPeripheral(
+                hubVendorChannels,
+                syncedVendorChannels,
+                IssV3ChannelResponse::getChannelLabel,
+                IssV3ChannelResponse::getChannelLabel,
+                availableFilter
+        );
+        return new ChannelSyncModel(
+                peripheralOrgs,
+                syncedCustomChannels,
+                syncedVendorChannels,
+                availableCustomChannels,
+                availableVendorChannels
+        );
+    }
+
+    /**
+     * Generic helper function that filters hub/peripheral channels by a label
+     *
+     * @param hubChannels a set of channels from the hub
+     * @param peripheralChannels a set of channels from the peripheral
+     * @param hubLabelExtractor the label get method
+     * @param peripheralLabelExtractor the label get method
+     * @param filterFunction the filter function
+     * @param <H> the hub class
+     * @param <P> the peripheral class
+     * @return the filtered list
+     */
+    private static <H, P> List<H> filterHubChannelsByPeripheral(
+            Set<H> hubChannels,
+            Set<P> peripheralChannels,
+            Function<H, String> hubLabelExtractor,
+            Function<P, String> peripheralLabelExtractor,
+            Function<Set<String>, Predicate<String>> filterFunction
+    ) {
+        Set<String> peripheralLabels = peripheralChannels.stream()
+                .map(peripheralLabelExtractor)
+                .collect(Collectors.toSet());
+        Predicate<String> hubFilter = filterFunction.apply(peripheralLabels);
+        return hubChannels.stream()
+                .filter(hub -> hubFilter.test(hubLabelExtractor.apply(hub)))
+                .toList();
+    }
+
+    /**
+     * Sync the channels from "this" hub to the selected peripheral
+     * @param user the SatAdmin
+     * @param peripheralId the peripheral id
+     * @param channelsId the list of channels id from the hub
+     */
+    public void syncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        //TODO: check for parents, ask sync for parents if not already synced
+        List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
+        var internalApi = clientFactory.newInternalClient(
+                issPeripheral.getFqdn(),
+                accessToken.getToken(),
+                issPeripheral.getRootCa()
+        );
+        Transaction transaction = HubFactory.getSession().getTransaction();
+        try {
+            List<String> channelsLabel = new ArrayList<>();
+            Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+            transaction.begin();
+            channels.forEach(ch -> {
+                IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
+                peripheralChannels.add(issPeripheralChannel);
+                channelsLabel.add(ch.getLabel());
+                hubFactory.save(issPeripheralChannel);
+            });
+            issPeripheral.setPeripheralChannels(peripheralChannels);
+            hubFactory.save(issPeripheral);
+            internalApi.syncVendorChannels(channelsLabel);
+            transaction.commit();
+        }
+        catch (IOException e) {
+            transaction.rollback();
+            throw e;
+        }
+    }
+
+    /**
+     * Sync the channels from "this" hub to the selected peripheral
+     * @param user the SatAdmin
+     * @param peripheralId the peripheral id
+     * @param channelsId the list of channels id from the hub
+     */
+    public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId) {
+        ensureSatAdmin(user);
+        //TODO: check for children, desync children is parent is desynced
+        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
+        List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
+        Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
+        channels.forEach(ch -> peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch)));
+        issPeripheral.setPeripheralChannels(peripheralChannels);
+        hubFactory.save(issPeripheral);
+    }
+
+    /**
      * Synchornize channels from the hub on this peripheral server
      * @param accessToken the access token
      * @param channelInfo a set of channel information to create or update the channels
@@ -990,4 +1233,5 @@ public class HubManager {
         ensureValidToken(accessToken);
         return ProductsController.doSynchronizeSubscriptions();
     }
+
 }

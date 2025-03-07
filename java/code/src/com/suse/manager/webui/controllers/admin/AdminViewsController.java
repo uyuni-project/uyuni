@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -61,6 +62,7 @@ public class AdminViewsController {
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
+    private static final HubManager HUB_MANAGER = new HubManager();
 
     private AdminViewsController() { }
 
@@ -70,7 +72,7 @@ public class AdminViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -87,7 +89,9 @@ public class AdminViewsController {
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
         get("/manager/admin/hub/peripherals/register",
-            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+                withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/peripherals/:id",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
@@ -143,6 +147,22 @@ public class AdminViewsController {
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
     }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to show
+     */
+    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        long peripheralId = Long.parseLong(request.params("id"));
+        data.put("detailsData", GSON.toJson(null));
+        data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+        return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
+    }
+
 
     /**
      * show list of saved payg ssh connection data

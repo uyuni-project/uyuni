@@ -15,6 +15,7 @@ import static spark.Spark.get;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -23,6 +24,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
 
 import com.suse.manager.hub.RouteWithSCCAuth;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.utils.token.DownloadTokenBuilder;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
@@ -46,9 +48,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -221,9 +226,11 @@ public class SCCEndpoints {
     public String repositories(Request request, Response response, HubSCCCredentials credentials) {
         var hostname = ConfigDefaults.get().getJavaHostname();
         var peripheral = credentials.getIssPeripheral();
-        var channels = peripheral.getPeripheralChannels();
-        var jsonRepos = channels.stream().map(c -> {
-            Channel channel = c.getChannel();
+        Stream<Channel> customChannel = peripheral.getPeripheralChannels().stream()
+                .map(IssPeripheralChannels::getChannel)
+                .filter(c -> Objects.nonNull(c.getOrg()));
+        Stream<Channel> vendorChannels = ChannelFactory.listVendorChannels().stream();
+        var jsonRepos = Stream.concat(vendorChannels, customChannel).map(channel -> {
             String label = channel.getLabel();
             String tokenString = buildHubRepositoryToken(label).orElse("");
             return SUSEProductFactory.lookupByChannelLabelFirst(label)
