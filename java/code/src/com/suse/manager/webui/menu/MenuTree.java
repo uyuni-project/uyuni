@@ -500,6 +500,8 @@ public class MenuTree {
                     .withAltUrl("/rhn/manager/multiorg/details/custom")
                     .withAltUrl("/rhn/manager/multiorg/recurring-actions")
                     .withVisibility(adminRoles.get("satellite")))
+            .addChild(new MenuItem("Access Group")
+                    .withPrimaryUrl("/rhn/manager/admin/config/access-group"))
             .addChild(new MenuItem("Users")
                     .withPrimaryUrl("/rhn/admin/multiorg/Users.do")
                     .withAltUrl("/rhn/admin/multiorg/SatRoleConfirm.do")
