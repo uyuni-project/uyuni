@@ -437,6 +437,9 @@ public class ActionFactory extends HibernateFactory {
         else if (typeIn.equals(TYPE_APPSTREAM_CONFIGURE)) {
             retval = new AppStreamAction();
         }
+        else if (typeIn.equals(TYPE_SUPPORTDATA_GET)) {
+            retval = new SupportDataAction();
+        }
         else {
             retval = new Action();
         }
@@ -1238,6 +1241,12 @@ public class ActionFactory extends HibernateFactory {
      */
     public static final ActionType TYPE_COCO_ATTESTATION =
             lookupActionTypeByLabel("coco.attestation");
+
+    /**
+     * The constant representing "Support Data Get" [ID:525]
+     */
+    public static final ActionType TYPE_SUPPORTDATA_GET =
+            lookupActionTypeByLabel("supportdata.get");
 
     /**
      * The constant representing appstreams changes action.
