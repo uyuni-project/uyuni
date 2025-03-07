@@ -36,11 +36,6 @@ public class PaygAuthenticationUpdateFailed implements NotificationData {
     }
 
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.ERROR;
-    }
-
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().getMessage("notification.paygauthenticationupdatefailed",
                 getPaygDataId().toString(), getHost());

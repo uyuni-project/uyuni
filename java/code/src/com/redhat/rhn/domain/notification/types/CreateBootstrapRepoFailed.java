@@ -43,14 +43,6 @@ public class CreateBootstrapRepoFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.ERROR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().
                 getMessage("notification.bootstraprepofailed", getIdentifier());
