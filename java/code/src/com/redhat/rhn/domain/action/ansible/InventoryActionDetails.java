@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,21 +12,18 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-package com.redhat.rhn.domain.action.salt;
+package com.redhat.rhn.domain.action.ansible;
 
 import com.redhat.rhn.domain.action.ActionChild;
 
 /**
- * PlaybookActionDetails - Class representation of the table rhnActionPlaybook.
+ * InventoryActionDetails - Class representation of the table rhnActionInventory.
  */
-public class PlaybookActionDetails extends ActionChild {
+public class InventoryActionDetails extends ActionChild {
 
     private long id;
     private long actionId;
-    private String playbookPath;
     private String inventoryPath;
-    private boolean testMode;
-    private boolean flushCache;
 
     /**
      * @return the id
@@ -56,35 +53,11 @@ public class PlaybookActionDetails extends ActionChild {
         this.actionId = actionIdIn;
     }
 
-    public String getPlaybookPath() {
-        return playbookPath;
-    }
-
-    public void setPlaybookPath(String playbookPathIn) {
-        this.playbookPath = playbookPathIn;
-    }
-
     public String getInventoryPath() {
         return inventoryPath;
     }
 
     public void setInventoryPath(String inventoryPathIn) {
         this.inventoryPath = inventoryPathIn;
-    }
-
-    public boolean isTestMode() {
-        return testMode;
-    }
-
-    public void setTestMode(boolean testModeIn) {
-        this.testMode = testModeIn;
-    }
-
-    public boolean isFlushCache() {
-        return flushCache;
-    }
-
-    public void setFlushCache(boolean flushCacheIn) {
-        this.flushCache = flushCacheIn;
     }
 }

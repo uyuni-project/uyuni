@@ -33,8 +33,6 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -45,7 +43,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -66,11 +63,8 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     private Acl acl;
     private final SaltApi saltApi = new TestSaltApi();
-    private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-    private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+            new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
     @Override

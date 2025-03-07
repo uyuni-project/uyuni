@@ -16,6 +16,7 @@
 package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.hibernate.PathConverter;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -64,6 +65,23 @@ public class AnsibleFactory extends HibernateFactory {
     }
 
     /**
+     * Lookup {@link InventoryPath} associated with a {@link MinionServer} with given path
+     *
+     * @param minionId the id of {@link MinionServer}
+     * @param inventoryPath the path of the inventory
+     * @return optional of {@link InventoryPath}
+     */
+    public static Optional<InventoryPath> lookupAnsibleInventoryPath(long minionId, String inventoryPath) {
+        return HibernateFactory.getSession()
+                .createQuery("SELECT p FROM InventoryPath p " +
+                        "WHERE p.minionServer.id = :mid " +
+                        "AND p.path = :inventoryPath")
+                .setParameter("mid", minionId)
+                .setParameter("inventoryPath", new PathConverter().convertToEntityAttribute(inventoryPath))
+                .uniqueResultOptional();
+    }
+
+    /**
      * List {@link AnsiblePath}s associated with a {@link MinionServer} with given id
      *
      * @param minionServerId the id of {@link MinionServer}
@@ -103,6 +121,53 @@ public class AnsibleFactory extends HibernateFactory {
                         "WHERE p.minionServer.id = :mid ")
                 .setParameter("mid", minionId)
                 .list();
+    }
+
+    /**
+     * List all ansible managed {@link Server}s linked to given {@link Server}
+     *
+     * @param minionId the id of the contorl node
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersByControlNode(long minionId) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
+                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ap.server_id = :server_id""", Server.class)
+                .setParameter("server_id", minionId)
+                .getResultList();
+    }
+
+    /**
+     * List all {@link Server}s linked to inventories excluding given {@link InventoryPath}
+     *
+     * @param path the inventory to exclude
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersExcludingPath(InventoryPath path) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsibleInventoryServers ais
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ais.inventory_id != :inventory_id""", Server.class)
+                .setParameter("inventory_id", path.getId())
+                .getResultList();
+    }
+
+    /**
+     * List all {@link Server}s linked to inventories from control nodes excluding given {@link MinionServer}
+     *
+     * @param minionId the id of the control node to exclude
+     * @return the list of inventory servers
+     */
+    public static List<Server> listAnsibleInventoryServersExcludingControlNode(long minionId) {
+        return HibernateFactory.getSession().createNativeQuery("""
+                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
+                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
+                 JOIN rhnServer s ON ais.server_id = s.id
+                 WHERE ap.server_id != :server_id""", Server.class)
+                .setParameter("server_id", minionId)
+                .getResultList();
     }
 
     /**

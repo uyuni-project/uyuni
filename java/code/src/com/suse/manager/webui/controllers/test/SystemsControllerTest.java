@@ -23,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.VirtualInstance;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -33,7 +31,6 @@ import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.SparkTestUtils;
 
 import com.suse.manager.webui.controllers.SystemsController;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -81,11 +78,8 @@ public class SystemsControllerTest extends BaseControllerTestCase {
 
         SaltApi saltApi = new TestSaltApi();
         systemsController = new SystemsController(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
-                new SystemEntitler(new TestSaltApi(), monitoringManager, serverGroupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
         serversByHostServerName = new HashMap<>();

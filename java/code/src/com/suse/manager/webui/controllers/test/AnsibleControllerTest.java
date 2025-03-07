@@ -17,9 +17,8 @@ package com.suse.manager.webui.controllers.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-
-import com.suse.manager.webui.controllers.AnsibleController;
 
 import org.junit.jupiter.api.Test;
 
@@ -150,7 +149,7 @@ public class AnsibleControllerTest extends BaseTestCaseWithUser {
     public void testParseInventoryAndGetHostnames() {
         List<InventoryTestCase> testCases = getTestInventories();
         testCases.stream().forEach((testCase) -> {
-            Set<String> gotHostnames = AnsibleController.parseInventoryAndGetHostnames(testCase.getInventory());
+            Set<String> gotHostnames = AnsibleManager.parseInventoryAndGetHostnames(testCase.getInventory());
             assertEquals(gotHostnames, testCase.getExpectedResult());
         });
     }
