@@ -71,7 +71,7 @@ server {
 }
 EOF
 
-tee -a /etc/docker/daemon.json <<EOF
+sudo tee -a /etc/docker/daemon.json <<EOF
 {
   "dns": ["10.89.0.1"]
 }
