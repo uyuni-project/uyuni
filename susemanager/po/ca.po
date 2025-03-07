@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-04-19 14:08+0200\n"
-"PO-Revision-Date: 2025-02-28 09:15+0000\n"
+"PO-Revision-Date: 2025-03-03 11:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/"
 "susemanager-5-0/ca/>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../yast/susemanager_ask.rb:38
 msgid "Set up #{@product_name} from scratch"
-msgstr "Configura  up{ upproductname} des de zero"
+msgstr "Configura #{@product_name} des de zero"
 
 #: ../yast/susemanager_ask.rb:48
 msgid "Migrate a #{@product_name} compatible server"
-msgstr "Migra un servidor compatible amb  a{ aproductname}"
+msgstr "Migra un servidor compatible amb #{@product_name}"
 
 #: ../yast/susemanager_ask.rb:60
 msgid ""
@@ -123,7 +123,7 @@ msgstr "Configuració completada"
 
 #: ../yast/susemanager_db.rb:90
 msgid "Database &User"
-msgstr "Usuari de la base de dades"
+msgstr "&Usuari de la base de dades"
 
 #: ../yast/susemanager_db.rb:98
 msgid "Database &Password"
@@ -150,7 +150,7 @@ msgstr ""
 
 #: ../yast/susemanager_manager.rb:84
 msgid "&IP Address of the #{@product_name} Server"
-msgstr "Adreça IP del servidor  the{ theproductname}"
+msgstr "Adreça IP del servidor del producte #{@product_name}"
 
 #: ../yast/susemanager_manager.rb:94
 msgid "#{@product_name} &Administrator e-mail address"
@@ -158,7 +158,7 @@ msgstr "Adreça de correu electrònic de l'administrador -{-productname}"
 
 #: ../yast/susemanager_manager.rb:101
 msgid "Advertise #{@product_name} via SLP"
-msgstr "Publica  A{ Aproductname} mitjançant SLP"
+msgstr "Publica #{@product_name} mitjançant SLP"
 
 #: ../yast/susemanager_manager.rb:112
 msgid ""
@@ -174,7 +174,7 @@ msgstr "L'adreça de correu electrònic de l'administrador no és vàlida."
 
 #: ../yast/susemanager_migration.rb:73
 msgid "&Hostname of source #{@product_name} Server"
-msgstr "Nom de l'ordinador del servidor  of{ ofproductname} d'origen"
+msgstr "&Nom d'amfitrió del servidor d'origen del producte #{@product_name}"
 
 #: ../yast/susemanager_migration.rb:80
 msgid "&Domain name"
@@ -182,11 +182,11 @@ msgstr "Nom del domini"
 
 #: ../yast/susemanager_migration.rb:87
 msgid "Source #{@product_name} Database &User Name"
-msgstr "Nom d'usuari de la base de dades  Source{ productname}"
+msgstr "Nom d'usuari de la base de dades del producte #{@product_name}"
 
 #: ../yast/susemanager_migration.rb:94
 msgid "Source #{@product_name} Database &Password"
-msgstr "Font  { productname} Contrasenya de la base de dades"
+msgstr "Font #{@product_name}: Base de dades i contrasenya"
 
 #: ../yast/susemanager_migration.rb:101
 msgid "&Repeat Password"
@@ -194,11 +194,11 @@ msgstr "Repeteix la contrasenya"
 
 #: ../yast/susemanager_migration.rb:108
 msgid "Source #{@product_name} Database &Name"
-msgstr "Font  { productname} Nom de la base de dades"
+msgstr "Font #{@product_name}: &Nom de la base de dades"
 
 #: ../yast/susemanager_migration.rb:121
 msgid "Migration from previous #{@product_name} to new #{@product_name}"
-msgstr "Migració de l'anterior  to{ toproductname} a la nova  { toproductname}"
+msgstr "Migració del producte anterior #{@product_name} al nou #{@product_name}"
 
 #: ../yast/susemanager_migration.rb:138
 msgid "Hostname is missing."

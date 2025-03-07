@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-28 10:25+0100\n"
+"POT-Creation-Date: 2025-03-07 11:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -290,6 +290,7 @@ msgstr ""
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:82
 #: ../html/src/components/formula-selection.tsx:279
 #: ../html/src/components/panels/CreatorPanel.tsx:125
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
@@ -453,6 +454,8 @@ msgid "This field is used as a 'key' identifier in the resulting pillar data."
 msgstr ""
 
 #: ../html/src/components/formulas/FormulaComponentGenerator.tsx:155
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:159
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:160
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 #: ../html/src/manager/virtualization/guests/list/guests-list.tsx:54
 msgid "Reset"
@@ -1339,16 +1342,20 @@ msgid "Cobbler"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:376
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:382
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:394
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:385
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:397
 msgid "Monitoring"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:405
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:379
+msgid "Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
 msgstr ""
 
-#: ../html/src/manager/admin/config/monitoring-admin.tsx:406
+#: ../html/src/manager/admin/config/monitoring-admin.tsx:409
 msgid ""
 " Tomcat and Taskomatic is needed for the configuration changes to take "
 "effect."
@@ -1416,6 +1423,70 @@ msgstr ""
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:107
 msgid "Add PAYG Connection"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:47
+msgid "Server Configuration - Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:50
+msgid "Set up your server local users password policy."
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:53
+msgid "Password Policy Settings"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:58
+msgid "Min Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:65
+msgid "Max Password Length"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:72
+msgid "Require Digits"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:79
+msgid "Require Lowercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:86
+msgid "Require Uppercase Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:93
+msgid "Restrict Consecutive Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:100
+msgid "Require Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:107
+msgid "Allowed Special Characters"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:119
+msgid "Restrict Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:126
+msgid "Max Characters Occurrences"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:143
+msgid "Save Password Policy"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:149
+msgid "Password Policy Changed"
+msgstr ""
+
+#: ../html/src/manager/admin/password-policy/password-policy.tsx:166
+msgid "Password Policy reset to defaults"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66

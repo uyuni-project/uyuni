@@ -1543,13 +1543,6 @@
         </context-group>
         <target state="translated">口令不能少于 {0} 个字符。</target>
       </trans-unit>
-      <trans-unit id="error.invalidpasswordcharacters" xml:space="preserve">
-        <source>Password contains tab or newline characters.</source>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-        <target state="translated">口令包含制表符或换行符。</target>
-      </trans-unit>
       <trans-unit id="error.maxpassword" xml:space="preserve">
         <source>Passwords cannot be more than {0} characters.</source>
         <target>口令不能超过 {0} 个字符。</target>
@@ -1872,7 +1865,7 @@
         </context-group>
         <target state="translated">地址记录：</target>
       </trans-unit>
-      <trans-unit id="message.defaultSystemGroups" xml:space="preserve">
+      <trans-unit approved="yes" id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
@@ -1880,7 +1873,7 @@
             Default system groups updated for zbeeblebrox
           </context>
         </context-group>
-        <target state="translated">已更新 &lt;strong&gt;{0}&lt;/strong&gt; 的默认系统组</target>
+        <target state="final">已更新 &lt;strong&gt;{0}&lt;/strong&gt; 的默认系统组</target>
       </trans-unit>
       <trans-unit id="message.preferencesModified" xml:space="preserve">
         <source>Preferences modified</source>
@@ -6074,12 +6067,12 @@ user before attempting to deactivate their account.</source>
         </context-group>
         <target state="translated">未处理的错误</target>
       </trans-unit>
-      <trans-unit id="bootstrap.config.success" xml:space="preserve">
+      <trans-unit approved="yes" id="bootstrap.config.success" xml:space="preserve">
         <source>Bootstrap script successfully generated.  You can access it &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/CertificateConfig.do</context>
         </context-group>
-        <target state="needs-adaptation">已成功生成引导脚本。可通过 &lt;a href="{0}/pub/bootstrap/"&gt;{0}/pub/bootstrap/&lt;/a&gt; 访问它</target>
+        <target state="final">已成功生成引导脚本。可在 &lt;a href="{0}/pub/bootstrap/" target="_blank"&gt;{0}/pub/bootstrap/&lt;/a&gt; 中访问该脚本</target>
       </trans-unit>
       <trans-unit id="restart.config.error" xml:space="preserve">
         <source>There was an error restarting the @@PRODUCT_NAME@@.  It can be manually restarted from the console by issuing the command: &lt;strong&gt;/usr/sbin/spacewalk-service restart&lt;/strong&gt;.  Please contact support for more information.</source>
@@ -7283,13 +7276,13 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将立即更新。</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
           <context context-type="paramnotes">{0} - name of a system ex: highwind</context>
         </context-group>
-        <target state="translated">&lt;a href="{0}"&gt;已安排&lt;/a&gt; RHN 小程序 @@PRODUCT_NAME@@ 激活</target>
+        <target state="final">&lt;a href="{0}"&gt;已安排&lt;/a&gt; RHN 小程序 @@PRODUCT_NAME@@ 激活</target>
       </trans-unit>
       <trans-unit id="sdc.details.edit.none" xml:space="preserve">
         <source>None</source>
@@ -10126,9 +10119,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
         <target>&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;已安排&lt;/a&gt;将此系统迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。</target>
       </trans-unit>
-      <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
+      <trans-unit approved="yes" id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-        <target state="translated">已安排将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
+        <target state="final">已安排将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
@@ -10353,9 +10346,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Stores</source>
         <target>存储区</target>
       </trans-unit>
-      <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve">
+      <trans-unit approved="yes" id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;通道状态自动应用</target>
+        <target state="final">&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;通道状态自动应用</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/Delete.do</context>
         </context-group>
@@ -10503,9 +10496,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error generating bootstrap repo for: {0}</source>
         <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
-      <trans-unit id="notification.stateapplyfailed" xml:space="preserve">
+      <trans-unit approved="yes" id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
-        <target>在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
+        <target state="final">在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
       </trans-unit>
       <trans-unit id="Networks" xml:space="preserve">
         <source>Networks</source>
@@ -11495,32 +11488,112 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Perform a reboot, only if required</source>
         <target state="final">仅在需要时执行重引导</target>
       </trans-unit>
-    <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
+      <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
+        <target state="new"/>
+      </trans-unit>
+    <trans-unit id="Password Policy" xml:space="preserve">
+        <source>Password Policy</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
+        <source>Field {0} can't be equal or less than zero.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
+        <source>Field {0} can't be can't be greater or equal than field {1}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
+        <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+          <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.spacesinpassword" xml:space="preserve">
+        <source>Password contains tab or newline characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
+        <source>Password contains consecutive characters.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nodigitspassword" xml:space="preserve">
+        <source>Passwords must contain at least one digit.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nouppercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one upper case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nolowercasepassword" xml:space="preserve">
+        <source>Passwords must contain at least one lower case character.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
+        <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
+        <source>Password characters occurrences exceeded maximum allowed {0}.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
+        </context-group>
       <target state="new"/>
   </trans-unit>
       </body>
