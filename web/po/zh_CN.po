@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-28 10:25+0100\n"
-"PO-Revision-Date: 2025-02-18 10:29+0000\n"
+"PO-Revision-Date: 2025-03-07 05:26+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/"
 "web-5-0/zh_CN/>\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -1244,7 +1244,7 @@ msgstr "Taskomatic Prometheus 导出器已关闭，但 JMX 配置已启用。 "
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Monitoring status hasn't changed."
-msgstr "监视状态未更改。"
+msgstr "监控状态未更改。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
@@ -2054,7 +2054,7 @@ msgstr "未知主机名"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "OVAL 数据不同步。可能遗漏了某些漏洞"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
@@ -5382,7 +5382,7 @@ msgstr ""
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
+msgstr "这是开发人员使用的隐藏页面，如果您无意间发现了该页面，那么为您点赞！"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -5690,7 +5690,7 @@ msgstr "管理"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Monitored Host"
-msgstr "受监视主机"
+msgstr "受监控主机"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
 msgid "OS Image Build Host"
