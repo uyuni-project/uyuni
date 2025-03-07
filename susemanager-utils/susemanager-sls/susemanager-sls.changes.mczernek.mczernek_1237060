@@ -1,0 +1,2 @@
+- Change uptodate recurring action to use dist-upgrade
+  instead of upgrade (bsc#1237060)
