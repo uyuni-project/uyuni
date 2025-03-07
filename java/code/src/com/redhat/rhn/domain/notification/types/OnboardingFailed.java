@@ -51,14 +51,6 @@ public class OnboardingFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.ERROR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().
                 getMessage("notification.onboardingfailed", getMinionId());

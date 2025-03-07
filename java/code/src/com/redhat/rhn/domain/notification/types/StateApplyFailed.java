@@ -58,14 +58,6 @@ public class StateApplyFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.ERROR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().getMessage("notification.stateapplyfailed",
                 getSystemId().toString(), getActionId().toString(), getSystemName());
