@@ -20,20 +20,6 @@ PROMTAIL_TARGETS = 6
 LOKI_WAIT_TIMEOUT = 120
 
 
-def download_component_build_image(image: str, verbose=False):
-    if image_exists(image):
-        return
-
-    console.log("[bold]Building Promtail image")
-    url = "https://github.com/grafana/loki/releases/download/v3.3.0/promtail-linux-amd64.zip"
-    dest_dir = config.load_dockerfile_dir("promtail")
-    response = requests.get(url)
-    zip_archive = zipfile.ZipFile(io.BytesIO(response.content))
-    zip_archive.extract("promtail-linux-amd64", dest_dir)
-    build_image(image, dest_dir, verbose=verbose)
-    console.log(f"[green]The {image} image was built successfully")
-
-
 def run_loki(supportconfig_path=None, verbose=False):
     """
     Run promtail and loki to aggregate the logs
@@ -70,7 +56,6 @@ def run_loki(supportconfig_path=None, verbose=False):
     # Run promtail only now since it pushes data to loki
     promtail_image = config.load_prop("promtail.image")
 
-    download_component_build_image(promtail_image, verbose=verbose)
     podman_args = [
         "run",
         "--replace",
