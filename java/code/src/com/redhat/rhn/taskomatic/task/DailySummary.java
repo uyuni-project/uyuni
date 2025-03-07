@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2024 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -49,13 +49,12 @@ import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -111,8 +110,7 @@ public class DailySummary extends RhnJavaJob {
         if (END_OF_LIFE_MANAGER.isNotificationPeriod(today)) {
             NotificationMessage notification = UserNotificationFactory.createNotificationMessage(
                 new EndOfLifePeriod(END_OF_LIFE_MANAGER.getEndOfLifeDate()));
-            UserNotificationFactory.storeNotificationMessageFor(notification,
-                Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.ORG_ADMIN));
         }
     }
 
@@ -125,8 +123,7 @@ public class DailySummary extends RhnJavaJob {
         if (sw.expiresSoon()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(new SubscriptionWarning());
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.singleton(RoleFactory.ORG_ADMIN), Optional.empty());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.ORG_ADMIN));
         }
     }
 
@@ -135,8 +132,7 @@ public class DailySummary extends RhnJavaJob {
         if (uan.hasUpdateAvailable()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(uan);
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.singleton(RoleFactory.SAT_ADMIN), Optional.empty());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.SAT_ADMIN));
         }
     }
 
@@ -151,8 +147,8 @@ public class DailySummary extends RhnJavaJob {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(
                             new PaygNotCompliantWarning());
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.emptySet(), Optional.empty()); // This notification will be sent to everyone
+            // This notification will be sent to everyone
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage);
         }
     }
 
