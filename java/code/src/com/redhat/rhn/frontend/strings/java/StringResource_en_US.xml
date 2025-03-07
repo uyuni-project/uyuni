@@ -9490,6 +9490,39 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
       </trans-unit>
+      <trans-unit id="onboardingfailed" xml:space="preserve">
+        <source>Onboarding failed</source>
+      </trans-unit>
+      <trans-unit id="channelsyncfailed" xml:space="preserve">
+        <source>Channel sync failed</source>
+      </trans-unit>
+      <trans-unit id="channelsyncfinished" xml:space="preserve">
+        <source>Channel sync finished</source>
+      </trans-unit>
+      <trans-unit id="createbootstraprepofailed" xml:space="preserve">
+        <source>Creating Bootstrap Repository failed</source>
+      </trans-unit>
+      <trans-unit id="stateapplyfailed" xml:space="preserve">
+        <source>State apply failed</source>
+      </trans-unit>
+      <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
+        <source>PAYG refresh failed</source>
+      </trans-unit>
+      <trans-unit id="endoflifeperiod" xml:space="preserve">
+        <source>End of Life Period</source>
+      </trans-unit>
+      <trans-unit id="subscriptionwarning" xml:space="preserve">
+        <source>Subscription Warning</source>
+      </trans-unit>
+      <trans-unit id="updateavailable" xml:space="preserve">
+        <source>Updates are Available</source>
+      </trans-unit>
+      <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
+        <source>PAYG instance is not compliant</source>
+      </trans-unit>
+      <trans-unit id="sccoptoutwarning" xml:space="preserve">
+        <source>SCC Data Sync Disabled</source>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
