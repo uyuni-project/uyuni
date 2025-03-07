@@ -1,6 +1,6 @@
 include ../common.jade
 
-#notification-messages
+#notifications-list
 
 script(src='/javascript/momentjs/moment-with-langs.min.js?cb=#{webBuildtimestamp}', type='text/javascript')
 
@@ -8,5 +8,5 @@ script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('notifications/notification-messages')
-        .then(function(module) { module.renderer('notification-messages') });
+    spaImportReactPage('notifications/notifications-list')
+        .then(function(module) { module.renderer('notifications-list', !{notificationTypes}) });

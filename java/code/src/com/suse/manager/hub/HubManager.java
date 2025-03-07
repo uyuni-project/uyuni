@@ -262,15 +262,17 @@ public class HubManager {
      * Delete locally all ISS artifacts for the hub or peripheral server identified by the FQDN
      * @param accessToken the token
      * @param fqdn the FQDN
+     * @return the role of the removed server
      */
-    public void deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
+    public IssRole deleteIssServerLocal(IssAccessToken accessToken, String fqdn) {
         ensureValidToken(accessToken);
         if (hubFactory.isISSPeripheral()) {
             deleteHub(fqdn);
+            return IssRole.HUB;
         }
-        else {
-            deletePeripheral(fqdn);
-        }
+
+        deletePeripheral(fqdn);
+        return IssRole.PERIPHERAL;
     }
 
     private void deletePeripheral(String peripheralFqdn) {

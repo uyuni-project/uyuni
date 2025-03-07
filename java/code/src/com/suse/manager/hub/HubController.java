@@ -29,6 +29,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.ConnectionManager;
 import com.redhat.rhn.common.hibernate.ConnectionManagerFactory;
 import com.redhat.rhn.common.hibernate.ReportDbHibernateFactory;
+import com.redhat.rhn.domain.notification.UserNotificationFactory;
+import com.redhat.rhn.domain.notification.types.HubRegistrationChanged;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.taskomatic.task.ReportDBHelper;
@@ -60,6 +63,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import spark.Request;
 import spark.Response;
@@ -159,7 +163,13 @@ public class HubController {
 
     private String deregister(Request request, Response response, IssAccessToken accessToken) {
         // request to delete the local access for the requesting server.
-        hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
+        IssRole remoteRole = hubManager.deleteIssServerLocal(accessToken, accessToken.getServerFqdn());
+
+        // Add a notification to inform the user this server has been deregistered
+        var notificationData = new HubRegistrationChanged(false, remoteRole, accessToken.getServerFqdn());
+        var notification = UserNotificationFactory.createNotificationMessage(notificationData);
+        UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
+
         return success(response);
     }
 
@@ -261,6 +271,11 @@ public class HubController {
         try {
             hubManager.storeAccessToken(token, tokenToStore);
             hubManager.saveNewServer(token, IssRole.HUB, registerRequest.getRootCA(), registerRequest.getGpgKey());
+
+            // Add a notification to inform the user this server is now a peripheral
+            var notificationData = new HubRegistrationChanged(true, IssRole.HUB, token.getServerFqdn());
+            var notification = UserNotificationFactory.createNotificationMessage(notificationData);
+            UserNotificationFactory.storeNotificationMessageFor(notification, Set.of(RoleFactory.SAT_ADMIN));
 
             return success(response);
         }
