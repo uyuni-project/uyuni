@@ -12,7 +12,6 @@ package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,14 +39,14 @@ public class EndOfLifePeriod implements NotificationData {
     }
 
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
+    public NotificationSeverity getSeverity() {
         // Mark the notification as error 1 month before the actual expiration
         final LocalDate localEolDate = LocalDate.ofInstant(endOfLifeDate.toInstant(), ZoneId.systemDefault());
         if (ChronoUnit.MONTHS.between(localEolDate, LocalDate.now()) > -1) {
-            return NotificationMessage.NotificationMessageSeverity.ERROR;
+            return NotificationSeverity.ERROR;
         }
 
-        return NotificationMessage.NotificationMessageSeverity.WARNING;
+        return NotificationSeverity.WARNING;
     }
 
     private boolean isExpired() {

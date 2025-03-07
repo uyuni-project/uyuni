@@ -26,7 +26,7 @@ import java.util.Date;
 public class NotificationMessageJson {
 
     private Long id;
-    private NotificationMessage.NotificationMessageSeverity severity;
+    private String severity;
     private String type;
     private NotificationData data;
     private String summary;
@@ -49,7 +49,7 @@ public class NotificationMessageJson {
     public NotificationMessageJson(NotificationMessage nm, boolean isReadIn) {
         this.id = nm.getId();
         this.data = nm.getNotificationData();
-        this.severity = data.getSeverity();
+        this.severity = data.getSeverity().getLabel();
         this.summary = data.getSummary();
         this.details = data.getDetails();
         this.type = nm.getType().getLabel();
@@ -176,14 +176,14 @@ public class NotificationMessageJson {
     /**
      * @return Returns the severity.
      */
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
+    public String getSeverity() {
         return severity;
     }
 
     /**
      * @param severityIn The severity to set.
      */
-    public void setSeverity(NotificationMessage.NotificationMessageSeverity severityIn) {
+    public void setSeverity(String severityIn) {
         this.severity = severityIn;
     }
 

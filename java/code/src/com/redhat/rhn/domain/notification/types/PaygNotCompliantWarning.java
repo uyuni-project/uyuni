@@ -12,14 +12,13 @@
 package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 public class PaygNotCompliantWarning implements NotificationData {
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
 
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.WARNING;
+    public NotificationSeverity getSeverity() {
+        return NotificationSeverity.WARNING;
     }
 
     @Override
