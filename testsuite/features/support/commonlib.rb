@@ -271,7 +271,7 @@ end
 # @return [Boolean] Returns true if the system is a SLE/SL Micro one
 def slemicro_host?(name)
   node = get_target(name)
-  os_family = node.os_family
+  os_family = node.local_os_family
   (name.include? 'slemicro') || (name.include? 'micro') || os_family.include?('sle-micro') || os_family.include?('suse-microos')
 end
 
@@ -281,7 +281,7 @@ end
 # @return [Boolean] Returns true if the system is a openSUSE Leap Micro one.
 def leapmicro_host?(name)
   node = get_target(name)
-  os_family = node.os_family
+  os_family = node.local_os_family
   os_family.include?('opensuse-leap-micro')
 end
 
