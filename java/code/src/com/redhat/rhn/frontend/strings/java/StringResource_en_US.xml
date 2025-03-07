@@ -9523,6 +9523,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
       </trans-unit>
+      <trans-unit id="notification.not_found" xml:space="preserve">
+        <source>Cannot retry: a notification with id '{0}' does not exist.</source>
+      </trans-unit>
+      <trans-unit id="notification.type_not_actionable" xml:space="preserve">
+        <source>Cannot retry: the notification type '{0}' is not actionable.</source>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed" xml:space="preserve">
         <source>Error syncing the channel: &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt;</source>
       </trans-unit>
@@ -9533,11 +9539,23 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
       </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
+        <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
+        <source>Failed to restart reposync for the channel '{0}': {1}.</source>
+      </trans-unit>
+      <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
+        <source>Reposync restarted for the channel '{0}'</source>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfinished" xml:space="preserve">
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
       </trans-unit>
       <trans-unit id="notification.onboardingfailed" xml:space="preserve">
         <source>Error registering minion id: {0}</source>
+      </trans-unit>
+      <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
+        <source>Onboarding restarted for the minion with id '{0}'</source>
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>

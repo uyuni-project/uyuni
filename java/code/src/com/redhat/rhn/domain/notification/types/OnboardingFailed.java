@@ -52,8 +52,7 @@ public class OnboardingFailed implements NotificationData {
      */
     @Override
     public String getSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.onboardingfailed", getMinionId());
+        return LocalizationService.getInstance().getMessage("notification.onboardingfailed", getMinionId());
     }
 
     /**
@@ -62,8 +61,13 @@ public class OnboardingFailed implements NotificationData {
     @Override
     public String getDetails() {
         if (details != null) {
-            return String.format("<pre>%s</pre>", details.replaceAll("\\\\n", "\n"));
+            return String.format("<pre>%s</pre>", details.replace("\\\\n", "\n"));
         }
         return "";
+    }
+
+    @Override
+    public boolean isActionable() {
+        return true;
     }
 }
