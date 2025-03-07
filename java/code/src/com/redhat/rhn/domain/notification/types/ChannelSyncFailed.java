@@ -53,14 +53,6 @@ public class ChannelSyncFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.ERROR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         if (getChannelId() != null && getChannelName() != null) {
             return LocalizationService.getInstance().getMessage("notification.channelsyncfailed",

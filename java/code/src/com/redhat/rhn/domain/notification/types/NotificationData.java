@@ -16,10 +16,13 @@ package com.redhat.rhn.domain.notification.types;
 public interface NotificationData {
     /**
      * Gets the severity of the notification.
+     * Default implementation returns {@link NotificationType#getDefaultSeverity()}.
      *
      * @return severity of this notification
      */
-    NotificationSeverity getSeverity();
+    default NotificationSeverity getSeverity() {
+        return getType().getDefaultSeverity();
+    }
 
     /**
      * Gets the {@link NotificationType} associated with this notification. Default implementation uses

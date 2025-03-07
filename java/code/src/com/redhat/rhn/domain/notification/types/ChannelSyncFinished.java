@@ -48,14 +48,6 @@ public class ChannelSyncFinished implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.INFO;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
         return LocalizationService.getInstance().getMessage("notification.channelsyncfinished",
                 getChannelId().toString(), getChannelName());
