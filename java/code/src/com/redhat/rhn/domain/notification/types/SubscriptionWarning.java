@@ -13,7 +13,6 @@ package com.redhat.rhn.domain.notification.types;
 import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 import java.util.Optional;
 
@@ -37,8 +36,8 @@ public class SubscriptionWarning implements NotificationData {
     }
 
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.WARNING;
+    public NotificationSeverity getSeverity() {
+        return NotificationSeverity.WARNING;
     }
 
     @Override
