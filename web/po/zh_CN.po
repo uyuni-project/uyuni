@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-18 10:28+0000\n"
+"PO-Revision-Date: 2025-03-07 05:26+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/"
 "zh_CN/>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.10\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -474,26 +474,22 @@ msgstr "切换部分可见性"
 #: ../html/src/components/hub/AddTokenButton.tsx:66
 #: ../html/src/components/hub/AddTokenButton.tsx:93
 #: ../html/src/components/hub/AddTokenButton.tsx:120
-#, fuzzy
-#| msgid "Issue date"
 msgid "Issue a new token"
-msgstr "颁发日期"
+msgstr "颁发新令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:77
 #: ../html/src/components/hub/AddTokenButton.tsx:101
 #: ../html/src/components/hub/AddTokenButton.tsx:120
 msgid "Store an external token"
-msgstr ""
+msgstr "存储外部令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
-#, fuzzy
-#| msgid "Add to:"
 msgid "Add token"
-msgstr "添加到："
+msgstr "添加令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
 msgid "Add a new access token"
-msgstr ""
+msgstr "添加新的访问令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
 msgid "Server FQDN"
@@ -501,8 +497,6 @@ msgstr "服务器 FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
-#, fuzzy
-#| msgid "e.g., server.domain.com"
 msgid "e.g. server.domain.com"
 msgstr "例如 server.domain.com"
 
@@ -516,35 +510,29 @@ msgstr "必须为有效的 FQDN 地址"
 #: ../html/src/components/hub/AddTokenButton.tsx:139
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
 msgid "Token"
-msgstr ""
+msgstr "令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Issued"
 msgid "Issue"
-msgstr "颁发日期"
+msgstr "颁发"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Store URI"
 msgid "Store"
-msgstr "存储区 URI"
+msgstr "存储"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:179
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "New token successfully issued"
-msgstr "成功更新日程安排。"
+msgstr "已成功颁发新令牌"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
 msgid ""
 "The new token was generated successfully. Make sure to copy it now as you "
 "will not be able to see this again."
-msgstr ""
+msgstr "已成功生成新令牌。请务必立即复制，因为您将无法再看到该令牌。"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
-msgstr ""
+msgstr "复制"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
@@ -554,196 +542,163 @@ msgstr "关闭"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:252
 msgid "Access token copied to the clipboard"
-msgstr ""
+msgstr "访问令牌已复制到剪贴板"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
 #: ../html/src/components/hub/PeripheralsList.tsx:51
-#, fuzzy
-#| msgid "Persistent"
 msgid "Deregister"
-msgstr "持久"
+msgstr "取消注册"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
 msgid "Deregister from the hub"
-msgstr ""
+msgstr "从 Hub 取消注册"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm deregistration"
-msgstr "确认删除"
+msgstr "确认取消注册"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
 msgid ""
 "Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
 "longer receive data from it."
-msgstr ""
+msgstr "您确定要从 Hub {fqdn} 取消注册吗？如果取消注册，您将无法再从该处获得数据。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
 msgid ""
 "Are you sure you want to derigester peripheral {fqdn}? All the current "
 "configuration will be lost."
-msgstr ""
+msgstr "您确定要将外设 {fqdn} 取消注册吗？当前的所有配置都将丢失。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
-msgstr ""
+msgstr "已成功将服务器 {fqdn} 取消注册。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server FQDN:"
-msgstr "服务器 FQDN"
+msgstr "服务器 FQDN："
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:44
-#, fuzzy
-#| msgid "Attestation time"
 msgid "Registration date:"
-msgstr "认证时间"
+msgstr "注册日期："
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:54
-#, fuzzy
-#| msgid "Last modified"
 msgid "Last modified:"
-msgstr "上次修改时间"
+msgstr "上次修改时间："
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
 msgid "Root Certificate Authority:"
-msgstr ""
+msgstr "根证书颁发机构："
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:70
 msgid ""
 "A customized Root Certificate Authority is currently configured for this hub."
-msgstr ""
+msgstr "目前已为此 Hub 配置自定义根证书颁发机构。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:71
 msgid "This hub is currently using the default Root Certificate Authority."
-msgstr ""
+msgstr "此 Hub 目前使用的是默认根证书颁发机构。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
-#, fuzzy
-#| msgid "SSL Certificate data"
 msgid "Root Certificate Authority"
-msgstr "SSL 证书数据"
+msgstr "根证书颁发机构"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:74
 msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the hub."
-msgstr ""
+msgstr "请确保您提供的证书正确无误，然后再继续。如果提供的值不正确，将会破坏与 Hub "
+"的连接。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:77
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the hub."
-msgstr ""
+msgstr "您确定要删除当前的根证书颁发机构吗？此更改可能会破坏与 Hub 的连接。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:83
 msgid "Root Certificate Authority successfully modified."
-msgstr ""
+msgstr "已成功修改根证书颁发机构。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "Root Certificate Authority successfully updated."
-msgstr "成功更新日程安排。"
+msgstr "已成功更新根证书颁发机构。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
 msgid "GPG Public Key:"
-msgstr ""
+msgstr "GPG 公共密钥："
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:121
 msgid "A customized GPG key is currently configured for this hub."
-msgstr ""
+msgstr "目前已为此 Hub 配置自定义 GPG 密钥。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:122
 msgid "This hub is currently not using a custom GPG key."
-msgstr ""
+msgstr "此 Hub 目前使用的不是自定义 GPG 密钥。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Mirror credentials:"
-msgstr "使用身份凭证"
+msgstr "镜像身份凭证："
 
 #: ../html/src/components/hub/PeripheralsList.tsx:29
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by FQDN"
-msgstr "按名称过滤"
+msgstr "按 FQDN 过滤"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:31
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Peripheral FQDN"
-msgstr "服务器 FQDN"
+msgstr "外设 FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:35
-#, fuzzy
-#| msgid "SUSE Channels"
 msgid "N. of Sync Channels"
-msgstr "SUSE 通道"
+msgstr "同步通道数量"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of Sync Orgs"
-msgstr ""
+msgstr "同步组织数量"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download Root CA"
-msgstr "下载 CSV"
+msgstr "下载根 CA"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
-#, fuzzy
-#| msgid "System is not a peripheral server"
 msgid "Register a new peripheral server"
-msgstr "系统不是外设服务器"
+msgstr "注册新的外设服务器"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
-#, fuzzy
-#| msgid ""
-#| "Generation of the proxy configuration in progress: waiting for a "
-#| "response..."
 msgid "Peripheral registration in progress: waiting for a response..."
-msgstr "正在生成代理配置：正在等待响应..."
+msgstr "正在注册外设：正在等待响应..."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Peripheral Server FQDN"
-msgstr "外设服务器"
+msgstr "外设服务器 FQDN"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
-msgstr ""
+msgstr "待注册服务器的可由 DNS 解析的唯一完全限定域名。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#, fuzzy
-#| msgid "Permission mode"
 msgid "Registration mode"
-msgstr "权限模式"
+msgstr "注册模式"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Define how to connect to the remote server to initiate the registration"
-msgstr ""
+msgstr "指定如何连接远程服务器以开始注册"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
 msgid "Existing token"
-msgstr ""
+msgstr "现有令牌"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Administrator User/Password"
-msgstr ""
+msgstr "管理员用户/口令"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid ""
 "The token that grant access to the remote server to establish the connection."
-msgstr ""
+msgstr "用于授予对远程服务器的访问权限以建立连接的令牌。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -755,7 +710,7 @@ msgstr "用户名"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 msgid "The username of {productName} Administrator of the remote server."
-msgstr ""
+msgstr "远程服务器的 {productName} 管理员的用户名。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
 #: ../html/src/components/input/password/Password.stories.tsx:23
@@ -772,67 +727,51 @@ msgstr "口令"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 msgid "The password of the specified user."
-msgstr ""
+msgstr "所指定用户的口令。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Root CA certificate"
-msgstr "CA 证书"
+msgstr "根 CA 证书"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
-msgstr ""
+msgstr "远程服务器的根证书颁发机构，该颁发机构必须受信任以便建立安全的连接。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-#, fuzzy
-#| msgid "Not affected"
 msgid "Not needed"
-msgstr "不受影响"
+msgstr "不需要"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 #: ../html/src/components/large-text-attachment.tsx:136
 msgid "Upload a file"
-msgstr ""
+msgstr "上载文件"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#, fuzzy
-#| msgid "Proxy certificate"
 msgid "Paste a PEM certificate"
-msgstr "代理证书"
+msgstr "粘贴 PEM 证书"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificate File"
-msgstr "CA 证书"
+msgstr "证书文件"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-#, fuzzy
-#| msgid "CA file in PEM format"
 msgid "Certificate file, in PEM format"
 msgstr "PEM 格式的 CA 文件"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
-#, fuzzy
-#| msgid "CA certificate"
 msgid "PEM Certificate"
-msgstr "CA 证书"
+msgstr "PEM 证书"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "The text representing the certificate, in PEM format"
-msgstr "为 PEM 格式的 SSL 证书签名"
+msgstr "表示 PEM 格式证书的文本"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
-#, fuzzy
-#| msgid "Registered Days"
 msgid "Register"
-msgstr "已注册天数"
+msgstr "注册"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
 #: ../html/src/manager/images/image-import.tsx:314
@@ -845,26 +784,20 @@ msgid "Clear fields"
 msgstr "清除字段"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
-#, fuzzy
-#| msgid "No modules available"
 msgid "No tokens available"
-msgstr "无可用模块"
+msgstr "无可用令牌"
 
 #: ../html/src/components/hub/TokenTable.tsx:61
-#, fuzzy
-#| msgid "Action type"
 msgid "Token type"
-msgstr "操作类型"
+msgstr "令牌类型"
 
 #: ../html/src/components/hub/TokenTable.tsx:68
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server"
-msgstr "服务器 FQDN"
+msgstr "服务器"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
-msgstr ""
+msgstr "有效"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
@@ -882,7 +815,7 @@ msgstr "否"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
-msgstr ""
+msgstr "已过期"
 
 #: ../html/src/components/hub/TokenTable.tsx:96
 #: ../html/src/manager/images/image-view.tsx:675
@@ -891,35 +824,29 @@ msgstr "上次修改时间"
 
 #: ../html/src/components/hub/TokenTable.tsx:113
 msgid "No, never expires"
-msgstr ""
+msgstr "不，永不过期"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "Yes, expired <expiration></expiration>"
-msgstr ""
+msgstr "是，已过期 <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "No, expires <expiration></expiration>"
-msgstr ""
+msgstr "否，会过期 <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Invalidate"
-msgstr "无效数据"
+msgstr "设为无效"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Validate"
-msgstr "无效数据"
+msgstr "设为有效"
 
 #: ../html/src/components/hub/TokenTable.tsx:151
-#, fuzzy
-#| msgid "Confirm Attestation Execution"
 msgid "Confirm access token modification"
-msgstr "确认认证执行"
+msgstr "确认修改访问令牌"
 
 #: ../html/src/components/hub/TokenTable.tsx:155
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -927,71 +854,67 @@ msgid "Confirm if you want to proceed."
 msgstr "请确认是否继续。"
 
 #: ../html/src/components/hub/TokenTable.tsx:180
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm access token deletion"
-msgstr "确认删除"
+msgstr "确认删除访问令牌"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
-#, fuzzy
-#| msgid "Are you sure you want to delete this schedule?"
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr "您确定要删除此日程安排吗？"
+msgstr "您确定要删除此令牌吗？它目前未被使用。"
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
-msgstr ""
+msgstr "无法删除此访问令牌。它目前已被 Hub {fqdn} 使用"
 
 #: ../html/src/components/hub/TokenTable.tsx:224
 msgid ""
 "This access token cannot be deleted. It is currently used by peripheral "
 "{fqdn}"
-msgstr ""
+msgstr "无法删除此访问令牌。它目前已被外设 {fqdn} 使用"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
 msgid ""
 "Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr ""
+msgstr "如果将此访问令牌设为无效，将会阻止 Hub {fqdn} 进行访问。"
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
 msgid ""
 "Invalidating this access token will prevent the peripheral {fqdn} from "
 "accesssing."
-msgstr ""
+msgstr "如果将此访问令牌设为无效，将会阻止外设 {fqdn} 进行访问。"
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
 msgid "Enabling this access token will grant access to the hub {fqdn}."
-msgstr ""
+msgstr "启用此访问令牌将授予对 Hub {fqdn} 的访问权限。"
 
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr ""
+msgstr "启用此访问令牌将授予对外设 {fqdn} 的访问权限。"
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr ""
+msgstr "如果将此访问令牌设为无效，将会阻止访问 Hub {fqdn}。"
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
 msgid ""
 "Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr ""
+msgstr "如果将此访问令牌设为无效，将会阻止访问外设 {fqdn}。"
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr ""
+msgstr "启用此访问令牌将恢复对 Hub {fqdn} 的访问权限。"
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
 msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr ""
+msgstr "启用此访问令牌将恢复对外设 {fqdn} 的访问权限。"
 
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
@@ -1136,14 +1059,12 @@ msgid "No flavors"
 msgstr "无风格"
 
 #: ../html/src/components/large-text-attachment.tsx:62
-#, fuzzy
-#| msgid "Data is refreshed every "
 msgid "Data is present."
-msgstr "数据每隔 "
+msgstr "数据存在。"
 
 #: ../html/src/components/large-text-attachment.tsx:63
 msgid "Data is not present."
-msgstr ""
+msgstr "数据不存在。"
 
 #: ../html/src/components/large-text-attachment.tsx:64
 #: ../html/src/components/large-text-attachment.tsx:103
@@ -1167,10 +1088,8 @@ msgid "Edit"
 msgstr "编辑"
 
 #: ../html/src/components/large-text-attachment.tsx:93
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download"
-msgstr "下载 CSV"
+msgstr "下载"
 
 #: ../html/src/components/large-text-attachment.tsx:103
 msgid "Add"
@@ -1178,18 +1097,16 @@ msgstr "添加"
 
 #: ../html/src/components/large-text-attachment.tsx:127
 #: ../html/src/components/large-text-attachment.tsx:128
-#, fuzzy
-#| msgid "Edit store"
 msgid "Edit method"
-msgstr "编辑存储区"
+msgstr "编辑方法"
 
 #: ../html/src/components/large-text-attachment.tsx:129
 msgid "Define how to provide the new value"
-msgstr ""
+msgstr "指定如何提供新值"
 
 #: ../html/src/components/large-text-attachment.tsx:137
 msgid "Paste the new value"
-msgstr ""
+msgstr "粘贴新值"
 
 #: ../html/src/components/large-text-attachment.tsx:143
 msgid "File"
@@ -1197,7 +1114,7 @@ msgstr "文件"
 
 #: ../html/src/components/large-text-attachment.tsx:153
 msgid "New value"
-msgstr ""
+msgstr "新值"
 
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
@@ -1885,10 +1802,8 @@ msgid "Monitoring"
 msgstr "监控"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "口令"
+msgstr "口令策略"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1937,40 +1852,34 @@ msgid "Bastion SSH connection data"
 msgstr "堡垒 SSH 连接数据"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:24
-#, fuzzy
-#| msgid "Details"
 msgid "Hub Details"
-msgstr "细节"
+msgstr "Hub 细节"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:44
 msgid "No hub is currently configured for this server. "
-msgstr ""
+msgstr "目前未为此服务器配置 Hub。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:53
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr ""
+msgstr "此服务器目前注册为 Hub {fqdn} 的外设。 "
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
-msgstr ""
+msgstr "访问令牌"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:16
-#, fuzzy
-#| msgid "Configuration"
 msgid "Peripherals Configuration"
-msgstr "配置"
+msgstr "外设配置"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:25
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Add Peripheral"
-msgstr "外设服务器"
+msgstr "添加外设"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Managing PAYG Connections is disabled."
-msgstr ""
+msgstr "此服务器已配置为某个 Hub 配置的外设服务器。禁止管理 PAYG 连接。"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -1999,73 +1908,67 @@ msgstr "添加 PAYG 连接"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "服务器配置 - 口令策略"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "设置服务器本地用户口令策略。"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
-msgstr "提供程序设置"
+msgstr "口令策略设置"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "口令长度下限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "口令长度上限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "需要重引导"
+msgstr "需要包含数字"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "需要包含小写字母"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "需要包含大写字母"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "限制连续的字符"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "必需的通道"
+msgstr "需要包含特殊字符"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "允许使用的特殊字符"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "限制重复的字符"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "重复字符数上限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "保存口令策略"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "口令策略已更改"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr ""
+msgstr "口令策略已重置为默认值"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -2233,16 +2136,10 @@ msgstr ""
 "如果您确信缺少了产品，请确保已在向导的上一步中添加了正确的组织身份凭证。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-#, fuzzy
-#| msgid ""
-#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-#| "Products can only be managed on the ISS master."
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Products can only be managed on the Hub server."
-msgstr ""
-"此服务器已配置为服务器间同步 (ISS) 从属服务器。只能在 ISS 主服务器上管理产"
-"品。"
+msgstr "此服务器已配置为某个 Hub 配置的外设服务器。只能在相应 Hub 服务器上管理产品。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
@@ -6196,13 +6093,11 @@ msgstr "系统不是外设服务器"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:33
 msgid "Setting new credentials for the report database failed"
-msgstr ""
+msgstr "为报告数据库设置新身份凭证失败"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
-#, fuzzy
-#| msgid "New password generated and action for peripheral server scheduled"
 msgid "New password generated and changed on the peripheral server"
-msgstr "已生成新口令并为外设服务器安排了操作"
+msgstr "已生成新口令并针对外设服务器更改口令"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
