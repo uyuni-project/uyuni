@@ -376,11 +376,19 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
                         outer-join="false" cascade="all" property-ref="parentAction"/>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.supportdata.SupportDataAction"
+                  lazy="true" discriminator-value="526" >
+            <one-to-one name="details"
+                        class="com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails"
+                        outer-join="false" cascade="all" property-ref="parentAction"/>
+        </subclass>
+        
         <!-- Refresh virtual instance information -->
         <subclass
                 name="com.redhat.rhn.domain.action.VirtualInstanceRefreshAction"
                 discriminator-value="527" lazy="true">
         </subclass>
+
 
     </class>
     <query name="Action.findByIdandOrgId">
