@@ -14,6 +14,8 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.Labeled;
 
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * Available notification types
@@ -76,9 +78,23 @@ public enum NotificationType implements Labeled {
      * @throws IllegalArgumentException when no type matches the given label
      */
     public static NotificationType byLabel(String label) {
+        return findByField(NotificationType::getLabel, label);
+    }
+
+    /**
+     * Retrieves a notification type by its {@link NotificationData} implementation class.
+     * @param dataClass the class representing the notification data
+     * @return the {@link NotificationType} matching the given {@link NotificationData} class.
+     * @throws IllegalArgumentException when no type matches the given data class
+     */
+    public static NotificationType byDataClass(Class<? extends NotificationData> dataClass) {
+        return findByField(NotificationType::getDataClass, dataClass);
+    }
+
+    private static <T> NotificationType findByField(Function<NotificationType, T> getter, T value) {
         return Arrays.stream(NotificationType.values())
-            .filter(type -> type.getLabel().equals(label))
+            .filter(type -> Objects.equals(value, getter.apply(type)))
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException("Unable to find type for label %s".formatted(label)));
+            .orElseThrow(() -> new IllegalArgumentException("Unable to find type for %s".formatted(value)));
     }
 }
