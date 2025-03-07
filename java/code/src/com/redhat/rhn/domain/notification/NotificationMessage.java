@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,43 +7,25 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.notification;
 
-import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.domain.notification.types.ChannelSyncFailed;
-import com.redhat.rhn.domain.notification.types.ChannelSyncFinished;
-import com.redhat.rhn.domain.notification.types.CreateBootstrapRepoFailed;
-import com.redhat.rhn.domain.notification.types.EndOfLifePeriod;
 import com.redhat.rhn.domain.notification.types.NotificationData;
 import com.redhat.rhn.domain.notification.types.NotificationType;
-import com.redhat.rhn.domain.notification.types.OnboardingFailed;
-import com.redhat.rhn.domain.notification.types.PaygAuthenticationUpdateFailed;
-import com.redhat.rhn.domain.notification.types.PaygNotCompliantWarning;
-import com.redhat.rhn.domain.notification.types.SCCOptOutWarning;
-import com.redhat.rhn.domain.notification.types.StateApplyFailed;
-import com.redhat.rhn.domain.notification.types.SubscriptionWarning;
-import com.redhat.rhn.domain.notification.types.UpdateAvailable;
-
-import com.google.gson.Gson;
+import com.redhat.rhn.domain.notification.types.NotificationTypeAdapter;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -113,8 +95,8 @@ public class NotificationMessage implements Serializable {
      */
     @Transient
     public void setNotificationData(NotificationData notificationData) {
-        setType(notificationData.getType());
-        setData(new Gson().toJson(notificationData));
+        this.type = notificationData.getType();
+        this.data = new NotificationTypeAdapter(type).toJson(notificationData);
     }
 
     /**
@@ -123,51 +105,7 @@ public class NotificationMessage implements Serializable {
      */
     @Transient
     public NotificationData getNotificationData() {
-        switch (getType()) {
-            case OnboardingFailed: return new Gson().fromJson(getData(), OnboardingFailed.class);
-            case ChannelSyncFailed: return new Gson().fromJson(getData(), ChannelSyncFailed.class);
-            case ChannelSyncFinished:
-                return new Gson().fromJson(getData(), ChannelSyncFinished.class);
-            case CreateBootstrapRepoFailed:
-                return new Gson().fromJson(getData(), CreateBootstrapRepoFailed.class);
-            case StateApplyFailed:
-                return new Gson().fromJson(getData(), StateApplyFailed.class);
-            case PaygAuthenticationUpdateFailed:
-                return new Gson().fromJson(getData(), PaygAuthenticationUpdateFailed.class);
-            case EndOfLifePeriod:
-                return new Gson().fromJson(getData(), EndOfLifePeriod.class);
-            case SubscriptionWarning:
-                return new Gson().fromJson(getData(), SubscriptionWarning.class);
-            case UpdateAvailable:
-                return new Gson().fromJson(getData(), UpdateAvailable.class);
-            case PaygNotCompliantWarning:
-                return new Gson().fromJson(getData(), PaygNotCompliantWarning.class);
-            case SCCOptOutWarning:
-                return new Gson().fromJson(getData(), SCCOptOutWarning.class);
-            default: throw new RhnRuntimeException("Notification type not found");
-        }
-    }
-
-    /**
-     * Return the Notification Type as human readable string
-     * @return the notification type as string
-     */
-    @Transient
-    public String getTypeAsString() {
-        switch (getType()) {
-            case OnboardingFailed: return "Onboarding failed";
-            case ChannelSyncFailed: return "Channel sync failed";
-            case ChannelSyncFinished: return "Channel sync finished";
-            case CreateBootstrapRepoFailed: return "Creating Bootstrap Repository failed";
-            case StateApplyFailed: return "State apply failed";
-            case PaygAuthenticationUpdateFailed: return "PAYG refresh failed";
-            case EndOfLifePeriod: return "End of Life Period";
-            case SubscriptionWarning: return "Subscription Warning";
-            case UpdateAvailable: return "Updates are Available";
-            case PaygNotCompliantWarning: return "PAYG instance is not compliant";
-            case SCCOptOutWarning: return "SCC Data Sync Disabled";
-            default: return getType().name();
-        }
+        return new NotificationTypeAdapter(type).fromJson(data);
     }
 
     /**
@@ -181,8 +119,8 @@ public class NotificationMessage implements Serializable {
      * Get the type of this notification.
      * @return notification type
      */
-    @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "type")
+    @Type(type = "com.redhat.rhn.domain.notification.types.NotificationTypeEnumType")
     public NotificationType getType() {
         return type;
     }
