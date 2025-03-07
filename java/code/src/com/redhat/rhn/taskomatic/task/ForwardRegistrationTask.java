@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.taskomatic.task;
 
@@ -63,7 +59,7 @@ public class ForwardRegistrationTask extends RhnJavaJob {
     public void execute(JobExecutionContext arg0) {
         if (!ConfigDefaults.get().isForwardRegistrationEnabled()) {
             NotificationMessage lastNotification = UserNotificationFactory
-                    .getLastNotificationMessageByType(NotificationType.SCCOptOutWarning);
+                    .getLastNotificationMessageByType(NotificationType.SCC_OPT_OUT_WARNING);
 
             if (lastNotification == null || lastNotification.getCreated().before(DateUtils.addMonths(new Date(), -3))) {
                 NotificationMessage notificationMessage =
