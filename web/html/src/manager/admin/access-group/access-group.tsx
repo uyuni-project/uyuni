@@ -4,54 +4,108 @@ import * as React from "react";
 import { useState } from "react";
 
 import AccessGroupDetails from "./access-group-details";
-import { AsyncButton } from "components/buttons";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
-import { showErrorToastr } from "components/toastr/toastr";
-
+import AccessGroupPermissions from "./access-group-permissions";
 import { StepsProgressBar } from "components/steps-progress-bar";
+import AccessGroupUsers from "./access-group-user";
 
 const CreateAccessGroup = () => {
+  type AccessGroupState = {
+    detailsproperties: {
+      name: string;
+      description: string;
+    };
+    accessGroupsModel: {
+      accessGroup: string[];
+    };
+    permissions: string[];
+    users: { id: number; username: string; email: string; orgId: string }[];
+    errors: any;
+  };
 
-  const [accessGroupDetails, setAccessGroupDetails] = useState({
-    properties: {
+  const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>({
+    detailsproperties: {
       name: "",
-      label: "",
       description: "",
-      org_id: ""
     },
-    errors: { "test": "dsgysgd" },
+    accessGroupsModel: {
+      accessGroup: [],
+    },
+    permissions: [],
+    users: [],
+    errors: {},
   });
-  const handleFormChange = (newProperties) => {
-    console.log("Before Update:", accessGroupDetails.properties); // Logs previous state
-    console.log("New Input:", newProperties); // Logs new input
 
-    setAccessGroupDetails((prev) => {
-      const updatedState = {
-        ...prev,
-        properties: { ...prev.properties, ...newProperties },
-      };
-      console.log("Updated State:", updatedState.properties); // Logs after merging
-      return updatedState;
+  const handleFormChange = (newProperties) => {
+    setAccessGroupState((prev) => ({
+      ...prev,
+      detailsproperties: { ...prev.detailsproperties, ...newProperties },
+    }));
+  };
+
+  const handleNamespace = (newname) => {
+    setAccessGroupState(prevState => ({
+      ...prevState,
+      accessGroupsModel: {
+        ...prevState.accessGroupsModel,
+        accessGroup: newname["accessGroup"]
+      }
+    }));
+  };
+
+  const handleUsers = (user, action) => {
+    setAccessGroupState((prevState) => {
+      if (action === "add") {
+        return {
+          ...prevState,
+          users: [...prevState.users, user], // Add user
+        };
+      } else if (action === "remove") {
+        return {
+          ...prevState,
+          users: prevState.users.filter((u) => u.id !== user.id), // Remove user
+        };
+      }
+      return prevState;
     });
+  };
+
+  const handleCreateAccessGroup = () => {
+    console.log("Access Group Created:", accessGroupState);
   };
 
   const steps = [
     {
       title: "Details",
-      content: <AccessGroupDetails properties={accessGroupDetails.properties}
-        errors={accessGroupDetails.errors}
-        onChange={handleFormChange} />,
+      content: <AccessGroupDetails
+        properties={accessGroupState.detailsproperties}
+        onChange={handleFormChange}
+        errors={accessGroupState.errors} />,
       validate: () => true,
     },
-    { title: "Namespaces & Permissions", content: <p>Now you're on step 2</p>, validate: null, },
-    { title: "Users", content: <p>Final step reached!</p> }
+    {
+      title: "Namespaces & Permissions",
+      content: <AccessGroupPermissions
+        state={accessGroupState}
+        onChange={handleNamespace}
+        errors={accessGroupState.errors} />,
+      validate: null,
+    },
+    {
+      title: "Users",
+      content: <AccessGroupUsers
+        state={accessGroupState}
+        onChange={handleUsers}
+        errors={accessGroupState.errors} />,
+      validate: null,
+    }
   ]
   return (
     <TopPanel
       title={t("Access Group")}
     >
-      <StepsProgressBar steps={steps}></StepsProgressBar>
+      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} />
     </TopPanel>
   );
 };
