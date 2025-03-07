@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -34,11 +35,11 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Used for syncing repos (like yum repos) to a channel.
@@ -70,8 +71,7 @@ public class RepoSyncTask extends RhnJavaJob {
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new ChannelSyncFailed(null, null, LocalizationService.getInstance()
                             .getMessage("notification.channelsyncfailed.notcompliant")));
-            UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                    Collections.singleton(RoleFactory.CHANNEL_ADMIN), Optional.empty());
+            UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.CHANNEL_ADMIN));
             return;
         }
 
@@ -117,7 +117,7 @@ public class RepoSyncTask extends RhnJavaJob {
 
             UserNotificationFactory.storeNotificationMessageFor(
                 UserNotificationFactory.createNotificationMessage(notificationData),
-                Collections.singleton(RoleFactory.CHANNEL_ADMIN),
+                Set.of(RoleFactory.CHANNEL_ADMIN),
                 Optional.ofNullable(channel.getOrg())
             );
         }
