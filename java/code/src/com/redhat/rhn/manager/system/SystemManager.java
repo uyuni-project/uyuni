@@ -42,7 +42,8 @@ import com.redhat.rhn.common.validator.ValidatorWarning;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.dto.SystemGroupID;
@@ -941,8 +942,9 @@ public class SystemManager extends BaseManager {
      */
     public static DataResult<ShortSystemInfo> systemListShortInactive(User user,
             PageControl pc) {
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         return systemListShortInactive(user,
-                SatConfigFactory.getSatConfigLongValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD, 1L), pc);
+                factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue(), pc);
     }
 
     /**

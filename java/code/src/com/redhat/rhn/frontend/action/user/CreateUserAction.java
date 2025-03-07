@@ -73,7 +73,6 @@ public class CreateUserAction extends RhnAction {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("error.password_mismatch"));
         }
-
         // Put any validationErrors into ActionErrors object
         ValidatorError[] validationErrors = command.validate();
         for (ValidatorError err : validationErrors) {

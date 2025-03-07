@@ -19,9 +19,11 @@ import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.SatConfigFactory;
+import com.redhat.rhn.domain.common.RhnConfiguration;
+import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
+import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -200,7 +202,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * with {@link ConfigFile} with path='/init.sls', single {@link ConfigRevision} pointing to
      * {@link ConfigContent} with empty content.
      *
-     * This method is responsible of populating that {@link ConfigContent} based on the contents
+     * This method is responsible for populating that {@link ConfigContent} based on the contents
      * of the state file on the disk.
      *
      * Before the import, the files corresponding to the legacy states are backed up to a separate directory.
@@ -387,7 +389,8 @@ public class UpgradeCommand extends BaseTransactionCommand {
 
     private void convertSystemThresholdFromConfig() {
         log.warn("Converting web.system_checkin_threshold to DB config");
-        SatConfigFactory.setSatConfigValue(SatConfigFactory.SYSTEM_CHECKIN_THRESHOLD,
+        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
+        factory.updateConfigurationValue(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD,
                 Config.get().getString("web.system_checkin_threshold", "1"));
     }
 
