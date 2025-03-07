@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.download.DownloadException;
-import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.types.NotificationSeverity;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 
@@ -76,7 +76,7 @@ public class UpdateAvailableTest {
 
         assertTrue(updateAvailable.hasUpdateAvailable());
         assertEquals(NotificationType.UPDATE_AVAILABLE, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals(NotificationSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
@@ -126,7 +126,7 @@ public class UpdateAvailableTest {
 
         assertTrue(updateAvailable.hasUpdateAvailable());
         assertEquals(NotificationType.UPDATE_AVAILABLE, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals(NotificationSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
