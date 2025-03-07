@@ -71,6 +71,11 @@ public class UpdateAvailableTest {
             public String getReleaseNotes() {
                 return String.format(RELEASE_NOTES_HTML_ELEMENT, "5.3.2");
             }
+
+            @Override
+            public NotificationType getType() {
+                return NotificationType.UPDATE_AVAILABLE;
+            }
         };
 
         assertTrue(updateAvailable.hasUpdateAvailable());
@@ -115,6 +120,11 @@ public class UpdateAvailableTest {
             @Override
             public String getReleaseNotes() {
                 return String.format(RELEASE_NOTES_HTML_ELEMENT, "2024.08");
+            }
+
+            @Override
+            public NotificationType getType() {
+                return NotificationType.UPDATE_AVAILABLE;
             }
         };
 
