@@ -9178,6 +9178,12 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
       </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
+        <source>EU</source>
+      </trans-unit>
+      <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
+        <source>US</source>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
       </trans-unit>
