@@ -77,7 +77,9 @@ sudo tee -a /etc/docker/daemon.json <<EOF
 }
 EOF
 
+cd /etc/nginx/sites-enabled && ln -s /etc/nginx/sites-available/registry
 
+sudo systemctl restart nginx
 
 echo buildhostproductuuid > /tmp/buildhost_product_uuid
 
