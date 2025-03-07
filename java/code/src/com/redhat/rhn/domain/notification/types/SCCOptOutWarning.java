@@ -17,11 +17,6 @@ public class SCCOptOutWarning implements NotificationData {
     private static final LocalizationService LOCALIZATION_SERVICE = LocalizationService.getInstance();
 
     @Override
-    public NotificationSeverity getSeverity() {
-        return NotificationSeverity.WARNING;
-    }
-
-    @Override
     public String getSummary() {
         return LOCALIZATION_SERVICE.getMessage("notification.sccoptoutwarning.summary");
     }
