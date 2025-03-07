@@ -51,7 +51,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             })}
           </p>
         </div>
-        <div className={`${styles.loginArea} is-wrap`}>
+        <div className={`${styles.loginArea}`}>
           <div className={styles.loginHeader}>
             <img src={mobileLogo} alt="SUSE logo" width="70" height="35" className={styles.mobileLogo} />
             <div className={styles.messagesArea}>

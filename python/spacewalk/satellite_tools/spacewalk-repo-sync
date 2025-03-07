@@ -22,7 +22,7 @@ try:
 except ImportError:
     #  python3
     import io as StringIO
-import simplejson as json
+import json
 import shutil
 import sys
 import os

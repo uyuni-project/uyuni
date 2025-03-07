@@ -1,0 +1,1 @@
+- Remove spacewalk-clone-by-date dependency on python3-simplejson

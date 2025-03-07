@@ -6,8 +6,8 @@
 
 ## Finishing Secondary features  BEGIN ##
 
-# this feature is destructive for other features, so it is better at the end
+# these features are disruptive for other features, so they are better at the end
 - features/secondary/srv_rename_hostname.feature
-- features/finishing/srv_smdba.feature
+- features/secondary/srv_smdba.feature
 
 ## Finishing Secondary features END ##
