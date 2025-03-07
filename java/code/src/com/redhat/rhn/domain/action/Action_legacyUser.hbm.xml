@@ -370,6 +370,8 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </set>
         </subclass>
 
+        <subclass name="com.redhat.rhn.domain.action.SupportDataAction" lazy="true" discriminator-value="525" />
+
     </class>
     <query name="Action.findByIdandOrgId">
         <![CDATA[from com.redhat.rhn.domain.action.Action as a where a.id = :aid and org_id = :orgId]]>
