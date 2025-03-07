@@ -22,17 +22,17 @@ import java.util.function.Function;
  */
 public enum NotificationType implements Labeled {
     // Keep the alphabetical order
-    ChannelSyncFailed(ChannelSyncFailed.class, "channelsyncfailed"),
-    ChannelSyncFinished(ChannelSyncFinished.class, "channelsyncfinished"),
-    CreateBootstrapRepoFailed(CreateBootstrapRepoFailed.class, "createbootstraprepofailed"),
-    EndOfLifePeriod(EndOfLifePeriod.class, "endoflifeperiod"),
-    OnboardingFailed(OnboardingFailed.class, "onboardingfailed"),
-    PaygAuthenticationUpdateFailed(PaygAuthenticationUpdateFailed.class, "paygauthenticationupdatefailed"),
-    PaygNotCompliantWarning(PaygNotCompliantWarning.class, "paygnotcompliantwarning"),
-    SCCOptOutWarning(SCCOptOutWarning.class, "sccoptoutwarning"),
-    StateApplyFailed(StateApplyFailed.class, "stateapplyfailed"),
-    SubscriptionWarning(SubscriptionWarning.class, "subscriptionwarning"),
-    UpdateAvailable(UpdateAvailable.class, "updateavailable");
+    CHANNEL_SYNC_FAILED(ChannelSyncFailed.class, "channelsyncfailed"),
+    CHANNEL_SYNC_FINISHED(ChannelSyncFinished.class, "channelsyncfinished"),
+    CREATE_BOOTSTRAP_REPO_FAILED(CreateBootstrapRepoFailed.class, "createbootstraprepofailed"),
+    END_OF_LIFE_PERIOD(EndOfLifePeriod.class, "endoflifeperiod"),
+    ONBOARDING_FAILED(OnboardingFailed.class, "onboardingfailed"),
+    PAYG_AUTHENTICATION_UPDATE_FAILED(PaygAuthenticationUpdateFailed.class, "paygauthenticationupdatefailed"),
+    PAYG_NOT_COMPLIANT_WARNING(PaygNotCompliantWarning.class, "paygnotcompliantwarning"),
+    SCC_OPT_OUT_WARNING(SCCOptOutWarning.class, "sccoptoutwarning"),
+    STATE_APPLY_FAILED(StateApplyFailed.class, "stateapplyfailed"),
+    SUBSCRIPTION_WARNING(SubscriptionWarning.class, "subscriptionwarning"),
+    UPDATE_AVAILABLE(UpdateAvailable.class, "updateavailable");
 
     private final String label;
 
