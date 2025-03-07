@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017--2020 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,17 +7,12 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.types.NotificationData;
-import com.redhat.rhn.domain.notification.types.NotificationType;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -32,7 +27,7 @@ public class NotificationMessageJson {
 
     private Long id;
     private NotificationMessage.NotificationMessageSeverity severity;
-    private NotificationType type;
+    private String type;
     private NotificationData data;
     private String summary;
     private String details;
@@ -57,7 +52,7 @@ public class NotificationMessageJson {
         this.severity = data.getSeverity();
         this.summary = data.getSummary();
         this.details = data.getDetails();
-        this.type = nm.getType();
+        this.type = nm.getType().getLabel();
         this.isRead = isReadIn;
         this.created = nm.getCreated();
     }
@@ -74,6 +69,20 @@ public class NotificationMessageJson {
      */
     public void setId(Long idIn) {
         this.id = idIn;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param typeIn the type to set
+     */
+    public void setType(String typeIn) {
+        this.type = typeIn;
     }
 
     /**
