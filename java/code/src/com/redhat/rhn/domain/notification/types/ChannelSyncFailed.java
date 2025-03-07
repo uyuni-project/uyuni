@@ -71,4 +71,9 @@ public class ChannelSyncFailed implements NotificationData {
         }
         return "";
     }
+
+    @Override
+    public boolean isActionable() {
+        return true;
+    }
 }

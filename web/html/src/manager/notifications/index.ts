@@ -1,4 +1,4 @@
 export default {
   "notifications/notifications": () => import("./notifications"),
-  "notifications/notification-messages": () => import("./notification-messages.renderer"),
+  "notifications/notifications-list": () => import("./notifications-list.renderer"),
 };

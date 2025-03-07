@@ -47,4 +47,15 @@ public interface NotificationData {
      * @return details of this notification
      */
     String getDetails();
+
+    /**
+     * Checks if this notification is actionable. An actionable notification
+     * means that the user can perform an action to address the root cause
+     * that triggered this notification.
+     *
+     * @return {@code true} if the notification is actionable, {@code false} otherwise.
+     */
+    default boolean isActionable() {
+        return false;
+    }
 }

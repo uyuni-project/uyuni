@@ -12,219 +12,47 @@
 package com.suse.manager.webui.utils.gson;
 
 import com.redhat.rhn.domain.notification.NotificationMessage;
-import com.redhat.rhn.domain.notification.types.NotificationData;
-
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Date;
 
 /**
  * A notification NotificationMessageJson Object.
+ *
+ * @param id the id
+ * @param severity the severity
+ * @param type the type
+ * @param summary the summary
+ * @param details the details
+ * @param read the read flag
+ * @param actionable the actionable glag
+ * @param created the creation date
  */
-public class NotificationMessageJson {
-
-    private Long id;
-    private String severity;
-    private String type;
-    private NotificationData data;
-    private String summary;
-    private String details;
-    private boolean isRead;
-    private Date created;
-    private Date modified;
-
-    /**
-     * Empty constructor
-     */
-    public NotificationMessageJson() {
-    }
+public record NotificationMessageJson(
+    Long id,
+    String severity,
+    String type,
+    String summary,
+    String details,
+    boolean read,
+    boolean actionable,
+    Date created
+) {
 
     /**
      * Default constructor for a NotificationMessageJson
      *@param nm the {@link NotificationMessage} source object
-     *@param isReadIn the read/unread flag
+     *@param readIn the read/unread flag
      */
-    public NotificationMessageJson(NotificationMessage nm, boolean isReadIn) {
-        this.id = nm.getId();
-        this.data = nm.getNotificationData();
-        this.severity = data.getSeverity().getLabel();
-        this.summary = data.getSummary();
-        this.details = data.getDetails();
-        this.type = nm.getType().getLabel();
-        this.isRead = isReadIn;
-        this.created = nm.getCreated();
-    }
-
-    /**
-     * @return Returns the id.
-     */
-    public Long getId() {
-        return id;
-    }
-
-    /**
-     * @param idIn The id to set.
-     */
-    public void setId(Long idIn) {
-        this.id = idIn;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param typeIn the type to set
-     */
-    public void setType(String typeIn) {
-        this.type = typeIn;
-    }
-
-    /**
-     * @return Returns the notification data.
-     */
-    public NotificationData getData() {
-        return data;
-    }
-
-    /**
-     * @param dataIn The notification data to set.
-     */
-    public void setData(NotificationData dataIn) {
-        this.data = dataIn;
-    }
-
-    /**
-     * @return the summary
-     */
-    public String getSummary() {
-        return summary;
-    }
-
-    /**
-     * @param summaryIn the summary to set
-     */
-    public void setSummary(String summaryIn) {
-        this.summary = summaryIn;
-    }
-
-    /**
-     * Gets the details.
-     *
-     * @return details
-     */
-    public String getDetails() {
-        return details;
-    }
-
-    /**
-     * Sets the details.
-     *
-     * @param detailsIn the details
-     */
-    public void setDetails(String detailsIn) {
-        details = detailsIn;
-    }
-
-    /**
-     * @return Returns the read.
-     */
-    public boolean getIsRead() {
-        return isRead;
-    }
-
-    /**
-     * @param isReadIn The read to set.
-     */
-    public void setIsRead(boolean isReadIn) {
-        this.isRead = isReadIn;
-    }
-
-    /**
-     * @return Returns the created date.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    /**
-     * @param createdIn The created date to set.
-     */
-    public void setCreated(Date createdIn) {
-        this.created = createdIn;
-    }
-
-    /**
-     * @return Returns the modified date.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    /**
-     * @param modifiedIn The modified date to set.
-     */
-    public void setModified(Date modifiedIn) {
-        this.modified = modifiedIn;
-    }
-
-    /**
-     * @return Returns the severity.
-     */
-    public String getSeverity() {
-        return severity;
-    }
-
-    /**
-     * @param severityIn The severity to set.
-     */
-    public void setSeverity(String severityIn) {
-        this.severity = severityIn;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof NotificationMessageJson otherNotificationMessage)) {
-            return false;
-        }
-        return new EqualsBuilder()
-            .append(getId(), otherNotificationMessage.getId())
-            .append(getData(), otherNotificationMessage.getData())
-            .append(getCreated(), otherNotificationMessage.getCreated())
-            .append(getIsRead(), otherNotificationMessage.getIsRead())
-            .isEquals();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int hashCode() {
-        return new HashCodeBuilder()
-            .append(getId())
-            .append(getData())
-            .append(getCreated())
-            .toHashCode();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-            .append("id", getId())
-            .append("data", getData())
-            .append("created", getCreated())
-            .append("isRead", getIsRead())
-            .toString();
+    public NotificationMessageJson(NotificationMessage nm, boolean readIn) {
+        this(
+            nm.getId(),
+            nm.getNotificationData().getSeverity().getLabel(),
+            nm.getType().getLabel(),
+            nm.getNotificationData().getSummary(),
+            nm.getNotificationData().getDetails(),
+            readIn,
+            nm.getNotificationData().isActionable(),
+            nm.getCreated()
+        );
     }
 }
