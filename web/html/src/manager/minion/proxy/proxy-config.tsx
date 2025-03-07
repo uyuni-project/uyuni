@@ -19,6 +19,7 @@ import { ContainerConfigMessages } from "./proxy-config-messages";
 import {
   ProxyConfigModel,
   ProxyConfigProps,
+  RegistryBaseURL,
   RegistryMode,
   SourceMode,
   TagOptions,
@@ -64,7 +65,7 @@ export function ProxyConfig({
       //work-around to trigger validation for filled forms using RPM
       retrieveRegistryTags(currentConfig, "", setErrors, setTagOptions, setModel);
     } else if (currentConfig.registryBaseURL) {
-      retrieveRegistryTags(currentConfig, "registryBaseURL", setErrors, setTagOptions, setModel);
+      retrieveRegistryTags(currentConfig, RegistryBaseURL, setErrors, setTagOptions, setModel);
     } else {
       imageNames.forEach((url) => {
         if (currentConfig[url]) {
@@ -166,7 +167,7 @@ export function ProxyConfig({
     setErrors({});
     if (newModel.registryMode === RegistryMode.Simple) {
       if (newModel.registryBaseURL && !tagOptions.registryBaseURL?.length) {
-        retrieveRegistryTags(newModel, "registryBaseURL", setErrors, setTagOptions, setModel);
+        retrieveRegistryTags(newModel, RegistryBaseURL, setErrors, setTagOptions, setModel);
       }
     } else if (newModel.registryMode === RegistryMode.Advanced) {
       imageNames.forEach((property) => {

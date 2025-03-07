@@ -62,3 +62,5 @@ export type TagOptions = {
   registrySshURL?: string[];
   registryTftpdURL?: string[];
 };
+
+export const RegistryBaseURL = "registryBaseURL";
