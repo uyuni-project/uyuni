@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-28 09:01+0000\n"
+"PO-Revision-Date: 2025-03-08 21:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -751,7 +751,7 @@ msgstr "El nom d'usuari de l'administrador {productName} del servidor remot."
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:417
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 msgid "Password"
-msgstr "Contrasta"
+msgstr "Contrasenya"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 msgid "The password of the specified user."
@@ -1875,7 +1875,7 @@ msgstr "Seguiment"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
 msgid "Password Policy"
-msgstr "Política de contrasenyes"
+msgstr "Política per a les contrasenyes"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1985,16 +1985,16 @@ msgstr "Afegeix una connexió PAYG"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr "Configuració del servidor - Política de contrasenyes"
+msgstr "Configuració del servidor - Política per a les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
 msgstr ""
-"Configureu la política de contrasenyes d'usuaris locals del vostre servidor."
+"Configureu la política de les contrasenyes dels usuaris locals del servidor."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
 msgid "Password Policy Settings"
-msgstr "Configuració de la política de contrasenyes"
+msgstr "Configuració de la política per a les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
@@ -2006,7 +2006,7 @@ msgstr "Longitud màxima de la contrasenya"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
 msgid "Require Digits"
-msgstr "Requereix els dígits"
+msgstr "Requereix dígits"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
@@ -2014,7 +2014,7 @@ msgstr "Requereix caràcters en minúscula"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr "Requereix caràcters en majúscules"
+msgstr "Requereix caràcters en majúscula"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
@@ -2030,23 +2030,24 @@ msgstr "Caràcters especials permesos"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr "Restringeix les ocurrències dels caràcters"
+msgstr "Restringeix l'ocurrència de caràcters"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr "Ocurrències màximes de caràcters"
+msgstr "Màxim d'ocurrències de caràcters"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr "Desa la política de contrasenyes"
+msgstr "Desa la política de les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr "S'ha canviat la política de contrasenyes"
+msgstr "La política de les contrasenyes ha canviat"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr "Política de contrasenyes restablerta als valors predeterminats"
+msgstr ""
+"La política per a les contrasenyes es restableix als valors predeterminats"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
