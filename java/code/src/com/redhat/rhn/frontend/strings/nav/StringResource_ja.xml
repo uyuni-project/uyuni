@@ -482,14 +482,14 @@
         <target>その他のファイル</target>
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
-          <source>List Scans</source>
+        <source>List Scans</source>
         <target>スキャンの一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
-          <source>Schedule</source>
+        <source>Schedule</source>
         <target>スケジュール</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
@@ -497,77 +497,77 @@
       </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
-          <source>Overview</source>
+        <source>Overview</source>
         <target>概要</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
-          <source>View/Modify Files</source>
+        <source>View/Modify Files</source>
         <target>ファイルの表示/変更</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
-          <source>View Files</source>
+        <source>View Files</source>
         <target>ファイルの表示</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
-          <source>Compare Files</source>
+        <source>Compare Files</source>
         <target>ファイルの比較</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
-          <source>Manage Configuration Channels</source>
+        <source>Manage Configuration Channels</source>
         <target>設定チャンネルの管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
-          <source>List/Unsubscribe from Channels</source>
+        <source>List/Unsubscribe from Channels</source>
         <target>チャンネルの一覧表示／サブスクライブの解除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
-          <source>Subscribe to Channels</source>
+        <source>Subscribe to Channels</source>
         <target>チャンネルにサブスクライブ</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
-          <source>View/Modify Rankings</source>
+        <source>View/Modify Rankings</source>
         <target>ランキングの表示/変更</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
-          <source>Centrally-Managed Files</source>
+        <source>Centrally-Managed Files</source>
         <target>中央管理ファイル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
-          <source>Locally-Managed Files</source>
+        <source>Locally-Managed Files</source>
         <target>ローカル管理ファイル</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
-          <source>Local Sandbox</source>
+        <source>Local Sandbox</source>
         <target>ローカルのサンドボックス</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
@@ -575,14 +575,14 @@
       </trans-unit>
       <!-- END config file nav -->
       <trans-unit id="system.detail.nav.list" xml:space="preserve">
-          <source>List</source>
+        <source>List</source>
         <target>一覧</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.detail.nav.remove" xml:space="preserve">
-          <source>List / Remove</source>
+        <source>List / Remove</source>
         <target>一覧表示 / 削除</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
@@ -1150,44 +1150,44 @@
       </trans-unit>
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
-          <source>Child Channels</source>
+        <source>Child Channels</source>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
+        </context-group>
         <target>子チャンネル</target>
       </trans-unit>
       <trans-unit id="Chat" xml:space="preserve">
-          <source>Chat</source>
+        <source>Chat</source>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/help/about.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/help/about.do</context>
+        </context-group>
         <target>チャット</target>
       </trans-unit>
       <trans-unit id="Base Channels" xml:space="preserve">
-          <source>Base Channels</source>
+        <source>Base Channels</source>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
+        </context-group>
         <target>ベースチャンネル</target>
       </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
-          <source>Activated Systems</source>
+        <source>Activated Systems</source>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
+        </context-group>
         <target>アクティベートしたシステム</target>
       </trans-unit>
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
-          <source>Manage</source>
+        <source>Manage</source>
         <target>管理</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clear" xml:space="preserve">
-          <source>Clear</source>
+        <source>Clear</source>
         <target>消去</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
@@ -1255,34 +1255,34 @@
         <source>List Attestations</source>
         <target state="final">認証を一覧にする</target>
       </trans-unit>
-    <trans-unit id="Hub Configuration" xml:space="preserve">
+      <trans-unit id="Hub Configuration" xml:space="preserve" approved="yes">
         <source>Hub Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Hub Details" xml:space="preserve">
+        <target state="final">ハブ設定</target>
+      </trans-unit>
+      <trans-unit id="Hub Details" xml:space="preserve" approved="yes">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Peripherals Configuration" xml:space="preserve">
+        <target state="final">ハブの詳細</target>
+      </trans-unit>
+      <trans-unit id="Peripherals Configuration" xml:space="preserve" approved="yes">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Access Tokens" xml:space="preserve">
+        <target state="final">周辺機器の設定</target>
+      </trans-unit>
+      <trans-unit id="Access Tokens" xml:space="preserve" approved="yes">
         <source>Access Tokens</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">アクセストークン</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
