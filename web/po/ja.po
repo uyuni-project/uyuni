@@ -14,15 +14,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-02-13 21:50+0000\n"
-"Last-Translator: Valentina Leonardi <valentina.leonardi@vistatec.com>\n"
+"PO-Revision-Date: 2025-03-08 07:56+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -494,7 +494,7 @@ msgstr "発行日"
 #: ../html/src/components/hub/AddTokenButton.tsx:101
 #: ../html/src/components/hub/AddTokenButton.tsx:120
 msgid "Store an external token"
-msgstr ""
+msgstr "外部トークンの保存"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
 #, fuzzy
@@ -504,7 +504,7 @@ msgstr "以下に追加:"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
 msgid "Add a new access token"
-msgstr ""
+msgstr "新しいアクセストークンの追加"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:128
 msgid "Server FQDN"
@@ -527,7 +527,7 @@ msgstr "有効なFQDNアドレスでなければなりません"
 #: ../html/src/components/hub/AddTokenButton.tsx:139
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
 msgid "Token"
-msgstr ""
+msgstr "トークン"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
 #, fuzzy
@@ -551,11 +551,12 @@ msgstr "スケジュールが正常に更新されました。"
 msgid ""
 "The new token was generated successfully. Make sure to copy it now as you "
 "will not be able to see this again."
-msgstr ""
+msgstr "新しいトークンが正常に生成されました。このトークンは再度表示できないため、今"
+"すぐコピーしてください。"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
-msgstr ""
+msgstr "コピー"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
@@ -565,7 +566,7 @@ msgstr "閉じる"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:252
 msgid "Access token copied to the clipboard"
-msgstr ""
+msgstr "アクセストークンがクリップボードにコピーされました"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
@@ -577,7 +578,7 @@ msgstr "恒久"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
 msgid "Deregister from the hub"
-msgstr ""
+msgstr "ハブから登録解除"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
 #, fuzzy
@@ -589,17 +590,18 @@ msgstr "削除の確認"
 msgid ""
 "Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
 "longer receive data from it."
-msgstr ""
+msgstr "ハブ {fqdn} から登録解除してよろしいですか? "
+"登録解除すると、それ以降、ハブからデータが受信されなくなります。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
 msgid ""
 "Are you sure you want to derigester peripheral {fqdn}? All the current "
 "configuration will be lost."
-msgstr ""
+msgstr "周辺機器 {fqdn} を削除してもよろしいですか? 現在のすべての設定が失われます。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
-msgstr ""
+msgstr "サーバ {fqdn} が正常に登録解除されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
 #, fuzzy
@@ -621,16 +623,16 @@ msgstr "最終変更"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
 msgid "Root Certificate Authority:"
-msgstr ""
+msgstr "ルート認証局:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:70
 msgid ""
 "A customized Root Certificate Authority is currently configured for this hub."
-msgstr ""
+msgstr "このハブには現在、カスタマイズされたルート認証局が設定されています。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:71
 msgid "This hub is currently using the default Root Certificate Authority."
-msgstr ""
+msgstr "このハブは現在、デフォルトのルート認証局を使用しています。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
 #, fuzzy
@@ -642,17 +644,19 @@ msgstr "SSL証明書データ"
 msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the hub."
-msgstr ""
+msgstr "提供している証明書が正しいことを確認してから続行してください。値が間違ってい"
+"ると、ハブとの接続が切断されます。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:77
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the hub."
-msgstr ""
+msgstr "現在のルート認証局を削除してもよろしいですか? "
+"この変更により、ハブとの接続が切断される可能性があります。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:83
 msgid "Root Certificate Authority successfully modified."
-msgstr ""
+msgstr "ルート認証局が正常に変更されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
 #, fuzzy
@@ -662,15 +666,15 @@ msgstr "スケジュールが正常に更新されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
 msgid "GPG Public Key:"
-msgstr ""
+msgstr "GPG公開鍵:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:121
 msgid "A customized GPG key is currently configured for this hub."
-msgstr ""
+msgstr "このハブには現在、カスタマイズされたGPGキーが設定されています。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:122
 msgid "This hub is currently not using a custom GPG key."
-msgstr ""
+msgstr "このハブは現在、カスタムGPGキーを使用していません。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
 #, fuzzy
@@ -698,7 +702,7 @@ msgstr "SUSE チャンネル"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of Sync Orgs"
-msgstr ""
+msgstr "同期組織の数"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
 #, fuzzy
@@ -730,7 +734,7 @@ msgstr "周辺機器サーバ"
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
-msgstr ""
+msgstr "登録するサーバのDNSで解決可能な完全修飾ドメイン名。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
@@ -741,7 +745,7 @@ msgstr "パーミッションモード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Define how to connect to the remote server to initiate the registration"
-msgstr ""
+msgstr "登録を開始するためにリモートサーバに接続する方法を定義する"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
 msgid "Existing token"
