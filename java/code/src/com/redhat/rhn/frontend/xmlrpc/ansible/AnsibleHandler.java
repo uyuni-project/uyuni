@@ -48,6 +48,7 @@ public class AnsibleHandler extends BaseHandler {
 
     // Keys to pass to schedulePlaybook endpoint as additional args for Ansible
     public static final String ANSIBLE_FLUSH_CACHE = "flushCache";
+    public static final String ANSIBLE_EXTRA_VARS = "extraVars";
 
     private final AnsibleManager ansibleManager;
 
@@ -138,6 +139,7 @@ public class AnsibleHandler extends BaseHandler {
      * @apidoc.param #param_desc("string", "actionChainLabel", "label of an action chain to use, or None")
      * @apidoc.param
      *     #struct_begin("ansibleArgs")
+     *         #prop("string", "extraVars", "extra variables to override existing vars or create new ones")
      *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
      *     #struct_end()
      * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
@@ -172,6 +174,7 @@ public class AnsibleHandler extends BaseHandler {
      * @apidoc.param #param_desc("boolean", "testMode", "'true' if the playbook shall be executed in test mode")
      * @apidoc.param
      *     #struct_begin("ansibleArgs")
+     *         #prop("string", "extraVars", "extra variables to override existing vars or create new ones")
      *         #prop("boolean", "flushCache", "clear the fact cache for every host in inventory")
      *     #struct_end()
      * @apidoc.returntype #param_desc("int", "id", "ID of the playbook execution action created")
@@ -182,13 +185,14 @@ public class AnsibleHandler extends BaseHandler {
 
         // Validate the args map and set defaults
         Map<String, Object> argMap = new HashMap<>(ansibleArgs);
-        validateMap(Set.of(ANSIBLE_FLUSH_CACHE), argMap);
+        validateMap(Set.of(ANSIBLE_FLUSH_CACHE, ANSIBLE_EXTRA_VARS), argMap);
         argMap.putIfAbsent(ANSIBLE_FLUSH_CACHE, false);
+        argMap.putIfAbsent(ANSIBLE_EXTRA_VARS, "");
 
         try {
             return AnsibleManager.schedulePlaybook(playbookPath, inventoryPath, controlNodeId, testMode,
-                    (Boolean) argMap.get(ANSIBLE_FLUSH_CACHE), earliestOccurrence,
-                    Optional.ofNullable(actionChainLabel), loggedInUser);
+                    (Boolean) argMap.get(ANSIBLE_FLUSH_CACHE), (String) argMap.get(ANSIBLE_EXTRA_VARS),
+                    earliestOccurrence, Optional.ofNullable(actionChainLabel), loggedInUser);
         }
         catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
             throw new TaskomaticApiException(e.getMessage());

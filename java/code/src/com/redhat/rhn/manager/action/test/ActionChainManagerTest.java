@@ -134,7 +134,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
-                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false, false);
+                "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false, false, "{test: 123}");
 
         // Look it up and verify
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
@@ -148,6 +148,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
+        assertEquals("{test: 123}", details.getExtraVarsContents());
         assertFalse(details.isTestMode());
         assertFalse(details.isFlushCache());
     }
@@ -162,7 +163,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         Date earliestAction = new Date();
         PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
-                "/path/to/myplaybook.yml", null, null, earliestAction, true, true);
+                "/path/to/myplaybook.yml", null, null, earliestAction, true, true, "{test: 123}");
 
         // Look it up and verify
         PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
@@ -175,6 +176,7 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         PlaybookActionDetails details = savedAction.getDetails();
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("{test: 123}", details.getExtraVarsContents());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
         assertTrue(details.isFlushCache());

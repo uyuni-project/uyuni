@@ -1745,6 +1745,7 @@ public class SaltServerActionService {
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
         pillarData.put("flush_cache", details.isFlushCache());
+        pillarData.put("extra_vars", details.getExtraVarsContents());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
     }
