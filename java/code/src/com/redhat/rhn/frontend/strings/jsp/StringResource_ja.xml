@@ -28895,7 +28895,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve" approved="yes">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="final">このサーバはハブ設定の周辺機器サーバとして設定されています。資格情報はハブサーバでのみ管理することができます。</target>
+        <target state="final">このサーバはハブ設定で周辺機器サーバとして設定されています。資格情報はハブサーバでのみ管理することができます。</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
