@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.domain.action.ansible;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.ActionChild;
 
 /**
@@ -27,6 +28,7 @@ public class PlaybookActionDetails extends ActionChild {
     private String inventoryPath;
     private boolean testMode;
     private boolean flushCache;
+    private byte[] extraVars;
 
     /**
      * @return the id
@@ -86,5 +88,17 @@ public class PlaybookActionDetails extends ActionChild {
 
     public void setFlushCache(boolean flushCacheIn) {
         this.flushCache = flushCacheIn;
+    }
+
+    public byte[] getExtraVars() {
+        return extraVars;
+    }
+
+    public void setExtraVars(byte[] extraVarsIn) {
+        extraVars = extraVarsIn;
+    }
+
+    public String getExtraVarsContents() {
+        return HibernateFactory.getByteArrayContents(getExtraVars());
     }
 }
