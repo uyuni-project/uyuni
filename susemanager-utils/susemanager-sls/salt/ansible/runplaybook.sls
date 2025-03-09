@@ -3,7 +3,7 @@
 #
 # This SLS requires pillar data to render properly.
 #
-# Example (inventory is optional):
+# Example (inventory and extra_vars are optional):
 #
 # pillar = {
 #   "playbook_path": "/root/ansible-examples/lamp_simple/site.yml",
@@ -18,6 +18,9 @@ run_ansible_playbook:
     - playbook: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}
     - flush_cache: {{ pillar["flush_cache"] }}
+{%- if "extra_vars" in pillar %}
+    - extra_vars: {{ pillar["extra_vars"] }}
+{% endif %}
 {%- if "inventory_path" in pillar %}
     - inventory: {{ pillar["inventory_path"] }}
 {% endif %}
