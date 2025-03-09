@@ -109,6 +109,7 @@ public class RecurringActionJob extends RhnJavaJob {
                         minionIds.get(0),
                         playbookType.isTestMode(),
                         playbookType.isFlushCache(),
+                        playbookType.getExtraVarsContents(),
                         context.getFireTime(),
                         Optional.empty(),
                         action.getCreator()

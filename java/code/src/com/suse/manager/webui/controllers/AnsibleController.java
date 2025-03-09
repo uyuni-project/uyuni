@@ -309,6 +309,7 @@ public class AnsibleController {
                     params.getControlNodeId(),
                     params.isTestMode(),
                     params.isFlushCache(),
+                    "",
                     params.getEarliest().map(AnsibleController::getScheduleDate).orElse(new Date()),
                     params.getActionChainLabel(),
                     user);
