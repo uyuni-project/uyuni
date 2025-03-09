@@ -79,7 +79,7 @@ EOF
 
 cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
 
-sudo systemctl restart nginx
+sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service && exit 2
 
 echo buildhostproductuuid > /tmp/buildhost_product_uuid
 
