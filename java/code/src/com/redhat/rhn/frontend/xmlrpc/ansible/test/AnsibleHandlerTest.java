@@ -64,7 +64,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -128,8 +127,9 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
-                scheduleDate, null, true, Collections.singletonMap(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true));
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null,
+                controlNode.getId().intValue(), scheduleDate, null, true,
+                Map.of(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true, AnsibleHandler.ANSIBLE_EXTRA_VARS, "{test: 123}"));
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -145,6 +145,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         PlaybookActionDetails details = action.getDetails();
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("{test: 123}", details.getExtraVarsContents());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
         assertTrue(details.isFlushCache());
