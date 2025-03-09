@@ -11529,7 +11529,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-        <target state="final">フィールド {0} は0以下にはできません。</target>
+        <target state="final">フィールド {0} は0以下にできません。</target>
       </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve" approved="yes">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
@@ -11537,7 +11537,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-        <target state="final">フィールド {0} はフィールド {1} より大きくも等しくもできません。</target>
+        <target state="final">フィールド {0} はフィールド {1} 以上にできません。</target>
       </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
@@ -11573,14 +11573,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="final">パスワードには、少なくとも1つの大文字を含める必要があります。</target>
+        <target state="final">パスワードには少なくとも1つの大文字を含める必要があります。</target>
       </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="final">パスワードには、少なくとも1つの小文字を含める必要があります。</target>
+        <target state="final">パスワードには少なくとも1つの小文字を含める必要があります。</target>
       </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve" approved="yes">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
@@ -11598,7 +11598,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve" approved="yes">
         <source>Unable to invoke the remote server {0}</source>
-        <target state="final">リモートサーバー {0} を起動できません</target>
+        <target state="final">リモートサーバ {0} を起動できません</target>
       </trans-unit>
       <trans-unit id="hub.tokenType.issued" xml:space="preserve" approved="yes">
         <source>Issued</source>
@@ -11618,7 +11618,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="hub.invalid_root_ca" xml:space="preserve" approved="yes">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-        <target state="final">提供された証明書は有効なPEM形式&gt;ではありません。&lt;br/&gt;証明書がBase64エンコードされたASCIIファイルとして正しくエンコードされ、&lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt;および&lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt;タグで囲まれていることを確認してください。</target>
+        <target state="final">提供された証明書は有効なPEM形式ではありません。&lt;br/&gt;証明書がBase64エンコードされたASCIIファイルとして正しくエンコードされ、&lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt;および&lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt;タグで囲まれていることを確認してください。</target>
       </trans-unit>
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve" approved="yes">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
@@ -11634,7 +11634,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve" approved="yes">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-        <target state="final">リモートサーバとのセキュアな接続を確立できません。正しいルート証明書を指定していることを確認してください。</target>
+        <target state="final">リモートサーバとのセキュアな接続を確立できません。正しいルート証明書を提供していることを確認してください。</target>
       </trans-unit>
       <trans-unit id="hub.invalid_remote_response" xml:space="preserve" approved="yes">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
