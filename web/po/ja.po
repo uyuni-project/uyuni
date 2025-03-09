@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-09 03:56+0000\n"
+"PO-Revision-Date: 2025-03-09 11:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -575,7 +575,7 @@ msgid ""
 "Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
 "longer receive data from it."
 msgstr "ハブ {fqdn} から登録解除してよろしいですか? "
-"登録解除すると、それ以降、ハブからデータが受信されなくなります。"
+"登録解除すると、それ以降ハブからデータが受信されなくなります。"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
 msgid ""
@@ -712,7 +712,7 @@ msgstr "管理者ユーザ/パスワード"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid ""
 "The token that grant access to the remote server to establish the connection."
-msgstr "接続を確立するためにリモートサーバへのアクセス権を付与するトークン。"
+msgstr "接続を確立するためにリモートサーバへのアクセスを許可するトークン。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -830,7 +830,7 @@ msgstr "いいえ"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
-msgstr "失効"
+msgstr "期限切れ"
 
 #: ../html/src/components/hub/TokenTable.tsx:96
 #: ../html/src/manager/images/image-view.tsx:675
@@ -874,7 +874,7 @@ msgstr "アクセストークン削除の確認"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr "このトークンを削除してよろしいですか? 現在、使用されていません。"
+msgstr "このトークンを削除してもよろしいですか? 現在、使用されていません。"
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
@@ -916,14 +916,14 @@ msgstr "このアクセストークンを有効にすると、周辺機器 {fqdn
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr "このアクセストークンを無効にすると、ハブ {fqdn} へのアクセスが許可されます。"
+msgstr "このアクセストークンを無効にすると、ハブ {fqdn} にアクセスできなくなります。"
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
 msgid ""
 "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr "このアクセストークンを無効にすると、周辺機器 {fqdn} "
-"へのアクセスが許可されます。"
+"にアクセスできなくなります。"
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
