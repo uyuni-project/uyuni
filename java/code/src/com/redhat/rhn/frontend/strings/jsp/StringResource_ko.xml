@@ -28883,7 +28883,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
-        <target state="needs-adaptation">이 서버는 ISS(서버 간 동기화) 슬레이브로 구성됩니다. 인증서는 ISS 마스터에서만 관리할 수 있습니다.</target>
+        <target state="needs-translation">이 서버는 Hub 구성에서 주변기기 서버로 구성되어 있습니다. 인증서는 Hub 서버에서만 관리할 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="mirror-credentials.jsp.bt.cancel" xml:space="preserve">
         <source>Cancel</source>
