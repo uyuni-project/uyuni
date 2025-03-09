@@ -21,9 +21,11 @@ import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.taskomatic.TaskoXmlRpcHandler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
@@ -99,6 +101,18 @@ public class RecurringActionJob extends RhnJavaJob {
                         true);
                 ActionFactory.save(a);
                 new TaskomaticApi().scheduleActionExecution(a);
+            }
+            else if (actionType instanceof RecurringPlaybook playbookType) {
+                AnsibleManager.schedulePlaybook(
+                        playbookType.getPlaybookPath(),
+                        playbookType.getInventoryPath(),
+                        minionIds.get(0),
+                        playbookType.isTestMode(),
+                        playbookType.isFlushCache(),
+                        context.getFireTime(),
+                        Optional.empty(),
+                        action.getCreator()
+                );
             }
         }
         catch (TaskomaticApiException e) {
