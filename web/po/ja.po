@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-08 07:56+0000\n"
+"PO-Revision-Date: 2025-03-09 03:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -485,10 +485,8 @@ msgstr "セクション表示の切り替え"
 #: ../html/src/components/hub/AddTokenButton.tsx:66
 #: ../html/src/components/hub/AddTokenButton.tsx:93
 #: ../html/src/components/hub/AddTokenButton.tsx:120
-#, fuzzy
-#| msgid "Issue date"
 msgid "Issue a new token"
-msgstr "発行日"
+msgstr "新しいトークンの発行"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:77
 #: ../html/src/components/hub/AddTokenButton.tsx:101
@@ -497,10 +495,8 @@ msgid "Store an external token"
 msgstr "外部トークンの保存"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
-#, fuzzy
-#| msgid "Add to:"
 msgid "Add token"
-msgstr "以下に追加:"
+msgstr "トークンの追加"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
 msgid "Add a new access token"
@@ -512,8 +508,6 @@ msgstr "サーバFQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
-#, fuzzy
-#| msgid "e.g., server.domain.com"
 msgid "e.g. server.domain.com"
 msgstr "例: server.domain.com"
 
@@ -530,22 +524,16 @@ msgid "Token"
 msgstr "トークン"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Issued"
 msgid "Issue"
-msgstr "発行済み"
+msgstr "発行"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Store URI"
 msgid "Store"
-msgstr "ストア URI"
+msgstr "保存"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:179
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "New token successfully issued"
-msgstr "スケジュールが正常に更新されました。"
+msgstr "新しいトークンが正常に発行されました"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
 msgid ""
@@ -571,20 +559,16 @@ msgstr "アクセストークンがクリップボードにコピーされまし
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
 #: ../html/src/components/hub/PeripheralsList.tsx:51
-#, fuzzy
-#| msgid "Persistent"
 msgid "Deregister"
-msgstr "恒久"
+msgstr "登録解除"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
 msgid "Deregister from the hub"
 msgstr "ハブから登録解除"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm deregistration"
-msgstr "削除の確認"
+msgstr "登録解除の確認"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
 msgid ""
@@ -604,22 +588,16 @@ msgid "The server {fqdn} has been successfully deregistered."
 msgstr "サーバ {fqdn} が正常に登録解除されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server FQDN:"
-msgstr "サーバFQDN"
+msgstr "サーバFQDN:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:44
-#, fuzzy
-#| msgid "Attestation time"
 msgid "Registration date:"
-msgstr "認証時間"
+msgstr "登録日:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:54
-#, fuzzy
-#| msgid "Last modified"
 msgid "Last modified:"
-msgstr "最終変更"
+msgstr "最終変更:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
 msgid "Root Certificate Authority:"
@@ -635,10 +613,8 @@ msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "このハブは現在、デフォルトのルート認証局を使用しています。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
-#, fuzzy
-#| msgid "SSL Certificate data"
 msgid "Root Certificate Authority"
-msgstr "SSL証明書データ"
+msgstr "ルート認証局"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:74
 msgid ""
@@ -659,10 +635,8 @@ msgid "Root Certificate Authority successfully modified."
 msgstr "ルート認証局が正常に変更されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "Root Certificate Authority successfully updated."
-msgstr "スケジュールが正常に更新されました。"
+msgstr "ルート認証局が正常に更新されました。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
 msgid "GPG Public Key:"
@@ -677,58 +651,40 @@ msgid "This hub is currently not using a custom GPG key."
 msgstr "このハブは現在、カスタムGPGキーを使用していません。"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Mirror credentials:"
-msgstr "資格情報の使用"
+msgstr "ミラー資格情報:"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:29
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by FQDN"
-msgstr "名前でフィルタ"
+msgstr "FQDNでフィルタ"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:31
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Peripheral FQDN"
-msgstr "サーバFQDN"
+msgstr "周辺機器FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:35
-#, fuzzy
-#| msgid "SUSE Channels"
 msgid "N. of Sync Channels"
-msgstr "SUSE チャンネル"
+msgstr "同期チャンネルの数"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of Sync Orgs"
 msgstr "同期組織の数"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download Root CA"
-msgstr "CSV のダウンロード"
+msgstr "ルートCAのダウンロード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
-#, fuzzy
-#| msgid "System is not a peripheral server"
 msgid "Register a new peripheral server"
-msgstr "システムは周辺機器サーバではありません"
+msgstr "新しい周辺機器サーバの登録"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
-#, fuzzy
-#| msgid ""
-#| "Generation of the proxy configuration in progress: waiting for a "
-#| "response..."
 msgid "Peripheral registration in progress: waiting for a response..."
-msgstr "プロキシ設定の生成が進行中です: 応答を待機しています..."
+msgstr "周辺機器の登録が進行中です: 応答を待機しています..."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Peripheral Server FQDN"
-msgstr "周辺機器サーバ"
+msgstr "周辺機器サーバFQDN"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
 msgid ""
@@ -738,10 +694,8 @@ msgstr "登録するサーバのDNSで解決可能な完全修飾ドメイン名
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#, fuzzy
-#| msgid "Permission mode"
 msgid "Registration mode"
-msgstr "パーミッションモード"
+msgstr "登録モード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Define how to connect to the remote server to initiate the registration"
@@ -749,16 +703,16 @@ msgstr "登録を開始するためにリモートサーバに接続する方法
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
 msgid "Existing token"
-msgstr ""
+msgstr "既存のトークン"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Administrator User/Password"
-msgstr ""
+msgstr "管理者ユーザ/パスワード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid ""
 "The token that grant access to the remote server to establish the connection."
-msgstr ""
+msgstr "接続を確立するためにリモートサーバへのアクセス権を付与するトークン。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -770,7 +724,7 @@ msgstr "ユーザ名"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 msgid "The username of {productName} Administrator of the remote server."
-msgstr ""
+msgstr "リモートサーバの {productName} 管理者のユーザ名。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
 #: ../html/src/components/input/password/Password.stories.tsx:23
@@ -787,67 +741,52 @@ msgstr "パスワード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 msgid "The password of the specified user."
-msgstr ""
+msgstr "指定されたユーザのパスワード。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Root CA certificate"
-msgstr "CA 証明書"
+msgstr "ルートCA 証明書"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
-msgstr ""
+msgstr "セキュアな接続を確立するために信頼される必要がある、リモートサーバのルート認"
+"証局。"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-#, fuzzy
-#| msgid "Not affected"
 msgid "Not needed"
-msgstr "影響を受けません"
+msgstr "不要"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 #: ../html/src/components/large-text-attachment.tsx:136
 msgid "Upload a file"
-msgstr ""
+msgstr "ファイルのアップロード"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#, fuzzy
-#| msgid "Proxy certificate"
 msgid "Paste a PEM certificate"
-msgstr "プロキシ証明書"
+msgstr "PEM証明書の貼り付け"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificate File"
-msgstr "CA 証明書"
+msgstr "証明書ファイル"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-#, fuzzy
-#| msgid "CA file in PEM format"
 msgid "Certificate file, in PEM format"
-msgstr "PEM形式のCAファイル"
+msgstr "PEM形式の証明書ファイル"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
-#, fuzzy
-#| msgid "CA certificate"
 msgid "PEM Certificate"
-msgstr "CA 証明書"
+msgstr "PEM証明書"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "The text representing the certificate, in PEM format"
-msgstr "PEM形式のSSL証明書に署名するには"
+msgstr "PEM形式の証明書を表すテキスト"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
-#, fuzzy
-#| msgid "Registered Days"
 msgid "Register"
-msgstr "登録日数"
+msgstr "登録"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:267
 #: ../html/src/manager/images/image-import.tsx:314
@@ -860,26 +799,20 @@ msgid "Clear fields"
 msgstr "項目の消去"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
-#, fuzzy
-#| msgid "No modules available"
 msgid "No tokens available"
-msgstr "利用可能なモジュールがありません"
+msgstr "利用可能なトークンがありません"
 
 #: ../html/src/components/hub/TokenTable.tsx:61
-#, fuzzy
-#| msgid "Action type"
 msgid "Token type"
-msgstr "動作タイプ"
+msgstr "トークンタイプ"
 
 #: ../html/src/components/hub/TokenTable.tsx:68
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server"
-msgstr "サーバFQDN"
+msgstr "サーバ"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
-msgstr ""
+msgstr "有効"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
@@ -897,7 +830,7 @@ msgstr "いいえ"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
-msgstr ""
+msgstr "失効"
 
 #: ../html/src/components/hub/TokenTable.tsx:96
 #: ../html/src/manager/images/image-view.tsx:675
@@ -906,35 +839,29 @@ msgstr "最終変更"
 
 #: ../html/src/components/hub/TokenTable.tsx:113
 msgid "No, never expires"
-msgstr ""
+msgstr "いいえ、期限はありません"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "Yes, expired <expiration></expiration>"
-msgstr ""
+msgstr "はい、期限切れです<expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "No, expires <expiration></expiration>"
-msgstr ""
+msgstr "いいえ、期限はありません<expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Invalidate"
-msgstr "データが正しくありません"
+msgstr "無効"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Validate"
-msgstr "データが正しくありません"
+msgstr "有効"
 
 #: ../html/src/components/hub/TokenTable.tsx:151
-#, fuzzy
-#| msgid "Confirm Attestation Execution"
 msgid "Confirm access token modification"
-msgstr "認証実行の確認"
+msgstr "アクセストークン変更の確認"
 
 #: ../html/src/components/hub/TokenTable.tsx:155
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -942,71 +869,73 @@ msgid "Confirm if you want to proceed."
 msgstr "続行して問題ないかご確認ください。"
 
 #: ../html/src/components/hub/TokenTable.tsx:180
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm access token deletion"
-msgstr "削除の確認"
+msgstr "アクセストークン削除の確認"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
-#, fuzzy
-#| msgid "Are you sure you want to delete this schedule?"
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr "このスケジュールを削除してよろしいですか？"
+msgstr "このトークンを削除してよろしいですか? 現在、使用されていません。"
 
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
-msgstr ""
+msgstr "このアクセストークンは削除できません。現在、ハブ {fqdn} "
+"によって使用されています"
 
 #: ../html/src/components/hub/TokenTable.tsx:224
 msgid ""
 "This access token cannot be deleted. It is currently used by peripheral "
 "{fqdn}"
-msgstr ""
+msgstr "このアクセストークンは削除できません。現在、周辺機器 {fqdn} "
+"によって使用されています"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
 msgid ""
 "Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr ""
+msgstr "このアクセストークンを無効にすると、ハブ {fqdn} がアクセスできなくなります。"
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
 msgid ""
 "Invalidating this access token will prevent the peripheral {fqdn} from "
 "accesssing."
-msgstr ""
+msgstr "このアクセストークンを無効にすると、周辺機器 {fqdn} "
+"がアクセスできなくなります。"
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
 msgid "Enabling this access token will grant access to the hub {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを有効にすると、ハブ {fqdn} へのアクセスが許可されます。"
 
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを有効にすると、周辺機器 {fqdn} "
+"へのアクセスが許可されます。"
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを無効にすると、ハブ {fqdn} へのアクセスが許可されます。"
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
 msgid ""
 "Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを無効にすると、周辺機器 {fqdn} "
+"へのアクセスが許可されます。"
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを有効にすると、ハブ {fqdn} へのアクセスが復元されます。"
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
 msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr ""
+msgstr "このアクセストークンを有効にすると、周辺機器 {fqdn} "
+"へのアクセスが復元されます。"
 
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
@@ -1151,14 +1080,12 @@ msgid "No flavors"
 msgstr "フレーバー無し"
 
 #: ../html/src/components/large-text-attachment.tsx:62
-#, fuzzy
-#| msgid "Data is refreshed every "
 msgid "Data is present."
-msgstr "データ更新間隔 "
+msgstr "データは存在します。"
 
 #: ../html/src/components/large-text-attachment.tsx:63
 msgid "Data is not present."
-msgstr ""
+msgstr "データは存在しません。"
 
 #: ../html/src/components/large-text-attachment.tsx:64
 #: ../html/src/components/large-text-attachment.tsx:103
@@ -1182,10 +1109,8 @@ msgid "Edit"
 msgstr "編集"
 
 #: ../html/src/components/large-text-attachment.tsx:93
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download"
-msgstr "CSV のダウンロード"
+msgstr "ダウンロード"
 
 #: ../html/src/components/large-text-attachment.tsx:103
 msgid "Add"
@@ -1193,18 +1118,16 @@ msgstr "追加"
 
 #: ../html/src/components/large-text-attachment.tsx:127
 #: ../html/src/components/large-text-attachment.tsx:128
-#, fuzzy
-#| msgid "Edit store"
 msgid "Edit method"
-msgstr "ストアの編集"
+msgstr "方法の編集"
 
 #: ../html/src/components/large-text-attachment.tsx:129
 msgid "Define how to provide the new value"
-msgstr ""
+msgstr "新しい値の提供方法を定義する"
 
 #: ../html/src/components/large-text-attachment.tsx:137
 msgid "Paste the new value"
-msgstr ""
+msgstr "新しい値の貼り付け"
 
 #: ../html/src/components/large-text-attachment.tsx:143
 msgid "File"
@@ -1212,7 +1135,7 @@ msgstr "ファイル"
 
 #: ../html/src/components/large-text-attachment.tsx:153
 msgid "New value"
-msgstr ""
+msgstr "新しい値"
 
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
@@ -1920,10 +1843,8 @@ msgid "Monitoring"
 msgstr "モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "パスワード"
+msgstr "パスワードポリシー"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1972,40 +1893,35 @@ msgid "Bastion SSH connection data"
 msgstr "要塞SSH接続データ"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:24
-#, fuzzy
-#| msgid "Details"
 msgid "Hub Details"
-msgstr "詳細"
+msgstr "ハブの詳細"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:44
 msgid "No hub is currently configured for this server. "
-msgstr ""
+msgstr "このサーバには現在ハブが設定されていません。 "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:53
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr ""
+msgstr "このサーバは現在、ハブ {fqdn} の周辺機器として登録されています。 "
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
-msgstr ""
+msgstr "アクセストークン"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:16
-#, fuzzy
-#| msgid "Configuration"
 msgid "Peripherals Configuration"
-msgstr "設定"
+msgstr "周辺機器の設定"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:25
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Add Peripheral"
-msgstr "周辺機器サーバ"
+msgstr "周辺機器の追加"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Managing PAYG Connections is disabled."
-msgstr ""
+msgstr "このサーバは、ハブ設定で周辺機器サーバとして設定されています。PAYG接続の管理"
+"は無効になっています。"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -2034,73 +1950,67 @@ msgstr "PAYGの接続を追加"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "サーバ設定 - パスワードポリシー"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "サーバのローカルユーザパスワードポリシーを設定します。"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
-msgstr "プロバイダの設定"
+msgstr "パスワードポリシーの設定"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "最小パスワード長"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "最大パスワード長"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "再起動が必要"
+msgstr "数字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "小文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "大文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "連続文字を制限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "必要なチャンネル"
+msgstr "特殊文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "使用できる特殊文字"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "文字数を制限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "最大文字数"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "パスワードポリシーの保存"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "パスワードポリシーが変更されました"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr ""
+msgstr "パスワードポリシーがデフォルトにリセットされました"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -2277,16 +2187,11 @@ msgstr ""
 "報を追加していることをご確認ください。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-#, fuzzy
-#| msgid ""
-#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-#| "Products can only be managed on the ISS master."
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Products can only be managed on the Hub server."
-msgstr ""
-"このサーバはサーバ間同期 (ISS) スレーブとして設定されています。製品は ISS マ"
-"スター上でのみ管理することができます。"
+msgstr "このサーバはハブ設定で周辺機器サーバとして設定されています。製品はハブサーバ"
+"上でのみ管理することができます。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
@@ -6112,8 +6017,7 @@ msgstr "開発デバッグページ"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
-"これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
+msgstr "これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -6364,15 +6268,11 @@ msgstr "システムは周辺機器サーバではありません"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:33
 msgid "Setting new credentials for the report database failed"
-msgstr ""
+msgstr "レポートデータベースの新しい資格情報の設定に失敗しました"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
-#, fuzzy
-#| msgid "New password generated and action for peripheral server scheduled"
 msgid "New password generated and changed on the peripheral server"
-msgstr ""
-"新しいパスワードが生成され、周辺機器サーバのアクションがスケジュールされまし"
-"た"
+msgstr "周辺機器サーバで新しいパスワードが生成され、変更されました"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
