@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-04 21:56+0000\n"
+"PO-Revision-Date: 2025-03-09 15:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -851,16 +851,12 @@ msgstr "Zrušiť platnosť"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Validate"
-msgstr "Neplatné dáta"
+msgstr "Potvrdiť platnosť"
 
 #: ../html/src/components/hub/TokenTable.tsx:151
-#, fuzzy
-#| msgid "Confirm Attestation Execution"
 msgid "Confirm access token modification"
-msgstr "Potvrdiť vykonanie atestácie"
+msgstr "Potvrdiť modifikáciu prístupového tokenu"
 
 #: ../html/src/components/hub/TokenTable.tsx:155
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:186
@@ -868,10 +864,8 @@ msgid "Confirm if you want to proceed."
 msgstr "Potvrďte, ak chcete pokračovať."
 
 #: ../html/src/components/hub/TokenTable.tsx:180
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm access token deletion"
-msgstr "Potvrdiť vymazanie"
+msgstr "Potvrdiť vymazanie prístupového tokenu"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
 msgid "Are you sure you want to delete this token. It is currently not used."
@@ -1104,10 +1098,8 @@ msgid "Edit"
 msgstr "Upraviť"
 
 #: ../html/src/components/large-text-attachment.tsx:93
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download"
-msgstr "Stiahnuť CSV"
+msgstr "Stiahnuť"
 
 #: ../html/src/components/large-text-attachment.tsx:103
 msgid "Add"
@@ -1115,10 +1107,8 @@ msgstr "Pridať"
 
 #: ../html/src/components/large-text-attachment.tsx:127
 #: ../html/src/components/large-text-attachment.tsx:128
-#, fuzzy
-#| msgid "Edit store"
 msgid "Edit method"
-msgstr "Upraviť úložisko"
+msgstr "Upraviť metódu"
 
 #: ../html/src/components/large-text-attachment.tsx:129
 msgid "Define how to provide the new value"
@@ -1894,10 +1884,8 @@ msgid "Bastion SSH connection data"
 msgstr "Dáta pripojenia bašty SSH"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:24
-#, fuzzy
-#| msgid "Details"
 msgid "Hub Details"
-msgstr "Podrobnosti"
+msgstr "Podrobnosti pre hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:44
 msgid "No hub is currently configured for this server. "
@@ -1912,16 +1900,12 @@ msgid "Access Tokens"
 msgstr ""
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:16
-#, fuzzy
-#| msgid "Configuration"
 msgid "Peripherals Configuration"
-msgstr "Konfigurácia"
+msgstr "Konfigurácia periférií"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:25
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Add Peripheral"
-msgstr "Periférny server"
+msgstr "Pridať perifériu"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
 msgid ""
@@ -1964,7 +1948,7 @@ msgstr "Nastavte pravidlá pre heslá lokálnych používateľov servera."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
 msgid "Password Policy Settings"
-msgstr "Nastavenie pravidiel pre heslá"
+msgstr "Nastavenia pravidiel pre heslá"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
@@ -2196,16 +2180,12 @@ msgstr ""
 "správne prihlasovacie údaje organizácie v predchádzajúcom kroku sprievodcu."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-#, fuzzy
-#| msgid ""
-#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-#| "Products can only be managed on the ISS master."
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Products can only be managed on the Hub server."
 msgstr ""
-"Tento server je nakonfigurovaný ako podriadený Inter-Server Synchronisation "
-"(ISS). Produkty je možné spravovať iba na hlavnom serveri ISS."
+"Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. "
+"Produkty možno spravovať len na hub serveri."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
@@ -6280,10 +6260,8 @@ msgid "Setting new credentials for the report database failed"
 msgstr ""
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
-#, fuzzy
-#| msgid "New password generated and action for peripheral server scheduled"
 msgid "New password generated and changed on the peripheral server"
-msgstr "Nové heslo vygenerované a naplánovaná akcia pre periférny server"
+msgstr "Nové heslo vygenerované a zmenené na periférnom serveri"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
