@@ -101,5 +101,15 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
         return data;
     }
 
+    @Override
+    public List<String> getRegistryUrlTags(String registryUrl, boolean isExact) {
+        ProxyConfigGetRegistryTags getRegistryTags = new ProxyConfigGetRegistryTags(registryUrl, isExact);
+        getRegistryTags.retrieveTags();
+        getRegistryTags.getErrorReport().report();
+        return getRegistryTags.getTags();
+    }
+
+
+
 
 }

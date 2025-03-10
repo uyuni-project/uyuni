@@ -66,4 +66,5 @@ public class RhnErrorReport {
     public void report() {
         ErrorReportingStrategies.validationReportingStrategy().report(errors);
     }
+
 }
