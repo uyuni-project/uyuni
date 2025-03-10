@@ -96,7 +96,6 @@ public class ProxyConfigGetFacadeImpl implements ProxyConfigGetFacade {
         Map<String, Object> data = new HashMap<>();
         data.put("currentConfig", Json.GSON.toJson(context.getProxyConfigAsMap()));
         data.put("parents", Json.GSON.toJson(context.getElectableParentsFqdn()));
-        data.put("isUyuni", context.isUyuni());
         data.put("initFailMessage", context.getInitFailMessage());
 
         return data;

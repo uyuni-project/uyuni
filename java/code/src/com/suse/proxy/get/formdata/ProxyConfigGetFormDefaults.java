@@ -34,6 +34,7 @@ public class ProxyConfigGetFormDefaults implements ProxyConfigGetFormDataContext
 
     public static final String DEFAULT_UYUNI_REGISTRY_URL = "registry.opensuse.org/uyuni/";
     public static final String DEFAULT_UYUNI_REGISTRY_TAG = "latest";
+    private final boolean isUyuni = ConfigDefaults.get().isUyuni();
 
     @Override
     public void handle(ProxyConfigGetFormDataContext context) {
@@ -45,13 +46,13 @@ public class ProxyConfigGetFormDefaults implements ProxyConfigGetFormDataContext
         proxyConfigAsMap.put(SOURCE_MODE_FIELD, SOURCE_MODE_REGISTRY);
         proxyConfigAsMap.put(REGISTRY_MODE, REGISTRY_MODE_SIMPLE);
 
-        if (context.isUyuni()) {
+        if (isUyuni) {
             proxyConfigAsMap.put(REGISTRY_BASE_URL, DEFAULT_UYUNI_REGISTRY_URL);
             proxyConfigAsMap.put(REGISTRY_BASE_TAG, DEFAULT_UYUNI_REGISTRY_TAG);
         }
         else {
             String productVersion = ConfigDefaults.get().getProductVersion();
-            Version version = new Version(productVersion, ConfigDefaults.get().isUyuni());
+            Version version = new Version(productVersion, isUyuni);
             String registryBaseUrl = String.format("registry.suse.com/suse/manager/%d.%d/%s",
                     version.getMajor(), version.getMinor(), context.getServer().getServerArch().getName());
 

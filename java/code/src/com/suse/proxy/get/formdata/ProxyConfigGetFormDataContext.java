@@ -15,7 +15,6 @@
 
 package com.suse.proxy.get.formdata;
 
-import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -66,10 +65,6 @@ public class ProxyConfigGetFormDataContext {
 
     public List<String> getElectableParentsFqdn() {
         return electableParentsFqdn;
-    }
-
-    public boolean isUyuni() {
-        return ConfigDefaults.get().isUyuni();
     }
 
     public void setInitFailMessage(String initFailMessageIn) {

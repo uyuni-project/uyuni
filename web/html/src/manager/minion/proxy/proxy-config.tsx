@@ -1,6 +1,8 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 
+import { isUyuni } from "core/user-preferences";
+
 import { AsyncButton, SubmitButton } from "components/buttons";
 import { Select } from "components/input";
 import { Form } from "components/input/form/Form";
@@ -34,13 +36,7 @@ import {
   retrieveRegistryTags,
 } from "./proxy-config-utils";
 
-export function ProxyConfig({
-  serverId,
-  isUyuni,
-  parents,
-  currentConfig,
-  initFailMessage,
-}: Readonly<ProxyConfigProps>) {
+export function ProxyConfig({ serverId, parents, currentConfig, initFailMessage }: Readonly<ProxyConfigProps>) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
