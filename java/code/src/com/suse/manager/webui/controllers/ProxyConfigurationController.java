@@ -18,11 +18,11 @@ package com.suse.manager.webui.controllers;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
-import static com.suse.utils.Predicates.isAbsent;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -32,16 +32,11 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.api.ParseException;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.proxy.ProxyContainerImagesEnum;
-import com.suse.proxy.ProxyRegistryUtils;
-import com.suse.proxy.ProxyRegistryUtilsImpl;
-import com.suse.proxy.RegistryUrl;
 import com.suse.proxy.get.ProxyConfigGetFacade;
 import com.suse.proxy.get.ProxyConfigGetFacadeImpl;
 import com.suse.proxy.update.ProxyConfigUpdateFacade;
@@ -55,13 +50,8 @@ import com.google.gson.reflect.TypeToken;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -80,7 +70,6 @@ public class ProxyConfigurationController {
 
     private final SystemManager systemManager;
     private final SaltApi saltApi;
-    private final ProxyRegistryUtils proxyRegistryUtils;
     private final ProxyConfigUpdateFacade proxyConfigUpdateFacade;
     private final ProxyConfigGetFacade proxyConfigGetFacade;
 
@@ -100,7 +89,6 @@ public class ProxyConfigurationController {
         this(
                 systemManagerIn,
                 saltApiIn,
-                new ProxyRegistryUtilsImpl(),
                 new ProxyConfigUpdateFacadeImpl(),
                 new ProxyConfigGetFacadeImpl()
         );
@@ -111,20 +99,17 @@ public class ProxyConfigurationController {
      *
      * @param systemManagerIn the system manager
      * @param saltApiIn the salt API
-     * @param proxyRegistryUtilsIn the proxy registry utils
      * @param proxyConfigUpdateFacadeIn the proxy config update facade
      * @param proxyConfigGetFacadeIn the proxy config get facade
      */
     public ProxyConfigurationController(
             SystemManager systemManagerIn,
             SaltApi saltApiIn,
-            ProxyRegistryUtils proxyRegistryUtilsIn,
             ProxyConfigUpdateFacade proxyConfigUpdateFacadeIn,
             ProxyConfigGetFacade proxyConfigGetFacadeIn
     ) {
         this.systemManager = systemManagerIn;
         this.saltApi = saltApiIn;
-        this.proxyRegistryUtils = proxyRegistryUtilsIn;
         this.proxyConfigUpdateFacade = proxyConfigUpdateFacadeIn;
         this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
@@ -141,7 +126,7 @@ public class ProxyConfigurationController {
                 jade
         );
         post("/manager/systems/details/proxy-config", withUser(this::updateProxyConfiguration));
-        post("/manager/systems/details/proxy-config/registry-url", withUser(this::checkRegistryUrl));
+        post("/manager/systems/details/proxy-config/get-registry-tags", withUser(this::getRegistryTags));
     }
 
     /**
@@ -166,107 +151,27 @@ public class ProxyConfigurationController {
      * @param user     the user
      * @return the tags or an error message
      */
-    public Object checkRegistryUrl(Request request, Response response, User user) {
+    public Object getRegistryTags(Request request, Response response, User user) {
         try {
             JsonObject jsonObject = new Gson().fromJson(request.body(), JsonObject.class);
             String registryUrl = jsonObject.get(REGISTRY_URL_TAG).getAsString();
+            boolean isExact = jsonObject.has(IS_EXACT_TAG) && jsonObject.get(IS_EXACT_TAG).getAsBoolean();
+            List<String> tags = proxyConfigGetFacade.getRegistryUrlTags(registryUrl, isExact);
 
-            return jsonObject.has(IS_EXACT_TAG) && jsonObject.get(IS_EXACT_TAG).getAsBoolean() ?
-                    getTagsFromRegistry(response, registryUrl) :
-                    getCommonTagsFromRegistry(response, registryUrl);
+            return success(response, ResultJson.success(tags));
+        }
+        catch (RhnRuntimeException e) {
+            LOG.error("Failed to apply proxy configuration to minion", e);
+            return success(response, ResultJson.error(e.getMessage()));
+        }
+        catch (RhnGeneralException e) {
+            LOG.error("Failed to apply proxy configuration to minion", e);
+            return success(response, ResultJson.error(e.getErrorMessages()));
         }
         catch (Exception e) {
             LOG.error("Failed to check registry URL", e);
-            return result(response, ResultJson.error("Failed to check registry URL"));
+            return success(response, ResultJson.error(e.getMessage()));
         }
-    }
-
-
-    /**
-     * Get the tags from the registry when the URL for a specific image.
-     * Eg:
-     * - https://registry.opensuse.org/uyuni/proxy-httpd
-     *
-     * @param response            the response object
-     * @param registryUrlAsString the registry URL for a specific image
-     * @return the json with either the tags or with an error message
-     */
-    public Object getTagsFromRegistry(Response response, String registryUrlAsString) {
-        try {
-            RegistryUrl registryUrl = new RegistryUrl(registryUrlAsString);
-            List<String> tags = proxyRegistryUtils.getTags(registryUrl);
-            if (tags == null) {
-                LOG.debug("No tags found on registry {}", registryUrlAsString);
-                return result(response, ResultJson.error("No tags found on registry"));
-            }
-            return result(response, ResultJson.success(tags));
-        }
-        catch (Exception e) {
-            LOG.error("Failed downloading tags from registry {} {}", registryUrlAsString, e);
-            return result(response, ResultJson.error("Failed to download tags from registry"));
-        }
-    }
-
-    /**
-     * Retrieves the common tags among the proxy images from the given base registry URL.
-     *
-     * @param response        the response object
-     * @param baseRegistryUrl the base registry URL
-     * @return the json with either the list of common tags or with an error message
-     */
-    private Object getCommonTagsFromRegistry(Response response, String baseRegistryUrl)
-            throws URISyntaxException, RhnRuntimeException, ParseException {
-        RegistryUrl registryUrl = new RegistryUrl(baseRegistryUrl);
-
-        List<String> repositories = proxyRegistryUtils.getRepositories(registryUrl);
-        if (repositories.isEmpty()) {
-            LOG.debug("No repositories found on registry {}", baseRegistryUrl);
-            return result(response, ResultJson.error("No repositories found on registry"));
-        }
-
-        // Check if all proxy images are present in the catalog
-        Set<String> repositorySet = new HashSet<>(repositories);
-        Set<String> proxyImageList = new HashSet<>(ProxyContainerImagesEnum.values().length);
-        String pathPrefix = registryUrl.getPath().substring(1);
-        for (ProxyContainerImagesEnum proxyImage : ProxyContainerImagesEnum.values()) {
-            proxyImageList.add(pathPrefix + "/" + proxyImage.getImageName());
-        }
-
-        if (!repositorySet.containsAll(proxyImageList)) {
-            return result(response, ResultJson.error("Cannot find all images in catalog"));
-        }
-
-        // Collect common tags among proxy images
-        Set<String> commonTags = null;
-        for (ProxyContainerImagesEnum proxyImage : ProxyContainerImagesEnum.values()) {
-            RegistryUrl imageRegistryUrl = new RegistryUrl(registryUrl.getUrl() + "/" + proxyImage.getImageName());
-            List<String> tags = proxyRegistryUtils.getTags(imageRegistryUrl);
-
-            if (tags == null || tags.isEmpty()) {
-                LOG.debug("No tags found on registry {}", imageRegistryUrl);
-                return result(response, ResultJson.error("No common tags found among proxy images"));
-            }
-
-            Set<String> tagSet = new HashSet<>(tags);
-            if (commonTags == null) {
-                commonTags = new HashSet<>(tagSet);
-            }
-            else {
-                commonTags.retainAll(tagSet);
-                if (commonTags.isEmpty()) {
-                    break;
-                }
-            }
-        }
-
-        if (isAbsent(commonTags)) {
-            LOG.debug("No common tags found among proxy images using registryUrl {}", baseRegistryUrl);
-            return result(response, ResultJson.error("No common tags found among proxy images"));
-        }
-
-        List<String> commonTagsList = new ArrayList<>(commonTags);
-        Collections.sort(commonTagsList);
-        return result(response, ResultJson.success(commonTagsList));
     }
 
     /**
