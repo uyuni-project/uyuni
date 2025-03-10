@@ -5,7 +5,7 @@ ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
 
 RUN zypper -n ref
-RUN zypper -n install python311-PyYAML python311-pip python311-prometheus-client python311-Jinja2 python311-rich
+RUN zypper -n install python311-PyYAML
 
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.health-check-supportconfig-exporter
