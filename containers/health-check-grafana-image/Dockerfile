@@ -1,4 +1,4 @@
-#!BuildTag: health-check-grafana
+#!BuildTag: uyuni/health-check-grafana:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 

@@ -1,4 +1,4 @@
-#!BuildTag: health-check-supportconfig-exporter
+#!BuildTag: uyuni/health-check-supportconfig-exporter:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 
