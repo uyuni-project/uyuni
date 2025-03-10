@@ -123,7 +123,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         final String expectedCurrentConfig = "{}";
         final String expectedParents = "[]";
         final String expectedInitFailMessage = "Server not found";
-        final boolean isUyuni = ConfigDefaults.get().isUyuni();
 
         //
         Map<String, Object> formData = proxyConfigGetFacadeImpl.getFormData(user, null);
@@ -131,7 +130,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
         assertEquals(expectedInitFailMessage, formData.get("initFailMessage"));
-        assertEquals(isUyuni, formData.get("isUyuni"));
     }
 
     /**
@@ -143,7 +141,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         final String expectedCurrentConfig = "{\"sourceMode\":\"registry\",\"registryMode\":\"simple\"," +
                 "\"registryBaseTag\":\"99.98.97\",\"registryBaseURL\":\"registry.suse.com/suse/manager/99.98/x86_64\"}";
         final String expectedParents = "[\"" + Config.get().getString(ConfigDefaults.SERVER_HOSTNAME) + "\"]";
-        final boolean isUyuni = ConfigDefaults.get().isUyuni();
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
@@ -165,7 +162,6 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         assertEquals(expectedCurrentConfig, formData.get("currentConfig"));
         assertEquals(expectedParents, formData.get("parents"));
         assertNull(formData.get("initFailMessage"));
-        assertEquals(isUyuni, formData.get("isUyuni"));
     }
 
     /**
