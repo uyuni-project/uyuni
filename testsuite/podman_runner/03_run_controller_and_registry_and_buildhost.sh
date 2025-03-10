@@ -32,7 +32,7 @@ server {
         
         location / {
                 proxy_pass http://localhost:5001;
-                proxy_set_header Host $host;
+                proxy_set_header Host \$host;
         }
         client_max_body_size 0;
 }
@@ -43,7 +43,7 @@ server {
         
         location / {
                 proxy_pass http://localhost:5002;
-                proxy_set_header Host $host;
+                proxy_set_header Host \$host;
         }
         client_max_body_size 0;
 }
@@ -54,7 +54,7 @@ server {
         
         location / {
                 proxy_pass http://localhost:8080;
-                proxy_set_header Host $host;
+                proxy_set_header Host \$host;
         }
         client_max_body_size 0;
 }
@@ -65,7 +65,7 @@ server {
 
         location / {
                 proxy_pass https://localhost:8443;
-                proxy_set_header Host $host;
+                proxy_set_header Host \$host;
         }
         client_max_body_size 0;
 }
