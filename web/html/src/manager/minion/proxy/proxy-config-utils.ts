@@ -63,7 +63,7 @@ export const retrieveRegistryTags = async (
   }
 
   try {
-    const response = await Network.post("/rhn/manager/systems/details/proxy-config/registry-url", {
+    const response = await Network.post("/rhn/manager/systems/details/proxy-config/get-registry-tags", {
       registryUrl: registryUrl,
       isExact: name !== "registryBaseURL",
     });
