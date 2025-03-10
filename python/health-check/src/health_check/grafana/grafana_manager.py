@@ -20,7 +20,6 @@ def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
         console.log(f"[yellow]Skipped; {name} container is already running")
         return
 
-    build_grafana_image(image, verbose)
     grafana_cfg = config.get_config_dir_path("grafana")
     grafana_dasthboard_template = config.get_json_template_filepath(
         "grafana_dashboard/supportconfig_with_logs.template.json"
