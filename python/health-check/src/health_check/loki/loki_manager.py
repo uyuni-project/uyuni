@@ -7,7 +7,6 @@ import zipfile
 from health_check import config
 from health_check.utils import console
 from health_check.containers.manager import (
-    build_image,
     image_exists,
     container_is_running,
     podman,

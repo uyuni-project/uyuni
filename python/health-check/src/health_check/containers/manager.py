@@ -14,24 +14,6 @@ def podman(cmd: List[str], verbose=False, raise_exc=True) -> List:
     return run_command(["podman"] + cmd, verbose, raise_exc)
 
 
-def build_image(
-    name: str,
-    containerfile_path: str,
-    build_args: List[str] | None = None,
-    verbose: bool = False,
-) -> None:
-    """
-    Build a container image
-    """
-    podman_args = ["build", "-t", f"{name}"]
-    if build_args:
-        # pylint: disable-next=expression-not-assigned
-        [podman_args.append(f'--build-arg="{param}"') for param in build_args]
-    podman_args.append(containerfile_path)
-
-    podman(podman_args, verbose)
-
-
 def image_exists(image):
     """
     Check if the image is present in podman images result
