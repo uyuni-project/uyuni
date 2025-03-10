@@ -42,9 +42,9 @@ sudo -i podman run \
     --secret uyuni-db-admin-user,type=env,target=POSTGRES_USER \
     --secret uyuni-db-admin-pass,type=env,target=POSTGRES_PASSWORD \
     --secret uyuni-db-user,type=env,target=MANAGER_USER \
-    --secret uyuni-db-pass,type=env,target=MANAGER_PASSWORD \
-    --secret uyuni-reportdb-user,type=env,target=REPORTDB_USER \
-    --secret uyuni-reportdb-pass,type=env,target=REPORTDB_PASSWORD \
+    --secret uyuni-db-pass,type=env,target=MANAGER_PASS \
+    --secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \
+    --secret uyuni-reportdb-pass,type=env,target=REPORT_DB_PASS \
     -v var-pgsql:/var/lib/pgsql/data \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-postgresql:$UYUNI_VERSION
