@@ -1,1 +1,5 @@
-__version__ =  "0.1"
+"""
+Health Check tool for Uyuni"
+"""
+
+__version__ = "0.1"

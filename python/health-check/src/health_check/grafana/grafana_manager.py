@@ -4,7 +4,6 @@ import json
 from health_check import config
 from health_check.utils import console
 from health_check.containers.manager import (
-    image_exists,
     container_is_running,
     podman,
 )
