@@ -1,13 +1,9 @@
 """Module that controls the Loki and Promtail containers"""
 
-import io
 import os
-import requests
-import zipfile
 from health_check import config
 from health_check.utils import console
 from health_check.containers.manager import (
-    image_exists,
     container_is_running,
     podman,
 )
