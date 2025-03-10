@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-09 22:56+0000\n"
+"PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -479,26 +479,20 @@ msgstr "섹션 표시 여부 전환"
 #: ../html/src/components/hub/AddTokenButton.tsx:66
 #: ../html/src/components/hub/AddTokenButton.tsx:93
 #: ../html/src/components/hub/AddTokenButton.tsx:120
-#, fuzzy
-#| msgid "Issue date"
 msgid "Issue a new token"
 msgstr "새 토큰 발급"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:77
 #: ../html/src/components/hub/AddTokenButton.tsx:101
 #: ../html/src/components/hub/AddTokenButton.tsx:120
-#, fuzzy
 msgid "Store an external token"
 msgstr "외부 토큰 저장"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:84
-#, fuzzy
-#| msgid "Add to:"
 msgid "Add token"
 msgstr "토큰 추가"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:86
-#, fuzzy
 msgid "Add a new access token"
 msgstr "새 액세스 토큰 추가"
 
@@ -508,8 +502,6 @@ msgstr "서버 FQDN"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:130
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:159
-#, fuzzy
-#| msgid "e.g., server.domain.com"
 msgid "e.g. server.domain.com"
 msgstr "예: server.domain.com"
 
@@ -522,30 +514,22 @@ msgstr "유효한 FQDN 주소여야 함"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:139
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:183
-#, fuzzy
 msgid "Token"
 msgstr "토큰"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Issued"
 msgid "Issue"
 msgstr "발급"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:161
-#, fuzzy
-#| msgid "Store URI"
 msgid "Store"
-msgstr "저장소"
+msgstr "저장"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:179
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "New token successfully issued"
 msgstr "새 토큰이 발급되었습니다."
 
 #: ../html/src/components/hub/AddTokenButton.tsx:186
-#, fuzzy
 msgid ""
 "The new token was generated successfully. Make sure to copy it now as you "
 "will not be able to see this again."
@@ -553,7 +537,6 @@ msgstr "새 토큰이 생성되었습니다. 이 토큰은 다시 확인할 수 
 "두십시오."
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
-#, fuzzy
 msgid "Copy"
 msgstr "복사"
 
@@ -564,99 +547,77 @@ msgid "Close"
 msgstr "닫기"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:252
-#, fuzzy
 msgid "Access token copied to the clipboard"
 msgstr "액세스 토큰이 클립보드에 복사되었습니다."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
 #: ../html/src/components/hub/PeripheralsList.tsx:51
-#, fuzzy
-#| msgid "Persistent"
 msgid "Deregister"
 msgstr "등록 취소"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
-#, fuzzy
 msgid "Deregister from the hub"
 msgstr "허브에서 등록 취소"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm deregistration"
 msgstr "등록 취소 확인"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:64
-#, fuzzy
 msgid ""
 "Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
 "longer receive data from it."
-msgstr "허브 {fqdn}에서 등록을 취소하시겠습니까? 등록을 취소하면 더 이상 허브 {fqdn}"
-"에서 데이터를 수신하지 않습니다."
+msgstr "허브 {fqdn}에서 등록을 취소하시겠습니까? 등록을 취소하면 더 이상 이 허브에서 "
+"데이터를 수신하지 않습니다."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
-#, fuzzy
 msgid ""
 "Are you sure you want to derigester peripheral {fqdn}? All the current "
 "configuration will be lost."
-msgstr "{fqdn} 주변기기를 등록 취소하시겠습니까? 모든 현재 설정이 손실됩니다."
+msgstr "{fqdn} 주변기기를 등록 취소하시겠습니까? 모든 현재 설정이 사라집니다."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
-#, fuzzy
 msgid "The server {fqdn} has been successfully deregistered."
 msgstr "{fqdn} 서버의 등록이 취소되었습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server FQDN:"
 msgstr "서버 FQDN:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:44
-#, fuzzy
-#| msgid "Attestation time"
 msgid "Registration date:"
 msgstr "등록 날짜:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:54
-#, fuzzy
-#| msgid "Last modified"
 msgid "Last modified:"
-msgstr "마지막으로 수정된 날짜:"
+msgstr "마지막 수정:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
-#, fuzzy
 msgid "Root Certificate Authority:"
 msgstr "루트 인증 기관:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:70
-#, fuzzy
 msgid ""
 "A customized Root Certificate Authority is currently configured for this hub."
-msgstr "현재 이 허브에 사용자 지정 루트 인증 기관이 구성되어 있습니다."
+msgstr "현재 이 허브에 사용자 정의 루트 인증 기관이 구성되어 있습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:71
-#, fuzzy
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr "이 허브는 현재 기본 루트 인증 기관을 사용하고 있습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
-#, fuzzy
-#| msgid "SSL Certificate data"
 msgid "Root Certificate Authority"
-msgstr "루트 인증서 기관"
+msgstr "루트 인증 기관"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:74
-#, fuzzy
 msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the hub."
-msgstr "계속하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 허브와의 "
-"연결이 끊깁니다."
+msgstr "계속 진행하기 전에 제공한 인증서가 올바른지 확인하십시오. 값이 잘못되면 "
+"허브와의 연결이 끊어집니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:77
-#, fuzzy
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the hub."
@@ -664,120 +625,88 @@ msgstr "현재 루트 인증 기관을 삭제하시겠습니까? 이 변경으�
 "끊어질 수 있습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:83
-#, fuzzy
 msgid "Root Certificate Authority successfully modified."
 msgstr "루트 인증 기관이 수정되었습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
-#, fuzzy
-#| msgid "Schedule successfully updated."
 msgid "Root Certificate Authority successfully updated."
-msgstr "루트 인증 기관을 성공적으로 업데이트했습니다."
+msgstr "루트 인증 기관을 업데이트했습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
-#, fuzzy
 msgid "GPG Public Key:"
-msgstr "GPG 공개 키:"
+msgstr "GPG 공개키:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:121
-#, fuzzy
 msgid "A customized GPG key is currently configured for this hub."
-msgstr "현재 이 허브에 사용자 지정 GPG 키가 구성되어 있습니다."
+msgstr "현재 이 허브에 사용자 정의 GPG 키가 구성되어 있습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:122
-#, fuzzy
 msgid "This hub is currently not using a custom GPG key."
-msgstr "이 허브는 현재 사용자 지정 GPG 키를 사용하지 않습니다."
+msgstr "이 허브는 현재 사용자 정의 GPG 키를 사용하지 않습니다."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
-#, fuzzy
-#| msgid "Use credentials"
 msgid "Mirror credentials:"
 msgstr "미러 자격 증명:"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:29
-#, fuzzy
-#| msgid "Filter by name"
 msgid "Filter by FQDN"
 msgstr "FQDN을 기준으로 필터링"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:31
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Peripheral FQDN"
 msgstr "주변기기 FQDN"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:35
-#, fuzzy
-#| msgid "SUSE Channels"
 msgid "N. of Sync Channels"
 msgstr "동기화 채널 수"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
-#, fuzzy
 msgid "N. of Sync Orgs"
 msgstr "동기화 조직 수"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download Root CA"
 msgstr "루트 CA 다운로드"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:135
-#, fuzzy
-#| msgid "System is not a peripheral server"
 msgid "Register a new peripheral server"
 msgstr "새 주변기기 서버 등록"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:141
-#, fuzzy
-#| msgid ""
-#| "Generation of the proxy configuration in progress: waiting for a "
-#| "response..."
 msgid "Peripheral registration in progress: waiting for a response..."
 msgstr "주변기기 등록 진행 중: 응답을 기다리는 중..."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:156
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Peripheral Server FQDN"
 msgstr "주변기기 서버 FQDN"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:157
-#, fuzzy
 msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
-msgstr "등록할 서버의 고유한 DNS 확인 가능한 완전한 도메인 이름입니다."
+msgstr "등록할 서버의 고유한 DNS-Resolvable FQDN(전체 도메인 이름)입니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
-#, fuzzy
-#| msgid "Permission mode"
 msgid "Registration mode"
 msgstr "등록 모드"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
-#, fuzzy
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr "등록을 시작하기 위해 원격 서버에 연결하는 방법을 정의합니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
-#, fuzzy
 msgid "Existing token"
 msgstr "기존 토큰"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
-#, fuzzy
 msgid "Administrator User/Password"
 msgstr "관리자 사용자/암호"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
-#, fuzzy
 msgid ""
 "The token that grant access to the remote server to establish the connection."
-msgstr "원격 서버에 액세스하여 연결을 설정할 수 있는 토큰입니다."
+msgstr "원격 서버에 연결을 설정하기 위한 액세스 권한을 부여하는 토큰입니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -788,7 +717,6 @@ msgid "Username"
 msgstr "사용자 이름"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
-#, fuzzy
 msgid "The username of {productName} Administrator of the remote server."
 msgstr "원격 서버에 대한 {productname} 관리자의 사용자 이름입니다."
 
@@ -806,69 +734,51 @@ msgid "Password"
 msgstr "비밀번호"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
-#, fuzzy
 msgid "The password of the specified user."
 msgstr "지정된 사용자의 암호입니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Root CA certificate"
 msgstr "루트 CA 인증서"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:217
-#, fuzzy
 msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
-msgstr "원격 서버의 루트 인증 기관은 보안 연결을 설정하기 위해 신뢰해야 합니다."
+msgstr "보안 연결을 설정하기 위해 신뢰할 수 있어야 하는 원격 서버의 루트 인증 "
+"기관입니다."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
-#, fuzzy
-#| msgid "Not affected"
 msgid "Not needed"
 msgstr "필요하지 않음"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 #: ../html/src/components/large-text-attachment.tsx:136
-#, fuzzy
 msgid "Upload a file"
 msgstr "파일 업로드"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
-#, fuzzy
-#| msgid "Proxy certificate"
 msgid "Paste a PEM certificate"
 msgstr "PEM 인증서 붙여넣기"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:233
-#, fuzzy
-#| msgid "CA certificate"
 msgid "Certificate File"
 msgstr "인증서 파일"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:234
-#, fuzzy
-#| msgid "CA file in PEM format"
 msgid "Certificate file, in PEM format"
 msgstr "인증서 파일(PEM 형식)"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:244
-#, fuzzy
-#| msgid "CA certificate"
 msgid "PEM Certificate"
 msgstr "PEM 인증서"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:245
-#, fuzzy
-#| msgid "To sign the SSL certificate in PEM format"
 msgid "The text representing the certificate, in PEM format"
-msgstr "인증서(PEM) 형식을 나타내는 텍스트"
+msgstr "PEM 형식의 인증서를 나타내는 텍스트"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:260
-#, fuzzy
-#| msgid "Registered Days"
 msgid "Register"
 msgstr "등록"
 
@@ -883,25 +793,18 @@ msgid "Clear fields"
 msgstr "필드 지우기"
 
 #: ../html/src/components/hub/TokenTable.tsx:54
-#, fuzzy
-#| msgid "No modules available"
 msgid "No tokens available"
 msgstr "사용할 수 있는 토큰 없음"
 
 #: ../html/src/components/hub/TokenTable.tsx:61
-#, fuzzy
-#| msgid "Action type"
 msgid "Token type"
 msgstr "토큰 유형"
 
 #: ../html/src/components/hub/TokenTable.tsx:68
-#, fuzzy
-#| msgid "Server FQDN"
 msgid "Server"
 msgstr "서버"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
-#, fuzzy
 msgid "Valid"
 msgstr "유효"
 
@@ -920,7 +823,6 @@ msgid "No"
 msgstr "아니요"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
-#, fuzzy
 msgid "Expired"
 msgstr "만료됨"
 
@@ -930,37 +832,28 @@ msgid "Last Modified"
 msgstr "마지막으로 수정된 날짜"
 
 #: ../html/src/components/hub/TokenTable.tsx:113
-#, fuzzy
 msgid "No, never expires"
-msgstr "아니요. 만료 없음"
+msgstr "아니요, 만료되지 않음"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
-#, fuzzy
 msgid "Yes, expired <expiration></expiration>"
-msgstr "예, 만료된 <expiration></expiration>"
+msgstr "예, 만료됨 <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
-#, fuzzy
 msgid "No, expires <expiration></expiration>"
-msgstr "아니요, 만료 <expiration></expiration>"
+msgstr "아니요, 만료됨 <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Invalidate"
-msgstr "유효하지 않음"
+msgstr "무효화"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
-#, fuzzy
-#| msgid "Invalid data"
 msgid "Validate"
-msgstr "유효"
+msgstr "검증"
 
 #: ../html/src/components/hub/TokenTable.tsx:151
-#, fuzzy
-#| msgid "Confirm Attestation Execution"
 msgid "Confirm access token modification"
 msgstr "액세스 토큰 수정 확인"
 
@@ -970,24 +863,18 @@ msgid "Confirm if you want to proceed."
 msgstr "계속 진행할지 여부를 확인하십시오."
 
 #: ../html/src/components/hub/TokenTable.tsx:180
-#, fuzzy
-#| msgid "Confirm Deletion"
 msgid "Confirm access token deletion"
 msgstr "액세스 토큰 삭제 확인"
 
 #: ../html/src/components/hub/TokenTable.tsx:181
-#, fuzzy
-#| msgid "Are you sure you want to delete this schedule?"
 msgid "Are you sure you want to delete this token. It is currently not used."
-msgstr "이 토큰을 삭제하시겠습니까? 현재 사용 중이 아닙니다."
+msgstr "이 토큰을 삭제하시겠습니까? 현재 사용 중이지 않습니다."
 
 #: ../html/src/components/hub/TokenTable.tsx:220
-#, fuzzy
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 허브 {fqdn}에서 사용 중입니다."
 
 #: ../html/src/components/hub/TokenTable.tsx:224
-#, fuzzy
 msgid ""
 "This access token cannot be deleted. It is currently used by peripheral "
 "{fqdn}"
@@ -995,59 +882,48 @@ msgstr "이 액세스 토큰은 삭제할 수 없습니다. 현재 주변기기 
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
-#, fuzzy
 msgid ""
 "Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}의 액세스를 차단할 수 있습니다."
+msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}의 액세스가 차단됩니다."
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
-#, fuzzy
 msgid ""
 "Invalidating this access token will prevent the peripheral {fqdn} from "
 "accesssing."
-msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}의 액세스를 차단할 수 있습니다."
+msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}의 액세스가 차단됩니다."
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
-#, fuzzy
 msgid "Enabling this access token will grant access to the hub {fqdn}."
-msgstr "이 액세스 토큰을 사용으로 설정하면 허브 {fqdn}에 대한 액세스 권한이 "
-"부여됩니다."
+msgstr "이 액세스 토큰을 활성화하면 허브 {fqdn}에 대한 액세스 권한이 부여됩니다."
 
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
-#, fuzzy
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
-msgstr "이 액세스 토큰을 사용으로 설정하면 주변기기 {fqdn}에 대한 액세스 권한이 "
-"부여됩니다."
+msgstr "이 액세스 토큰을 활성화하면 주변기기 {fqdn}에 대한 액세스 권한이 부여됩니다."
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
-#, fuzzy
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}에 액세스할 수 없습니다."
+msgstr "이 액세스 토큰을 무효화하면 허브 {fqdn}에 대한 액세스가 차단됩니다."
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
-#, fuzzy
 msgid ""
 "Invalidating this access token will prevent access to the peripheral {fqdn}."
-msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}에 액세스할 수 없습니다."
+msgstr "이 액세스 토큰을 무효화하면 주변기기 {fqdn}에 대한 액세스가 차단됩니다."
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
-#, fuzzy
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr "이 액세스 토큰을 사용으로 설정하면 허브 {fqdn}에 대한 액세스가 복원됩니다."
+msgstr "이 액세스 토큰을 활성화하면 허브 {fqdn}에 대한 액세스가 복원됩니다."
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
-#, fuzzy
 msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
-msgstr "이 액세스 토큰을 사용으로 설정하면 주변기기 {fqdn}에 대한 액세스가 "
-"복원됩니다."
+msgstr "이 액세스 토큰을 활성화하면 주변기기 {fqdn}에 대한 액세스가 복원됩니다."
 
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
@@ -1192,13 +1068,10 @@ msgid "No flavors"
 msgstr "특징 없음"
 
 #: ../html/src/components/large-text-attachment.tsx:62
-#, fuzzy
-#| msgid "Data is refreshed every "
 msgid "Data is present."
 msgstr "데이터가 있습니다."
 
 #: ../html/src/components/large-text-attachment.tsx:63
-#, fuzzy
 msgid "Data is not present."
 msgstr "데이터가 없습니다."
 
@@ -1224,8 +1097,6 @@ msgid "Edit"
 msgstr "편집"
 
 #: ../html/src/components/large-text-attachment.tsx:93
-#, fuzzy
-#| msgid "Download CSV"
 msgid "Download"
 msgstr "다운로드"
 
@@ -1235,18 +1106,14 @@ msgstr "추가"
 
 #: ../html/src/components/large-text-attachment.tsx:127
 #: ../html/src/components/large-text-attachment.tsx:128
-#, fuzzy
-#| msgid "Edit store"
 msgid "Edit method"
-msgstr "방법 편집"
+msgstr "메소드 편집"
 
 #: ../html/src/components/large-text-attachment.tsx:129
-#, fuzzy
 msgid "Define how to provide the new value"
 msgstr "새로운 값 제공 방법 정의"
 
 #: ../html/src/components/large-text-attachment.tsx:137
-#, fuzzy
 msgid "Paste the new value"
 msgstr "새 값 붙여넣기"
 
@@ -1255,7 +1122,6 @@ msgid "File"
 msgstr "파일"
 
 #: ../html/src/components/large-text-attachment.tsx:153
-#, fuzzy
 msgid "New value"
 msgstr "새 값"
 
@@ -1962,8 +1828,6 @@ msgid "Monitoring"
 msgstr "모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
 msgstr "암호 정책"
 
@@ -2014,45 +1878,35 @@ msgid "Bastion SSH connection data"
 msgstr "베스천 SSH 연결 데이터"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:24
-#, fuzzy
-#| msgid "Details"
 msgid "Hub Details"
-msgstr "Hub 상세 정보"
+msgstr "허브 상세 정보"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:44
-#, fuzzy
 msgid "No hub is currently configured for this server. "
 msgstr "현재 이 서버에 허브가 구성되어 있지 않습니다. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:53
-#, fuzzy
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. "
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
-#, fuzzy
 msgid "Access Tokens"
 msgstr "액세스 토큰"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:16
-#, fuzzy
-#| msgid "Configuration"
 msgid "Peripherals Configuration"
 msgstr "주변기기 구성"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:25
-#, fuzzy
-#| msgid "Peripheral Server"
 msgid "Add Peripheral"
 msgstr "주변기기 추가"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:57
-#, fuzzy
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Managing PAYG Connections is disabled."
-msgstr "이 서버는 허브 구성에서 주변기기 서버로 구성되어 있습니다. PAYG 연결 관리는 "
-"사용 안 함으로 설정되어 있습니다."
+msgstr "이 서버는 허브 구성에서 주변기기 서버로 설정되어 있습니다. PAYG 연결 관리는 "
+"비활성화되어 있습니다."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -2080,85 +1934,66 @@ msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
-#, fuzzy
 msgid "Server Configuration - Password Policy"
 msgstr "서버 구성 - 암호 정책"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
-#, fuzzy
 msgid "Set up your server local users password policy."
 msgstr "서버의 로컬 사용자 암호 정책을 설정하십시오."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
 msgstr "암호 정책 설정"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
-#, fuzzy
 msgid "Min Password Length"
 msgstr "최소 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
-#, fuzzy
 msgid "Max Password Length"
 msgstr "최대 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
 msgstr "숫자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
-#, fuzzy
 msgid "Require Lowercase Characters"
 msgstr "소문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
-#, fuzzy
 msgid "Require Uppercase Characters"
 msgstr "대문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
-#, fuzzy
 msgid "Restrict Consecutive Characters"
 msgstr "연속 문자 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
 msgstr "특수 문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
-#, fuzzy
 msgid "Allowed Special Characters"
 msgstr "허용되는 특수 문자"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
-#, fuzzy
 msgid "Restrict Characters Occurrences"
-msgstr "문자 수 제한"
+msgstr "문자 발생 횟수 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
-#, fuzzy
 msgid "Max Characters Occurrences"
-msgstr "최대 문자 수"
+msgstr "최대 문자 발생 횟수"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
-#, fuzzy
 msgid "Save Password Policy"
 msgstr "암호 정책 저장"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
-#, fuzzy
 msgid "Password Policy Changed"
 msgstr "암호 정책 변경됨"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-#, fuzzy
 msgid "Password Policy reset to defaults"
 msgstr "암호 정책 기본값으로 재설정"
 
@@ -2335,15 +2170,11 @@ msgstr ""
 "하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:390
-#, fuzzy
-#| msgid ""
-#| "This server is configured as an Inter-Server Synchronisation (ISS) slave. "
-#| "Products can only be managed on the ISS master."
 msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Products can only be managed on the Hub server."
-msgstr "이 서버는 Hub 구성에서 주변기기 서버로 구성되었습니다. 제품은 Hub 서버에서만 "
-"관리할 수 있습니다."
+msgstr "이 서버는 허브 구성에서 주변기기 서버로 설정되어 있습니다. 제품은 허브 "
+"서버에서만 관리할 수 있습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:487
 msgid "Filter by architecture"
@@ -6118,9 +5949,8 @@ msgstr "개발 디버깅 페이지"
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
-"개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단"
-"하시네요!"
+msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 "
+"대단하시네요!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
@@ -6364,15 +6194,12 @@ msgid "System is not a peripheral server"
 msgstr "시스템이 주변기기 서버가 아닙니다."
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:33
-#, fuzzy
 msgid "Setting new credentials for the report database failed"
 msgstr "보고서 데이터베이스에 대한 새로운 자격 증명을 설정하지 못함"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
-#, fuzzy
-#| msgid "New password generated and action for peripheral server scheduled"
 msgid "New password generated and changed on the peripheral server"
-msgstr "새 암호가 생성되고 주변기기 서버에서 변경됨"
+msgstr "주변기기 서버에서 새 암호가 생성되고 변경됨"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:92
 msgid "Report Database Name"
