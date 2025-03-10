@@ -95,14 +95,11 @@ no_ssh_push_key_authorized:
     {%- set os_base = 'alibaba' %}
   {%- elif 'oracle' in grains['osfullname']|lower %}
     {%- set os_base = 'oracle' %}
+  {%- elif 'openeuler' in grains['osfullname']|lower %}
+    {%- set os_base = grains['os'] %}
+    {%- set osrelease = grains['osrelease'] %}
   {%- endif %}
   #end of expections
-{%- endif %}
-
-# openEuler Family. This OS is based in RedHat, but declares a separate family
-{%- if grains['os_family'] == 'openEuler' %}
-  {% set os_base = grains['os'] %}
-  {% set osrelease = grains['osrelease'] %}
 {%- endif %}
 
 {% set bootstrap_repo_url = 'https://' ~ salt['pillar.get']('mgr_server') ~ '/pub/repositories/' ~ os_base ~ '/' ~ osrelease ~ '/bootstrap/' %}
