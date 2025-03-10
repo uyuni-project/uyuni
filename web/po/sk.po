@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-09 15:50+0000\n"
+"PO-Revision-Date: 2025-03-10 19:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -540,10 +540,12 @@ msgid ""
 "The new token was generated successfully. Make sure to copy it now as you "
 "will not be able to see this again."
 msgstr ""
+"Nový token bol úspešne vygenerovaný. Uistite sa, že ste si ho skopírovali, "
+"pretože ho už nebudete môcť vidieť."
 
 #: ../html/src/components/hub/AddTokenButton.tsx:200
 msgid "Copy"
-msgstr ""
+msgstr "Kopírovať"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:220
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:93
@@ -553,7 +555,7 @@ msgstr "Zavrieť"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:252
 msgid "Access token copied to the clipboard"
-msgstr ""
+msgstr "Prístupový token skopírovaný do schránky"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:38
 #: ../html/src/components/hub/DeregisterServer.tsx:47
@@ -563,7 +565,7 @@ msgstr "Zrušiť registráciu"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:39
 msgid "Deregister from the hub"
-msgstr ""
+msgstr "Zrušiť registráciu z hubu"
 
 #: ../html/src/components/hub/DeregisterServer.tsx:44
 msgid "Confirm deregistration"
@@ -574,16 +576,20 @@ msgid ""
 "Are you sure you want to deregister from hub {fqdn}? If you do, you will no "
 "longer receive data from it."
 msgstr ""
+"te si istí, že chcete zrušiť registráciu z hubu {fqdn}? Ak tak urobíte, už z "
+"neho nebudete dostávať dáta."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:70
 msgid ""
 "Are you sure you want to derigester peripheral {fqdn}? All the current "
 "configuration will be lost."
 msgstr ""
+"Ste si istí, že chcete zrušiť registráciu periférie {fqdn}? Celá aktuálna "
+"konfigurácia sa stratí."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:86
 msgid "The server {fqdn} has been successfully deregistered."
-msgstr ""
+msgstr "Serveru {fqdn} bola úspešne zrušená registrácia."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:36
 msgid "Server FQDN:"
@@ -599,16 +605,19 @@ msgstr "Naposledy zmenené:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:64
 msgid "Root Certificate Authority:"
-msgstr ""
+msgstr "Koreňová certifikačná autorita:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:70
 msgid ""
 "A customized Root Certificate Authority is currently configured for this hub."
 msgstr ""
+"Pre tento hub je v súčasnosti nastavená vlastná koreňová certifikačná "
+"autorita."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:71
 msgid "This hub is currently using the default Root Certificate Authority."
 msgstr ""
+"Tento hub v súčasnosti používa predvolenú koreňovú certifikačnú autoritu."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:72
 msgid "Root Certificate Authority"
