@@ -1,9 +1,6 @@
 #!/bin/bash
 set -xe
 
-# dockerd runs in the ubuntu host and the registries are visible at ports 5001 and 5002
-AUTH_REGISTRY=localhost:5001
-NO_AUTH_REGISTRY=localhost:5002
 
 sudo -i podman exec server bash -c "sed -e 's/http:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/rhn/spacewalk-common-channels.ini"
 sudo -i podman exec server bash -c "sed -e 's/https:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/rhn/spacewalk-common-channels.ini"
