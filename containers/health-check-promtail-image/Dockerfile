@@ -1,7 +1,10 @@
 #!BuildTag: uyuni/health-check-promtail:latest
 
-FROM registry.suse.com/bci/bci-base:15.6
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 
+FROM $BASE
+
+RUN zypper -n ref
 RUN zypper -n install promtail
 
 # Build Service required labels
