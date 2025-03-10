@@ -39,7 +39,7 @@ function parseConfiguration {
         EMAIL_ADDRESS="root@localhost"
     fi
     if [ "$SPACECHECKDIRS" = "" ]; then
-        SPACECHECKDIRS="/var/lib/pgsql /var/spacewalk /var/cache /srv"
+        SPACECHECKDIRS="/var/spacewalk /var/cache /srv"
     fi
     if [ "$SPACECHECKALERT" = "" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
         SPACECHECKALERT=10
