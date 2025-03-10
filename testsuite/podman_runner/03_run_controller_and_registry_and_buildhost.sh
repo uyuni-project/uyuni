@@ -22,7 +22,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
 echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
-echo "127.0.0.1 server" | sudo tee -a /etc/hosts
+# echo "127.0.0.1 server" | sudo tee -a /etc/hosts
 
 sudo apt -y install nginx
 sudo tee -a /etc/nginx/sites-available/registry <<EOF
