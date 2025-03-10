@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-07 11:19+0100\n"
-"PO-Revision-Date: 2025-03-09 23:56+0000\n"
+"PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-5-0/ko/>"
 "\n"
@@ -1385,8 +1385,6 @@ msgid "Monitoring"
 msgstr "모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
 msgstr "암호 정책"
 
@@ -1465,85 +1463,66 @@ msgid "Add PAYG Connection"
 msgstr "PAYG 연결 추가"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
-#, fuzzy
 msgid "Server Configuration - Password Policy"
 msgstr "서버 구성 - 암호 정책"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
-#, fuzzy
 msgid "Set up your server local users password policy."
 msgstr "서버의 로컬 사용자 암호 정책을 설정하십시오."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
 msgstr "암호 정책 설정"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
-#, fuzzy
 msgid "Min Password Length"
 msgstr "최소 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
-#, fuzzy
 msgid "Max Password Length"
 msgstr "최대 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
 msgstr "숫자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
-#, fuzzy
 msgid "Require Lowercase Characters"
 msgstr "소문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
-#, fuzzy
 msgid "Require Uppercase Characters"
 msgstr "대문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
-#, fuzzy
 msgid "Restrict Consecutive Characters"
 msgstr "연속 문자 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
 msgstr "특수 문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
-#, fuzzy
 msgid "Allowed Special Characters"
 msgstr "허용되는 특수 문자"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
-#, fuzzy
 msgid "Restrict Characters Occurrences"
-msgstr "문자 수 제한"
+msgstr "문자 발생 횟수 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
-#, fuzzy
 msgid "Max Characters Occurrences"
-msgstr "최대 문자 수"
+msgstr "최대 문자 발생 횟수"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
-#, fuzzy
 msgid "Save Password Policy"
 msgstr "암호 정책 저장"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
-#, fuzzy
 msgid "Password Policy Changed"
 msgstr "암호 정책 변경됨"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
-#, fuzzy
 msgid "Password Policy reset to defaults"
 msgstr "암호 정책 기본값으로 재설정"
 
@@ -2181,7 +2160,7 @@ msgstr "알 수 없는 호스트 이름"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "OVAL 데이터가 동기화되지 않음. 잠재적 누락된 취약점"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
@@ -5563,7 +5542,8 @@ msgstr ""
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
-msgstr ""
+msgstr "개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 "
+"대단하시네요!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"
