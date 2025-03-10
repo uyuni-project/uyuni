@@ -12,8 +12,8 @@ image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/h
 
 [exporter]
 container_name = "health_check_supportconfig_exporter"
-image = "localhost/health-check-supportconfig-exporter"
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-exporter:latest"
 
 [grafana]
 container_name = "health-check-grafana"
-image = "localhost/health-check-grafana"
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-grafana:latest"
