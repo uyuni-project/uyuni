@@ -4,7 +4,6 @@ import json
 from health_check import config
 from health_check.utils import console
 from health_check.containers.manager import (
-    build_image,
     image_exists,
     container_is_running,
     podman,
@@ -51,16 +50,6 @@ def prepare_grafana(from_datetime: str, to_datetime: str, verbose: bool):
         ],
         verbose,
     )
-
-
-def build_grafana_image(image: str, verbose: bool):
-    if image_exists(image):
-        return
-
-    console.log(f"Building {image}")
-    image_path = config.load_dockerfile_dir("grafana")
-    build_image(image, image_path, verbose=verbose)
-    console.log(f"[green]The {image} image was built successfully")
 
 
 def render_grafana_dashboard_cfg(
