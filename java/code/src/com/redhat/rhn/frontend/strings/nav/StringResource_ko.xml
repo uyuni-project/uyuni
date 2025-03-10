@@ -1255,33 +1255,33 @@
         <source>List Attestations</source>
         <target state="final">증명 나열</target>
       </trans-unit>
-      <trans-unit id="Hub Configuration" xml:space="preserve">
+      <trans-unit id="Hub Configuration" xml:space="preserve" approved="yes">
         <source>Hub Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">Hub 구성</target>
+        <target state="final">허브 구성</target>
       </trans-unit>
-      <trans-unit id="Hub Details" xml:space="preserve">
+      <trans-unit id="Hub Details" xml:space="preserve" approved="yes">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">Hub 상세 정보</target>
+        <target state="final">허브 상세 정보</target>
       </trans-unit>
-      <trans-unit id="Peripherals Configuration" xml:space="preserve">
+      <trans-unit id="Peripherals Configuration" xml:space="preserve" approved="yes">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">주변기기 구성</target>
+        <target state="final">주변기기 구성</target>
       </trans-unit>
-      <trans-unit id="Access Tokens" xml:space="preserve">
+      <trans-unit id="Access Tokens" xml:space="preserve" approved="yes">
         <source>Access Tokens</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="needs-translation">액세스 토큰</target>
+        <target state="final">액세스 토큰</target>
       </trans-unit>
     </body>
   </file>
