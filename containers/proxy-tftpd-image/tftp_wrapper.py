@@ -84,10 +84,11 @@ class HttpResponseDataFiltered(HttpResponseData):
     """
 
     # pylint: disable-next=super-init-not-called
-    def __init__(self, url, capath, proxy_fqdn, server_fqdn):
+    def __init__(self, url, capath, proxy_fqdn, server_fqdn, replace_fqdns):
         # request file by url and store it
         self._proxy_fqdn = proxy_fqdn
         self._server_fqdn = server_fqdn
+        self._replace_fqdns = replace_fqdns
         self._request = requests.get(url, stream=True, verify=capath)
         if self._request.status_code == 404:
             raise FileNotFoundError()
@@ -133,11 +134,18 @@ class HttpResponseDataFilteredPXE(HttpResponseDataFiltered):
                         entry += f"ONTIMEOUT {entry_name}\n"
                         saltboot_content += entry
                     else:
-                        cobbler_content += re.sub(
+                        filtered_entry = re.sub(
                             r"\b" + re.escape(self._server_fqdn) + r"\b",
                             self._proxy_fqdn,
                             entry,
                         )
+                        for fqdn in self._replace_fqdns:
+                            filtered_entry = re.sub(
+                                r"\b" + re.escape(fqdn) + r"\b",
+                                self._proxy_fqdn,
+                                filtered_entry,
+                            )
+                        cobbler_content += filtered_entry
                     entry = ""
             if not in_entry:
                 if line.startswith("LABEL"):
@@ -182,11 +190,18 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         saltboot_content += entry
                         saltboot_content += f"set default={entry_name}\n"
                     else:
-                        cobbler_content += re.sub(
+                        filtered_entry = re.sub(
                             r"\b" + re.escape(self._server_fqdn) + r"\b",
                             self._proxy_fqdn,
                             entry,
                         )
+                        for fqdn in self._replace_fqdns:
+                            filtered_entry = re.sub(
+                                r"\b" + re.escape(fqdn) + r"\b",
+                                self._proxy_fqdn,
+                                filtered_entry,
+                            )
+                        cobbler_content += filtered_entry
                     entry = ""
             else:
                 if line.startswith("menuentry"):
@@ -216,12 +231,14 @@ class TFTPHandler(BaseHandler):
         proxy_fqdn,
         server_fqdn,
         capath,
+        replace_fqdns,
     ):
         self._root = root
         self._http_host = http_host
         self._proxy_fqdn = proxy_fqdn
         self._server_fqdn = server_fqdn
         self._capath = capath
+        self._replace_fqdns = replace_fqdns
         super().__init__(server_addr, peer, path, options, stats)
 
     def get_response_data(self):
@@ -236,18 +253,18 @@ class TFTPHandler(BaseHandler):
             # request specific system configuration
             logging.debug("Got request for system PXE %s, filtering HTTP", path)
             return HttpResponseDataFilteredPXE(
-                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn
+                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn, self._replace_fqdns
             )
         elif path.startswith("grub/system"):
             logging.debug("Got request for system GRUB %s, filtering HTTP", path)
             return HttpResponseDataFilteredGrub(
-                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn
+                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn, self._replace_fqdns
             )
         elif path.startswith("pxelinux.cfg/default"):
             # server local default
             logging.debug("Got request for %s, filtering HTTP", path)
             return HttpResponseDataFilteredPXE(
-                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn
+                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn, self._replace_fqdns
             )
         elif path.startswith("pxelinux.cfg/"):
             # ignore other pxelinux.cfg files
@@ -256,7 +273,7 @@ class TFTPHandler(BaseHandler):
         elif path.startswith("grub/") and path.endswith("_menu_items.cfg"):
             logging.debug("Got request for %s, filtering HTTP", path)
             return HttpResponseDataFilteredGrub(
-                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn
+                f"{target}/tftp/{path}", capath, self._proxy_fqdn, self._server_fqdn, self._replace_fqdns
             )
         # The rest get from http
         logging.debug("Got request for %s, forwarding to HTTP", path)
@@ -277,6 +294,7 @@ class TFTPServer(BaseServer):
         proxy_fqdn,
         server_fqdn,
         capath,
+        replace_fqdns,
     ):
         self._root = root
         if capath is None or http_host == "localhost":
@@ -289,6 +307,7 @@ class TFTPServer(BaseServer):
         self._proxy_fqdn = proxy_fqdn
         self._server_fqdn = server_fqdn
         self._capath = capath
+        self._replace_fqdns = replace_fqdns
         super().__init__(address, port, retries, timeout, None)
 
     def get_handler(self, server_addr, peer, path, options):
@@ -302,6 +321,7 @@ class TFTPServer(BaseServer):
             self._proxy_fqdn,
             self._server_fqdn,
             self._capath,
+            self._replace_fqdns
         )
 
 
@@ -365,6 +385,13 @@ def get_arguments():
         default="/usr/share/uyuni/ca.crt",
         help="Path to CA certificate",
     )
+    parser.add_argument(
+        "--replaceFqdns",
+        nargs='*',
+        type=str,
+        dest="replace_fqdns",
+        help="Replace additional FQDNs with proxy hostname in cobbler menu files",
+    )
     return parser.parse_args()
 
 
@@ -377,6 +404,7 @@ def main():
             config = yaml.safe_load(source)
             args.proxy_fqdn = config["proxy_fqdn"]
             args.server_fqdn = config["server"]
+            args.replace_fqdns = config.get("replace_fqdns", [])
             log_level = (
                 logging.DEBUG if config.get("log_level", 1) == 5 else logging.INFO
             )
@@ -388,11 +416,16 @@ def main():
         logging.error("Invalid configuration file passed, missing %s", str(err))
         exit(1)
 
+    if not isinstance(args.replace_fqdns, list):
+        logging.error("Invalid configuration file passed, replace_fqdns is not a list")
+        exit(1)
+
     logging.info("Starting TFTP proxy:")
     logging.info("HTTP endpoint: %s", args.http_host)
     logging.info("Server FQDN: %s", args.server_fqdn)
     logging.info("Proxy FQDN: %s", args.proxy_fqdn)
     logging.info("CA path: %s", args.caPath)
+    logging.info("Replace FQDNs: %s", args.replace_fqdns)
 
     server = TFTPServer(
         args.ip,
@@ -404,6 +437,7 @@ def main():
         args.proxy_fqdn,
         args.server_fqdn,
         args.caPath,
+        args.replace_fqdns,
     )
 
     try:
