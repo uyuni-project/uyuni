@@ -48,7 +48,7 @@
     "y18n": "4.0.1"
   },
   "dependencies": {
-    "@babel/core": "7.23.0",
+    "@babel/core": "7.26.9",
     "@babel/plugin-proposal-class-properties": "7.16.7",
     "@babel/plugin-proposal-logical-assignment-operators": "7.16.7",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.16.7",
@@ -165,7 +165,7 @@
     "webpack-dev-server": "4.7.3"
   },
   "engines": {
-    "node": ">=20",
+    "node": "22.x",
     "yarn": ">=1.0.0"
   }
 }
