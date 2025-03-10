@@ -72,7 +72,7 @@ db_schema_exists() {
 
     # Assumption, if web_customer table exists then schema exists:
     QUERY="SELECT tablename from pg_tables where schemaname='public' and tablename='$TABLE';"
-    EXISTS=$(echo "$QUERY" | (export PGPASSWORD=$MANAGER_PASS; exec psql -t -U $MANAGER_USER -h $MANAGER_DB_HOST $DBNAME))
+    EXISTS=$(echo "$QUERY" | (PGPASSWORD=$MANAGER_PASS psql -t -U $MANAGER_USER -h $MANAGER_DB_HOST $DBNAME))
     if [ "x$EXISTS" == "x $TABLE" ] ; then
         return 0
     else
