@@ -43,6 +43,7 @@ def systemExit(code, msg=None):
 
 try:
     from rhn import rhnLockfile
+    from uyuni.common.context_managers import cfg_component
     from spacewalk.common import rhnLog
     from spacewalk.common.rhnConfig import CFG, initCFG
     from spacewalk.satellite_tools import reposync
@@ -134,11 +135,17 @@ def main():
 
     log_level = options.verbose
     if log_level is None:
-        log_level = 0
+        # if no -v flag is passed, use "debug" setting from rhn.conf
+        with cfg_component(None) as cfg:
+            log_level = cfg.get("DEBUG", 0)
 
+    # Apparently we need to call initCFG and have CFG available
+    # to prevent some errors accessing CFG later on during package
+    # import.
     initCFG('server.satellite')
     CFG.set('DEBUG', log_level)
     CFG.set("TRACEBACK_MAIL", options.traceback_mail or CFG.TRACEBACK_MAIL)
+
     if options.email:
         initEMAIL_LOG()
     rhnLog.initLOG(log_path, log_level)
@@ -265,7 +272,7 @@ def main():
                       no_packages=options.no_packages,
                       sync_kickstart=options.sync_kickstart,
                       latest=options.latest,
-                      log_level=options.verbose,
+                      log_level=log_level,
                       force_all_errata=options.force_all_errata, show_packages_only=options.show_packages)
         if options.batch_size:
             sync.set_import_batch_size(options.batch_size)
