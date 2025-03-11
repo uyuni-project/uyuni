@@ -18,7 +18,7 @@ package com.redhat.rhn.domain.product;
  * Represent the product type
  */
 public enum ProductType {
-    base,
-    extension,
-    module
+    BASE,
+    EXTENSION,
+    MODULE
 }
