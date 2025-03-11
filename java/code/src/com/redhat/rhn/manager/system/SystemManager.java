@@ -1415,7 +1415,10 @@ public class SystemManager extends BaseManager {
         elabParams.put("sid", sid);
         elabParams.put("user_id", user.getId());
 
-        return makeDataResultNoPagination(params, elabParams, m);
+        DataResult<ErrataOverview> dr = makeDataResultNoPagination(params, elabParams, m);
+        //elaborate the data result to get the detailed information.
+        dr.elaborate(elabParams);
+        return dr;
     }
 
     /**
