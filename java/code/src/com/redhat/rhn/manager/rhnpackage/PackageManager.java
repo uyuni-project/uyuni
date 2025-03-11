@@ -894,19 +894,18 @@ public class PackageManager extends BaseManager {
         SelectMode m1 = ModeFactory.getMode("Package_queries",
                                            "possible_packages_for_pushing_into_channel");
 
-        DataResult possiblePackages = m1.execute(params);
+        DataResult<PackageComparison> possiblePackages = m1.execute(params);
 
         SelectMode m2 = ModeFactory.getMode("Package_queries",
             "packages_in_errata_not_in_channel");
 
-        DataResult notInChannelPackages = m2.execute(params);
-        Iterator i = notInChannelPackages.iterator();
+        DataResult<PackageComparison> notInChannelPackages = m2.execute(params);
+        Iterator<PackageComparison> i = notInChannelPackages.iterator();
 
         // Remove packages that are in both queries
         while (i.hasNext()) {
-            PackageComparison po = (PackageComparison) i.next();
-            for (Object possiblePackageIn : possiblePackages) {
-                PackageComparison pinner = (PackageComparison) possiblePackageIn;
+            PackageComparison po = i.next();
+            for (PackageManager pinner : possiblePackages) {
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: {}", pinner.getId());
                     i.remove();
