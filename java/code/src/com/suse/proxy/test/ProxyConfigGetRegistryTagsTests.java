@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings({"java:S3599", "java:S1171", "java:S1130"})
 public class ProxyConfigGetRegistryTagsTests extends MockObjectTestCase {
-    private final String DUMMY_REGISTRY_URL = "dummyRegistryUrl.com/at/some/path";
+    private static final String DUMMY_REGISTRY_URL = "dummyRegistryUrl.com/at/some/path";
     private ProxyRegistryUtils mockProxyRegistryUtils;
 
     public static void assertExpectedErrors(String[] expectedErrorMessages, RhnErrorReport rhnErrorReport) {
