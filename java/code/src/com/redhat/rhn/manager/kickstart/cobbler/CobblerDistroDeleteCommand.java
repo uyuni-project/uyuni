@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -79,7 +78,7 @@ public class CobblerDistroDeleteCommand extends CobblerDistroCommand {
             }
         }
 
-        return new CobblerSyncCommand(user).store();
+        return null;
 
     }
 
