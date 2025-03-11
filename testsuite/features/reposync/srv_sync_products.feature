@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2024 SUSE LLC
+# Copyright (c) 2017-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -121,7 +121,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
-  Scenario: Add SLE Micro 5.5
+@transactional_server
+  Scenario: Add SLE Micro 5.5 as base OS for proxy
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -136,7 +137,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
-  Scenario: Add SUSE Manager Proxy Extension 5.0
+@skip_if_transactional_server
+  Scenario: Add SLES 15 SP6 as base OS for proxy
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP6" as the filtered product description
+    And I select "SUSE Linux Enterprise Server 15 SP6" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP6" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
+    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+
+@proxy
+@susemanager
+@transactional_server
+  Scenario: Add SUSE Manager Proxy Extension 5.0 with SLE Micro 5.5 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -152,7 +170,25 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
-  Scenario: Add SUSE Manager Retail Branch Server Extension 5.0
+@skip_if_transactional_server
+  Scenario: Add SUSE Manager Proxy Extension 5.0 with SLES 15 SP6 as base OS
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP6" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP6 x86_64"
+    And I select "SUSE Manager Proxy Extension 5.0 x86_64" as a product
+    Then I should see the "SUSE Manager Proxy Extension 5.0 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Manager Proxy Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-proxy-extension-50-sp6" have finished
+
+@proxy
+@susemanager
+@transactional_server
+  Scenario: Add SUSE Manager Retail Branch Server Extension 5.0 with SLE Micro 5.5 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -166,6 +202,22 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
     And I wait until all synchronized channels for "suma-retail-branch-server-extension-50" have finished
 
+@proxy
+@susemanager
+@skip_if_transactional_server
+  Scenario: Add SUSE Manager Retail Branch Server Extension 5.0 with SLES 15 SP6 as base OS
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Enterprise Server 15 SP6" as the filtered product description
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP6 x86_64"
+    And I select "SUSE Manager Retail Branch Server Extension 5.0 x86_64" as a product
+    Then I should see the "SUSE Manager Retail Branch Server Extension 5.0 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Manager Retail Branch Server Extension 5.0 x86_64" product has been added
+    And I wait until all synchronized channels for "suma-retail-branch-server-extension-50-sp6" have finished
 
 @scc_credentials
 @susemanager

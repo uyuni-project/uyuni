@@ -1062,6 +1062,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
+  host = 'proxy_nontransactional' if host == 'proxy' and not $is_transactional_server
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]

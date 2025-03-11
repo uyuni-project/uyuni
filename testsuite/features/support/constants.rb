@@ -234,6 +234,7 @@ BASE_CHANNEL_BY_CLIENT = {
     'proxy' => 'SLE-Micro-5.5-Pool for x86_64',
     'proxy_container' => 'SLE-Micro-5.5-Pool for x86_64',
     'proxy_traditional' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64',
+    'proxy_nontransactional' => 'SLE-Product-SLES15-SP6-Pool for x86_64',
     'sle_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -1019,6 +1020,16 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-manager-retail-branch-server-5.0-pool-x86_64
         suse-manager-retail-branch-server-5.0-updates-x86_64
+      ],
+    'suma-proxy-extension-50-sp6' => # not a real product name
+      %w[
+        suse-manager-proxy-5.0-pool-x86_64-sp6
+        suse-manager-proxy-5.0-updates-x86_64-sp6
+      ],
+    'suma-retail-branch-server-extension-50-sp6' => # not a real product name
+      %w[
+        suse-manager-retail-branch-server-5.0-pool-x86_64-sp6
+        suse-manager-retail-branch-server-5.0-updates-x86_64-sp6
       ]
   },
   'Uyuni' => {
@@ -1631,9 +1642,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sll-as-9-updates-x86_64' => 1620,
   'sll-cb-9-updates-x86_64' => 2640,
   'suse-manager-proxy-5.0-pool-x86_64' => 60,
+  'suse-manager-proxy-5.0-pool-x86_64-sp6' => 60,
   'suse-manager-proxy-5.0-updates-x86_64' => 60,
+  'suse-manager-proxy-5.0-updates-x86_64-sp6' => 60,
   'suse-manager-retail-branch-server-5.0-pool-x86_64' => 60,
+  'suse-manager-retail-branch-server-5.0-pool-x86_64-sp6' => 60,
   'suse-manager-retail-branch-server-5.0-updates-x86_64' => 60,
+  'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' => 60,
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 60,
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 300,
