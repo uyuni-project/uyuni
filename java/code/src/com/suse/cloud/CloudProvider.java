@@ -13,11 +13,12 @@
  * in this software or its documentation.
  */
 
-package com.suse.cloud;
+ package com.suse.cloud;
 
-public enum CloudProvider {
-    NONE,
-    AWS,
-    AZURE,
-    GCE
-}
+ public enum CloudProvider {
+     NONE,
+     AWS,
+     AZURE,
+     GCE
+ }
+ 
