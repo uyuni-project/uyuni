@@ -5421,9 +5421,9 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve">
+      <trans-unit id="ssm.overview.provisioning.rollback" xml:space="preserve" approved="yes">
         <source>&lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; systems for &lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;snapshot rollback&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;스냅샷 롤백&lt;/a&gt;용 &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; 시스템</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/provisioning/Rollback.do"&gt;스냅샷 롤백&lt;/a&gt;용 &lt;a href="/rhn/systems/ssm/provisioning/TagSystems.do"&gt;Tag&lt;/a&gt; 시스템</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -5530,23 +5530,23 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.hardwareprofiles" xml:space="preserve" approved="yes">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;hardware profiles&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;하드웨어 프로필&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/HardwareRefresh.do"&gt;하드웨어 프로필&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.packageprofiles" xml:space="preserve" approved="yes">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;package profiles&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;패키지 프로파일&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/SoftwareRefresh.do"&gt;패키지 프로파일&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve">
+      <trans-unit id="ssm.overview.misc.systempreferences" xml:space="preserve" approved="yes">
         <source>Update &lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;system preferences&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;시스템 기본 설정&lt;/a&gt; 업데이트</target>
+        <target state="final">&lt;a href="/rhn/systems/ssm/misc/Index.do"&gt;시스템 기본 설정&lt;/a&gt; 업데이트</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
@@ -13185,9 +13185,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
         <target>&lt;strong&gt;활성화 키&lt;/strong&gt; 관리</target>
       </trans-unit>
-      <trans-unit id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve">
+      <trans-unit id="yourrhn.jsp.tasks.manage_sat_orgs" xml:space="preserve" approved="yes">
         <source>Manage &lt;strong&gt;Organizations&lt;/strong&gt;</source>
-        <target>&lt;strong&gt;조직&lt;/strong&gt; 관리</target>
+        <target state="final">&lt;strong&gt;조직&lt;/strong&gt; 관리</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/YourRhn.do</context>
         </context-group>
@@ -29857,14 +29857,14 @@ given channel.</source>
         <source>AppStreams</source>
         <target state="final">AppStreams</target>
       </trans-unit>
-    <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
+      <trans-unit id="channel.manage.errata.listalreadyincludedlabel" xml:space="preserve">
         <source>List Already Included Patches:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.manage.errata.listalreadyincludedmsg" xml:space="preserve">
         <source>With this selected, patches that are already part of the channel are shown. This is useful when a patch is part of multiple channels, has been included from one of them, and it is necessary to associate its packages from another one.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-07 11:19+0100\n"
-"PO-Revision-Date: 2025-02-14 18:04+0000\n"
+"POT-Creation-Date: 2025-03-11 10:07+0100\n"
+"PO-Revision-Date: 2025-03-09 15:50+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web-5-0/sk/"
 ">\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.9.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -1388,10 +1388,8 @@ msgid "Monitoring"
 msgstr "Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "Heslo"
+msgstr "Pravidlá pre heslá"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1470,73 +1468,67 @@ msgstr "Pridať pripojenie PAYG"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "Konfigurácia servera - Pravidlá pre heslá"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "Nastavte pravidlá pre heslá lokálnych používateľov servera."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
-msgstr "Nastavenia poskytovateľa"
+msgstr "Nastavenia pravidiel pre heslá"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "Min. dĺžka hesla"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "Max. dĺžka hesla"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "Vyžaduje reštart"
+msgstr "Vyžadujú sa číslice"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "Vyžadujú sa malé písmená"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "Vyžadujú sa veľké písmená"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "Obmedzenie po sebe idúcich znakov"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "Požadované kanály"
+msgstr "Vyžadujú sa špeciálne znaky"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "Povolené špeciálne znaky"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "Obmedzenie výskytu znakov"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "Max. výskyt znakov"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "Uložiť pravidlá pre heslá"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "Zmenené pravidlá pre heslá"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr ""
+msgstr "Obnoviť predvolené nastavenia pravidiel pre heslá"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75

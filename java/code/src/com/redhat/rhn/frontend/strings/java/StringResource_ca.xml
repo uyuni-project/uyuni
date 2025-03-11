@@ -11520,86 +11520,86 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
         <target state="translated">Genereu les dades d'OVAL necessàries per augmentar la precisió de les consultes d'auditoria de CVE</target>
       </trans-unit>
-    <trans-unit id="Password Policy" xml:space="preserve">
+      <trans-unit id="Password Policy" xml:space="preserve">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Política per a les contrasenyes</target>
+      </trans-unit>
       <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El camp {0} no pot ser igual o superior a zero.</target>
+      </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El camp {0} no pot ser més gran que el camp {1} ni igual.</target>
+      </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El nombre màxim d'ocurrències de caràcters permeses per contrasenya no poden ser inferiors ni iguals a 0.</target>
+      </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La contrasenya conté caràcters de tabulació o de línia nova.</target>
+      </trans-unit>
       <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La contrasenya conté caràcters consecutius.</target>
+      </trans-unit>
       <trans-unit id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Les contrasenyes han de contenir almenys un dígit.</target>
+      </trans-unit>
       <trans-unit id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Les contrasenyes han de contenir almenys un caràcter en majúscula.</target>
+      </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Les contrasenyes han de contenir almenys un caràcter en minúscula.</target>
+      </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Les contrasenyes han de contenir almenys un caràcter especial. Els caràcters especials permesos són els següents: {0}.</target>
+      </trans-unit>
       <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Els caràcters de la contrasenya han superat el màxim permès: {0}.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-07 11:19+0100\n"
-"PO-Revision-Date: 2024-10-17 02:48+0000\n"
+"POT-Creation-Date: 2025-03-11 10:07+0100\n"
+"PO-Revision-Date: 2025-03-10 07:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-5-0/ko/"
 ">\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -1385,10 +1385,8 @@ msgid "Monitoring"
 msgstr "모니터링"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "비밀번호"
+msgstr "암호 정책"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1466,73 +1464,67 @@ msgstr "PAYG 연결 추가"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "서버 구성 - 암호 정책"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "서버의 로컬 사용자 암호 정책을 설정하십시오."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
-msgstr "공급자 설정"
+msgstr "암호 정책 설정"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "최소 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "최대 암호 길이"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "재부팅 필요"
+msgstr "숫자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "소문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "대문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "연속 문자 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "필수 채널"
+msgstr "특수 문자 필요"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "허용되는 특수 문자"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "문자 발생 횟수 제한"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "최대 문자 발생 횟수"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "암호 정책 저장"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "암호 정책 변경됨"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr ""
+msgstr "암호 정책 기본값으로 재설정"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -2168,7 +2160,7 @@ msgstr "알 수 없는 호스트 이름"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "OVAL 데이터가 동기화되지 않음. 잠재적 누락된 취약점"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
@@ -5551,6 +5543,8 @@ msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
 msgstr ""
+"개발자들이 사용하는 숨겨진 페이지입니다. 이 페이지를 우연히 발견하셨다면 대단"
+"하시네요!"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"

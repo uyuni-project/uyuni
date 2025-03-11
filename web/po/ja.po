@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-07 11:19+0100\n"
-"PO-Revision-Date: 2024-10-15 09:48+0000\n"
+"POT-Creation-Date: 2025-03-11 10:07+0100\n"
+"PO-Revision-Date: 2025-03-09 04:56+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web-5-0/ja/"
 ">\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.7.2\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -1394,10 +1394,8 @@ msgid "Monitoring"
 msgstr "モニタリング"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "パスワード"
+msgstr "パスワードポリシー"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1475,73 +1473,67 @@ msgstr "PAYGの接続を追加"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "サーバ設定 - パスワードポリシー"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "サーバのローカルユーザパスワードポリシーを設定します。"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
-#, fuzzy
-#| msgid "Provider Settings"
 msgid "Password Policy Settings"
-msgstr "プロバイダの設定"
+msgstr "パスワードポリシーの設定"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "最小パスワード長"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "最大パスワード長"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "再起動が必要"
+msgstr "数字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "小文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "大文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "連続文字を制限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "必要なチャンネル"
+msgstr "特殊文字が必要"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "使用できる特殊文字"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "文字数を制限"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "最大文字数"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "パスワードポリシーの保存"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "パスワードポリシーが変更されました"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
-msgstr ""
+msgstr "パスワードポリシーがデフォルトにリセットされました"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
@@ -2186,7 +2178,7 @@ msgstr "不明ホスト名"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "OVALデータが同期されていない。脆弱性が見逃されている可能性がある"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
@@ -5613,6 +5605,7 @@ msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
 msgstr ""
+"これは開発者が使用する隠しページです。偶然見つけた場合は無視してください。"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:32
 msgid "SUSE Manager Default"

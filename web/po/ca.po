@@ -17,8 +17,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-07 11:19+0100\n"
-"PO-Revision-Date: 2025-02-28 09:15+0000\n"
+"POT-Creation-Date: 2025-03-11 10:07+0100\n"
+"PO-Revision-Date: 2025-03-08 21:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web-5-0/ca/"
 ">\n"
@@ -27,7 +27,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.1\n"
+"X-Generator: Weblate 5.10.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:446
 msgid "remaining"
@@ -593,7 +593,7 @@ msgstr "Nom"
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:540
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:38
 msgid "Password"
-msgstr "Contrasta"
+msgstr "Contrasenya"
 
 #: ../html/src/components/input/password/Password.stories.tsx:25
 msgid "Minimum 4 characters"
@@ -1396,10 +1396,8 @@ msgid "Monitoring"
 msgstr "Seguiment"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:379
-#, fuzzy
-#| msgid "Password"
 msgid "Password Policy"
-msgstr "Contrasta"
+msgstr "Política per a les contrasenyes"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:408
 msgid "Restarting"
@@ -1479,71 +1477,69 @@ msgstr "Afegeix una connexió PAYG"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:47
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "Configuració del servidor - Política per a les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:50
 msgid "Set up your server local users password policy."
 msgstr ""
+"Configureu la política de les contrasenyes dels usuaris locals del servidor."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:53
 msgid "Password Policy Settings"
-msgstr ""
+msgstr "Configuració de la política per a les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:58
 msgid "Min Password Length"
-msgstr ""
+msgstr "Longitud mínima de la contrasenya"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:65
 msgid "Max Password Length"
-msgstr ""
+msgstr "Longitud màxima de la contrasenya"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:72
-#, fuzzy
-#| msgid "Requires Reboot"
 msgid "Require Digits"
-msgstr "Requereix reiniciar"
+msgstr "Requereix dígits"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:79
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "Requereix caràcters en minúscula"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:86
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "Requereix caràcters en majúscula"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:93
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "Restringeix els caràcters consecutius"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:100
-#, fuzzy
-#| msgid "Required channels"
 msgid "Require Special Characters"
-msgstr "Canals necessaris"
+msgstr "Requereix caràcters especials"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:107
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "Caràcters especials permesos"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:119
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "Restringeix l'ocurrència de caràcters"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:126
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "Màxim d'ocurrències de caràcters"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:143
 msgid "Save Password Policy"
-msgstr ""
+msgstr "Desa la política de les contrasenyes"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:149
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "La política de les contrasenyes ha canviat"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:166
 msgid "Password Policy reset to defaults"
 msgstr ""
+"La política per a les contrasenyes es restableix als valors predeterminats"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
