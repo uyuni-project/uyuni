@@ -10,7 +10,7 @@ function fillSpecFile() {
   // Files under `web/html/javascript` are MIT licensed but won't be inferred from the automatic list
   npmLicensesArray.push("MIT");
 
-  //https://github.com/metal/metal.js/issues/411
+  // See https://github.com/metal/metal.js/issues/411
   const processedLicenses = npmLicensesArray.map((item) => {
     if (item === "BSD") {
       return "0BSD";
@@ -19,7 +19,7 @@ function fillSpecFile() {
   });
   const mappedProcessedLicenses = Array.from(new Set(processedLicenses)).sort().filter(Boolean).join(" AND ");
 
-  const specFileLocation = "../../spacewalk-web.spec";
+  const specFileLocation = path.resolve(__dirname, "../../../spacewalk-web.spec");
 
   return new Promise(function (resolve, reject) {
     fs.readFile(specFileLocation, "utf8", function (err, specFile) {
