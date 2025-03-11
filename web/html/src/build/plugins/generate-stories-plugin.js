@@ -38,8 +38,7 @@ module.exports = class GenerateStoriesPlugin {
     }
     this.didApply = true;
 
-    /** Source directory for the compilation, an absolute path to `/web/html/src` */
-    const webHtmlSrc = compiler.context;
+    const webHtmlSrc = path.resolve(__dirname, "../..");
     if (!this.outputFile.startsWith(webHtmlSrc)) {
       throw new RangeError("GenerateStoriesPlugin: `outputFile` is outside of the source code directory");
     }
