@@ -53,11 +53,11 @@ public class CobblerPowerCommand extends CobblerCommand {
      */
     public enum Operation {
         /** Turn on. */
-        PowerOn,
+        POWER_ON,
         /** Turn off. */
-        PowerOff,
+        POWER_OFF,
         /** Reboot. */
-        Reboot
+        REBOOT
     }
 
     /**
