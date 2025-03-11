@@ -34,7 +34,7 @@ def run_command(cmd: List[str], verbose=False, raise_exc=True) -> List:
     Runs a command
     """
     if verbose:
-        console.log(f"Executing: {' '.join(cmd)}")
+        console.log(f'Executing: {" ".join(cmd)}')
 
     process = subprocess.run(
         cmd,
