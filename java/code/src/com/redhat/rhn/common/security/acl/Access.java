@@ -747,9 +747,12 @@ public class Access extends BaseHandler {
     public boolean aclSystemIsConvertibleToProxy(Map<String, Object> ctx, String[] params) {
         Long sid = getAsLong(ctx.get("sid"));
         User user = (User) ctx.get("user");
-        Server lookedUp = SystemManager.lookupByIdAndUser(sid, user);
+        Server server = SystemManager.lookupByIdAndUser(sid, user);
+        if (server == null) {
+            return false;
+        }
 
-        return lookedUp.isConvertibleToProxy();
+        return server.isConvertibleToProxy();
     }
 
     /**
