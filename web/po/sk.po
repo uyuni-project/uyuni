@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-10 19:56+0000\n"
+"PO-Revision-Date: 2025-03-11 18:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -628,16 +628,20 @@ msgid ""
 "Ensure the certificate you are providing is correct before proceeding. A "
 "wrong value will break the connection with the hub."
 msgstr ""
+"Pred pokračovaním sa uistite, či je poskytnutý certifikát správny. Nesprávna "
+"hodnota spôsobí prerušenie spojenia s hubom."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:77
 msgid ""
 "Are you sure you want to delete the current Root Certificate Authority? This "
 "change may break the connection with the hub."
 msgstr ""
+"Ste si istí, že chcete vymazať aktuálnu koreňovú certifikačnú autoritu? Táto "
+"zmena môže prerušiť spojenie s hubom."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:83
 msgid "Root Certificate Authority successfully modified."
-msgstr ""
+msgstr "Koreňová certifikačná autorita bola úspešne pozmenená."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:98
 msgid "Root Certificate Authority successfully updated."
@@ -645,15 +649,15 @@ msgstr "Koreňová certifikačná autorita bola úspešne aktualizovaná."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:115
 msgid "GPG Public Key:"
-msgstr ""
+msgstr "Verejný kľúč GPG:"
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:121
 msgid "A customized GPG key is currently configured for this hub."
-msgstr ""
+msgstr "Pre tento hub je v súčasnosti nakonfigurovaný vlastný kľúč GPG."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:122
 msgid "This hub is currently not using a custom GPG key."
-msgstr ""
+msgstr "Tento hub v súčasnosti nepoužíva vlastný kľúč GPG."
 
 #: ../html/src/components/hub/HubDetailsForm.tsx:131
 msgid "Mirror credentials:"
@@ -673,7 +677,7 @@ msgstr "Počet synchronizovaných kanálov"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:41
 msgid "N. of Sync Orgs"
-msgstr ""
+msgstr "Počet synchronizovaných organizácií"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:46
 msgid "Download Root CA"
@@ -696,6 +700,8 @@ msgid ""
 "The unique, DNS-resolvable fully-qualified domain name of the server to "
 "register."
 msgstr ""
+"Jedinečný, plne kvalifikovaný názov domény servera rozpoznateľný DNS, ktorý "
+"sa má zaregistrovať."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:167
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:168
@@ -705,10 +711,11 @@ msgstr "Režim registrácie"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:169
 msgid "Define how to connect to the remote server to initiate the registration"
 msgstr ""
+"Definovanie spôsobu pripojenia k vzdialenému serveru na začatie registrácie"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:176
 msgid "Existing token"
-msgstr ""
+msgstr "Existujúci token"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Administrator User/Password"
