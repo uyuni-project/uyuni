@@ -1,2 +1,0 @@
-- Fix race at updating system overview table (bsc#1235853)
-- Fix double-delete in cancelActions
