@@ -6,7 +6,7 @@ import { Button } from "./buttons";
 type Step = {
   title: string;
   content: React.ReactNode;
-  validate: Boolean;
+  validate: boolean | null;
 };
 
 type StepsProgressBarProps = {
@@ -15,16 +15,19 @@ type StepsProgressBarProps = {
   /** steps title and contents */
   steps: Step[];
   onCreate?: Function
+  onCancel?: Function
 };
 
-const StepsProgressBar = ({ className, steps, onCreate }: StepsProgressBarProps) => {
+const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgressBarProps) => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [validate, setValidate] = useState(steps[currentStep].validate);
 
   const nextStep = () => {
-    if (validate && currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else if (onCreate) {
+    const isLastStep = currentStep === steps.length - 1;
+    const currentValidate = steps[currentStep].validate;
+
+    if ((currentValidate || currentValidate === null) && !isLastStep) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    } else if (isLastStep && onCreate) {
       onCreate();
     }
   };
@@ -32,6 +35,12 @@ const StepsProgressBar = ({ className, steps, onCreate }: StepsProgressBarProps)
   const prevStep = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const cancel = () => {
+    if (onCancel) {
+      onCancel();
     }
   };
 
@@ -64,23 +73,21 @@ const StepsProgressBar = ({ className, steps, onCreate }: StepsProgressBarProps)
             ))}
           </div>
         </div>
-        {/* <div className="content-section">{steps[currentStep]?.content}</div> */}
       </div>
       <div className="progress-bar-footer">
-        <Button className={`btn-default pull-left`} text="Cancel" />
+        <Button className="btn-default btn-sm pull-left" text="Cancel" handler={cancel} />
         <div className="pull-right">
-          <Button className={`btn-default me-3 ${currentStep === 0
+          <Button className={`btn-default btn-sm me-3 ${currentStep === 0
             ? "d-none"
             : ""
             }`} text="Back" handler={prevStep} />
-          <Button className={"btn-primary"}
+          <Button className="btn-primary btn-sm"
             text={`${currentStep === steps.length - 1
               ? "Create"
               : "Continue"
               }`}
             handler={nextStep} />
         </div>
-
       </div>
     </div>
   );
