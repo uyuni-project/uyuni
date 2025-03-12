@@ -7,7 +7,7 @@ pgdata="/var/lib/postgresql/data"
 pgconf="$pgdata/postgresql.conf"
 
 if [ ! -f $pgdata/PG_VERSION ]; then
-  if [ ! -f $pgdata; then
+  if [ ! -f $pgdata ]; then
     mkdir -p $pgdata
     chown postgres:postgres $pgdata
   fi
