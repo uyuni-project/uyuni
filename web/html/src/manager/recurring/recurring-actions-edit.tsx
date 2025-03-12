@@ -2,6 +2,8 @@ import * as React from "react";
 
 import _isEqual from "lodash/isEqual";
 
+import { RecurringPlaybookPicker } from "manager/recurring/recurring-playbook-picker";
+
 import { Button } from "components/buttons";
 import { AsyncButton } from "components/buttons";
 import { Form, Select } from "components/input";
@@ -103,6 +105,9 @@ class RecurringActionsEdit extends React.Component<Props, State> {
   };
 
   getActionTypeFromString = (actionType: string) => {
+    if (actionType === "Ansible Playbook") {
+      actionType = "Playbook";
+    }
     return actionType.replace(/\s+/g, "").toUpperCase();
   };
 
@@ -123,6 +128,14 @@ class RecurringActionsEdit extends React.Component<Props, State> {
         targetId: window.minions?.[0].id,
       });
     }
+  };
+
+  getTypes = () => {
+    let types = ["Highstate", "Custom state"];
+    if (window.isControlNode) {
+      types = types.concat("Ansible Playbook");
+    }
+    return types;
   };
 
   isEdit = () => {
@@ -184,6 +197,17 @@ class RecurringActionsEdit extends React.Component<Props, State> {
     return Promise.resolve(states);
   };
 
+  onSelectPlaybook = (playbook) => {
+    this.setState({
+      details: {
+        ...this.state.details,
+        playbookPath: playbook?.playbookPath,
+        inventoryPath: playbook?.inventoryPath,
+        flushCache: playbook?.flushCache,
+      },
+    });
+  };
+
   toggleTestState = () => {
     let { details } = this.state;
     details.test = !this.state.details.test;
@@ -234,7 +258,7 @@ class RecurringActionsEdit extends React.Component<Props, State> {
             name="actionTypeDescription"
             label={t("Action Type")}
             disabled={this.isEdit()}
-            options={["Highstate", "Custom state"]}
+            options={this.getTypes()}
             labelClass="col-sm-3"
             divClass="col-sm-6"
           />
@@ -250,7 +274,6 @@ class RecurringActionsEdit extends React.Component<Props, State> {
           onCronTimesChanged={this.onCronTimesChanged}
           onCronChanged={this.onCustomCronChanged}
         />
-        {/* TODO: Make schedules that don't belong to the currently selected entity readonly */}
         {window.entityType === "NONE" || this.state.actionTypeDescription !== "Highstate" ? null : (
           <DisplayHighstate minions={this.state.minions} />
         )}
@@ -267,6 +290,15 @@ class RecurringActionsEdit extends React.Component<Props, State> {
               applyRequest={this.onClickExecute}
             />
           </span>
+        )}
+        {this.state.actionTypeDescription === "Ansible Playbook" && (
+          <RecurringPlaybookPicker
+            minionServerId={this.state.targetId}
+            playbookPath={this.state.details.playbookPath}
+            inventoryPath={this.state.details.inventoryPath}
+            flushCache={this.state.details.flushCache}
+            onSelectPlaybook={this.onSelectPlaybook}
+          />
         )}
       </InnerPanel>
     );
