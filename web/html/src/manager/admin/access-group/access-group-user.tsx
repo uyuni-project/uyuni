@@ -79,14 +79,14 @@ const AccessGroupUsers = (props: Props) => {
 
   return (
     <div>
-      <div className="row">
-        <div className="col-md-4 d-flex">
-          <strong className="me-3">Name:</strong>
-          <div>{props.state.detailsproperties.name}</div>
+      <div className="d-flex">
+        <div className="me-5">
+          <strong className="me-1">Name:</strong>
+          {props.state.detailsproperties.name}
         </div>
-        <div className="col-md-8 d-flex">
-          <strong className="me-3">Description:</strong>
-          <div>{props.state.detailsproperties.description}</div>
+        <div>
+          <strong className="me-1">Description:</strong>
+          {props.state.detailsproperties.description}
         </div>
       </div>
       <hr></hr>
