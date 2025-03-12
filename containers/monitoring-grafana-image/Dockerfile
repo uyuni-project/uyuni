@@ -6,8 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-#!BuildTag: uyuni/grafana:%%grafana_patch_version%%
-#!BuildTag: uyuni/grafana:latest
+#!BuildTag: uyuni/monitoring-grafana:latest uyuni/monitoring-grafana:%%grafana_patch_version%%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
