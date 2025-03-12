@@ -66,7 +66,7 @@ public class StateResult {
                 }
                 else {
                     changes = YamlHelper.INSTANCE.dump(val);
-                    changes = changes.replaceAll("\\\\n", "\n");
+                    changes = changes.replace("\\\\n", "\n");
                 }
                 break;
             case "comment":

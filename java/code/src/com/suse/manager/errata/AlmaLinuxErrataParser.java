@@ -36,6 +36,6 @@ public class AlmaLinuxErrataParser extends AbstractSimpleErrataParser {
     // AlmaLinux is using '-' in place of ':' in the url
     @Override
     protected String getAdvisoryCode(String errataAdvisory) {
-        return errataAdvisory.replaceAll(":", "-");
+        return errataAdvisory.replace(":", "-");
     }
 }

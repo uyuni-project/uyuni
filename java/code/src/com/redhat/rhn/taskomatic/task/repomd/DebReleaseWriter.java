@@ -101,7 +101,7 @@ public class DebReleaseWriter {
 
     private String toArchString(ChannelArch channelArch) {
         return (String)channelArch.getCompatiblePackageArches().stream().
-               map(a -> ((PackageArch)a).getLabel().replaceAll("-deb", "")).
+               map(a -> ((PackageArch)a).getLabel().replace("-deb", "")).
                filter(a -> !("all".equals(a) || "src".equals(a))).
                sorted().collect(Collectors.joining(" "));
     }
