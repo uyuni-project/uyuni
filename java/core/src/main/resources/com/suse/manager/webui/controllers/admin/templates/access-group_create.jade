@@ -3,13 +3,13 @@ include /templates/common.jade
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
-#access-group
+#create-access-group
 
 script(type='text/javascript').
-    spaImportReactPage('admin/access-group')
+    spaImportReactPage('admin/create-access-group')
         .then(function(module) {
             module.renderer(
-                'access-group',
+                'create-access-group',
                 { }
             );
         });
