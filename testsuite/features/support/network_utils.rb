@@ -20,13 +20,18 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
   stdout = ''
   stderr = ''
   exit_code = -1
-
   begin
-    Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
-      stdout, stderr, exit_code = ssh_exec!(ssh, command)
+    Timeout.timeout(timeout) do # Enforce timeout on the entire SSH operation
+      Net::SSH.start(host, nil, port: port, verify_host_key: :never, timeout: timeout, keepalive: true, max_pkt_size: buffer_size, config: true) do |ssh|
+        stdout, stderr, exit_code = ssh_exec!(ssh, command, timeout: DEFAULT_TIMEOUT)
+      end
     end
+  rescue Timeout::Error
+    puts "SSH operation timed out after #{timeout} seconds."
   rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH
-    # The connection times out or is refused
+    puts "Unable to reach the SSH server at #{host}:#{port}"
+  rescue Net::SSH::AuthenticationFailed
+    puts "Authentication failed for user #{user} on #{host}"
   end
 
   [stdout, stderr, exit_code]
@@ -70,7 +75,7 @@ end
 
 private
 
-def ssh_exec!(ssh, command)
+def ssh_exec!(ssh, command, timeout: 10)
   stdout = ''
   stderr = ''
   exit_code = -1
@@ -91,12 +96,18 @@ def ssh_exec!(ssh, command)
         exit_code = data.read_long
       end
     end
+
+    Timeout.timeout(timeout) do
+      channel.wait
+    end
   end
 
   begin
     ssh.loop
   rescue IOError
     puts "The remote node #{ssh.host} has been disconnected."
+  rescue Net::SSH::Disconnect
+    puts 'The SSH session was unexpectedly terminated.'
   end
 
   [stdout, stderr, exit_code]

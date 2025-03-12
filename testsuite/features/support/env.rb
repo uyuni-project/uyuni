@@ -57,9 +57,6 @@ $current_user = 'admin'
 $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
-# add_context('timeout_failure_counter', 0)
-$timeout_failure_counter = 0
-$timeout_threshold = 10  # Set the threshold for stopping the suite
 
 # maximal wait before giving up
 # the tests return much before that delay in case of success
@@ -134,34 +131,23 @@ $quality_intelligence = QualityIntelligence.new if $quality_intelligence_mode
 # Define the current feature scope
 Before do |scenario|
   $feature_scope = scenario.location.file.split(%r{(\.feature|/)})[-2]
-  check_read_timeout_threshold
 end
 
-# After hook to handle scenario failures and dump feature code coverage into Redis DB
+# Embed a screenshot after each failed scenario
 After do |scenario|
-  check_read_timeout_threshold
-
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
-
-  # Check if the scenario failed due to a Net::ReadTimeout
   if scenario.failed?
-    if scenario.exception.is_a?(Net::ReadTimeout)
-      increase_read_timeout_count
-      log_server_response_time
-    else
-      begin
-        if web_session_is_active?
-          handle_screenshot_and_relog(scenario, current_epoch)
-        else
-          warn 'There is no active web session; unable to take a screenshot or relog.'
-        end
-      ensure
-        print_server_logs
+    begin
+      if web_session_is_active?
+        handle_screenshot_and_relog(scenario, current_epoch)
+      else
+        warn 'There is no active web session; unable to take a screenshot or relog.'
       end
+    ensure
+      print_server_logs
     end
   end
-
   page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
 end
 
@@ -170,20 +156,6 @@ def web_session_is_active?
   return false unless Capybara::Session.instance_created?
 
   page.has_selector?('header') || page.has_selector?('#username-field')
-end
-
-def check_read_timeout_threshold
-  # Check if the consecutive timeout threshold is reached
-  if $timeout_failure_counter >= $timeout_threshold
-    warn "Timeout failure threshold reached, stopping test suite."
-    exit(1)
-  end
-end
-
-def increase_read_timeout_count
-  $timeout_failure_counter += 1
-
-  warn "Net::ReadTimeout detected! Consecutive ReadTimeouts: #{$timeout_failure_counter}"
 end
 
 # Take a screenshot and try to log back at suse manager server
@@ -226,7 +198,6 @@ def relog_and_visit_previous_url
     end
   rescue Timeout::Error
     warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
-    increase_read_timeout_count
   rescue StandardError => e
     warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
   end
@@ -291,7 +262,6 @@ end
 
 # Create a user for each feature
 Before do |scenario|
-  check_read_timeout_threshold
   feature_path = scenario.location.file
   $feature_filename = feature_path.split(%r{(\.feature|/)})[-2]
   next if get_context('user_created') == true
