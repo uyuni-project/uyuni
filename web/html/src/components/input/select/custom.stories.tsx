@@ -3,15 +3,15 @@ import { Select } from "./Select";
 
 export default () => {
   const model = {
-    flavor: ["vanilla aa", "strawberry aa"],
+    flavor: ["vanilla", "strawberry"],
   };
 
   const options = [
-    { value: "chocolate aa", label: "Chocolate", color: "#7B3F00" },
-    { value: "strawberry aa", label: "Strawberry", color: "#DF0000" },
-    { value: "vanilla aa", label: "Vanilla", color: "#F3E5AB" },
+    { value: "chocolate", label: "Chocolate", color: "#7B3F00" },
+    { value: "strawberry", label: "Strawberry", color: "#DF0000" },
+    { value: "vanilla", label: "Vanilla", color: "#F3E5AB" },
   ];
-  console.log('model OUT', model)
+
   return (
     <>
       <p>Custom layouts and colors:</p>
@@ -21,7 +21,6 @@ export default () => {
           <Form
             model={model}
             onChange={(newModel) => {
-              console.log('model', model)
               model["flavor"] = newModel["flavor"];
             }}
             onSubmit={() => Loggerhead.info(model)}

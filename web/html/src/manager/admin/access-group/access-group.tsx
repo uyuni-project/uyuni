@@ -106,7 +106,7 @@ const CreateAccessGroup = () => {
   ]
   return (
     <TopPanel
-      title={t("Access Group")}
+      title={t("Create: Access Group")}
     >
       <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={handleCancel} />
     </TopPanel>
