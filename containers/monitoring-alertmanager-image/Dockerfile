@@ -11,6 +11,13 @@
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
 
+RUN set -euo pipefail && \
+    zypper -n install --no-recommends \\
+        golang-github-prometheus-alertmanager \
+        curl && \
+    zypper -n clean && \
+    rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
+
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
@@ -30,7 +37,6 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-alertmanager curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/prometheus-alertmanager"]
 EXPOSE 9093
 HEALTHCHECK --interval=5s --timeout=5s --retries=5 \
