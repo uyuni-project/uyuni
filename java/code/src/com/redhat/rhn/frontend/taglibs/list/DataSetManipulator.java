@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
@@ -128,11 +129,13 @@ public class DataSetManipulator {
 
         String sortDir = getActiveSortDirection();
         try {
-            dataset.sort(new DynamicComparator(sortAttr, sortDir));
+            dataset = (List) dataset.stream().sorted(new DynamicComparator(sortAttr, sortDir))
+                    .collect(Collectors.toList());
         }
         catch (IllegalArgumentException iae) {
             log.warn("Unable to sort dataset according to: {}", sortAttr);
-            dataset.sort(new DynamicComparator(defaultSortAttribute, sortDir));
+            dataset = (List) dataset.stream().sorted(new DynamicComparator(defaultSortAttribute, sortDir))
+                    .collect(Collectors.toList());
         }
     }
 
