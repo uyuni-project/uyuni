@@ -100,6 +100,9 @@ public class RecurringActionManager extends BaseManager {
     public static RecurringAction createRecurringAction(RecurringAction.TargetType targetType,
                                                         RecurringActionType.ActionType actionType,
                                                         long entityId, User user) {
+        if (actionType == null) {
+            throw new ValidatorException(getLocalization().getMessage("recurring_action.empty_action_type"));
+        }
         switch (targetType) {
             case MINION:
                 return createMinionRecurringAction(actionType, entityId, user);

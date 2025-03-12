@@ -29,6 +29,7 @@ declare global {
     orgName?: any;
     minions?: any[];
     entityType?: any;
+    isControlNode?: boolean;
     timezone?: any;
     localTime?: any;
   }

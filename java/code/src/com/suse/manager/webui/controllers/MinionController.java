@@ -39,6 +39,7 @@ import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ShortSystemInfo;
 import com.redhat.rhn.frontend.struts.ActionChainHelper;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -441,6 +442,7 @@ public class MinionController {
         Map<String, Object> data = new HashMap<>();
         data.put("entityType", "MINION");
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("isControlNode", server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
         return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 
