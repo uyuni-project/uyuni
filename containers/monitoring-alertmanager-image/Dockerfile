@@ -12,7 +12,7 @@ ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
 
 RUN set -euo pipefail && \
-    zypper -n install --no-recommends \\
+    zypper -n install --no-recommends \
         golang-github-prometheus-alertmanager \
         curl && \
     zypper -n clean && \
