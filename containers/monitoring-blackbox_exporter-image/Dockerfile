@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-#     Copyright (c) 2024 SUSE LLC
+#     Copyright (c) 2025 SUSE LLC
 
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,8 +12,6 @@
 ARG BASE=bci/bci-base:15.6
 FROM $BASE
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
@@ -24,13 +22,14 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 LABEL org.opencontainers.image.title="${PRODUCT} Blackbox Exporter"
 LABEL org.opencontainers.image.name="monitoring-blackbox_exporter-image"
 LABEL org.opencontainers.image.description="Blackbox Exporter container image for ${PRODUCT}"
-LABEL org.opencontainers.image.version=5.1.3
+LABEL org.opencontainers.image.version=5.1.0
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/blackbox_exporter:%%blackbox_exporter_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]

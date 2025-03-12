@@ -12,8 +12,6 @@
 ARG BASE=bci/bci-base:15.6
 FROM $BASE
 
-MAINTAINER SUSE LLC (https://www.suse.com/)
-
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
@@ -31,8 +29,8 @@ LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/alertmanager:%%alertmanager_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
-
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
+
 RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-alertmanager curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/prometheus-alertmanager"]
 EXPOSE 9093
