@@ -1,8 +1,0 @@
-FROM registry.opensuse.org/opensuse/grafana:11.5.1
-
-ENV GF_PATHS_PROVISIONING=/etc/grafana/provisioning
-ENV GF_AUTH_ANONYMOUS_ENABLED=true
-ENV GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-ENV GF_INSTALL_PLUGINS="yesoreyeram-infinity-datasource 2.12.2"
-
-CMD [ "run.sh" ]
