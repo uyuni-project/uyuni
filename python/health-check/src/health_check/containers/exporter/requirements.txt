@@ -1,3 +1,0 @@
-prometheus_client
-jinja2
-rich
