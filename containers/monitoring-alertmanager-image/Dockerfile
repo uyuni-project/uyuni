@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.version=5.1.0
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/alertmanager:%%alertmanager_patch_version%%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/monitoring-alertmanager:%%alertmanager_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
