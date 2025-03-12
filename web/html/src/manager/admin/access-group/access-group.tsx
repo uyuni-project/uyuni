@@ -15,8 +15,6 @@ const CreateAccessGroup = () => {
     detailsproperties: {
       name: string;
       description: string;
-    };
-    accessGroupsModel: {
       accessGroup: string[];
     };
     permissions: string[];
@@ -28,8 +26,6 @@ const CreateAccessGroup = () => {
     detailsproperties: {
       name: "",
       description: "",
-    },
-    accessGroupsModel: {
       accessGroup: [],
     },
     permissions: [],
@@ -45,13 +41,13 @@ const CreateAccessGroup = () => {
   };
 
   const handleNamespace = (newname) => {
-    setAccessGroupState(prevState => ({
-      ...prevState,
-      accessGroupsModel: {
-        ...prevState.accessGroupsModel,
-        accessGroup: newname["accessGroup"]
-      }
-    }));
+    // setAccessGroupState(prevState => ({
+    //   ...prevState,
+    //   accessGroupsModel: {
+    //     ...prevState.accessGroupsModel,
+    //     accessGroup: newname["accessGroup"]
+    //   }
+    // }));
   };
 
   const handleUsers = (user, action) => {
@@ -72,8 +68,15 @@ const CreateAccessGroup = () => {
   };
 
   const handleCreateAccessGroup = () => {
+    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
     console.log("Access Group Created:", accessGroupState);
   };
+
+  const handleCancel = () => {
+    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
+  };
+
+  console.log(accessGroupState)
 
   const steps = [
     {
@@ -82,7 +85,7 @@ const CreateAccessGroup = () => {
         properties={accessGroupState.detailsproperties}
         onChange={handleFormChange}
         errors={accessGroupState.errors} />,
-      validate: () => true,
+      validate: null,
     },
     {
       title: "Namespaces & Permissions",
@@ -105,7 +108,7 @@ const CreateAccessGroup = () => {
     <TopPanel
       title={t("Access Group")}
     >
-      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} />
+      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={handleCancel} />
     </TopPanel>
   );
 };

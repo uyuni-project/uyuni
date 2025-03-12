@@ -5,7 +5,7 @@
   margin-bottom: -4em;
 }
 
-.progress-bar-container{
+.progress-bar-container {
   flex-grow: 1;
 }
 
@@ -23,7 +23,7 @@
     display: inline-flex;
     gap: 0.4em;
     align-items: center;
-    
+
     .step-circle {
       width: 18px;
       height: 18px;
@@ -33,7 +33,7 @@
       font-size: 11px;
       line-height: 14px;
     }
-    .step-title{
+    .step-title {
       font-weight: bold;
       color: $eos-bc-gray-500;
       text-align: left;
@@ -56,7 +56,7 @@
         background: radial-gradient(circle, $eos-bc-gray-900 50%, transparent 11%);
         transition: all 0.5s ease-in;
       }
-      .step-title{
+      .step-title {
         color: $eos-bc-gray-1000;
       }
       .step-line span {
@@ -77,7 +77,7 @@
           color: $white;
         }
       }
-      .step-title{
+      .step-title {
         color: $eos-bc-gray-1000;
       }
       .step-line span {
@@ -100,6 +100,6 @@
 }
 
 .main-content {
-  margin: 30px 0;
+  margin: 20px 0;
   text-align: left;
 }
