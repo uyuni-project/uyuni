@@ -9,7 +9,7 @@
 #!BuildTag: uyuni/alertmanager:%%alertmanager_patch_version%%
 #!BuildTag: uyuni/alertmanager:latest
 
-ARG BASE=bci/bci-base:15.6
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
 
 ARG PRODUCT=Uyuni
