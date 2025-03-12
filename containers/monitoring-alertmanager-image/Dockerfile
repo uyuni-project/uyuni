@@ -6,8 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-#!BuildTag: uyuni/alertmanager:%%alertmanager_patch_version%%
-#!BuildTag: uyuni/alertmanager:latest
+#!BuildTag: uyuni/monitoring-alertmanager:latest uyuni/monitoring-alertmanager:%%alertmanager_patch_version%%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
