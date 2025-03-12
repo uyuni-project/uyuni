@@ -25,7 +25,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} health check grafana imag
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=0.1
+LABEL org.opencontainers.image.version=5.1.0
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/health-check-grafana:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

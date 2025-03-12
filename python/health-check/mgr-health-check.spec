@@ -17,7 +17,7 @@
 
 %{?sle15_python_module_pythons}
 Name:           mgr-health-check
-Version:        0.1
+Version:        5.1.0
 Release:        0
 Summary:        Show Uyuni server health metrics and logs
 License:        Apache-2.0 
