@@ -1,0 +1,2 @@
+- Fix: Using reboot_suggested or restart_suggested by API
+  always responds false (bsc#1236910)
