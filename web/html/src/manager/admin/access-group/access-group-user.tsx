@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
 import { Button } from "components/buttons";
-import { DEPRECATED_Select, Form, Select } from "components/input";
+import { DEPRECATED_Select, Form } from "components/input";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
@@ -87,20 +87,6 @@ const AccessGroupUsers = (props: Props) => {
         <div className="col-md-8 d-flex">
           <strong className="me-3">Description:</strong>
           <div>{props.state.detailsproperties.description}</div>
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-md-12"><strong className="me-3">Access Groups:</strong>
-          {props.state.accessGroupsModel.accessGroup.map((item, key) => (
-            <span className="label label-default me-3" key={key}>{item}</span>
-          ))}
-        </div>
-      </div>
-      <div className="row mt-3">
-        <div className="col-md-12"><strong className="me-3">Namespace & Permissions:</strong>
-          {props.state.accessGroupsModel.accessGroup.map((item, key) => (
-            <span className="label label-default me-3" key={key}>{item}</span>
-          ))}
         </div>
       </div>
       <hr></hr>
