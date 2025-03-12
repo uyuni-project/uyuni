@@ -32,6 +32,7 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/alertmanager:%%alertmanager_pa
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 
+LABEL org.uyuni.version="${PRODUCT_VERSION}"
 RUN set -euo pipefail; zypper -n in --no-recommends golang-github-prometheus-alertmanager curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/prometheus-alertmanager"]
 EXPOSE 9093
