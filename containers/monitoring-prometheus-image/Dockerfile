@@ -6,8 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-#!BuildTag: uyuni/prometheus:%%prometheus_patch_version%%
-#!BuildTag: uyuni/prometheus:latest
+#!BuildTag: uyuni/monitoring-prometheus:latest uyuni/monitoring-prometheus:%%prometheus_patch_version%%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE

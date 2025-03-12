@@ -6,8 +6,7 @@
 # remain the property of their copyright owners, unless otherwise agreed
 # upon.
 
-#!BuildTag: uyuni/blackbox_exporter:%%blackbox_exporter_patch_version%%
-#!BuildTag: uyuni/blackbox_exporter:latest
+#!BuildTag: uyuni/monitoring-blackbox_exporter:latest uyuni/monitoring-blackbox_exporter:%%blackbox_exporter_patch_version%%
 
 ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
