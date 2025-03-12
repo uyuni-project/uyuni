@@ -1,2 +1,0 @@
-- Fix: fix the generics for set, iterator, DataResult and others,
-  eliminating unnecessary type cast and object
