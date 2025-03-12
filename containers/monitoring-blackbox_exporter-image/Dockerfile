@@ -9,8 +9,15 @@
 #!BuildTag: uyuni/blackbox_exporter:%%blackbox_exporter_patch_version%%
 #!BuildTag: uyuni/blackbox_exporter:latest
 
-ARG BASE=bci/bci-base:15.6
+ARG BASE=registry.suse.com/bci/bci-base:15.6
 FROM $BASE
+
+RUN set -euo pipefail && \
+    zypper -n install --no-recommends \
+        prometheus-blackbox_exporter \
+        curl && \
+    zypper -n clean && \
+    rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
@@ -26,12 +33,11 @@ LABEL org.opencontainers.image.version=5.1.0
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/blackbox_exporter:%%blackbox_exporter_patch_version%%.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/monitoring-blackbox_exporter:%%blackbox_exporter_patch_version%%.%RELEASE%"
 LABEL org.openbuildservice.disturl="%DISTURL%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-RUN set -euo pipefail; zypper -n in --no-recommends prometheus-blackbox_exporter curl; zypper -n clean; rm -rf /var/log/{lastlog,tallylog,zypper.log,zypp/history,YaST2}
 ENTRYPOINT ["/usr/bin/blackbox_exporter"]
 CMD ["--config.file=/etc/prometheus/blackbox.yml"]
 EXPOSE 9115
