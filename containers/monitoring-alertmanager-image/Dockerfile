@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-#     Copyright (c) 2024 SUSE LLC
+#     Copyright (c) 2025 SUSE LLC
 
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
