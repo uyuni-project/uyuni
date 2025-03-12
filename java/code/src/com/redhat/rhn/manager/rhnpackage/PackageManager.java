@@ -1757,7 +1757,7 @@ public class PackageManager extends BaseManager {
             for (DistChannelMap map : chan.getDistChannelMaps()) {
                 String release = map.getRelease();
                 if (release != null && !release.isEmpty()) {
-                    release.add(release)
+                    release.add(release);
                 }
             }
         }
