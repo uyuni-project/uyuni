@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-26 13:49+0100\n"
-"PO-Revision-Date: 2025-03-11 18:56+0000\n"
+"PO-Revision-Date: 2025-03-12 17:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -719,12 +719,13 @@ msgstr "Existujúci token"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:177
 msgid "Administrator User/Password"
-msgstr ""
+msgstr "Administrátor používateľ/heslo"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:184
 msgid ""
 "The token that grant access to the remote server to establish the connection."
 msgstr ""
+"Token, ktorý poskytuje prístup k vzdialenému serveru na vytvorenie spojenia."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:195
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
@@ -736,7 +737,7 @@ msgstr "Používateľské meno"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
 msgid "The username of {productName} Administrator of the remote server."
-msgstr ""
+msgstr "Používateľské meno administrátora {productName} vzdialeného servera."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:204
 #: ../html/src/components/input/password/Password.stories.tsx:23
@@ -753,7 +754,7 @@ msgstr "Heslo"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:205
 msgid "The password of the specified user."
-msgstr ""
+msgstr "Heslo zadaného používateľa."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:214
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:215
@@ -765,6 +766,8 @@ msgid ""
 "The Root certificate authority of the remote server, that must be trusted to "
 "establish a secure connection."
 msgstr ""
+"Koreňová certifikačná autorita vzdialeného servera, ktorá musí byť "
+"dôveryhodná na vytvorenie bezpečného pripojenia."
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:225
 msgid "Not needed"
@@ -773,7 +776,7 @@ msgstr "Nie je potrebné"
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:226
 #: ../html/src/components/large-text-attachment.tsx:136
 msgid "Upload a file"
-msgstr ""
+msgstr "Nahrať súbor"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:227
 msgid "Paste a PEM certificate"
@@ -823,7 +826,7 @@ msgstr "Server"
 
 #: ../html/src/components/hub/TokenTable.tsx:75
 msgid "Valid"
-msgstr ""
+msgstr "Platné"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
@@ -841,7 +844,7 @@ msgstr "Nie"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
-msgstr ""
+msgstr "Vypršané"
 
 #: ../html/src/components/hub/TokenTable.tsx:96
 #: ../html/src/manager/images/image-view.tsx:675
@@ -850,15 +853,15 @@ msgstr "Naposledy zmenené"
 
 #: ../html/src/components/hub/TokenTable.tsx:113
 msgid "No, never expires"
-msgstr ""
+msgstr "Nie, nikdy nevyprší"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "Yes, expired <expiration></expiration>"
-msgstr ""
+msgstr "Áno, vypršalo <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:121
 msgid "No, expires <expiration></expiration>"
-msgstr ""
+msgstr "Nie, vyprší <expiration></expiration>"
 
 #: ../html/src/components/hub/TokenTable.tsx:145
 #: ../html/src/components/hub/TokenTable.tsx:160
@@ -890,18 +893,21 @@ msgstr "Určite chcete tento token vymazať. V súčasnosti sa nepoužíva."
 #: ../html/src/components/hub/TokenTable.tsx:220
 msgid "This access token cannot be deleted. It is currently used by hub {fqdn}"
 msgstr ""
+"Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa hub {fqdn}"
 
 #: ../html/src/components/hub/TokenTable.tsx:224
 msgid ""
 "This access token cannot be deleted. It is currently used by peripheral "
 "{fqdn}"
 msgstr ""
+"Tento prístupový token sa nemôže vymazať. V súčasnosti ho používa periféria "
+"{fqdn}"
 
 #. token issued for another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:235
 msgid ""
 "Invalidating this access token will prevent the hub {fqdn} from accesssing."
-msgstr ""
+msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k hubu {fqdn}."
 
 #. token issued for another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:238
@@ -909,38 +915,42 @@ msgid ""
 "Invalidating this access token will prevent the peripheral {fqdn} from "
 "accesssing."
 msgstr ""
+"Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
 
 #. token issued for another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:241
 msgid "Enabling this access token will grant access to the hub {fqdn}."
-msgstr ""
+msgstr "Povolením tohto prístupového tokenu sa udelí prístup k hubu {fqdn}."
 
 #. token issued for another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:244
 msgid "Enabling this access token will grant access to the peripheral {fqdn}."
 msgstr ""
+"Povolením tohto prístupového tokenu sa udelí prístup k periférii {fqdn}."
 
 #. token received from another server currently valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:247
 msgid "Invalidating this access token will prevent access to the hub {fqdn}."
-msgstr ""
+msgstr "Zneplatnenie tohto prístupového tokenu zabráni prístupu k hubu {fqdn}."
 
 #. token received from another server currently valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:250
 msgid ""
 "Invalidating this access token will prevent access to the peripheral {fqdn}."
 msgstr ""
+"Zneplatnenie tohto prístupového tokenu zabráni prístupu k periférii {fqdn}."
 
 #. token received from another server currently not valid and linked to a hub
 #: ../html/src/components/hub/TokenTable.tsx:253
 msgid "Enabling this access token will restore access to the hub {fqdn}."
-msgstr ""
+msgstr "Povolením tohto prístupového tokenu sa obnoví prístup k hubu {fqdn}."
 
 #. token received from another server currently not valid and linked to a peripheral
 #: ../html/src/components/hub/TokenTable.tsx:256
 msgid ""
 "Enabling this access token will restore access to the peripheral {fqdn}."
 msgstr ""
+"Povolením tohto prístupového tokenu sa obnoví prístup k periférii {fqdn}."
 
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
@@ -1090,7 +1100,7 @@ msgstr "Údaje sú prítomné."
 
 #: ../html/src/components/large-text-attachment.tsx:63
 msgid "Data is not present."
-msgstr ""
+msgstr "Údaje nie sú prítomné."
 
 #: ../html/src/components/large-text-attachment.tsx:64
 #: ../html/src/components/large-text-attachment.tsx:103
@@ -1128,11 +1138,11 @@ msgstr "Upraviť metódu"
 
 #: ../html/src/components/large-text-attachment.tsx:129
 msgid "Define how to provide the new value"
-msgstr ""
+msgstr "Definovať spôsob poskytovania novej hodnoty"
 
 #: ../html/src/components/large-text-attachment.tsx:137
 msgid "Paste the new value"
-msgstr ""
+msgstr "Vložiť novú hodnotu"
 
 #: ../html/src/components/large-text-attachment.tsx:143
 msgid "File"
@@ -1140,7 +1150,7 @@ msgstr "Súbor"
 
 #: ../html/src/components/large-text-attachment.tsx:153
 msgid "New value"
-msgstr ""
+msgstr "Nová hodnota"
 
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:33
@@ -1905,15 +1915,15 @@ msgstr "Podrobnosti pre hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:44
 msgid "No hub is currently configured for this server. "
-msgstr ""
+msgstr "Pre tento server nie je v súčasnosti nakonfigurovaný žiadny hub. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:53
 msgid "This server is currently registered as peripheral of hub {fqdn}. "
-msgstr ""
+msgstr "Tento server je v súčasnosti registrovaný ako periféria hubu {fqdn}. "
 
 #: ../html/src/manager/admin/hub/list-tokens.tsx:20
 msgid "Access Tokens"
-msgstr ""
+msgstr "Prístupové tokeny"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:16
 msgid "Peripherals Configuration"
@@ -1928,6 +1938,8 @@ msgid ""
 "This server is configured as a Peripheral server in a Hub configuration. "
 "Managing PAYG Connections is disabled."
 msgstr ""
+"Tento server je nakonfigurovaný ako periférny server v konfigurácii pre hub. "
+"Spravovanie pripojení PAYG je zakázané."
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:66
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:95
@@ -6273,7 +6285,7 @@ msgstr "Systém nie je periférny server"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:33
 msgid "Setting new credentials for the report database failed"
-msgstr ""
+msgstr "Nastavenie nových prihlasovacích údajov pre databázu správ zlyhalo"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:51
 msgid "New password generated and changed on the peripheral server"
