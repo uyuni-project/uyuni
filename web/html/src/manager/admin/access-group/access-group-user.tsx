@@ -134,9 +134,9 @@ const AccessGroupUsers = (props: Props) => {
           columnKey="outdated_packages"
           comparator={Utils.sortByText}
           header={t("Actions")}
-          cell={(item) => (
+          cell={(item) =>
             <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />
-          )}
+          }
         />
       </Table>
     </div>
