@@ -959,7 +959,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_leap15_6-x86_64-backports-updates
         opensuse_leap15_6-x86_64-sle-updates
       ],
-    'leap15.5-aarch64' => # TODO: Client tools not there anymore, product EoL?, missing in UI
+    'leap15.5-aarch64' =>
       %w[
         opensuse-backports-15.5-updates-aarch64
         opensuse-leap-15.5-pool-aarch64
