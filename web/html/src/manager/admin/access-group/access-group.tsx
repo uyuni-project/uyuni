@@ -3,11 +3,12 @@ import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import { useState } from "react";
 
-import AccessGroupDetails from "./access-group-details";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
-import AccessGroupPermissions from "./access-group-permissions";
 import { StepsProgressBar } from "components/steps-progress-bar";
+
+import AccessGroupDetails from "./access-group-details";
+import AccessGroupPermissions from "./access-group-permissions";
 import AccessGroupUsers from "./access-group-user";
 
 const CreateAccessGroup = () => {
@@ -69,45 +70,39 @@ const CreateAccessGroup = () => {
 
   const handleCreateAccessGroup = () => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
-    console.log("Access Group Created:", accessGroupState);
   };
 
   const handleCancel = () => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
   };
 
-  console.log(accessGroupState)
-
   const steps = [
     {
       title: "Details",
-      content: <AccessGroupDetails
-        properties={accessGroupState.detailsproperties}
-        onChange={handleFormChange}
-        errors={accessGroupState.errors} />,
+      content: (
+        <AccessGroupDetails
+          properties={accessGroupState.detailsproperties}
+          onChange={handleFormChange}
+          errors={accessGroupState.errors}
+        />
+      ),
       validate: null,
     },
     {
       title: "Namespaces & Permissions",
-      content: <AccessGroupPermissions
-        state={accessGroupState}
-        onChange={handleNamespace}
-        errors={accessGroupState.errors} />,
+      content: (
+        <AccessGroupPermissions state={accessGroupState} onChange={handleNamespace} errors={accessGroupState.errors} />
+      ),
       validate: null,
     },
     {
       title: "Users",
-      content: <AccessGroupUsers
-        state={accessGroupState}
-        onChange={handleUsers}
-        errors={accessGroupState.errors} />,
+      content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
       validate: null,
-    }
-  ]
+    },
+  ];
   return (
-    <TopPanel
-      title={t("Create: Access Group")}
-    >
+    <TopPanel title={t("Create: Access Group")}>
       <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={handleCancel} />
     </TopPanel>
   );
