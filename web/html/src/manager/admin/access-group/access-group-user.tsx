@@ -1,14 +1,16 @@
 import * as React from "react";
 import { useState } from "react";
+
+import { Button } from "components/buttons";
 import { Form } from "components/input";
 import { Select } from "components/input";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+
 import { Utils } from "utils/functions";
-import { Button } from "components/buttons";
 
 const dataTest = {
-  "items": [
+  items: [
     { id: 1, username: "jdoe", email: "jdoe@example.com", orgId: "ORG123" },
     { id: 2, username: "asmith", email: "asmith@example.com", orgId: "ORG456" },
     { id: 3, username: "bwilliams", email: "bwilliams@example.com", orgId: "ORG789" },
@@ -18,14 +20,14 @@ const dataTest = {
     { id: 7, username: "williams", email: "williams@example.com", orgId: "ORG789" },
     { id: 8, username: "asmitha", email: "asmitha@example.com", orgId: "ORG101" },
   ],
-  "total": "",
-  "selectedIds": []
-}
+  total: "",
+  selectedIds: [],
+};
 
 type Props = {
-  state: any,
-  onChange: Function,
-  errors: any
+  state: any;
+  onChange: Function;
+  errors: any;
 };
 
 const AccessGroupUsers = (props: Props) => {
@@ -36,9 +38,9 @@ const AccessGroupUsers = (props: Props) => {
   });
 
   // Table data
-  const [selectedUsers, setSelectedUsers] = useState<
-    { id: number; username: string; email: string; orgId: string }[]
-  >([]);
+  const [selectedUsers, setSelectedUsers] = useState<{ id: number; username: string; email: string; orgId: string }[]>(
+    []
+  );
 
   const updateUserList = (search) => {
     const selectedUser = listData.items.find((user) => user.username === search.username);
@@ -46,7 +48,7 @@ const AccessGroupUsers = (props: Props) => {
       // Prevent duplicate users
       setListData((prevData) => ({
         ...prevData,
-        items: listData.items.filter(name => name.username !== search.username),  // Update the items list
+        items: listData.items.filter((name) => name.username !== search.username), // Update the items list
       }));
 
       setSelectedUsers((prevUsers) => {
@@ -54,7 +56,6 @@ const AccessGroupUsers = (props: Props) => {
       });
 
       props.onChange(selectedUser, "add");
-
     } else {
       setSelectedUsers([]);
     }
@@ -65,17 +66,15 @@ const AccessGroupUsers = (props: Props) => {
     if (removeUser) {
       setListData((prevData) => ({
         ...prevData,
-        items: [removeUser, ...prevData.items],  // Update the items list
+        items: [removeUser, ...prevData.items], // Update the items list
       }));
-      setSelectedUsers((prevUsers) =>
-        prevUsers.filter((user) => user.username !== username) //Remove the user form the list
+      setSelectedUsers(
+        (prevUsers) => prevUsers.filter((user) => user.username !== username) //Remove the user form the list
       );
       props.onChange(removeUser, "remove");
       setSearch({ username: "" });
-    } else {
-      console.log('NO addUser')
     }
-  }
+  };
 
   return (
     <div>
@@ -138,7 +137,9 @@ const AccessGroupUsers = (props: Props) => {
           columnKey="outdated_packages"
           comparator={Utils.sortByText}
           header={t("Actions")}
-          cell={(item) => <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />}
+          cell={(item) => (
+            <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />
+          )}
         />
       </Table>
     </div>
