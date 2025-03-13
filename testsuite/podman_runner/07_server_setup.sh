@@ -113,7 +113,7 @@ echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
 # echo "127.0.0.1 server" | sudo tee -a /etc/hosts
 
 sudo apt -y install nginx
-sudo tee -a /etc/nginx/sites-available/registry <<EOF
+sudo tee /etc/nginx/sites-available/registry <<EOF
 server {
         listen 80;
         server_name authregistry.lab;
@@ -155,10 +155,10 @@ server {
 
         location / {
                 proxy_pass https://localhost:8443;
-                proxy_set_header Host $host;
-                proxy_set_header X-Real-IP $remote_addr;
-                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header Host \$host;
+                proxy_set_header X-Real-IP \$remote_addr;
+                proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto \$scheme;
                 proxy_set_header X-Forwarded-Port 443;
                 proxy_ssl_server_name on;
                 proxy_ssl_verify off;
