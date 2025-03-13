@@ -627,9 +627,9 @@ class Syncer:
                         "ERROR: Live content synchronizing with RHN Classic Hosted is no longer supported.\nPlease "
                         "use the cdn-sync command instead unless you are attempting to sync from another {PRODUCT_NAME} "
                         "via Inter-Server-Sync (ISS), or from local content on disk via Channel Dump ISOs."
-                    ),
+                    ).format(PRODUCT_NAME=PRODUCT_NAME),
                     stream=sys.stderr,
-                ).format(PRODUCT_NAME=PRODUCT_NAME)
+                )
                 sys.exit(1)
 
             url = self.xmlDataServer.schemeAndUrl(sync_parent)

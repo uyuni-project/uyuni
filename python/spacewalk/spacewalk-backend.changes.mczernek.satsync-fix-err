@@ -1,0 +1,2 @@
+- Fix AttributeError: 'NoneType' object has no attribute 'format'
+  when executing mgr-inter-sync.
