@@ -85,7 +85,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @containerized_server
 @proxy
 @uyuni
-  Scenario: Add openSUSE Leap Micro 6.1 Proxy, including Uyuni Client Tools
+  Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
     # TODO: Refactor the scenarios in order to not require a full synchronization of Uyuni proxy product (OpenSUSE Micro 5.5)
     When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
