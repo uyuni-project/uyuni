@@ -1061,11 +1061,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         suse-manager-retail-branch-server-5.0-pool-x86_64
         suse-manager-retail-branch-server-5.0-updates-x86_64
       ]
-    'suse-multi-linux-manager-proxy-5.1' => # CHECKED
+    'suse-multi-linux-manager-proxy-51' =>
       %w[
         suse-multi-linux-manager-proxy-5.1-x86_64
       ],
-    'suse-multi-linux-manager-retail-branch-server-5.1' => # CHECKED
+    'suse-multi-linux-manager-retail-branch-server-51' =>
       %w[
         suse-multi-linux-manager-retail-branch-server-5.1-x86_64
       ]
