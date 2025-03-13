@@ -108,7 +108,6 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
 # Then, when we build the docker containers, those containers need to resolve the
 # server hostname, because the container tries to setup the repos from the server.
 # In order to do that, we need to use the podman dns when using docker.
-
 echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
 echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
 # echo "127.0.0.1 server" | sudo tee -a /etc/hosts
@@ -142,3 +141,35 @@ server {
         server_name server;
         
         location / {
+                proxy_pass http://localhost:8080;
+                proxy_set_header Host \$host;
+        }
+        client_max_body_size 0;
+}
+
+server {
+        listen 443 ssl;
+        server_name server;
+        ssl_certificate_key /tmp/testing/server-nginx.key;
+        ssl_certificate /tmp/testing/server-nginx.crt;
+
+        location / {
+                proxy_pass https://localhost:8443;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+                proxy_set_header X-Forwarded-Port 443;
+                proxy_ssl_server_name on;
+                proxy_ssl_verify off;
+                proxy_http_version 1.1;
+                proxy_set_header Connection "";
+        }
+        client_max_body_size 0;
+}
+EOF
+
+cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
+
+sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
+
