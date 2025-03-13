@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.frontend.action.configuration.overview;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.RhnSetAction;
 import com.redhat.rhn.frontend.dto.ConfigSystemDto;
@@ -104,6 +107,7 @@ public class TargetSystemsSubmitAction extends RhnSetAction {
         updateSet(request);
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
+        ensureRoleBasedAccess(user, "config.systems", Namespace.AccessMode.W);
 
         //get the earliest date for package actions.
         DynaActionForm form = (DynaActionForm) formIn;

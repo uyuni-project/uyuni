@@ -156,6 +156,12 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/configuration/SubscriptionsSubmit.do,POST,W,t,systems.config.channels,W
 ,/systems/details/configuration/RankChannels.do,GET,W,t,systems.config.channels,R
 ,/systems/details/configuration/RankChannels.do,POST,W,t,systems.config.channels,W
+,/systems/details/configuration/ViewModifyCentralPaths.do,GET,W,t,systems.config.files,R
+,/systems/details/configuration/ViewModifyCentralPaths.do,POST,W,t,systems.config.files,R
+,/systems/details/configuration/ViewModifyLocalPaths.do,GET,W,t,systems.config.files,R
+,/systems/details/configuration/ViewModifyLocalPaths.do,POST,W,t,systems.config.files,R
+,/systems/details/configuration/ViewModifySandboxPaths.do,GET,W,t,systems.config.files,R
+,/systems/details/configuration/ViewModifySandboxPaths.do,POST,W,t,systems.config.files,R
 
 # System groups
 ,/systems/details/groups/ListRemove.do,GET,W,t,systems.groups.list,R
@@ -283,7 +289,22 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/customdata/UpdateCustomKey.do,POST,W,t,systems.custom_data,W
 
 # TODO: Autoinstallation
-# TODO: Virtual host managers
 
-# TODO: Systems API
+,/manager/vhms,GET,W,t,systems.vhms,R
+,/manager/api/vhms,GET,W,t,systems.vhms,R
+,/manager/api/vhms/modules,GET,W,t,systems.vhms,R
+,/manager/api/vhms/:id,GET,W,t,systems.vhms,R
+,/manager/api/vhms/:id/nodes,GET,W,t,systems.vhms,R
+,/manager/api/vhms/:id/refresh,POST,W,t,systems.vhms,W
+,/manager/api/vhms/module/:name/params,GET,W,t,systems.vhms,W
+,/manager/api/vhms/create,POST,W,t,systems.vhms,W
+,/manager/api/vhms/update/:id,POST,W,t,systems.vhms,W
+,/manager/api/vhms/delete/:id,DELETE,W,t,systems.vhms,W
+
+# TODO: Map these (k8s integration) (maybe into a child namespace 'systems.vhms.k8s'?):
+#,/manager/api/vhms/kubeconfig/validate
+#,/manager/api/vhms/create/kubernetes
+#,/manager/api/vhms/update/kubernetes
+#,/manager/api/vhms/kubeconfig/:id/contexts
+
 # TODO: upcoming-windows in datetimepicker (should require permission for maintenance windows) (maybe also for action chains?) ADD TO EVERY NEEDED NAMESPACE?
