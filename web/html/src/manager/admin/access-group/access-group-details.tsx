@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { Form, Text, TextArea } from "components/input";
-import { Select } from "components/input";
+import { Form, Text, TextArea, Select } from "components/input";
 
 type Detailsproperties = {
   name: string;
