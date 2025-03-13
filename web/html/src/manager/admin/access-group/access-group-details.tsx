@@ -3,15 +3,15 @@ import * as React from "react";
 import {DEPRECATED_Select, Form, Text, TextArea} from "components/input";
 
 type Detailsproperties = {
-  name: string,
-  description: string,
+  name: string;
+  description: string;
   accessGroup: string[];
-}
+};
 
 type Props = {
-  properties: Detailsproperties,
+  properties: Detailsproperties;
   onChange: Function;
-  errors: any
+  errors: any;
 };
 
 const options = [
@@ -53,8 +53,10 @@ const AccessGroupDetails = (props: Props) => {
           divClass="col-md-6"
           isMulti
         />
-        <div className="offset-md-3 col-md-6">This action copy permissions from an existing access group to a new one.
-          Once created, the new access group will function independently, unaffected by future updates to the original.</div>
+        <div className="offset-md-3 col-md-6">
+          This action copy permissions from an existing access group to a new one. Once created, the new access group
+          will function independently, unaffected by future updates to the original.
+        </div>
       </div>
     </Form>
   );
