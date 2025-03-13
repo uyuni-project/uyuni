@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.configuration.sdc;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -125,6 +128,7 @@ public class ViewModifyPathsAction extends RhnAction implements Listable<ConfigF
                                                 RequestContext context) {
 
         User user = context.getCurrentUser();
+        ensureRoleBasedAccess(user, "systems.config.files", Namespace.AccessMode.W);
         Server server = context.lookupAndBindServer();
         String action = COPY_TO_GLOBAL;
         Map<String, Object> params = new HashMap<>();
