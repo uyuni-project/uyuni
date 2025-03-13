@@ -34,7 +34,7 @@
                     <i class="fa fa-clock-o"></i>&nbsp;
                     </c:if>
                 <c:choose>
-                    <c:when test="${not checkPackageId or not empty current.packageId}">
+                    <c:when test="${not empty current.packageId}">
                         <a href="/rhn/software/packages/Details.do?sid=${param.sid}&amp;id_combo=${current.idCombo}">${current.nvre}</a>
                     </c:when>
                     <c:otherwise>
