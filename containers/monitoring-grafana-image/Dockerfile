@@ -24,7 +24,7 @@ ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 # Define labels according to https://en.opensuse.org/Building_derived_containers
 # labelprefix=org.opensuse.uyuni.grafana
 LABEL org.opencontainers.image.title="${PRODUCT} Grafana"
-LABEL org.opencontainers.image.name="monitoring-grafana-image"
+LABEL org.opencontainers.image.name=monitoring-grafana-image
 LABEL org.opencontainers.image.description="Grafana container image for ${PRODUCT}"
 LABEL org.opencontainers.image.version=5.1.0
 LABEL org.opencontainers.image.url="${URL}"
