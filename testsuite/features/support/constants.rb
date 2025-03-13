@@ -696,10 +696,10 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
         sle-manager-tools15-pool-x86_64-sp4
-￼       sle-manager-tools15-updates-x86_64-sp4
-￼       sle-manager-tools15-beta-pool-x86_64-sp4
-￼       sle-manager-tools15-beta-updates-x86_64-sp4
-￼       managertools-sle15-pool-x86_64-sp4
+        sle-manager-tools15-updates-x86_64-sp4
+        sle-manager-tools15-beta-pool-x86_64-sp4
+        sle-manager-tools15-beta-updates-x86_64-sp4
+        managertools-sle15-pool-x86_64-sp4
         managertools-sle15-updates-x86_64-sp4
         managertools-beta-sle15-pool-x86_64-sp4
         managertools-beta-sle15-updates-x86_64-sp4
@@ -739,7 +739,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         res-7-ltss-updates-x86_64
         res-7-suse-manager-tools-x86_64-lbt7
-￼       managertools-el7-pool-x86_64-lbt7
+        managertools-el7-pool-x86_64-lbt7
         managertools-el7-updates-x86_64-lbt7
       ],
     'sll-9' => # CHECKED
@@ -784,11 +784,11 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sles12-sp5' => # CHECKED
       %w[
         sles12-sp5-pool-x86_64
-        sle-manager-tools12-pool-x86_64-sp5
-￼       sle-manager-tools12-updates-x86_64-sp5
-￼       managertools-sle12-pool-x86_64-sp5
-        managertools-sle12-updates-x86_64-sp5
+        sle-manager-tools12-updates-x86_64-sp5
         sles12-sp5-updates-x86_64
+        sle-manager-tools12-pool-x86_64-sp5
+        managertools-sle12-pool-x86_64-sp5
+        managertools-sle12-updates-x86_64-sp5
         sles12-sp5-installer-updates-x86_64
       ],
     'sles15-sp2' => # CHECKED
@@ -818,8 +818,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp3-updates-x86_64
         sle-module-basesystem15-sp3-pool-x86_64
         sle-manager-tools15-updates-x86_64-sp3
-￼       sle-manager-tools15-pool-x86_64-sp3
-￼       managertools-sle15-pool-x86_64-sp3
+        sle-manager-tools15-pool-x86_64-sp3
+        managertools-sle15-pool-x86_64-sp3
         managertools-sle15-updates-x86_64-sp3
         sle-module-server-applications15-sp3-updates-x86_64
         sle-module-server-applications15-sp3-pool-x86_64
@@ -881,6 +881,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles15-sp6-updates-x86_64
         sle-module-basesystem15-sp6-pool-x86_64
         sle-module-basesystem15-sp6-updates-x86_64
+        sle-manager-tools15-updates-x86_64-sp6
+        sle-manager-tools15-pool-x86_64-sp6
         managertools-sle15-pool-x86_64-sp6
         managertools-sle15-updates-x86_64-sp6
         sle-module-server-applications15-sp6-pool-x86_64
