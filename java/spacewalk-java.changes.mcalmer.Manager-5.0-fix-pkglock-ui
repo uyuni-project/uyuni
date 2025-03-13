@@ -1,0 +1,2 @@
+- Fix package locking for packages not available anymore
+  in the assigned repositories (bsc#1236877)
