@@ -1,17 +1,12 @@
-import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 import * as React from "react";
 
-import { StepsProgressBar } from "./steps-progress-bar";
 import { Form } from "./input";
 import { Text } from "./input";
+import { StepsProgressBar } from "./steps-progress-bar";
 
 export default () => {
-
   const detailsForm = [
-    <Form
-      divClass="col-md-12"
-      formDirection="form-horizontal"
-    >
+    <Form divClass="col-md-12" formDirection="form-horizontal">
       <Text
         name="name"
         label={t("Name")}
@@ -21,19 +16,17 @@ export default () => {
         divClass="col-md-6"
         validators={[(value) => value.length > 2]}
       />
-    </Form >
-  ]
+    </Form>,
+  ];
 
   const steps = [
     {
       title: "Details",
       content: detailsForm,
-      validate: () => true,
+      validate: null,
     },
-    { title: "Namespaces & Permissions", content: <p>Now you're on step 2</p>, validate: null, },
-    { title: "Users", content: <p>Final step reached!</p> }
-  ]
-  return (
-    <StepsProgressBar steps={steps}></StepsProgressBar>
-  );
+    { title: "Namespaces & Permissions", content: <p>Now you're on step 2</p>, validate: null },
+    { title: "Users", content: <p>Final step reached!</p>, validate: null },
+  ];
+  return <StepsProgressBar steps={steps}></StepsProgressBar>;
 };

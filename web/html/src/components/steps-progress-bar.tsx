@@ -1,6 +1,6 @@
 import * as React from "react";
-
 import { useState } from "react";
+
 import { Button } from "./buttons";
 
 type Step = {
@@ -14,8 +14,8 @@ type StepsProgressBarProps = {
   className?: string;
   /** steps title and contents */
   steps: Step[];
-  onCreate?: Function
-  onCancel?: Function
+  onCreate?: Function;
+  onCancel?: Function;
 };
 
 const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgressBarProps) => {
@@ -49,25 +49,22 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
       <div className="progress-bar-container">
         <div className="steps-container">
           {steps.map((step, index) => (
-            <div key={index} className={`steps ${index < currentStep
-              ? "completed"
-              : index === currentStep
-                ? "active"
-                : ""
-              }`}>
+            <div
+              key={index}
+              className={`steps ${index < currentStep ? "completed" : index === currentStep ? "active" : ""}`}
+            >
               <div className="step-circle"></div>
               <div className="step-title">{step.title}</div>
-              <div className="step-line"><span></span></div>
+              <div className="step-line">
+                <span></span>
+              </div>
             </div>
           ))}
         </div>
         <div className="main-content">
           <div className="content-section">
             {steps.map((step, index) => (
-              <div
-                key={index}
-                style={{ display: currentStep === index ? "block" : "none" }}
-              >
+              <div key={index} style={{ display: currentStep === index ? "block" : "none" }}>
                 {step.content}
               </div>
             ))}
@@ -77,16 +74,16 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
       <div className="progress-bar-footer">
         <Button className="btn-default btn-sm pull-left" text="Cancel" handler={cancel} />
         <div className="pull-right">
-          <Button className={`btn-default btn-sm me-3 ${currentStep === 0
-            ? "d-none"
-            : ""
-            }`} text="Back" handler={prevStep} />
-          <Button className="btn-primary btn-sm"
-            text={`${currentStep === steps.length - 1
-              ? "Create"
-              : "Continue"
-              }`}
-            handler={nextStep} />
+          <Button
+            className={`btn-default btn-sm me-3 ${currentStep === 0 ? "d-none" : ""}`}
+            text="Back"
+            handler={prevStep}
+          />
+          <Button
+            className="btn-primary btn-sm"
+            text={`${currentStep === steps.length - 1 ? "Create" : "Continue"}`}
+            handler={nextStep}
+          />
         </div>
       </div>
     </div>
