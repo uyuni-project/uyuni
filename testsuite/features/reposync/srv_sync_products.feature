@@ -51,15 +51,15 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP4 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP4 x86_64"
     And I open the sub-list of the product "Desktop Applications Module 15 SP4 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" if present
     Then I should see that the "Basesystem Module 15 SP4 x86_64" product is "recommended"
     And I should see that the "Server Applications Module 15 SP4 x86_64" product is "recommended"
-    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" product is "recommended"
+    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" product is "recommended"
     When I select "SUSE Linux Enterprise Server 15 SP4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server 15 SP4 x86_64" selected
     And I should see the "Basesystem Module 15 SP4 x86_64" selected
     And I should see the "Server Applications Module 15 SP4 x86_64" selected
-    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64 (BETA)" selected
     When I select "Desktop Applications Module 15 SP4 x86_64" as a product
     And I select "Development Tools Module 15 SP4 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP4 x86_64" selected
