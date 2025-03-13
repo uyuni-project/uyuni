@@ -1,7 +1,6 @@
 import * as React from "react";
 
-import { Form } from "./input";
-import { Text } from "./input";
+import { Form, Text } from "./input";
 import { StepsProgressBar } from "./steps-progress-bar";
 
 export default () => {
