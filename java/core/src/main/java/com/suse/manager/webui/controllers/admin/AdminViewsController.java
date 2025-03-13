@@ -265,18 +265,24 @@ public class AdminViewsController {
     }
 
 
-    /**
-     * Reder new Access group ssh connection data create page
+   /**
+     * show list of saved access group ssh connection data
+     * @param request
+     * @param response
+     * @param user
+     * @return list of access group ssh connection data
+     */
+    public static ModelAndView listAccessGroup(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group.jade");
+    }
+
+     /**
+     * Render new Access group ssh connection data create page
      * @param request
      * @param response
      * @param user
      * @return return the form to create a new Access group ssh connection data
      */
-
-    public static ModelAndView listAccessGroup(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group.jade");
-    }
-
     public static ModelAndView createAccessGroup(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group_create.jade");
     }
