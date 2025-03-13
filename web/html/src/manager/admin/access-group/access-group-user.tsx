@@ -2,11 +2,9 @@ import * as React from "react";
 import { useState } from "react";
 
 import { Button } from "components/buttons";
-import { Form } from "components/input";
-import { Select } from "components/input";
+import { Form, Select } from "components/input";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
-
 import { Utils } from "utils/functions";
 
 const dataTest = {
@@ -137,9 +135,9 @@ const AccessGroupUsers = (props: Props) => {
           columnKey="outdated_packages"
           comparator={Utils.sortByText}
           header={t("Actions")}
-          cell={(item) => (
+          cell={(item) =>
             <Button className="btn-default btn-sm" icon="fa-trash" handler={() => deleteUser(item.username)} />
-          )}
+          }
         />
       </Table>
     </div>

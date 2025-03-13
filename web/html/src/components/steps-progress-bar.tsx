@@ -50,7 +50,7 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
         <div className="steps-container">
           {steps.map((step, index) => (
             <div
-              key={index}
+              key={step.title}
               className={`steps ${index < currentStep ? "completed" : index === currentStep ? "active" : ""}`}
             >
               <div className="step-circle"></div>
@@ -64,7 +64,7 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
         <div className="main-content">
           <div className="content-section">
             {steps.map((step, index) => (
-              <div key={index} style={{ display: currentStep === index ? "block" : "none" }}>
+              <div key={step.title} style={{ display: currentStep === index ? "block" : "none" }}>
                 {step.content}
               </div>
             ))}
