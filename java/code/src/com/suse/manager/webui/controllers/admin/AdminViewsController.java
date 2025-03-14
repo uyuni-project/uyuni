@@ -73,6 +73,10 @@ public class AdminViewsController {
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
+        get("/manager/admin/access-group",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listAccessGroup))), jade);
+        get("/manager/admin/access-group/create",
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::createAccessGroup))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
@@ -169,6 +173,29 @@ public class AdminViewsController {
      */
     public static ModelAndView createPayg(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/payg_create.jade");
+    }
+
+
+   /**
+     * show list of saved access group ssh connection data
+     * @param request
+     * @param response
+     * @param user
+     * @return list of access group ssh connection data
+     */
+    public static ModelAndView listAccessGroup(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group.jade");
+    }
+
+     /**
+     * Render new Access group ssh connection data create page
+     * @param request
+     * @param response
+     * @param user
+     * @return return the form to create a new Access group ssh connection data
+     */
+    public static ModelAndView createAccessGroup(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group_create.jade");
     }
 
     /**
