@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -139,6 +139,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     #item("osimage_build_host")
      *     #item("virtualization_host")
      *     #item("ansible_control_node")
+     *     #item("proxy_entitled")
      *   #options_end()
      * @apidoc.param #param("boolean", "universalDefault")
      * @apidoc.returntype #param("string", "The new activation key")
@@ -528,6 +529,7 @@ public class ActivationKeyHandler extends BaseHandler {
      *     #item("osimage_build_host")
      *     #item("virtualization_host")
      *     #item("ansible_control_node")
+     *     #item("proxy_entitled")
      *   #options_end()
      * @apidoc.returntype #return_int_success()
      */

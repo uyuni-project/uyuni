@@ -18,6 +18,7 @@ const SYSTEM_TYPE_OPTIONS = [
   { value: "osimage_build_host", label: t("OS Image Build Host") },
   { value: "salt_entitled", label: t("Salt") },
   { value: "virtualization_host", label: t("Virtualization Host") },
+  { value: "proxy_entitled", label: t("Proxy") },
 ];
 
 const STATUS_TYPE_OPTIONS = [
