@@ -1,7 +1,7 @@
 <datasource_modes>
     <callable-mode name="add_product_vulnerable_package">
-        <query params="package_name, fix_version, product_name, cve_name">
-            call insert_product_vulnerable_packages(:package_name, :fix_version, :product_name, :cve_name)
+        <query params="os_product_family, os_product_version, package_name, fix_version, platform_cpe, cve_name">
+            call insert_product_vulnerable_packages(:os_product_family, :os_product_version, :package_name, :fix_version, :platform_cpe, :cve_name)
         </query>
     </callable-mode>
 
@@ -46,10 +46,13 @@
         </query>
     </mode>
 
-    <write-mode name="clear_oval_metadata_by_platform">
-        <query params="cpe">
-            DELETE FROM suseOVALPlatformVulnerablePackage pvp WHERE pvp.platform_id = (SELECT id FROM suseOVALPlatform plat WHERE plat.cpe = :cpe);
-            DELETE FROM suseOVALPlatform plat where plat.cpe = :cpe;
+    <write-mode name="clear_oval_metadata_by_os_product">
+        <query params="os_product_family, os_product_version">
+            DELETE
+            FROM suseOVALOsProduct
+            WHERE os_family = :os_product_family
+              AND version = :os_product_version;
+
         </query>
     </write-mode>
 </datasource_modes>
