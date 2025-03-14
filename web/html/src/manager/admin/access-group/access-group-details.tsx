@@ -54,8 +54,9 @@ const AccessGroupDetails = (props: Props) => {
           isMulti
         />
         <div className="offset-md-3 col-md-6">
-          This action copy permissions from an existing access group to a new one. Once created, the new access group
-          will function independently, unaffected by future updates to the original.
+          {t(
+            "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
+          )}
         </div>
       </div>
     </Form>
