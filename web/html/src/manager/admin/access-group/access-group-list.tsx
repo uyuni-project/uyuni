@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Button } from "components/buttons";
+import { Button, LinkButton } from "components/buttons";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -83,19 +83,16 @@ const actionButtons = (type) => {
   }
 };
 export function AccessGroupList(props) {
-  const addAccessGroup = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group/create`);
-  };
   return (
     <TopPanel
       title={t("Access Group Management")}
       button={
         <div className="pull-right btn-group">
-          <Button
+          <LinkButton
             className="btn-primary"
-            title={t("Delete")}
+            title={t("Create Access Group")}
             text={t("Create Access Group")}
-            handler={addAccessGroup}
+            href="/rhn/manager/admin/access-group/create"
           />
         </div>
       }
