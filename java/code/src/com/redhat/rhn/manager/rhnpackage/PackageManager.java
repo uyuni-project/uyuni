@@ -88,15 +88,9 @@ public class PackageManager extends BaseManager {
     private static final Logger LOG = LogManager.getLogger(PackageManager.class);
 
     // Valid dependency types
-    protected static final String[]
+    public static final String[]
         DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
             "recommends", "suggests", "supplements", "enhances", "predepends", "breaks"};
-
-    // encapsulate access to DEPENDENCY_TYPE - for temp test
-    public static String[] getDependencyTypes() {
-        return DEPENDENCY_TYPES;
-    }
-
 
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
