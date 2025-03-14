@@ -1,0 +1,2 @@
+- Fix: Filters of type Product Temporary Fix cannot be created
+  (bsc#1238922)
