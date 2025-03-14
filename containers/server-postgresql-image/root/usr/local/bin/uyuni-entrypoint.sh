@@ -3,7 +3,7 @@ set -e
 
 chown postgres /etc/pki/tls/private/pg-spacewalk.key
 
-pgdata="/var/lib/postgresql/data"
+pgdata="/var/lib/pgsql/data"
 pgconf="$pgdata/postgresql.conf"
 
 if [ ! -f $pgdata/PG_VERSION ]; then
