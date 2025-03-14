@@ -23,7 +23,6 @@ mgr_buildimage:
     - buildargs:
         repo: "{{ pillar.get('repo') }}"
         cert: "{{ pillar.get('cert') }}"
-        add-host: "server:127.0.0.1"
 {%- if pillar.get('customvalues') is defined %}
 {%- for key, value in pillar.get('customvalues').items() %}
         {{key}}: "{{value}}"
