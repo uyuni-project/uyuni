@@ -46,6 +46,9 @@ Feature: Build image with authenticated registry
     And I wait until no Salt job is running on "build_host"
     And I refresh the page
     Then table row for "auth_registry_profile" should contain "1"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
     And the list of packages of image "auth_registry_profile" with version "latest" is not empty
 
   @scc_credentials
