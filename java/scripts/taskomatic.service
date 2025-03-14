@@ -1,6 +1,6 @@
 [Unit]
 Description=Taskomatic
-After=local-fs.target cobblerd.service sendmail.service apache2.service postgresql.service
+After=local-fs.target cobblerd.service sendmail.service apache2.service
 Requires=apache2.service
 
 [Service]

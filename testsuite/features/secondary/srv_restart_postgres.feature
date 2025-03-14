@@ -5,8 +5,8 @@ Feature: Restart the PostgreSQL service
 
   Scenario: Restart the PostgreSQL database service
     Given I am authorized for the "Admin" section
-    When I restart the "postgresql.service" service on "server"
-    And I wait until "postgresql" service is active on "server"
+    When I restart the "uyuni-db" container 
+    And I wait until "uyuni-db" container is active 
     # WORKAROUND for not having something to check for in the logs
     And I wait for "60" seconds
     And I am on the Systems overview page of this "sle_minion"

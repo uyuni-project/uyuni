@@ -25,18 +25,6 @@ License:        GPL-2.0-only
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-%if 0%{?suse_version}
-# Actual version set by prjconf, default is 14
-%{!?postgresql_version_min: %global postgresql_version_min 14}
-%{!?postgresql_version_max: %global postgresql_version_max 15}
-Requires:       postgresql-contrib-implementation >= %{postgresql_version_min}
-Requires:       postgresql-server-implementation >= %{postgresql_version_min}
-Conflicts:      postgresql-contrib-implementation > %{postgresql_version_max}
-Conflicts:      postgresql-server-implementation > %{postgresql_version_max}
-%else
-Requires:       postgresql-contrib >= 12
-Requires:       postgresql-server > 12
-%endif
 Requires:       lsof
 Requires:       susemanager-schema-utility
 Requires:       uyuni-reportdb-schema
@@ -57,7 +45,6 @@ install -m 0755 bin/* %{buildroot}%{_bindir}
 %files
 %defattr(-,root,root,-)
 %license LICENSE
-%attr(755,root,root) %{_bindir}/uyuni-setup-reportdb
 %attr(755,root,root) %{_bindir}/uyuni-setup-reportdb-user
 %attr(755,root,root) %{_bindir}/uyuni-sort-pg_hba
 #%{_mandir}/man1/*
