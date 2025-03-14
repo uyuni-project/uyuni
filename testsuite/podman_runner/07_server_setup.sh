@@ -107,10 +107,10 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
 # and redirect the requests to the port, depending on the hostname.
 # Then, when we build the docker containers, those containers need to resolve the
 # server hostname, because the container tries to setup the repos from the server.
-# In order to do that, we need to use the podman dns when using docker.
+
 echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
 echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
-# echo "127.0.0.1 server" | sudo tee -a /etc/hosts
+echo "127.0.0.1 server" | sudo tee -a /etc/hosts
 
 sudo apt -y install nginx
 sudo tee /etc/nginx/sites-available/registry <<EOF
