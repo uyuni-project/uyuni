@@ -41,8 +41,7 @@ const CreateAccessGroup = () => {
     }));
   };
 
-  const handleNamespace = (newname) => { };
-  console.log(accessGroupState)
+  const handleNamespace = (newname) => {};
 
   const handleUsers = (user, action) => {
     setAccessGroupState((prevState) => {
