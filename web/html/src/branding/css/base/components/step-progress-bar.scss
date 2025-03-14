@@ -1,8 +1,7 @@
 .progress-bar-wrapper {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 124px); /* Ensures full height */
-  margin-bottom: -4em;
+  height: 100%;
 }
 
 .progress-bar-container {
@@ -70,11 +69,10 @@
       .step-circle {
         background-color: $eos-bc-green-500;
         border-color: $eos-bc-green-500;
+        color: $white;
 
-        &:before {
-          font-family: "FontAwesome";
-          content: "\f00c";
-          color: $white;
+        i {
+          margin-right: 0;
         }
       }
       .step-title {
@@ -91,7 +89,7 @@
 
 .progress-bar-footer {
   position: sticky;
-  bottom: 0;
+  bottom: -4em;
   width: 100%;
   background: $white;
   padding: 10px 0;

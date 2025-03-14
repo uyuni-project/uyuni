@@ -41,8 +41,8 @@ const CreateAccessGroup = () => {
     }));
   };
 
-  const handleNamespace = (newname) => {
-  };
+  const handleNamespace = (newname) => { };
+  console.log(accessGroupState)
 
   const handleUsers = (user, action) => {
     setAccessGroupState((prevState) => {
@@ -62,10 +62,6 @@ const CreateAccessGroup = () => {
   };
 
   const handleCreateAccessGroup = () => {
-    window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
-  };
-
-  const handleCancel = () => {
     window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/access-group`);
   };
 
@@ -96,7 +92,7 @@ const CreateAccessGroup = () => {
   ];
   return (
     <TopPanel title={t("Create: Access Group")}>
-      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={handleCancel} />
+      <StepsProgressBar steps={steps} onCreate={handleCreateAccessGroup} onCancel={"/rhn/manager/admin/access-group"} />
     </TopPanel>
   );
 };
