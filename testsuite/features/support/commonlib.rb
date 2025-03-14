@@ -261,8 +261,10 @@ end
 #
 # @param name [String] The name of the host.
 # @return [Boolean] Returns true if the host is a SUSE host, false otherwise.
-def suse_host?(name)
-  (name.include? 'sle') || (name.include? 'opensuse') || (name.include? 'ssh')
+def suse_host?(name, runs_in_container: true)
+  node = get_target(name)
+  os_family = runs_in_container ? node.os_family : node.local_os_family
+  %w[sles opensuse opensuse-leap sle-micro suse-microos opensuse-leap-micro].include? os_family
 end
 
 # Determines if the given host name is a SLE/SL Micro host.
