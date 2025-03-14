@@ -67,6 +67,8 @@ Feature: Build container images
     # Also, check that all inspect actions are finished:
     And I wait at most 600 seconds until image "suse_key" with version "latest" is built successfully via API
     And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
+
+  Scenario: Check the list of packages is not empty
     Then the list of packages of image "suse_key" with version "latest" is not empty
 
 
