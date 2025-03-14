@@ -10,6 +10,7 @@ const SYSTEM_KIND_OPTIONS = [
 
 const SYSTEM_TYPE_OPTIONS = [
   { value: "ansible_control_node", label: t("Ansible Control Node") },
+  { value: "ansible_managed", label: t("Ansible Managed") },
   { value: "bootstrap_entitled", label: t("Bootstrap") },
   { value: "container_build_host", label: t("Container Build Host") },
   { value: "foreign_entitled", label: t("Foreign") },

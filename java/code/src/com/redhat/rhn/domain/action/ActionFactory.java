@@ -24,6 +24,8 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.config.ConfigAction;
@@ -45,7 +47,6 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.PlaybookAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -430,6 +431,9 @@ public class ActionFactory extends HibernateFactory {
         }
         else if (typeIn.equals(TYPE_PLAYBOOK)) {
             retval = new PlaybookAction();
+        }
+        else if (typeIn.equals(TYPE_INVENTORY)) {
+            retval = new InventoryAction();
         }
         else if (typeIn.equals(TYPE_COCO_ATTESTATION)) {
             retval = new CoCoAttestationAction();
@@ -1243,5 +1247,10 @@ public class ActionFactory extends HibernateFactory {
      * The constant representing appstreams changes action.
      */
     public static final ActionType TYPE_APPSTREAM_CONFIGURE = lookupActionTypeByLabel("appstreams.configure");
+
+    /**
+     * The constant representing "Refresh Ansible inventories" [ID:525]
+     */
+    public static final ActionType TYPE_INVENTORY = lookupActionTypeByLabel("ansible.inventory");
 }
 

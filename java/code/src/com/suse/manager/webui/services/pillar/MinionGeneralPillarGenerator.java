@@ -21,6 +21,8 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.model.attestation.AttestationFactory;
 import com.suse.manager.model.attestation.CoCoAttestationStatus;
@@ -31,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -98,6 +101,14 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
                 minion.getOsFamily().equalsIgnoreCase("debian")) {
             beaconConfig.put("pkgset", PKGSET_BEACON_PROPS);
             beaconConfig.put("reboot_info", minion.isRedHat() ? REBOOT_INFO_BEACON_PROPS_RH : REBOOT_INFO_BEACON_PROPS);
+        }
+        // If the minion is an Ansible control node generate an inotify beacon with the managed inventory files
+        // If there is no inventory path for the minion the beacon will be removed
+        if (minion.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE)) {
+            List<Map<String, Object>> inotifyBeacon = AnsibleManager.generateBeacon(minion);
+            if (!inotifyBeacon.isEmpty()) {
+                beaconConfig.put("inotify", inotifyBeacon);
+            }
         }
         if (!beaconConfig.isEmpty()) {
             pillar.add("beacons", beaconConfig);

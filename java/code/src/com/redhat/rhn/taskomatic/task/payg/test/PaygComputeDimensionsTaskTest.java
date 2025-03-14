@@ -27,8 +27,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -41,7 +39,6 @@ import com.suse.cloud.domain.BillingDimension;
 import com.suse.cloud.domain.PaygDimensionComputation;
 import com.suse.cloud.domain.PaygDimensionFactory;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
@@ -71,12 +68,8 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         factory = new PaygDimensionFactory();
         SaltApi saltApi = new TestSaltApi();
 
-        ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-
         systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
-            new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
+            new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
     }
 

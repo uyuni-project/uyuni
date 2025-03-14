@@ -16,9 +16,20 @@
 package com.redhat.rhn.domain.server.ansible;
 
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.Server;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 /**
@@ -28,10 +39,14 @@ import javax.persistence.Transient;
 @DiscriminatorValue("inventory")
 public class InventoryPath extends AnsiblePath {
 
+    private Set<Server> inventoryServers;
+
     /**
      * Standard constructor
      */
-    public InventoryPath() { }
+    public InventoryPath() {
+        inventoryServers = new HashSet<>();
+    }
 
     /**
      * Standard constructor
@@ -39,11 +54,56 @@ public class InventoryPath extends AnsiblePath {
      */
     public InventoryPath(MinionServer minionServer) {
         super(minionServer);
+        inventoryServers = new HashSet<>();
     }
 
     @Override
     @Transient
     public Type getEntityType() {
         return Type.INVENTORY;
+    }
+
+    /**
+     * Gets the inventory servers
+     *
+     * @return the inventory servers
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "suseAnsibleInventoryServers",
+            joinColumns = @JoinColumn(name = "inventory_id"),
+            inverseJoinColumns = @JoinColumn(name = "server_id")
+    )
+    public Set<Server> getInventoryServers() {
+        return inventoryServers;
+    }
+
+    /**
+     * Sets the inventory server
+     *
+     * @param inventoryServersIn the inventory servers
+     */
+    public void setInventoryServers(Set<Server> inventoryServersIn) {
+        inventoryServers = inventoryServersIn;
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (this == oIn) {
+            return true;
+        }
+        if (!(oIn instanceof InventoryPath that)) {
+            return false;
+        }
+        return new EqualsBuilder().appendSuper(super.equals(oIn))
+                .append(inventoryServers, that.inventoryServers).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .appendSuper(super.hashCode())
+                .append(inventoryServers)
+                .toHashCode();
     }
 }
