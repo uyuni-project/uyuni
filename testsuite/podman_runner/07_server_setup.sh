@@ -110,7 +110,6 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
 
 echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
 echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
-echo "127.0.0.1 server" | sudo tee -a /etc/hosts
 
 sudo apt -y install nginx
 sudo tee /etc/nginx/sites-available/registry <<EOF
