@@ -275,7 +275,7 @@ Note that this command can be used to run any command inside the server like `mg
 To copy files to the server, use the `mgrctl cp <local_path> server:<remote_path>` command.
 Conversely to copy files from the server use `mgrctl cp server:<remote_path> <local_path>`.
 
-# Developping with the containers
+# Developing with the containers
 
 ## Deploying code
 
