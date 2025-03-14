@@ -87,6 +87,7 @@ import com.suse.utils.Json;
 import com.suse.utils.Opt;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.client.config.CookieSpecs;
@@ -1107,10 +1108,23 @@ public class SaltService implements SystemQuery, SaltApi {
      */
     @Override
     public Optional<SystemInfo> getSystemInfoFull(String minionId) {
-        return rawJsonCall(State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO_FULL),
-               Optional.empty()), minionId)
-               .flatMap(Result::result)
-               .map(result -> Json.GSON.fromJson(result, SystemInfo.class));
+        Optional<Result<JsonElement>> res = rawJsonCall(
+                State.apply(Collections.singletonList(ApplyStatesEventMessage.SYSTEM_INFO_FULL),
+                        Optional.empty()), minionId);
+        try {
+            return res.flatMap(Result::result).map(result -> Json.GSON.fromJson(result, SystemInfo.class));
+        }
+        catch (JsonSyntaxException ex) {
+            //catch errors when json element is an error message instead of a SystemInfo representation
+            String errorString = res.flatMap(Result::result)
+                    .filter(JsonElement::isJsonArray)
+                    .map(result ->
+                            String.join(" ", Json.GSON.fromJson(result.getAsJsonArray(), String[].class)))
+                    .orElse(ex.getMessage());
+            JsonSyntaxException newException = new JsonSyntaxException(errorString);
+            newException.setStackTrace(new StackTraceElement[0]);
+            throw newException;
+        }
     }
 
     /**
