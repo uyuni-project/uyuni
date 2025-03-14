@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.frontend.dto.PackageComparison;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

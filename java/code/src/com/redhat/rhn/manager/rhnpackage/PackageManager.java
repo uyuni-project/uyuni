@@ -92,6 +92,11 @@ public class PackageManager extends BaseManager {
         DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
             "recommends", "suggests", "supplements", "enhances", "predepends", "breaks"};
 
+    // encapsulate access to DEPENDENCY_TYPE - for temp test
+    public static String[] getDependencyTypes() {
+        return DEPENDENCY_TYPES;
+    }
+
 
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
@@ -233,7 +238,7 @@ public class PackageManager extends BaseManager {
      * @param cid the channel id
      * @return the list of packages
      */
-    public static DataResult<PackageListItem> listPackagesInChannelForList(Long cid) {
+    public static DataResult<PackageOverview> listPackagesInChannelForList(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -288,7 +293,7 @@ public class PackageManager extends BaseManager {
      * @param pid The package in question
      * @return A map of updating package information
      */
-    public static DataResult<Row> obsoletingPackages(User user, Long pid) {
+    public static DataResult<Map<String, Object>> obsoletingPackages(User user, Long pid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "obsoleting_packages");
         Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
@@ -904,7 +909,7 @@ public class PackageManager extends BaseManager {
         // Remove packages that are in both queries
         while (i.hasNext()) {
             PackageComparison po = i.next();
-            for (PackageManager pinner : possiblePackages) {
+            for (PackageComparison pinner : possiblePackages) {
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: {}", pinner.getId());
                     i.remove();
@@ -1754,10 +1759,11 @@ public class PackageManager extends BaseManager {
 
     private static String getAssociatedRelease(Package pack) {
         for (Channel chan : pack.getChannels()) {
+            List<String> releases = new ArrayList<>();
             for (DistChannelMap map : chan.getDistChannelMaps()) {
                 String release = map.getRelease();
                 if (release != null && !release.isEmpty()) {
-                    release.add(release);
+                    releases.add(release);
                 }
             }
         }
