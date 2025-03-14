@@ -1,24 +1,22 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { Button } from "./buttons";
+import { Button, LinkButton } from "./buttons";
 
 type Step = {
   title: string;
   content: React.ReactNode;
-  validate: boolean | null;
+  validate?: boolean | null;
 };
 
 type StepsProgressBarProps = {
-  /** The css className for the 'step progress bar' div */
-  className?: string;
   /** steps title and contents */
   steps: Step[];
   onCreate?: Function;
-  onCancel?: Function;
+  onCancel?: string;
 };
 
-const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgressBarProps) => {
+const StepsProgressBar = ({ steps, onCreate, onCancel }: StepsProgressBarProps) => {
   const [currentStep, setCurrentStep] = useState(0);
 
   const nextStep = () => {
@@ -38,22 +36,15 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
     }
   };
 
-  const cancel = () => {
-    if (onCancel) {
-      onCancel();
-    }
-  };
-
   return (
-    <div className={`progress-bar-wrapper ${className}`}>
+    <div className={`progress-bar-wrapper`}>
       <div className="progress-bar-container">
         <div className="steps-container">
           {steps.map((step, index) => (
             <div
               key={step.title}
-              className={`steps ${index < currentStep ? "completed" : index === currentStep ? "active" : ""}`}
-            >
-              <div className="step-circle"></div>
+              className={`steps ${index < currentStep ? "completed" : index === currentStep ? "active" : ""}`}>
+              <div className="step-circle">{index < currentStep ? (<i className="fa fa-check"> </i>) : null}</div>
               <div className="step-title">{step.title}</div>
               <div className="step-line">
                 <span></span>
@@ -63,22 +54,24 @@ const StepsProgressBar = ({ className, steps, onCreate, onCancel }: StepsProgres
         </div>
         <div className="main-content">
           <div className="content-section">
-            {steps.map((step, index) => (
-              <div key={step.title} style={{ display: currentStep === index ? "block" : "none" }}>
-                {step.content}
-              </div>
-            ))}
+            {steps.map((step, index) =>
+              currentStep === index ? (
+                <div key={step.title}>{step.content}</div>
+              ) : null
+            )}
           </div>
         </div>
       </div>
       <div className="progress-bar-footer">
-        <Button className="btn-default btn-sm pull-left" text="Cancel" handler={cancel} />
+        <LinkButton className="btn-default btn-sm pull-left" text="Cancel" href={onCancel} />
         <div className="pull-right">
-          <Button
-            className={`btn-default btn-sm me-3 ${currentStep === 0 ? "d-none" : ""}`}
-            text="Back"
-            handler={prevStep}
-          />
+          {currentStep != 0 ? (
+            <Button
+              className={`btn-default btn-sm me-3`}
+              text="Back"
+              handler={prevStep}
+            />
+          ) : null}
           <Button
             className="btn-primary btn-sm"
             text={`${currentStep === steps.length - 1 ? "Create" : "Continue"}`}

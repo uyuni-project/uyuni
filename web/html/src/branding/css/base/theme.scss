@@ -68,6 +68,12 @@ header {
     float: none !important;
   }
 
+  #spacewalk-content,
+  .flipped {
+    height: 100%;
+    overflow: auto;
+  }
+
   #page-body {
     flex: 1 1 auto;
     overflow: auto;

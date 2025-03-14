@@ -100,7 +100,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000010000,
+      id: 1000100000,
       name: "Custom group1",
       description: "Custom group1 Activation Administrator, Configuration Administrator.",
       type: "Custome",
@@ -110,7 +110,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000010000,
+      id: 1000011000,
       name: "Content Management",
       description: "View image details, patches, packages, build log and cluster information",
       type: "Built-in",
@@ -120,7 +120,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000011000,
+      id: 1000012000,
       name: "Activation Key Administrator",
       description: "View Activation Administrator, Configuration Administrator.",
       type: "Built-in",
@@ -130,7 +130,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000012000,
+      id: 1000013000,
       name: "Configuration Administrator",
       description: "View Configuration Administrator Administrator, Configuration Administrator.",
       type: "Built-in",
@@ -140,7 +140,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000013000,
+      id: 1000014000,
       name: "System Group Administrator",
       description: "View Activation Administrator, Configuration Administrator.",
       type: "Built-in",
@@ -150,7 +150,7 @@ const dataTest = {
       disabled: false,
     },
     {
-      id: 1000014000,
+      id: 1000015000,
       name: "Custom group1",
       description: "Custom group1 Activation Administrator, Configuration Administrator.",
       type: "Custome",
