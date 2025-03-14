@@ -198,14 +198,13 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             Server server, HttpServletRequest request)
         throws TaskomaticApiException {
         RequestContext context = new RequestContext(request);
-        Long sid = context.getRequiredParam("sid");
         User user = context.getCurrentUser();
         Set<Package> pkgsToUnlock = new HashSet<>();
         String[] selectedPkgs = ListTagHelper.getSelected(LIST_NAME, request);
 
         if (selectedPkgs != null) {
             for (String label : selectedPkgs) {
-                Package pkg = this.findPackage(sid, label, user);
+                Package pkg = this.findPackage(label, user);
                 if (pkg != null) {
                     pkgsToUnlock.add(pkg);
                 }
@@ -239,7 +238,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         // Lock all selected packages, if they are not already in the list
         if (selectedPkgs != null) {
             for (String label : selectedPkgs) {
-                Package pkg = this.findPackage(sid, label, user);
+                Package pkg = this.findPackage(label, user);
 
                 if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
                     continue;
@@ -266,12 +265,11 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     /**
      * Find the package.
      *
-     * @param sid System ID
      * @param combo Package combo (Separated by "|" name ID, evr ID and arch ID).
      * @param user User.
      * @return Returns Package or null.
      */
-    private Package findPackage(Long sid, String combo, User user) {
+    private Package findPackage(String combo, User user) {
         PackageListItem pkgInfo = PackageListItem.parse(combo.split("\\~\\*\\~")[0]);
         Package pkg = PackageFactory.lookupByNevraIds(user.getOrg(), pkgInfo.getIdOne(),
                 pkgInfo.getIdTwo(), pkgInfo.getIdThree()).get(0);
