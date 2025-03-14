@@ -69,5 +69,6 @@ export type Channel = {
   channelArch: string;
   channelOrg: Org | null;
   parentId?: number; // if null or undefined, this is a root channel
-  children?: Channel[]; // for easy hierarchical references
+  children: Channel[]; // for easy hierarchical references
+  originalId: number; // the id of the channel that this is a clone of
 };

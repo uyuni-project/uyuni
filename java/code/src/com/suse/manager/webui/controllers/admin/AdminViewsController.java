@@ -153,7 +153,7 @@ public class AdminViewsController {
      * @param request http request
      * @param response http response
      * @param user current user
-     * @return the view to show
+     * @return the view to showp
      */
     public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
