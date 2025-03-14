@@ -15,9 +15,9 @@ on:
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
-  NO_AUTH_REGISTRY: no_auth_registry
+  NO_AUTH_REGISTRY: "noauthregistry.lab"
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY: "authregistry.lab"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
   skip: false
 jobs:
@@ -150,6 +150,9 @@ jobs:
       - name: Run acceptance tests
         if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
+      - name: Get buildhost logs
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost cat /var/log/venv-salt-minion.log
       - name: Get server logs
         if: ${{ failure() && env.skip != 'true' }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}

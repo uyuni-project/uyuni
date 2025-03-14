@@ -36,6 +36,9 @@ rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \
 NAME=${HOSTNAME%%.*}
 cp /root/ssl-build/${NAME}/server.crt /ssl/server.crt
 cp /root/ssl-build/${NAME}/server.key /ssl/server.key
+# Copy the cert and key for the nginx server to redirect to the right port for the docker test to pass
+cp /root/ssl-build/${NAME}/server.crt /tmp/server-nginx.crt
+echo "${CERT_PASS}" | openssl rsa -in /ssl/server.key -out "/tmp/server-nginx.key" -passin pass:"${CERT_PASS}"
 
 echo "Generating DB certificate..."
 rhn-ssl-tool --gen-server --no-rpm --cert-expiration 3650 \

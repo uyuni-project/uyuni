@@ -2,6 +2,8 @@
 set -ex
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
+
+
 echo buildhostproductuuid > /tmp/buildhost_product_uuid
 
 AUTH_REGISTRY_USER=$(echo "$AUTH_REGISTRY_CREDENTIALS"| cut -d\| -f1)
