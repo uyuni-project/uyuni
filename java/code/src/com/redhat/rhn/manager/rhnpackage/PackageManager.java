@@ -1637,10 +1637,10 @@ public class PackageManager extends BaseManager {
         params.put("archId", archId);
         m = ModeFactory.getMode("Package_queries", "package_by_combo_id");
 
-        DataResult dr = m.execute(params);
+        DataResult<Object> dr = m.execute(params);
         if (dr != null && !dr.isEmpty()) {
             return PackageFactory.lookupByIdAndOrg(
-                    (Long) ((Map)dr.get(0)).get("id"), org);
+                    (Long) ((Map<?, ?>)dr.get(0)).get("id"), org);
         }
 
         return null;
