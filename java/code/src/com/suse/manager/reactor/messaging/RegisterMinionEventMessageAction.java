@@ -76,6 +76,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.utils.Opt;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -629,6 +630,14 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         catch (RegisterMinionException rme) {
             LOG.error("Error registering minion id: {}", minionId, rme);
             throw rme;
+        }
+        catch (JsonSyntaxException t) {
+            //log error without stack trace
+            LOG.error("Error registering minion id [{}]: {}", minionId, t.getMessage());
+            //convert into RegisterMinionException without stack trace
+            RegisterMinionException exception = new RegisterMinionException(minionId, org, t.getMessage());
+            exception.setStackTrace(new StackTraceElement[0]);
+            throw exception;
         }
         catch (Exception t) {
             LOG.error("Error registering minion id: {}", minionId, t);
