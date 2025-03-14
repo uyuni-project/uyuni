@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.user.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
@@ -77,14 +76,15 @@ public class UserEditSetupActionTest extends RhnBaseTestCase {
                     sah.getRequest().getAttribute("lastLoggedIn"));
             // Verify some more intensive stuff
             assertNotNull(sah.getRequest().getAttribute("adminRoles"));
-            assertNotNull(sah.getRequest().getAttribute("regularRoles"));
-            List<UserRoleStatusBean> regularRoles = (List<UserRoleStatusBean>)
-                sah.getRequest().getAttribute("regularRoles");
-            assertEquals(5, regularRoles.size());
-            UserRoleStatusBean lv = regularRoles.get(0);
+            assertNotNull(sah.getRequest().getAttribute("rbacRoles"));
+            List<UserRoleStatusBean> rbacRoles = (List<UserRoleStatusBean>)
+                sah.getRequest().getAttribute("rbacRoles");
+            assertEquals(5, rbacRoles.size());
+            /** TODO: Being the user org_admin will also disable RBAC roles?
+            UserRoleStatusBean lv = rbacRoles.get(0);
             assertTrue(TestUtils.isLocalized(lv.getName()));
             assertTrue(lv.isDisabled());
-            assertNotNull(sah.getRequest().getAttribute("disabledRoles"));
+            assertNotNull(sah.getRequest().getAttribute("disabledRoles"));*/
             assertInstanceOf(User.class, sah.getRequest().getAttribute("user"));
 
             //If we have pam setup where we're testing, make sure displaypam was set

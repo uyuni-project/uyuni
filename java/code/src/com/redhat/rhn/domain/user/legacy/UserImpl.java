@@ -1502,5 +1502,10 @@ public class UserImpl extends BaseDomainHelper implements User {
     public void setAccessGroups(Set<AccessGroup> accessGroupsIn) {
         accessGroups = accessGroupsIn;
     }
+
+    @Override
+    public boolean isMemberOf(AccessGroup accessGroup) {
+        return getAccessGroups() != null && getAccessGroups().contains(accessGroup);
+    }
 }
 

@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -178,6 +179,8 @@ public class AdminUserEditAction extends UserEditActionHelper {
             }
         }
 
+        processRBACRolesAssignments(request, targetUser);
+
         try {
             UserManager.addRemoveUserRoles(targetUser, rolesToAdd,
                     rolesToRemove);
@@ -204,6 +207,31 @@ public class AdminUserEditAction extends UserEditActionHelper {
         }
 
         return errors;
+    }
+
+    private void processRBACRolesAssignments(HttpServletRequest request, User targetUser) {
+        var userAccessGroups = targetUser.getAccessGroups();
+        var currentUserGroupsLabels = userAccessGroups.stream()
+                .map(AccessGroup::getLabel)
+                .collect(Collectors.toSet());
+
+        Iterator<AccessGroup> iterator = userAccessGroups.iterator();
+        while (iterator.hasNext()) {
+            AccessGroup accessGroup = iterator.next();
+            String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + accessGroup.getLabel());
+
+            if (groupSetting == null) {
+                iterator.remove();
+            }
+        }
+
+        for (AccessGroup accessGroup : targetUser.getOrg().getAccessGroups()) {
+            String groupSetting = request.getParameter(ROLE_SETTING_PREFIX + accessGroup.getLabel());
+
+            if (groupSetting != null && !currentUserGroupsLabels.contains(accessGroup.getLabel())) {
+                userAccessGroups.add(accessGroup);
+            }
+        }
     }
 
     private Set<String> extractDisabledRoles(HttpServletRequest request) {

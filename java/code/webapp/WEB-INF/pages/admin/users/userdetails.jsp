@@ -37,7 +37,7 @@
                             <bean:message key="userdetails.jsp.roles"/>:
                         </label>
                         <div class="col-lg-6">
-                            <c:forEach items="${regularRoles}" var="role">
+                            <c:forEach items="${rbacRoles}" var="role">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" name="role_${role.value}"
@@ -47,11 +47,6 @@
                                     </label>
                                 </div>
                             </c:forEach>
-                            <c:if test="${orgAdmin}">
-                                <p class="form-control-static">
-                                    <small><bean:message key="userdetails.jsp.grantedByOrgAdmin"/></small>
-                                </p>
-                            </c:if>
                         </div>
                     </div>
                     <c:if test="${not empty temporaryRoles}">

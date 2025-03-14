@@ -644,4 +644,11 @@ public interface User extends Serializable {
      * @return the set of access groups
      */
     Set<AccessGroup> getAccessGroups();
+
+    /**
+     * Checks if the user is a member of the given access group.
+     * @param accessGroup the access group to check
+     * @return true if the user is a member of the access group, false otherwise
+     */
+    boolean isMemberOf(AccessGroup accessGroup);
 }
