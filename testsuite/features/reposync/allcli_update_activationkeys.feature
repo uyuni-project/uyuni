@@ -118,6 +118,7 @@ Feature: Update activation keys
 @susemanager
 @proxy
 @containerized_server
+@transactional_server
   Scenario: Update the SLE Micro proxy key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "Proxy Key x86_64" in the content area
@@ -128,6 +129,24 @@ Feature: Update activation keys
     And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
     And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
     And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
+    And I click on "Update Activation Key"
+    Then I should see a "Activation key Proxy Key x86_64 has been modified" text
+
+@scc_credentials
+@susemanager
+@proxy
+@containerized_server
+@skip_if_transactional_server
+  Scenario: Update the SLES proxy key with synced base product
+    When I follow the left menu "Systems > Activation Keys"
+    And I follow "Proxy Key x86_64" in the content area
+    And I wait for child channels to appear
+    And I select the parent channel for the "proxy_nontransactional" from "selectedBaseChannel"
+    And I wait for child channels to appear
+    And I include the recommended child channels
+    And I wait until "SLE-Manager-Tools15-Pool for x86_64 SP7" has been checked
+    And I check "SUSE-Manager-Proxy-5.1-Pool for x86_64"
+    And I check "SUSE-Manager-Proxy-5.1-Updates for x86_64"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
@@ -145,9 +164,9 @@ Feature: Update activation keys
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
-@containerized_server
 @uyuni
 @proxy
+@containerized_server
 @skip_if_cloud
   Scenario: Update the openSUSE Leap Micro 5.5 Proxy Host key with synced base product
     When I follow the left menu "Systems > Activation Keys"
