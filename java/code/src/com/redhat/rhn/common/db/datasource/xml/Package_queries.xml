@@ -1955,17 +1955,6 @@ ORDER BY P.package_arch_id DESC
   </query>
 </mode>
 
-<mode name="package_by_combo_id" >
-    <query params="nameId, evrId, archId">
-        SELECT p.id
-          FROM rhnPackage p
-        WHERE p.name_id = :nameId
-          AND p.evr_id = :evrId
-          AND ((:archId is NULL) OR (p.package_arch_id = :archId))
-        ORDER BY P.package_arch_id DESC
-    </query>
-</mode>
-
 <!-- Deletes sources of all packages found in the given RhnSet. The set must
      contain the package ID in the "element" of the set. -->
 <write-mode name="delete_package_sources_from_set">

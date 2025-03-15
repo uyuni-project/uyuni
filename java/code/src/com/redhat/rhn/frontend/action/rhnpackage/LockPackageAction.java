@@ -18,6 +18,7 @@ package com.redhat.rhn.frontend.action.rhnpackage;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -270,9 +271,8 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      */
     private Package findPackage(String combo, User user) {
         PackageListItem pkgInfo = PackageListItem.parse(combo.split("\\~\\*\\~")[0]);
-        Package pkg = PackageManager.lookupPackageByComboId(pkgInfo.getIdOne(),
-                pkgInfo.getIdTwo(),
-                pkgInfo.getIdThree(), user.getOrg());
+        Package pkg = PackageFactory.lookupByNevraIds(user.getOrg(), pkgInfo.getIdOne(),
+                pkgInfo.getIdTwo(), pkgInfo.getIdThree()).get(0);
         if (pkg != null) {
             pkg.setLockPending(Boolean.TRUE);
         }
