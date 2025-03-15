@@ -350,14 +350,14 @@ public class LoginHelper {
             String[] resultKV = line.split("=", 2);
             if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
                 try {
-                    osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
+                    osVersion = Double.valueOf(resultKV[1].replace("\"", ""));
                 }
                 catch (NumberFormatException e) {
                     log.error("Unable to parse OS versionnumber {}", resultKV[1]);
                 }
             }
             else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
-                osName = resultKV[1].replaceAll("\"", "'");
+                osName = resultKV[1].replace("\"", "'");
             }
         }
         if (log.isDebugEnabled()) {
