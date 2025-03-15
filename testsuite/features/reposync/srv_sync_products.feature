@@ -148,8 +148,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP6" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
-    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP6" product has been added
+    And I wait until all synchronized channels for "sles15-sp6" have finished
 
 @proxy
 @susemanager
