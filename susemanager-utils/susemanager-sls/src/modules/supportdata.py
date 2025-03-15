@@ -3,6 +3,7 @@ Module for Getting Supportdata
 
 """
 
+from typing import Any, Dict
 import os
 import shutil
 
@@ -20,13 +21,16 @@ def _get_supportdata_dir():
 
 
 # pylint: disable-next=unused-argument
-def get(**kwargs):
+def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     """
     Collect supportdata like config and logfiles from the system
     and upload them to the master's minion files cachedir
     (defaults to ``/var/cache/salt/master/minions/minion-id/files``)
 
     It needs ``file_recv`` set to ``True`` in the master configuration file.
+
+    cmd_args
+        extra commandline arguments for the executed tool
 
     CLI Example:
 
@@ -46,6 +50,7 @@ def get(**kwargs):
     returncode = None
 
     output_dir = _get_supportdata_dir()
+    extra_args = cmd_args.split()
 
     if "Suse" in __grains__["os_family"]:
         if os.path.exists(mgradm_path):
@@ -63,10 +68,12 @@ def get(**kwargs):
 
     if len(cmd) > 0:
         os.makedirs(output_dir, exist_ok=True)
+        cmd.extend(extra_args)
         ret = __salt__["cmd.run_all"](cmd, python_shell=False)
 
         returncode = ret["retcode"]
         if returncode != 0:
+            # pylint: disable-next=inconsistent-quotes
             error = f"Failed to run {cmd[0]}: {ret['stderr']}"
         else:
             if __salt__["cp.push_dir"](output_dir):
