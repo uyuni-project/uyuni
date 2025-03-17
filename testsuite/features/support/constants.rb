@@ -1021,12 +1021,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         suse-manager-retail-branch-server-5.0-pool-x86_64
         suse-manager-retail-branch-server-5.0-updates-x86_64
       ],
-    'suma-proxy-extension-50-sp6' => # not a real product name
+    # the following entries use convenience product names meant for the testsuite
+    # these product names do not exist in sumatoolbox
+    # (but the channel names do exist in sumatoolbox):
+    'suma-proxy-extension-50-sp6' =>
       %w[
         suse-manager-proxy-5.0-pool-x86_64-sp6
         suse-manager-proxy-5.0-updates-x86_64-sp6
       ],
-    'suma-retail-branch-server-extension-50-sp6' => # not a real product name
+    'suma-retail-branch-server-extension-50-sp6' =>
       %w[
         suse-manager-retail-branch-server-5.0-pool-x86_64-sp6
         suse-manager-retail-branch-server-5.0-updates-x86_64-sp6
