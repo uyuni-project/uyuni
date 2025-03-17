@@ -1,0 +1,2 @@
+- Fix billing-data-service configuration after upgrade from 4.3
+  (bsc#1236118)
