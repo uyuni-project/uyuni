@@ -230,8 +230,8 @@ PACKAGE_BY_CLIENT = {
 # Then take a look at the Parent Channel selections
 BASE_CHANNEL_BY_CLIENT = {
   'SUSE Manager' => {
-    'proxy' => 'SLE-Micro-5.5-Pool for x86_64',
-    'proxy_container' => 'SLE-Micro-5.5-Pool for x86_64',
+    'proxy' => 'SL-Micro-6.1-Pool for x86_64',
+    'proxy_container' => 'SL-Micro-6.1-Pool for x86_64',
     'proxy_traditional' => 'SLE-Product-SUSE-Manager-Proxy-4.3-Pool for x86_64',
     'sle_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
     'ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',

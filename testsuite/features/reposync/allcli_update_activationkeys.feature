@@ -125,9 +125,10 @@ Feature: Update activation keys
     And I select the parent channel for the "proxy_container" from "selectedBaseChannel"
     And I wait for child channels to appear
     And I include the recommended child channels
-    And I wait until "SLE-Manager-Tools-For-Micro5-Pool for x86_64 5.5" has been checked
-    And I check "SUSE-Manager-Proxy-5.0-Pool for x86_64"
-    And I check "SUSE-Manager-Proxy-5.0-Updates for x86_64"
+    # TODO: WORKAROUND: When they are ready add them again
+    # And I wait until "SUSE Multi-Linux Manager Client Tools for SLE Micro 6 x86_64" has been checked
+    And I check "SUSE-Multi-Linux-Manager-Proxy-5.1 for x86_64"
+    And I check "SUSE-Multi-Linux-Manager-Retail-Branch-Server-5.1 for x86_64"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
