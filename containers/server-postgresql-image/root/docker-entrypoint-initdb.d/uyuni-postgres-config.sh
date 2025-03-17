@@ -79,6 +79,10 @@ postgres_reconfig "wal_buffers" "16MB"
 postgres_reconfig "constraint_exclusion" "off"
 postgres_reconfig "max_connections" "$MAX_CONNECTIONS"
 
+# log to the stderr instead of the log file
+postgres_reconfig "logging_collector" "off"
+postgres_reconfig "log_destination" "stderr"
+
 if [ "$IS_SSD" -eq 1 ]; then
     postgres_reconfig "random_page_cost" "1.1"
     postgres_reconfig "effective_io_concurrency" "200"
