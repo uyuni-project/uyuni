@@ -357,6 +357,9 @@ def extract_logs_from_node(node, host)
     elsif transactional_system?(host)
       node.run('transactional-update --continue -n pkg install tar')
     end
+    if deb_host?(node)
+      node.run('apt -y install xz')
+    end
     node.run('journalctl > /var/log/messages', check_errors: false)
     node.run('venv-salt-call --local grains.items | tee -a /var/log/salt_grains', verbose: true, check_errors: false) unless $host_by_node[node] == 'server'
     node.run("tar cfvJP /tmp/#{node.full_hostname}-logs.tar.xz /var/log/ || [[ $? -eq 1 ]]")
