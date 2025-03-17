@@ -141,7 +141,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Micro 6.1 x86_64" product has been added
-    And I wait until all synchronized channels for "sle-micro-6.1" have finished
+    And I wait until all synchronized channels for "sl-micro-6.1" have finished
 
 @proxy
 @susemanager
