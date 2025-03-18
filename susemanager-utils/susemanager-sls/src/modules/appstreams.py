@@ -1,4 +1,4 @@
-"""AppStreams module for SUSE Manager"""
+"""AppStreams module for SUSE Multi-Linux Manager"""
 
 import re
 import subprocess

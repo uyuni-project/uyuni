@@ -1031,9 +1031,9 @@ Generating CA public certificate RPM:
         print(
             """
 Make the public CA certificate publically available:
-    (NOTE: the SUSE Manager Server or Proxy installers may do this step for you.)
+    (NOTE: the SUSE Multi-Linux Manager Server or Proxy installers may do this step for you.)
     The "noarch" RPM and raw CA certificate can be made publically accessible
-    by copying it to the /srv/www/htdocs/pub directory of your SUSE Manager Server or
+    by copying it to the /srv/www/htdocs/pub directory of your SUSE Multi-Linux Manager Server or
     Proxy."""
         )
 
@@ -1043,7 +1043,7 @@ Make the public CA certificate publically available:
 
 # pylint: disable-next=invalid-name
 def genProxyServerTarball_dependencies(d):
-    """dependency check for the step that generates the SUSE Manager Proxy's
+    """dependency check for the step that generates the SUSE Multi-Linux Manager Proxy's
     tar archive containing its SSL key set + CA certificate.
     """
 
@@ -1136,7 +1136,7 @@ def genProxyServerTarball(d, version="1.0", release="1", verbosity=0):
         print(
             # pylint: disable-next=consider-using-f-string
             """
-The most current SUSE Manager Proxy installation process against SUSE Manager hosted
+The most current SUSE Multi-Linux Manager Proxy installation process against SUSE Multi-Linux Manager hosted
 requires the upload of an SSL tar archive that contains the CA SSL public
 certificate and the web server's key set.
 
@@ -1463,9 +1463,9 @@ Generating web server's SSL key pair/set RPM:
             # pylint: disable-next=consider-using-f-string
             """
 Deploy the server's SSL key pair/set RPM:
-    (NOTE: the SUSE Manager or Proxy installers may do this step for you.)
+    (NOTE: the SUSE Multi-Linux Manager or Proxy installers may do this step for you.)
     The "noarch" RPM needs to be deployed to the machine working as a
-    web server, or SUSE Manager, or SUSE Manager Proxy.
+    web server, or SUSE Multi-Linux Manager, or SUSE Multi-Linux Manager Proxy.
     Presumably %s."""
             % repr(d["--set-hostname"])
         )
@@ -1712,7 +1712,7 @@ def main():
      32  country code length cannot exceed 2
      33  missing file created in previous step
 
-    100  general SUSE Manager SSL tool error
+    100  general SUSE Multi-Linux Manager SSL tool error
     """
 
     # pylint: disable-next=invalid-name

@@ -155,8 +155,11 @@ def log_debug(level, *args):
 def log_stderr(*args):
     pid = os.getpid()
     for arg in args:
-        # pylint: disable-next=consider-using-f-string
-        sys.stderr.write("SUSE Manager %s %s: %s\n" % (pid, log_time(), arg))
+        sys.stderr.write(
+            # pylint: disable-next=consider-using-f-string
+            "SUSE Multi-Linux Manager %s %s: %s\n"
+            % (pid, log_time(), arg)
+        )
     sys.stderr.flush()
 
 

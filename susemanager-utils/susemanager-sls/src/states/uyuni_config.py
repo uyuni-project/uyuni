@@ -785,7 +785,7 @@ class UyuniOrgs:
     ) -> Dict[str, Any]:
         """
         Create or update an Uyuni organization.
-        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+        Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
         :param name: organization name
         :param org_admin_user: organization admin user
@@ -887,7 +887,7 @@ class UyuniOrgs:
     def delete(self, name: str, admin_user=None, admin_password=None) -> Dict[str, Any]:
         """
         Remove an Uyuni organization
-        Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+        Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
         :param name: Organization Name
         :param admin_user: administrator username
@@ -1687,7 +1687,7 @@ def org_present(
 ):
     """
     Create or update an Uyuni organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param org_admin_user: organization admin user

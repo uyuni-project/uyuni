@@ -1395,7 +1395,7 @@ def channel_software_is_globally_subscribable(
 def org_list_orgs(admin_user=None, admin_password=None):
     """
     List all organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param admin_user: uyuni admin user
     :param admin_password: uyuni admin password
@@ -1408,7 +1408,7 @@ def org_list_orgs(admin_user=None, admin_password=None):
 def org_get_details(name, admin_user=None, admin_password=None):
     """
     Get details of an organization.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param name: organisation name
     :param admin_user: uyuni admin user
@@ -1422,7 +1422,7 @@ def org_get_details(name, admin_user=None, admin_password=None):
 def org_delete(name, admin_user=None, admin_password=None):
     """
     Delete an organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param admin_user: uyuni admin user
@@ -1447,7 +1447,7 @@ def org_create(
 ):
     """
     Create an Uyuni organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param name: organization name
     :param org_admin_user: organization admin user
@@ -1477,7 +1477,7 @@ def org_create(
 def org_update_name(org_id, name, admin_user=None, admin_password=None):
     """
     update an Uyuni organization name
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_id: organization internal id
     :param name: new organization name
@@ -1504,7 +1504,7 @@ def org_trust_list_orgs(org_admin_user=None, org_admin_password=None):
 def org_trust_list_trusts(org_name, admin_user=None, admin_password=None):
     """
     List all trusts for one organization
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_name: Name of the organization to get the trusts
     :param admin_user: authentication user
@@ -1520,7 +1520,7 @@ def org_trust_add_trust_by_name(
 ):
     """
     Add an organization to the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_name: organization name
     :param org_trust: Trust organization name
@@ -1537,7 +1537,7 @@ def org_trust_add_trust_by_name(
 def org_trust_add_trust(org_id, org_trust_id, admin_user=None, admin_password=None):
     """
     Add an organization to the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_id: Organization id
     :param org_trust_id: Trust organization id
@@ -1554,7 +1554,7 @@ def org_trust_remove_trust_by_name(
 ):
     """
     Remove an organization from the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_name: organization name
     :param org_untrust: organization name to untrust
@@ -1573,7 +1573,7 @@ def org_trust_remove_trust(
 ):
     """
     Remove an organization from the list of trusted organizations.
-    Note: the configured admin user must have the SUSE Manager/Uyuni Administrator role to perform this action
+    Note: the configured admin user must have the SUSE Multi-Linux Manager/Uyuni Administrator role to perform this action
 
     :param org_id: orgnization id
     :param org_untrust_id: organizaton id to untrust

@@ -23,7 +23,8 @@ from spacewalk.susemanager.mgr_sync.version import VERSION
 def _create_parser():
     # create the top-level parser
     parser = argparse.ArgumentParser(
-        prog="mgr-sync", description="Synchronize SUSE Manager repositories."
+        prog="mgr-sync",
+        description="Synchronize SUSE Multi-Linux Manager repositories.",
     )
 
     # Generic options

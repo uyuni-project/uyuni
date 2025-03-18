@@ -178,7 +178,7 @@ def _getOptionsTree(defs):
         "--server-tar",
         action="store",
         type="string",
-        help="(rarely changed) name of tar archive of the web server's SSL key set and CA SSL public certificate that is used solely by the hosted SUSE Manager Proxy installation routines (the base filename, not filename-version-release.tar).",
+        help="(rarely changed) name of tar archive of the web server's SSL key set and CA SSL public certificate that is used solely by the hosted SUSE Multi-Linux Manager Proxy installation routines (the base filename, not filename-version-release.tar).",
     )
 
     # pylint: disable-next=invalid-name
