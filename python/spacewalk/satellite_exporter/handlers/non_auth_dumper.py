@@ -550,7 +550,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         path = os.path.join(CFG.MOUNT_POINT, row["base_path"], relative_path)
         if not os.path.exists(path):
             # pylint: disable-next=consider-using-f-string
-            log_error("Missing file for SUSE Manager dumper: %s" % path)
+            log_error("Missing file for SUSE Multi-Linux Manager dumper: %s" % path)
             raise rhnFault(
                 3007,
                 # pylint: disable-next=consider-using-f-string
@@ -569,7 +569,7 @@ class NonAuthenticatedDumper(rhnHandler, dumper.XML_Dumper):
         log_debug(3, "Package path", path)
         if not os.path.exists(path):
             # pylint: disable-next=consider-using-f-string
-            log_error("Missing package (SUSE Manager dumper): %s" % path)
+            log_error("Missing package (SUSE Multi-Linux Manager dumper): %s" % path)
             # pylint: disable-next=consider-using-f-string
             raise rhnFault(3007, "Unable to retrieve package %s" % package)
         return self._send_stream(path)

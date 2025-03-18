@@ -84,7 +84,7 @@ public class SSHMinionActionExecutor extends RhnJavaJob {
             return;
         }
         if (!cloudPaygManager.isCompliant()) {
-            log.error("This action was not executed because SUSE Manager Server PAYG is unable to send " +
+            log.error("This action was not executed because SUSE Multi-Linux Manager Server PAYG is unable to send " +
                     "accounting data to the cloud provider.");
             ActionFactory.rejectScheduledActions(List.of(actionId),
                     LocalizationService.getInstance().getMessage("task.action.rejection.notcompliant"));

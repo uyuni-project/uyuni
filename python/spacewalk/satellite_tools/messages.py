@@ -13,10 +13,10 @@
 # in this software or its documentation.
 #
 #
-""" Spacewalk Synchronization Tool Messages
+"""Spacewalk Synchronization Tool Messages
 
-    Copyright (c) 2002--2015 Red Hat, Inc.
-    All rights reserved.
+Copyright (c) 2002--2015 Red Hat, Inc.
+All rights reserved.
 """
 
 import gettext
@@ -70,7 +70,7 @@ ERROR: a child-channel cannot be synced without its parent being synced as
 invalid_channel_family_error = _(
     """
 ERROR: you are not entitled to sync a channel in this set of channels.
-Please contact your SUSE Manager contact
+Please contact your SUSE Multi-Linux Manager contact
 %s"""
 )
 

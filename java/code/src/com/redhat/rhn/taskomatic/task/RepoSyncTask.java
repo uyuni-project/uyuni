@@ -65,7 +65,7 @@ public class RepoSyncTask extends RhnJavaJob {
         final List<Long> channelIds = getChannelIds(jobDataMap);
 
         if (!GlobalInstanceHolder.PAYG_MANAGER.isCompliant()) {
-            log.error("Synchronization of repositories is forbidden as SUSE Manager Server PAYG " +
+            log.error("Synchronization of repositories is forbidden as SUSE Multi-Linux Manager Server PAYG " +
                     "is unable to send accounting data to the cloud provider.");
             NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                     new ChannelSyncFailed(null, null, LocalizationService.getInstance()

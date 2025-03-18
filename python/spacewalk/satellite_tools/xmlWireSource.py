@@ -43,7 +43,6 @@ from spacewalk.satellite_tools import connection
 
 
 class BaseWireSource:
-
     """Base object for wire-commo to RHN for delivery of XML/RPMS."""
 
     serverObj = None
@@ -138,8 +137,11 @@ class BaseWireSource:
             # require SSL CA file to be able to authenticate the SSL
             # connections.
             if not os.access(caChain, os.R_OK):
-                # pylint: disable-next=consider-using-f-string
-                message = "ERROR: can not find SUSE Manager CA file: %s" % caChain
+                message = (
+                    # pylint: disable-next=consider-using-f-string
+                    "ERROR: can not find SUSE Multi-Linux Manager CA file: %s"
+                    % caChain
+                )
                 log(-1, message, stream=sys.stderr)
                 # pylint: disable-next=broad-exception-raised
                 raise Exception(message)
@@ -223,7 +225,6 @@ class BaseWireSource:
 
 
 class MetadataWireSource(BaseWireSource):
-
     """retrieve specific xml stream through xmlrpc interface."""
 
     @staticmethod
@@ -404,25 +405,31 @@ class XMLRPCWireSource(BaseWireSource):
 
 
 class AuthWireSource(XMLRPCWireSource):
-
     """Simply authenticate this systemid as a satellite."""
 
     def checkAuth(self):
         self.setServer(CFG.RHN_XMLRPC_HANDLER)
         authYN = None
-        log(2, "   +++ SUSE Manager Server synchronization tool checking in.")
+        log(
+            2,
+            "   +++ SUSE Multi-Linux Manager Server synchronization tool checking in.",
+        )
         try:
             authYN = self._xmlrpc("authentication.check", (self.systemid,))
         # pylint: disable-next=try-except-raise
         except (rpclib.xmlrpclib.ProtocolError, rpclib.xmlrpclib.Fault):
             raise
         if authYN:
-            log(2, "   +++ Entitled SUSE Manager Server validated.", stream=sys.stderr)
+            log(
+                2,
+                "   +++ Entitled SUSE Multi-Linux Manager Server validated.",
+                stream=sys.stderr,
+            )
         elif authYN is None:
             log(
                 -1,
                 # pylint: disable-next=consider-using-f-string
-                "   --- An error occurred upon authentication of this SUSE Manager Server -- "
+                "   --- An error occurred upon authentication of this SUSE Multi-Linux Manager Server -- "
                 "review the pertinent log file (%s) and/or submit a service request."
                 % CFG.LOG_FILE,
                 stream=sys.stderr,
@@ -436,6 +443,7 @@ class AuthWireSource(XMLRPCWireSource):
 
 class RPCGetWireSource(BaseWireSource):
     "Class to retrieve various files via authenticated GET requests"
+
     get_server_obj = None
     login_token = None
     get_server_obj = None

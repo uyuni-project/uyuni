@@ -53,7 +53,6 @@ def gen_secret():
 
 
 class Checksum:
-
     """Functions for handling system_id strings"""
 
     def __init__(self, secret, *args, **kwargs):
@@ -84,7 +83,6 @@ class Checksum:
 
 
 class Certificate:
-
     """Main certificate class"""
 
     # pylint: disable-next=invalid-name
@@ -225,6 +223,7 @@ class Certificate:
             csum = self.compute_checksum(secret, algo="sha256")
         elif len(self.__checksum) == 32:
             csum = self.compute_checksum(secret, algo="md5")
+        # pylint: disable-next=possibly-used-before-assignment
         if not csum == self.__checksum:
             # fail, current checksum does not match
             log_error(
@@ -267,9 +266,9 @@ class Certificate:
             raise rhnFault(
                 28,
                 """
-            You need to re-register your system with SUSE Manager.
+            You need to re-register your system with SUSE Multi-Linux Manager.
             Previously you have chosen to skip the creation of a system profile
-            with SUSE Manager and this trial feature is no longer available now.
+            with SUSE Multi-Linux Manager and this trial feature is no longer available now.
             """,
             )  # we don't support anonymous anymore
         # now we have a real server. Get its secret

@@ -896,7 +896,7 @@ public class ActionFactory extends HibernateFactory {
         }
         List<MinionSummary> byosMinions = MinionServerFactory.findByosServers(action);
         if (CollectionUtils.isNotEmpty(byosMinions)) {
-            LOG.error("To manage BYOS or DC servers from SUSE Manager PAYG, SCC credentials must be " +
+            LOG.error("To manage BYOS or DC servers from SUSE Multi-Linux Manager PAYG, SCC credentials must be " +
                     "in place.");
             Object[] args = {formatByosListToStringErrorMsg(byosMinions)};
             rejectScheduledActions(List.of(action.getId()),

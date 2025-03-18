@@ -475,7 +475,9 @@ class Runner:
             log(
                 1,
                 [
-                    _("The SUSE Manager master does not support syncing orgs data."),
+                    _(
+                        "The SUSE Multi-Linux Manager master does not support syncing orgs data."
+                    ),
                     _("Skipping..."),
                 ],
             )
@@ -517,7 +519,9 @@ def sendMail(forceEmail=0):
             print((_("+++ sending log as an email +++")))
             host_label = idn_puny_to_unicode(os.uname()[1])
             headers = {
-                "Subject": _("SUSE Manager Inter Server sync. report from %s")
+                "Subject": _(
+                    "SUSE Multi-Linux Manager Inter Server sync. report from %s"
+                )
                 % host_label,
             }
             # pylint: disable-next=consider-using-f-string
@@ -654,7 +658,7 @@ class Syncer:
                     usix.raise_with_tb(
                         RhnSyncException(
                             _(
-                                "ERROR: this server must be registered with SUSE Manager."
+                                "ERROR: this server must be registered with SUSE Multi-Linux Manager."
                             )
                         ),
                         sys.exc_info()[2],
@@ -2781,7 +2785,7 @@ def processCommandline():
         Option(
             "--iss-parent",
             action="store",
-            help=_("parent SUSE Manager to import content from"),
+            help=_("parent SUSE Multi-Linux Manager to import content from"),
         ),
         Option(
             "-l",
@@ -3142,7 +3146,7 @@ def processCommandline():
             _("  15 - SQL error during xml processing"),
             _("  16 - server.mount_point not set in the configuration file"),
             _(
-                "  17 - SQL error during retrieving the channels already imported in the SUSE Manager database"
+                "  17 - SQL error during retrieving the channels already imported in the SUSE Multi-Linux Manager database"
             ),
             _("  18 - Wrong db connection string in rhn.conf"),
             _("  19 - Bad arguments"),

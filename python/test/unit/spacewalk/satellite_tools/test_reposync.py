@@ -509,7 +509,7 @@ class RepoSyncTest(unittest.TestCase):
                     {
                         "To": "recipient",
                         "From": "testhost <recipient>",
-                        "Subject": "SUSE Manager repository sync failed (testhost)",
+                        "Subject": "SUSE Multi-Linux Manager repository sync failed (testhost)",
                     },
                     "Syncing Channel 'Label' failed:\n\nemail body",
                 ),

@@ -87,7 +87,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
         self.log.info("Executing mgr-sync {0}".format(options))
 
         if self.conn.sync.master.hasMaster() and "refresh" not in vars(options):
-            msg = """SUSE Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
+            msg = """SUSE Multi-Linux Manager is configured as slave server. Please use 'mgr-inter-sync' command.\n"""
             self.log.error(msg)
             sys.stderr.write(msg)
             return 1
@@ -646,7 +646,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def _list_credentials(self, show_interactive_numbers=False):
         """
-        List credentials in the SUSE Manager database.
+        List credentials in the SUSE Multi-Linux Manager database.
         """
         credentials = self._fetch_credentials()
         interactive_number = 0
@@ -669,7 +669,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def _add_credentials(self, primary, credentials):
         """
-        Add credentials to the SUSE Manager database.
+        Add credentials to the SUSE Multi-Linux Manager database.
         """
         if not credentials:
             # pylint: disable-next=superfluous-parens
@@ -703,7 +703,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def _delete_credentials(self, credentials):
         """
-        Delete credentials from the SUSE Manager database.
+        Delete credentials from the SUSE Multi-Linux Manager database.
 
         If the credentials list is empty interactive mode is used.
         """
@@ -807,7 +807,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
 
     def _refresh(self, enable_reposync, mirror="", schedule=False):
         """
-        Refresh the SCC data in the SUSE Manager database.
+        Refresh the SCC data in the SUSE Multi-Linux Manager database.
 
         Returns True when the refresh operation completed successfully, False
         otherwise.

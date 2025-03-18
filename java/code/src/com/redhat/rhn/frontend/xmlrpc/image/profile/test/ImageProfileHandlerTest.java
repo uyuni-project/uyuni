@@ -197,8 +197,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             fail("Activation Key with no base channel provided for Kiwi profile");
         }
         catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).",
-                    e.getMessage());
+            assertEquals("Activation key does not have any base channel associated " +
+            "(do not use SUSE Multi-Linux Manager default).", e.getMessage());
         }
 
         try {
@@ -235,8 +235,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
             fail("Activation Key with no base channel provided for Kiwi profile");
         }
         catch (InvalidParameterException e) {
-            assertEquals("Activation key does not have any base channel associated (do not use SUSE Manager default).",
-                    e.getMessage());
+            assertEquals("Activation key does not have any base channel associated " +
+            "(do not use SUSE Multi-Linux Manager default).", e.getMessage());
         }
 
         try {

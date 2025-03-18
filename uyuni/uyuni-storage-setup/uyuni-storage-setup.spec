@@ -30,7 +30,7 @@ Source0:        %{name}-%{version}.tar.gz
 Tools for managing storage on Uyuni Server and Proxy
 
 %package server
-Summary:        Storage setup scripts for Uyuni and SUSE Manager Server
+Summary:        Storage setup scripts for Uyuni and SUSE Multi-Linux Manager Server
 Requires:       grep
 Requires:       mgradm
 Requires:       parted
@@ -40,10 +40,10 @@ Requires:       xfsprogs
 Conflicts:      %{name}-proxy
 
 %description server
-Scripts that help setting up Uyuni and SUSE Manager Server storage after deployment.
+Scripts that help setting up Uyuni and SUSE Multi-Linux Manager Server storage after deployment.
 
 %package proxy
-Summary:        Storage setup scripts for Uyuni and SUSE Manager Proxy
+Summary:        Storage setup scripts for Uyuni and SUSE Multi-Linux Manager Proxy
 Requires:       grep
 Requires:       mgrpxy
 Requires:       parted
@@ -53,7 +53,7 @@ Requires:       xfsprogs
 Conflicts:      %{name}-server
 
 %description proxy
-Scripts that help setting up Uyuni and SUSE Manager Proxy storage after deployment.
+Scripts that help setting up Uyuni and SUSE Multi-Linux Manager Proxy storage after deployment.
 
 %prep
 %autosetup

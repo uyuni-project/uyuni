@@ -227,7 +227,7 @@ class Server(ServerWrapper):
             )
             self.server["release"] = new_rel
             self.server.save()
-            msg = """The SUSE Manager Update Agent has detected a
+            msg = """The SUSE Multi-Linux Manager Update Agent has detected a
             change in the base version of the operating system running
             on your system, additionally you are subscribed to a custom
             channel as your base channel.  Due to this configuration
@@ -303,7 +303,7 @@ class Server(ServerWrapper):
         sub_channels = rhnChannel.channels_for_server(self.server["id"])
         if sub_channels:
             channel_list = [a["name"] for a in sub_channels]
-            msg = """The SUSE Manager Update Agent has detected a
+            msg = """The SUSE Multi-Linux Manager Update Agent has detected a
             change in the base version of the operating system running
             on your system and has updated your channel subscriptions
             to reflect that.

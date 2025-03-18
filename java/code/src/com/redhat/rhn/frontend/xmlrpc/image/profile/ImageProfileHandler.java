@@ -160,7 +160,7 @@ public class ImageProfileHandler extends BaseHandler {
                 if (akey.getBaseChannel() == null) {
                     throw new InvalidParameterException(
                             "Activation key does not have any base channel associated " +
-                                    "(do not use SUSE Manager default).");
+                                    "(do not use SUSE Multi-Linux Manager default).");
                 }
             });
         }

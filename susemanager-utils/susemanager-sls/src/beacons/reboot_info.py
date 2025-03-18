@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Watch system status and fire an event to SUSE Manager indicating 
+Watch system status and fire an event to SUSE Multi-Linux Manager indicating
 when a reboot is required.
 """
 

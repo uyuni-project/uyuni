@@ -30,8 +30,8 @@ Feature: Main landing page options and preferences
     Given I am not authorized
     When I go to the home page
     And I follow "Copyright Notice"
-    And I follow "SUSE MANAGER LICENSE AGREEMENT"
-    Then I should see a "SUSE Manager License Agreement" text
+    And I follow "SUSE Multi-Linux Manager License Agreement"
+    Then I should see a "SUSE Multi-Linux Manager License Agreement" text
 
   Scenario: Log into Uyuni
     Given I am not authorized

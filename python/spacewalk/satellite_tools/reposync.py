@@ -3054,7 +3054,8 @@ class RepoSync(object):
 
         headers = {
             # pylint: disable-next=consider-using-f-string
-            "Subject": "SUSE Manager repository sync failed (%s)" % hostname,
+            "Subject": "SUSE Multi-Linux Manager repository sync failed (%s)"
+            % hostname,
             # pylint: disable-next=consider-using-f-string
             "From": "%s <%s>" % (hostname, fr),
             "To": to,

@@ -366,7 +366,7 @@ public class ContentSyncManager {
      */
     public List<MgrSyncProductDto> listProducts() {
         if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription() || canSyncToolsChannelViaCloudRMT())) {
-            LOG.warn("No SUSE Manager Server Subscription available. " +
+            LOG.warn("No SUSE Multi-Linux Manager Server Subscription available. " +
                     "Products requiring Client Tools Channel will not be shown.");
         }
         return HibernateFactory.doWithoutAutoFlushing(this::listProductsImpl);

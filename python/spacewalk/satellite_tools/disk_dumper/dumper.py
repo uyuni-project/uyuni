@@ -602,7 +602,7 @@ class XML_Dumper:
                         (
                             "Channel %s has incompatible rpm checksum (%s). Please contact\n"
                             + "SUSE support for information about upgrade to newer version\n"
-                            + "of SUSE Manager Server which supports it."
+                            + "of SUSE Multi-Linux Manager Server which supports it."
                         )
                         % (label, all_channels_hash[label]["checksum_type"]),
                     )

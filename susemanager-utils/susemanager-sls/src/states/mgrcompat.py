@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
-SUSE Manager custom wrapper for Salt "module.run" state module.
+SUSE Multi-Linux Manager custom wrapper for Salt "module.run" state module.
 
 This wrapper determines the syntax to use for calling the Salt "module.run" state
 that has changed between different Salt version.
 
-Using this wrapper we ensure all SUSE Manager SLS files are using the same syntax
+Using this wrapper we ensure all SUSE Multi-Linux Manager SLS files are using the same syntax
 regardless the actual Salt version installed on the minion.
 
 """
