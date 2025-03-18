@@ -127,7 +127,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
 @susemanager
 @transactional_server
-  Scenario: Add SLE Micro 6.1
+  Scenario: Add SL Micro 6.1
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
