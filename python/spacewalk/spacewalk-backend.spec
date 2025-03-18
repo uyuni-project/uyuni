@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname SUSE Multi-Linux Manager}
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
@@ -248,7 +250,8 @@ do
 done
 
 %if !0%{?is_opensuse} && 0%{?sle_version}
-sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = "SUSE Manager"/' common/rhnConfig.py
+PPNAME="%{productprettyname}"
+sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = \"$PPNAME\"/" common/rhnConfig.py
 %endif
 
 %install
