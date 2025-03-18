@@ -153,6 +153,15 @@ jobs:
       - name: Get buildhost logs
         if: ${{ failure() && env.skip != 'true' }}
         run: sudo -i podman exec -ti buildhost cat /var/log/venv-salt-minion.log
+      - name: Get nginx logs
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo journalctl -u nginx
+      - name: Get docker images as root
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo docker images 
+      - name: Get docker images as non-root
+        if: ${{ failure() && env.skip != 'true' }}
+        run: docker images 
       - name: Get server logs
         if: ${{ failure() && env.skip != 'true' }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
