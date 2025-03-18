@@ -1775,4 +1775,6 @@ EMPTY_CHANNELS = %w[
   fake-base-channel-suse-like
   fake-base-channel-i586
   test-base-channel-x86_64
+  managertools-sle15-updates-x86_64-sp4
+  managertools-beta-sle15-updates-x86_64-sp4
 ].freeze
