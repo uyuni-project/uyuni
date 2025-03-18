@@ -163,7 +163,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @proxy
 @susemanager
 @transactional_server
-  Scenario: Add SUSE Manager Proxy Extension 5.1 with SL Micro 6.1 as base OS
+  Scenario: Add SUSE MLM Proxy Extension 5.1 with SL Micro 6.1 as base OS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
