@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
-import { docsLocale } from "core/user-preferences";
+import { docsLocale, productName } from "core/user-preferences";
 
 import { SubmitButton } from "components/buttons";
 import { useInputValue } from "components/hooks/forms/useInputValue";
@@ -53,7 +53,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
                   {str}
                 </a>
               ),
-              productName: product.key,
+              productName: product.productName,
             })}
           </p>
         </div>
@@ -119,7 +119,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
             <span>
               {t("{productName} release {versionNumber}", {
-                productName: props.productName,
+                productName,
                 versionNumber: (
                   <a key="version" href={`/docs/${docsLocale}/release-notes/release-notes-server.html`}>
                     {props.webVersion}

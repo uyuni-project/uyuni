@@ -1,12 +1,14 @@
-import re
 import sys
 import yaml
 
 if len(sys.argv) != 2:
-    print("Expecting the XML string as argument")
+    print("Expecting a list of comma-separated tests as an argument")
     exit(-1)
 
-xml_string = sys.argv[1]
-pattern = re.compile(r'<li>([\w\-]+)</li>')
-matches = pattern.findall(xml_string)
-print(yaml.dump(matches))
+js_output = sys.argv[1]
+
+# Split the comma-separated output into a list
+test_names = js_output.split(',') if js_output else []
+
+# Convert list to YAML format
+print(yaml.dump(test_names, default_flow_style=False))

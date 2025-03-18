@@ -103,8 +103,8 @@ module.exports = (env, argv) => {
   return {
     entry: {
       "javascript/manager/main": "./manager/index.ts",
-      "css/updated-susemanager-light": path.resolve(__dirname, "../branding/css/susemanager-light.scss"),
-      "css/updated-susemanager-dark": path.resolve(__dirname, "../branding/css/susemanager-dark.scss"),
+      "css/updated-suse-light": path.resolve(__dirname, "../branding/css/suse-light.scss"),
+      "css/updated-suse-dark": path.resolve(__dirname, "../branding/css/suse-dark.scss"),
       "css/updated-uyuni": path.resolve(__dirname, "../branding/css/uyuni.scss"),
     },
     output: {

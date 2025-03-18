@@ -54,7 +54,7 @@ public class MgrSyncUtils {
     private static final String OFFICIAL_NOVELL_UPDATE_HOST = "nu.novell.com";
     public static final String OFFICIAL_UPDATE_HOST_DOMAIN = ".suse.com";
     private static final List<String> PRODUCT_ARCHS = Arrays.asList("i386", "i486", "i586", "i686", "ia64", "ppc64le",
-            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64");
+            "ppc64", "ppc", "s390x", "s390", "x86_64", "aarch64", "amd64", "arm64");
 
     // No instances should be created
     private MgrSyncUtils() {
@@ -136,6 +136,9 @@ public class MgrSyncUtils {
                 break;
             case "amd64":
                 arch = "amd64-deb";
+                break;
+            case "arm64":
+                arch = "arm64-deb";
                 break;
             default:
                 // keep arch unchanged

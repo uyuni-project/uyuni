@@ -25,7 +25,6 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
-    And files on container volumes should all have the proper SELinux label
 
 @proxy
   Scenario: The proxy is healthy

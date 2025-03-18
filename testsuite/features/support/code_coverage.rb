@@ -4,7 +4,7 @@ require_relative 'keyvalue_store'
 require 'nokogiri'
 require 'open-uri'
 
-# CodeCoverage handler to produce, parse and report Code Coverage from the Jave Server to our GitHub PRs
+# CodeCoverage handler to produce, parse and report Code Coverage from the Java Server to our GitHub PRs
 class CodeCoverage
   include Nokogiri::XML
 

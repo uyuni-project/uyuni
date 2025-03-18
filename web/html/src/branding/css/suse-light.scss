@@ -1,4 +1,4 @@
-$theme: "susemanager-light";
+$theme: "suse-light";
 
 @import "./base/body.scss";
 
@@ -9,7 +9,7 @@ $theme: "susemanager-light";
   @import "bootstrap/scss/bootstrap";
 
   @import "./variables.scss";
-  @import "./susemanager-light-variables.scss";
+  @import "./suse-light-variables.scss";
 
   display: flex;
   flex-direction: column;

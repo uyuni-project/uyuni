@@ -5,6 +5,5 @@
 <div id="left-menu-data">
     <script type="text/javascript">
         window.JSONMenu = <%= GlobalInstanceHolder.MENU_TREE.getJsonMenu(pageContext) %>;
-        window._IS_UYUNI = <%= Config.get().getString("product_name").compareToIgnoreCase("Uyuni") == 0 %>;
     </script>
 </div>
