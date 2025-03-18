@@ -49,7 +49,8 @@ _sql_find_root_channel_label = """
 SELECT label
  FROM rhnChannel
 WHERE id IN (
-  SELECT DISTINCT c.parent_channel
+  SELECT DISTINCT
+         CASE WHEN c.parent_channel IS NOT NULL THEN c.parent_channel ELSE c.id END
     FROM rhnChannel c
     JOIN suseProductChannel pc ON pc.channel_id = c.id
     JOIN suseProducts p ON pc.product_id = p.id
