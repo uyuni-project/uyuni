@@ -3,7 +3,7 @@ RUN echo "deb [trusted=yes] http://download.opensuse.org/repositories/systemsman
 RUN apt-get update && \
   apt-get -y install ca-certificates && \
   apt-get -y install venv-salt-minion openssh-server openssh-client hostname iproute2 openscap-utils openscap-scanner openscap-common ssg-debderived udev dmidecode tar \
-    prometheus-node-exporter prometheus-apache-exporter prometheus-postgres-exporter prometheus-exporter-exporter prometheus-apache-exporter prometheus-node-exporter xz && \
+    prometheus-node-exporter prometheus-apache-exporter prometheus-postgres-exporter prometheus-exporter-exporter prometheus-apache-exporter prometheus-node-exporter xz-utils && \
   apt-get clean
 RUN echo "deb [trusted=yes] http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/deb/ /" > /etc/apt/sources.list.d/test_repo_deb_pool.list
 RUN mkdir /run/sshd
