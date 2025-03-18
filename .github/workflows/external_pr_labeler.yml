@@ -24,7 +24,7 @@ jobs:
       - name: Label the PR
         # If not a member of org
         if: ${{ steps.is_member.outputs.result == 404 }}
-        uses: christianvuerings/add-labels@v1
+        uses: christianvuerings/add-labels@ede518d #v1.1 WARNING: Replace it with actions/labeler!?
         with:
           labels: "community"
         env:
