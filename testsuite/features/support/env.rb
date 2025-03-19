@@ -446,14 +446,6 @@ Before('@sle15sp6_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
 end
 
-Before('@opensuse155arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_minion']
-end
-
-Before('@opensuse155arm_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
-end
-
 Before('@opensuse156arm_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse156arm_minion']
 end

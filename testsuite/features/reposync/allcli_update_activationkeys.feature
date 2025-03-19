@@ -42,7 +42,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -75,7 +75,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -108,7 +108,7 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -160,8 +160,8 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
