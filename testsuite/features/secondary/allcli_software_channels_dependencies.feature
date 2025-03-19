@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2024 SUSE LLC
+# Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_changing_software_channels
@@ -42,11 +42,11 @@ Feature: Channel subscription with recommended or required dependencies
     And I wait for child channels to appear
     And I check radio button "(none, disable service)"
     And I wait for child channels to appear
-    And I check radio button "openSUSE Leap 15.5 (x86_64)"
-    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "unselected" and "disabled"
-    Then I should see the child channel "openSUSE 15.5 non oss (x86_64)" "selected"
-    When I select the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)"
-    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64) (Development)" "selected"
+    And I check radio button "openSUSE Leap 15.6 (x86_64)"
+    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64) (Development)" "unselected" and "disabled"
+    Then I should see the child channel "openSUSE 15.6 non oss (x86_64)" "selected"
+    When I select the child channel "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64) (Development)"
+    Then I should see the child channel "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64) (Development)" "selected"
 
 @susemanager
   Scenario: Play with recommended and required child channels selection in SSM
@@ -78,12 +78,12 @@ Feature: Channel subscription with recommended or required dependencies
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    And I should see a table line with "openSUSE Leap 15.5 (x86_64)", "1"
-    When I select "No Change" from drop-down in table line with "openSUSE Leap 15.5 (x86_64)"
+    And I should see a table line with "openSUSE Leap 15.6 (x86_64)", "1"
+    When I select "No Change" from drop-down in table line with "openSUSE Leap 15.6 (x86_64)"
     And I click on "Next"
     Then I should see the toggler "disabled"
-    And I should see a "openSUSE 15.5 non oss (x86_64)" text
-    And I should see "No change" "selected" for the "openSUSE 15.5 non oss (x86_64)" channel
+    And I should see a "openSUSE 15.6 non oss (x86_64)" text
+    And I should see "No change" "selected" for the "openSUSE 15.6 non oss (x86_64)" channel
 
   Scenario: Cleanup: remove remaining systems from SSM after software channel tests
     When I click on the clear SSM button
