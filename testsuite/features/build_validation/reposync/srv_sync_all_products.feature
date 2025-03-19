@@ -496,27 +496,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sl-micro-6.1-devel-uyuni-client-x86_64" has been synced
 
   @susemanager
-  @opensuse155arm_minion
-  Scenario: Add openSUSE 15.5 for ARM
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "openSUSE Leap 15.5 aarch64" as the filtered product description
-    And I select "openSUSE Leap 15.5 aarch64" as a product
-    Then I should see the "openSUSE Leap 15.5 aarch64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "openSUSE Leap 15.5 aarch64" product has been added
-    And I wait until all synchronized channels for "leap15.5-aarch64" have finished
-
-  @uyuni
-  @opensuse155arm_minion
-  Scenario: Add openSUSE 15.5 for ARM Uyuni Client tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "aarch64"
-    And I wait until all synchronized channels for "leap15.5-aarch64" have finished
-
-  @susemanager
   @opensuse156arm_minion
   Scenario: Add openSUSE 15.6 for ARM
     Given I am authorized for the "Admin" section
@@ -866,8 +845,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
   @uyuni
   @proxy
-  Scenario: Add Uyuni Leap 15.5 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
+  Scenario: Add Uyuni Leap 15.6 Proxy, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
   @susemanager

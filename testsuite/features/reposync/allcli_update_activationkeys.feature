@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC
+# Copyright (c) 2022-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @skip_if_github_validation
@@ -43,12 +43,12 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "openSUSE 15.6 non oss (x86_64)"
+    And I check "openSUSE Leap 15.6 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.6 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.6 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.6 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -81,12 +81,12 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "openSUSE 15.6 non oss (x86_64)"
+    And I check "openSUSE Leap 15.6 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.6 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.6 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.6 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -119,12 +119,12 @@ Feature: Update activation keys
     And I wait until I do not see "Loading..." text
     And I select the parent channel for the "sle_minion" from "selectedBaseChannel"
     And I wait until I do not see "Loading..." text
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "openSUSE 15.6 non oss (x86_64)"
+    And I check "openSUSE Leap 15.6 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.6 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.6 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.6 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until "Fake-RPM-SUSE-Channel" has been checked
     And I click on "Update Activation Key"
@@ -156,13 +156,13 @@ Feature: Update activation keys
     And I wait for child channels to appear
     And I select the parent channel for the "proxy_traditional" from "selectedBaseChannel"
     And I wait for child channels to appear
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
-    And I check "Uyuni Proxy Devel for openSUSE Leap 15.5 (x86_64)"
+    And I check "openSUSE 15.6 non oss (x86_64)"
+    And I check "openSUSE Leap 15.6 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.6 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.6 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.6 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Proxy Devel for openSUSE Leap 15.6 (x86_64)"
     And I click on "Update Activation Key"
     Then I should see a "Activation key Proxy Key x86_64 has been modified" text
 
