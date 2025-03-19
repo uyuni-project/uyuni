@@ -679,10 +679,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
-        sle-manager-tools15-pool-x86_64-sp4
-        sle-manager-tools15-updates-x86_64-sp4
-        sle-manager-tools15-beta-pool-x86_64-sp4
-        sle-manager-tools15-beta-updates-x86_64-sp4
         managertools-sle15-pool-x86_64-sp4
         managertools-sle15-updates-x86_64-sp4
         managertools-beta-sle15-pool-x86_64-sp4
@@ -708,14 +704,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-12-pool-amd64
         debian-12-main-security-amd64
         debian-12-main-updates-amd64
-        debian-12-suse-manager-tools-amd64
         managertools-debian12-updates-amd64
         managertools-debian12-beta-updates-amd64
       ],
     'sll-7-ltss' => # CHECKED
       %w[
         res-7-ltss-updates-x86_64
-        res-7-suse-manager-tools-x86_64-lbt7
         managertools-el7-pool-x86_64-lbt7
         managertools-el7-updates-x86_64-lbt7
       ],
@@ -727,15 +721,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'el9' => # CHECKED
       %w[
-        el9-manager-tools-updates-x86_64-alma
-        el9-manager-tools-pool-x86_64-alma
         el9-pool-x86_64
-        el9-manager-tools-pool-x86_64
-        el9-manager-tools-updates-x86_64
-        el9-manager-tools-pool-x86_64-ol9
-        el9-manager-tools-updates-x86_64-ol9
-        el9-manager-tools-pool-x86_64-rocky
-        el9-manager-tools-updates-x86_64-rocky
         managertools-el9-pool-x86_64
         managertools-el9-updates-x86_64
         managertools-beta-el9-pool-x86_64
@@ -761,9 +747,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sles12-sp5' => # CHECKED
       %w[
         sles12-sp5-pool-x86_64
-        sle-manager-tools12-updates-x86_64-sp5
         sles12-sp5-updates-x86_64
-        sle-manager-tools12-pool-x86_64-sp5
         managertools-sle12-pool-x86_64-sp5
         managertools-sle12-updates-x86_64-sp5
         sles12-sp5-installer-updates-x86_64
@@ -775,8 +759,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle15-sp2-installer-updates-x86_64
         sle-module-basesystem15-sp2-pool-x86_64
         sle-module-basesystem15-sp2-updates-x86_64
-        sle-manager-tools15-pool-x86_64-sp2
-        sle-manager-tools15-updates-x86_64-sp2
         managertools-sle15-pool-x86_64-sp2
         managertools-sle15-updates-x86_64-sp2
         sle-module-server-applications15-sp2-pool-x86_64
@@ -794,8 +776,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle15-sp3-installer-updates-x86_64
         sle-module-basesystem15-sp3-updates-x86_64
         sle-module-basesystem15-sp3-pool-x86_64
-        sle-manager-tools15-updates-x86_64-sp3
-        sle-manager-tools15-pool-x86_64-sp3
         managertools-sle15-pool-x86_64-sp3
         managertools-sle15-updates-x86_64-sp3
         sle-module-server-applications15-sp3-updates-x86_64
@@ -818,10 +798,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-server-applications15-sp4-pool-x86_64
         sle-module-server-applications15-sp4-updates-x86_64
         sle-product-sles15-sp4-ltss-updates-x86_64
-        sle-manager-tools15-pool-x86_64-sp4
-        sle-manager-tools15-updates-x86_64-sp4
-        sle-manager-tools15-beta-pool-x86_64-sp4
-        sle-manager-tools15-beta-updates-x86_64-sp4
         managertools-sle15-pool-x86_64-sp4
         managertools-sle15-updates-x86_64-sp4
         managertools-beta-sle15-pool-x86_64-sp4
@@ -839,8 +815,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp5-updates-x86_64
         sle-module-python3-15-sp5-pool-x86_64
         sle-module-python3-15-sp5-updates-x86_64
-        sle-manager-tools15-updates-x86_64-sp5
-        sle-manager-tools15-pool-x86_64-sp5
         managertools-sle15-pool-x86_64-sp5
         managertools-sle15-updates-x86_64-sp5
         sle-module-server-applications15-sp5-pool-x86_64
@@ -856,8 +830,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-product-sles15-sp6-updates-x86_64
         sle-module-basesystem15-sp6-pool-x86_64
         sle-module-basesystem15-sp6-updates-x86_64
-        sle-manager-tools15-updates-x86_64-sp6
-        sle-manager-tools15-pool-x86_64-sp6
         managertools-sle15-pool-x86_64-sp6
         managertools-sle15-updates-x86_64-sp6
         sle-module-server-applications15-sp6-pool-x86_64
@@ -869,8 +841,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'slesforsap15-sp5' =>
       %w[
-        sle-manager-tools15-pool-x86_64-sap-sp5
-        sle-manager-tools15-updates-x86_64-sap-sp5
         managertools-sle15-pool-x86_64-sap-sp5
         managertools-sle15-updates-x86_64-sap-sp5
         sle-module-basesystem15-sp5-pool-x86_64-sap
@@ -890,8 +860,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       ],
     'sles15-sp5-s390x' =>
       %w[
-        sle-manager-tools15-pool-s390x-sp5
-        sle-manager-tools15-updates-s390x-sp5
         managertools-sle15-pool-s390x-sp5
         managertools-sle15-updates-s390x-sp5
         sle-module-basesystem15-sp5-pool-s390x
@@ -905,7 +873,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         rhel-x86_64-server-7
         res7-x86_64
-        res7-suse-manager-tools-x86_64
       ],
     'res8' =>
       %w[
@@ -913,8 +880,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         res-8-updates-x86_64
         res-as-8-updates-x86_64
         res-cb-8-updates-x86_64
-        res8-manager-tools-pool-x86_64
-        res8-manager-tools-updates-x86_64
         managertools-el8-pool-x86_64
         managertools-el8-updates-x86_64
       ],
@@ -942,8 +907,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse-leap-15.5-pool-aarch64
         opensuse-leap-15.5-updates-aarch64
         opensuse-sle-15.5-updates-aarch64
-        sle-manager-tools15-updates-aarch64-opensuse-15.5
-        sle-manager-tools15-pool-aarch64-opensuse-15.5
       ],
     'leap15.6-aarch64' =>
       %w[
@@ -951,8 +914,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse-leap-15.6-pool-aarch64
         opensuse-leap-15.6-updates-aarch64
         opensuse-sle-15.6-updates-aarch64
-        sle-manager-tools15-updates-aarch64-opensuse-15.6
-        sle-manager-tools15-pool-aarch64-opensuse-15.6
         managertools-sle15-pool-aarch64-opensuse-15.6
         managertools-sle15-updates-aarch64-opensuse-15.6
       ],
@@ -960,62 +921,46 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-microos-5.1-pool-x86_64
         suse-microos-5.1-updates-x86_64
-        sle-manager-tools-for-micro5-updates-x86_64-5.1
-        sle-manager-tools-for-micro5-pool-x86_64-5.1
       ],
     'suse-microos-5.2' => # CHECKED
       %w[
         suse-microos-5.2-pool-x86_64
         suse-microos-5.2-updates-x86_64
-        sle-manager-tools-for-micro5-pool-x86_64-5.2
-        sle-manager-tools-for-micro5-updates-x86_64-5.2
       ],
     'sle-micro-5.3' => # CHECKED
       %w[
         sle-micro-5.3-pool-x86_64
         sle-micro-5.3-updates-x86_64
-        sle-manager-tools-for-micro5-pool-x86_64-5.3
-        sle-manager-tools-for-micro5-updates-x86_64-5.3
       ],
     'sle-micro-5.4' => # CHECKED
       %w[
         sle-micro-5.4-pool-x86_64
         sle-micro-5.4-updates-x86_64
-        sle-manager-tools-for-micro5-updates-x86_64-5.4
-        sle-manager-tools-for-micro5-pool-x86_64-5.4
       ],
     'sle-micro-5.5' => # CHECKED
       %w[
         sle-micro-5.5-pool-x86_64
         sle-micro-5.5-updates-x86_64
-        sle-manager-tools-for-micro5-pool-x86_64-5.5
-        sle-manager-tools-for-micro5-updates-x86_64-5.5
-        sle-manager-tools-beta-for-micro5-pool-x86_64-5.5
-        sle-manager-tools-beta-for-micro5-updates-x86_64-5.5
       ],
     'sl-micro-6.0' =>
       %w[
         sl-micro-6.0-pool-x86_64
-        suse-manager-tools-for-sl-micro-6.0-x86_64
       ],
     'sl-micro-6.1' =>
       %w[
         sl-micro-6.1-pool-x86_64
-        suse-manager-tools-for-sl-micro-6.1-x86_64
       ],
     'ubuntu-2004' => # CHECKED
       %w[
         ubuntu-2004-amd64-main-amd64
         ubuntu-2004-amd64-main-security-amd64
         ubuntu-2004-amd64-main-updates-amd64
-        ubuntu-20.04-suse-manager-tools-amd64
       ],
     'ubuntu-2204' =>
       %w[
         ubuntu-2204-amd64-main-amd64
         ubuntu-2204-amd64-main-updates-amd64
         ubuntu-2204-amd64-main-security-amd64
-        ubuntu-22.04-suse-manager-tools-amd64
         managertools-ubuntu2204-updates-amd64
         managertools-beta-ubuntu2204-updates-amd64
       ],
@@ -1024,7 +969,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2404-amd64-main-amd64
         ubuntu-2404-amd64-main-updates-amd64
         ubuntu-2404-amd64-main-security-amd64
-        ubuntu-24.04-suse-manager-tools-amd64
         managertools-ubuntu2404-updates-amd64
         managertools-beta-ubuntu2404-updates-amd64
       ],
@@ -1444,19 +1388,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-main-updates-amd64' => 120,
   'debian-12-pool-amd64' => 27_960,
   'debian-12-pool-amd64-uyuni' => 28_260,
-  'debian-12-suse-manager-tools-amd64' => 120,
   'devel-build-host-channel' => 120,
   'devel-debian-like-channel' => 120,
   'devel-rh-like-channel' => 120,
   'devel-suse-channel' => 120,
-  'el9-manager-tools-pool-x86_64' => 120,
-  'el9-manager-tools-pool-x86_64-alma' => 120,
-  'el9-manager-tools-pool-x86_64-ol9' => 120,
-  'el9-manager-tools-pool-x86_64-rocky' => 120,
-  'el9-manager-tools-updates-x86_64' => 120,
-  'el9-manager-tools-updates-x86_64-alma' => 120,
-  'el9-manager-tools-updates-x86_64-ol9' => 120,
-  'el9-manager-tools-updates-x86_64-rocky' => 120,
   'el9-pool-x86_64' => 60,
   'fake-base-channel-appstream' => 360,
   'fake-base-channel-debian-like' => 300,
@@ -1543,8 +1478,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'oraclelinux9-uyuni-client-devel-x86_64' => 120,
   'oraclelinux9-x86_64' => 840,
   'res-7-ltss-updates-x86_64' => 960,
-  'res7-suse-manager-tools-x86_64' => 300,
-  'res-7-suse-manager-tools-x86_64-lbt7' => 120,
   'res7-x86_64' => 21_000,
   'rhel-x86_64-server-7' => 60,
   'rocky-8-iso' => 600,
@@ -1559,37 +1492,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle15-sp2-installer-updates-x86_64' => 60,
   'sle15-sp3-installer-updates-x86_64' => 60,
   'sle15-sp4-installer-updates-x86_64' => 60,
-  'sle-manager-tools12-pool-x86_64-sp5' => 120,
-  'sle-manager-tools12-updates-x86_64-sp5' => 120,
-  'sle-manager-tools15-beta-pool-x86_64-sp4' => 120,
-  'sle-manager-tools15-beta-updates-x86_64-sp4' => 120,
-  'sle-manager-tools15-pool-aarch64-opensuse-15.6' => 120,
-  'sle-manager-tools15-pool-s390x-sp5' => 120,
-  'sle-manager-tools15-pool-x86_64-sp2' => 120,
-  'sle-manager-tools15-pool-x86_64-sp3' => 120,
-  'sle-manager-tools15-pool-x86_64-sp4' => 120,
-  'sle-manager-tools15-pool-x86_64-sp5' => 120,
-  'sle-manager-tools15-pool-x86_64-sp6' => 120,
-  'sle-manager-tools15-updates-aarch64-opensuse-15.6' => 120,
-  'sle-manager-tools15-updates-s390x-sp5' => 120,
-  'sle-manager-tools15-updates-x86_64-sp2' => 120,
-  'sle-manager-tools15-updates-x86_64-sp3' => 120,
-  'sle-manager-tools15-updates-x86_64-sp4' => 180,
-  'sle-manager-tools15-updates-x86_64-sp5' => 120,
-  'sle-manager-tools15-updates-x86_64-sp6' => 120,
-  'sle-manager-tools-beta-for-micro5-pool-x86_64-5.5' => 60,
-  'sle-manager-tools-beta-for-micro5-updates-x86_64-5.5' => 60,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.1' => 120,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.2' => 120,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.3' => 120,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.4' => 120,
-  'sle-manager-tools-for-micro5-pool-x86_64-5.5' => 120,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.1' => 120,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.2' => 120,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.3' => 120,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.4' => 120,
-  'sle-manager-tools-for-micro5-updates-x86_64-5.5' => 120,
-  'sle-manager-tools-for-micro6-pool-x86_64-6.0' => 120,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.3-pool-x86_64' => 120,
   'sle-micro-5.3-updates-x86_64' => 240,
@@ -1711,8 +1613,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-manager-retail-branch-server-5.1-pool-x86_64-sp7' => 60,
   'suse-manager-retail-branch-server-5.1-updates-x86_64' => 60,
   'suse-manager-retail-branch-server-5.1-updates-x86_64-sp7' => 60,
-  'suse-manager-tools-for-sl-micro-6.0-x86_64' => 60,
-  'suse-manager-tools-for-sl-micro-6.1-x86_64' => 60,
   'suse-microos-5.1-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.1-pool-x86_64' => 60,
   'suse-microos-5.1-updates-x86_64' => 300,
@@ -1734,7 +1634,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2004-amd64-universe-uyuni' => 19_560,
   'ubuntu-2004-amd64-uyuni-client-devel' => 120,
   'ubuntu-2004-pool-amd64-uyuni' => 60,
-  'ubuntu-20.04-suse-manager-tools-amd64' => 120,
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 2760,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
@@ -1747,7 +1646,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2204-amd64-universe-uyuni' => 24_000,
   'ubuntu-2204-amd64-uyuni-client-devel' => 120,
   'ubuntu-2204-pool-amd64-uyuni' => 60,
-  'ubuntu-22.04-suse-manager-tools-amd64' => 120,
   'ubuntu-2404-amd64-main-amd64' => 780,
   'ubuntu-2404-amd64-main-security-amd64' => 2760,
   'ubuntu-2404-amd64-main-security-uyuni' => 2040,
@@ -1760,7 +1658,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'ubuntu-2404-amd64-universe-uyuni' => 24_000,
   'ubuntu-2404-amd64-uyuni-client-devel' => 120,
   'ubuntu-2404-pool-amd64-uyuni' => 60,
-  'ubuntu-24.04-suse-manager-tools-amd64' => 120,
   'uyuni-proxy-devel-leap-x86_64' => 60
 }.freeze
 
@@ -1768,7 +1665,6 @@ EMPTY_CHANNELS = %w[
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64
-  sle-manager-tools15-beta-pool-x86_64-sp4
   fake-base-channel-suse-like
   fake-base-channel-i586
   test-base-channel-x86_64
