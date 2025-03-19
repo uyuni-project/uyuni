@@ -158,11 +158,11 @@ const FilterEdit = (props: FilterEditProps) => {
         onClosePopUp={() => setOpen(false)}
         buttons={
           <React.Fragment>
-            <div className="btn-group col-lg-6">
+            <div className="w-100">
               {props.editing && (
                 <Button
                   id={`${props.id}-modal-delete-button`}
-                  className="btn-danger"
+                  className="btn-danger pull-left"
                   text={t("Delete")}
                   disabled={isLoading}
                   handler={() => {
@@ -178,9 +178,7 @@ const FilterEdit = (props: FilterEditProps) => {
                   }}
                 />
               )}
-            </div>
-            <div className="col-lg-6">
-              <div className="pull-right btn-group">
+              <div className="btn-group pull-right">
                 <Button
                   id={`${props.id}-modal-cancel-button`}
                   className="btn-default"

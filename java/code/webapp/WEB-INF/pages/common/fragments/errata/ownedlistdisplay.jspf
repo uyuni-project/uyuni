@@ -6,7 +6,7 @@
             <rl:csv
                 name="errataList"
                 exportColumns="advisoryType,advisoryName,synopsis,updateDate"/>
-            <button type="submit" name="dispatch" class="btn btn-default">
+            <button type="submit" name="dispatch" class="btn btn-danger">
                 <bean:message key="erratalist.jsp.deleteerrata"/>
             </button>
         </div>

@@ -21,7 +21,7 @@ const IssPeripheral = () => {
             <Button
               id="addPeripheral"
               icon="fa-plus"
-              className="btn-default"
+              className="btn-primary"
               text={t("Add Peripheral")}
               handler={() => window.pageRenderers?.spaengine?.navigate?.(`/rhn/manager/admin/hub/peripherals/register`)}
             />
