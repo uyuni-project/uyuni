@@ -133,7 +133,7 @@ sync() {
             RSYNC_ARGS="--exclude={$LIST_FILES_TO_EXCLUDE}"
         fi
         # Synchronize package files from source excluding (configuration files)
-        CMD="rsync -ab $RSYNC_ARGS --exclude=".pv" --suffix ".rpmsave" $SOURCES $PV"
+        CMD="rsync -a $RSYNC_ARGS --exclude=".pv" $SOURCES $PV"
         eval $CMD
         echo "done!"
 
