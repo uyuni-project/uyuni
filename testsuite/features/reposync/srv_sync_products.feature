@@ -153,11 +153,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP7" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP7" selected
+    And I select "SUSE Linux Enterprise Server 15 SP7 (BETA)" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP7 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Server 15 SP7" product has been added
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 (BETA)" product has been added
     And I wait until all synchronized channels for "sles15-sp7" have finished
 
 @proxy
@@ -222,7 +222,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64 (BETA)"
     And I select "SUSE Manager Retail Branch Server Extension 5.1 x86_64" as a product
     Then I should see the "SUSE Manager Retail Branch Server Extension 5.1 x86_64" selected
     When I click the Add Product button
