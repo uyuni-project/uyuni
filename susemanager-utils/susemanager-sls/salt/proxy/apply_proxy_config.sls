@@ -122,9 +122,8 @@ mgrpxy_installed:
 
 # The system will run this service to enable apply_proxy_config.service after reboot
 enable_apply_proxy_config_service:
-  service.running:
-    - name: apply_proxy_config.service
-    - enable: True
+  cmd.run:
+    - name: systemctl enable apply_proxy_config.service
     - require:
       - file: /etc/systemd/system/apply_proxy_config.service
 
