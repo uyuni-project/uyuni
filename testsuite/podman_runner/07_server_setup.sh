@@ -181,5 +181,5 @@ cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
 
 sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
 
-sudo -i podman exec -ti buildhost bash -c "docker ps"
+sudo -i podman exec -ti buildhost bash -c "docker images"
 exit -1
