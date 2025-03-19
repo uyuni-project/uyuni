@@ -182,4 +182,6 @@ cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
 sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
 
 sudo -i podman exec -ti buildhost bash -c "docker images"
+sudo -i podman tag ghcr.io/uyuni-project/uyuni/uyuni-master-testsuite noauthregistry.lab/uyuni-master-testsuite:1
+sudo -i podman push noauthregistry.lab/uyuni-master-testsuite:1
 exit -1
