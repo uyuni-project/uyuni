@@ -1,0 +1,4 @@
+- No sync when a user modified file was not changed between
+  2 image versions
+- No backup for files which would be replaced directly from
+  RPM as well
