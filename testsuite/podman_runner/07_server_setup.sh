@@ -183,5 +183,5 @@ sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xe
 
 sudo -i podman exec -ti buildhost bash -c "docker images"
 sudo -i podman exec -ti buildhost bash -c "docker tag ghcr.io/uyuni-project/uyuni/uyuni-master-testsuite:master noauthregistry.lab/uyuni-master-testsuite:1"
-sudo -i podman exec -ti buildhost bash -c "push noauthregistry.lab/uyuni-master-testsuite:1"
+sudo -i podman exec -ti buildhost bash -c "docker push noauthregistry.lab/uyuni-master-testsuite:1"
 exit -1
