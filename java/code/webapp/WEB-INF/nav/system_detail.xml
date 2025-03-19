@@ -10,10 +10,10 @@
     <rhn-tab name="Remote Command" acl="system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
+    <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
     <rhn-tab name="Proxy" acl="system_has_proxy_entitlement()">
       <rhn-tab-url>/rhn/manager/systems/details/proxy-config</rhn-tab-url>
       <rhn-tab name="Configuration" url="/rhn/manager/systems/details/proxy-config"/>
-      <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
       <rhn-tab name="Clients" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()"/>
     </rhn-tab>
     <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
