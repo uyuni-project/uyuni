@@ -72,7 +72,7 @@
                                     <bean:message key="actionchain.jsp.systems"/>
                                 </span>
 
-                                <div class="system-list" id="system-list-${group.sortOrder}" hidden></div>
+                                <div class="system-list" id="system-list-${group.sortOrder}"></div>
                             </td>
                             <td>
                                 <a class="delete-group" href="#"><i class="fa fa-trash-o"></i>delete action</a>
@@ -82,7 +82,7 @@
                 </tbody>
             </table></div></div>
 
-            <div id="action-chain-save-input" class="form-group" hidden>
+            <div id="action-chain-save-input" class="form-group">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button class="btn btn-primary" id="save"><bean:message key="actionchain.jsp.save"/></button>
                     <button class="btn btn-default" id="cancel"><bean:message key="actionchain.jsp.cancel"/></button>
