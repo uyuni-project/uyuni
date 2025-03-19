@@ -14,7 +14,10 @@
  */
 package com.redhat.rhn.frontend.action.schedule;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -70,6 +73,7 @@ public class ArchivedActionsSetupAction extends BaseScheduledListAction {
        StrutsDelegate strutsDelegate = getStrutsDelegate();
 
        User user = requestContext.getCurrentUser();
+       ensureRoleBasedAccess(user, "schedule.archived", Namespace.AccessMode.W);
        RhnSet set = getSetDecl().get(user);
 
        ActionManager.deleteActions(user, getSetDecl().getLabel());
