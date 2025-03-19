@@ -6872,35 +6872,35 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="duplicate.jsp.message" xml:space="preserve">
         <source>Inactive systems are listed below.</source>
-        <target/>
+        <target state="translated">Neaktívne systémy sú uvedené nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Delete Selected" xml:space="preserve">
         <source>Delete Selected</source>
-        <target/>
+        <target state="translated">Vymazať vybrané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.delete.confirm.message" xml:space="preserve">
         <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source>
-        <target/>
+        <target state="translated"> Nižšie môžu byť vybrané systémové profily na vymazanie, ktoré neboli vybrané na stránke Duplicitné systémové profily. Pozorne skontrolujte nasledujúci zoznam, aby ste zabránili náhodnému vymazaniu profilov, ktoré sa mohli nachádzať v Správcovi sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.delete.confirmmessage" xml:space="preserve">
         <source>Selected systems have been queued for deletion.</source>
-        <target/>
+        <target state="translated">Vybrané systémy boli zaradené na vymazanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Compare Systems" xml:space="preserve">
         <source>Compare Systems</source>
-        <target/>
+        <target state="translated">Porovnať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
@@ -6908,35 +6908,35 @@ organization. You may grant or remove the organization administrator role in the
       <!--- System Duplicates Compare pages -->
       <trans-unit id="duplicate.compare.jsp.header" xml:space="preserve">
         <source>Duplicate System Compare</source>
-        <target/>
+        <target state="translated">Porovnanie duplicitných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.compares.jsp.message" xml:space="preserve">
         <source>The systems below are potential duplicates of one another. You may select a combination of &lt;strong&gt;{0} systems at once&lt;/strong&gt; for detailed comparison</source>
-        <target/>
+        <target state="translated">Nižšie uvedené systémy sú navzájom možnými duplikátmi. Môžete vybrať kombináciu &lt;strong&gt;{0} systémov naraz&lt;/strong&gt; na podrobné porovnanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.compares.max_limit.message" xml:space="preserve">
         <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">Na porovnanie ste vybrali viac ako {0} systémových profilov. Vyberte kombináciu &lt;strong&gt;{0} systémov alebo menej&lt;/strong&gt; na porovnanie a vyberte &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Delete System Profile" xml:space="preserve">
         <source>Delete System Profile</source>
-        <target/>
+        <target state="translated">Vymazať systémový profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Refresh Comparison" xml:space="preserve">
         <source>Refresh Comparison</source>
-        <target/>
+        <target state="translated">Obnoviť porovnanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
