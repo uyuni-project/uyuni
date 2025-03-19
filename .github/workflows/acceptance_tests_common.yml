@@ -162,6 +162,19 @@ jobs:
       - name: Get docker images as non-root
         if: ${{ failure() && env.skip != 'true' }}
         run: docker images 
+      - name: Get nginx status
+        if: ${{ failure() && env.skip != 'true' }}
+        run: systemctl status nginx
+      - name: Get nginx status 2
+        if: ${{ failure() && env.skip != 'true' }}
+        run: journalctl -u nginx
+      - name: Try docker push
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost bash -c "docker tag ghcr.io/uyuni-project/uyuni/uyuni-master-testsuite:master noauthregistry.lab/uyuni-master-testsuite:1" && sudo -i podman exec -ti buildhost bash -c "docker push noauthregistry.lab/uyuni-master-testsuite:1"
+      - name: Try python docker push
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost bash -c "venv-salt-call docker.push noauthregistry.lab/uyuni-master-testsuite:1"
+
       - name: Get server logs
         if: ${{ failure() && env.skip != 'true' }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}
