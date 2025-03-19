@@ -31,6 +31,7 @@
   }
 
   // Branding hover effect
+  // It has to be ::after Pseudo-element. ::before is used to set icons in pagination button.
   &:not(:disabled):not(.disabled):not(.text-muted):hover::after {
     // background: #686565;
     border: 2px solid transparent;
@@ -139,7 +140,8 @@
   &:active,
   &:focus,
   &:disabled,
-  &.disabled {
+  &.disabled,
+  &.btn.show {
     &,
     &:hover {
       background: $eos-bc-persimmon-500;

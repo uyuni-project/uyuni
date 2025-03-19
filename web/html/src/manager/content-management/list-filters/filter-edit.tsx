@@ -162,7 +162,7 @@ const FilterEdit = (props: FilterEditProps) => {
               {props.editing && (
                 <Button
                   id={`${props.id}-modal-delete-button`}
-                  className="btn-danger"
+                  className="btn-danger pull-left"
                   text={t("Delete")}
                   disabled={isLoading}
                   handler={() => {
