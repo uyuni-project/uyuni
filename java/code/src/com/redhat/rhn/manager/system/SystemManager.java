@@ -2327,7 +2327,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("uid", user.getId());
         params.put("sid", sid);
-        return m.execute(params).size() >= 1;
+        return !m.execute(params).isEmpty();
     }
 
     /**

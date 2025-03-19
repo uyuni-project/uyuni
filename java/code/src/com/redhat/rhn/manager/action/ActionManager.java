@@ -233,7 +233,7 @@ public class ActionManager extends BaseManager {
         params.put("org_id", user.getOrg().getId());
         params.put("aid", aid);
         params.put("include_orphans", user.hasRole(RoleFactory.ORG_ADMIN) ? "Y" : "N");
-        if (m.execute(params).size() < 1) {
+        if (m.execute(params).isEmpty()) {
             returnedAction = null;
         }
 
@@ -577,7 +577,7 @@ public class ActionManager extends BaseManager {
         }
 
         //if this is a pointless action, don't do it.
-        if (a.getConfigFileNameAssociations().size() < 1) {
+        if (a.getConfigFileNameAssociations().isEmpty()) {
             return null;
         }
 
