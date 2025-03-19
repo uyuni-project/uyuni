@@ -167,22 +167,24 @@ sync() {
                     else
                         CHECKSUM=""
                     fi
-                    if [ ! -z "$CHECKSUM" ] && [ "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
-                        # Checksum are equal between new defaults and cached defaults
-                        # this mean changes are made by the user
-                        sync_file $SOURCE_FILE $TARGET_FILE
-                    elif [ ! -z "$CHECKSUM" ] && [ ! "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
-                        # Checksum are different between new defaults and cached defaults checksums
-                        # Meaning changes in file due an upgrade or local user changes
-                        if [ "$CHECKSUM" = "$(sha256sum $TARGET_FILE | awk '{print $1}')" ]; then
-                            # Checksum is equal between cached defaults and target file
-                            # Meaning no local changes and changes are due an upgrade
-                            echo "    - $TARGET_FILE - No local modifications but new changes coming from a package upgrade, replacing file"
-                            rsync -a $SOURCE_FILE $TARGET_FILE
+		    if [ ! -z "$CHECKSUM" ]; then
+                        if [ ! "$CHECKSUM" = "$(sha256sum $SOURCE_FILE | awk '{print $1}')" ]; then
+                            # Checksum are different between new defaults and cached defaults checksums
+                            # Meaning changes in file due an upgrade or local user changes
+                            if [ "$CHECKSUM" = "$(sha256sum $TARGET_FILE | awk '{print $1}')" ]; then
+                                # Checksum is equal between cached defaults and target file
+                                # Meaning no local changes and changes are due an upgrade
+                                echo "    - $TARGET_FILE - No local modifications but new changes coming from a package upgrade, replacing file"
+                                rsync -a $SOURCE_FILE $TARGET_FILE
+                            else
+                                # Local changes made by the user.
+                                sync_file $SOURCE_FILE $TARGET_FILE
+                            fi
                         else
-                            # Local changes made by the user.
-                            sync_file $SOURCE_FILE $TARGET_FILE
-                        fi
+                            # User has changed the file, but the checksum between new defaults and cached defaults
+                            # are the same. This means the original file in the image has not changed. No need to sync or backup
+                            echo "    - $TARGET_FILE - Local modifications, but file has not changed in the image. Keeping"
+			fi
                     else
                         # First sync - no checksums stored yet. Syncing
                         sync_file $SOURCE_FILE $TARGET_FILE
