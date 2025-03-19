@@ -534,6 +534,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
+        testMinionServer = TestUtils.saveAndReload(testMinionServer);
+
         Channel pool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
         Channel update = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
         Channel legacy = ChannelFactory.lookupByLabel("sle-module-legacy12-pool-x86_64");

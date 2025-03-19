@@ -1,0 +1,2 @@
+- Fix: applying the highstate to Salt SSH minions
+  causes HHH000179 warning at taskomatic (bsc#1216936)

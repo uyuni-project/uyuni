@@ -3,7 +3,7 @@
 PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.redhat.rhn.domain.server.Server" table="rhnServer">
+    <class name="com.redhat.rhn.domain.server.Server" table="rhnServer" lazy="false">
         <id name="id" type="long" column="id">
             <meta attribute="scope-set">protected</meta>
             <generator class="org.hibernate.id.enhanced.SequenceStyleGenerator">
@@ -198,7 +198,7 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             <one-to-many class="com.redhat.rhn.domain.server.ServerAppStream"/>
         </set>
 
-        <joined-subclass name="com.redhat.rhn.domain.server.MinionServer"
+        <joined-subclass name="com.redhat.rhn.domain.server.MinionServer" lazy="false"
                          table="suseMinionInfo">
             <key column="server_id"/>
             <property name="minionId" column="minion_id" />
