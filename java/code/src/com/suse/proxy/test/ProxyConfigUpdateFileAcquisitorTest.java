@@ -99,7 +99,7 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 "server", "dummyServer",
                 "ca_crt", "dummyCaCrt",
                 "proxy_fqdn", "dummyProxyFqdn",
-                "max_cache_size_mb", "dummyMaxCacheSizeMb",
+                "max_cache_size_mb", 100L,
                 "server_version", "dummyServerVersion",
                 "email", "dummyEmail",
                 "httpd", Map.of(

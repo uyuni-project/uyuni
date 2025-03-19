@@ -40,7 +40,7 @@ public class ProxyConfigUpdateFileAcquisitor implements ProxyConfigUpdateContext
             "server", String.class,
             "ca_crt", String.class,
             "proxy_fqdn", String.class,
-            "max_cache_size_mb", String.class,
+            "max_cache_size_mb", Long.class,
             "server_version", String.class,
             "email", String.class,
             "httpd", Map.of(
