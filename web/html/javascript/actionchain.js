@@ -105,6 +105,12 @@ jQuery(function() {
     update: renumberGroups
   });
 
+  // hide change related buttons and systems lists when page loads
+  jQuery(document).ready(function () {
+    jQuery("#action-chain-save-input").hide();
+    jQuery("[id^='system-list-']").hide();
+  });
+
   // handle exit without save
   jQuery(window).on("beforeunload", function() {
     if (jQuery.unsaved == true) {
