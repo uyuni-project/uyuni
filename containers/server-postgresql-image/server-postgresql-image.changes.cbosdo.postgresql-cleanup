@@ -1,0 +1,3 @@
+- Ensure postgresql has PID1 to have clean container stops
+- Use correct variables in the initialization scripts
+- Log to STDERR instead of the log file
