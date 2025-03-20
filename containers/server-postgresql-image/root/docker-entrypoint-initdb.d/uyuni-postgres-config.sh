@@ -94,8 +94,6 @@ fi
 postgres_reconfig jit off
 
 if [ -f $SSL_KEY ] ; then
-    chown postgres $SSL_KEY
-    chmod 400 $SSL_KEY
     postgres_reconfig "ssl" "on"
     postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
