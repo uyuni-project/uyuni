@@ -20,5 +20,5 @@ CREATE TABLE access.accessGroup (
 );
 COMMENT ON TABLE access.accessGroup IS 'Access groups (roles) for RBAC';
 
-CREATE UNIQUE INDEX access_group_label_uq
-ON access.accessGroup(label);
+CREATE UNIQUE INDEX access_group_label_org_uq
+ON access.accessGroup(label, org_id);

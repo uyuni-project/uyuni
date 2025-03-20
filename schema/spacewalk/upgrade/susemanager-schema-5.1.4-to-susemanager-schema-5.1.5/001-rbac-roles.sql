@@ -1,18 +1,82 @@
---
--- Copyright (c) 2008--2012 Red Hat, Inc.
---
--- This software is licensed to you under the GNU General Public License,
--- version 2 (GPLv2). There is NO WARRANTY for this software, express or
--- implied, including the implied warranties of MERCHANTABILITY or FITNESS
--- FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
--- along with this software; if not, see
--- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
--- 
--- Red Hat trademarks are not licensed under GPLv2. No permission is
--- granted to use or replicate Red Hat trademarks that are incorporated
--- in this software or its documentation. 
---
+-- Include org_id in the unique constraint
+DROP INDEX IF EXISTS access.access_group_label_uq;
+CREATE UNIQUE INDEX IF NOT EXISTS access_group_label_org_uq
+ON access.accessGroup(label, org_id);
 
+-- Create RBAC roles for all orgs
+INSERT INTO access.accessGroup (org_id, label, description)
+SELECT id, 'activation_key_admin', 'Activation Key Administrator'
+FROM web_customer
+ON CONFLICT (org_id, label) DO NOTHING;
+
+INSERT INTO access.accessGroup (org_id, label, description)
+SELECT id, 'image_admin', 'Image Administrator'
+FROM web_customer
+ON CONFLICT (org_id, label) DO NOTHING;
+
+INSERT INTO access.accessGroup (org_id, label, description)
+SELECT id, 'config_admin', 'Configuration Administrator'
+FROM web_customer
+ON CONFLICT (org_id, label) DO NOTHING;
+
+INSERT INTO access.accessGroup (org_id, label, description)
+SELECT id, 'channel_admin', 'Channel Administrator'
+FROM web_customer
+ON CONFLICT (org_id, label) DO NOTHING;
+
+INSERT INTO access.accessGroup (org_id, label, description)
+SELECT id, 'system_group_admin', 'System Group Administrator'
+FROM web_customer
+ON CONFLICT (org_id, label) DO NOTHING;
+
+-- Automatically assign RBAC roles based on old roles.
+WITH
+    labels AS (
+        VALUES ('activation_key_admin'), ('image_admin'), ('config_admin'), ('channel_admin'), ('system_group_admin')
+    ),
+    old_group_type AS (
+        SELECT ugt.id, l.column1 AS label
+        FROM rhnUserGroupType ugt, labels l
+        WHERE ugt.label = l.column1
+    ),
+    old_role AS (
+        SELECT ug.id, ug.org_id, ogt.label
+        FROM rhnUserGroup ug
+        JOIN old_group_type ogt ON ug.group_type = ogt.id
+    ),
+    old_role_members AS (
+        SELECT ugm.user_id, old_r.org_id, old_r.label
+        FROM rhnUserGroupMembers ugm
+        JOIN old_role old_r ON ugm.user_group_id = old_r.id
+    ),
+    new_role AS (
+        SELECT id, org_id, label FROM access.accessGroup
+    )
+    INSERT INTO access.userAccessGroup(user_id, group_id)
+    SELECT old_rm.user_id, new_rl.id
+    FROM old_role_members old_rm
+    JOIN new_role new_rl
+    ON old_rm.org_id = new_rl.org_id
+    AND old_rm.label = new_rl.label
+    ON CONFLICT (user_id, group_id) DO NOTHING;
+
+-- Bypass old permissions by assigning them to every user.
+WITH all_users AS (
+    SELECT id AS user_id, org_id FROM web_contact
+),
+all_old_roles AS (
+    SELECT ug.id AS user_group_id, ug.org_id, ugt.label
+    FROM rhnUserGroup ug
+    JOIN rhnUserGroupType ugt ON ug.group_type = ugt.id
+    WHERE ugt.label IN ('activation_key_admin', 'image_admin', 'config_admin', 'channel_admin', 'system_group_admin')
+)
+INSERT INTO rhnUserGroupMembers(user_id, user_group_id, temporary)
+SELECT u.user_id, r.user_group_id, 'N'
+FROM all_users u
+JOIN all_old_roles r ON u.org_id = r.org_id
+ON CONFLICT (user_id, user_group_id, temporary) DO NOTHING;
+
+--Replace create org function to also create RBAC roles
 create or replace function create_new_org
 (
         name_in      in varchar,

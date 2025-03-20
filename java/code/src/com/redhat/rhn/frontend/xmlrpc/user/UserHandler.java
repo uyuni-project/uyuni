@@ -22,6 +22,8 @@ import com.redhat.rhn.common.util.CryptHelper;
 import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.common.validator.ValidatorError;
+import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
@@ -137,18 +139,10 @@ public class UserHandler extends BaseHandler {
      */
     @ReadOnly
     public Object[] listRoles(User loggedInUser, String login) throws FaultException {
-        // Get the logged in user
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        List roles = new ArrayList<>(); //List of role labels to return
-
-        //Loop through the target users roles and stick the labels into the ArrayList
-        Set roleObjects = target.getPermanentRoles();
-        for (Object roleObjectIn : roleObjects) {
-            Role r = (Role) roleObjectIn;
-            roles.add(r.getLabel());
-        }
-
-        return roles.toArray();
+        return target.getAccessGroups().stream()
+                .map(AccessGroup::getLabel)
+                .toArray();
     }
 
     /**
@@ -368,10 +362,15 @@ public class UserHandler extends BaseHandler {
             return modifySatAdminRole(loggedInUser, login, true);
         }
         User target = XmlRpcUserHelper.getInstance().lookupTargetUser(loggedInUser, login);
-        // Retrieve the role object corresponding to the role label passed in and
-        // add to user
-        Role r = RoleFactory.lookupByLabel(role);
-        target.addPermanentRole(r);
+
+        if (RoleFactory.ORG_ADMIN.getLabel().equals(role)) {
+            Role r = RoleFactory.lookupByLabel(role);
+            target.addPermanentRole(r);
+        }
+        else {
+            AccessGroup accessGroup = AccessGroupFactory.lookupByOrgAndLabel(target.getOrg(), role);
+            target.getAccessGroups().add(accessGroup);
+        }
         UserManager.storeUser(target);
         return 1;
     }
@@ -420,8 +419,14 @@ public class UserHandler extends BaseHandler {
 
         // Retrieve the role object corresponding to the role label passed in and
         // remove from user
-        Role r = RoleFactory.lookupByLabel(role);
-        target.removePermanentRole(r);
+        if (role.equals(RoleFactory.ORG_ADMIN.getLabel())) {
+            Role r = RoleFactory.lookupByLabel(role);
+            target.removePermanentRole(r);
+        }
+        else {
+            AccessGroup accessGroup = AccessGroupFactory.lookupByOrgAndLabel(target.getOrg(), role);
+            target.getAccessGroups().remove(accessGroup);
+        }
 
         UserManager.storeUser(target);
         return 1;

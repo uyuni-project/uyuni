@@ -93,7 +93,7 @@ sub check_file_content {
         } elsif ($type eq 'data') {
                 if (not $content =~ /^(--.*\n
                                         |\s*\n
-                                        |insert\s+into\s+$name\b[^;]+(values|select)('[^;]+(;[^;]*)*'|[^';])+;
+                                        |insert\s+into\s+(?:\w+\.)?$name\b[^;]+(values|select)('[^;]+(;[^;]*)*'|[^';])+;
                                         |select\s+[^;()]+\(('[^;]+')*\);
                                         |begin\s+[^;()]+\(('[^;]+')*\);\s+end;\n\/
                                         |commit;

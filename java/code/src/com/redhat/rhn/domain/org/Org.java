@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -110,6 +111,9 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
     private Set<UserGroupImpl> userGroups = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
+    private Set<AccessGroup> accessGroups = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
     private Set<Channel> ownedChannels;
@@ -292,6 +296,25 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      */
     public void setUserGroups(Set<UserGroupImpl> ugIn) {
         userGroups = ugIn;
+    }
+
+    /**
+     * Get AccessGroups for this Org. This is used in the context of RBAC.
+     *
+     * @return a set of AccessGroups associated with this Org.
+     */
+    public Set<AccessGroup> getAccessGroups() {
+        return accessGroups;
+    }
+
+
+    /**
+     * Set AccessGroups for this Org. This is used in the context of RBAC.
+     *
+     * @param accessGroupsIn the new set of AccessGroups to be associated with this Org.
+     */
+    public void setAccessGroups(Set<AccessGroup> accessGroupsIn) {
+        accessGroups = accessGroupsIn;
     }
 
     /**
