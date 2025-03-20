@@ -15,9 +15,9 @@ on:
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
-  NO_AUTH_REGISTRY: no_auth_registry
+  NO_AUTH_REGISTRY: "noauthregistry.lab"
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY: "authregistry.lab"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
   skip: false
 jobs:
@@ -150,6 +150,31 @@ jobs:
       - name: Run acceptance tests
         if: ${{ env.skip != 'true' }}
         run: ./testsuite/podman_runner/${{ inputs.secondary_tests }}
+      - name: Get buildhost logs
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost cat /var/log/venv-salt-minion.log
+      - name: Get nginx logs
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo journalctl -u nginx
+      - name: Get docker images as root
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo docker images 
+      - name: Get docker images as non-root
+        if: ${{ failure() && env.skip != 'true' }}
+        run: docker images 
+      - name: Get nginx status
+        if: ${{ failure() && env.skip != 'true' }}
+        run: systemctl status nginx
+      - name: Get nginx status 2
+        if: ${{ failure() && env.skip != 'true' }}
+        run: journalctl -u nginx
+      - name: Try docker push
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost bash -c "docker tag ghcr.io/uyuni-project/uyuni/uyuni-master-testsuite:master noauthregistry.lab/uyuni-master-testsuite:1" && sudo -i podman exec -ti buildhost bash -c "docker push noauthregistry.lab/uyuni-master-testsuite:1"
+      - name: Try python docker push
+        if: ${{ failure() && env.skip != 'true' }}
+        run: sudo -i podman exec -ti buildhost bash -c "venv-salt-call docker.push noauthregistry.lab/uyuni-master-testsuite:1"
+
       - name: Get server logs
         if: ${{ failure() && env.skip != 'true' }}
         run: ./testsuite/podman_runner/20_get_server_logs.sh ${{ inputs.server_id }}

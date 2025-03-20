@@ -17,7 +17,6 @@
 @build_host
 @scope_building_container_images
 @no_auth_registry
-@skip_if_github_validation
 Feature: Build container images
 
   Scenario: Log in as org admin user
@@ -63,47 +62,62 @@ Feature: Build container images
   Scenario: Build the suse_key image with and without activation key
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_key" via API calls
-    And I wait at most 660 seconds until event "Image Build suse_key scheduled" is completed
+    And I wait at most 120 seconds until event "Image Build suse_key scheduled" is completed
     # We should see the same result via API.
     # Also, check that all inspect actions are finished:
-    And I wait at most 600 seconds until image "suse_key" with version "latest" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "latest" is inspected successfully via API
+    And I wait at most 120 seconds until image "suse_key" with version "latest" is built successfully via API
+    And I wait at most 120 seconds until image "suse_key" with version "latest" is inspected successfully via API
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
     Then the list of packages of image "suse_key" with version "latest" is not empty
 
 
   Scenario: Build the suse_simple image with and without activation key
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_simple" via API calls
-    And I wait at most 660 seconds until event "Image Build suse_simple scheduled" is completed
-    And I wait at most 600 seconds until image "suse_simple" with version "latest" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "latest" is inspected successfully via API
+    And I wait at most 120 seconds until event "Image Build suse_simple scheduled" is completed
+    And I wait at most 120 seconds until image "suse_simple" with version "latest" is built successfully via API
+    And I wait at most 120 seconds until image "suse_simple" with version "latest" is inspected successfully via API
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
     Then the list of packages of image "suse_simple" with version "latest" is not empty
 
 @scc_credentials
   Scenario: Build the suse_real_key image with and without activation key
     Given I am on the Systems overview page of this "build_host"
     When I schedule the build of image "suse_real_key" via API calls
-    And I wait at most 660 seconds until event "Image Build suse_real_key scheduled" is completed
+    And I wait at most 120 seconds until event "Image Build suse_real_key scheduled" is completed
     And I wait at most 60 seconds until all "3" container images are built correctly on the Image List page
-    And I wait at most 600 seconds until image "suse_real_key" with version "latest" is built successfully via API
-    And I wait at most 300 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
-    Then the list of packages of image "suse_real_key" with version "latest" is not empty
+    And I wait at most 120 seconds until image "suse_real_key" with version "latest" is built successfully via API
+    And I wait at most 120 seconds until image "suse_real_key" with version "latest" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
+    Then the list of packages of image "suse_real_key" with version "latest" is not empty
 
 @scc_credentials
   Scenario: Build suse_key images with different versions
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
-    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    And I wait at most 120 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 120 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
+    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
 
   Scenario: Build suse_simple image with different versions
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
-    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    And I wait at most 120 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 120 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
+    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
 @scc_credentials
   Scenario: Delete image via API calls with key
@@ -118,18 +132,24 @@ Feature: Build container images
 
   Scenario: Rebuild suse_simple image
     When I schedule the build of image "suse_simple" with version "Latest_simple" via API calls
-    And I wait at most 600 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
-    And I wait at most 300 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
-    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
+    And I wait at most 120 seconds until image "suse_simple" with version "Latest_simple" is built successfully via API
+    And I wait at most 120 seconds until image "suse_simple" with version "Latest_simple" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
+    Then the list of packages of image "suse_simple" with version "Latest_simple" is not empty
 
 @scc_credentials
   Scenario: Rebuild suse_key image
     When I schedule the build of image "suse_key" with version "Latest_key-activation1" via API calls
-    And I wait at most 600 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
-    And I wait at most 300 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
-    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
+    And I wait at most 120 seconds until image "suse_key" with version "Latest_key-activation1" is built successfully via API
+    And I wait at most 120 seconds until image "suse_key" with version "Latest_key-activation1" is inspected successfully via API
     When I wait until no Salt job is running on "build_host"
+
+@skip_if_github_validation
+  Scenario: Check the list of packages is not empty
+    Then the list of packages of image "suse_key" with version "Latest_key-activation1" is not empty
 
 @scc_credentials
   Scenario: Build an image via the GUI
@@ -140,8 +160,8 @@ Feature: Build container images
     And I click on "submit-btn"
     And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_BUILT_IMAGE" text
-    And I wait at most 600 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
-    And I wait at most 300 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is inspected successfully via API
+    And I wait at most 120 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is built successfully via API
+    And I wait at most 120 seconds until image "suse_real_key" with version "GUI_BUILT_IMAGE" is inspected successfully via API
 
 @scc_credentials
   Scenario: Login as Docker image administrator and build an image
@@ -153,8 +173,8 @@ Feature: Build container images
     And I click on "submit-btn"
     And I wait until no Salt job is running on "build_host"
     Then I wait until I see "GUI_DOCKERADMIN" text
-    And I wait at most 600 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
-    And I wait at most 300 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
+    And I wait at most 120 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is built successfully via API
+    And I wait at most 120 seconds until image "suse_real_key" with version "GUI_DOCKERADMIN" is inspected successfully via API
 
 @scc_credentials
   Scenario: Cleanup: delete all images with key
