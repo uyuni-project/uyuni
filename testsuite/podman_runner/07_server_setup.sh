@@ -181,6 +181,9 @@ cd /etc/nginx/sites-enabled && sudo ln -s /etc/nginx/sites-available/registry
 
 sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
 
+# increase docker client timeout, or it time outs when doing the docker push
+sudo -i podman exec -ti server bash -c "echo 'dockerclienttimeout: 120'  > /srv/pillar/docker_client_timeout.sls"
+
 sudo -i podman exec -ti buildhost bash -c "docker images"
 sudo -i podman exec -ti buildhost bash -c "docker tag ghcr.io/uyuni-project/uyuni/uyuni-master-testsuite:master noauthregistry.lab/uyuni-master-testsuite:1"
 sudo -i podman exec -ti buildhost bash -c "docker push noauthregistry.lab/uyuni-master-testsuite:1"

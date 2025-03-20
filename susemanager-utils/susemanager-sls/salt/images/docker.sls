@@ -35,6 +35,9 @@ mgr_pushimage:
   mgrcompat.module_run:
     - name: docker.push
     - image: "{{ pillar.get('imagename') }}"
+{%- if pillar.get('dockerclienttimeout') is defined %}
+    - client_timeout: "{{ pillar.get('dockerclienttimeout') }}"
+{%- endif %}
     - require:
       - mgrcompat: mgr_buildimage
       - mgrcompat: mgr_registries_login
