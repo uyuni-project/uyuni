@@ -1749,6 +1749,7 @@ class RepoSync(object):
                 e = str(sys.exc_info()[1])
                 if e:
                     log2(0, 1, e, stream=sys.stderr)
+                log2(0, 1, traceback.format_exc(), stream=sys.stderr)
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)
