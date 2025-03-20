@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # This value means either NPM or Yarn, Yarn doesn't have a separate value
-    directory: "/web/html/src/**"
+    directory: "/web/html/src"
     open-pull-requests-limit: 0
     schedule:
       interval: "daily"
