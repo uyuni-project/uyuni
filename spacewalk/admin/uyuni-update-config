@@ -164,12 +164,35 @@ def copy_ca():
     sys.stdout.flush()
 
 
+def change_billing_data_service():
+    sysconf = "/etc/sysconfig/billing-data-service"
+    content = []
+    changed = False
+    if os.path.exists(sysconf):
+        with open(sysconf, "r", encoding="utf8") as f:
+            for line in f:
+                line = line.strip()
+                if line == 'LISTEN="127.0.0.1"':
+                    line = 'LISTEN="0.0.0.0"'
+                    changed = True
+                content.append(line)
+
+        if not changed:
+            sys.stdout.write("billing-data-service sysconfig file unchanged\n")
+            return
+        with open(sysconf, "w", encoding="utf8") as r:
+            for line in content:
+                r.write(f"{line}\n")
+        sys.stdout.write("billing-data-service sysconfig: changed LISTEN address\n")
+
+
 def main():
     run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
     copy_ca()
     move_config_to_db()
+    change_billing_data_service()
 
 
 if __name__ == "__main__":
