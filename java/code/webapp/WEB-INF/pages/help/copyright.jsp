@@ -5,7 +5,7 @@
 <html>
     <body>
         <h1><rhn:icon type="header-info" /><bean:message key="help.jsp.copyright.title"/></h1>
-        <p><bean:message key="copyright.jsp.title"/></p>
+        <p><bean:message key="copyright.jsp.title"/>TEST</p>
         <c:choose>
             <c:when test="${isUyuni}">
                 <bean:message key="copyright.jsp.body.uyuni"/>
