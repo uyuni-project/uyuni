@@ -1,0 +1,51 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# User lists
+,/users/ActiveList.do,GET,W,t,users.list.active,R
+,/users/ActiveList.do,POST,W,t,users.list.active,R
+,/users/DisabledList.do,GET,W,t,users.list.disabled,R
+,/users/DisabledList.do,POST,W,t,users.list.disabled,R
+,/users/UserList.do,GET,W,t,users.list.all,R
+,/users/EnableConfirm.do,GET,W,t,users.list.disabled,W
+,/users/EnableConfirm.do,POST,W,t,users.list.disabled,W
+
+# User details
+,/users/UserDetails.do,GET,W,t,users.details,R
+,/users/UserDetailsSubmit.do,POST,W,t,users.details,W
+,/users/ChangeEmail.do,GET,W,t,users.details,W
+,/users/ChangeEmailSubmit.do,POST,W,t,users.details,W
+,/users/DisableUser.do,GET,W,t,users.details,W
+,/users/DisableUserSubmit.do,POST,W,t,users.details,W
+,/users/EnableUser.do,GET,W,t,users.details,W
+,/users/EnableUserSubmit.do,POST,W,t,users.details,W
+,/users/DeleteUser.do,GET,W,t,users.details,W
+,/users/DeleteUserSubmit.do,POST,W,t,users.details,W
+,/users/CreateUser.do,GET,W,t,users.details,W
+,/users/Addresses.do,GET,W,t,users.details,R
+,/users/EditAddress.do,GET,W,t,users.details,W
+,/users/EditAddressSubmit.do,POST,W,t,users.details,W
+
+# System groups
+,/users/AssignedSystemGroups.do,GET,W,t,users.groups,R
+,/users/AssignedSystemGroups.do,POST,W,t,users.groups,R
+
+# Systems
+,/users/SystemsAdmined.do,GET,W,t,users.systems,R
+,/users/SystemsAdminedSubmit.do,POST,W,t,users.systems,R
+
+# Channels
+,/users/ChannelPerms.do,GET,W,t,users.channels,R
+,/users/ChannelManagementPerms.do,GET,W,t,users.channels,R
+,/users/ChannelPermsSubmit.do,POST,W,t,users.channels,R
+
+# Preferences
+,/users/UserPreferences.do,GET,W,t,users.preferences,R
+,/users/PrefSubmit.do,POST,W,t,users.preferences,W
+
+# System group configuration
+,/users/SystemGroupConfig.do,GET,W,t,users.group_config,R
+,/users/SystemGroupConfig.do,POST,W,t,users.group_config,W
+,/users/ExtAuthSgMapping.do,GET,W,t,users.group_config,R
+,/users/ExtAuthSgMapping.do,POST,W,t,users.group_config,R
+,/users/ExtAuthSgDetails.do,GET,W,t,users.group_config,W
+,/users/ExtAuthSgDetails.do,POST,W,t,users.group_config,W
