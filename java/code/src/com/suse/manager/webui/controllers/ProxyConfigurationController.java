@@ -187,7 +187,7 @@ public class ProxyConfigurationController {
                 GSON.fromJson(request.body(), new TypeToken<ProxyConfigUpdateJson>() { }.getType());
 
         try {
-            proxyConfigUpdateFacade.update(data, systemManager, saltApi, user);
+            proxyConfigUpdateFacade.update(data, systemManager, user);
             return result(response, ResultJson.success("Proxy configuration applied"));
         }
         catch (RhnRuntimeException e) {

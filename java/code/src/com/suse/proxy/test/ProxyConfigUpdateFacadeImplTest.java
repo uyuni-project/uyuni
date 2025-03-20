@@ -49,7 +49,7 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
         ProxyConfigUpdateFacadeImpl proxyConfigUpdate = new ProxyConfigUpdateFacadeImpl();
         replaceHandlers(proxyConfigUpdate, List.of(okHandler1, okHandler2, okHandler3));
 
-        proxyConfigUpdate.update(null, null, null, null);
+        proxyConfigUpdate.update(null, null, null);
     }
 
     /**
@@ -72,7 +72,7 @@ public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
         replaceHandlers(proxyConfigUpdate, List.of(okHandler, failingHandler, anotherFailingHandler));
 
         try {
-            proxyConfigUpdate.update(null, null, null, null);
+            proxyConfigUpdate.update(null, null, null);
             fail("Expected RhnGeneralException to be thrown");
         }
         catch (RhnGeneralException e) {

@@ -246,7 +246,7 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 .email(DUMMY_ADMIN_MAIL)
                 .build();
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, systemManager, saltApi, user);
+                new ProxyConfigUpdateContext(request, systemManager, user);
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setIntermediateCAs(List.of(DUMMY_INTERMEDIATE_CA_1, DUMMY_INTERMEDIATE_CA_2));
