@@ -2570,4 +2570,28 @@ public class ActionManager extends BaseManager {
         taskomaticApi.scheduleActionExecution(action);
         return action;
     }
+
+    /**
+     * Schedule proxy.apply_proxy_config salt state.
+     *
+     * @param loggedInUser The current user
+     * @param sysids A list of systems ids
+     * @param pillar The pillar passed to the salt state
+     * @return the scheduled action
+     *
+     */
+    public static Action scheduleApplyProxyConfig(User loggedInUser,
+                                                  List<Long> sysids,
+                                                  Optional<Map<String, Object>> pillar)
+            throws TaskomaticApiException {
+        Date earliestAction = new Date();
+        Action action = scheduleApplyStates(loggedInUser, sysids,
+                Collections.singletonList("proxy.apply_proxy_config"),
+                pillar,
+                earliestAction, Optional.empty());
+        action = ActionFactory.save(action);
+        taskomaticApi.scheduleActionExecution(action);
+        return action;
+    }
+
 }

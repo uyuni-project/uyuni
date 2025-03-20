@@ -25,7 +25,7 @@ mgrpxy_installed:
         ca_crt: |
           {{ pillar['ca_crt'] | replace('\\n', '\n') | indent(12) }}
         proxy_fqdn: {{ pillar['proxy_fqdn'] }}
-        max_cache_size_mb: {{ pillar['max_cache_size_mb'] }}
+        max_cache_size_mb: {{ pillar['max_cache_size_mb']|int }}
         server_version: "{{ pillar['server_version'] }}"
         email: {{ pillar['email'] }}
 
@@ -64,20 +64,20 @@ mgrpxy_installed:
 
 
 {% set args = [] %}
-{% if pillar['httpd_image'] is defined and pillar['httpd_tag'] is defined %}
-  {% do args.append("--httpd-image " ~ pillar['httpd_image'] ~ " --httpd-tag " ~ pillar['httpd_tag']) %}
+{% if salt['pillar.get']('registries:proxy-httpd:url') and salt['pillar.get']('registries:proxy-httpd:tag') %}
+  {% do args.append("--httpd-image " ~ salt['pillar.get']('registries:proxy-httpd:url') ~ " --httpd-tag " ~ salt['pillar.get']('registries:proxy-httpd:tag')) %}
 {% endif %}
-{% if pillar['saltbroker_image'] is defined and pillar['saltbroker_tag'] is defined %}
-  {% do args.append("--saltbroker-image " ~ pillar['saltbroker_image'] ~ " --saltbroker-tag " ~ pillar['saltbroker_tag']) %}
+{% if salt['pillar.get']('registries:proxy-salt-broker:url') and salt['pillar.get']('registries:proxy-salt-broker:tag') %}
+  {% do args.append("--saltbroker-image " ~ salt['pillar.get']('registries:proxy-salt-broker:url') ~ " --saltbroker-tag " ~ salt['pillar.get']('registries:proxy-salt-broker:tag')) %}
 {% endif %}
-{% if pillar['squid_image'] is defined and pillar['squid_tag'] is defined %}
-  {% do args.append("--squid-image " ~ pillar['squid_image'] ~ " --squid-tag " ~ pillar['squid_tag']) %}
+{% if salt['pillar.get']('registries:proxy-squid:url') and salt['pillar.get']('registries:proxy-squid:tag') %}
+  {% do args.append("--squid-image " ~ salt['pillar.get']('registries:proxy-squid:url') ~ " --squid-tag " ~ salt['pillar.get']('registries:proxy-squid:tag')) %}
 {% endif %}
-{% if pillar['ssh_image'] is defined and pillar['ssh_tag'] is defined %}
-  {% do args.append("--ssh-image " ~ pillar['ssh_image'] ~ " --ssh-tag " ~ pillar['ssh_tag']) %}
+{% if salt['pillar.get']('registries:proxy-ssh:url') and salt['pillar.get']('registries:proxy-ssh:tag') %}
+  {% do args.append("--ssh-image " ~ salt['pillar.get']('registries:proxy-ssh:url') ~ " --ssh-tag " ~ salt['pillar.get']('registries:proxy-ssh:tag')) %}
 {% endif %}
-{% if pillar['tftpd_image'] is defined and pillar['tftpd_tag'] is defined %}
-  {% do args.append("--tftpd-image " ~ pillar['tftpd_image'] ~ " --tftpd-tag " ~ pillar['tftpd_tag']) %}
+{% if salt['pillar.get']('registries:proxy-tftpd:url') and salt['pillar.get']('registries:proxy-tftpd:tag') %}
+  {% do args.append("--tftpd-image " ~ salt['pillar.get']('registries:proxy-tftpd:url') ~ " --tftpd-tag " ~ salt['pillar.get']('registries:proxy-tftpd:tag')) %}
 {% endif %}
 
 {% if transactional %}

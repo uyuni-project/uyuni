@@ -20,7 +20,6 @@ import static java.util.Arrays.asList;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 
 import java.util.ArrayList;
@@ -55,12 +54,11 @@ public class ProxyConfigUpdateFacadeImpl implements ProxyConfigUpdateFacade {
      *
      * @param request       the proxy configuration update JSON with the new values
      * @param systemManager the system manager
-     * @param saltApi       the salt API
      * @param user          the user
      */
     @Override
-    public void update(ProxyConfigUpdateJson request, SystemManager systemManager, SaltApi saltApi, User user) {
-        ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, systemManager, saltApi, user);
+    public void update(ProxyConfigUpdateJson request, SystemManager systemManager, User user) {
+        ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, systemManager, user);
 
         for (ProxyConfigUpdateContextHandler handler : contextHandlerChain) {
             handler.handle(context);

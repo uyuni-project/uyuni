@@ -71,7 +71,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
         };
 
         ProxyConfigUpdateJson request = Json.GSON.fromJson("{}", ProxyConfigUpdateJson.class);
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateValidation().handle(proxyConfigUpdateContext);
@@ -101,7 +101,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .sourceRPM()
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
@@ -121,7 +121,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .replaceCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setProxyCert(DUMMY_PROXY_CERT);
@@ -164,7 +164,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
 
@@ -189,7 +189,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setProxyConfig(new ProxyConfig());
@@ -348,7 +348,7 @@ public class ProxyConfigUpdateValidationTest extends MockObjectTestCase {
      * @return the context
      */
     private static ProxyConfigUpdateContext getProxyConfigUpdateContext(ProxyConfigUpdateJson request) {
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
         proxyConfigUpdateContext.setParentServer(new Server(DUMMY_SERVER_ID, DUMMY_PARENT_FQDN));
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         // certificate content is handled in {@link ProxyConfigUpdateAcquisitor} and set directly in the context
