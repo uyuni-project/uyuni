@@ -30,4 +30,3 @@ sudo docker push localhost:5002/cucutest/systemsmanagement/uyuni/master/docker/c
 sudo docker login -u ${AUTH_REGISTRY_USER} -p ${AUTH_REGISTRY_PASSWD} localhost:5001
 sudo docker tag ghcr.io/$UYUNI_PROJECT/uyuni/uyuni-master-testsuite:master localhost:5001/cucutest/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
 sudo docker push localhost:5001/cucutest/systemsmanagement/uyuni/master/docker/containers/uyuni-master-testsuite
-sudo -i podman exec buildhost bash -c "cp /testsuite/podman_runner/usr.lib.venv-salt-minion.lib.python3.11.site-packages.salt.modules.dockermod.py /usr/lib/venv-salt-minion/lib/python3.11/site-packages/salt/modules/dockermod.py"
