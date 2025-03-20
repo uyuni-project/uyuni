@@ -102,6 +102,11 @@ public class SUSEErrataParser implements VendorSpecificErrataParser {
     }
 
     private int extractId(String advisory) throws ErrataParsingException {
+        // SLE-Micro 6.0 and 6.1 do not publish advisories yet
+        if (advisory.contains("SLE-Micro-6.1") || advisory.contains("SLE-Micro-6.0")) {
+            throw new ErrataParsingException("Product provide no Vendor Advisory");
+        }
+
         // The id is the last part of the advisoryId i.e. SUSE-15-SP3-2021-3411 or avahi-13947
         final int lastDash = advisory.lastIndexOf('-');
         if (lastDash == -1) {
