@@ -344,7 +344,7 @@ public class StrutsDelegate {
         //if it is not there, then that means we should always evaluate the
         //date picker.  Otherwise, we evaluate if it tells us to do so.
         if (!form.getMap().containsKey(DatePicker.SCHEDULE_TYPE) ||
-                form.get(DatePicker.SCHEDULE_TYPE) == null ||
+                StringUtils.isEmpty(String.valueOf(form.get(DatePicker.SCHEDULE_TYPE))) ||
                 form.get(DatePicker.SCHEDULE_TYPE).equals(DatePicker.ScheduleType.DATE.asString())) {
             DatePicker p = getDatePicker(name, yearDirection);
             p.readForm(form);
