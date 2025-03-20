@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager-sls
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,6 +15,15 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
+
+# Keep in sync with salt/salt.spec
+%if 0%{?suse_version} == 1500 && 0%{?sle_version} >= 150700
+%global use_python python311
+%else
+%global use_python python3
+%endif
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel}
 # SLE15 builds on Python 3
@@ -30,9 +39,10 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.1.5
+Version:        5.1.6
 Release:        0
-Summary:        Static Salt state files for SUSE Manager
+Summary:        Static Salt state files for %{productprettyname}
+URL:            https://github.com/uyuni-project/uyuni
 License:        Apache-2.0 AND LGPL-2.1-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -42,8 +52,8 @@ Requires(pre):  coreutils
 Requires(posttrans):spacewalk-admin
 Requires:       susemanager-build-keys-web >= 15.4.2
 %if 0%{?build_py3}
-BuildRequires:  python3-pytest
-BuildRequires:  python3-salt
+BuildRequires:  %{use_python}-pytest
+BuildRequires:  %{use_python}-salt
 BuildRequires:  python3-spacewalk-certs-tools
 # Different package names for SUSE and RHEL:
 Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
@@ -56,17 +66,17 @@ Requires:       python-PyYAML >= 5.1
 BuildArch:      noarch
 
 %description
-Static Salt state files for SUSE Manager, where generic operations are
+Static Salt state files for %{productprettyname}, where generic operations are
 provided for the integration between infrastructure components.
 
 %package -n uyuni-config-modules
-Summary:        Salt modules to configure a Server
+Summary:        Salt modules to configure a %{productprettyname} Server
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 
 %description -n uyuni-config-modules
 This package contains Salt execution and state modules that can be used
-to configure a SUSE Manager or Uyuni Server.
+to configure %{productprettyname} Server.
 
 %prep
 %setup -q

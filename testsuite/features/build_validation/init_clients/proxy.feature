@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
@@ -17,7 +17,10 @@ Feature: Setup containerized proxy
 
   Scenario: Clean up sumaform leftovers on the containerized proxy
     When I perform a full salt minion cleanup on "proxy"
-    And I reboot the "proxy" host through SSH, waiting until it comes back
+
+@transactional_server
+  Scenario: Reboot after clean up
+    When I reboot the "proxy" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -33,6 +36,7 @@ Feature: Setup containerized proxy
     And I click on "Bootstrap"
     And I wait until I see "Bootstrap process initiated." text
 
+@transactional_server
   Scenario: Reboot the proxy host
     When I reboot the "proxy" host through SSH, waiting until it comes back
 
@@ -40,8 +44,11 @@ Feature: Setup containerized proxy
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Upgrade mgrpxy tool
-    Then I upgrade "proxy" with the last "mgrpxy" version
-    And I reboot the "proxy" minion through the web UI
+    When I upgrade "proxy" with the last "mgrpxy" version
+
+@transactional_server
+  Scenario: Reboot after mgrpxy upgrade
+    When I reboot the "proxy" minion through the web UI
 
   Scenario: Generate containerized proxy configuration
     When I generate the configuration "/tmp/proxy_container_config.tar.gz" of containerized proxy on the server
