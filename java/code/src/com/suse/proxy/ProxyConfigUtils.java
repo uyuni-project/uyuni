@@ -249,50 +249,6 @@ public class ProxyConfigUtils {
         return data;
     }
 
-
-    /**
-     * Maps a ProxyConfig pillar data to a ProxyConfig Map data meant for the apply_proxy_config salt state file
-     *
-     * @param rootPillar the root pillar containing the proxy data to be installed
-     * @return a map of the data for the apply_proxy_config salt state file
-     */
-    public static Map<String, Object> applyProxyConfigDataFromPillar(Pillar rootPillar) {
-        Map<String, Object> data = new HashMap<>();
-
-        if (rootPillar == null  || rootPillar.getPillar() == null || rootPillar.getPillar().isEmpty()) {
-            return data;
-        }
-        Map<String, Object> pillar = rootPillar.getPillar();
-
-        data.put(PARENT_FQDN_FIELD, pillar.get(PARENT_FQDN_FIELD));
-        data.put(PROXY_PORT_FIELD, pillar.get(PROXY_PORT_FIELD));
-        data.put(MAX_CACHE_FIELD, pillar.get(MAX_CACHE_FIELD));
-        data.put(EMAIL_FIELD, pillar.get(EMAIL_FIELD));
-        data.put(ROOT_CA_FIELD, pillar.get(ROOT_CA_FIELD));
-        data.put(INTERMEDIATE_CAS_FIELD, pillar.get(INTERMEDIATE_CAS_FIELD));
-        data.put(PROXY_CERT_FIELD, pillar.get(PROXY_CERT_FIELD));
-        data.put(PROXY_KEY_FIELD, pillar.get(PROXY_KEY_FIELD));
-
-        Map<String, Object> registries = (Map<String, Object>) pillar.get(PILLAR_REGISTRY_ENTRY);
-        if (isProvided(registries)) {
-            data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_REGISTRY);
-            data.put(REGISTRY_MODE, ProxyConfigUtils.REGISTRY_MODE_ADVANCED);
-            for (ProxyContainerImagesEnum image : ProxyContainerImagesEnum.values()) {
-                Map<String, String> registryEntry = (Map<String, String>) registries.get(image.getImageName());
-                if (isProvided(registryEntry)) {
-                    data.put(image.getPillarImageVariableName(), registryEntry.get(PILLAR_REGISTRY_URL_ENTRY));
-                    data.put(image.getPillarTagVariableName(), registryEntry.get(PILLAR_REGISTRY_TAG_ENTRY));
-                }
-            }
-        }
-        else {
-            data.put(SOURCE_MODE_FIELD, ProxyConfigUtils.SOURCE_MODE_RPM);
-        }
-
-        return data;
-    }
-
-
     /**
      * Verifies if all the images have the same (non-nullable) tag
      *

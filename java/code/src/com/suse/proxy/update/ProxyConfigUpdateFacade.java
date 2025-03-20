@@ -18,7 +18,6 @@ package com.suse.proxy.update;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 
 public interface ProxyConfigUpdateFacade {
@@ -26,8 +25,7 @@ public interface ProxyConfigUpdateFacade {
      * Update a proxy configuration to a proxy minion.
      * @param request the proxy configuration update JSON with the new values
      * @param systemManager the system manager
-     * @param saltApi the salt API
      * @param user the user
      */
-    void update(ProxyConfigUpdateJson request, SystemManager systemManager, SaltApi saltApi, User user);
+    void update(ProxyConfigUpdateJson request, SystemManager systemManager, User user);
 }

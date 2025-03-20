@@ -68,7 +68,7 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
     @Test
     public void testSuccessWhenSourceModeIsRpm() {
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().sourceRPM().build();
-        ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext context = new ProxyConfigUpdateContext(request, null, null);
         new ProxyConfigUpdateRegistryPreConditions().handle(context);
         assertFalse(context.getErrorReport().hasErrors());
     }
@@ -89,7 +89,7 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().sourceMode(SOURCE_MODE_REGISTRY).build();
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, null, null, null);
+                new ProxyConfigUpdateContext(request, null, null);
 
         //
         new ProxyConfigUpdateRegistryPreConditions().handle(proxyConfigUpdateContext);
@@ -111,7 +111,7 @@ public class ProxyConfigUpdateRegistryPreConditionsTest extends MockObjectTestCa
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().sourceMode(SOURCE_MODE_REGISTRY).build();
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, null, null, null);
+                new ProxyConfigUpdateContext(request, null, null);
 
         Map<ProxyContainerImagesEnum, RegistryUrl> registryUrls = new EnumMap<>(ProxyContainerImagesEnum.class);
         RegistryUrl registryUrl = context.mock(RegistryUrl.class);

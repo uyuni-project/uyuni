@@ -10,7 +10,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: React.
     items = [
       {
         severity: "success",
-        text: <p>{t("Proxy configuration successfully applied.")}</p>,
+        text: <p>{t("Proxy configuration action has been scheduled.")}</p>,
       },
     ];
   } else if (messagesIn.length > 0) {
@@ -22,7 +22,7 @@ export const ContainerConfigMessages = (success: SuccessType, messagesIn: React.
     items = [
       {
         severity: "info",
-        text: <p>{t("Applying proxy configuration: waiting for a response...")}</p>,
+        text: <p>{t("Scheduling proxy configuration action...")}</p>,
       },
     ];
   }

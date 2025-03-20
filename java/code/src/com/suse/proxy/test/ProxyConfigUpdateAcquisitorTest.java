@@ -115,7 +115,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testBlankRequest() {
         ProxyConfigUpdateJson request = Json.GSON.fromJson("{}", ProxyConfigUpdateJson.class);
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -171,7 +171,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                         getDummyTag(ProxyContainerImagesEnum.PROXY_TFTPD)
                 )
                 .build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -221,7 +221,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(minion);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().serverId(minion.getId()).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -266,7 +266,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                         DUMMY_REPLACE_PROXY_CERT,
                         DUMMY_REPLACE_PROXY_KEY
                 ).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -305,7 +305,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                         DUMMY_REPLACE_PROXY_CERT,
                         DUMMY_REPLACE_PROXY_KEY
                 ).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -347,7 +347,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                         DUMMY_REPLACE_PROXY_CERT,
                         DUMMY_REPLACE_PROXY_KEY
                 ).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -380,7 +380,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         parent.addFqdn(DUMMY_PARENT_FQDN);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().parentFqdn(DUMMY_PARENT_FQDN).build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -406,7 +406,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         parent.addFqdn(DUMMY_PARENT_FQDN);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().parentFqdn("not.existent.com").build();
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -432,7 +432,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                 .registryBaseTag(DUMMY_TAG)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -465,7 +465,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
                 .registryBaseTag(DUMMY_TAG)
                 .build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         //
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);
@@ -481,7 +481,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     public void testBuildRegistryUrlsWhenAdvancedRegistry() {
         ProxyConfigUpdateJson request = getFullRequest().build();
 
-        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null, null);
+        ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
 
         // execution
         new ProxyConfigUpdateAcquisitor().handle(proxyConfigUpdateContext);

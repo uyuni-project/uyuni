@@ -16,13 +16,13 @@
 package com.suse.proxy.update;
 
 import com.redhat.rhn.common.RhnErrorReport;
+import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.proxy.ProxyContainerImagesEnum;
 import com.suse.proxy.RegistryUrl;
@@ -46,7 +46,6 @@ public class ProxyConfigUpdateContext {
             new EnumMap<>(ProxyContainerImagesEnum.class);
     private final SystemManager systemManager;
     private final User user;
-    private final SaltApi saltApi;
     private final ProxyConfigGetFacade proxyConfigGetFacade;
 
     // Acquired/computed data
@@ -62,22 +61,21 @@ public class ProxyConfigUpdateContext {
     private Map<String, Object> proxyConfigFiles;
 
     private Pillar pillar;
+    private Action action;
 
     /**
      * Constructor
      *
      * @param requestIn       the request
      * @param systemManagerIn the system manager
-     * @param saltApiIn       the salt API
      * @param userIn          the user
      */
     public ProxyConfigUpdateContext(
             ProxyConfigUpdateJson requestIn,
             SystemManager systemManagerIn,
-            SaltApi saltApiIn,
             User userIn
     ) {
-        this(requestIn, systemManagerIn, saltApiIn, userIn, new ProxyConfigGetFacadeImpl());
+        this(requestIn, systemManagerIn, userIn, new ProxyConfigGetFacadeImpl());
     }
 
     /**
@@ -85,20 +83,17 @@ public class ProxyConfigUpdateContext {
      *
      * @param requestIn              the request
      * @param systemManagerIn        the system manager
-     * @param saltApiIn              the salt API
      * @param userIn                 the user
      * @param proxyConfigGetFacadeIn the proxy config get facade
      */
     public ProxyConfigUpdateContext(
             ProxyConfigUpdateJson requestIn,
             SystemManager systemManagerIn,
-            SaltApi saltApiIn,
             User userIn,
             ProxyConfigGetFacade proxyConfigGetFacadeIn
     ) {
         this.request = requestIn;
         this.systemManager = systemManagerIn;
-        this.saltApi = saltApiIn;
         this.user = userIn;
         this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }
@@ -203,8 +198,12 @@ public class ProxyConfigUpdateContext {
         pillar = pillarIn;
     }
 
-    public SaltApi getSaltApi() {
-        return saltApi;
+    public Action getAction() {
+        return action;
+    }
+
+    public void setAction(Action actionIn) {
+        action = actionIn;
     }
 
     public ProxyConfigGetFacade getProxyConfigGetFacade() {
