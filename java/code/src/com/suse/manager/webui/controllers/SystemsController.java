@@ -322,8 +322,9 @@ public class SystemsController {
     private ModelAndView allListPage(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
 
-        String filterColumn = requestIn.queryParams("qc");
-        String filterQuery = requestIn.queryParams("q");
+        PageControlHelper pageHelper = new PageControlHelper(requestIn);
+        String filterColumn = pageHelper.getQueryColumn();
+        String filterQuery = pageHelper.getQuery();
 
         data.put("is_admin", userIn.hasRole(RoleFactory.ORG_ADMIN));
         data.put("query", filterQuery != null ? String.format("'%s'", filterQuery) : "null");
