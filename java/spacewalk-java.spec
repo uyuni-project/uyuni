@@ -425,7 +425,7 @@ done
 sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
 
 %build
-PRODUCT_NAME=%{productprettyname}
+PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
@@ -488,7 +488,7 @@ if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
 fi
 
 %install
-PRODUCT_NAME=%{productprettyname}
+PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
