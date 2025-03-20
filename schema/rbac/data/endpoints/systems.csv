@@ -3,7 +3,7 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 # Many of the struts handlers handle table/list selection besides actual 'Modify'
 # operations on the same POST route. These POST routes are mapped as 'View' in the DB.
 # 'Modify' access is enforced for specific modify operations in the controller methods.
-# TODO: grep 'ensureAccess' in java to find the additional namespaces to be inserted.
+# TODO: grep 'ensureRoleBasedAccess' in /java/code to find the additional namespaces to be inserted.
 
 # Systems list
 ,/manager/systems/list/all,GET,W,t,systems.list,R
@@ -32,7 +32,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/systems/csv/virtualSystems,GET,W,t,systems.list,R
 
 # System groups
-
 ,/systems/SystemGroupList.do,GET,W,t,systems.groups.list,R
 ,/systems/SystemGroupList.do,POST,W,t,systems.groups.list,R
 ,/systems/WorkWithGroup.do,GET,W,t,systems.groups.details,R
@@ -51,6 +50,37 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/groups/SystemsAffected.do,POST,W,t,systems.groups.patches,R
 ,/groups/AdminList.do,GET,W,t,systems.groups.admins,R
 ,/groups/AdminList.do,POST,W,t,systems.groups.admins,R
+
+# System group states
+,/manager/groups/details/custom,GET,W,t,systems.groups.config,R
+,/manager/groups/details/highstate,GET,W,t,systems.groups.highstate,R
+,/manager/api/states/summary,GET,W,t,systems.groups.highstate,R
+,/manager/api/states/highstate,GET,W,t,systems.groups.highstate,R
+,/manager/api/states/applyall,POST,W,t,systems.groups.highstate,W
+,/manager/api/states/match,GET,W,t,systems.groups.config,R
+,/manager/api/states/save,POST,W,t,systems.groups.config,W
+,/manager/api/states/apply,POST,W,t,systems.groups.config,W
+
+# System group formulas
+,/manager/groups/details/formulas,GET,W,t,systems.groups.formulas,R
+,/manager/api/formulas/list/:targetType/:id,GET,W,t,systems.groups.formulas,R
+,/manager/api/formulas/select,POST,W,t,systems.groups.formulas,W
+,/manager/groups/details/formula/:formula_id,GET,W,t,systems.groups.formulas,R
+,/manager/api/formulas/form/:targetType/:id/:formula_id,GET,W,t,systems.groups.formulas,R
+,/manager/api/formulas/save,POST,W,t,systems.groups.formulas,W
+
+# System group recurring actions
+,/manager/groups/details/recurring-actions,GET,W,t,systems.groups.recurring,R
+,/manager/api/recurringactions/:type/:id,GET,W,t,systems.groups.recurring,R
+,/manager/api/states/summary,GET,W,t,systems.groups.recurring,W
+,/manager/api/states/highstate,GET,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/states,GET,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/save,POST,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/targets/:type/:id,GET,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/custom/execute,POST,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/:id/details,GET,W,t,systems.groups.recurring,W
+,/manager/api/recurringactions/:id/delete,DELETE,W,t,systems.groups.recurring,W
+
 
 # System details
 # TODO: systems/details/Connection.do
