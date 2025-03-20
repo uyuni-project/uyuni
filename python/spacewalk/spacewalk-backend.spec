@@ -17,7 +17,7 @@
 #
 
 ## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
-%{!?productprettyname: %global productprettyname SUSE Multi-Linux Manager}
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
@@ -250,8 +250,7 @@ do
 done
 
 %if !0%{?is_opensuse} && 0%{?sle_version}
-PPNAME="%{productprettyname}"
-sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = \"$PPNAME\"/" common/rhnConfig.py
+sed -i "s/PRODUCT_NAME = \"Uyuni\"/PRODUCT_NAME = \"%{productprettyname}\"/" common/rhnConfig.py
 %endif
 
 %install

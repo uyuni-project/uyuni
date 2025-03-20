@@ -17,7 +17,7 @@
 #
 
 ## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
-%{!?productprettyname: %global productprettyname SUSE Multi-Linux Manager}
+%{!?productprettyname: %global productprettyname Uyuni}
 
 #!BuildIgnore:  udev-mini libudev-mini1
 
@@ -426,9 +426,6 @@ sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
 
 %build
 PRODUCT_NAME=%{productprettyname}
-%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
-PRODUCT_NAME="Uyuni"
-%endif
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
@@ -492,9 +489,6 @@ fi
 
 %install
 PRODUCT_NAME=%{productprettyname}
-%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
-PRODUCT_NAME="Uyuni"
-%endif
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
