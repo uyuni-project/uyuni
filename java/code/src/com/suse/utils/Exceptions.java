@@ -13,6 +13,8 @@ package com.suse.utils;
 import java.util.Optional;
 import java.util.function.Function;
 
+// TEST
+
 public final class Exceptions {
 
     /**
