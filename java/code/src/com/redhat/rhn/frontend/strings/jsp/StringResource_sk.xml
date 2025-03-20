@@ -6894,70 +6894,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="System Comparison" xml:space="preserve">
         <source>System Comparison</source>
-        <target/>
+        <target state="translated">Porovnanie systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Identity Properties" xml:space="preserve">
         <source>System Identity Properties</source>
-        <target/>
+        <target state="translated">Vlastnosti systémovej identity</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Content" xml:space="preserve">
         <source>System Content</source>
-        <target/>
+        <target state="translated">Obsah systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Extended System Identity Properties" xml:space="preserve">
         <source>Extended System Identity Properties</source>
-        <target/>
+        <target state="translated">Rozšírené vlastnosti systémovej identity</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Click Here To Hide" xml:space="preserve">
         <source>Click Here To Hide</source>
-        <target/>
+        <target state="translated">Kliknutím sem skryjete</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Click Here To Show" xml:space="preserve">
         <source>Click Here To Show</source>
-        <target/>
+        <target state="translated">Kliknutím sem zobrazíte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Registration Date" xml:space="preserve">
         <source>Registration Date</source>
-        <target/>
+        <target state="translated">Dátum registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System ID" xml:space="preserve">
         <source>System ID</source>
-        <target/>
+        <target state="translated">Systémové ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Child Software Channels" xml:space="preserve">
         <source>Child Software Channels</source>
-        <target/>
+        <target state="translated">Softvérové kanály potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software Entitlements" xml:space="preserve">
         <source>Software Entitlements</source>
-        <target/>
+        <target state="translated">Softvérové oprávnenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
