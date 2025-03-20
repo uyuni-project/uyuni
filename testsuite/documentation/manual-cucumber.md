@@ -148,10 +148,6 @@ ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate
 **RES 7** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
 ... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**Ubuntu 20.04**
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
- .. | SSH Salt minion tunnel | high | ... | [General client smoke tests](#generalclientsmoke)
 **Ubuntu 18.04** | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
 ... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
  .. | SSH Salt minion tunnel | high | ... | [General client smoke tests](#generalclientsmoke)
