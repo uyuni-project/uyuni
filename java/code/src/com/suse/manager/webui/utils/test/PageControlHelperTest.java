@@ -255,6 +255,7 @@ public class PageControlHelperTest  {
         queryParams.put("sc", "secondProperty");
         helper = new PageControlHelper(SparkTestUtils.createMockRequestWithParams(REQUEST_URL, queryParams),
                 "mydefaultproperty");
+        assertEquals("-1", helper.getSortDirection());
         listToSort = new ArrayList<>(unsortedList);
         helper.applySort(listToSort);
 
@@ -318,5 +319,30 @@ public class PageControlHelperTest  {
         assertEquals(3, result.getEnd());
         assertEquals("orange", result.get(0).secondProperty);
         assertEquals("ranger", result.get(1).secondProperty);
+    }
+
+    @Test
+    public void testProcessPageControlInputFiltering() {
+        Map<String, String> queryParams = new HashMap<>();
+        // Start index and page size
+        queryParams.put("p", "1");
+        queryParams.put("ps", "3");
+        // Filter string and column
+        queryParams.put("q", "%27%2balert(%27foo%27)%2b%27");
+        queryParams.put("qc", "@#$%^&*()");
+        queryParams.put("s", "%27%2balert(%27foo%27)%2b%27");
+        queryParams.put("sc", "@#$%^&*()");
+        queryParams.put("f", "%27%2balert(0x01F137)%2b%27");
+
+        PageControlHelper helper = new PageControlHelper(SparkTestUtils.createMockRequestWithParams(REQUEST_URL,
+                queryParams), "mydefaultproperty");
+
+        assertEquals(1, helper.getStart());
+        assertEquals(3, helper.getPageSize());
+        assertEquals("272balert27foo272b27", helper.getQuery());
+        assertEquals("", helper.getQueryColumn());
+        assertEquals("272balert27foo272b27", helper.getSortDirection());
+        assertEquals("", helper.getSortColumn());
+        assertEquals("272balert0x01F1372b27", helper.getFunction());
     }
 }
