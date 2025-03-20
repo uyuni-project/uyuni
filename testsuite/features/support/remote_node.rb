@@ -7,7 +7,7 @@ require_relative 'network_utils'
 # The RemoteNode class represents a remote node.
 # It is used to interact with the remote node through SSH.
 class RemoteNode
-  attr_accessor :host, :hostname, :port, :target, :full_hostname, :private_ip, :public_ip, :private_interface, :public_interface, :os_family, :os_version, :has_mgrctl
+  attr_accessor :host, :hostname, :port, :target, :full_hostname, :private_ip, :public_ip, :private_interface, :public_interface, :os_family, :os_version, :local_os_family, :local_os_version, :has_mgrctl
 
   # Initializes a new remote node.
   #
@@ -46,7 +46,11 @@ class RemoteNode
     raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?
 
     $stdout.puts "Host '#{@host}' is alive with determined hostname #{@hostname} and FQDN #{@full_hostname}" unless $build_validation
+
+    # Determine OS version and OS family both inside the container and on the local host
+    # in the case of non-containerized systems, both fields will be identical:
     @os_version, @os_family = get_os_version
+    @local_os_version, @local_os_family = get_os_version(runs_in_container: false)
 
     if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
@@ -327,9 +331,9 @@ class RemoteNode
 
   # Extract the OS version and OS family
   # We get these data decoding the values in '/etc/os-release'
-  def get_os_version
-    os_family_raw, code = run('grep "^ID=" /etc/os-release', check_errors: false)
-    os_family_raw, code = run('sw_vers --productName', check_errors: false) if code.nonzero?
+  def get_os_version(runs_in_container: true)
+    os_family_raw, code = run('grep "^ID=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
+    os_family_raw, code = run('sw_vers --productName', runs_in_container: runs_in_container, check_errors: false) if code.nonzero?
     return nil, nil unless code.zero?
 
     os_family = os_family_raw.strip
@@ -339,12 +343,12 @@ class RemoteNode
     os_family.delete! '"'
 
     if os_family == 'macOS'
-      os_version_raw, code = run('sw_vers --productVersion', check_errors: false)
+      os_version_raw, code = run('sw_vers --productVersion', runs_in_container: runs_in_container, check_errors: false)
       return nil, nil unless code.zero?
 
       os_version = os_version_raw.strip
     else
-      os_version_raw, code = run('grep "^VERSION_ID=" /etc/os-release', check_errors: false)
+      os_version_raw, code = run('grep "^VERSION_ID=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
       return nil, nil unless code.zero?
 
       os_version = os_version_raw.strip.split('=')[1]

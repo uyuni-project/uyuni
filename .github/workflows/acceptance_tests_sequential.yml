@@ -1,0 +1,27 @@
+name: Acceptance Tests
+on:
+  workflow_call:
+    inputs:
+      skip_tests:
+        required: true
+        type: boolean
+  repository_dispatch:
+    types: [run-acceptance-tests]
+
+jobs:
+  acceptance-tests:
+    name: "0"
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "18_run_secondary_tests.sh"
+      server_id: "acceptance"
+      skip_tests: ${{ inputs.skip_tests == true }}
+  scheduled-acceptance-tests:
+    name: Scheduled 0
+    if: ${{ github.event_name == 'repository_dispatch' }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "18_run_secondary_tests.sh"
+      server_id: "acceptance"
+      skip_tests: false
+

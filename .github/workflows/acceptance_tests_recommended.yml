@@ -1,0 +1,22 @@
+name: Recommended Tests
+on:
+  workflow_call:
+    inputs:
+      skip_tests:
+        required: true
+        type: boolean
+      recommended_tests:
+        required: true
+        type: string
+  repository_dispatch:
+    types: [run-recommended-tests]
+
+jobs:
+  recommended-tests:
+    name: 0
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "20_run_recommended_tests.sh"
+      server_id: "recommended"
+      recommended_tests: ${{ inputs.recommended_tests }}
+      skip_tests: ${{ inputs.skip_tests == true }}

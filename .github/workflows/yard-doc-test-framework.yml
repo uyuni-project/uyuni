@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
 
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@922ebc4c5262cd14e07bb0e1db020984b6c064fe #v1.226.0
         with:
           ruby-version: '3.3'
 
@@ -45,7 +45,7 @@ jobs:
           yard doc --protected --private features/step_definitions/*.rb features/support/*.rb features/support/**/*.rb features/**/*.feature features/**/**/*.feature
 
       - name: Archive documentation as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
         with:
           name: yard-docs
           path: testsuite/doc

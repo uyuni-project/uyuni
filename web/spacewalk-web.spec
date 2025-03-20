@@ -31,7 +31,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.1.7
+Version:        5.1.8
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only

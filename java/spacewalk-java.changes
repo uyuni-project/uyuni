@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Mar 06 19:57:20 CET 2025 - marina.latini@suse.com
+
+- version 5.1.10-0
+  * Update ISSv3 registration to the new logout scheme
+  * Handle architecture arm64
+  * Allow both GET and POST requests for /auth/logout API endpoint
+  * SUSE Manager is now branded as SUSE Multi-Linux Manager
+
+-------------------------------------------------------------------
 Fri Feb 28 11:49:49 CET 2025 - rosuna@suse.com
 
 - version 5.1.9-0

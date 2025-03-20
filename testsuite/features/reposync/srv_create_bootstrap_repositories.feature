@@ -13,6 +13,8 @@ Feature: Create bootstrap repositories
   Scenario: Create the bootstrap repository for SUSE Minion
     When I create the bootstrap repository for "sle_minion" on the server
 
+# WORKAROUND: Skipping because SL Micro 6 MLM tools are not ready and this fails
+@skip
 @proxy
   Scenario: Create the bootstrap repository for Proxy
     When I create the bootstrap repository for "proxy" on the server
