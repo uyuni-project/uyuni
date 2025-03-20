@@ -689,7 +689,7 @@
             {
                 "id" : -625,
                 "url" : "https://nu.novell.com/repo/$RCE/OES24.4-SLE-Manager-Tools15-Debuginfo-Updates/sle-15-x86_64/",
-                "name" : "OES22.4-SLE-Manager-Tools15-Debuginfo-Updates",
+                "name" : "OES24.4-SLE-Manager-Tools15-Debuginfo-Updates",
                 "distro_target" : "sle-15-x86_64",
                 "description" : "SLE-Manager-Tools15-Debuginfo-Updates for sle-15-x86_64",
                 "enabled" : false,
