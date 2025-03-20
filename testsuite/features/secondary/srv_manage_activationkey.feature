@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2024 SUSE LLC
+# Copyright (c) 2010-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Manipulate activation keys
@@ -90,7 +90,7 @@ Feature: Manipulate activation keys
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-TEST-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Leap 15.6 (x86_64)" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"

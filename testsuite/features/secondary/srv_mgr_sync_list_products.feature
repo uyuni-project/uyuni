@@ -14,7 +14,7 @@ Feature: List available products
 @uyuni
   Scenario: List available products
     When I execute mgr-sync "list products" with user "admin" and password "admin"
-    Then I should get "[ ] openSUSE Leap 15.5 x86_64"
+    Then I should get "[ ] openSUSE Leap 15.6 x86_64"
 
 @susemanager
   Scenario: List all available products
