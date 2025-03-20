@@ -6,8 +6,6 @@ on:
       - opened
       - reopened
       - synchronize
-    paths:
-      - '**.java'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
