@@ -54,6 +54,9 @@ import com.redhat.rhn.domain.action.scap.ScapActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.action.supportdata.UploadGeoType;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigFileName;
@@ -2513,5 +2516,37 @@ public class ActionManager extends BaseManager {
             ret.add(a.getId());
         }
         return ret;
+    }
+
+    /**
+     * Schedule Action to get and upload supportdata from the defined system to SCC.
+     * @param scheduler the scheduler of this action
+     * @param sid the system ID
+     * @param caseNumber the support case number
+     * @param parameter additional parameter for the tool which collect the data
+     * @param uploadGeoType the uploadGeo Type
+     * @param earliest the date when this action should be executed
+     * @return the action
+     */
+    public static Action scheduleSupportDataAction(User scheduler, long sid, String caseNumber, String parameter,
+                                                   UploadGeoType uploadGeoType, Date earliest) {
+        SupportDataAction action = (SupportDataAction) ActionFactory
+                .createAction(ActionFactory.TYPE_SUPPORTDATA_GET, earliest);
+        action.setName("Get and Upload Support data");
+        action.setOrg(scheduler != null ?
+                scheduler.getOrg() : OrgFactory.getSatelliteOrg());
+        action.setSchedulerUser(scheduler);
+
+        SupportDataActionDetails actionDetails = new SupportDataActionDetails();
+        actionDetails.setCaseNumber(caseNumber);
+        actionDetails.setParameter(parameter);
+        actionDetails.setGeoType(uploadGeoType);
+        actionDetails.setParentAction(action);
+
+        action.setDetails(actionDetails);
+        ActionFactory.save(action);
+
+        scheduleForExecution(action, Set.of(sid));
+        return action;
     }
 }
