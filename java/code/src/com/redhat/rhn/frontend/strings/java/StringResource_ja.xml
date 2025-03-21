@@ -11519,7 +11519,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11527,7 +11527,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">フィールド {0} は0以下にできません。</target>
       </trans-unit>
-      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11543,14 +11543,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="error.spacesinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">パスワードにタブまたは改行文字が含まれています。</target>
       </trans-unit>
-      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11564,14 +11564,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="error.nouppercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">パスワードには少なくとも1つの大文字を含める必要があります。</target>
       </trans-unit>
-      <trans-unit id="error.nolowercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
