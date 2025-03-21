@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:20:59 CET 2025 - rosuna@suse.com
+
+- version 5.0.13-0
+  * Remove unnecessary Salt Minion upgrade cleanup from highstate
+  * Change uptodate recurring action to use dist-upgrade
+    instead of upgrade for Deb systems (bsc#1237060)
+
+-------------------------------------------------------------------
 Mon Jan 13 15:15:38 CET 2025 - rosuna@suse.com
 
 - version 5.0.12-0

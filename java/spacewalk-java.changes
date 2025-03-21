@@ -1,4 +1,31 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:17:05 CET 2025 - rosuna@suse.com
+
+- version 5.0.20-0
+  * Enable the synchronization of OVAL data
+  * Enable the configuration of OVAL data sources
+  * Add support for OVAL based CVE auditing to SLE & Leap Micro
+  * Filter away Debian12 boostrap extra log messages
+  * Fixes: update packages list when a SLE micro
+    gets updated (bsc#1227118)
+  * Fix formatting in 'contentmanagement' API docs (bsc#1225287)
+  * Simplify HTTP proxy setup in setup wizard (bsc#1235527)
+  * Layout improvements for the login page and error page
+  * Fix Monitoring detection on Oracle Linux (bsc#1234033)
+  * Set a send date when preparing emails
+  * Proxy server FQDN merge java filter (bsc#1236011)
+  * Better logs on SP migration
+  * Fix issue preventing OES products from showing up (bsc#1236268)
+  * Fix config channels not following priority in highstate (bsc#1237694)
+  * Fix API namespace for AdminPaygHandler
+  * Fix race at updating system overview table (bsc#1235853)
+  * Fix double-delete in Cancel Actions
+  * Replace server hostname in chained proxy tftp container (bsc#1236166)
+  * Add option to set kernel and post kernel options
+    on provisioning via API
+  * Password policy restrictions and functions first release
+
+-------------------------------------------------------------------
 Thu Jan 16 15:46:39 CET 2025 - rosuna@suse.com
 
 - version 5.0.19-0

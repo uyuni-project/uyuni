@@ -1,2 +1,0 @@
-- Allow spacewalk-repo-sync filtering using NEVRA
-  instead of package name only (bsc#1234226)

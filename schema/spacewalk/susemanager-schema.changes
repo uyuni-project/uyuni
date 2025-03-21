@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:20:26 CET 2025 - rosuna@suse.com
+
+- version 5.0.14-0
+  * Add a new task to handle OVAL data synchronization
+  * Password policy restrictions and functions first release
+  * Fix for bad schema migration
+
+-------------------------------------------------------------------
 Mon Jan 13 15:14:23 CET 2025 - rosuna@suse.com
 
 - version 5.0.13-0

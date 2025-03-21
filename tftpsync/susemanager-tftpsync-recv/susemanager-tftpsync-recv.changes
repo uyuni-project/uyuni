@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:22:02 CET 2025 - rosuna@suse.com
+
+- version 5.0.2-0
+  * Fix possible errors replacing IP addresses and FQDNs for
+    proxies on pxe and grub files (bsc#1236601)
+
+-------------------------------------------------------------------
 Tue Jan 16 08:09:43 CET 2024 - jgonzalez@suse.com
 
 - version 5.0.1-1

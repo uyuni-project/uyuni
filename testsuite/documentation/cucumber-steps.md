@@ -291,7 +291,7 @@ The radio button can be identified by name, id or label text.
 ```gherkin
   When I check "manageWithSSH"
   When I uncheck "role_org_admin"
-  When I check "Container Build Host" if not checked
+  When I check "Container Build Host"
 ```
 
 The check box can be identified by name, id or label text.

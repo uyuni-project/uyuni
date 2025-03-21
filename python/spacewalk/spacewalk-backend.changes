@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:14:34 CET 2025 - rosuna@suse.com
+
+- version 5.0.12-0
+  * Allow translation to wrap strings as weblate forces it
+  * Show Source String change for translations
+  * Make ISSv1 timezone independent (bsc#1221505)
+  * Allow spacewalk-repo-sync filtering using NEVRA
+    instead of package name only (bsc#1234226)
+  * Fix `AttributeError: ENABLE_NVREA` for reposyncing (bsc#1226273)
+  * Fix wrong timestamp when importing packages
+    with rhnpush (bsc#1235970)
+  * Implement module to get configuration values from the database
+  * Cast float pkg metadata to int (gh#uyuni-project/uyuni#9613)
+  * New password policy implemented, removal of old defaults
+  * Improve Debian reposync logging (bsc#1227859)
+
+-------------------------------------------------------------------
 Mon Jan 13 15:06:58 CET 2025 - rosuna@suse.com
 
 - version 5.0.11-0

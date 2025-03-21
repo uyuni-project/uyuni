@@ -65,7 +65,7 @@ DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
-$is_transactional_server = transactional_system? 'server'
+$is_transactional_server = transactional_system?('server', runs_in_container: false)
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
@@ -450,14 +450,6 @@ end
 
 Before('@sle15sp6_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
-end
-
-Before('@opensuse155arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_minion']
-end
-
-Before('@opensuse155arm_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
 end
 
 Before('@opensuse156arm_minion') do

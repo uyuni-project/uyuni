@@ -570,25 +570,11 @@ end
 
 When(/^the server starts mocking an IPMI host$/) do
   server = get_target('server')
-  server.run('mkdir -p /etc/ipmi')
-  %w[ipmisim1.emu lan.conf fake_ipmi_host.sh].each do |file|
-    source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
-    dest = "/etc/ipmi/#{file}"
-    success = file_inject(get_target('server'), source, dest)
-    raise ScriptError, 'File injection failed' unless success
-  end
-  server.run('chmod +x /etc/ipmi/fake_ipmi_host.sh', verbose: true, check_errors: true)
-  # Check if ipmi_sim is already running
-  if server.run('pgrep -f ipmi_sim', verbose: false, check_errors: false)[1].zero?
-    log 'ipmi_sim is already running; skipping startup.'
-  else
-    server.run('ipmi_sim -n < /dev/null > /dev/null &', verbose: true, check_errors: true)
-  end
+  server.run_local('podman run -d --rm --network uyuni -p [::]:623:623/udp -p [::]:9002:9002 --name fakeipmi ghcr.io/uyuni-project/uyuni/ci-fakeipmi:master', verbose: true, check_errors: true)
 end
 
 When(/^the server stops mocking an IPMI host$/) do
-  get_target('server').run('pkill ipmi_sim')
-  get_target('server').run('pkill --full fake_ipmi_host.sh || :', verbose: false, check_errors: false)
+  get_target('server').run_local('podman kill fakeipmi')
 end
 
 When(/^the controller starts mocking a Redfish host$/) do
@@ -1062,7 +1048,7 @@ When(/^I wait until the package "(.*?)" has been cached on this "(.*?)"$/) do |p
 end
 
 When(/^I create the bootstrap repository for "([^"]*)" on the server((?: without flushing)?)$/) do |host, without_flushing|
-  host = 'proxy_nontransactional' if host == 'proxy' and not $is_transactional_server
+  host = 'proxy_nontransactional' if host == 'proxy' && !$is_transactional_server
   base_channel = BASE_CHANNEL_BY_CLIENT[product][host]
   channel = CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
   parent_channel = PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL[product][base_channel]
@@ -1387,7 +1373,8 @@ When(/^I create a read-only user for the ReportDB$/) do
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 
-  get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+  node = get_target('server')
+  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
 end
 
 Then(/^I should see the read-only user listed on the ReportDB user accounts$/) do
@@ -1402,7 +1389,8 @@ When(/^I delete the read-only user for the ReportDB$/) do
   success = file_inject(get_target('server'), source, dest)
   raise ScriptError, 'File injection in server failed' unless success
 
-  get_target('server').run("expect -f /tmp/#{file} #{$reportdb_ro_user}")
+  node = get_target('server')
+  node.run_local("expect -f /tmp/#{file} #{$reportdb_ro_user} #{node.has_mgrctl}")
 end
 
 Then(/^I shouldn't see the read-only user listed on the ReportDB user accounts$/) do

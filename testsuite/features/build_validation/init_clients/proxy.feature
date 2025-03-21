@@ -44,7 +44,7 @@ Feature: Setup containerized proxy
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Upgrade mgrpxy tool
-    Then I upgrade "proxy" with the last "mgrpxy" version using spacecmd
+    When I upgrade "proxy" with the last "mgrpxy" version using spacecmd
 
 @transactional_server
   Scenario: Reboot after mgrpxy upgrade

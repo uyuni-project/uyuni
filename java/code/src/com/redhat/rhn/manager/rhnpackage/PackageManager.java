@@ -1621,6 +1621,31 @@ public class PackageManager extends BaseManager {
     }
 
     /**
+     * Return the package identified by id tripple and is accessible by the given org
+     * @param nameId the name id
+     * @param evrId the evr id
+     * @param archId the arch id
+     * @param org the org
+     * @return the package
+     */
+    public static Package lookupPackageByComboId(Long nameId, Long evrId, Long archId, Org org) {
+        SelectMode m;
+        Map<String, Object> params = new HashMap<>();
+        params.put("nameId", nameId);
+        params.put("evrId", evrId);
+        params.put("archId", archId);
+        m = ModeFactory.getMode("Package_queries", "package_by_combo_id");
+
+        DataResult dr = m.execute(params);
+        if (dr != null && !dr.isEmpty()) {
+            return PackageFactory.lookupByIdAndOrg(
+                    (Long) ((Map)dr.get(0)).get("id"), org);
+        }
+
+        return null;
+    }
+
+    /**
      * Returns the list of packages installed on at least one system in the SSM, along with
      * the count of how many systems each package is installed on.
      *

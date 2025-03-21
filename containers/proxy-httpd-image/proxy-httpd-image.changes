@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar 11 15:11:26 CET 2025 - rosuna@suse.com
+
+- version 5.0.10
+  * Fix wrong IP address set on susemanager-tftpsync-recv.conf
+
+-------------------------------------------------------------------
 Mon Jan 13 15:33:26 CET 2025 - rosuna@suse.com
 
 - version 5.0.9

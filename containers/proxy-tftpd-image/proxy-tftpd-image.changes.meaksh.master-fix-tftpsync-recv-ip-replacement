@@ -1,1 +1,0 @@
-- Fix possible collisions replacing FQDNs for proxies (bsc#1236601)

@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2024 SUSE LLC
+# Copyright (c) 2019-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scc_credentials
@@ -71,10 +71,10 @@ Feature: Content lifecycle
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
     And I click on "Attach/Detach Sources"
-    And I select "openSUSE Leap 15.5 (x86_64)" from "selectedBaseChannel"
-    And I wait until I see "openSUSE Leap 15.5 Updates (x86_64)" text
+    And I select "openSUSE Leap 15.6 (x86_64)" from "selectedBaseChannel"
+    And I wait until I see "openSUSE Leap 15.6 Updates (x86_64)" text
     And I click on "Save"
-    And I wait until I see "openSUSE Leap 15.5 (x86_64)" text
+    And I wait until I see "openSUSE Leap 15.6 (x86_64)" text
     Then I should see a "Version 1: (draft - not built) - Check the changes below" text
 
 @susemanager
@@ -88,7 +88,7 @@ Feature: Content lifecycle
   Scenario: Verify added sources
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
-    Then I should see a "openSUSE Leap 15.5 (x86_64)" text
+    Then I should see a "openSUSE Leap 15.6 (x86_64)" text
     And I should see a "Build (1)" text
 
   Scenario: Add fonts packages filter to the project
@@ -200,6 +200,438 @@ Feature: Content lifecycle
     And I wait for "1" second
     Then I wait at most 600 seconds until I see "Built" text in the environment "prod_name"
 
+  Scenario: Create a CLM filter of type Package(NEVRA) that allows packages whose version and release number are lower than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "mercury" as "filter_name"
+    And I select "Package (NEVRA)" from "type"
+    And I select "lower" from "matcher"
+    And I enter "mercury" as "Package Name"
+    And I enter "mercury" as "Epoch"
+    And I enter "0.0.0" as "version"
+    And I enter "0.0.0" as "Release"
+    And I enter "x86_64" as "Architecture"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+   Scenario: Create a CLM filter of type Package(NEVRA) that denies packages whose version and release number are lower than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "venus" as "filter_name"
+    And I select "Package (NEVRA)" from "type"
+    And I select "lower" from "matcher"
+    And I enter "venus" as "Package Name"
+    And I enter "venus" as "Epoch"
+    And I enter "0.0.0" as "version"
+    And I enter "0.0.0" as "Release"
+    And I enter "x86_64" as "Architecture"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+Scenario: Create CLM filter that allows packages of type Package (Provides Name)
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "cereal" as "filter_name"
+    And I select "Package (Provides Name)" from "type"
+    And I select "provides name" from "matcher"
+    And I enter "cereal" as "Provides Name"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+  
+  Scenario: Create CLM filter that denies packages of type Package (Provides Name)
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "potato" as "filter_name"
+    And I select "Package (Provides Name)" from "type"
+    And I select "provides name" from "matcher"
+    And I enter "potato" as "Provides Name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+Scenario: Create CLM filter of type Package (Build date) that allows packages whose date is lower than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "cherry" as "filter_name"
+    And I select "Package (Build date)" from "type"
+    And I select "lower" from "matcher"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+  
+  Scenario: Create CLM filter of type Package (Build date) that denies packages whose date is lower than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "drummer" as "filter_name"
+    And I select "Package (Build date)" from "type"
+    And I select "lower" from "matcher"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Advisory Name) that allows patches that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "africa-patch" as "filter_name"
+    And I select "Patch (Advisory Name)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "africa" as "Advisory name"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Advisory Name) that denies patches that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "asia-patch" as "filter_name"
+    And I select "Patch (Advisory Name)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "asia" as "Advisory name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Advisory Type) that allows Security Advisory patches that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "key" as "filter_name"
+    And I select "Patch (Advisory Type)" from "type"
+    And I select "equals" from "matcher"
+    And I check radio button "Security Advisory"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Advisory Type) that denies Security Advisory patches that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "geminis-patch" as "filter_name"
+    And I select "Patch (Advisory Type)" from "type"
+    And I select "equals" from "matcher"
+    And I check radio button "Security Advisory"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Synopsis) that allows patches that that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "aries-patch" as "filter_name"
+    And I select "Patch (Synopsis)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "aries" as "Synopsis"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Synopsis) that denies patches that are equal to a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "andromeda-patch" as "filter_name"
+    And I select "Patch (Synopsis)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "andromeda" as "Synopsis"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Keyword) that allows patches that contains Package Manager Restart Required keyword in its name
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "mars-patch" as "filter_name"
+    And I select "Patch (Keyword)" from "type"
+    And I select "contains" from "matcher"
+    And I check radio button "Package Manager Restart Required"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Keyword) that denies patches that contains Package Manager Restart Required Keyword in its name
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "eurasia-patch" as "filter_name"
+    And I select "Patch (Keyword)" from "type"
+    And I select "contains" from "matcher"
+    And I check radio button "Package Manager Restart Required"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Issue date) that allows patches whose date is greater or equal than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "milkyway-patch" as "filter_name"
+    And I select "Patch (Issue date)" from "type"
+    And I select "greater or equal" from "matcher"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+  
+  Scenario: Create CLM filter of type Patch(Issue date) that denies patches whose date is greater or equal than a defined one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "venus-patch" as "filter_name"
+    And I select "Patch (Issue date)" from "type"
+    And I select "greater or equal" from "matcher"
+    When I enter "solar" as "filter_name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package Name) that allows patches that are equal to a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Triangulum-patch" as "filter_name"
+    And I select "Patch (Contains Package Name)" from "type"
+    And I select "equals" from "matcher"
+    When I enter "Triangulum-patch" as "Package Name"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package Name) that denies patches that are equal to a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Pinwheel-patch" as "filter_name"
+    And I select "Patch (Contains Package Name)" from "type"
+    And I select "equals" from "matcher"
+    When I enter "Pinwheel-patch" as "Package Name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter that allows patches of type Patch(Contains Package Name) that match a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Sunflower-patch" as "filter_name"
+    And I select "Patch (Contains Package Name)" from "type"
+    And I select "matches" from "matcher"
+    When I enter "Sunflower-patch" as "Package Name"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package Name) that denies patches that match a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Whirlpool-patch" as "filter_name"
+    And I select "Patch (Contains Package Name)" from "type"
+    And I select "matches" from "matcher"
+    When I enter "Whirlpool-patch" as "Package Name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package Provides Name) that allows patches with a specific name
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Antennae-patch" as "filter_name"
+    And I select "Patch (Contains Package Provides Name)" from "type"
+    And I select "provides name" from "matcher"
+    When I enter "Antennae-patch" as "Package Provides Name"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package Provides Name) that denies patches with a specific name
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "hat-patch" as "filter_name"
+    And I select "Patch (Contains Package Provides Name)" from "type"
+    And I select "provides name" from "matcher"
+    When I enter "hat-patch" as "Package Provides Name"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package) that allows patches whose version is lower than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "Hubble-patch" as "filter_name"
+    And I select "Patch (Contains Package)" from "type"
+    And I select "version lower than" from "matcher"
+    When I enter "Hubble-patch" as "Package Name"
+    And I enter "Hubble-patch" as "Epoch"
+    And I enter "0.0.0" as "Version"
+    And I enter "0.0.0" as "Release"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package) that denies patches whose version is lower than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "galaxy-patch" as "filter_name"
+    And I select "Patch (Contains Package)" from "type"
+    And I select "version lower than" from "matcher"
+    When I enter "galaxy-patch" as "Package Name"
+    And I enter "galaxy-patch" as "Epoch"
+    And I enter "0.0.0" as "Version"
+    And I enter "0.0.0" as "Release"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package) that allows patches whose version is lower or equal than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "earth-patch" as "filter_name"
+    And I select "Patch (Contains Package)" from "type"
+    And I select "version lower or equal" from "matcher"
+    When I enter "earth-patch" as "Package Name"
+    And I enter "earth-patch" as "Epoch"
+    And I enter "0.0.0" as "Version"
+    And I enter "0.0.0" as "Release"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Patch(Contains Package) that denies patches whose version is lower or equal than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "moon-patch" as "filter_name"
+    And I select "Patch (Contains Package)" from "type"
+    And I select "version lower or equal" from "matcher"
+    When I enter "moon-patch" as "Package Name"
+    And I enter "moon-patch" as "Epoch"
+    And I enter "0.0.0" as "Version"
+    And I enter "0.0.0" as "Release"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter to enable Ruby 2.7 module
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    And I enter "ruby 2.7 module" as "filter_name"
+    And I select "Module (Stream)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "ruby" as "moduleName"
+    And I enter "2.7" as "moduleStream"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter that allows Product Temporary Fix (All)
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "mars" as "filter_name"
+    And I select "Product Temporary Fix (All)" from "type"
+    And I select "all" from "matcher"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter that denies Product Temporary Fix (All)
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "mercury-patch" as "filter_name"
+    And I select "Product Temporary Fix (All)" from "type"
+    And I select "all" from "matcher"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Product Temporary Fix (Number) that allows packages of a version lower than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "jupiter-patch" as "filter_name"
+    And I select "Product Temporary Fix (Number)" from "type"
+    And I select "lower" from "matcher"
+    And I enter "1" as "Number"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+  Scenario: Create CLM filter of type Product Temporary Fix (Number) that denies packages of a version lower than a specific one
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "pluto-patch" as "filter_name"
+    And I select "Product Temporary Fix (Number)" from "type"
+    And I select "lower" from "matcher"
+    And I enter "2" as "Number"
+    And I check radio button "Deny"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
+# This test fails, but this error is tracked in the bug 1238922
+@skip_if_github_validation
+  Scenario: Create CLM filter that allows packages versions that are equal to a specific Product Temporary Fix (Fixes Package Name)
+    When I follow the left menu "Content Lifecycle > Filters"
+    And I click on "Create Filter"
+    And I wait at most 10 seconds until I see modal containing "Create a new filter" text
+    Then I should see a "Create a new filter" text
+    When I enter "comet-patch" as "filter_name"
+    And I select "Product Temporary Fix (Fixes Package Name)" from "type"
+    And I select "equals" from "matcher"
+    And I enter "comet-patch" as "Package Name"
+    And I check radio button "Allow"
+    And I click on "Save" in "Create a new filter" modal
+    Then I should see a "Filter created successfully" text
+
   Scenario: Cleanup: remove the Content Lifecycle Management project
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -209,10 +641,68 @@ Feature: Content lifecycle
 
   Scenario: Cleanup: remove the CLM filters
     When I follow the left menu "Content Lifecycle > Filters"
-    And I click the "remove fonts packages" item delete button
-    And I click the "ruby 2.7 module" item delete button
+    And I click the "africa-patch" item delete button if exists
+    And I click the "andromeda-patch" item delete button if exists
+    And I click the "Antennae-patch" item delete button if exists
+    And I click the "aries-patch" item delete button if exists
+    And I click the "eurasia-patch" item delete button if exists
+    And I click the "asia-patch" item delete button if exists
+    And I click the "cereal" item delete button if exists
+    And I click the "comet-patch" item delete button if exists
+    And I click the "cherry" item delete button if exists
+    And I click the "drummer" item delete button if exists
+    And I click the "earth-patch" item delete button if exists
+    And I click the "galaxy-patch" item delete button if exists
+    And I click the "geminis-patch" item delete button if exists
+    And I click the "hat-patch" item delete button if exists
+    And I click the "Hubble-patch" item delete button if exists
+    And I click the "jupiter-patch" item delete button if exists
+    And I click the "key" item delete button if exists
+    And I click the "mars-patch" item delete button if exists
+    And I click the "mars" item delete button if exists
+    And I click the "mercury-patch" item delete button if exists
+    And I click the "mercury" item delete button if exists
+    And I click the "milkyway-patch" item delete button if exists
+    And I click the "moon-patch" item delete button if exists
+    And I click the "Pinwheel-patch" item delete button if exists
+    And I click the "pluto-patch" item delete button if exists
+    And I click the "potato" item delete button if exists
+    And I click the "ruby 2.7 module" item delete button if exists
+    And I click the "solar" item delete button if exists
+    And I click the "remove fonts packages" item delete button if exists
+    And I click the "Sunflower-patch" item delete button if exists
+    And I click the "Triangulum-patch" item delete button if exists
+    And I click the "venus" item delete button if exists
+    And I click the "Whirlpool-patch" item delete button if exists
     Then I should not see a "remove fonts packages" text
+    And I should not see a "africa-patch" text
+    And I should not see a "andromeda-patch" text
+    And I should not see a "Antennae-patch" text
+    And I should not see a "aries-patch" text
+    And I should not see a "asia-patch" text
+    And I should not see a "cereal" text
+    And I should not see a "comet-patch" text
+    And I should not see a "cherry" text
+    And I should not see a "drummer" text
+    And I should not see a "earth-patch" text
+    And I should not see a "galaxy-patch" text
+    And I should not see a "hat-patch" text
+    And I should not see a "Hubble-patch" text
+    And I should not see a "mars" text
+    And I should not see a "mars-patch" text
+    And I should not see a "mercury" text
+    And I should not see a "milkyway-patch" text
+    And I should not see a "moon-patch" text
+    And I should not see a "Pinwheel-patch" text
+    And I should not see a "pluto-patch" text
+    And I should not see a "solar" text
+    And I should not see a "Sunflower-patch" text
+    And I should not see a "Triangulum-patch" text
+    And I should not see a "venus" text
+    And I should not see a "Whirlpool-patch" text
+    And I should not see a "remove fonts packages" text
     And I should not see a "ruby 2.7 module" text
+    And I should not see a "key" text
 
 @susemanager
   Scenario: Cleanup: remove the created channels
@@ -234,10 +724,10 @@ Feature: Content lifecycle
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
       | clp_label-prod_label-fake-base-channel-suse-like |
-      | clp_label-prod_label-opensuse_leap15_5-x86_64    |
+      | clp_label-prod_label-opensuse_leap15_6-x86_64    |
       | clp_label-qa_label-fake-base-channel-suse-like   |
-      | clp_label-qa_label-opensuse_leap15_5-x86_64      |
+      | clp_label-qa_label-opensuse_leap15_6-x86_64      |
       | clp_label-dev_label-fake-base-channel-suse-like  |
-      | clp_label-dev_label-opensuse_leap15_5-x86_64     |
+      | clp_label-dev_label-opensuse_leap15_6-x86_64     |
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"

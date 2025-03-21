@@ -104,11 +104,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
 @uyuni
-  Scenario: Add openSUSE Leap 15.5 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.5" channels with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "leap15.5-x86_64"
-    And I use spacewalk-common-channel to add all "leap15.5-client-tools" channels with arch "x86_64"
-    And I wait until all synchronized channels for "leap15.5-client-tools-x86_64" have finished
+  Scenario: Add openSUSE Leap 15.6 product, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
+    And I kill running spacewalk-repo-sync for "leap15.6-x86_64"
+    And I use spacewalk-common-channel to add all "leap15.6-client-tools" channels with arch "x86_64"
+    And I wait until all synchronized channels for "leap15.6-client-tools-x86_64" have finished
 
 @containerized_server
 @proxy
@@ -148,8 +148,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Enterprise Server 15 SP6" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
-    And I wait until all synchronized channels for "sle-micro-5.5" have finished
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP6" product has been added
+    And I wait until all synchronized channels for "sles15-sp6" have finished
 
 @proxy
 @susemanager

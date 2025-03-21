@@ -1,1 +1,0 @@
-fix config channels not following priority in highstate (bsc#1237694)

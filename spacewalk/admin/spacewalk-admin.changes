@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Mar 17 13:59:01 CET 2025 - rosuna@suse.com
+
+- version 5.0.10-0
+  * Fix billing-data-service configuration after upgrade from 4.3
+    (bsc#1236118)
+
+-------------------------------------------------------------------
+Tue Mar 11 15:14:02 CET 2025 - rosuna@suse.com
+
+- version 5.0.9-0
+  * Add tool to migrate configuration values into the database
+
+-------------------------------------------------------------------
 Thu Aug 01 09:42:29 CEST 2024 - marina.latini@suse.com
 
 - version 5.0.8-0
