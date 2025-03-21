@@ -69,7 +69,7 @@ export function PackageList(props: Props) {
     <AsyncButton
       key="delete-btn"
       defaultType="btn-danger"
-      text={t("Delete")}
+      text={t("Delete test")}
       icon="fa-trash"
       action={() => setOpen(true)}
       disabled={selectedPackages.length === 0}
