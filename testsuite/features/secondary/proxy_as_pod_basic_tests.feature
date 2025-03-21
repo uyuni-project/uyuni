@@ -223,12 +223,12 @@ Feature: Containerized Proxy
     And I wait until I do not see "Loading..." text
     And I check default base channel radio button of this "sle_minion"
     And I wait for child channels to appear
-    And I check "openSUSE 15.5 non oss (x86_64)"
-    And I check "openSUSE Leap 15.5 non oss Updates (x86_64)"
-    And I check "openSUSE Leap 15.5 Updates (x86_64)"
-    And I check "Update repository of openSUSE Leap 15.5 Backports (x86_64)"
-    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.5 (x86_64)"
-    And I check "Uyuni Client Tools for openSUSE Leap 15.5 (x86_64) (Development)"
+    And I check "openSUSE 15.6 non oss (x86_64)"
+    And I check "openSUSE Leap 15.6 non oss Updates (x86_64)"
+    And I check "openSUSE Leap 15.6 Updates (x86_64)"
+    And I check "Update repository of openSUSE Leap 15.6 Backports (x86_64)"
+    And I check "Update repository with updates from SUSE Linux Enterprise 15 for openSUSE Leap 15.6 (x86_64)"
+    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
