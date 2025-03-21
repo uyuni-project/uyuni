@@ -267,13 +267,13 @@
             "s390x"
         ],
         "autorefresh": true,
-        "description": "openSUSE-Leap-15.6-Updates",
+        "description": "openSUSE-Leap-15.5-Updates",
         "distro_target": null,
         "enabled": true,
-        "id": 6860,
+        "id": 6189,
         "installer_updates": false,
-        "name": "openSUSE-Leap-15.6-Updates",
-        "url": "http://download.opensuse.org/update/leap/15.6/oss/"
+        "name": "openSUSE-Leap-15.5-Updates",
+        "url": "http://download.opensuse.org/update/leap/15.5/oss/"
     },
     {
         "arch": [
@@ -283,13 +283,13 @@
             "s390x"
         ],
         "autorefresh": true,
-        "description": "openSUSE-Leap-15.6-NonOss-Updates",
+        "description": "openSUSE-Leap-15.5-NonOss-Updates",
         "distro_target": null,
         "enabled": false,
-        "id": 6861,
+        "id": 6190,
         "installer_updates": false,
-        "name": "openSUSE-Leap-15.6-NonOss-Updates",
-        "url": "http://download.opensuse.org/update/leap/15.6/non-oss/"
+        "name": "openSUSE-Leap-15.5-NonOss-Updates",
+        "url": "http://download.opensuse.org/update/leap/15.5/non-oss/"
     },
     {
         "arch": [
@@ -299,13 +299,13 @@
             "s390x"
         ],
         "autorefresh": false,
-        "description": "openSUSE-Leap-15.6-Pool",
+        "description": "openSUSE-Leap-15.5-Pool",
         "distro_target": null,
         "enabled": true,
-        "id": 6864,
+        "id": 6193,
         "installer_updates": false,
-        "name": "openSUSE-Leap-15.6-Pool",
-        "url": "http://download.opensuse.org/distribution/leap/15.6/repo/oss/"
+        "name": "openSUSE-Leap-15.5-Pool",
+        "url": "http://download.opensuse.org/distribution/leap/15.5/repo/oss/"
     },
     {
         "arch": [
@@ -315,13 +315,13 @@
             "s390x"
         ],
         "autorefresh": false,
-        "description": "openSUSE-Leap-15.6-NonOss-Pool",
+        "description": "openSUSE-Leap-15.5-NonOss-Pool",
         "distro_target": null,
         "enabled": false,
-        "id": 6865,
+        "id": 6194,
         "installer_updates": false,
-        "name": "openSUSE-Leap-15.6-NonOss-Pool",
-        "url": "http://download.opensuse.org/distribution/leap/15.6/repo/non-oss/"
+        "name": "openSUSE-Leap-15.5-NonOss-Pool",
+        "url": "http://download.opensuse.org/distribution/leap/15.5/repo/non-oss/"
     },
     {
         "arch": [
@@ -331,13 +331,13 @@
             "s390x"
         ],
         "autorefresh": true,
-        "description": "openSUSE-SLE-15.6-Updates",
+        "description": "openSUSE-SLE-15.5-Updates",
         "distro_target": null,
         "enabled": true,
-        "id": 6863,
+        "id": 6197,
         "installer_updates": false,
-        "name": "openSUSE-SLE-15.6-Updates",
-        "url": "http://download.opensuse.org/update/leap/15.6/sle/"
+        "name": "openSUSE-SLE-15.5-Updates",
+        "url": "http://download.opensuse.org/update/leap/15.5/sle/"
     },
     {
         "arch": [
@@ -347,13 +347,13 @@
             "s390x"
         ],
         "autorefresh": true,
-        "description": "openSUSE-Backports-15.6-Updates",
+        "description": "openSUSE-Backports-15.5-Updates",
         "distro_target": null,
         "enabled": true,
-        "id": 6862,
+        "id": 6198,
         "installer_updates": false,
-        "name": "openSUSE-Backports-15.6-Updates",
-        "url": "http://download.opensuse.org/update/leap/15.6/backports/"
+        "name": "openSUSE-Backports-15.5-Updates",
+        "url": "http://download.opensuse.org/update/leap/15.5/backports/"
     },
     {
         "arch": [
