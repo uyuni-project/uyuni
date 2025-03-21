@@ -14,6 +14,7 @@ import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";
 import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
+import { SelectedRowDetails } from "./SelectedRowDetails"
 
 type ChildrenArgsProps = {
   currItems: Array<any>;
@@ -311,7 +312,6 @@ export class TableDataHandler extends React.Component<Props, State> {
     const itemsPerPage = this.state.itemsPerPage;
     const currentPage = this.state.currentPage;
     const firstItemIndex = (currentPage - 1) * itemsPerPage;
-
     const currItems = this.state.data;
     const selectedItems = this.props.selectedItems || [];
     const itemCount = this.state.totalItems || 0;
@@ -324,7 +324,6 @@ export class TableDataHandler extends React.Component<Props, State> {
         typeof this.props.selectable === "boolean" ? () => this.props.selectable : this.props.selectable;
       const selectableItems = currItems.filter((item) => isSelectable(item));
       const currIds = selectableItems.map((item) => this.props.identifier(item));
-
       const handleSelectAll = (sel) => {
         let arr = selectedItems;
         if (sel) {
@@ -394,7 +393,8 @@ export class TableDataHandler extends React.Component<Props, State> {
         <div className="panel panel-default">
           {this.props.initialItemsPerPage !== 0 ? (
             <div className="panel-heading">
-              <div className="spacewalk-list-head-addons">
+              <div className="spacewalk-list-head-addons align-items-center">
+
                 <SearchPanel
                   fromItem={fromItem}
                   toItem={toItem}
@@ -412,16 +412,20 @@ export class TableDataHandler extends React.Component<Props, State> {
                   {this.props.additionalFilters}
                 </SearchPanel>
                 <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                  <ItemsPerPageSelector
-                    key="itemsPerPageSelector"
-                    currentValue={this.state.itemsPerPage}
-                    onChange={this.onItemsPerPageChange}
-                  />{" "}
-                  {t("items per page")}
                   {this.props.titleButtons}
                 </div>
               </div>
+              <SelectedRowDetails
+                fromItem={fromItem}
+                toItem={toItem}
+                itemCount={itemCount}
+                onClear={handleSearchPanelClear}
+                onSelectAll={handleSearchPanelSelectAll}
+                selectable={isSelectable}
+                selectedCount={selectedItems.length}
+              />
             </div>
+
           ) : null}
           {this.state.loading ? (
             <Loading text={this.props.loadingText} />
@@ -445,7 +449,15 @@ export class TableDataHandler extends React.Component<Props, State> {
           )}
           {this.props.initialItemsPerPage !== 0 ? (
             <div className="panel-footer">
-              <div className="spacewalk-list-bottom-addons">
+              <div className="spacewalk-list-bottom-addons d-flex justify-content-between">
+                <ItemsPerPageSelector
+                  key="itemsPerPageSelector"
+                  currentValue={this.state.itemsPerPage}
+                  fromItem={fromItem}
+                  toItem={toItem}
+                  itemCount={itemCount}
+                  onChange={this.onItemsPerPageChange}
+                />
                 <PaginationBlock
                   key="paginationBlock"
                   currentPage={this.state.currentPage}
