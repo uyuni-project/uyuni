@@ -46,6 +46,8 @@ import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
+import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
+import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -239,6 +241,24 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
+    }
+
+    @Test
+    public void testCreateSupportdataAction() throws Exception {
+        Server server = ServerFactoryTest.createTestServer(admin, true);
+
+        Integer aid = handler.scheduleSupportDataUpload(admin, server.getId().intValue(),
+                "012345", "-i LVM", "EU", getNow());
+        assertNotNull(aid);
+
+        Action action = ActionFactory.lookupById(Long.valueOf(aid));
+        assertEquals(ActionFactory.TYPE_SUPPORTDATA_GET, action.getActionType());
+        assertEquals("Get and Upload Support data", action.getName());
+        SupportDataActionDetails details = ((SupportDataAction) action).getDetails();
+        assertNotNull(details);
+        assertEquals("012345", details.getCaseNumber());
+        assertEquals("-i LVM", details.getParameter());
+        assertEquals("EU", details.getGeoType().name());
     }
 
     @Test
