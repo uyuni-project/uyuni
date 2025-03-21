@@ -8,12 +8,19 @@
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
+package com.redhat.rhn.domain.action.supportdata;
 
-package com.redhat.rhn.domain.action;
+import com.redhat.rhn.domain.DatabaseEnumType;
 
 /**
- * SupportDataAction - Class representing TYPE_SUPPORTDATA_GET
+ * Maps the {@link UploadGeoType} enum to its label
  */
-public class SupportDataAction extends Action {
+public class UploadGeoEnumType extends DatabaseEnumType<UploadGeoType> {
 
+    /**
+     * Default Constructor
+     */
+    public UploadGeoEnumType() {
+        super(UploadGeoType.class);
+    }
 }
