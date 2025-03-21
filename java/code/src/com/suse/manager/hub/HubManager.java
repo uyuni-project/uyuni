@@ -66,7 +66,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import java.io.IOException;
@@ -80,8 +79,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -1034,34 +1031,27 @@ public class HubManager {
      * @param peripheralId the Peripheral ID
      * @return the Sync Channel operations model
      */
-    public ChannelSyncModel getChannelSyncModelForPeripheral(User user, Long peripheralId) {
-        try {
-            // Fetch all required data
-            List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(user, peripheralId);
-            Set<IssV3ChannelResponse> syncedChannels = getPeripheralChannels(user, peripheralId);
-            Set<IssV3ChannelResponse> hubVendorChannels = getHubVendorChannels(user);
-            Set<IssV3ChannelResponse> hubCustomChannels = getHubCustomChannels(user);
-
-            // Separate custom and vendor channels
-            Map<Boolean, Set<IssV3ChannelResponse>> partitionedChannels = partitionChannelsByType(syncedChannels);
-            Set<IssV3ChannelResponse> syncedCustomChannels = partitionedChannels.get(true);
-            Set<IssV3ChannelResponse> syncedVendorChannels = partitionedChannels.get(false);
-
-            // Filter to find available channels
-            List<IssV3ChannelResponse> availableCustomChannels = filterAvailableChannels(hubCustomChannels, syncedChannels);
-            List<IssV3ChannelResponse> availableVendorChannels = filterAvailableChannels(hubVendorChannels, syncedChannels);
-
-            return new ChannelSyncModel(
-                    peripheralOrgs,
-                    syncedCustomChannels,
-                    syncedVendorChannels,
-                    availableCustomChannels,
-                    availableVendorChannels
-            );
-        }
-        catch (CertificateException | IOException e) {
-            throw new RuntimeException(e);
-        }
+    public ChannelSyncModel getChannelSyncModelForPeripheral(User user, Long peripheralId)
+            throws CertificateException, IOException {
+        // Fetch all required data
+        List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(user, peripheralId);
+        Set<IssV3ChannelResponse> syncedChannels = getPeripheralChannels(user, peripheralId);
+        Set<IssV3ChannelResponse> hubVendorChannels = getHubVendorChannels(user);
+        Set<IssV3ChannelResponse> hubCustomChannels = getHubCustomChannels(user);
+        // Separate custom and vendor channels
+        Map<Boolean, Set<IssV3ChannelResponse>> partitionedChannels = partitionChannelsByType(syncedChannels);
+        Set<IssV3ChannelResponse> syncedCustomChannels = partitionedChannels.get(true);
+        Set<IssV3ChannelResponse> syncedVendorChannels = partitionedChannels.get(false);
+        // Filter to find available channels
+        List<IssV3ChannelResponse> availableCustomChannels = filterAvailableChannels(hubCustomChannels, syncedChannels);
+        List<IssV3ChannelResponse> availableVendorChannels = filterAvailableChannels(hubVendorChannels, syncedChannels);
+        return new ChannelSyncModel(
+                peripheralOrgs,
+                syncedCustomChannels,
+                syncedVendorChannels,
+                availableCustomChannels,
+                availableVendorChannels
+        );
     }
 
     /**
@@ -1071,15 +1061,11 @@ public class HubManager {
      */
     private Map<Boolean, Set<IssV3ChannelResponse>> partitionChannelsByType(Set<IssV3ChannelResponse> channels) {
         Map<Boolean, Set<IssV3ChannelResponse>> result = new HashMap<>();
-
         // Create partitioned lists based on whether channel has an org (custom) or not (vendor)
         Map<Boolean, List<IssV3ChannelResponse>> partitioned = channels.stream()
                 .collect(Collectors.partitioningBy(ch -> ch.getChannelOrg() != null));
-
-        // Convert lists to sets
         result.put(true, new HashSet<>(partitioned.get(true)));
         result.put(false, new HashSet<>(partitioned.get(false)));
-
         return result;
     }
 
@@ -1092,11 +1078,9 @@ public class HubManager {
     private List<IssV3ChannelResponse> filterAvailableChannels(
             Set<IssV3ChannelResponse> hubChannels,
             Set<IssV3ChannelResponse> syncedChannels) {
-
         // Create a map of synced channel labels for quick lookup
         Set<String> syncedLabels = createChannelLabelSet(syncedChannels);
         Map<String, String> childToParentMap = buildChildToParentMap(hubChannels);
-
         return hubChannels.stream()
                 .filter(channel -> isChannelAvailableForSync(channel, syncedLabels, childToParentMap))
                 .collect(Collectors.toList());

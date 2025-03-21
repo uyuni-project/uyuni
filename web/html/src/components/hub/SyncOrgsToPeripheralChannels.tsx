@@ -82,16 +82,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     this.setState({ selectedOrg: null, syncModalOpen: isOpen });
   }
 
-  // Handler for selected channels from the HierarchicalChannelTable
   handleSelectedChannels = (selectedItems: FlatChannel[]) => {
     this.setState({
       selectedChannels: selectedItems,
     });
   };
 
-  // Handler for unselected channels from the HierarchicalChannelTable
   handleUnselectedChannels = (unselectedItems: FlatChannel[]) => {
-    // Remove the unselected channels from selectedChannels
     const { selectedChannels } = this.state;
     const unselectedIds = new Set(unselectedItems.map((item) => item.channelId));
 
@@ -105,33 +102,21 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   onChannelSyncConfirm = () => {
     const { peripheralId, selectedChannels, selectedOrg } = this.state;
 
-    // Validate organization is selected
     if (!selectedOrg) {
-      // Show an error or warning to user that org must be selected
       return;
     }
-
     // Get channel IDs for the API call
     const channelIds = selectedChannels.map((channel) => channel.channelId);
-
     if (channelIds.length === 0) {
-      // Show warning that no channels are selected
       return;
     }
-
-    // Create the payload for the API
     const payload = {
       orgId: selectedOrg.orgId,
       channelIds: channelIds,
     };
 
-    // Set loading state
     this.setState({ loading: true });
-
-    // Define the API endpoint
     const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/sync-channels`;
-
-    // Make the API call
     Network.post(endpoint, payload)
       .then(() => {
         showSuccessToastr(t("Channels synced correctly to peripheral!"));
@@ -140,7 +125,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       })
       .then((response: SyncPeripheralsProps) => {
         this.setStateFromApiProps(response);
-        // Close the modal after successful sync
         this.openCloseModalState(false);
       })
       .catch((error) => {
@@ -151,7 +135,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
   onChannelSyncModalOpen = () => {
     const { selectedChannels } = this.state;
-
     // Only open the modal if there are channels selected
     if (selectedChannels.length > 0) {
       this.openCloseModalState(true);
@@ -167,10 +150,8 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
   render() {
     const { syncedChannels, availableChannels, selectedChannels, syncModalOpen, availableOrgs, loading } = this.state;
-
     // Combine available and synced channels for the full list
     const allChannels = [...availableChannels, ...syncedChannels];
-
     const searchData = (row, criteria) => {
       const keysToSearch = ["channelName", "channelLabel"];
       if (criteria) {
@@ -180,7 +161,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       return true;
     };
 
-    // Cell renderer functions defined outside the component
     const renderChannelName = (channel: FlatChannel): JSX.Element => <span>{channel.channelName}</span>;
 
     const renderChannelLabel = (channel: FlatChannel): JSX.Element => <span>{channel.channelLabel}</span>;
@@ -191,7 +171,6 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       <span>{channel.channelOrg ? channel.channelOrg.orgName : "SUSE"}</span>
     );
 
-    // Inside the component
     const selectedChannelsTable = (
       <>
         <Table

@@ -17,6 +17,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdm
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -37,6 +38,9 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,6 +67,8 @@ public class AdminViewsController {
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
     private static final HubManager HUB_MANAGER = new HubManager();
+
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private AdminViewsController() { }
 
@@ -157,8 +163,20 @@ public class AdminViewsController {
      */
     public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
-        long peripheralId = Long.parseLong(request.params("id"));
-        data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+        List<String> errors = new ArrayList<>();
+        try {
+            long peripheralId = Long.parseLong(request.params("id"));
+            data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+        }
+        catch (CertificateException eIn) {
+            errors.add(LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            errors.add(LOC.getMessage("hub.error_connecting_remote"));
+        }
+        if (errors.isEmpty()) {
+            data.put("errors", errors);
+        }
         return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
     }
 

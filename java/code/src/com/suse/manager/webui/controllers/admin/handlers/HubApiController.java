@@ -164,8 +164,18 @@ public class HubApiController {
 
     private String getPeripheralChannelSyncStatus(Request request, Response response, User satAdmin) {
         long peripheralId = Long.parseLong(request.params("id"));
-        ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
-        return json(response, GSON.toJson(syncModel));
+        try {
+            ChannelSyncModel syncModel = hubManager.getChannelSyncModelForPeripheral(satAdmin, peripheralId);
+            return json(response, GSON.toJson(syncModel));
+        }
+        catch (CertificateException eIn) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+            return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+            return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
+        }
     }
 
     // Define a functional interface that allows throwing CertificateException

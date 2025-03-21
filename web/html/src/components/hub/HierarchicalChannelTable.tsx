@@ -401,8 +401,6 @@ class ChannelList extends React.Component<ChannelListProps> {
       return null;
     }
 
-    // CRITICAL FIX: At the root level (treeLevel === 0), only display root channels
-    // This ensures child channels never appear at the top level
     const displayData =
       this.props.treeLevel === 0 ? channelData.filter((channel) => !channel.parentChannelLabel) : channelData;
 
@@ -621,7 +619,6 @@ class ChannelListItem extends React.Component<ChannelListItemProps> {
         {currentItem.channelName}
       </span>
     );
-    let channelLabelContent = <span className={"product-name"}>{currentItem.channelLabel}</span>;
 
     const evenOddClass = this.props.index % 2 === 0 ? "list-row-even" : "list-row-odd";
     const indentClass = this.props.treeLevel > 0 ? "nested-product-item" : "";
