@@ -133,7 +133,7 @@ class AccordionPathContent extends React.Component<PropsType, StateType> {
               icon="fa-file-text-o"
               text={p.name}
               handler={() => this.props.onSelectPlaybook(p)}
-              className="btn-link btn-sm"
+              className="btn-tertiary"
             />
           </dd>
         </dl>

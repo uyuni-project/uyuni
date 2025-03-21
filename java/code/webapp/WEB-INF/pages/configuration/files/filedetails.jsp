@@ -46,7 +46,7 @@
 
         <rhn:require acl="config_channel_editable()"
              mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
-        <div class="text-right">
+        <div>
             <html:submit styleClass="btn btn-primary"><bean:message key="filedetails.jsp.update" /></html:submit>
         </div>
         </rhn:require>

@@ -125,7 +125,7 @@ const ListFilters = (props: Props) => {
           id="create-filter-button"
           initialFilterForm={initialFilterForm}
           icon="fa-plus"
-          buttonText="Create Filter"
+          buttonText={t("Create Filter")}
           className="btn-primary"
           openFilterId={openFilterId}
           projectLabel={projectLabel}
@@ -142,7 +142,7 @@ const ListFilters = (props: Props) => {
       className="btn btn-danger"
       disabled={!selectedIdentifiers.length}
       handler={deleteSelectedRows}
-      text={t("Delete selected")}
+      text={t("Delete")}
     />
   );
 
@@ -197,15 +197,16 @@ const ListFilters = (props: Props) => {
         />
         <Column
           columnKey="action-buttons"
-          header={t("")}
+          header={t("Actions")}
+          width="30px"
           cell={(row) =>
             hasEditingPermissions && (
               <FilterEdit
                 id={`edit-filter-button-${row.id}`}
                 initialFilterForm={row}
-                icon="fa-edit"
-                buttonText="Edit Filter"
-                className="btn-link"
+                icon="fa-pencil"
+                buttonTitle={t("Edit Filter")}
+                className="btn-default btn-sm"
                 onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
                 openFilterId={openFilterId}
                 projectLabel={projectLabel}

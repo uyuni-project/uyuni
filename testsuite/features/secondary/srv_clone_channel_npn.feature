@@ -112,21 +112,21 @@ Feature: Clone a channel
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Clone-RPM-SLES15SP4-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Fake-Clone-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
     When I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Fake-Clone-2-RPM-SLES15SP4-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
     When I follow "Fake-Clone-3-RPM-SLES15SP4-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Fake-Clone-3-RPM-SLES15SP4-Channel" text
