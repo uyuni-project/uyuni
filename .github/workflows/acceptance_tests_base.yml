@@ -212,14 +212,14 @@ jobs:
 
       - name: Upload server log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 #v4.6.2
         with:
           name: server_rhn_logs_${{ inputs.server_id }}
           path: /tmp/testing/server-logs/${{ inputs.server_id }}
 
       - name: Upload client log artifacts
         if: ${{ failure() && !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/upload-artifact@4cec3d8aa04e39d1a68397de0c4cd6fb9dce8ec1 #v4.6.1
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 #v4.6.2
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs
