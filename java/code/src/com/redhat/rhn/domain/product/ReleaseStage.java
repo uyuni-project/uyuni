@@ -18,8 +18,8 @@ package com.redhat.rhn.domain.product;
  * Represent the Release Stage of a product
  */
 public enum ReleaseStage {
-    alpha,
-    beta,
-    released,
-    draft
+    ALPHA,
+    BETA,
+    RELEASED,
+    DRAFT
 }
