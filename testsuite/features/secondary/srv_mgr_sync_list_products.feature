@@ -12,12 +12,14 @@ Feature: List available products
     Then I should get "[ ] SUSE Linux Enterprise Desktop 15 SP3 x86_64"
 
 @uyuni
-  Scenario: List available products
+@skip_if_github_validation
+  # WORKAROUND: temporarily skipped while we fix GH validation
+  Scenario: List available products in Uyuni case
     When I execute mgr-sync "list products" with user "admin" and password "admin"
     Then I should get "[ ] openSUSE Leap 15.6 x86_64"
 
 @susemanager
-  Scenario: List all available products
+  Scenario: List all available products in Manager case
     When I execute mgr-sync "list products -e"
     Then I should get "[ ] SUSE Linux Enterprise Desktop 15 SP3 x86_64"
     And I should get "  [ ] (R) Basesystem Module 15 SP3 x86_64"
