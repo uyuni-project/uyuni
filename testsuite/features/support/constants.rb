@@ -56,8 +56,6 @@ ENV_VAR_BY_HOST = {
   'rocky8_ssh_minion' => 'ROCKY8_SSHMINION',
   'rocky9_minion' => 'ROCKY9_MINION',
   'rocky9_ssh_minion' => 'ROCKY9_SSHMINION',
-  'ubuntu2004_minion' => 'UBUNTU2004_MINION',
-  'ubuntu2004_ssh_minion' => 'UBUNTU2004_SSHMINION',
   'ubuntu2204_minion' => 'UBUNTU2204_MINION',
   'ubuntu2204_ssh_minion' => 'UBUNTU2204_SSHMINION',
   'ubuntu2404_minion' => 'UBUNTU2404_MINION',
@@ -502,7 +500,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64-uyuni',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64-uyuni',
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -541,7 +538,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'RHEL8-Pool for x86_64' => nil,
     'rockylinux-8 for x86_64' => nil,
     'rockylinux-9 for x86_64' => nil,
-    'ubuntu-2004-amd64-main for amd64' => nil,
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -571,7 +567,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => nil,
     'Rocky Linux 8 (x86_64)' => nil,
     'Rocky Linux 9 (x86_64)' => nil,
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -628,8 +623,6 @@ PKGARCH_BY_CLIENT = {
   'rocky8_ssh_minion' => 'x86_64',
   'rocky9_minion' => 'x86_64',
   'rocky9_ssh_minion' => 'x86_64',
-  'ubuntu2004_minion' => 'amd64',
-  'ubuntu2004_ssh_minion' => 'amd64',
   'ubuntu2204_minion' => 'amd64',
   'ubuntu2204_ssh_minion' => 'amd64',
   'ubuntu2404_minion' => 'amd64',
@@ -914,12 +907,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'sl-micro-6.1' =>
       %w[
         sl-micro-6.1-pool-x86_64
-      ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-amd64-main-amd64
-        ubuntu-2004-amd64-main-security-amd64
-        ubuntu-2004-amd64-main-updates-amd64
       ],
     'ubuntu-2204' =>
       %w[
@@ -1261,18 +1248,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sl-micro-6.1-pool-x86_64
         sl-micro-6.1-devel-uyuni-client-x86_64
       ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-pool-amd64-uyuni
-        ubuntu-2004-amd64-main-uyuni
-        ubuntu-2004-amd64-main-security-uyuni
-        ubuntu-2004-amd64-main-updates-uyuni
-        ubuntu-2004-amd64-universe-uyuni
-        ubuntu-2004-amd64-universe-backports-uyuni
-        ubuntu-2004-amd64-universe-security-uyuni
-        ubuntu-2004-amd64-universe-updates-uyuni
-        ubuntu-2004-amd64-uyuni-client-devel
-      ],
     'ubuntu-2204' => # CHECKED
       %w[
         ubuntu-2204-pool-amd64-uyuni
@@ -1284,18 +1259,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         ubuntu-2204-amd64-universe-updates-uyuni
         ubuntu-2204-amd64-universe-uyuni
         ubuntu-2204-amd64-uyuni-client-devel
-      ],
-    'ubuntu-2404' =>
-      %w[
-        ubuntu-2404-pool-amd64-uyuni
-        ubuntu-2404-amd64-main-security-uyuni
-        ubuntu-2404-amd64-main-updates-uyuni
-        ubuntu-2404-amd64-main-uyuni
-        ubuntu-2404-amd64-universe-backports-uyuni
-        ubuntu-2404-amd64-universe-security-uyuni
-        ubuntu-2404-amd64-universe-updates-uyuni
-        ubuntu-2404-amd64-universe-uyuni
-        ubuntu-2404-amd64-uyuni-client-devel
       ],
     'uyuni-proxy' => # CHECKED
       %w[
@@ -1552,18 +1515,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-multi-linux-manager-proxy-5.1-x86_64' => 60,
   'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' => 60,
   'test-child-channel-x86_64' => 360,
-  'ubuntu-2004-amd64-main-amd64' => 480,
-  'ubuntu-2004-amd64-main-security-amd64' => 3480,
-  'ubuntu-2004-amd64-main-security-uyuni' => 4200,
-  'ubuntu-2004-amd64-main-updates-amd64' => 660,
-  'ubuntu-2004-amd64-main-updates-uyuni' => 600,
-  'ubuntu-2004-amd64-main-uyuni' => 660,
-  'ubuntu-2004-amd64-universe-backports-uyuni' => 60,
-  'ubuntu-2004-amd64-universe-security-uyuni' => 900,
-  'ubuntu-2004-amd64-universe-updates-uyuni' => 240,
-  'ubuntu-2004-amd64-universe-uyuni' => 19_560,
-  'ubuntu-2004-amd64-uyuni-client-devel' => 120,
-  'ubuntu-2004-pool-amd64-uyuni' => 60,
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 2760,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
