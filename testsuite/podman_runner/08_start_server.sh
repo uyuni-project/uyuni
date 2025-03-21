@@ -74,3 +74,6 @@ sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-
 
 # mgrctl should not be installed in this container
 sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
+
+# increase docker client timeout, or "docker push" will time out.
+sudo -i podman exec -ti server bash -c "echo 'dockerclienttimeout: 120' > /srv/pillar/docker_client_timeout.sls"
