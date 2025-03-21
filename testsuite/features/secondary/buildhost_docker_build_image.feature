@@ -22,6 +22,11 @@ Feature: Build container images
   Scenario: Log in as org admin user
     Given I am authorized
 
+  Scenario: Increase docker timeout
+    When I install a salt pillar top file for "docker_client_timeout" with target "*" on the server
+    And I wait for "1" seconds
+    And I refresh the pillar data
+
   Scenario: Create a simple image profile without activation key
     When I follow the left menu "Images > Profiles"
     And I follow "Create"

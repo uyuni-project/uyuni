@@ -12,6 +12,11 @@ Feature: Build image with authenticated registry
   Scenario: Log in as docker user
     Given I am authorized as "docker" with password "docker"
 
+  Scenario: Increase docker timeout
+    When I install a salt pillar top file for "docker_client_timeout" with target "*" on the server
+    And I wait for "1" seconds
+    And I refresh the pillar data
+
   Scenario: Create an authenticated image store as Docker admin
     When I follow the left menu "Images > Stores"
     And I follow "Create"
