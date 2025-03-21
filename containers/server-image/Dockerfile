@@ -20,8 +20,6 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         spacewalk-backend-sql-postgresql \
         spacewalk-java-postgresql \
-        postgresql16-contrib \
-        postgresql16-server \
         postgresql16 \
         billing-data-service \
         grub2-x86_64-efi \
