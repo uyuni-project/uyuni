@@ -39,7 +39,7 @@
         </div>
       </div>
     </li>
-    <c:if test="${requestScope.typePlaybook}">
+    <c:if test="${requestScope.typePlaybook && not empty requestScope.inventory}">
       <li class="list-group-item">
         <div class="row">
           <div class="col-sm-2">
