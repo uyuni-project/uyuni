@@ -158,9 +158,8 @@ public class AdminViewsController {
     public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         long peripheralId = Long.parseLong(request.params("id"));
-        data.put("detailsData", GSON.toJson(null));
         data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
-        return new ModelAndView(data, "controllers/admin/templates/update-peripheral.jade");
+        return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
     }
 
 

@@ -2,13 +2,15 @@ import * as React from "react";
 
 import { Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
+import { Form, Select } from "components/input";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table, TableRef } from "components/table/Table";
-import { showSuccessToastr } from "components/toastr";
+import { showSuccessToastr, showWarningToastr } from "components/toastr";
 
 import Network from "utils/network";
 
+import { FlatChannel, flattenChannels } from "./ChannelFlatteningUtils";
 import { HierarchicalChannelTable } from "./HierarchicalChannelTable";
 import { Channel, Org } from "./types";
 
@@ -23,12 +25,13 @@ type SyncPeripheralsProps = {
 
 type State = {
   peripheralId: number;
-  syncedChannels: Channel[];
+  syncedChannels: FlatChannel[];
   availableOrgs: Org[];
-  availableChannels: Channel[];
+  availableChannels: FlatChannel[];
   syncModalOpen: boolean;
-  modalSelectedChannels: number[];
+  selectedChannels: FlatChannel[];
   selectedOrg: Org | null;
+  loading: boolean;
 };
 
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
@@ -36,53 +39,126 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
   constructor(props: SyncPeripheralsProps) {
     super(props);
+    // Convert hierarchical channels to flat channels
+    const syncedChannels = flattenChannels([...props.syncedCustomChannels, ...props.syncedVendorChannels]);
+    const availableChannels = flattenChannels([...props.availableCustomChannels, ...props.availableVendorChannels]);
+
     this.state = {
       peripheralId: props.peripheralId,
-      syncedChannels: props.syncedCustomChannels.concat(props.syncedVendorChannels),
+      syncedChannels,
       availableOrgs: props.availableOrgs,
-      availableChannels: props.availableCustomChannels.concat(props.availableVendorChannels),
+      availableChannels,
       syncModalOpen: false,
-      modalSelectedChannels: [],
+      selectedChannels: [],
       selectedOrg: null,
+      loading: false,
     };
   }
 
+  componentDidUpdate(prevProps: SyncPeripheralsProps) {
+    if (
+      prevProps.syncedCustomChannels !== this.props.syncedCustomChannels ||
+      prevProps.syncedVendorChannels !== this.props.syncedVendorChannels ||
+      prevProps.availableCustomChannels !== this.props.availableCustomChannels ||
+      prevProps.availableVendorChannels !== this.props.availableVendorChannels
+    ) {
+      this.setStateFromApiProps(this.props);
+    }
+  }
+
   private setStateFromApiProps(props: SyncPeripheralsProps) {
+    const syncedChannels = flattenChannels([...props.syncedCustomChannels, ...props.syncedVendorChannels]);
+    const availableChannels = flattenChannels([...props.availableCustomChannels, ...props.availableVendorChannels]);
+
     this.setState({
-      syncedChannels: props.syncedCustomChannels.concat(props.syncedVendorChannels),
+      syncedChannels,
       availableOrgs: props.availableOrgs,
-      availableChannels: props.availableCustomChannels.concat(props.availableVendorChannels),
+      availableChannels,
+      loading: false,
     });
   }
 
   private openCloseModalState(isOpen: boolean) {
-    this.setState({ selectedOrg: null, modalSelectedChannels: [], syncModalOpen: isOpen });
+    this.setState({ selectedOrg: null, syncModalOpen: isOpen });
   }
 
-  onChannelSyncConfirm = (event) => {
-    const { peripheralId, modalSelectedChannels } = this.state;
+  // Handler for selected channels from the HierarchicalChannelTable
+  handleSelectedChannels = (selectedItems: FlatChannel[]) => {
+    this.setState({
+      selectedChannels: selectedItems,
+    });
+  };
+
+  // Handler for unselected channels from the HierarchicalChannelTable
+  handleUnselectedChannels = (unselectedItems: FlatChannel[]) => {
+    // Remove the unselected channels from selectedChannels
+    const { selectedChannels } = this.state;
+    const unselectedIds = new Set(unselectedItems.map((item) => item.channelId));
+
+    const updatedSelectedChannels = selectedChannels.filter((channel) => !unselectedIds.has(channel.channelId));
+
+    this.setState({
+      selectedChannels: updatedSelectedChannels,
+    });
+  };
+
+  onChannelSyncConfirm = () => {
+    const { peripheralId, selectedChannels, selectedOrg } = this.state;
+
+    // Validate organization is selected
+    if (!selectedOrg) {
+      // Show an error or warning to user that org must be selected
+      return;
+    }
+
+    // Get channel IDs for the API call
+    const channelIds = selectedChannels.map((channel) => channel.channelId);
+
+    if (channelIds.length === 0) {
+      // Show warning that no channels are selected
+      return;
+    }
+
+    // Create the payload for the API
+    const payload = {
+      orgId: selectedOrg.orgId,
+      channelIds: channelIds,
+    };
+
+    // Set loading state
+    this.setState({ loading: true });
+
+    // Define the API endpoint
     const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/sync-channels`;
 
-    const syncChannels = () =>
-      Network.post(endpoint, modalSelectedChannels).then(() => {
+    // Make the API call
+    Network.post(endpoint, payload)
+      .then(() => {
         showSuccessToastr(t("Channels synced correctly to peripheral!"));
+        // Refresh the data after successful sync
         return Network.get(endpoint);
-      });
-    syncChannels()
+      })
       .then((response: SyncPeripheralsProps) => {
         this.setStateFromApiProps(response);
+        // Close the modal after successful sync
+        this.openCloseModalState(false);
       })
       .catch((error) => {
         Network.showResponseErrorToastr(error);
+        this.setState({ loading: false });
       });
   };
 
-  onChannelToSyncSelect = (channelsIds: number[]) => {
-    this.setState({ modalSelectedChannels: channelsIds });
-  };
-
   onChannelSyncModalOpen = () => {
-    this.openCloseModalState(true);
+    const { selectedChannels } = this.state;
+
+    // Only open the modal if there are channels selected
+    if (selectedChannels.length > 0) {
+      this.openCloseModalState(true);
+    } else {
+      // Show a message that no channels are selected
+      showWarningToastr(t("Please select at least one channel to sync"));
+    }
   };
 
   onChannelSyncModalClose = () => {
@@ -90,10 +166,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   render() {
-    const { syncedChannels, availableChannels, modalSelectedChannels, syncModalOpen } = this.state;
+    const { syncedChannels, availableChannels, selectedChannels, syncModalOpen, availableOrgs, loading } = this.state;
+
+    // Combine available and synced channels for the full list
+    const allChannels = [...availableChannels, ...syncedChannels];
 
     const searchData = (row, criteria) => {
-      const keysToSearch = ["name"];
+      const keysToSearch = ["channelName", "channelLabel"];
       if (criteria) {
         const needle = criteria.toLocaleLowerCase();
         return keysToSearch.map((key) => row[key]).some((item) => item.toLocaleLowerCase().includes(needle));
@@ -101,83 +180,112 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       return true;
     };
 
-    const syncedChannelsTable = (
+    // Cell renderer functions defined outside the component
+    const renderChannelName = (channel: FlatChannel): JSX.Element => <span>{channel.channelName}</span>;
+
+    const renderChannelLabel = (channel: FlatChannel): JSX.Element => <span>{channel.channelLabel}</span>;
+
+    const renderChannelArch = (channel: FlatChannel): JSX.Element => <span>{channel.channelArch}</span>;
+
+    const renderChannelOrg = (channel: FlatChannel): JSX.Element => (
+      <span>{channel.channelOrg ? channel.channelOrg.orgName : "SUSE"}</span>
+    );
+
+    // Inside the component
+    const selectedChannelsTable = (
       <>
-        <span>
-          <h3>{t("Synced Channels")}</h3>
-        </span>
         <Table
-          data={syncedChannels}
-          identifier={(row: Channel) => row.channelId}
+          data={selectedChannels}
+          identifier={(row: FlatChannel) => row.channelId}
           selectable={false}
-          initialSortColumnKey="name"
+          initialSortColumnKey="channelName"
           ref={this.tableRef}
           searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
         >
-          <Column columnKey="name" header={t("Name")} cell={(row: Channel) => <span>{row.channelName}</span>} />
-          <Column columnKey="label" header={t("Label")} cell={(row: Channel) => <span>{row.channelLabel}</span>} />
-          <Column columnKey="arch" header={t("Arch")} cell={(row: Channel) => <span>{row.channelArch}</span>} />
-          <Column
-            columnKey="orgName"
-            header={t("Org")}
-            cell={(row: Channel) => <span>{row.channelOrg ? row.channelOrg.orgName : "SUSE"}</span>}
-          />
-          <Column columnKey="remove" header={t("Remove")} cell={(row: Channel) => <i className="fa fa-trash"></i>} />
+          <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
+          <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
+          <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
+          <Column columnKey="orgName" header={t("Org")} cell={renderChannelOrg} />
         </Table>
       </>
     );
 
     const modalContent = (
       <>
-        <span>
-          <h4>Select an organization from the Peripheral to Sync your channels to: //TODO: SelectBox</h4>
-        </span>
-        <span>(Vendor channels are automatically synced to SUSE Organization)</span>
-        <span>
-          <h3>{t("Available Channels")}</h3>
-        </span>
-        <HierarchicalChannelTable data={availableChannels} />
+        <div className="mb-4">
+          <h4>{t("Select an organization from the Peripheral to Sync your channels to:")}</h4>
+          <Form>
+            <Select
+              name="channel-orgs"
+              placeholder={t("Select Organization")}
+              options={availableOrgs.map((org) => ({
+                value: org.orgId,
+                label: org.orgName,
+              }))}
+              onChange={(_, selectedOrgId) => {
+                const selectedOrg = availableOrgs.find((org) => org.orgId === selectedOrgId);
+                this.setState({ selectedOrg: selectedOrg || null });
+              }}
+            />
+          </Form>
+          <small>{t("(Vendor channels are automatically synced to SUSE Organization)")}</small>
+        </div>
+        <h3 className="mt-4">{t("Selected Channels to Sync")}</h3>
+        <p>
+          {t("You have selected")} <strong>{selectedChannels.length}</strong> {t("channels to sync")}
+        </p>
+        {selectedChannelsTable}
       </>
     );
 
     const modalFooter = (
-      <>
-        <div className="col-lg-6">
-          <div className="pull-right btn-group">
-            <Button
-              id="sync-modal-confirm"
-              className="btn-primary"
-              text={t("Confirm")}
-              handler={this.onChannelSyncConfirm}
-            />
-            <Button
-              id="sync-modal-cancel"
-              className="btn-danger"
-              text="Cancel"
-              handler={this.onChannelSyncModalClose}
-            />
-          </div>
+      <div className="col-lg-12">
+        <div className="pull-right btn-group">
+          <Button
+            id="sync-modal-confirm"
+            className="btn-primary"
+            text={t("Confirm")}
+            disabled={loading || !this.state.selectedOrg || selectedChannels.length === 0}
+            handler={this.onChannelSyncConfirm}
+          />
+          <Button
+            id="sync-modal-cancel"
+            className="btn-default"
+            text={t("Cancel")}
+            disabled={loading}
+            handler={this.onChannelSyncModalClose}
+          />
         </div>
-      </>
+      </div>
     );
 
     return (
       <div className="container mt-4">
         <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
-        <div className="synced-channels mb-3">{syncedChannelsTable}</div>
-        {/* Modal Button to Open the Channel Selection Modal */}
-        <div className="text-center mb-4">
+
+        {/* HierarchicalChannelTable with proper handlers */}
+        <HierarchicalChannelTable
+          channels={allChannels}
+          loading={loading}
+          handleSelectedItems={this.handleSelectedChannels}
+          handleUnselectedItems={this.handleUnselectedChannels}
+        />
+
+        {/* Button to Open the Channel Selection Modal */}
+        <div className="text-center mt-4 mb-4">
           <Button
             className="btn-primary"
             title={t("Add Channels")}
             text={t("Add Channels")}
+            disabled={loading || selectedChannels.length === 0}
             handler={this.onChannelSyncModalOpen}
           />
         </div>
-        {/* Modal Dialog with Available Channels Table */}
+
+        {/* Modal Dialog with Selected Channels Table */}
         <Dialog
           id="sync-channel-modal"
-          title={t("Add Channel to Sync")}
+          title={t("Confirm Channel Synchronization")}
           content={modalContent}
           isOpen={syncModalOpen}
           footer={modalFooter}
@@ -187,4 +295,5 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     );
   }
 }
+
 export default SyncOrgsToPeripheralChannel;

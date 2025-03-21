@@ -1,14 +1,15 @@
 include /templates/common.jade
 
-#list-peripherals
+#peripheral-details
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
 
 script(type='text/javascript').
-    spaImportReactPage('admin/hub/peripherals')
+    spaImportReactPage('admin/hub/peripherals/:id')
         .then(function (module) {
             module.renderer(
-                'list-peripherals', !{peripherals}
+                'peripheral-details',
+                !{channelsSyncData}
             )
         });

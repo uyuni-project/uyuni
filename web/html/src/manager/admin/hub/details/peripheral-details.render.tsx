@@ -18,26 +18,29 @@ type ChannelSyncProps = {
   availableVendorChannels: Channel[];
 };
 
-export const renderer = (
-  id: string,
-  detailsData: PeripheralDetailsProps | null,
-  channelsSyncData: ChannelSyncProps
-) => {
+export const renderer = (id: string, channelsSyncData: ChannelSyncProps) => {
   // TODO: find a better way to get path parameters
   const pathname = window.location.pathname;
   const segments = pathname.split("/").filter(Boolean);
   const peripheralId = Number(segments[segments.length - 1]);
+  const mapAvailableChannels = (ch: Channel) => {
+    ch.synced = false;
+    return ch;
+  }
+  const mapSyncedChannels = (ch: Channel) => {
+    ch.synced = true;
+    return ch;
+  };
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
-      <PeripheralDetails fqdn={""} />
       <SyncOrgsToPeripheralChannel
         peripheralId={peripheralId}
         availableOrgs={channelsSyncData.peripheralOrgs}
-        availableCustomChannels={channelsSyncData.availableCustomChannels}
-        availableVendorChannels={channelsSyncData.availableVendorChannels}
-        syncedCustomChannels={channelsSyncData.syncedPeripheralCustomChannels}
-        syncedVendorChannels={channelsSyncData.syncedPeripheralVendorChannels}
+        availableCustomChannels={channelsSyncData.availableCustomChannels.map(mapAvailableChannels)}
+        availableVendorChannels={channelsSyncData.availableVendorChannels.map(mapAvailableChannels)}
+        syncedCustomChannels={channelsSyncData.syncedPeripheralCustomChannels.map(mapSyncedChannels)}
+        syncedVendorChannels={channelsSyncData.syncedPeripheralVendorChannels.map(mapSyncedChannels)}
       />
     </RolesProvider>,
     document.getElementById(id)
