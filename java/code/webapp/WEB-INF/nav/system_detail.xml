@@ -10,9 +10,8 @@
     <rhn-tab name="Remote Command" acl="authorized_for(systems.details.remote_commands); system_feature(ftr_remote_command); not is(java.disable_remote_commands_from_ui)">
       <rhn-tab-url>/rhn/systems/details/SystemRemoteCommand.do</rhn-tab-url>
     </rhn-tab>
-    <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
-    <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()">
-    </rhn-tab>
+    <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies(); authorized_for(systems.details.connection)"/>
+    <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy(); authorized_for(systems.details.proxy)"/>
     <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
     <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="authorized_for(systems.details.activation); system_feature(ftr_agent_smith)"/>
     <rhn-tab name="Hardware" acl="authorized_for(systems.details.hardware); not system_has_foreign_entitlement() or not system_is_proxy()">

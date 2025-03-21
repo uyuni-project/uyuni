@@ -83,12 +83,8 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
 
 # System details
-# TODO: systems/details/Connection.do
-# TODO: systems/details/ProxyClients.do
-# TODO: systems/details/mgr-server-info
 # TODO: systems/details/packages/VerifyPackages.do
 # TODO: systems/details/ptf/...
-
 ,/manager/systems/:id,GET,W,t,systems.details.overview,R
 ,/systems/details/Overview.do,GET,W,t,systems.details.overview,R
 ,/systems/details/Edit.do,GET,W,t,systems.details.overview,W
@@ -109,6 +105,12 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/DeleteCustomData.do,POST,W,t,systems.details.custom_data,W
 ,/systems/details/SystemRemoteCommand.do,GET,W,t,systems.details.remote_commands,W
 ,/systems/details/SystemRemoteCommand.do,POST,W,t,systems.details.remote_commands,W
+,/systems/details/Connection.do,GET,W,t,systems.details.connection,R
+,/manager/systems/details/proxy,GET,W,t,systems.details.connection,W
+,/manager/api/systems/proxy,POST,W,t,systems.details.connection,W
+,/systems/details/ProxyClients.do,GET,W,t,systems.details.proxy,R
+,/systems/details/ProxyClients.do,POST,W,t,systems.details.proxy,R
+# TODO: Peripheral server (mgr-server-info)
 ,/systems/details/Activation.do,GET,W,t,systems.details.activation,R
 ,/systems/details/Activation.do,POST,W,t,systems.details.activation,R
 ,/systems/details/SystemHardware.do,GET,W,t,systems.details.hardware,R
@@ -199,7 +201,7 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/groups/Add.do,GET,W,t,systems.groups.join,W
 ,/systems/details/groups/Add.do,POST,W,t,systems.groups.join,W
 
-# TODO: System audit (openSCAP, coco)
+# TODO: System audit (openSCAP, coco) ns:systems.details.audit
 
 # System states
 ,/manager/systems/details/highstate,GET,W,t,systems.states.highstate,R
@@ -318,7 +320,7 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/customdata/UpdateCustomKey.do,GET,W,t,systems.custom_data,W
 ,/systems/customdata/UpdateCustomKey.do,POST,W,t,systems.custom_data,W
 
-# TODO: Autoinstallation
+# TODO: Autoinstallation (Provisioning) ns:systems.details.provisioning
 
 ,/manager/vhms,GET,W,t,systems.vhms,R
 ,/manager/api/vhms,GET,W,t,systems.vhms,R
