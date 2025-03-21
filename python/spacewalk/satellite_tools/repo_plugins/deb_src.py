@@ -24,7 +24,6 @@ import fnmatch
 import requests
 import logging
 from functools import cmp_to_key
-from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common.rhnConfig import cfg_component
@@ -33,6 +32,8 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
 from spacewalk.common import repo
+
+import looseversion
 
 try:
     #  python 2
@@ -477,9 +478,9 @@ class ContentSource:
                 # pylint: disable-next=consider-using-f-string
                 ident = "{}.{}".format(pkg.name, pkg.arch)
                 # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or LooseVersion(
+                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
                     pkg.evr()
-                ) > LooseVersion(latest_pkgs[ident].evr()):
+                ) > looseversion.LooseVersion(latest_pkgs[ident].evr()):
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
         pkglist.sort(key=cmp_to_key(self._sort_packages))
