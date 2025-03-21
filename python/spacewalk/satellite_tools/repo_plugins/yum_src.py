@@ -51,6 +51,7 @@ import traceback
 # pylint: disable-next=unused-import
 import types
 import urlgrabber
+import looseversion
 import json
 
 try:
@@ -63,7 +64,6 @@ except:
 import xml.etree.ElementTree as etree
 
 from functools import cmp_to_key
-from salt.utils.versions import LooseVersion
 from shlex import quote as sh_quote
 from uyuni.common import checksum, fileutils
 from spacewalk.common import rhnLog
@@ -1500,9 +1500,9 @@ password={passwd}
                 # pylint: disable-next=consider-using-f-string
                 ident = "{}.{}".format(pkg.name, pkg.arch)
                 # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or LooseVersion(
+                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
                     str(pkg.evr)
-                ) > LooseVersion(str(latest_pkgs[ident].evr)):
+                ) > looseversion.LooseVersion(str(latest_pkgs[ident].evr)):
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
