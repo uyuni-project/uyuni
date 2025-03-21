@@ -92,7 +92,6 @@ public class PackageManager extends BaseManager {
         DEPENDENCY_TYPES = {"requires", "conflicts", "obsoletes", "provides",
             "recommends", "suggests", "supplements", "enhances", "predepends", "breaks"};
 
-
     private static final String[]
         CLEANUP_QUERIES = {"requires", "provides", "conflicts", "obsoletes",
             "recommends", "suggests", "supplements", "enhances", "predepends", "breaks",
@@ -233,7 +232,7 @@ public class PackageManager extends BaseManager {
      * @param cid the channel id
      * @return the list of packages
      */
-    public static DataResult listPackagesInChannelForList(Long cid) {
+    public static DataResult<PackageOverview> listPackagesInChannelForList(Long cid) {
         SelectMode m = ModeFactory.getMode("Package_queries", "packages_in_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -262,7 +261,7 @@ public class PackageManager extends BaseManager {
      * @param pid The package id for the package in question
      * @return Returns a list of errata that provide the given package
      */
-    public static DataResult providingErrata(Long orgId, Long pid) {
+    public static DataResult<Errata> providingErrata(Long orgId, Long pid) {
         SelectMode m = ModeFactory.getMode("Errata_queries", "org_pkg_errata");
         Map<String, Object> params = new HashMap<>();
         params.put("pid", pid);
@@ -599,10 +598,9 @@ public class PackageManager extends BaseManager {
         params.put("name", packageName);
         SelectMode m = ModeFactory.getMode("Package_queries",
                 "server_packages_needing_update");
-        DataResult dr = m.execute(params);
+        DataResult<Map<String, Long>> dr = m.execute(params);
         if (!dr.isEmpty()) {
-            Long id = (Long) ((Map) dr.get(0)).get("id");
-            return id;
+            return (Long) ((Map) dr.get(0)).get("id");
         }
         return null;
     }
@@ -885,7 +883,7 @@ public class PackageManager extends BaseManager {
      * @param pc PageControl object needed to handle pagination issues.
      * @return DataResult of PackageComparisons
      */
-    public static DataResult possiblePackagesForPushingIntoChannel(Long cid, Long eid,
+    public static DataResult<PackageComparison> possiblePackagesForPushingIntoChannel(Long cid, Long eid,
                                                             PageControl pc) {
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
@@ -894,19 +892,18 @@ public class PackageManager extends BaseManager {
         SelectMode m1 = ModeFactory.getMode("Package_queries",
                                            "possible_packages_for_pushing_into_channel");
 
-        DataResult possiblePackages = m1.execute(params);
+        DataResult<PackageComparison> possiblePackages = m1.execute(params);
 
         SelectMode m2 = ModeFactory.getMode("Package_queries",
             "packages_in_errata_not_in_channel");
 
-        DataResult notInChannelPackages = m2.execute(params);
-        Iterator i = notInChannelPackages.iterator();
+        DataResult<PackageComparison> notInChannelPackages = m2.execute(params);
+        Iterator<PackageComparison> i = notInChannelPackages.iterator();
 
         // Remove packages that are in both queries
         while (i.hasNext()) {
-            PackageComparison po = (PackageComparison) i.next();
-            for (Object possiblePackageIn : possiblePackages) {
-                PackageComparison pinner = (PackageComparison) possiblePackageIn;
+            PackageComparison po = i.next();
+            for (PackageComparison pinner : possiblePackages) {
                 if (pinner.getId().equals(po.getId())) {
                     LOG.debug("possiblePackagesForPushingIntoChannel removing: {}", pinner.getId());
                     i.remove();
@@ -1001,7 +998,7 @@ public class PackageManager extends BaseManager {
      * @return package metadata for all packages named 'packageName' and exist
      * in the channels whose arch is one of the 'channelArches'.
      */
-    public static DataResult lookupPackageNameOverview(
+    public static DataResult<PackageOverview> lookupPackageNameOverview(
             Org org, String packageName, String[] channelarches) {
 
         Map<String, Object> params = new HashMap<>();
@@ -1022,7 +1019,7 @@ public class PackageManager extends BaseManager {
      * @return package metadata for all packages named 'packageName' and exist
      * in the channels which which the orgId is subscribed.
      */
-    public static DataResult lookupPackageNameOverview(Org org, String packageName) {
+    public static DataResult<PackageOverview> lookupPackageNameOverview(Org org, String packageName) {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
         params.put("package_name", packageName);
@@ -1047,7 +1044,7 @@ public class PackageManager extends BaseManager {
      * @return package metadata for all packages named 'packageName' and exist
      * in the channels which which the orgId is subscribed.
      */
-    public static DataResult lookupPackageNameOverviewInChannel(Org org, String packageName,
+    public static DataResult<PackageOverview> lookupPackageNameOverviewInChannel(Org org, String packageName,
             Long channelID) {
         Map<String, Object> params = new HashMap<>();
         params.put("org_id", org.getId());
@@ -1108,7 +1105,7 @@ public class PackageManager extends BaseManager {
      * @param otherCid channel id which we compare to
      * @return DataResult of PackageOverview objects
      */
-    public static DataResult comparePackagesBetweenChannels(Long thisCid, Long otherCid) {
+    public static DataResult<PackageOverview> comparePackagesBetweenChannels(Long thisCid, Long otherCid) {
         Map<String, Object> params = new HashMap<>();
         params.put("this_cid", thisCid);
         params.put("other_cid", otherCid);
@@ -1116,7 +1113,7 @@ public class PackageManager extends BaseManager {
             SelectMode m = ModeFactory.getMode(
                     "Package_queries", "compare_managed_channel_packages");
 
-            DataResult dr = m.execute(params);
+            DataResult<PackageOverview> dr = m.execute(params);
             dr.setElaborationParams(new HashMap<>());
             return dr;
     }
@@ -1128,7 +1125,7 @@ public class PackageManager extends BaseManager {
      * @param cmpType compare type
      * @return DataResult of PackageMergeDto objects
      */
-    public static DataResult comparePackagesBetweenChannelsPreview(Long thisCid,
+    public static DataResult<PackageMergeDto> comparePackagesBetweenChannelsPreview(Long thisCid,
                          Long otherCid, String cmpType) {
         Map<String, Object> params = new HashMap<>();
         params.put("this_cid", thisCid);
@@ -1138,7 +1135,7 @@ public class PackageManager extends BaseManager {
             SelectMode m = ModeFactory.getMode(
                     "Package_queries", "managed_channel_merge_preview");
 
-            DataResult dr = m.execute(params);
+            DataResult<PackageMergeDto> dr = m.execute(params);
             dr.setElaborationParams(new HashMap<>());
             return dr;
     }
@@ -1461,8 +1458,8 @@ public class PackageManager extends BaseManager {
         SelectMode selectMode = ModeFactory.getMode("Package_queries",
             "determine_channels_for_packages_in_set");
 
-        DataResult dataResult = selectMode.execute(params);
-        Set<Map> channelIds = new HashSet<Map>(dataResult);
+        DataResult<Row> dataResult = selectMode.execute(params);
+        Set<Row> channelIds = new HashSet<>(dataResult);
 
         // Clear server->package cache for all packages
         mode = ModeFactory.getWriteMode("Package_queries",
@@ -1507,7 +1504,7 @@ public class PackageManager extends BaseManager {
         // For now, continue to use repeated calls to the managers rather than having the
         // calls take place using the data in the package IDs RhnSet
         List<Long> pList = new ArrayList<>(ids);
-        for (Map channelIdData : channelIds) {
+        for (Map<String, Object> channelIdData : channelIds) {
             Long channelId = (Long) channelIdData.get("channel_id");
             ChannelManager.refreshWithNewestPackages(channelId, "web.package_delete");
             ErrataCacheManager.deleteCacheEntriesForChannelPackages(channelId, pList);
@@ -1576,7 +1573,7 @@ public class PackageManager extends BaseManager {
         SelectMode m = ModeFactory.getMode(
                 "Package_queries", "guestimate_package_by_channel");
 
-        DataResult dr = m.execute(params);
+        DataResult<PackageFactory> dr = m.execute(params);
         if (dr != null && !dr.isEmpty()) {
             return PackageFactory.lookupByIdAndOrg(
                     (Long) ((Map)dr.get(0)).get("id"), org);
@@ -1612,7 +1609,7 @@ public class PackageManager extends BaseManager {
                     "Package_queries", "guestimate_package_by_system");
         }
 
-        DataResult dr = m.execute(params);
+        DataResult<PackageFactory> dr = m.execute(params);
         if (dr != null && !dr.isEmpty()) {
             return PackageFactory.lookupByIdAndOrg(
                     (Long) ((Map)dr.get(0)).get("id"), org);
@@ -1714,7 +1711,7 @@ public class PackageManager extends BaseManager {
      * @param packageId the package id
      * @return A list of package dto objects
      */
-    public static DataResult getRepoData(Long packageId) {
+    public static DataResult<PackageListItem> getRepoData(Long packageId) {
         SelectMode m = ModeFactory.getMode("Package_queries", "lookup_repodata");
         Map<String, Object> params = new HashMap<>();
         params.put("pid", packageId);
@@ -1756,8 +1753,12 @@ public class PackageManager extends BaseManager {
 
     private static String getAssociatedRelease(Package pack) {
         for (Channel chan : pack.getChannels()) {
+            List<String> releases = new ArrayList<>();
             for (DistChannelMap map : chan.getDistChannelMaps()) {
-                return map.getRelease();
+                String release = map.getRelease();
+                if (release != null && !release.isEmpty()) {
+                    releases.add(release);
+                }
             }
         }
         return null;

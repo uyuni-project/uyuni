@@ -29,6 +29,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
+import com.redhat.rhn.frontend.dto.PackageComparison;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -67,9 +68,9 @@ public class PackagePushSetupAction extends RhnListAction {
 
         RhnSet targetChannels = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
 
-        Set set = targetChannels.getElements();
+        Set<RhnSetElement> set = targetChannels.getElements();
 
-        Iterator i = set.iterator();
+        Iterator<RhnSetElement> i = set.iterator();
 
         RhnSet packageSet = RhnSetDecl.PACKAGES_TO_PUSH.get(user);
 
@@ -88,9 +89,9 @@ public class PackagePushSetupAction extends RhnListAction {
                 mapping.findForward("finished");
             }
 
-            RhnSetElement element = (RhnSetElement) i.next();
+            RhnSetElement element = i.next();
             Long cid = element.getElement();
-            DataResult dr = PackageManager.
+            DataResult<PackageComparison> dr = PackageManager.
                             possiblePackagesForPushingIntoChannel(cid, eid, pc);
 
             i.remove();
