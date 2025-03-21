@@ -20,15 +20,19 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
+
       - name: Use Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - run: npm i ioredis
+
       - id: changed_files
         uses: Ana06/get-changed-files@v2.3.0
         with:
           filter: '*.java'
+
       - id: tests_covering_pr
         name: Tests covering the Pull Request
         env:
@@ -40,6 +44,7 @@ jobs:
           recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.added_modified }})
           echo "recommended_tests=$recommended_tests" >> $GITHUB_OUTPUT
           echo "Recommended Tests: $recommended_tests"
+
       - name: Determine if we should run the full test suite
         id: determine_running_full_testsuite
         run: |
@@ -49,31 +54,59 @@ jobs:
           else
             echo "run_full_testsuite=false" >> $GITHUB_OUTPUT
           fi
+
     outputs:
       recommended_tests: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
       run_full_testsuite: ${{ steps.determine_running_full_testsuite.outputs.run_full_testsuite }}
 
-  recommended:
+  trigger-recommended:
     name: Recommended Tests
     needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_recommended.yml
-    secrets: inherit
-    with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == 'true' }}
-      recommended_tests: ${{ needs.determine_tests.outputs.recommended_tests }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-recommended-tests
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          client-payload: |
+            {
+              "ref": "${{ github.event.pull_request.head.ref }}",
+              "skip_tests": "${{ needs.determine_tests.outputs.run_full_testsuite == 'true' }}",
+              "recommended_tests": "${{ needs.determine_tests.outputs.recommended_tests }}"
+            }
 
-  acceptance:
+  trigger-acceptance:
     name: Acceptance Tests
     needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_sequential.yml
-    secrets: inherit
-    with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-acceptance-tests
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          client-payload: |
+            {
+              "ref": "${{ github.event.pull_request.head.ref }}",
+              "skip_tests": "${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}"
+            }
 
-  additional:
+  trigger-additional:
     name: Additional Tests
     needs: determine_tests
-    uses: ./.github/workflows/acceptance_tests_parallel.yml
-    secrets: inherit
-    with:
-      skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: run-additional-tests
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          client-payload: |
+            {
+              "ref": "${{ github.event.pull_request.head.ref }}",
+              "skip_tests": "${{ needs.determine_tests.outputs.run_full_testsuite != 'true' }}"
+            }

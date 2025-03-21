@@ -1,10 +1,5 @@
 name: Additional Tests
 on:
-  workflow_call:
-    inputs:
-      skip_tests:
-        required: true
-        type: boolean
   repository_dispatch:
     types: [run-additional-tests]
 
@@ -19,7 +14,7 @@ jobs:
     with:
       tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
       server_id: "additional_${{ matrix.set }}"
-      skip_tests: ${{ inputs.skip_tests == true }}
+      skip_tests: ${{ github.event.client_payload.skip_tests == 'true' }}
   scheduled-additional-tests:
     name: Scheduled ${{ matrix.set }}
     if: ${{ github.event_name == 'repository_dispatch' }}
