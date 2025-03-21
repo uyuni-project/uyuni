@@ -2,6 +2,7 @@ import * as React from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
+import { DropdownButton } from "components/buttons";
 type PaginationBlockProps = {
   currentPage: number;
   lastPage: number;
@@ -20,22 +21,22 @@ const PaginationBlock = (props: PaginationBlockProps) => {
           <PaginationButton
             onClick={() => onPageChange(1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
-            text={t("First")}
+            icon="fa-angle-double-left "
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
-            text={t("Prev")}
+            icon="fa-angle-left "
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage + 1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
-            text={t("Next")}
+            icon="fa-angle-right"
           />
           <PaginationButton
             onClick={() => onPageChange(lastPage)}
             disabled={DEPRECATED_unsafeEquals(currentPage, lastPage)}
-            text={t("Last")}
+            icon="fa-angle-double-right"
           />
         </div>
       </div>
@@ -52,33 +53,48 @@ const PaginationBlock = (props: PaginationBlockProps) => {
 type PaginationButtonProps = {
   disabled?: boolean;
   onClick: (...args: any[]) => any;
-  text: React.ReactNode;
+  text?: React.ReactNode;
+  icon?: string
 };
+const PaginationButton = (props: PaginationButtonProps) => {
+  return (
 
-const PaginationButton = (props: PaginationButtonProps) => (
-  <button type="button" className="btn btn-default" disabled={props.disabled} onClick={props.onClick}>
-    {props.text}
-  </button>
-);
+    <button type="button" className="btn btn-default" disabled={props.disabled} onClick={props.onClick}>
+      {<i className={"fa " + props.icon} />}{props.text}
+    </button>
+  )
+};
 
 type ItemsPerPageSelectorProps = {
   currentValue: number;
   onChange: (value: number) => any;
+  itemCount: number;
+  fromItem: number;
+  toItem: number;
 };
 
 const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
-  <select
-    name="pageSize"
-    className="display-number"
-    defaultValue={props.currentValue}
-    onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-  >
-    {[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
-      <option value={o} key={o}>
-        {o}
-      </option>
-    ))}
-  </select>
+  <div>
+    <DropdownButton
+      text={t("{from} - {to} of {total} Items", { from: props.fromItem, to: props.toItem, total: props.itemCount })}
+      className="page-selector"
+      items={[5, 10, 15, 25, 50, 100, 250, 500].map((o) => (
+        <a
+          key={o}
+          href="#"
+          className="d-flex justify-content-between"
+          onClick={(e) => {
+            e.preventDefault();
+            props.onChange(o);
+          }}
+        >
+          <div>{o} per page</div>
+          <div>{props.currentValue === o ? <i className="fa fa-check" /> : null}
+          </div>
+        </a>
+      ))}
+    />
+  </div>
 );
 
 type PageSelectorProps = {
@@ -90,22 +106,23 @@ type PageSelectorProps = {
 const PageSelector = (props: PageSelectorProps) => {
   if (props.lastPage > 1) {
     return (
-      <div className="table-page-information">
+      <div className="table-page-information me-5">
         {t("Page <dropdown></dropdown> of {total}", {
           dropdown: () => (
-            <select
-              name="pageNumber"
-              className="display-number small-select"
-              value={props.currentValue}
-              onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
-              key="select"
-            >
-              {Array.from(Array(props.lastPage)).map((_, i) => (
-                <option value={i + 1} key={i + 1}>
-                  {i + 1}
-                </option>
-              ))}
-            </select>
+            <>
+              <select
+                className="display-number small-select"
+                value={props.currentValue}
+                onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
+                key="select"
+              >
+                {Array.from(Array(props.lastPage)).map((_, i) => (
+                  <option value={i + 1} key={i + 1}>
+                    {i + 1}
+                  </option>
+                ))}
+              </select>
+            </>
           ),
           total: props.lastPage,
         })}
@@ -113,7 +130,7 @@ const PageSelector = (props: PageSelectorProps) => {
     );
   } else {
     return (
-      <div className="table-page-information">
+      <div className="table-page-information me-5">
         {t("Page {current} of {total}", { current: props.currentValue, total: props.lastPage })}
       </div>
     );
