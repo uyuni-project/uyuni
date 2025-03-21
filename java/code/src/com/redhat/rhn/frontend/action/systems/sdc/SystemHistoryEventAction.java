@@ -111,8 +111,9 @@ public class SystemHistoryEventAction extends RhnAction {
         boolean typePlaybook = action.getActionType().equals(ActionFactory.TYPE_PLAYBOOK);
         request.setAttribute("typePlaybook", typePlaybook);
         if (typePlaybook) {
-            request.setAttribute("inventory", new PlaybookActionFormatter(action).getTargetedSystems(
-                    server, requestContext.getCurrentUser()));
+            String inventory = new PlaybookActionFormatter(action).getTargetedSystems(
+                    serverAction, requestContext.getCurrentUser());
+            request.setAttribute("inventory", inventory);
         }
         if (!serverAction.getStatus().equals(ActionFactory.STATUS_COMPLETED) &&
                 !serverAction.getStatus().equals(ActionFactory.STATUS_FAILED)) {
