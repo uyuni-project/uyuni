@@ -142,9 +142,9 @@ Feature: Assign child channel to a system
     Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
     And I wait until I see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" text
+    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)"
     And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
-    And I uncheck "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
     When I click on "Confirm"
