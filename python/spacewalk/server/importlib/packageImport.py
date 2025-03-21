@@ -93,7 +93,7 @@ class ChannelPackageSubscription(GenericPackageImport):
         self.backend.lookupChecksums(self.checksums)
 
         # Fix the package information up, and uniquify the packages too
-        with cfg_component("server.satellite") as CFG:
+        with cfg_component("server") as CFG:
             enable_nvrea = CFG.ENABLE_NVREA
         uniqdict = {}
         for package in self.batch:
