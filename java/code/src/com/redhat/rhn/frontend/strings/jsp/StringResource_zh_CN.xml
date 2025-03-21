@@ -7653,7 +7653,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/systems/SystemEntitlements.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system_entitlements.monitoring.noSolarisSupport" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system_entitlements.monitoring.noSolarisSupport" xml:space="preserve">
         <source>&lt;strong&gt;Monitoring&lt;/strong&gt; entitlement failed for &lt;strong&gt;{0}&lt;/strong&gt; system(s) because Monitoring is not supported on Solaris systems.</source>
         <target state="final">为 &lt;strong&gt;{0}&lt;/strong&gt; 个系统添加&lt;strong&gt;监控&lt;/strong&gt;权利失败，因为 Solaris 系统不支持监控。</target>
         <context-group name="ctx2">
