@@ -150,8 +150,8 @@ class NotificationMessages extends React.Component<Props, State> {
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500
-            ? "general"
-            : null,
+              ? "general"
+              : null,
           loading: false,
           messages: [],
           selectedItems: [],
@@ -201,8 +201,8 @@ class NotificationMessages extends React.Component<Props, State> {
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500
-            ? "general"
-            : null,
+              ? "general"
+              : null,
         });
       });
   };
@@ -226,8 +226,8 @@ class NotificationMessages extends React.Component<Props, State> {
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500
-            ? "general"
-            : null,
+              ? "general"
+              : null,
         });
       });
   };
@@ -350,7 +350,7 @@ class NotificationMessages extends React.Component<Props, State> {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })
-      .catch((response) => {});
+      .catch((response) => { });
   };
 
   retryReposync = (channelId) => {
@@ -359,7 +359,7 @@ class NotificationMessages extends React.Component<Props, State> {
         const newMessage = { severity: data.severity, text: data.text };
         this.setState((prevState, props) => ({ messages: prevState.messages.concat([newMessage]) }));
       })
-      .catch((response) => {});
+      .catch((response) => { });
   };
 
   messageReaction = (messageType, messageData) => {
@@ -432,31 +432,58 @@ class NotificationMessages extends React.Component<Props, State> {
       </div>
     );
 
-    const panelButtons = (
-      <SectionToolbar>
-        <div className="action-button-wrapper">
-          <div className="btn-group">
-            <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.refreshServerData} />
-            <AsyncButton
-              id="delete-selected-messages"
-              icon="fa-trash"
-              title={t("Delete selected messages")}
-              text={t("Delete selected messages")}
-              action={() => this.deleteNotifications(this.state.selectedItems)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-            <AsyncButton
-              id="mark-as-read"
-              icon="fa-check-circle"
-              title={t("Mark selected as read")}
-              text={t("Mark selected as read")}
-              action={() => this.markAsRead(this.state.selectedItems)}
-              disabled={this.state.selectedItems.length === 0}
-            />
-          </div>
-        </div>
-      </SectionToolbar>
-    );
+    // const panelButtons = (
+    //   <SectionToolbar>
+    //     <div className="action-button-wrapper">
+    //       <div className="btn-group">
+    //         <AsyncButton id="reload" icon="fa-refresh" text={t("Refresh")} action={this.refreshServerData} />
+    //         <AsyncButton
+    //           id="delete-selected-messages"
+    //           icon="fa-trash"
+    //           title={t("Delete selected messages")}
+    //           text={t("Delete selected messages")}
+    //           action={() => this.deleteNotifications(this.state.selectedItems)}
+    //           disabled={this.state.selectedItems.length === 0}
+    //         />
+    //         <AsyncButton
+    //           id="mark-as-read"
+    //           icon="fa-check-circle"
+    //           title={t("Mark selected as read")}
+    //           text={t("Mark selected as read")}
+    //           action={() => this.markAsRead(this.state.selectedItems)}
+    //           disabled={this.state.selectedItems.length === 0}
+    //         />
+    //       </div>
+    //     </div>
+    //   </SectionToolbar>
+    // );
+
+    const bulkButtons = [
+      <div className="btn-group">
+        <AsyncButton
+          id="reload"
+          icon="fa-refresh"
+          text={t("Refresh")}
+          action={this.refreshServerData}
+        />
+        <AsyncButton
+          id="delete-selected-messages"
+          icon="fa-trash"
+          title={t("Delete messages")}
+          text={t("Delete messages")}
+          action={() => this.deleteNotifications(this.state.selectedItems)}
+          disabled={this.state.selectedItems.length === 0}
+        />
+        <AsyncButton
+          id="mark-as-read"
+          icon="fa-check-circle"
+          title={t("Mark as read")}
+          text={t("Mark as read")}
+          action={() => this.markAsRead(this.state.selectedItems)}
+          disabled={this.state.selectedItems.length === 0}
+        />
+      </div>
+    ];
 
     const visibleMessages =
       this.state.messages.length > 3 ? this.state.messages.slice(this.state.messages.length - 3) : this.state.messages;
@@ -474,7 +501,7 @@ class NotificationMessages extends React.Component<Props, State> {
           <p>{t("The server has collected the following notification messages.")}</p>
           {headerTabs}
 
-          {panelButtons}
+          {/* {panelButtons} */}
 
           <Table
             data={this.buildRows(this.filterDataByType(data))}
@@ -487,6 +514,7 @@ class NotificationMessages extends React.Component<Props, State> {
             onSelect={this.handleSelectItems}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by summary")} />}
             additionalFilters={[typeFilter]}
+            titleButtons={bulkButtons}
           >
             <Column
               columnKey="severity"
@@ -558,8 +586,8 @@ const ErrorMessage = (props) => (
       DEPRECATED_unsafeEquals(props.error, "authentication")
         ? MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data."))
         : DEPRECATED_unsafeEquals(props.error, "general")
-        ? MessagesUtils.warning(t("Server error, please check log files."))
-        : []
+          ? MessagesUtils.warning(t("Server error, please check log files."))
+          : []
     }
   />
 );

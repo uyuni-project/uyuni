@@ -198,12 +198,12 @@ export class LinkButton extends _ButtonBase<LinkProps> {
     const targetProps: Partial<React.HTMLProps<HTMLAnchorElement>> =
       this.props.target === "_blank"
         ? {
-            target: "_blank",
-            rel: "noopener noreferrer",
-          }
+          target: "_blank",
+          rel: "noopener noreferrer",
+        }
         : {
-            target: this.props.target,
-          };
+          target: this.props.target,
+        };
     return (
       <a
         id={this.props.id}
@@ -258,7 +258,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           id={this.props.id}
           type="button"
           title={this.props.title}
-          className={"dropdown-toggle btn " + this.props.className}
+          className={"dropdown-toggle " + this.props.className}
           onClick={this.props.handler}
           data-bs-toggle="dropdown"
           disabled={this.props.disabled}

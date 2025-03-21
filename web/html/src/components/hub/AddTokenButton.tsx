@@ -84,7 +84,7 @@ export class AddTokenButton extends React.Component<Props, State> {
             text={t("Add token")}
             icon="fa-plus"
             title={t("Add a new access token")}
-            className="btn-primary"
+            className="btn btn-primary"
             items={[
               <LinkButton
                 id="issue-btn-link"
