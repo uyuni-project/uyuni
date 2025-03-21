@@ -370,7 +370,12 @@ PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
             </set>
         </subclass>
 
-        <subclass name="com.redhat.rhn.domain.action.SupportDataAction" lazy="true" discriminator-value="525" />
+        <subclass name="com.redhat.rhn.domain.action.supportdata.SupportDataAction"
+                  lazy="true" discriminator-value="525" >
+            <one-to-one name="details"
+                        class="com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails"
+                        outer-join="false" cascade="all" property-ref="parentAction"/>
+        </subclass>
 
     </class>
     <query name="Action.findByIdandOrgId">
