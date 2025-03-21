@@ -36,7 +36,7 @@ mgr_pushimage:
     - name: docker.push
     - image: "{{ pillar.get('imagename') }}"
 {%- if pillar.get('dockerclienttimeout') is defined %}
-    - client_timeout: "{{ pillar.get('dockerclienttimeout') }}"
+    - client_timeout: {{ pillar.get('dockerclienttimeout') }}
 {%- endif %}
     - require:
       - mgrcompat: mgr_buildimage
