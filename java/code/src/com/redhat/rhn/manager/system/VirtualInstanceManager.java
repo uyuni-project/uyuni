@@ -38,9 +38,9 @@ import java.util.stream.Collectors;
  */
 public class VirtualInstanceManager extends BaseManager {
 
-    public static final String EVENT_TYPE_FULLREPORT = "fullreport";
-    public static final String EVENT_TYPE_EXISTS = "exists";
-    public static final String EVENT_TYPE_REMOVED = "removed";
+    private static final String EVENT_TYPE_FULLREPORT = "fullreport";
+    private static final String EVENT_TYPE_EXISTS = "exists";
+    private static final String EVENT_TYPE_REMOVED = "removed";
 
     /**
      * Logger for this class

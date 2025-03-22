@@ -160,7 +160,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltServiceMock, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, monitoringManager, serverGroupManager)
         );
         saltUtils = new SaltUtils(saltServiceMock, saltServiceMock);
