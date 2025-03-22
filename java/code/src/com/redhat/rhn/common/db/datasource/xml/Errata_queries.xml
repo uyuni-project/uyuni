@@ -178,6 +178,7 @@ ORDER BY E.update_date DESC, E.id
   </query>
   <elaborator name="relevant_elab" />
   <elaborator name="errata_overview" />
+  <elaborator name="errata_flags" />
 </mode>
 
 <mode name="relevant_to_system_by_types" class="com.redhat.rhn.frontend.dto.ErrataOverview">
