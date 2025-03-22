@@ -18,15 +18,15 @@ package com.redhat.rhn.domain.notification.types;
  * Available notification types
  */
 public enum NotificationType {
-    OnboardingFailed,
-    ChannelSyncFailed,
-    ChannelSyncFinished,
-    CreateBootstrapRepoFailed,
-    StateApplyFailed,
-    PaygAuthenticationUpdateFailed,
-    EndOfLifePeriod,
-    SubscriptionWarning,
-    UpdateAvailable,
-    PaygNotCompliantWarning,
-    SCCOptOutWarning,
+    ONBOARDING_FAILED,
+    CHANNEL_SYNC_FAILED,
+    CHANNEL_SYNC_FINISHED,
+    CREATE_BOOTSTRAP_REPO_FAILED,
+    STATE_APPLY_FAILED,
+    PAYG_AUTHENTICATION_UPDATE_FAILED,
+    END_OF_LIFE_PERIOD,
+    SUBSCRIPTION_WARNING,
+    UPDATE_AVAILABLE,
+    PAYG_NOT_COMPLIANT_WARNING,
+    SCC_OPT_OUT_WARNING
 }

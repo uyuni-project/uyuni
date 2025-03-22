@@ -1,5 +1,8 @@
 # Change Log
 
+##[1.1.1] - 2025-03-11
+-Fixed sonar qube issues 
+
 ## [1.1.0] - 2020-05-09
 - Added ability to POST to actions shown in the mockups so that a 2xx code is returned
 
@@ -64,3 +67,5 @@
 
 ## [0.9.1] - 2016-09-06
 - Initial Public Release
+
+
