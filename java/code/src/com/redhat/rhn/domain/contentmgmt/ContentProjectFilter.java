@@ -64,7 +64,7 @@ public class ContentProjectFilter {
      * @param projectIn the {@link ContentProject}
      * @param filterIn the {@link ContentFilter}
      */
-    public ContentProjectFilter(ContentProject projectIn, ContentFilter filterIn) {
+    public ContentProjectFilter(ContentProject projectIn, ContentFilter<FilterCriteria> filterIn) {
         this();
         this.project = projectIn;
         this.filter = filterIn;
@@ -146,7 +146,7 @@ public class ContentProjectFilter {
      *
      * @param filterIn the filter
      */
-    public void setFilter(ContentFilter filterIn) {
+    public void setFilter(ContentFilter<FilterCriteria> filterIn) {
         this.filter = filterIn;
     }
 

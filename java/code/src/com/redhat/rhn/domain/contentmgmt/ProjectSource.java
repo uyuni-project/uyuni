@@ -76,7 +76,7 @@ public abstract class ProjectSource {
          * @param labelIn the label
          * @param sourceClassIn the source class
          */
-        Type(String labelIn, Class sourceClassIn) {
+        Type(String labelIn, Class<SoftwareProjectSource> sourceClassIn) {
             this.label = labelIn;
             this.sourceClass = sourceClassIn;
         }
