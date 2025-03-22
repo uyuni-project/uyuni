@@ -50,7 +50,7 @@ public class Lists {
      * @return cartesian product of the input
      */
     public static <T> List<List<T>>  combinations(List<List<T>> lists) {
-        if (lists.size() < 1) {
+        if (lists.isEmpty()) {
             return new ArrayList<>();
         }
         else {

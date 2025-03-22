@@ -282,7 +282,7 @@ public class SPMigrationAction extends RhnAction {
                 request.setAttribute(LATEST_SP, true);
                 return forward;
             }
-            else if (migrationTargets.size() >= 1) {
+            else if (!migrationTargets.isEmpty()) {
                 // At least one target available
                 logger.debug("Found at least one migration target");
                 request.setAttribute(TARGET_PRODUCTS, migrationTargets);

@@ -93,7 +93,7 @@ public class FileListSubmitAction extends RhnSetAction {
                                      HttpServletRequest request,
                                      HttpServletResponse response) {
         //They didn't select anything. Tell them to select something.
-        if (updateSet(request).size() < 1) {
+        if (updateSet(request).isEmpty()) {
             ActionErrors errors = new ActionErrors();
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                     new ActionMessage("sdcfilelist.jsp.noSelected"));

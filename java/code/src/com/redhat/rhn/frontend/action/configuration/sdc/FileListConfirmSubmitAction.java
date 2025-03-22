@@ -102,7 +102,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         RhnSet set = RhnSetDecl.CONFIG_IMPORT_FILE_NAMES.get(user);
         Set cfnids = getCfnids(set);
         //if they don't have a set, don't do anything.
-        if (cfnids.size() < 1) {
+        if (cfnids.isEmpty()) {
             return createErrorMessage(request, mapping, formIn, server.getId(),
                     "sdcfilelist.jsp.noSelected");
         }
@@ -173,7 +173,7 @@ public class FileListConfirmSubmitAction extends RhnListDispatchAction {
         RhnSet set = RhnSetDecl.CONFIG_FILE_NAMES.get(user);
         Set revisions = getCrids(set, sid);
         //if they don't have a set, don't do anything.
-        if (revisions.size() < 1) {
+        if (revisions.isEmpty()) {
             return createErrorMessage(request, mapping, form, sid,
                     "sdcfilelist.jsp.noSelected");
         }
