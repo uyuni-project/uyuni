@@ -75,7 +75,7 @@ public class PaygComputeDimensionsTaskTest extends JMockBaseTestCaseWithUser {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
 
         systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
+            new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
     }

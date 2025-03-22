@@ -243,7 +243,7 @@ public class TestSaltApi implements SaltApi {
 
     @Override
     public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
-        throw new UnsupportedOperationException();
+        return Optional.empty();
     }
 
     @Override

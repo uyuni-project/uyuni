@@ -123,7 +123,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     );
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
+            new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
     );
     private SystemManager systemManager =

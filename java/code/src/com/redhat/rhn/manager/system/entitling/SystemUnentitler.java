@@ -18,17 +18,24 @@ package com.redhat.rhn.manager.system.entitling;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
 import com.suse.manager.webui.services.iface.MonitoringManager;
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.calls.modules.State;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -39,15 +46,19 @@ public class SystemUnentitler {
 
     private static final Logger LOG = LogManager.getLogger(SystemUnentitler.class);
 
+    private SaltApi saltApi;
     private final MonitoringManager monitoringManager;
     private final ServerGroupManager serverGroupManager;
 
     /**
+     * @param saltApiIn the salt api
      * @param monitoringManagerIn instance for handling monitoring configuration.
      * @param serverGroupManagerIn
      */
-    public SystemUnentitler(MonitoringManager monitoringManagerIn,
+    public SystemUnentitler(SaltApi saltApiIn,
+                            MonitoringManager monitoringManagerIn,
                             ServerGroupManager serverGroupManagerIn) {
+        this.saltApi = saltApiIn;
         this.monitoringManager = monitoringManagerIn;
         this.serverGroupManager = serverGroupManagerIn;
     }
@@ -92,6 +103,9 @@ public class SystemUnentitler {
                     LOG.warn("Error disabling monitoring: {}", e.getMessage());
                 }
             }
+            if (EntitlementManager.VIRTUALIZATION.equals(ent)) {
+                updateLibvirtEngine(s);
+            }
         });
     }
 
@@ -107,4 +121,11 @@ public class SystemUnentitler {
         }
     }
 
+    private void updateLibvirtEngine(MinionServer minion) {
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("virt_entitled", minion.hasVirtualizationEntitlement());
+        saltApi.callSync(State.apply(Collections.singletonList("virt.engine-events"),
+                Optional.of(pillar)), minion.getMinionId());
+        saltApi.refreshPillar(new MinionList(minion.getMinionId()));
+    }
 }

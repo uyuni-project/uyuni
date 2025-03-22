@@ -325,7 +325,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, groupManager),
+                new SystemUnentitler(saltApi, monitoringManager, groupManager),
                 new SystemEntitler(saltApi, monitoringManager, groupManager)
         );
 

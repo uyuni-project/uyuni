@@ -84,7 +84,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(new TestSaltApi(), monitoringManager, serverGroupManager),
                 new SystemEntitler(new TestSaltApi(), monitoringManager, serverGroupManager)
         );
 

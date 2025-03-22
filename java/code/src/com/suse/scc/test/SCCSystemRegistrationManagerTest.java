@@ -340,7 +340,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
@@ -429,7 +429,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 
@@ -527,7 +527,7 @@ public class SCCSystemRegistrationManagerTest extends BaseTestCaseWithUser {
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
         );
 

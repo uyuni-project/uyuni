@@ -45,6 +45,8 @@ import com.suse.manager.reactor.messaging.RunnableEventMessage;
 import com.suse.manager.reactor.messaging.RunnableEventMessageAction;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessage;
 import com.suse.manager.reactor.messaging.SystemIdGenerateEventMessageAction;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessage;
+import com.suse.manager.reactor.messaging.VirtpollerBeaconEventMessageAction;
 import com.suse.manager.saltboot.PXEEvent;
 import com.suse.manager.saltboot.PXEEventMessage;
 import com.suse.manager.saltboot.PXEEventMessageAction;
@@ -56,6 +58,7 @@ import com.suse.manager.webui.utils.salt.custom.ImageDeployedEvent;
 import com.suse.manager.webui.utils.salt.custom.ImageSyncedEvent;
 import com.suse.manager.webui.utils.salt.custom.MinionStartupGrains;
 import com.suse.manager.webui.utils.salt.custom.SystemIdGenerateEvent;
+import com.suse.manager.webui.utils.salt.custom.VirtpollerData;
 import com.suse.salt.netapi.datatypes.Event;
 import com.suse.salt.netapi.event.BatchStartedEvent;
 import com.suse.salt.netapi.event.BeaconEvent;
@@ -128,6 +131,8 @@ public class SaltReactor {
                 RefreshGeneratedSaltFilesEventMessage.class);
         MessageQueue.registerAction(new RunnableEventMessageAction(),
                 RunnableEventMessage.class);
+        MessageQueue.registerAction(new VirtpollerBeaconEventMessageAction(),
+                VirtpollerBeaconEventMessage.class);
         MessageQueue.registerAction(new SystemIdGenerateEventMessageAction(systemQuery),
                 SystemIdGenerateEventMessage.class);
         MessageQueue.registerAction(new ImageDeployedEventMessageAction(systemQuery),
@@ -293,6 +298,12 @@ public class SaltReactor {
                     SystemManager.updateSystemOverview(m);
                 }
             );
+        }
+        else if (beaconEvent.getBeacon().equals("virtpoller")) {
+            return of(new VirtpollerBeaconEventMessage(
+                beaconEvent.getMinionId(),
+                beaconEvent.getData(VirtpollerData.class)
+            ));
         }
         return empty();
     }

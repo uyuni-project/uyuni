@@ -70,7 +70,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     private final SaltApi saltApi = new TestSaltApi();
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-    private final SystemUnentitler systemUnentitler = new SystemUnentitler(
+    private final SystemUnentitler systemUnentitler = new SystemUnentitler(saltApi,
             monitoringManager, serverGroupManager);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             systemUnentitler, new SystemEntitler(saltApi, monitoringManager, serverGroupManager)

@@ -48,7 +48,7 @@ public class PeripheralServerEntitlementTest extends BaseEntitlementTestCase {
     private final ServerGroupManager serverGroupManager = new ServerGroupManager(saltApi);
     private final MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
-            new SystemUnentitler(monitoringManager, serverGroupManager),
+            new SystemUnentitler(saltApi, monitoringManager, serverGroupManager),
             new SystemEntitler(saltApi, monitoringManager, serverGroupManager)
     );
 

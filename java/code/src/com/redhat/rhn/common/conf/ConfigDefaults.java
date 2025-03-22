@@ -237,6 +237,10 @@ public class ConfigDefaults {
 
     public static final String CVE_AUDIT_ENABLE_OVAL_METADATA = "java.cve_audit.enable_oval_metadata";
 
+    public static final String VIRTPOLLER_CACHE_EXPIRATION = "server.susemanager.virtpoller.expire_time";
+    public static final String VIRTPOLLER_CACHE_FILE = "server.susemanager.virtpoller.cache_file";
+    public static final String VIRTPOLLER_INTERVAL = "server.susemanager.virtpoller.interval";
+
     /**
      * Token lifetime in seconds
      */
