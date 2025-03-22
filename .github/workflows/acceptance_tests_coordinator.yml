@@ -41,7 +41,7 @@ jobs:
           REDIS_HOST: ${{ secrets.REDIS_HOST }}
           REDIS_PORT: ${{ secrets.REDIS_PORT }}
         run: |
-          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.added_modified }})
+          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.all }})
           echo "recommended_tests=$recommended_tests" >> $GITHUB_OUTPUT
           echo "Recommended Tests: $recommended_tests"
 
