@@ -1,0 +1,2 @@
+- Fix: openscap audit is running immediately even when scheduled
+  for next days (bsc#1239743)
