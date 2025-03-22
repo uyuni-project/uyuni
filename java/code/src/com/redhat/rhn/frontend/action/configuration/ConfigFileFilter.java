@@ -22,7 +22,7 @@ import java.util.List;
  * ConfigFileFilter
  */
 public class ConfigFileFilter extends BaseConfigFilter {
-    private List fields;
+    private List<String> fields;
 
     /**
      * Create a new filter with "path" added to its filter-criteria

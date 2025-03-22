@@ -107,7 +107,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         DynaActionForm form = (DynaActionForm) formIn;
 
         Errata currentErrata = requestContext.lookupErratum();
-        DataResult systems = ErrataManager.relevantSystemsInSet(user,
+        DataResult<SystemOverview> systems = ErrataManager.relevantSystemsInSet(user,
                 SetLabels.AFFECTED_SYSTEMS_LIST, currentErrata.getId(), null);
 
         if (systems.isEmpty()) {

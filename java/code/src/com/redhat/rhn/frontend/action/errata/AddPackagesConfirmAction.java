@@ -129,10 +129,10 @@ public class AddPackagesConfirmAction extends RhnAction implements Listable<Pack
         // We now need to loop through the set and get the package corresponding to
         // the id stored in ElementOne of the set. If the package exists, add it
         // to the errata.
-        Iterator itr = packageIdsToAdd.getElements().iterator();
+        Iterator<RhnSetElement> itr = packageIdsToAdd.getElements().iterator();
         int packagesAdded = 0;
         while (itr.hasNext()) {
-            Long pid = ((RhnSetElement) itr.next()).getElement(); //package id
+            Long pid = itr.next().getElement(); //package id
             Package pkg = PackageManager.lookupByIdAndUser(pid, user); //package
             if (pkg != null) {
                 //add the package to the errata

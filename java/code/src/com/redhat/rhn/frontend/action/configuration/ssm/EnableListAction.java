@@ -65,7 +65,7 @@ public class EnableListAction extends RhnListAction implements MaintenanceWindow
         pc.setFilterColumn("name");
         clampListBounds(pc, request, user);
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<ConfigSystemDto> dr = getDataResult(user, pc);
         request.setAttribute(RequestContext.PAGE_LIST, dr);
 
         //this is the set that contains status of systems that were
