@@ -242,7 +242,7 @@ export const clmFilterOptions: ClmFilterOptionsEnumType = {
     ],
   },
   PTF_PACKAGE_NAME: {
-    key: "ptf_package_name",
+    key: "ptf_package",
     text: t("Fixes Package Name"),
     entityType: filterEntity.PTF,
     matchers: [filterMatchers.EQUALS, filterMatchers.MATCHES, filterMatchers.CONTAINS],
