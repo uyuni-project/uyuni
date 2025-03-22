@@ -19,8 +19,6 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
 
-import com.suse.manager.webui.utils.SaltPillar;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,7 +49,7 @@ public class MinionVirtualizationPillarGenerator extends MinionPillarGeneratorBa
      */
     @Override
     public Optional<Pillar> generatePillarData(MinionServer minion) {
-        LOG.debug("Generating virtualization pillar file for minion: " + minion.getMinionId());
+        LOG.debug("Generating virtualization pillar file for minion: {}", minion.getMinionId());
 
         Pillar pillar = null;
         if (minion.hasVirtualizationEntitlement()) {
