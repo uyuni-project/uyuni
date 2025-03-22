@@ -304,6 +304,8 @@ suseAppstreamPackage               :: suseAppstream rhnPackage
 suseAppstreamApi                   :: suseAppstream
 rhnChannelNewestPackage            :: suseAppstream rhnChannel rhnPackageName rhnPackageEVR \
                                       rhnPackageArch
+suseAnsibleInventoryServers        :: suseAnsiblePath rhnServer
+rhnActionInventory                 :: rhnAction
 endpoint                           :: schemas/access
 namespace                          :: schemas/access
 endpointNamespace                  :: schemas/access endpoint namespace

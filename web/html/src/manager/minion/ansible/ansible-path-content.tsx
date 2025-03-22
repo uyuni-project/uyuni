@@ -14,6 +14,8 @@ import SchedulePlaybook from "./schedule-playbook";
 type PropsType = {
   minionServerId: number;
   pathContentType: string;
+  isRecurring?: boolean;
+  onSelectPlaybook?: (playbook: any) => void;
 };
 
 type StateType = {
@@ -57,7 +59,9 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       return (
         <SchedulePlaybook
           playbook={this.state.selectedPlaybook}
+          isRecurring={this.props.isRecurring}
           onBack={() => this.setState({ selectedPlaybook: null })}
+          onSelectPlaybook={this.props.onSelectPlaybook}
         />
       );
     }
@@ -88,6 +92,8 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
     );
   }
 }
+
+export { AnsiblePathContent };
 
 export const renderer = (renderId: string, { id, pathContentType }) => {
   return SpaRenderer.renderNavigationReact(

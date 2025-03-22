@@ -40,6 +40,7 @@ import com.redhat.rhn.domain.recurringactions.RecurringActionFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
+import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -300,6 +301,12 @@ public class RecurringActionController {
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
+        else if (RecurringActionType.ActionType.PLAYBOOK.equals(action.getActionType())) {
+            dto.setTest(((RecurringPlaybook) action.getRecurringActionType()).isTestMode());
+            dto.setPlaybookPath(((RecurringPlaybook) action.getRecurringActionType()).getPlaybookPath());
+            dto.setInventoryPath(((RecurringPlaybook) action.getRecurringActionType()).getInventoryPath());
+            dto.setFlushCache(((RecurringPlaybook) action.getRecurringActionType()).isFlushCache());
+        }
         return dto;
     }
 
@@ -438,6 +445,17 @@ public class RecurringActionController {
         return stateConfig;
     }
 
+    private static void setPlaybookDetails(RecurringPlaybook playbookType, RecurringActionDetailsDto details) {
+        if (details.getPlaybookPath() == null || details.getPlaybookPath().isEmpty()) {
+            throw new ValidatorException(LocalizationService.getInstance()
+                    .getMessage("recurring_action.empty_playbook_path"));
+        }
+        playbookType.setPlaybookPath(details.getPlaybookPath());
+        playbookType.setTestMode(details.isTest());
+        playbookType.setInventoryPath(details.getInventoryPath());
+        playbookType.setFlushCache(details.isFlushCache());
+    }
+
     private static void mapJsonToAction(RecurringActionScheduleJson json, RecurringAction action) {
         action.setName(json.getScheduleName());
         action.setActive(json.isActive());
@@ -457,6 +475,9 @@ public class RecurringActionController {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }
+        }
+        else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {
+            setPlaybookDetails(playbookType, details);
         }
 
         String cron = json.getCron();

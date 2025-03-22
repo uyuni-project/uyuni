@@ -38,6 +38,15 @@ public class RecurringActionDetailsDto {
     /** The states assigned to a custom state schedule */
     private Set<StateConfigJson> states;
 
+    /** The playbook path of a playbook schedule */
+    private String playbookPath;
+
+    /** The inventory path of a playbook schedule */
+    private String inventoryPath;
+
+    /** Whether the cache should be flushed on playbook execution */
+    private boolean flushCache;
+
     /**
      * @return the Array containing Quartz information
      */
@@ -136,5 +145,59 @@ public class RecurringActionDetailsDto {
      */
     public void setStates(Set<StateConfigJson> statesIn) {
         this.states = statesIn;
+    }
+
+    /**
+     * Gets the playbook path
+     *
+     * @return the playbook path
+     */
+    public String getPlaybookPath() {
+        return playbookPath;
+    }
+
+    /**
+     * Sets the playbook path
+     *
+     * @param playbookPathIn the playbook path
+     */
+    public void setPlaybookPath(String playbookPathIn) {
+        playbookPath = playbookPathIn;
+    }
+
+    /**
+     * Gets the inventory path
+     *
+     * @return the inventory path
+     */
+    public String getInventoryPath() {
+        return inventoryPath;
+    }
+
+    /**
+     * Sets the inventory path
+     *
+     * @param inventoryPathIn the inventory path
+     */
+    public void setInventoryPath(String inventoryPathIn) {
+        inventoryPath = inventoryPathIn;
+    }
+
+    /**
+     * Gets the flush cache
+     *
+     * @return if the cache should be flushed
+     */
+    public boolean isFlushCache() {
+        return flushCache;
+    }
+
+    /**
+     * Sets if the cache should be flushed
+     *
+     * @param flushCacheIn the flush cache
+     */
+    public void setFlushCache(boolean flushCacheIn) {
+        flushCache = flushCacheIn;
     }
 }

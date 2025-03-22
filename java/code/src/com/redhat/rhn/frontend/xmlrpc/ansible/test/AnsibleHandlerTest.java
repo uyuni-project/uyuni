@@ -25,8 +25,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.salt.PlaybookAction;
-import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -42,9 +42,7 @@ import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -52,7 +50,6 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.TestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.datatypes.target.MinionList;
@@ -67,7 +64,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
@@ -131,8 +127,9 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null, controlNode.getId().intValue(),
-                scheduleDate, null, true, Collections.singletonMap(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true));
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null,
+                controlNode.getId().intValue(), scheduleDate, null, true,
+                Map.of(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true, AnsibleHandler.ANSIBLE_EXTRA_VARS, "{test: 123}"));
         assertNotNull(actionId);
 
         DataResult schedule = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -148,6 +145,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
         PlaybookActionDetails details = action.getDetails();
         assertNotNull(details);
         assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("{test: 123}", details.getExtraVarsContents());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
         assertTrue(details.isFlushCache());
@@ -162,7 +160,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         AnsiblePath playbookPath = handler.createAnsiblePath(
@@ -206,7 +204,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("path", "/tmp/new-location"));
@@ -223,7 +221,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         try {
@@ -244,7 +242,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 Map.of(
                         "type", "inventory",
                         "server_id", controlNode.getId().intValue(),
-                        "path", "/etc/ansible/hosts"
+                        "path", "/etc/ansible/test"
                 ));
 
         int result = handler.removeAnsiblePath(admin, inventoryPath.getId().intValue());
@@ -322,11 +320,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, groupManager),
-                new SystemEntitler(saltApi, monitoringManager, groupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
         context.checking(new Expectations() {{
