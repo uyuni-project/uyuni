@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.systems;
 import static com.redhat.rhn.common.util.DatePicker.YEAR_RANGE_POSITIVE;
 import static com.redhat.rhn.domain.action.ActionFactory.TYPE_ERRATA;
 
+import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.util.DatePicker;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -61,7 +62,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * ErrataConfirmSetupAction
  */
-public class ErrataConfirmSetupAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class ErrataConfirmSetupAction extends RhnAction implements Listable<Row>, MaintenanceWindowsAware {
 
     public static final String ALLOW_VENDOR_CHANGE = "allowVendorChange";
     /** Logger instance */
