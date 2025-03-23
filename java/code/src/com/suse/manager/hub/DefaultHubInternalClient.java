@@ -125,7 +125,7 @@ public class DefaultHubInternalClient implements HubInternalClient {
     public void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException {
         // Use a TypeToken to preserve the generic type information
         Type type = new TypeToken<List<ChannelInfoDetailsJson>>() { }.getType();
-        invokePost("hub", "syncChannels", channelsIn, type);
+        invokePost("hub", "syncChannels", channelsIn);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)

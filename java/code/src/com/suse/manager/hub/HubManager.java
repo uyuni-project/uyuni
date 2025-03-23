@@ -65,7 +65,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Transaction;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -1256,9 +1255,9 @@ public class HubManager {
      * @param user the SatAdmin
      * @param peripheralId the peripheral id
      * @param orgId the org id to sync the channels to
-     * @param channelsId the list of channels id from the hub
+     * @param channelsLabels the list of channels labels from the hub
      */
-    public void syncChannelsByIdForPeripheral(User user, Long peripheralId, Long orgId, List<Long> channelsId)
+    public void syncChannelsByLabelForPeripheral(User user, Long peripheralId, Long orgId, List<String> channelsLabels)
             throws CertificateException, IOException {
         ensureSatAdmin(user);
         // Get peripheral and prepare client
@@ -1266,7 +1265,7 @@ public class HubManager {
         HubInternalClient client = createClientForPeripheral(peripheral);
         // Prepare channels for synchronization
         Set<Long> syncedChannelIds = getSyncedChannelIds(peripheral);
-        List<Channel> channelsToSync = prepareChannelsToSync(channelsId, syncedChannelIds);
+        List<Channel> channelsToSync = prepareChannelsToSync(channelsLabels, syncedChannelIds);
         // Execute the synchronization in a transaction
         executeInTransaction(() -> synchronizeChannels(peripheral, channelsToSync, syncedChannelIds, orgId, client));
     }
@@ -1295,12 +1294,9 @@ public class HubManager {
     /**
      * Prepare the list of channels to sync, including originals and parent channels
      */
-    private List<Channel> prepareChannelsToSync(List<Long> channelsId, Set<Long> syncedChannelIds) {
-        // Load requested channels
-        List<Channel> requestedChannels = loadChannelsById(channelsId);
-        // Include original channels for clones
+    private List<Channel> prepareChannelsToSync(List<String> channelsLabels, Set<Long> syncedChannelIds) {
+        List<Channel> requestedChannels = loadChannelsByLabel(channelsLabels);
         Set<Channel> channelsWithOriginals = includeOriginalChannels(requestedChannels);
-        // Ensure parent-child hierarchy and sort
         Set<Channel> completeChannelSet = ensureParentChildHierarchy(channelsWithOriginals, syncedChannelIds);
         return sortChannelsByHierarchy(completeChannelSet);
     }
@@ -1308,10 +1304,11 @@ public class HubManager {
     /**
      * Load channels by their IDs
      */
-    private List<Channel> loadChannelsById(List<Long> channelsId) {
+    private List<Channel> loadChannelsByLabel(List<String> channelsLabels) {
+        List<Long> channelsIds = ChannelFactory.getChannelIds(channelsLabels);
         return ChannelFactory.getSession()
                 .byMultipleIds(Channel.class)
-                .multiLoad(channelsId);
+                .multiLoad(channelsIds);
     }
 
     /**
@@ -1412,18 +1409,17 @@ public class HubManager {
      * @throws CertificateException if certificate errors occur
      */
     private void executeInTransaction(TransactedOperation operation) throws IOException, CertificateException {
-        Transaction transaction = HubFactory.getSession().getTransaction();
+        //Transaction transaction = HubFactory.getSession().beginTransaction();
         try {
-            transaction.begin();
             operation.execute();
-            transaction.commit();
+            //transaction.commit();
         }
         catch (IOException | CertificateException e) {
-            transaction.rollback();
+            //transaction.rollback();
             throw e;
         }
         catch (Exception e) {
-            transaction.rollback();
+            //transaction.rollback();
             throw new RuntimeException("Unexpected error during transaction", e);
         }
     }
@@ -1528,19 +1524,45 @@ public class HubManager {
      * Desync the channels from "this" hub to the selected peripheral
      * @param user the SatAdmin
      * @param peripheralId the peripheral id
-     * @param channelsId the list of channels id from the hub
+     * @param channelsLabels the list of channel labels from the hub to be desynced
      */
-    public void desyncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId) {
+    public void desyncChannelsByLabelForPeripheral(User user, Long peripheralId, List<String> channelsLabels) {
         ensureSatAdmin(user);
-        //TODO: check for children, desync children is parent is desynced
         IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        List<Channel> channels = ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
-        Set<IssPeripheralChannels> peripheralChannels = new HashSet<>();
-        channels.forEach(ch -> peripheralChannels.add(new IssPeripheralChannels(issPeripheral, ch)));
-        issPeripheral.setPeripheralChannels(peripheralChannels);
-        hubFactory.save(issPeripheral);
+        Set<IssPeripheralChannels> currentPeripheralChannels = issPeripheral.getPeripheralChannels();
+        // Early return if no channels to work with
+        if (currentPeripheralChannels == null || currentPeripheralChannels.isEmpty()) {
+            return;
+        }
+        Set<String> channelLabelsToDesync = new HashSet<>(channelsLabels);
+        // Find parent channel labels that are being desynced
+        Set<String> parentChannelLabelsToDesync = currentPeripheralChannels.stream()
+                .filter(pc -> channelLabelsToDesync.contains(pc.getChannel().getLabel()))
+                .map(pc -> pc.getChannel().getLabel())
+                .collect(Collectors.toSet());
+        // Collect channels that should be desynced
+        Set<IssPeripheralChannels> channelsToDelete = currentPeripheralChannels.stream()
+                .filter(pc -> {
+                    Channel channel = pc.getChannel();
+                    String channelLabel = channel.getLabel();
+                    // Include if the channel is in the list to desync
+                    if (channelLabelsToDesync.contains(channelLabel)) {
+                        return true;
+                    }
+                    // Include child channels if their parent is being desynced
+                    Channel parentChannel = channel.getParentChannel();
+                    if (parentChannel != null &&
+                            parentChannelLabelsToDesync.contains(parentChannel.getLabel())) {
+                        LOG.debug("Desyncing child channel {} because its parent channel is being desynced",
+                                channelLabel);
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toSet());
+        // Delete the channels that should be desynced
+        hubFactory.deleteChannels(channelsToDelete);
     }
-
     /**
      * Synchornize channels from the hub on this peripheral server
      * @param accessToken the access token

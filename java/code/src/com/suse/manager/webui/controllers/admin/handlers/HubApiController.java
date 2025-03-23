@@ -182,23 +182,23 @@ public class HubApiController {
      * Model for sync channel operations
      */
     private static class SyncChannelModel {
-        private List<Long> channelsId;
+        private List<String> channelsLabels;
         private Long selectedOrgId;
 
         public Long getSelectedOrgId() {
             return selectedOrgId;
         }
 
-        public List<Long> getChannelsId() {
-            return channelsId;
-        }
-
-        public void setChannelsId(List<Long> channelsIdIn) {
-            channelsId = channelsIdIn;
-        }
-
         public void setSelectedOrgId(Long selectedOrgIdIn) {
             selectedOrgId = selectedOrgIdIn;
+        }
+
+        public List<String> getChannelsLabels() {
+            return channelsLabels;
+        }
+
+        public void setChannelsLabels(List<String> channelsLabelsIn) {
+            channelsLabels = channelsLabelsIn;
         }
     }
 
@@ -209,15 +209,15 @@ public class HubApiController {
         try {
             long peripheralId = Long.parseLong(request.params("id"));
             SyncChannelModel opRequest = GSON.fromJson(request.body(), SyncChannelModel.class);
-            if (opRequest == null || opRequest.getChannelsId() == null || opRequest.getChannelsId().isEmpty()) {
+            if (opRequest == null || opRequest.getChannelsLabels() == null || opRequest.getChannelsLabels().isEmpty()) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
             // Execute the sync operation with org ID
-            hubManager.syncChannelsByIdForPeripheral(
+            hubManager.syncChannelsByLabelForPeripheral(
                     satAdmin,
                     peripheralId,
                     opRequest.getSelectedOrgId(),
-                    opRequest.getChannelsId()
+                    opRequest.getChannelsLabels()
             );
 
             return success(response);
@@ -243,15 +243,15 @@ public class HubApiController {
     private String desyncChannelsFromPeripheral(Request request, Response response, User satAdmin) {
         try {
             long peripheralId = Long.parseLong(request.params("id"));
-            Type listType = new TypeToken<List<Long>>() { }.getType();
-            List<Long> channelsId = GSON.fromJson(request.body(), listType);
-            if (channelsId == null || channelsId.isEmpty()) {
+            Type listType = new TypeToken<List<String>>() { }.getType();
+            List<String> channelsLabels = GSON.fromJson(request.body(), listType);
+            if (channelsLabels == null || channelsLabels.isEmpty()) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
-            hubManager.desyncChannelsByIdForPeripheral(
+            hubManager.desyncChannelsByLabelForPeripheral(
                     satAdmin,
                     peripheralId,
-                    channelsId
+                    channelsLabels
             );
             return success(response);
         }

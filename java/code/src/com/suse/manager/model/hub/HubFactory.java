@@ -57,6 +57,13 @@ public class HubFactory extends HibernateFactory {
     }
 
     /**
+     * Delete the peripheral channels
+     * @param issPeripheralChannelsIn the channels
+     */
+    public void deleteChannels(Set<IssPeripheralChannels> issPeripheralChannelsIn) {
+        delete(issPeripheralChannelsIn, IssPeripheralChannels.class);
+    }
+    /**
      * Remove a {@ink IssPeripheral} object
      * @param peripheralIn the object to remove
      */

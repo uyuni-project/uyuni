@@ -7,6 +7,7 @@ import { CustomDataHandler } from "components/table/CustomDataHandler";
 import { SearchField } from "components/table/SearchField";
 
 import { createChannelMap, FlatChannel } from "./ChannelFlatteningUtils";
+import { DesyncChannel } from "./DesyncChannel";
 
 const _COLS = {
   selector: { width: 2, um: "em" },
@@ -30,6 +31,7 @@ const searchCriteriaInChannel = (channel: FlatChannel, criteria: string | undefi
 };
 
 interface HierarchicalChannelTableProps {
+  peripheralId: number;
   channels: FlatChannel[];
   loading?: boolean;
   handleSelectedItems?: (items: FlatChannel[]) => void;
@@ -344,6 +346,7 @@ export class HierarchicalChannelTable extends React.Component<
               // Otherwise, just return all root channels
               return rootOnly.sort(this.compareChannels);
             }}
+            peripheralId={this.props.peripheralId}
             bypassProps={{
               allChannels: filteredByArch, // Need all channels for child lookups
               channelMap: this.state.channelMap,
@@ -368,6 +371,7 @@ export class HierarchicalChannelTable extends React.Component<
 
 interface ChannelListProps {
   data: FlatChannel[] | ((data: any) => FlatChannel[]);
+  peripheralId: number;
   bypassProps: {
     allChannels: FlatChannel[];
     channelMap: Map<string, FlatChannel>;
@@ -458,6 +462,7 @@ class ChannelList extends React.Component<ChannelListProps> {
           return (
             <ChannelListItem
               key={channel.channelId}
+              peripheralId={this.props.peripheralId}
               item={channel}
               bypassProps={this.props.bypassProps}
               handleSelectedItems={this.props.handleSelectedItems}
@@ -475,6 +480,7 @@ class ChannelList extends React.Component<ChannelListProps> {
 
 interface ChannelListItemProps {
   item: FlatChannel;
+  peripheralId: number;
   bypassProps: {
     allChannels: FlatChannel[];
     channelMap: Map<string, FlatChannel>;
@@ -665,7 +671,7 @@ class ChannelListItem extends React.Component<ChannelListItemProps> {
           um={this.props.bypassProps.cols.synced.um}
           title={t("Synced Status")}
         >
-          {currentItem.synced ? <i className="fa fa-check-circle">synced</i> : null}
+          {currentItem.synced ? <i className="fa fa-check-circle"></i> : null}
         </CustomDiv>
         <CustomDiv
           className="col"
@@ -673,7 +679,13 @@ class ChannelListItem extends React.Component<ChannelListItemProps> {
           um={this.props.bypassProps.cols.removeSynced.um}
           title={t("Remove Sync")}
         >
-          {currentItem.synced ? <i className="fa fa-trash">rem</i> : null}
+          {currentItem.synced ? (
+            <DesyncChannel
+              label={this.props.item.channelLabel}
+              name={this.props.item.channelName}
+              peripheralId={this.props.peripheralId}
+            />
+          ) : null}
         </CustomDiv>
       </div>
     );
@@ -687,6 +699,7 @@ class ChannelListItem extends React.Component<ChannelListItemProps> {
         {this.isSublistVisible() && childrenData.length > 0 ? (
           <ChannelList
             data={childrenData}
+            peripheralId={this.props.peripheralId}
             bypassProps={this.props.bypassProps}
             handleSelectedItems={this.handleSelectedItems}
             handleUnselectedItems={this.handleUnselectedItems}

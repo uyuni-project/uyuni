@@ -99,6 +99,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     });
   };
 
+  onChannelDesyncConfirm = () => {
+    const { peripheralId } = this.state;
+    const endpoint = `/rhn/manager/api/admin/hub/peripherals/${peripheralId}/sync-channels`;
+    return Network.get(endpoint);
+  };
+
   onChannelSyncConfirm = () => {
     const { peripheralId, selectedChannels, selectedOrg } = this.state;
 
@@ -106,12 +112,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       return;
     }
     // Get channel IDs for the API call
-    const channelIds = selectedChannels.map((channel) => channel.channelId);
-    if (channelIds.length === 0) {
+    const channelsLabels: string[] = selectedChannels.map((channel) => channel.channelLabel);
+    if (channelsLabels.length === 0) {
       return;
     }
     const payload = {
-      channelIds: channelIds,
+      channelsLabels: channelsLabels,
       selectedOrgId: selectedOrg.orgId,
     };
 
@@ -184,7 +190,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
           <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
           <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
           <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
-          <Column columnKey="orgName" header={t("Org")} cell={renderChannelOrg} />
+          <Column columnKey="orgName" header={t("Hub Org")} cell={renderChannelOrg} />
         </Table>
       </>
     );
@@ -245,6 +251,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
         {/* HierarchicalChannelTable with proper handlers */}
         <HierarchicalChannelTable
           channels={allChannels}
+          peripheralId={this.props.peripheralId}
           loading={loading}
           handleSelectedItems={this.handleSelectedChannels}
           handleUnselectedItems={this.handleUnselectedChannels}
