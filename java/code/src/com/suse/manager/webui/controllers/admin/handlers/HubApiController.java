@@ -117,7 +117,7 @@ public class HubApiController {
         post("/manager/api/admin/hub/peripherals/:id/channels-sync",
                 withProductAdmin(this::syncChannelsToPeripheral));
         delete("/manager/api/admin/hub/peripherals/:id/channels-sync",
-                withProductAdmin(this::desyncChannelsToPeripheral));
+                withProductAdmin(this::desyncChannelsFromPeripheral));
 
         // Hub management
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
@@ -178,39 +178,69 @@ public class HubApiController {
         }
     }
 
-    // Define a functional interface that allows throwing CertificateException
-    @FunctionalInterface
-    private interface ChannelsOperation {
-        void apply(User satAdmin, long peripheralId, List<Long> channelsId) throws CertificateException, IOException;
-    }
+    /**
+     * Model for sync channel operations
+     * @param chanelsId
+     * @param selectedOrg
+     */
+    record SyncChannelModel(List<Long> chanelsId, Long selectedOrg) { }
 
-    // Common helper method to process the request
-    private String processChannelsOperation(
-            Request request, Response response, User satAdmin, ChannelsOperation operation
-    ) {
-        long peripheralId = Long.parseLong(request.params("id"));
-        Type listType = new TypeToken<List<Long>>() { }.getType();
-        List<Long> channelsId = GSON.fromJson(request.body(), listType);
+    /**
+     * Sync channels to a peripheral with organization ID
+     */
+    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
         try {
-            operation.apply(satAdmin, peripheralId, channelsId);
+            long peripheralId = Long.parseLong(request.params("id"));
+            SyncChannelModel opRequest = GSON.fromJson(request.body(), SyncChannelModel.class);
+            if (opRequest == null || opRequest.chanelsId() == null || opRequest.chanelsId().isEmpty()) {
+                return badRequest(response, LOC.getMessage("hub.invalid_request"));
+            }
+            // Execute the sync operation with org ID
+            hubManager.syncChannelsByIdForPeripheral(
+                    satAdmin,
+                    peripheralId,
+                    opRequest.selectedOrg(),
+                    opRequest.chanelsId()
+            );
+
+            return success(response);
         }
-        catch (CertificateException eIn) {
-            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}", peripheralId, eIn);
+        catch (NumberFormatException e) {
+            return badRequest(response, LOC.getMessage("hub.invalid_id"));
+        }
+        catch (CertificateException e) {
+            LOGGER.error("Unable to parse the specified root certificate for the peripheral {}",
+                    request.params("id"), e);
             return badRequest(response, LOC.getMessage("hub.invalid_root_ca"));
         }
-        catch (IOException eIn) {
-            LOGGER.error("Error while attempting to connect to peripheral server {}", peripheralId, eIn);
+        catch (IOException e) {
+            LOGGER.error("Error while attempting to connect to peripheral server {}",
+                    request.params("id"), e);
             return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
         }
-        return success(response);
     }
 
-    private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
-        return processChannelsOperation(request, response, satAdmin, hubManager::syncChannelsByIdForPeripheral);
-    }
-
-    private String desyncChannelsToPeripheral(Request request, Response response, User satAdmin) {
-        return processChannelsOperation(request, response, satAdmin, hubManager::desyncChannelsByIdForPeripheral);
+    /**
+     * Desync channels from a peripheral
+     */
+    private String desyncChannelsFromPeripheral(Request request, Response response, User satAdmin) {
+        try {
+            long peripheralId = Long.parseLong(request.params("id"));
+            Type listType = new TypeToken<List<Long>>() { }.getType();
+            List<Long> channelsId = GSON.fromJson(request.body(), listType);
+            if (channelsId == null || channelsId.isEmpty()) {
+                return badRequest(response, LOC.getMessage("hub.invalid_request"));
+            }
+            hubManager.desyncChannelsByIdForPeripheral(
+                    satAdmin,
+                    peripheralId,
+                    channelsId
+            );
+            return success(response);
+        }
+        catch (NumberFormatException e) {
+            return badRequest(response, LOC.getMessage("hub.invalid_id"));
+        }
     }
 
     private String registerPeripheral(Request request, Response response, User satAdmin) {

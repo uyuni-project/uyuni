@@ -13,6 +13,7 @@ package com.suse.manager.hub;
 
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
@@ -121,10 +122,10 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
-    public List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException {
+    public void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException {
         // Use a TypeToken to preserve the generic type information
-        Type type = new TypeToken<List<ChannelInfoJson>>() { }.getType();
-        return invokePost("hub", "addVendorChannels", channelsLabelIn, type);
+        Type type = new TypeToken<List<ChannelInfoDetailsJson>>() { }.getType();
+        invokePost("hub", "syncChannels", channelsIn, type);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)

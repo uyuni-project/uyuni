@@ -11,6 +11,7 @@
 
 package com.suse.manager.hub;
 
+import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
@@ -86,11 +87,10 @@ public interface HubInternalClient {
 
     /**
      * Sync a list of vendor channels by label
-     * @param channelsLabelIn the list of vendor channels label, order is not important as it's assured by the peripheral
-     * @return a list with minimal info about the synced channels
+     * @param channelsIn the list of channels
      * @throws IOException when the communication fails
      */
-    List<ChannelInfoJson> syncVendorChannels(List<String> channelsLabelIn) throws IOException;
+    void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException;
 
     /**
      * Schedule a product refresh on the remote peripheral server

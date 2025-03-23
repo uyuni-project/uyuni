@@ -74,16 +74,14 @@ import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Business logic to manage ISSv3 Sync
@@ -1272,78 +1270,274 @@ public class HubManager {
      * Sync the channels from "this" hub to the selected peripheral
      * @param user the SatAdmin
      * @param peripheralId the peripheral id
+     * @param orgId the org id to sync the channels to
      * @param channelsId the list of channels id from the hub
      */
-    public void syncChannelsByIdForPeripheral(User user, Long peripheralId, List<Long> channelsId)
+    public void syncChannelsByIdForPeripheral(User user, Long peripheralId, Long orgId, List<Long> channelsId)
             throws CertificateException, IOException {
         ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
-        // Get the set of already synced channel IDs for this peripheral
-        Set<Long> syncedChannelIds = issPeripheral.getPeripheralChannels().stream()
+        // Get peripheral and prepare client
+        IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
+        HubInternalClient client = createClientForPeripheral(peripheral);
+        // Prepare channels for synchronization
+        Set<Long> syncedChannelIds = getSyncedChannelIds(peripheral);
+        List<Channel> channelsToSync = prepareChannelsToSync(channelsId, syncedChannelIds);
+        // Execute the synchronization in a transaction
+        executeInTransaction(() -> synchronizeChannels(peripheral, channelsToSync, syncedChannelIds, orgId, client));
+    }
+
+    /**
+     * Create a client for communicating with the peripheral
+     */
+    private HubInternalClient createClientForPeripheral(IssPeripheral peripheral) throws CertificateException {
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(peripheral.getFqdn());
+        return clientFactory.newInternalClient(
+                peripheral.getFqdn(),
+                accessToken.getToken(),
+                peripheral.getRootCa()
+        );
+    }
+
+    /**
+     * Get the set of channel IDs that are already synced to the peripheral
+     */
+    private Set<Long> getSyncedChannelIds(IssPeripheral peripheral) {
+        return peripheral.getPeripheralChannels().stream()
                 .map(pc -> pc.getChannel().getId())
                 .collect(Collectors.toSet());
-        List<Channel> requestedChannels =
-                ChannelFactory.getSession().byMultipleIds(Channel.class).multiLoad(channelsId);
-        // Create a set of all channels to sync, including parent channels if needed
-        Set<Channel> allChannelsToSync = getAllChannelsToSync(requestedChannels, syncedChannelIds);
-        var internalApi = clientFactory.newInternalClient(
-                issPeripheral.getFqdn(),
-                accessToken.getToken(),
-                issPeripheral.getRootCa()
-        );
+    }
+
+    /**
+     * Prepare the list of channels to sync, including originals and parent channels
+     */
+    private List<Channel> prepareChannelsToSync(List<Long> channelsId, Set<Long> syncedChannelIds) {
+        // Load requested channels
+        List<Channel> requestedChannels = loadChannelsById(channelsId);
+        // Include original channels for clones
+        Set<Channel> channelsWithOriginals = includeOriginalChannels(requestedChannels);
+        // Ensure parent-child hierarchy and sort
+        Set<Channel> completeChannelSet = ensureParentChildHierarchy(channelsWithOriginals, syncedChannelIds);
+        return sortChannelsByHierarchy(completeChannelSet);
+    }
+
+    /**
+     * Load channels by their IDs
+     */
+    private List<Channel> loadChannelsById(List<Long> channelsId) {
+        return ChannelFactory.getSession()
+                .byMultipleIds(Channel.class)
+                .multiLoad(channelsId);
+    }
+
+    /**
+     * Include original channels for any cloned channels
+     */
+    private Set<Channel> includeOriginalChannels(List<Channel> channels) {
+        Set<Channel> result = new HashSet<>();
+        for (Channel channel : channels) {
+            result.add(channel);
+            Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
+            if (originalChannel != null) {
+                result.add(originalChannel);
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Synchronize the channels to the peripheral
+     */
+    private void synchronizeChannels(IssPeripheral peripheral, List<Channel> channelsToSync,
+                                     Set<Long> syncedChannelIds, Long orgId, HubInternalClient client)
+            throws IOException {
+        // Create channel associations for new channels
+        Set<IssPeripheralChannels> newAssociations = createChannelAssociations(
+                peripheral, channelsToSync, syncedChannelIds, orgId);
+        if (newAssociations.isEmpty()) {
+            return; // Nothing new to sync
+        }
+        // Prepare channel info objects
+        List<ChannelInfoDetailsJson> channelInfoList = prepareChannelInfoObjects(
+                channelsToSync, syncedChannelIds, orgId);
+        // Send to peripheral
+        client.syncChannels(channelInfoList);
+        // Update peripheral with the new associations
+        updatePeripheralChannels(peripheral, newAssociations);
+    }
+
+    /**
+     * Create channel associations for channels that need to be synced
+     */
+    private Set<IssPeripheralChannels> createChannelAssociations(
+            IssPeripheral peripheral, List<Channel> channels, Set<Long> syncedChannelIds, Long orgId) {
+        Set<IssPeripheralChannels> newAssociations = new HashSet<>();
+        for (Channel channel : channels) {
+            if (!syncedChannelIds.contains(channel.getId())) {
+                IssPeripheralChannels association = new IssPeripheralChannels(peripheral, channel, orgId);
+                hubFactory.save(association);
+                newAssociations.add(association);
+            }
+        }
+        return newAssociations;
+    }
+
+    /**
+     * Prepare channel info objects for channels that need to be synced
+     */
+    private List<ChannelInfoDetailsJson> prepareChannelInfoObjects(
+            List<Channel> channels, Set<Long> syncedChannelIds, Long orgId) {
+        List<ChannelInfoDetailsJson> result = new ArrayList<>();
+        for (Channel channel : channels) {
+            if (!syncedChannelIds.contains(channel.getId())) {
+                // For cloned channels, pass the original channel label
+                Optional<String> originalLabel = getOriginalChannelLabel(channel);
+                ChannelInfoDetailsJson channelInfo = ChannelFactory.toChannelInfo(channel, orgId, originalLabel);
+                result.add(channelInfo);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get the label of the original channel if this is a clone
+     */
+    private Optional<String> getOriginalChannelLabel(Channel channel) {
+        Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
+        if (originalChannel != null) {
+            return Optional.of(originalChannel.getLabel());
+        }
+        return Optional.empty();
+    }
+
+    /**
+     * Update the peripheral with new channel associations
+     */
+    private void updatePeripheralChannels(IssPeripheral peripheral, Set<IssPeripheralChannels> newAssociations) {
+        Set<IssPeripheralChannels> allChannels = new HashSet<>(peripheral.getPeripheralChannels());
+        allChannels.addAll(newAssociations);
+        peripheral.setPeripheralChannels(allChannels);
+        hubFactory.save(peripheral);
+    }
+    /**
+     * Execute operations within a transaction, handling commit/rollback
+     * @param operation The operation to execute in the transaction
+     * @throws IOException if communication errors occur
+     * @throws CertificateException if certificate errors occur
+     */
+    private void executeInTransaction(TransactedOperation operation) throws IOException, CertificateException {
         Transaction transaction = HubFactory.getSession().getTransaction();
         try {
-            List<String> channelsLabel = new ArrayList<>();
-            Set<IssPeripheralChannels> peripheralChannels = new HashSet<>(issPeripheral.getPeripheralChannels());
             transaction.begin();
-            // Process base channels first, then their children to ensure proper hierarchy
-            List<Channel> sortedChannels = new ArrayList<>();
-            // First add base channels
-            allChannelsToSync.stream()
-                    .filter(Channel::isBaseChannel)
-                    .forEach(sortedChannels::add);
-            // Then add child channels
-            allChannelsToSync.stream()
-                    .filter(ch -> !ch.isBaseChannel())
-                    .forEach(sortedChannels::add);
-            for (Channel ch : sortedChannels) {
-                if (!syncedChannelIds.contains(ch.getId())) {
-                    IssPeripheralChannels issPeripheralChannel = new IssPeripheralChannels(issPeripheral, ch);
-                    peripheralChannels.add(issPeripheralChannel);
-                    channelsLabel.add(ch.getLabel());
-                    hubFactory.save(issPeripheralChannel);
-                    syncedChannelIds.add(ch.getId()); // Mark as synced for subsequent iterations
-                }
-            }
-            internalApi.syncVendorChannels(channelsLabel);
-            issPeripheral.setPeripheralChannels(peripheralChannels);
-            hubFactory.save(issPeripheral);
+            operation.execute();
             transaction.commit();
         }
-        catch (IOException e) {
+        catch (IOException | CertificateException e) {
             transaction.rollback();
             throw e;
+        }
+        catch (Exception e) {
+            transaction.rollback();
+            throw new RuntimeException("Unexpected error during transaction", e);
         }
     }
 
     /**
-     * Helper function to get a list of missing parents for sync
-     * @param requestedChannels the channels to sync
-     * @param syncedChannelIds the already synced channels
-     * @return all the channels to be synced
+     * Functional interface for transacted operation
      */
-    private Set<Channel> getAllChannelsToSync(List<Channel> requestedChannels, Set<Long> syncedChannelIds) {
-        Function<Channel, Stream<Channel>> getParentHierarchy = channel ->
-                Stream.iterate(channel.getParentChannel(), Objects::nonNull, Channel::getParentChannel);
-        return requestedChannels.stream()
-                .flatMap(channel -> Stream.concat(
-                        Stream.of(channel), getParentHierarchy.apply(channel).filter(
-                                parent -> !syncedChannelIds.contains(parent.getId())
-                        ))
-                )
-                .collect(Collectors.toSet());
+    @FunctionalInterface
+    private interface TransactedOperation {
+        void execute() throws Exception;
     }
+
+    /**
+     * Ensures that for each channel, its parent channel is included in the channels to sync
+     * @param requestedChannels the channels requested for sync
+     * @param alreadySyncedIds IDs of channels already synced
+     * @return A complete set of channels to sync including all necessary parent channels
+     */
+    private Set<Channel> ensureParentChildHierarchy(Set<Channel> requestedChannels, Set<Long> alreadySyncedIds) {
+        Set<Channel> result = new HashSet<>();
+        requestedChannels.forEach(channel -> addChannelWithParents(channel, result, alreadySyncedIds));
+        return result;
+    }
+
+    /**
+     * Recursively adds a channel and all its parent channels to the result set
+     * @param channel the channel to add
+     * @param result the set of channels to sync
+     * @param alreadySyncedIds IDs of channels already synced (to avoid reloading)
+     */
+    private void addChannelWithParents(Channel channel, Set<Channel> result, Set<Long> alreadySyncedIds) {
+        // If this channel is already being synced or is already synced, nothing to do
+        if (result.contains(channel) || alreadySyncedIds.contains(channel.getId())) {
+            return;
+        }
+        // First handle the parent if this is a child channel
+        if (!channel.isBaseChannel()) {
+            Channel parentChannel = channel.getParentChannel();
+            if (parentChannel != null) {
+                // Recursively ensure the parent is added first
+                addChannelWithParents(parentChannel, result, alreadySyncedIds);
+            }
+        }
+        // Then add this channel
+        result.add(channel);
+    }
+
+    /**
+     * Sorts channels ensuring parent channels come before their children
+     * @param channels the set of channels to sort
+     * @return a sorted list with parent channels before their children
+     */
+    private List<Channel> sortChannelsByHierarchy(Set<Channel> channels) {
+        List<Channel> baseChannels = new ArrayList<>();
+        Map<Long, List<Channel>> childrenByParentId = new HashMap<>();
+        // Separate base channels and organize child channels by parent ID
+        for (Channel channel : channels) {
+            if (channel.isBaseChannel()) {
+                baseChannels.add(channel);
+            }
+            else {
+                Channel parent = channel.getParentChannel();
+                if (parent != null) {
+                    Long parentId = parent.getId();
+                    childrenByParentId.computeIfAbsent(parentId, k -> new ArrayList<>()).add(channel);
+                }
+            }
+        }
+        // Sort base channels (if needed, e.g., by name or ID)
+        baseChannels.sort(Comparator.comparing(Channel::getLabel));
+        // Build the final sorted list
+        List<Channel> result = new ArrayList<>(baseChannels);
+        // Add children in order, following the parent hierarchy
+        for (Channel baseChannel : baseChannels) {
+            addChildrenRecursively(baseChannel, childrenByParentId, result);
+        }
+        return result;
+    }
+
+    /**
+     * Recursively adds child channels to the result list in the correct hierarchy order
+     */
+    private void addChildrenRecursively(
+            Channel parent, Map<Long, List<Channel>> childrenByParentId, List<Channel> result
+    ) {
+        List<Channel> children = childrenByParentId.get(parent.getId());
+        if (children == null || children.isEmpty()) {
+            return;
+        }
+        // Sort children (if needed)
+        children.sort(Comparator.comparing(Channel::getLabel));
+        for (Channel child : children) {
+            if (!result.contains(child)) {
+                result.add(child);
+                // Process this child's children
+                addChildrenRecursively(child, childrenByParentId, result);
+            }
+        }
+    }
+
     /**
      * Desync the channels from "this" hub to the selected peripheral
      * @param user the SatAdmin
@@ -1369,11 +1563,9 @@ public class HubManager {
     public void syncChannels(IssAccessToken accessToken, List<ChannelInfoDetailsJson> channelInfo) {
         ensureValidToken(accessToken);
         ChannelFactory.ensureValidChannelInfo(channelInfo);
-
         Set<String> syncFinished = new HashSet<>();
         Map<String, ChannelInfoDetailsJson> channelInfoByLabel = channelInfo.stream()
                 .collect(Collectors.toMap(ChannelInfoDetailsJson::getLabel, v -> v));
-
         for (ChannelInfoDetailsJson info : channelInfo) {
             ChannelFactory.syncChannel(info, channelInfoByLabel, syncFinished);
         }
