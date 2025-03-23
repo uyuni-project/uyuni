@@ -339,7 +339,7 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @param filter the filter to attach
      */
-    public void attachFilter(ContentFilter filter) {
+    public void attachFilter(ContentFilter<FilterCriteria> filter) {
         ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
 
         int idx = filters.indexOf(projectFilter);
@@ -366,7 +366,7 @@ public class ContentProject extends BaseDomainHelper {
      *
      * @param filter the filter to detach
      */
-    public void detachFilter(ContentFilter filter) {
+    public void detachFilter(ContentFilter<FilterCriteria> filter) {
         ContentProjectFilter projectFilter = new ContentProjectFilter(this, filter);
 
         int idx = filters.indexOf(projectFilter);

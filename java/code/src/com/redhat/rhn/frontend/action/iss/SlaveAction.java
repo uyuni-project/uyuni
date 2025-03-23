@@ -63,7 +63,7 @@ public class SlaveAction extends RhnAction {
 
         RequestContext requestContext = new RequestContext(request);
 
-        Set sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
+        Set<String> sessionSet = SessionSetHelper.lookupAndBind(request, getSetDecl()
                 .getLabel());
         if (!requestContext.isSubmitted()) {
             sessionSet.clear();

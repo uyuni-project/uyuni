@@ -39,7 +39,7 @@ public class ContentProjectFilter {
     private Long id;
     private State state;
     private ContentProject project;
-    private ContentFilter filter;
+    private ContentFilter<FilterCriteria> filter;
 
     /**
      * State of the Source
@@ -137,7 +137,7 @@ public class ContentProjectFilter {
      */
     @ManyToOne
     @JoinColumn(name = "filter_id")
-    public ContentFilter getFilter() {
+    public ContentFilter<FilterCriteria> getFilter() {
         return filter;
     }
 

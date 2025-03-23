@@ -62,7 +62,7 @@ public class RemoveSlavesAction extends RhnAction {
         }
 
         ActionForward destination = null;
-        Set sessionSet = null;
+        Set<String> sessionSet = null;
 
         Long sid = getSid(request);
         if (sid == null) {
@@ -110,11 +110,11 @@ public class RemoveSlavesAction extends RhnAction {
         return null;
     }
 
-    private List<IssSlave> findSelectedSlaves(Set sessionSet, Object sidIn) {
+    private List<IssSlave> findSelectedSlaves(Set<String> sessionSet, Object sidIn) {
         List<IssSlave> slaves = new ArrayList<>();
 
         if (sessionSet != null) {
-            for (String sid : (Set<String>) sessionSet) {
+            for (String sid : sessionSet) {
                 IssSlave aSlave = IssFactory.lookupSlaveById(Long.parseLong(sid));
                 slaves.add(aSlave);
             }

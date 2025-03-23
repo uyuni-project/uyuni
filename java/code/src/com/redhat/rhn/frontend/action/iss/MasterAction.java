@@ -62,7 +62,7 @@ public class MasterAction extends RhnAction {
         RequestContext ctxt = new RequestContext(request);
         SessionSetHelper helper = new SessionSetHelper(request);
 
-        Set sessionSet = getSessionSet(request);
+        Set<String> sessionSet = getSessionSet(request);
 
         if (request.getParameter("dispatch") != null) {
             // if its one of the Dispatch actions handle it..
@@ -103,9 +103,9 @@ public class MasterAction extends RhnAction {
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
 
-    protected Set getSessionSet(HttpServletRequest request) {
+    protected Set<String> getSessionSet(HttpServletRequest request) {
         RequestContext ctxt = new RequestContext(request);
-        Set slaveSet = SessionSetHelper.lookupAndBind(request, getSetDecl().getLabel());
+        Set<String > slaveSet = SessionSetHelper.lookupAndBind(request, getSetDecl().getLabel());
         if (!ctxt.isSubmitted()) {
             slaveSet.clear();
         }
