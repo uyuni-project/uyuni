@@ -41,10 +41,9 @@ public class PendingActionsRenderer extends BaseFragmentRenderer {
     protected void render(User user, PageControl pc, HttpServletRequest request) {
         LocalizationService ls = LocalizationService.getInstance();
         String pendingActionsCSSTable = null;
-        DataResult padr = ActionManager.recentlyScheduledActions(user, pc, 30);
-        for (Object oIn : padr) {
+        DataResult<ScheduledAction> padr = ActionManager.recentlyScheduledActions(user, pc, 30);
+        for (ScheduledAction sa : padr) {
             StringBuilder buffer = new StringBuilder();
-            ScheduledAction sa = (ScheduledAction) oIn;
 
             Action action = ActionManager.lookupAction(user, sa.getId());
 
