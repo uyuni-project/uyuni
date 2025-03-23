@@ -43,17 +43,16 @@ public class KickstartIpCommand extends BaseKickstartCommand {
      *
      * @return List representing ip ranges by this Kickstart, ksdata
      */
-    public List getDisplayRanges() {
-        List l = new LinkedList<>();
+    public List<IpAddressRange> getDisplayRanges() {
+        List<IpAddressRange> l = new LinkedList<>();
 
         Long id = this.ksdata.getId();
 
-        Set s = this.ksdata.getIps();
+        Set<KickstartIpRange> s = this.ksdata.getIps();
 
-        for (Object oIn : s) {
-            KickstartIpRange ipr = (KickstartIpRange) oIn;
-            IpAddress min = new IpAddress(ipr.getMin());
-            IpAddress max = new IpAddress(ipr.getMax());
+        for (KickstartIpRange oIn : s) {
+            IpAddress min = new IpAddress(oIn.getMin());
+            IpAddress max = new IpAddress(oIn.getMax());
             IpAddressRange iar = new IpAddressRange(min, max, id);
             l.add(iar);
         }
