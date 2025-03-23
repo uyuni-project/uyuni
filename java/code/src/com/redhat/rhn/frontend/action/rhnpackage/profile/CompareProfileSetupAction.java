@@ -61,7 +61,7 @@ public class CompareProfileSetupAction extends RhnAction {
 
         requestContext.lookupAndBindServer();
 
-        Set sessionSet = SessionSetHelper.lookupAndBind(request, getDecl(sid));
+        Set<String> sessionSet = SessionSetHelper.lookupAndBind(request, getDecl(sid));
 
         //if its not submitted
         // ==> this is the first visit to this page

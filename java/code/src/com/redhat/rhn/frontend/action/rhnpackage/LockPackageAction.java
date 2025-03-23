@@ -64,7 +64,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
     private static final Logger LOG = LogManager.getLogger(LockPackageAction.class);
 
     @Override
-    protected DataResult getDataResult(Server server) {
+    protected DataResult<PackageListItem> getDataResult(Server server) {
         Optional<MinionServer> minion = MinionServerFactory.lookupById(server.getId());
         // Check if this server is a minion
         boolean isMinion = minion.isPresent();
@@ -154,7 +154,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             }
         }
 
-        DataResult dataSet = getDataResult(server);
+        DataResult<PackageListItem> dataSet = getDataResult(server);
 
         // Update selection
         if (ListTagHelper.getListAction(LIST_NAME, request) != null) {

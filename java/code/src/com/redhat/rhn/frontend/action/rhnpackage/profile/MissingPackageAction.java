@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageMetadata;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
@@ -206,9 +207,9 @@ public class MissingPackageAction extends BaseProfilesAction {
     /**
      * {@inheritDoc}
      */
-    protected DataResult getDataResult(User user,
-                                       ActionForm formIn,
-                                       HttpServletRequest request) {
+    protected DataResult<PackageMetadata> getDataResult(User user,
+                                                        ActionForm formIn,
+                                                        HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
         Long sid = requestContext.getRequiredParam("sid");
         Set<String> pkgIdCombos = SessionSetHelper.lookupAndBind(request,
