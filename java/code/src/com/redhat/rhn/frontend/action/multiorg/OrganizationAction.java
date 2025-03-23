@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.action.multiorg;
 
 import com.redhat.rhn.common.db.datasource.DataList;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.OrgDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -45,7 +46,7 @@ public class OrganizationAction extends RhnAction {
 
         RequestContext requestContext = new RequestContext(request);
         User user = requestContext.getCurrentUser();
-        DataList result = OrgManager.activeOrgs(user);
+        DataList<OrgDto> result = OrgManager.activeOrgs(user);
 
         request.setAttribute(ListTagHelper.PAGE_LIST, result);
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
