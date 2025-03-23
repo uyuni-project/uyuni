@@ -47,11 +47,13 @@ import com.redhat.rhn.manager.audit.OsReleasePair;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.system.SystemManagerUtils;
 import com.redhat.rhn.manager.system.UpdateBaseChannelCommand;
 
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,8 +61,8 @@ import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
@@ -371,7 +373,7 @@ public class ServerFactory extends HibernateFactory {
         boolean serversUpdated = insertServersToGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> {
+            servers.forEach(s -> {
                 s.addGroup(serverGroup);
                 SystemManager.updateSystemOverview(s);
             });
@@ -421,7 +423,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroupIn The group to add the server to
      */
     public static void addServerToGroup(Server serverIn, ServerGroup serverGroupIn) {
-        addServersToGroup(Arrays.asList(serverIn), serverGroupIn);
+        addServersToGroup(Collections.singletonList(serverIn), serverGroupIn);
     }
 
     /**
@@ -454,7 +456,7 @@ public class ServerFactory extends HibernateFactory {
         boolean serversUpdated = removeServersFromGroup(serverIdsToAdd, serverGroup.getId());
 
         if (serversUpdated) {
-            servers.stream().forEach(s -> {
+            servers.forEach(s -> {
                 s.removeGroup(serverGroup);
                 SystemManager.updateSystemOverview(s);
             });
@@ -488,7 +490,7 @@ public class ServerFactory extends HibernateFactory {
      * @param serverGroupIn The group to remove the server from
      */
     public static void removeServerFromGroup(Server serverIn, ServerGroup serverGroupIn) {
-        removeServersFromGroup(Arrays.asList(serverIn), serverGroupIn);
+        removeServersFromGroup(Collections.singletonList(serverIn), serverGroupIn);
     }
 
     /**
@@ -743,7 +745,6 @@ public class ServerFactory extends HibernateFactory {
      * @param id the digital server id
      * @return server corresponding to the given id
      */
-    @SuppressWarnings("unchecked")
     public static Server lookupForeignSystemByDigitalServerId(String id) {
         List<Server> servers = getSession().createNativeQuery("""
                                       SELECT *, 0 as clazz_  from rhnServer
@@ -1104,7 +1105,7 @@ public class ServerFactory extends HibernateFactory {
         params.put("org", org);
         params.put("server", server);
 
-        List<ServerSnapshot> snaps = null;
+        List<ServerSnapshot> snaps;
 
         if ((startDate != null) && (endDate != null)) {
             params.put("start_date", startDate);
@@ -1599,4 +1600,27 @@ public class ServerFactory extends HibernateFactory {
         SINGLETON.removeObject(serverInfo);
         server.setMgrServerInfo(null);
     }
+
+    /**
+     * Build server info starting from creator and a server
+     * Uses SystemManagerUtils to create a unique id based on the server name
+     * @param creator the user
+     * @param serverName the server name
+     * @param serverIn the server
+     */
+    public static void buildServerInfo(User creator, String serverName, Server serverIn) {
+        serverIn.setCreator(creator);
+        String uniqueId = SystemManagerUtils.createUniqueId(List.of(serverName));
+        serverIn.setDigitalServerId(uniqueId);
+        serverIn.setMachineId(uniqueId);
+        serverIn.setOs("(unknown)");
+        serverIn.setRelease("(unknown)");
+        serverIn.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
+                null, new SecureRandom()));
+        serverIn.setAutoUpdate("N");
+        serverIn.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
+        serverIn.setLastBoot(System.currentTimeMillis() / 1000);
+        serverIn.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+    }
+
 }

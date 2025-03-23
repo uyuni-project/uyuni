@@ -33,7 +33,6 @@ import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.system.SystemManagerUtils;
 import com.redhat.rhn.manager.system.SystemsExistException;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -861,19 +860,7 @@ public class HubManager {
         server.setName(serverName);
         server.setHostname(serverName);
         server.setOrg(Optional.ofNullable(creator).map(User::getOrg).orElse(OrgFactory.getSatelliteOrg()));
-        server.setCreator(creator);
-
-        String uniqueId = SystemManagerUtils.createUniqueId(List.of(serverName));
-        server.setDigitalServerId(uniqueId);
-        server.setMachineId(uniqueId);
-        server.setOs("(unknown)");
-        server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
-                null, new SecureRandom()));
-        server.setAutoUpdate("N");
-        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        server.setLastBoot(System.currentTimeMillis() / 1000);
-        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.buildServerInfo(creator, serverName, server);
         ServerFactory.save(server);
 
         server.getFqdns().addAll(fqdns.stream()
@@ -964,10 +951,8 @@ public class HubManager {
      * @param user the SatAdmin
      * @param peripheralId the Peripheral ID
      * @return a Set of Channels from the Peripheral
-     * @throws CertificateException Wrong CA
      */
-    public Set<IssV3ChannelResponse> getPeripheralChannels(User user, Long peripheralId)
-            throws CertificateException {
+    public Set<IssV3ChannelResponse> getPeripheralChannels(User user, Long peripheralId) {
         ensureSatAdmin(user);
         IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
         return issPeripheral.getPeripheralChannels().stream()
