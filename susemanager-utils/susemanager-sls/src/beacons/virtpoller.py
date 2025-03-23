@@ -14,37 +14,36 @@
 # granted to use or replicate Red Hat trademarks that are incorporated
 # in this software or its documentation.
 #
-'''
+"""
 Watch libvirt and fire events with changes to virtual machines
 
 Author: Michael Calmer <mc@suse.com>
-'''
+"""
 
 from __future__ import absolute_import
-import sys
 import os
 import logging
+import time
+import binascii
+
 log = logging.getLogger(__name__)
 
 try:
     import libvirt  # pylint: disable=import-error
-    from libvirt import libvirtError
+    from libvirt import libvirtError  # pylint: disable=unused-import
+
     HAS_LIBVIRT = True
 except ImportError:
     HAS_LIBVIRT = False
     libvirt = None
 
-
 try:
     import cPickle as pickle
 except ImportError:
     import pickle
-import time
-import traceback
-import binascii
 
-CACHE_DATA_PATH = '/var/cache/virt_state.cache'
-CACHE_EXPIRE_SECS = 60 * 60 * 6   # 6 hours, in seconds
+CACHE_DATA_PATH = "/var/cache/virt_state.cache"
+CACHE_EXPIRE_SECS = 60 * 60 * 6  # 6 hours, in seconds
 
 ##
 # This structure maps the libvirt state enumeration to labels that
@@ -56,53 +55,65 @@ CACHE_EXPIRE_SECS = 60 * 60 * 6   # 6 hours, in seconds
 #    as valid states
 # 3. to avoid 'Abuse of Service' messages: bugs #230106 and #546676
 
-VIRT_STATE_NAME_MAP = ( 'running',  # VIR_DOMAIN_NOSTATE
-                        'running',  # VIR_DOMAIN_RUNNING
-                        'running',  # VIR_DOMAIN_BLOCKED
-                        'paused',   # VIR_DOMAIN_PAUSED
-                        'stopped',  # VIR_DOMAIN_SHUTDOWN
-                        'stopped',  # VIR_DOMAIN_SHUTOFF
-                        'crashed')  # VIR_DOMAIN_CRASHED
+VIRT_STATE_NAME_MAP = (
+    "running",  # VIR_DOMAIN_NOSTATE
+    "running",  # VIR_DOMAIN_RUNNING
+    "running",  # VIR_DOMAIN_BLOCKED
+    "paused",  # VIR_DOMAIN_PAUSED
+    "stopped",  # VIR_DOMAIN_SHUTDOWN
+    "stopped",  # VIR_DOMAIN_SHUTOFF
+    "crashed",
+)  # VIR_DOMAIN_CRASHED
+
 
 class EventType:
-    EXISTS      = 'exists'
-    REMOVED     = 'removed'
-    FULLREPORT  = 'fullreport'
+    EXISTS = "exists"
+    REMOVED = "removed"
+    FULLREPORT = "fullreport"
+
 
 class TargetType:
-    SYSTEM      = 'system'
-    DOMAIN      = 'domain'
+    SYSTEM = "system"
+    DOMAIN = "domain"
+
 
 class VirtualizationType:
-    PARA  = 'para_virtualized'
-    FULLY = 'fully_virtualized'
+    PARA = "para_virtualized"
+    FULLY = "fully_virtualized"
+
 
 class PropertyType:
-    NAME        = 'name'
-    UUID        = 'uuid'
-    TYPE        = 'virt_type'
-    MEMORY      = 'memory_size'
-    VCPUS       = 'vcpus'
-    STATE       = 'state'
-    IDENTITY    = 'identity'
-    ID          = 'id'
-    MESSAGE     = 'message'
+    NAME = "name"
+    UUID = "uuid"
+    TYPE = "virt_type"
+    MEMORY = "memory_size"
+    VCPUS = "vcpus"
+    STATE = "state"
+    IDENTITY = "identity"
+    ID = "id"
+    MESSAGE = "message"
 
-__virtualname__ = 'virtpoller'
+
+__virtualname__ = "virtpoller"
 
 
 ###############################################################################
 # PollerStateCache Class
 ###############################################################################
 
+
 class PollerStateCache:
+    """
+    Hold the Poller State
+    """
 
     ###########################################################################
     # Public Interface
     ###########################################################################
 
-    def __init__(self, domain_data, cache_file = CACHE_DATA_PATH,
-            expire_time = CACHE_EXPIRE_SECS):
+    def __init__(
+        self, domain_data, cache_file=CACHE_DATA_PATH, expire_time=CACHE_EXPIRE_SECS
+    ):
         """
         This method creates a new poller state based on the provided domain
         list.  The domain_data list should be in the form returned from
@@ -126,9 +137,9 @@ class PollerStateCache:
         # state.
         self._compare_domain_data()
 
-        log.debug("Added: %s"    % repr(self.__added))
-        log.debug("Removed: %s"  % repr(self.__removed))
-        log.debug("Modified: %s" % repr(self.__modified))
+        log.debug("Added: %s", repr(self.__added))
+        log.debug("Removed: %s", repr(self.__removed))
+        log.debug("Modified: %s", repr(self.__modified))
 
     def save(self):
         """
@@ -180,12 +191,11 @@ class PollerStateCache:
         # Attempt to open up the cache file.
         cache_file = None
         try:
-            cache_file = open(self.__cache_file, 'rb')
+            cache_file = open(self.__cache_file, "rb")
         except IOError as ioe:
             # Couldn't open the cache file.  That's ok, there might not be one.
             # We'll only complain if debugging is enabled.
-            log.debug("Could not open cache file '{0}': {1}".format(
-                self.__cache_file, str(ioe)))
+            log.debug("Could not open cache file '%s': %s", self.__cache_file, str(ioe))
 
         # Now, if a previous state was cached, load it.
         state = {}
@@ -195,7 +205,7 @@ class PollerStateCache:
             except pickle.PickleError as pe:
                 # Strange.  Possibly, the file is corrupt.  We'll load an empty
                 # state instead.
-                log.debug("Error occurred while loading state: {0}".format(str(pe)))
+                log.debug("Error occurred while loading state: %s", str(pe))
             except EOFError:
                 log.debug("Unexpected EOF. Probably an empty file.")
                 cache_file.close()
@@ -203,9 +213,9 @@ class PollerStateCache:
             cache_file.close()
 
         if state:
-            log.debug("Loaded state: {0}".format(repr(state)))
+            log.debug("Loaded state: %s", repr(state))
 
-            self.__expire_time = int(state['expire_time'])
+            self.__expire_time = int(state["expire_time"])
 
             # If the cache is expired, set the old data to None so we force
             # a refresh.
@@ -213,11 +223,11 @@ class PollerStateCache:
                 self.__old_domain_data = None
                 os.unlink(self.__cache_file)
             else:
-                self.__old_domain_data = state['domain_data']
+                self.__old_domain_data = state["domain_data"]
 
         else:
             self.__old_domain_data = None
-            self.__expire_time     = None
+            self.__expire_time = None
 
     def _save_state(self):
         """
@@ -229,11 +239,11 @@ class PollerStateCache:
             os.makedirs(cache_dir_path, 0o700)
 
         state = {}
-        state['domain_data'] = self.__new_domain_data
+        state["domain_data"] = self.__new_domain_data
         if self.__expire_time is None or self.is_expired():
-            state['expire_time'] = int(time.time()) + CACHE_EXPIRE_SECS
+            state["expire_time"] = int(time.time()) + CACHE_EXPIRE_SECS
         else:
-            state['expire_time'] = self.__expire_time
+            state["expire_time"] = self.__expire_time
 
         # Now attempt to open the file for writing.  We'll just overwrite
         # whatever's already there.  Also, let any exceptions bounce out.
@@ -248,15 +258,14 @@ class PollerStateCache:
 
             (added, removed, modified)
         """
-        self.__added    = {}
-        self.__removed  = {}
+        self.__added = {}
+        self.__removed = {}
         self.__modified = {}
 
         # First, figure out the modified and added uuids.
         if self.__new_domain_data:
-            for (uuid, new_properties) in list(self.__new_domain_data.items()):
-                if not self.__old_domain_data or \
-                    uuid not in self.__old_domain_data:
+            for uuid, new_properties in list(self.__new_domain_data.items()):
+                if not self.__old_domain_data or uuid not in self.__old_domain_data:
 
                     self.__added[uuid] = self.__new_domain_data[uuid]
                 else:
@@ -267,8 +276,7 @@ class PollerStateCache:
         # Now, figure out the removed uuids.
         if self.__old_domain_data:
             for uuid in list(self.__old_domain_data.keys()):
-                if not self.__new_domain_data or \
-                    uuid not in self.__new_domain_data:
+                if not self.__new_domain_data or uuid not in self.__new_domain_data:
 
                     self.__removed[uuid] = self.__old_domain_data[uuid]
 
@@ -277,23 +285,24 @@ class PollerStateCache:
 ### beacon                                                                  ###
 ###############################################################################
 
+
+# pylint: disable-next=invalid-name
 def __virtual__():
     return HAS_LIBVIRT and __virtualname__ or False
 
 
 def validate(config):
-    '''
+    """
     Validate the beacon configuration.
-    '''
+    """
     if not isinstance(config, dict):
-        return False, ('Configuration for virtpoller '
-                       'beacon must be a dictionary.')
+        return False, ("Configuration for virtpoller beacon must be a dictionary.")
     else:
-        return True, 'Configuration validated'
+        return True, "Configuration validated"
 
 
 def beacon(config):
-    '''
+    """
     polls the hypervisor for information about the currently
     running set of domains.
 
@@ -306,7 +315,7 @@ def beacon(config):
             expire_time: 21600
             cache_file: '/var/cache/virt_state.cache'
             interval: 320
-    '''
+    """
 
     ret = []
 
@@ -316,8 +325,10 @@ def beacon(config):
 
     try:
         conn = libvirt.openReadOnly(None)
-    except libvirt.libvirtError as lve:
-        log.error("Warning: Could not retrieve virtualization information! libvirtd service needs to be running.")
+    except libvirt.libvirtError:
+        log.error(
+            "Warning: Could not retrieve virtualization information! libvirtd service needs to be running."
+        )
         conn = None
 
     if not conn:
@@ -336,63 +347,74 @@ def beacon(config):
         # Set the virtualization type.  We can tell if the domain is fully virt
         # by checking the domain's OSType() attribute.
         virt_type = VirtualizationType.PARA
-        if domain.OSType().lower() == 'hvm':
+        if domain.OSType().lower() == "hvm":
             virt_type = VirtualizationType.FULLY
 
         # we need to filter out the small per/minute KB changes
         # that occur inside a vm.  To do this we divide by 1024 to
         # drop our precision down to megabytes with an int then
         # back up to KB
-        memory = int(domain_info[2] / 1024);
-        memory = memory * 1024;
+        memory = int(domain_info[2] / 1024)
+        memory = memory * 1024
         properties = {
-            PropertyType.NAME   : domain.name(),
-            PropertyType.UUID   : uuid,
-            PropertyType.TYPE   : virt_type,
-            PropertyType.MEMORY : str(memory), # current memory
-            PropertyType.VCPUS  : domain_info[3],
-            PropertyType.STATE  : VIRT_STATE_NAME_MAP[domain_info[0]] }
+            PropertyType.NAME: domain.name(),
+            PropertyType.UUID: uuid,
+            PropertyType.TYPE: virt_type,
+            PropertyType.MEMORY: str(memory),  # current memory
+            PropertyType.VCPUS: domain_info[3],
+            PropertyType.STATE: VIRT_STATE_NAME_MAP[domain_info[0]],
+        }
 
         state[uuid] = properties
 
-    poller_state = PollerStateCache(state,
-                                    cache_file = config.get('cache_file', CACHE_DATA_PATH),
-                                    expire_time = config.get('expire_time', CACHE_EXPIRE_SECS))
+    poller_state = PollerStateCache(
+        state,
+        cache_file=config.get("cache_file", CACHE_DATA_PATH),
+        expire_time=config.get("expire_time", CACHE_EXPIRE_SECS),
+    )
 
     plan = []
     if poller_state.is_changed():
-        added    = poller_state.get_added()
-        removed  = poller_state.get_removed()
+        added = poller_state.get_added()
+        removed = poller_state.get_removed()
         modified = poller_state.get_modified()
 
         if poller_state.is_expired():
-            item = {'time': int(time.time()),
-                    'event_type': EventType.FULLREPORT,
-                    'target_type': TargetType.DOMAIN }
+            item = {
+                "time": int(time.time()),
+                "event_type": EventType.FULLREPORT,
+                "target_type": TargetType.DOMAIN,
+            }
             plan.append(item)
 
-        for (uuid, data) in list(added.items()):
-            item = {'time': int(time.time()),
-                    'event_type': EventType.EXISTS,
-                    'target_type': TargetType.DOMAIN,
-                    'guest_properties': data}
+        for uuid, data in list(added.items()):
+            item = {
+                "time": int(time.time()),
+                "event_type": EventType.EXISTS,
+                "target_type": TargetType.DOMAIN,
+                "guest_properties": data,
+            }
             plan.append(item)
 
-        for (uuid, data) in list(modified.items()):
-            item = {'time': int(time.time()),
-                    'event_type': EventType.EXISTS,
-                    'target_type': TargetType.DOMAIN,
-                    'guest_properties': data}
+        for uuid, data in list(modified.items()):
+            item = {
+                "time": int(time.time()),
+                "event_type": EventType.EXISTS,
+                "target_type": TargetType.DOMAIN,
+                "guest_properties": data,
+            }
             plan.append(item)
 
-        for (uuid, data) in list(removed.items()):
-            item = {'time': int(time.time()),
-                    'event_type': EventType.REMOVED,
-                    'target_type': TargetType.DOMAIN,
-                    'guest_properties': data}
+        for uuid, data in list(removed.items()):
+            item = {
+                "time": int(time.time()),
+                "event_type": EventType.REMOVED,
+                "target_type": TargetType.DOMAIN,
+                "guest_properties": data,
+            }
             plan.append(item)
 
     poller_state.save()
     if len(plan) > 0:
-        ret.append({'plan': plan})
+        ret.append({"plan": plan})
     return ret
