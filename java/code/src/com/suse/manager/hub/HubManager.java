@@ -1404,6 +1404,7 @@ public class HubManager {
         peripheral.setPeripheralChannels(allChannels);
         hubFactory.save(peripheral);
     }
+
     /**
      * Execute operations within a transaction, handling commit/rollback
      * @param operation The operation to execute in the transaction

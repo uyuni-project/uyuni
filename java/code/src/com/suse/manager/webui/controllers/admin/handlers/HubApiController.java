@@ -112,11 +112,11 @@ public class HubApiController {
         delete("/manager/api/admin/hub/peripherals/:id", withProductAdmin(this::deletePeripheral));
 
         // Peripheral channels management
-        get("/manager/api/admin/hub/peripherals/:id/channels-sync",
+        get("/manager/api/admin/hub/peripherals/:id/sync-channels",
                 withProductAdmin(this::getPeripheralChannelSyncStatus));
-        post("/manager/api/admin/hub/peripherals/:id/channels-sync",
+        post("/manager/api/admin/hub/peripherals/:id/sync-channels",
                 withProductAdmin(this::syncChannelsToPeripheral));
-        delete("/manager/api/admin/hub/peripherals/:id/channels-sync",
+        delete("/manager/api/admin/hub/peripherals/:id/sync-channels",
                 withProductAdmin(this::desyncChannelsFromPeripheral));
 
         // Hub management
@@ -180,10 +180,10 @@ public class HubApiController {
 
     /**
      * Model for sync channel operations
-     * @param chanelsId
-     * @param selectedOrg
+     * @param channelsId
+     * @param selectedOrgId
      */
-    record SyncChannelModel(List<Long> chanelsId, Long selectedOrg) { }
+    record SyncChannelModel(List<Long> channelsId, Long selectedOrgId) { }
 
     /**
      * Sync channels to a peripheral with organization ID
@@ -192,15 +192,15 @@ public class HubApiController {
         try {
             long peripheralId = Long.parseLong(request.params("id"));
             SyncChannelModel opRequest = GSON.fromJson(request.body(), SyncChannelModel.class);
-            if (opRequest == null || opRequest.chanelsId() == null || opRequest.chanelsId().isEmpty()) {
+            if (opRequest == null || opRequest.channelsId() == null || opRequest.channelsId().isEmpty()) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
             // Execute the sync operation with org ID
             hubManager.syncChannelsByIdForPeripheral(
                     satAdmin,
                     peripheralId,
-                    opRequest.selectedOrg(),
-                    opRequest.chanelsId()
+                    opRequest.selectedOrgId(),
+                    opRequest.channelsId()
             );
 
             return success(response);

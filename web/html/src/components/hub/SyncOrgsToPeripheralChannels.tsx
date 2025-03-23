@@ -111,8 +111,8 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       return;
     }
     const payload = {
-      orgId: selectedOrg.orgId,
       channelIds: channelIds,
+      selectedOrgId: selectedOrg.orgId,
     };
 
     this.setState({ loading: true });
