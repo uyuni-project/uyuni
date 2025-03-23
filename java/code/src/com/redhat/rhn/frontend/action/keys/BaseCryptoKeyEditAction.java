@@ -78,7 +78,7 @@ public abstract class BaseCryptoKeyEditAction extends RhnAction {
         StrutsDelegate strutsDelegate = getStrutsDelegate();
 
         request.setAttribute(KEY, cmd.getCryptoKey());
-        List types = new LinkedList<>();
+        List<Object> types = new LinkedList<>();
         types.add(lvl10n("crypto.key.gpg",
                 KickstartFactory.KEY_TYPE_GPG.getLabel()));
         types.add(lvl10n("crypto.key.ssl",

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.acl.AclManager;
@@ -79,7 +80,7 @@ public abstract class BaseKickstartListSetupAction extends BaseSetListAction {
      * @param ksdata KickstartData to fetch info from
      * @return Iterator containing Identifiable objects.
      */
-    protected abstract Iterator getCurrentItemsIterator(KickstartData ksdata);
+    protected abstract Iterator<CryptoKey> getCurrentItemsIterator(KickstartData ksdata);
 
 
 }

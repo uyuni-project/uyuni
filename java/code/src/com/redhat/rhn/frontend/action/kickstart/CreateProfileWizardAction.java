@@ -334,7 +334,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
 
     private void loadVirtualizationTypes(KickstartWizardHelper cmd, DynaActionForm form,
             HttpServletRequest request) {
-        List types = cmd.getVirtualizationTypes();
+        List<KickstartVirtualizationType> types = cmd.getVirtualizationTypes();
         form.set(VIRTUALIZATION_TYPES_PARAM, types);
         form.set(VIRTUALIZATION_TYPE_LABEL_PARAM,
                 KickstartVirtualizationType.NONE);
@@ -356,7 +356,7 @@ public class CreateProfileWizardAction extends RhnWizardAction {
         }
     }
 
-    private boolean validateInput(DynaActionForm form, List fieldNames,
+    private boolean validateInput(DynaActionForm form, List<String> fieldNames,
             RequestContext ctx) {
         ActionErrors errs =
                 RhnValidationHelper.validateDynaActionForm(this, form, fieldNames);

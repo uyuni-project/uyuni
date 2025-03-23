@@ -126,7 +126,7 @@ public class KickstartDetailsEditAction extends BaseKickstartEditAction {
         KickstartWizardHelper wizardHelper = new
                 KickstartWizardHelper(ctx.getCurrentUser());
         // Lookup the kickstart virtualization types and pre-select the current one:
-        List types = wizardHelper.getVirtualizationTypes();
+        List<KickstartVirtualizationType> types = wizardHelper.getVirtualizationTypes();
         form.set(VIRTUALIZATION_TYPES, types);
         form.set(VIRTUALIZATION_TYPE_LABEL, cmd.getVirtualizationType().getLabel());
 
