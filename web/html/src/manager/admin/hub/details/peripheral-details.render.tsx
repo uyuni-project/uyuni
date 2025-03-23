@@ -4,12 +4,6 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { Channel, Org, SyncOrgsToPeripheralChannel } from "components/hub";
 import { MessagesContainer } from "components/toastr";
 
-import PeripheralDetails from "./peripheral-details";
-
-type PeripheralDetailsProps = {
-  fqdn: string;
-};
-
 type ChannelSyncProps = {
   peripheralOrgs: Org[];
   syncedPeripheralCustomChannels: Channel[];
@@ -26,7 +20,7 @@ export const renderer = (id: string, channelsSyncData: ChannelSyncProps) => {
   const mapAvailableChannels = (ch: Channel) => {
     ch.synced = false;
     return ch;
-  }
+  };
   const mapSyncedChannels = (ch: Channel) => {
     ch.synced = true;
     return ch;

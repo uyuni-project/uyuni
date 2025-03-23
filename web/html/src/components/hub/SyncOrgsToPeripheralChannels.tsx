@@ -116,7 +116,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     };
 
     this.setState({ loading: true });
-    const endpoint = `/rhn/manager/api/admin/hub/peripheral/${peripheralId}/sync-channels`;
+    const endpoint = `/rhn/manager/api/admin/hub/peripherals/${peripheralId}/sync-channels`;
     Network.post(endpoint, payload)
       .then(() => {
         showSuccessToastr(t("Channels synced correctly to peripheral!"));

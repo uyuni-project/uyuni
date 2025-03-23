@@ -259,13 +259,10 @@ export class HierarchicalChannelTable extends React.Component<
     // Store search criteria
     this.setState({ currentSearchCriteria: searchCriteria }, () => {
       const { flatChannels } = this.state;
-
       // Find all channels that match search criteria directly (for auto-expanding)
       const directMatchingChannels = flatChannels.filter((channel) => searchCriteriaInChannel(channel, searchCriteria));
-
       // Create set for parent channel IDs that need to be expanded
       const visibleSubList = new Set(this.state.visibleSubList);
-
       // For each matching channel, add all its parent channels to visibleSubList
       directMatchingChannels.forEach((channel) => {
         if (channel.parentChannelLabel) {
@@ -281,7 +278,6 @@ export class HierarchicalChannelTable extends React.Component<
           }
         }
       });
-
       // Update state to expand relevant nodes
       this.setState({
         visibleSubList: Array.from(visibleSubList),

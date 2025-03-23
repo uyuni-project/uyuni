@@ -174,7 +174,7 @@ public class AdminViewsController {
         catch (IOException eIn) {
             errors.add(LOC.getMessage("hub.error_connecting_remote"));
         }
-        if (errors.isEmpty()) {
+        if (!errors.isEmpty()) {
             data.put("errors", errors);
         }
         return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
