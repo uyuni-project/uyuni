@@ -51,7 +51,7 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
         pc.setFilter(true);
 
         clampListBounds(pc, request, user);
-        DataResult dr = getDataResult(user, pc, formIn);
+        DataResult<SystemOverview> dr = getDataResult(user, pc, formIn);
         RhnSet set = getSetDecl().get(user);
         if (dr.isEmpty()) {
             request.setAttribute(SHOW_NO_SYSTEMS, Boolean.TRUE);
@@ -78,16 +78,15 @@ public abstract class BaseSystemListSetupAction extends RhnListAction {
      * @param dr The list of System Overviews
      * @param user The user viewing the System List
      */
-    public void setStatusDisplay(DataResult dr, User user) {
+    public void setStatusDisplay(DataResult<SystemOverview> dr, User user) {
 
-        for (Object oIn : dr) {
-            SystemOverview next = (SystemOverview) oIn;
+        for (SystemOverview next : dr) {
             SystemListHelper.setSystemStatusDisplay(user, next);
         }
 
     }
 
-    protected abstract DataResult getDataResult(User user,
+    protected abstract DataResult<SystemOverview> getDataResult(User user,
                                                 PageControl pc,
                                                 ActionForm formIn);
 }
