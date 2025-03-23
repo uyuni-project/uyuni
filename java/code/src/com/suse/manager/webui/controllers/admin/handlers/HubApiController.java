@@ -180,10 +180,27 @@ public class HubApiController {
 
     /**
      * Model for sync channel operations
-     * @param channelsId
-     * @param selectedOrgId
      */
-    record SyncChannelModel(List<Long> channelsId, Long selectedOrgId) { }
+    private static class SyncChannelModel {
+        private List<Long> channelsId;
+        private Long selectedOrgId;
+
+        public Long getSelectedOrgId() {
+            return selectedOrgId;
+        }
+
+        public List<Long> getChannelsId() {
+            return channelsId;
+        }
+
+        public void setChannelsId(List<Long> channelsIdIn) {
+            channelsId = channelsIdIn;
+        }
+
+        public void setSelectedOrgId(Long selectedOrgIdIn) {
+            selectedOrgId = selectedOrgIdIn;
+        }
+    }
 
     /**
      * Sync channels to a peripheral with organization ID
@@ -192,15 +209,15 @@ public class HubApiController {
         try {
             long peripheralId = Long.parseLong(request.params("id"));
             SyncChannelModel opRequest = GSON.fromJson(request.body(), SyncChannelModel.class);
-            if (opRequest == null || opRequest.channelsId() == null || opRequest.channelsId().isEmpty()) {
+            if (opRequest == null || opRequest.getChannelsId() == null || opRequest.getChannelsId().isEmpty()) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
             // Execute the sync operation with org ID
             hubManager.syncChannelsByIdForPeripheral(
                     satAdmin,
                     peripheralId,
-                    opRequest.selectedOrgId(),
-                    opRequest.channelsId()
+                    opRequest.getSelectedOrgId(),
+                    opRequest.getChannelsId()
             );
 
             return success(response);
