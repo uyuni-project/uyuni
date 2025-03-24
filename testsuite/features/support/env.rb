@@ -198,15 +198,30 @@ end
 # Relog and visit the previous URL
 def relog_and_visit_previous_url
   begin
+    previous_url = current_url
+    log "DEBUG: Attempting to relog. Previous URL: #{previous_url}"
+
+    if $current_user.nil? || $current_password.nil?
+      warn "No stored credentials! Skipping relog."
+      return
+    end
+
     Timeout.timeout(DEFAULT_TIMEOUT) do
-      previous_url = current_url
+      Capybara.reset_sessions! # Ensure a clean session
       step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
-      visit previous_url
+
+      if page.current_url != previous_url
+        log "DEBUG: Navigating back to previous URL: #{previous_url}"
+        visit previous_url
+      else
+        log "DEBUG: Already on the correct page: #{previous_url}"
+      end
     end
   rescue Timeout::Error
     warn "Timed out while attempting to relog and visit the previous URL: #{current_url}"
   rescue StandardError => e
     warn "An error occurred while relogging and visiting the previous URL: #{e.message}"
+    Capybara.reset_sessions! # Reset again if error occurred
   end
 end
 

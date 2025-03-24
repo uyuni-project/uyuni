@@ -544,12 +544,20 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     log "The browser session could not be cleaned because there is no browser available: #{e.message}"
     capybara_register_driver
   rescue StandardError => e
-    log "The browser session could not be cleaned for unknown issue: #{e.message}"
+    log "The browser session could not be cleaned for an unknown issue: #{e.message}"
     capybara_register_driver
   ensure
     visit Capybara.app_host
   end
-  next if all(:xpath, "//header//span[text()='#{user}']", wait: 0).any?
+
+  # Ensure elements array is initialized as empty if nil
+  elements = all(:xpath, "//header//span[text()='#{user}']", wait: 0)
+  log "DEBUG: Found elements for user '#{user}': #{elements.inspect}"
+
+  elements = [] if elements.nil?  # safeguard
+
+  # Skip login if elements are found
+  next if elements.any?
 
   begin
     find(:xpath, '//header//i[@class=\'fa fa-sign-out\']').click
@@ -557,13 +565,18 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
     # No need to logout
   end
 
+  # Ensure we are on the login page
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
 
+  # Perform login actions
   fill_in('username', with: user)
   fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
+  # Verify login
   step 'I should be logged in'
+
+  # Store user credentials globally
   $current_user = user
   $current_password = passwd
 end
@@ -571,6 +584,7 @@ end
 Given(/^I am authorized$/) do
   user = get_context('user') || 'admin'
   password = get_context('password') || 'admin'
+  log "DEBUG: Using user '#{user}' and password '#{password}'"
   step %(I am authorized as "#{user}" with password "#{password}")
 end
 
