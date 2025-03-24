@@ -189,15 +189,13 @@ fi
 
 setup_spacewalk() {
     # Deploy the SSL certificates
-    ssl_args=""
-    for intermediate in /ssl/intermediate*.crt; do
-        if test -f "$intermediate"; then
-            ssl_args="$ssl_args --intermediate-ca-file $intermediate"
-        fi
-    done
-    /usr/bin/mgr-ssl-cert-setup --skip-db --root-ca-file /ssl/ca.crt \
-        --server-cert-file /ssl/server.crt \
-        --server-key-file /ssl/server.key $ssl_args
+    if [ "$NO_SSL" == "Y" ]; then
+        /usr/bin/spacewalk-setup-httpd --no-ssl
+    else
+        /usr/bin/spacewalk-setup-httpd
+    fi
+    /usr/sbin/update-ca-certificates
+    /usr/bin/rhn-ssl-dbstore --ca-cert /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 
     if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
         /usr/sbin/mgr-package-rpm-certificate-osimage
