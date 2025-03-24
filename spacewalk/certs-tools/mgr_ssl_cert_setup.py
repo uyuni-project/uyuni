@@ -38,7 +38,6 @@ SRV_KEY_NAME = "spacewalk.key"
 APACHE_CRT_NAME = "spacewalk.crt"
 APACHE_CRT_FILE = os.path.join(PKI_DIR, "tls", "certs", APACHE_CRT_NAME)
 APACHE_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", SRV_KEY_NAME)
-PG_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", "pg-" + SRV_KEY_NAME)
 
 ROOT_CA_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
 PKI_ROOT_CA_NAME = "LOCAL-" + ROOT_CA_NAME
