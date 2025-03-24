@@ -64,6 +64,7 @@ import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -145,8 +146,16 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         return allApiEndpoints().filter(e -> (IssRole.HUB == e.get()[2]));
     }
 
+    private static boolean noHubApis() {
+        return onlyHubApis().findAny().isEmpty();
+    }
+
     private static Stream<Arguments> onlyPeripheralApis() {
         return allApiEndpoints().filter(e -> (IssRole.PERIPHERAL == e.get()[2]));
+    }
+
+    private static boolean noPeripheralApis() {
+        return onlyPeripheralApis().findAny().isEmpty();
     }
 
     @ParameterizedTest
@@ -177,6 +186,7 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     @ParameterizedTest
     @MethodSource("onlyHubApis")
+    @DisabledIf(value = "noHubApis", disabledReason = "No API can be called only from a Hub")
     public void ensureHubApisNotWorkingWithPeripheral(HttpMethod apiMethod, String apiEndpoint, IssRole apiRole)
             throws Exception {
         String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
@@ -191,8 +201,9 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
         assertEquals("Token does not allow access to this resource", resultKO.getMessages().get(0));
     }
 
-    //@ParameterizedTest
-    //@MethodSource("onlyPeripheralApis")
+    @ParameterizedTest
+    @MethodSource("onlyPeripheralApis")
+    @DisabledIf(value = "noPeripheralApis", disabledReason = "No API can be called only from a Peripheral")
     public void ensurePeripheralApisNotWorkingWithHub(HttpMethod apiMethod, String apiEndpoint/*, IssRole apiRole*/)
             throws Exception {
         String answerKO = (String) testUtils.withServerFqdn(DUMMY_SERVER_FQDN)
@@ -483,8 +494,6 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
     @MethodSource("allBaseAndVendorChannelAlreadyPresentCombinations")
     public void checkApiSyncChannel(boolean baseChannelAlreadyPresentInPeripheral,
                                     boolean channelAlreadyPresentInPeripheral) throws Exception {
-        String apiUnderTest = "/hub/syncChannels";
-
         //SUSE Linux Enterprise Server 15 SP7 x86_64
         String vendorBaseChannelTemplateName = "SLES15-SP7-Pool for x86_64";
         String vendorBaseChannelTemplateLabel = "sles15-sp7-pool-x86_64";
