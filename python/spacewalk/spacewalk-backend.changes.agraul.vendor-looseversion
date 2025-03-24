@@ -1,2 +1,0 @@
-- Remove import of Salt code that might be shipped for a different
-  Python version (bsc#1239859)
