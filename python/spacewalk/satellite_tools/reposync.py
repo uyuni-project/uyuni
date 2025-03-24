@@ -1746,7 +1746,7 @@ class RepoSync(object):
                 raise
             except Exception:
                 failed_packages += 1
-                log(0, "traceback.format_exc()")
+                log(0, traceback.format_exc())
                 if self.fail:
                     raise
                 to_process[index] = (pack, False, False)
