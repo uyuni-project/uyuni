@@ -553,8 +553,8 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
   # Ensure elements array is initialized as empty if nil
   elements = all(:xpath, "//header//span[text()='#{user}']", wait: 0)
   log "DEBUG: Found elements for user '#{user}': #{elements.inspect}"
-
-  elements = [] if elements.nil?  # safeguard
+  # safeguard
+  elements = [] if elements.nil?
 
   # Skip login if elements are found
   next if elements.any?
