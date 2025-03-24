@@ -12,17 +12,21 @@
 package com.suse.manager.hub.migration;
 
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.migration.MigrationItem;
 import com.suse.manager.model.hub.migration.MigrationMessageLevel;
 import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
 import com.suse.manager.model.hub.migration.SlaveMigrationData;
+import com.suse.utils.CustomCollectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,6 +43,8 @@ public class IssMigrator {
     private final HubManager hubManager;
 
     private final User user;
+
+    private Map<String, Channel> localChannelsMap;
 
     private MigrationResult result;
 
@@ -60,7 +66,9 @@ public class IssMigrator {
         this.hubManager = hubManagerIn;
         this.user = userIn;
 
+        // These will be initialized at the start of the migration process
         this.result = null;
+        this.localChannelsMap = null;
 
         // ensure the user has the correct role
         if (!user.hasRole(RoleFactory.SAT_ADMIN)) {
@@ -74,9 +82,11 @@ public class IssMigrator {
      * @return the migration result
      */
     public MigrationResult migrateFromV1(Map<String, SlaveMigrationData> migrationDataMap) {
-        // Initialize the result
+        // initialize the result
         result = new MigrationResult();
-
+        // Load and cache all the available channels
+        localChannelsMap = ChannelFactory.listAllChannels().stream()
+            .collect(Collectors.toMap(Channel::getLabel, Function.identity()));
         // Load and cache all the ISS Slaves currently configured
         Map<String, IssSlave> slavesMap = IssFactory.listAllIssSlaves().stream()
             .collect(Collectors.toMap(IssSlave::getSlave, Function.identity()));
@@ -108,6 +118,8 @@ public class IssMigrator {
             .filter(item -> migrationDataAvailable(item))
             // Step 3 - Register the slave as peripheral
             .map(item -> registerSlaveAsPeripheral(item))
+            // Step 4 - Configure the channels comparing what the peripheral has with the hub
+            .map(item -> setupChannelConfiguration(item))
             // Last step - Cleanup the data that is no longer needed
             .map(item -> cleanupDanglingData(item))
             // Collect all the migrated items for determining the final result
@@ -165,6 +177,44 @@ public class IssMigrator {
 
             return item.fail();
         }
+    }
+
+    private MigrationItem setupChannelConfiguration(MigrationItem item) {
+        // Nothing to do if the item is already failed in previous steps
+        if (!item.success()) {
+            return item;
+        }
+
+        try {
+            List<ChannelInfoJson> peripheralChannelsInfo = hubManager.getAllPeripheralChannels(user, item.fqdn());
+
+            // Extract only the channels that also exist on this hub server, group by them by organization and create
+            // a map id -> list of channel labels
+            Map<Long, List<String>> matchingChannelLabelsByOrganization = peripheralChannelsInfo.stream()
+                .filter(channelInfo -> localChannelsMap.containsKey(channelInfo.getLabel()))
+                .collect(CustomCollectors.nullSafeGroupingBy(ChannelInfoJson::getOrgId, ChannelInfoJson::getLabel));
+
+            LOGGER.debug("For peripheral {} these channels are available on this hub and will be added for sync: {}",
+                () -> item.fqdn(), () -> matchingChannelLabelsByOrganization);
+
+            // For each entry in the map, configure the peripheral channel
+            matchingChannelLabelsByOrganization.forEach((orgId, channelLabels) ->
+                hubManager.addPeripheralChannelsToSync(user, item.fqdn(), channelLabels, orgId)
+            );
+
+            // Now sync the channels to the peripherals
+            hubManager.syncPeripheralChannels(user, item.fqdn());
+        }
+        catch (Exception ex) {
+            LOGGER.error("Unable to configure channels for peripheral {}", item.slave(), ex);
+
+            String message = "Unable to configure channels for peripheral %s: %s";
+            result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));
+
+            return item.fail();
+        }
+
+        return item;
     }
 
     private MigrationItem cleanupDanglingData(MigrationItem item) {
