@@ -17,11 +17,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.iss.IssSlave;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -44,9 +51,11 @@ import com.suse.manager.hub.HubClientFactory;
 import com.suse.manager.hub.HubInternalClient;
 import com.suse.manager.hub.HubManager;
 import com.suse.manager.hub.migration.IssMigrator;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.migration.MigrationMessage;
 import com.suse.manager.model.hub.migration.MigrationResult;
 import com.suse.manager.model.hub.migration.MigrationResultCode;
@@ -66,6 +75,7 @@ import org.opentest4j.AssertionFailedError;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -332,6 +342,108 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
         ), migrationResult.getMessages());
     }
 
+    @Test
+    @DisplayName("Rollback is correctly performed when migration fails after peripheral registration")
+    public void rollbacksChangesIfProcessFailsAfterPeripheralRegistration() throws Exception {
+        createSlave(ALPHA);
+        createSlave(BETA);
+
+        Map<String, SlaveMigrationData> migrationData = Stream.of(
+                createMigrationData(ALPHA),
+                createMigrationData(BETA)
+            )
+            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+        // Expect a successful migration for the first one, ad a failure after the peripheral has been registered for
+        // the second
+        context().checking(new MigrationExpectations() {{
+            expectMigrated(migrationData.get(ALPHA));
+            expectFailureAtChannelConfiguration(migrationData.get(BETA));
+        }});
+
+        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+        assertEquals(MigrationResultCode.PARTIAL, migrationResult.getResultCode());
+        assertNotNull(migrationResult.getMessages());
+        assertEquals(Set.of(
+            MigrationMessage.error("Unable to configure channels for peripheral " + BETA + ": Remote failure")
+        ), migrationResult.getMessages());
+
+        assertNull(IssFactory.lookupSlaveByName(ALPHA), "Slave " + ALPHA + "has not been removed");
+        hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+            .orElseThrow(() -> new AssertionFailedError("Cannot find peripheral with fqdn " + ALPHA));
+
+        // Ensure the failed slave is still there and the partially created peripheral has been removed
+        assertNotNull(IssFactory.lookupSlaveByName(BETA));
+        hubFactory.lookupIssPeripheralByFqdn(BETA)
+            .ifPresent(ph -> fail("Peripheral " + BETA + " has not been removed"));
+    }
+
+    @Test
+    @DisplayName("Migrate channel and configure the channel syncronization setup")
+    public void migrationChannelsAndConfigureChannelSyncSetup() throws Exception {
+        createSlave(ALPHA);
+        createSlave(BETA);
+
+        Map<String, SlaveMigrationData> migrationData = Stream.of(
+                createMigrationData(ALPHA),
+                createMigrationData(BETA)
+            )
+            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+        Channel slesChannel = createCustomChannel("sles-15sp6");
+        Channel ubuntuChannel = createCustomChannel("ubuntu-2004");
+        Channel prodChannel = createCustomChannel("custom-channel-prod");
+        Channel stageChanngel = createCustomChannel("custom-channel-stage");
+
+        context().checking(new MigrationExpectations() {{
+            expectMigrated(migrationData.get(ALPHA), List.of(
+                createChannelInfo(1L, "sles-15sp6", 1L),
+                createChannelInfo(2L, "sle15sp6-obs-tools", 1L),
+                createChannelInfo(3L, "custom-channel-prod", 2L)
+            ));
+            expectMigrated(migrationData.get(BETA), List.of(
+                createChannelInfo(1L, "ubuntu-2004", 7L),
+                createChannelInfo(2L, "ubuntu-2004security", 7L),
+                createChannelInfo(3L, "custom-channel-stage", 5L)
+            ));
+        }});
+
+        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+        assertEquals(Set.of(), migrationResult.getMessages());
+
+        // Flush and clear hibernate sessions to ensure we get fresh results
+        clearSession();
+
+        // Ensure the slaves has been removed
+        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+        assertTrue(issSlaves.isEmpty());
+
+        // Ensure the peripheral have been created
+        assertEquals(2L, hubFactory.countPeripherals());
+
+        // Verify the channels have been correctly configured
+        IssPeripheral alphaPeripheral = hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + ALPHA));
+
+        assertNotNull(alphaPeripheral.getPeripheralChannels());
+        assertEquals(2, alphaPeripheral.getPeripheralChannels().size());
+        assertEquals(Set.of(
+            new IssPeripheralChannels(alphaPeripheral, slesChannel, 1L),
+            new IssPeripheralChannels(alphaPeripheral, prodChannel, 2L)
+        ), new HashSet<>(alphaPeripheral.getPeripheralChannels()));
+
+        IssPeripheral betaPeripheral = hubFactory.lookupIssPeripheralByFqdn(BETA)
+            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + BETA));
+
+        assertNotNull(betaPeripheral.getPeripheralChannels());
+        assertEquals(2, betaPeripheral.getPeripheralChannels().size());
+        assertEquals(Set.of(
+            new IssPeripheralChannels(betaPeripheral, ubuntuChannel, 7L),
+            new IssPeripheralChannels(betaPeripheral, stageChanngel, 5L)
+        ), new HashSet<>(betaPeripheral.getPeripheralChannels()));
+    }
+
     private static IssSlave createSlave(String slaveName) {
         return createSlave(slaveName, true);
     }
@@ -356,14 +468,40 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
         return new SlaveMigrationData(slaveFqdn, accessToken.getSerializedForm(), TestUtils.randomString(16));
     }
 
+    private Channel createCustomChannel(String label) {
+        Org org = user.getOrg();
+
+        ChannelFamily cfam = org.getPrivateChannelFamily();
+        ChannelArch arch = ChannelFactory.lookupArchByName("x86_64");
+
+        return ChannelFactoryTest.createTestChannel(label, label, org, arch, cfam);
+    }
+
+    private ChannelInfoJson createChannelInfo(long id, String label, Long orgId) {
+        return new ChannelInfoJson(id, label, label, TestUtils.randomString(16), orgId, null);
+    }
+
+    private record PeripheralChannel(IssPeripheral peripheral, Long peripheralOrgId, Channel channel) {
+
+        PeripheralChannel(IssPeripheralChannels ph) {
+            this(ph.getPeripheral(), ph.getPeripheralOrgId(), ph.getChannel());
+        }
+    }
+
     private class MigrationExpectations extends Expectations {
 
         protected void expectMigrated(SlaveMigrationData data)
+            throws TaskomaticApiException, CertificateException, IOException {
+            expectMigrated(data, List.of());
+        }
+
+        protected void expectMigrated(SlaveMigrationData data, List<ChannelInfoJson> channelInfos)
             throws TaskomaticApiException, CertificateException, IOException {
 
             HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
 
             allowRegistration(data, internalClientMock);
+            allowChannelSetup(data, internalClientMock, channelInfos);
             allowIssV1Removal(internalClientMock);
         }
 
@@ -378,6 +516,16 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
 
             failingRegistration(data, internalClientMock);
 
+            allowingRollback(internalClientMock);
+        }
+
+        protected void expectFailureAtChannelConfiguration(SlaveMigrationData data)
+            throws TaskomaticApiException, CertificateException, IOException {
+
+            HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
+
+            allowRegistration(data, internalClientMock);
+            failChannelSetup(data, internalClientMock);
             allowingRollback(internalClientMock);
         }
 
@@ -417,6 +565,21 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 with(anyOf(nullValue(String.class), any(String.class))),
                 with(anyOf(nullValue(String.class), any(String.class)))
             );
+            will(throwException(new IOException("Remote failure")));
+        }
+
+        private void allowChannelSetup(SlaveMigrationData data, HubInternalClient internalClientMock,
+                                       List<ChannelInfoJson> channelInfos)
+            throws IOException {
+            allowing(internalClientMock).getAllPeripheralChannels();
+            will(returnValue(channelInfos));
+
+            allowing(internalClientMock).syncChannels(with(any(List.class)));
+        }
+
+        private void failChannelSetup(SlaveMigrationData data, HubInternalClient internalClientMock)
+            throws IOException {
+            allowing(internalClientMock).getAllPeripheralChannels();
             will(throwException(new IOException("Remote failure")));
         }
 
