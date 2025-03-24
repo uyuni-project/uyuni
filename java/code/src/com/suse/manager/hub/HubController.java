@@ -282,11 +282,11 @@ public class HubController {
             return success(response);
         }
         catch (TokenParsingException ex) {
-            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn());
+            LOGGER.error("Unable to parse the received token for server {}", token.getServerFqdn(), ex);
             return badRequest(response, "The specified token is not parseable");
         }
         catch (TaskomaticApiException ex) {
-            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn());
+            LOGGER.error("Unable to schedule root CA certificate update {}", token.getServerFqdn(), ex);
             return internalServerError(response, "Unable to schedule root CA certificate update");
         }
     }
