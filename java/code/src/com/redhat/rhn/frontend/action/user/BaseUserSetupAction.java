@@ -91,13 +91,13 @@ public class BaseUserSetupAction extends RhnAction {
      * Lists available time zones
      * @return List of available time zones
      */
-    public List getTimeZones() {
-        List dataList = UserManager.lookupAllTimeZones();
+    public List<Map<String, String>> getTimeZones() {
+        List<RhnTimeZone> dataList = UserManager.lookupAllTimeZones();
         List<Map<String, String>> displayList = new ArrayList<>();
-        for (Object oIn : dataList) {
+        for (RhnTimeZone oIn : dataList) {
             String display = LocalizationService.getInstance()
-                    .getMessage(((RhnTimeZone) oIn).getOlsonName());
-            String value = String.valueOf(((RhnTimeZone) oIn).getTimeZoneId());
+                    .getMessage(oIn.getOlsonName());
+            String value = String.valueOf(oIn.getTimeZoneId());
             displayList.add(createDisplayMap(display, value));
         }
         return displayList;
