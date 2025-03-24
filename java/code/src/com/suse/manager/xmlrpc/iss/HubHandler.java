@@ -25,17 +25,21 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.UpdatableServerData;
+import com.suse.manager.model.hub.migration.MigrationResult;
+import com.suse.manager.model.hub.migration.SlaveMigrationData;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
 import com.suse.manager.xmlrpc.InvalidCertificateException;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +49,8 @@ import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * HubHandler
@@ -58,11 +64,13 @@ public class HubHandler extends BaseHandler {
 
     private final HubManager hubManager;
 
+    private final IssMigratorFactory migratorFactory;
+
     /**
      * Default constructor
      */
     public HubHandler() {
-        this(new HubManager());
+        this(new HubManager(), new IssMigratorFactory());
     }
 
     /**
@@ -70,7 +78,17 @@ public class HubHandler extends BaseHandler {
      * @param hubManagerIn the hub manager
      */
     public HubHandler(HubManager hubManagerIn) {
+        this(hubManagerIn, new IssMigratorFactory());
+    }
+
+    /**
+     * Builds a handler with the specified dependencies
+     * @param hubManagerIn the hub manager
+     * @param migratorFactoryIn the migrator factory
+     */
+    public HubHandler(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn) {
         this.hubManager = hubManagerIn;
+        this.migratorFactory = migratorFactoryIn;
     }
 
     protected String logAndGetErrorMessage(Throwable ex, String message, Object... args) {
@@ -411,7 +429,7 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Set server details. All arguments are optional and will only be modified
      * if included in the struct.
      * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "The FDN of Hub or Periperal server to lookup details for.")
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN of Hub or Peripheral server to lookup details for.")
      * @apidoc.param #param_desc("string", "role", "The role which should be updated. Either 'HUB' or 'PERIPHERAL'.")
      * @apidoc.param
      *      #struct_begin("data")
@@ -671,5 +689,46 @@ public class HubHandler extends BaseHandler {
                     "Error while synchronizing channels for {}", fqdn));
         }
         return 1;
+    }
+
+    /**
+     * Migrate the existing ISSv1 slaves to Hub Online Synchronization peripherals.
+     *
+     * @param loggedInUser The current user
+     * @param migrationData         A list of peripheral migration data
+     * @return the migration result
+     *
+     * @apidoc.doc Migrate the existing ISSv1 slaves to Hub Online Synchronization peripherals.
+     * @apidoc.param #session_key()
+     * @apidoc.param
+     *   #array_begin("migration_data")
+     *     #struct_begin("slave_migration_data")
+     *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote slave server.")
+     *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
+     *       #prop_desc("string", "root_ca", "The root ca neeed to establish a secure connection to the remote server.")
+     *     #struct_end()
+     *   #array_end()
+     * @apidoc.returntype $MigrationResultSerializer
+     */
+    public MigrationResult migrateIssSlaves(User loggedInUser, List<Map<String, String>> migrationData) {
+        ensureSatAdmin(loggedInUser);
+
+        if (CollectionUtils.isEmpty(migrationData)) {
+            throw new InvalidParameterException("migration data must not be empty");
+        }
+
+        Map<String, SlaveMigrationData> migrationDataMap;
+
+        try {
+            migrationDataMap = migrationData.stream()
+                .map(SlaveMigrationData::new)
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+        }
+        catch (NullPointerException ex) {
+            throw new InvalidParameterException("Migration data is not valid: %s".formatted(ex.getMessage()));
+        }
+
+        return migratorFactory.createFor(loggedInUser)
+            .migrateFromV1(migrationDataMap);
     }
 }

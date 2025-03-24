@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
@@ -34,9 +35,14 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.hub.DefaultHubInternalClient;
 import com.suse.manager.hub.HubClientFactory;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.hub.migration.IssMigrator;
+import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
 import com.suse.manager.model.hub.IssPeripheral;
+import com.suse.manager.model.hub.migration.MigrationResult;
+import com.suse.manager.model.hub.migration.MigrationResultCode;
+import com.suse.manager.model.hub.migration.SlaveMigrationData;
 import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.manager.webui.utils.token.TokenException;
 import com.suse.manager.webui.utils.token.TokenParsingException;
@@ -55,7 +61,9 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.IOException;
 import java.security.cert.CertificateException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.SSLHandshakeException;
 
@@ -84,6 +92,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         setThreadingPolicy(new Synchroniser());
     }};
 
+    private IssMigratorFactory migratorFactoryMock;
+
     private HubManager hubManagerMock;
 
     private HubHandler hubHandler;
@@ -94,7 +104,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         context.setImposteriser((ByteBuddyClassImposteriser.INSTANCE));
 
         hubManagerMock = context.mock(HubManager.class);
-        hubHandler = new HubHandler(hubManagerMock);
+        migratorFactoryMock = context.mock(IssMigratorFactory.class);
+        hubHandler = new HubHandler(hubManagerMock, migratorFactoryMock);
     }
 
     @Test
@@ -386,6 +397,45 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void canMigrateIssV1Servers() {
+        context.checking(new Expectations() {{
+            IssMigrator migrator = context.mock(IssMigrator.class);
+
+            allowing(migratorFactoryMock).createFor(satAdmin);
+            will(returnValue(migrator));
+
+            allowing(migrator).migrateFromV1(Map.of(
+                "first-slave.dev.local", new SlaveMigrationData("first-slave.dev.local", "one", "dummy"),
+                "second-slave.dev.local", new SlaveMigrationData("second-slave.dev.local", "two", null)
+            ));
+            will(returnValue(new MigrationResult()));
+        }});
+
+        MigrationResult migrationResult = hubHandler.migrateIssSlaves(satAdmin, List.of(
+            Map.of("fqdn", "first-slave.dev.local", "token", "one", "root_ca", "dummy"),
+            mapWithNull("fqdn", "second-slave.dev.local", "token", "two", "root_ca", null)
+        ));
+        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+        assertEquals(Set.of(), migrationResult.getMessages());
+    }
+
+    @Test
+    public void migrateIssV1CorrectlyThrows() {
+        var illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateIssSlaves(satAdmin, List.of()));
+        assertEquals("migration data must not be empty", illegalParameter.getMessage());
+
+        illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateIssSlaves(satAdmin, null));
+        assertEquals("migration data must not be empty", illegalParameter.getMessage());
+
+        illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateIssSlaves(satAdmin, List.of(Map.of("fqdn", "slave.dev.local"))));
+        assertEquals("Migration data is not valid: Missing access token for slave.dev.local",
+            illegalParameter.getMessage());
+    }
+
+    @Test
     public void ensureDeregisterPeripheralWithNullMirrorCredentialsDoesNotThrow() {
         String dummyFqdn = "dummy-server.dev.local";
         HubHandler newHubHandler = new HubHandler();
@@ -427,5 +477,17 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         assertEquals("secondary_msg argument1 argument2 argument3",
                 hubHandlerMock.logAndGetErrorMessage("secondary_msg {} {} {}",
                         "argument1", "argument2", "argument3"));
+    }
+
+    private static Map<String, String> mapWithNull(String... keyValuePairs) {
+        if (keyValuePairs == null || (keyValuePairs.length % 2) != 0) {
+            throw new IllegalArgumentException();
+        }
+
+        Map<String, String> resultMap = new HashMap<>();
+        for (int i = 0; i < keyValuePairs.length; i += 2) {
+            resultMap.put(keyValuePairs[i], keyValuePairs[i + 1]);
+        }
+        return resultMap;
     }
 }
