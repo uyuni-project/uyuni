@@ -105,7 +105,7 @@ public class MasterAction extends RhnAction {
 
     protected Set<String> getSessionSet(HttpServletRequest request) {
         RequestContext ctxt = new RequestContext(request);
-        Set<String > slaveSet = SessionSetHelper.lookupAndBind(request, getSetDecl().getLabel());
+        Set<String> slaveSet = SessionSetHelper.lookupAndBind(request, getSetDecl().getLabel());
         if (!ctxt.isSubmitted()) {
             slaveSet.clear();
         }
