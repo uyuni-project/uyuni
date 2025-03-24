@@ -55,7 +55,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.1.5
+Version:        5.1.6
 Release:        0
 Summary:        SUSE Manager specific scripts
 License:        GPL-2.0-only
