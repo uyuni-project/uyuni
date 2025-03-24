@@ -44,8 +44,8 @@ public class ErrataOverview extends BaseDto {
     private List cves = new ArrayList<>();
     private List<String> packageNames = new ArrayList<>();
     private List<Long> pids = new ArrayList<>();
-    private List actionId;
-    private List status;
+    private List<Long> actionId;
+    private List<String> status;
     private Long associatedSystemId;
     private Date lastModified;
     private Long fromErrataId;
@@ -107,25 +107,25 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return Returns the actionId.
      */
-    public List getActionId() {
+    public List<Long> getActionId() {
         return actionId;
     }
     /**
      * @param actionIdIn The actionId to set.
      */
-    public void setActionId(List actionIdIn) {
+    public void setActionId(List<Long> actionIdIn) {
         this.actionId = actionIdIn;
     }
     /**
      * @return Returns the status.
      */
-    public List getStatus() {
+    public List<String> getStatus() {
         return status;
     }
     /**
      * @param statusIn The status to set.
      */
-    public void setStatus(List statusIn) {
+    public void setStatus(List<String> statusIn) {
         this.status = statusIn;
     }
     /**
@@ -138,7 +138,7 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return Returns the packageNames.
      */
-    public List getPackageNames() {
+    public List<String> getPackageNames() {
         return packageNames;
     }
     /**
@@ -158,7 +158,7 @@ public class ErrataOverview extends BaseDto {
     /**
      * @param p The packageNames to set.
      */
-    public void setPackageNames(List p) {
+    public void setPackageNames(List<String> p) {
         this.packageNames = p;
     }
     /**

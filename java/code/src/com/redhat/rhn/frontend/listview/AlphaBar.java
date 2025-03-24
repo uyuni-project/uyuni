@@ -78,12 +78,11 @@ public class AlphaBar {
         StringBuilder target = new StringBuilder();
         // Get the list of all the letters and digits in current thread's Locale
         // and put them together in the collection
-        List alist = LocalizationService.getInstance().getDigits();
+        List<String> alist = LocalizationService.getInstance().getDigits();
         alist.addAll(LocalizationService.getInstance().getAlphabet());
         // Iterator over each character and determine if we need to
         // enable or disable the row.
-        for (Object oIn : alist) {
-            String ch = (String) oIn;
+        for (String ch : alist) {
             // Format the message with current char as parameter
             MessageFormat form;
 

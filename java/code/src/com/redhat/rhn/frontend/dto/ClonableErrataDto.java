@@ -31,29 +31,29 @@ public class ClonableErrataDto extends BaseDto {
     protected String synopsis;
     protected String updateDate;
     protected Boolean alreadyCloned;
-    protected List channelId = new ArrayList<>();
-    protected List channelName =  new ArrayList<>();
+    protected List<Long> channelId = new ArrayList<>();
+    protected List<String> channelName =  new ArrayList<>();
     protected boolean rebootSuggested;
     protected boolean restartSuggested;
 
     /**
      * @return Returns the channelId.
      */
-    public List getChannelId() {
+    public List<Long> getChannelId() {
         return channelId;
     }
 
     /**
      * @param channelIdIn The channelId to set.
      */
-    public void setChannelId(List channelIdIn) {
+    public void setChannelId(List<Long> channelIdIn) {
         this.channelId = channelIdIn;
     }
 
     /**
      * @return Returns the channelName.
      */
-    public List getChannelName() {
+    public List<String> getChannelName() {
         return channelName;
     }
 
@@ -75,7 +75,7 @@ public class ClonableErrataDto extends BaseDto {
     /**
      * @param channelNameIn The channelName to set.
      */
-    public void setChannelName(List channelNameIn) {
+    public void setChannelName(List<String> channelNameIn) {
         this.channelName = channelNameIn;
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
 public class VisibleSystems extends BaseDto {
     private Long id;
     private String serverName;
-    private List groupName;
+    private List<String> groupName;
     private boolean selectable;
 
     /**
@@ -47,7 +47,7 @@ public class VisibleSystems extends BaseDto {
      * get the group name
      * @return the group name
      */
-    public List getGroupName() {
+    public List<String> getGroupName() {
         return groupName;
     }
 
@@ -71,7 +71,7 @@ public class VisibleSystems extends BaseDto {
      * Set the group name
      * @param g the group name to set.
      */
-    public void setGroupName(List g) {
+    public void setGroupName(List<String> g) {
         groupName = g;
     }
 

@@ -51,7 +51,7 @@ public class RenderEngine {
      */
     public String render(Renderable renderer, Map parameters) {
         result = new StringBuilder();
-        List todo = treeIndex.getTree().getNodes();
+        List<NavNode> todo = treeIndex.getTree().getNodes();
 
         renderer.preNav(result);
         this.renderLevel(renderer, todo, parameters, 0);
@@ -60,7 +60,7 @@ public class RenderEngine {
         return result.toString();
     }
 
-    private void renderLevel(Renderable renderer, List todo,
+    private void renderLevel(Renderable renderer, List<NavNode> todo,
                              Map<String, Object> parameters, int depth) {
         if (todo == null || todo.isEmpty()) {
             return;
@@ -72,7 +72,7 @@ public class RenderEngine {
 
         int size = todo.size();
         for (int i = 0; i < size; i++) {
-            NavNode node = (NavNode) todo.get(i);
+            NavNode node = todo.get(i);
 
             // mark the nodes as first or last based on index.
             if (i == 0) {
@@ -103,11 +103,11 @@ public class RenderEngine {
 
         if (activeNode != null && !renderer.nodeRenderInline(depth)) {
             boolean showKids = true;
-            List subnodes = activeNode.getNodes();
+            List<NavNode> subnodes = activeNode.getNodes();
             if (!activeNode.getShowChildrenIfActive()) {
                 showKids = false;
-                for (Object subnodeIn : subnodes) {
-                    if (treeIndex.isNodeActive((NavNode) subnodeIn)) {
+                for (NavNode subnodeIn : subnodes) {
+                    if (treeIndex.isNodeActive(subnodeIn)) {
                         showKids = true;
                         break;
                     }
