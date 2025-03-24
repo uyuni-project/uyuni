@@ -1,7 +1,7 @@
 #
 # spec file for package susemanager
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -21,6 +21,13 @@
 %global build_py3   1
 %endif
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
+
+# Keep in sync with salt/salt.spec, used to set correct shebang in mgr-salt-ssh
+%if 0%{?suse_version} == 1500 && 0%{?sle_version} >= 150700
+%global use_python python311
+%else
+%global use_python python3
+%endif
 
 %if 0%{?rhel}
 %global apache_user root
@@ -177,10 +184,11 @@ Bash completion for SUSE Manager CLI tools
 
 # Fixing shebang for Python 3
 %if 0%{?build_py3}
-for i in `find . -type f`;
+for i in `find . -type f -not -name 'mgr-salt-ssh'`;
 do
     sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
+sed -i '1s=^#!/usr/bin/python3=#!/usr/bin/%{use_python}=' src/mgr-salt-ssh
 %endif
 
 # Bash completion
