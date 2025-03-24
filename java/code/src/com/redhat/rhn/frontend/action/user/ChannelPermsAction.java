@@ -61,19 +61,18 @@ public class ChannelPermsAction extends RhnListAction {
         String[] channels = (String[]) form.get("cid");
         String[] selected = (String[]) form.get("selectedChannels");
 
-        List channelList = Arrays.asList(channels);
-        List selectedList = Arrays.asList(selected);
+        List<String> channelList = Arrays.asList(channels);
+        List<String> selectedList = Arrays.asList(selected);
 
-        for (Object oIn : channelList) {
-            String currentChannel = (String) oIn;
-            boolean isSet = selectedList.contains(currentChannel);
+        for (String oIn : channelList) {
+            boolean isSet = selectedList.contains(oIn);
 
             if (isSet) {
-                UserManager.removeChannelPerm(user, Long.valueOf(currentChannel), role);
-                UserManager.addChannelPerm(user, Long.valueOf(currentChannel), role);
+                UserManager.removeChannelPerm(user, Long.valueOf(oIn), role);
+                UserManager.addChannelPerm(user, Long.valueOf(oIn), role);
             }
             else {
-                UserManager.removeChannelPerm(user, Long.valueOf(currentChannel), role);
+                UserManager.removeChannelPerm(user, Long.valueOf(oIn), role);
             }
 
         }
