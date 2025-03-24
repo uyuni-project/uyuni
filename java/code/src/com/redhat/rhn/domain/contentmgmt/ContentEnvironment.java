@@ -261,7 +261,7 @@ public class ContentEnvironment extends BaseDomainHelper {
     /**
      * @param prevEnvironmentIn set previous environment
      */
-    protected void setPrevEnvironment(ContentEnvironment prevEnvironmentIn) {
+    public void setPrevEnvironment(ContentEnvironment prevEnvironmentIn) {
         prevEnvironment = prevEnvironmentIn;
     }
 
