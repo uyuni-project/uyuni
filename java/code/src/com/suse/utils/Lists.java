@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.utils;
 
@@ -19,6 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -28,6 +25,7 @@ public class Lists {
 
     private Lists() {
     }
+
 
     private static <T> List<List<T>>  combinations(List<List<T>> acc, List<T> list) {
         List<List<T>> result = new LinkedList<>();
@@ -50,20 +48,19 @@ public class Lists {
      * @return cartesian product of the input
      */
     public static <T> List<List<T>>  combinations(List<List<T>> lists) {
-        if (lists.size() < 1) {
+        if (lists.isEmpty()) {
             return new ArrayList<>();
         }
-        else {
-            List<List<T>> result = new ArrayList<>(lists.get(0).size());
-            for (T t : lists.get(0)) {
-                result.add(Collections.singletonList(t));
-            }
-            List<List<T>> rest = lists.subList(1, lists.size());
-            for (List<T> list : rest) {
-                result = combinations(result, list);
-            }
-            return result;
+
+        List<List<T>> result = new ArrayList<>(lists.get(0).size());
+        for (T t : lists.get(0)) {
+            result.add(Collections.singletonList(t));
         }
+        List<List<T>> rest = lists.subList(1, lists.size());
+        for (List<T> list : rest) {
+            result = combinations(result, list);
+        }
+        return result;
     }
 
     /**
@@ -73,31 +70,46 @@ public class Lists {
      * @param <T> list element type
      * @return a comparator for lists of T
      */
-    public static <T> Comparator<List<T>> listOfListComparator(
-            Comparator<T> elementComparator) {
+    public static <T> Comparator<List<T>> listOfListComparator(Comparator<T> elementComparator) {
         return (o1, o2) -> {
             if (o1 == o2) {
                 return 0;
             }
-            else {
-                for (int i = 0; i < o1.size(); i++) {
-                    T t1 = o1.get(i);
-                    T t2 = o2.get(i);
-                    if (t1 == null && t2 != null) {
-                        return 1;
-                    }
-                    else if (t2 == null && t1 != null) {
-                        return -1;
-                    }
-                    else {
-                        int compare = elementComparator.compare(t1, t2);
-                        if (compare != 0) {
-                            return compare;
-                        }
-                    }
+
+            for (int i = 0; i < o1.size(); i++) {
+                T t1 = o1.get(i);
+                T t2 = o2.get(i);
+
+                if (t1 == null && t2 != null) {
+                    return 1;
                 }
-                return 0;
+
+                if (t2 == null && t1 != null) {
+                    return -1;
+                }
+
+                int compare = elementComparator.compare(t1, t2);
+                if (compare != 0) {
+                    return compare;
+                }
             }
+
+            return 0;
         };
+    }
+
+    /**
+     * Returns a new list containing all elements from the given lists, with duplicates preserved.
+     * If either list is null, it is treated as an empty list.
+     *
+     * @param <T>   The type of elements in the lists.
+     * @param list1 The first list. May be null.
+     * @param list2 The second list. May be null.
+     * @return      A new list containing all elements from both input lists.
+     */
+    public static <T> List<T> union(List<T> list1, List<T> list2) {
+        ArrayList<T> result = new ArrayList<>(Objects.requireNonNullElseGet(list1, () -> List.of()));
+        result.addAll(Objects.requireNonNullElseGet(list2, () -> List.of()));
+        return result;
     }
 }
