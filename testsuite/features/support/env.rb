@@ -219,11 +219,17 @@ def process_code_coverage
   $code_coverage.push_feature_coverage(feature_filename)
 end
 
-# Dump feature code coverage into a Redis DB
-After do |scenario|
+# Dump feature code coverage into a Redis DB before we run next feature
+Before do |scenario|
   next unless $code_coverage_mode
-  next unless $feature_path != scenario.location.file
 
+  # Initialize $feature_path if that's the first feature
+  $feature_path ||= scenario.location.file
+
+  # Skip if still in the same feature file
+  next if $feature_path == scenario.location.file
+
+  # Runs only if a new feature file starts
   process_code_coverage
   $feature_path = scenario.location.file
 end
