@@ -98,4 +98,9 @@ public interface HubInternalClient {
      * @throws IOException when the communication fails
      */
     void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException;
+
+    /**
+     * Deletes the ISSv1 Master
+     */
+    void deleteIssV1Master() throws IOException;
 }

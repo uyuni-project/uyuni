@@ -22,6 +22,9 @@ import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
+import com.redhat.rhn.domain.iss.IssFactory;
+import com.redhat.rhn.domain.iss.IssMaster;
+import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -386,12 +389,13 @@ public class HubManager {
      * @param password the password of the specified user
      * @param rootCA the optional root CA of the remote server. can be null
      *
+     * @return the registered peripheral
      * @throws CertificateException if the specified certificate is not parseable
      * @throws TokenParsingException if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the server
      * @throws IOException when connecting to the server fails
      */
-    public void register(User user, String remoteServer, String username, String password, String rootCA)
+    public IssPeripheral register(User user, String remoteServer, String username, String password, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -405,7 +409,7 @@ public class HubManager {
             remoteToken = externalClient.generateAccessToken(ConfigDefaults.get().getHostname());
         }
 
-        registerWithToken(user, remoteServer, rootCA, remoteToken);
+        return registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
@@ -416,12 +420,13 @@ public class HubManager {
      * @param remoteToken the token used to connect to the peripheral server
      * @param rootCA the optional root CA of the peripheral server
      *
+     * @return the registered peripheral
      * @throws CertificateException if the specified certificate is not parseable
      * @throws TokenParsingException if the specified token is not parseable
      * @throws TokenBuildingException if an error occurs while generating the token for the peripheral server
      * @throws IOException when connecting to the peripheral server fails
      */
-    public void register(User user, String remoteServer, String remoteToken, String rootCA)
+    public IssPeripheral register(User user, String remoteServer, String remoteToken, String rootCA)
         throws CertificateException, TokenBuildingException, IOException, TokenParsingException,
             TaskomaticApiException {
         ensureSatAdmin(user);
@@ -429,7 +434,7 @@ public class HubManager {
         // Verify this server is not already registered as hub or peripheral
         ensureServerNotRegistered(remoteServer);
 
-        registerWithToken(user, remoteServer, rootCA, remoteToken);
+        return registerWithToken(user, remoteServer, rootCA, remoteToken);
     }
 
     /**
@@ -662,28 +667,31 @@ public class HubManager {
                 reportDbName, reportDbHost, reportDbPort);
     }
 
-    private void registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
+    private IssPeripheral registerWithToken(User user, String remoteServer, String rootCA, String remoteToken)
         throws TokenParsingException, CertificateException, TokenBuildingException, IOException,
             TaskomaticApiException {
         parseAndSaveToken(remoteServer, remoteToken);
 
         IssServer registeredServer = createServer(IssRole.PERIPHERAL, remoteServer, rootCA, null, user);
-        registerToRemote(user, registeredServer, remoteToken, rootCA);
-    }
-
-    private void registerToRemote(User user, IssServer remoteServer, String remoteToken, String rootCA)
-            throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
 
         // Ensure the remote server is a peripheral
-        if (!(remoteServer instanceof IssPeripheral peripheral)) {
+        if (!(registeredServer instanceof IssPeripheral peripheral)) {
             throw new IllegalStateException(remoteServer + "is not a peripheral server");
         }
 
+        registerToRemote(user, peripheral, remoteToken, rootCA);
+
+        return peripheral;
+    }
+
+    private void registerToRemote(User user, IssPeripheral peripheral, String remoteToken, String rootCA)
+            throws CertificateException, TokenParsingException, TokenBuildingException, IOException {
+
         // Create a client to connect to the internal API of the remote server
-        var internalApi = clientFactory.newInternalClient(remoteServer.getFqdn(), remoteToken, rootCA);
+        var internalApi = clientFactory.newInternalClient(peripheral.getFqdn(), remoteToken, rootCA);
         try {
             // Issue a token for granting access to the remote server
-            Token localAccessToken = createAndSaveToken(remoteServer.getFqdn());
+            Token localAccessToken = createAndSaveToken(peripheral.getFqdn());
             // Send the local trusted root, if we needed a different certificate to connect
             String localRootCA = rootCA != null ? CertificateUtils.loadLocalTrustedRoot() : null;
             // Send the local GPG key used to sign metadata, if configured.
@@ -701,7 +709,7 @@ public class HubManager {
             // Query Report DB connection values and set create a User
             ManagerInfoJson managerInfo = internalApi.getManagerInfo();
             Server peripheralServer = getOrCreateManagerSystem(systemEntitlementManager, user,
-                    remoteServer.getFqdn(), Set.of(remoteServer.getFqdn()));
+                    peripheral.getFqdn(), Set.of(peripheral.getFqdn()));
             boolean changed = SystemManager.updateMgrServerInfo(peripheralServer, managerInfo);
             if (changed) {
                 setReportDbUser(user, peripheralServer, false);
@@ -716,7 +724,7 @@ public class HubManager {
 
     private void cleanup(HubInternalClient internalApi) {
         try {
-            // try to cleanup the remote side
+            // try to clean up the remote side
             internalApi.deregister();
         }
         catch (Exception ex) {
@@ -1249,5 +1257,55 @@ public class HubManager {
                 accessToken.getToken(),
                 issPeripheral.getRootCa());
         internalClient.syncChannels(channelInfo);
+    }
+
+    /**
+     * Delete an ISS v1 slave if it's also registered as a ISS v3 peripheral
+     * @param user the user performing the operation
+     * @param fqdn the fully qualified domain name of the slave and corresponding peripheral
+     * @param onlyLocal true to perform the removal only on the local server, false to also delete the master on the
+     * remote slave
+     * @throws CertificateException when it's not possible to use remote server certificate
+     * @throws IOException when the connection with the remote server fails
+     */
+    public void deleteIssV1Slave(User user, String fqdn, boolean onlyLocal) throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        IssSlave slave = Optional.ofNullable(IssFactory.lookupSlaveByName(fqdn)).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v1 slave"));
+        IssPeripheral peripheral = hubFactory.lookupIssPeripheralByFqdn(fqdn).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v3 peripheral"));
+
+        if (!onlyLocal) {
+            // Delete the master remotely
+            IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(fqdn);
+            var internalClient = clientFactory.newInternalClient(fqdn, accessToken.getToken(), peripheral.getRootCa());
+            internalClient.deleteIssV1Master();
+        }
+
+        // Delete the slave locally
+        IssFactory.delete(slave);
+    }
+
+    /**
+     * Delete an ISS v1 master if it's also registered as an ISS v3 hub
+     * @param accessToken the access token granting access and identifying the caller
+     * remote slave
+     * @throws IllegalStateException if a master or a hub does not exist with the fqdn identified by the token
+     */
+    public void deleteIssV1Master(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+
+        String fqdn = accessToken.getServerFqdn();
+
+        IssMaster master = Optional.ofNullable(IssFactory.lookupMasterByLabel(fqdn)).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v1 master"));
+
+        // Ensure that the server is registered as hub
+        hubFactory.lookupIssHubByFqdn(fqdn).orElseThrow(() ->
+            new IllegalStateException(fqdn + " is not registered as an ISS v3 hub"));
+
+        // Remove the master
+        IssFactory.delete(master);
     }
 }
