@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -1595,7 +1596,9 @@ public class ServerFactory extends HibernateFactory {
             return;
         }
         ReportDBCredentials credentials = serverInfo.getReportDbCredentials();
-        CredentialsFactory.removeCredentials(credentials);
+        if (credentials != null) {
+            CredentialsFactory.removeCredentials(credentials);
+        }
         SINGLETON.removeObject(serverInfo);
         server.setMgrServerInfo(null);
     }
