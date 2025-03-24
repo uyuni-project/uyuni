@@ -23,3 +23,5 @@ CREATE TABLE suseAppstreamPackage(
     modified        TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
     CONSTRAINT uq_as_pkg_module UNIQUE (package_id, module_id)
 );
+
+CREATE INDEX suse_appstream_pkg_module_id_idx ON suseAppstreamPackage(module_id);
