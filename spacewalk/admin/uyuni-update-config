@@ -12,8 +12,10 @@
 #  pylint: disable=missing-module-docstring,invalid-name
 
 import sys
+import os
 import os.path
 import uuid
+import shutil
 import subprocess
 from spacewalk.common.rhnConfig import cfg_component
 from spacewalk.server import rhnSQL
@@ -164,7 +166,30 @@ def copy_ca():
     sys.stdout.flush()
 
 
+def init_dirs_and_perms():
+    mount_point = "/var/spacewalk"
+    with cfg_component("server") as CFG:
+        mount_point = CFG.MOUNT_POINT
+    if not mount_point:
+        sys.stdout.write("Invalid mount point. Aborting!\n")
+        sys.stdout.flush()
+        sys.exit(1)
+
+    # mount_point/systems dir with 775 wwwrun www
+    system_dir = os.path.join(mount_point, "systems")
+    if not os.path.exists(system_dir):
+        try:
+            os.makedirs(system_dir)
+        except OSError as e:
+            sys.stdout.write(f"Failed to create directory {system_dir}: {e}")
+            sys.exit(1)
+
+    shutil.chown(system_dir, "wwwrun", "www")
+    os.chmod(system_dir, int("0775", 8))
+
+
 def main():
+    init_dirs_and_perms()
     run_uyuni_configfiles_sync()
     init_scc_login()
     import_suma_gpg_keyring()
