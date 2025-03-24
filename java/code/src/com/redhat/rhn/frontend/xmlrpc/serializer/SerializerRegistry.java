@@ -1,6 +1,6 @@
 /*
+ * Copyright (c) 2020--2025 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
- * Copyright (c) 2020--2021 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,6 +19,7 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.xmlrpc.serializer.CoCoAttestationResultSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceCalendarSerializer;
 import com.suse.manager.xmlrpc.serializer.MaintenanceScheduleSerializer;
+import com.suse.manager.xmlrpc.serializer.MigrationResultSerializer;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
 import com.suse.manager.xmlrpc.serializer.ServerCoCoAttestationReportSerializer;
 import com.suse.manager.xmlrpc.serializer.SystemEventDetailsDtoSerializer;
@@ -172,6 +173,7 @@ public class SerializerRegistry {
         SERIALIZER_CLASSES.add(ManagerInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(ChannelInfoJsonSerializer.class);
         SERIALIZER_CLASSES.add(OrgInfoJsonSerializer.class);
+        SERIALIZER_CLASSES.add(MigrationResultSerializer.class);
     }
 
     /**
