@@ -54,4 +54,8 @@ insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
 values (lookup_sg_type('salt_entitled'),
         lookup_sg_type('proxy_entitled'));
 
+insert into rhnSGTypeBaseAddonCompat (base_id, addon_id)
+values (lookup_sg_type('foreign_entitled'),
+        lookup_sg_type('proxy_entitled'));
+
 commit;
