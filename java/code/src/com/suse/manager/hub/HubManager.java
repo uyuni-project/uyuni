@@ -99,8 +99,6 @@ public class HubManager {
 
     private static final Logger LOG = LogManager.getLogger(HubManager.class);
 
-    private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
-
     /**
      * A Hub deliver custom repositories via organization/repositories SCC endpoint.
      * We need a fake repo ID for it.
@@ -600,7 +598,8 @@ public class HubManager {
         });
 
         if (data.hasRootCA()) {
-            taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, fqdn), data.getRootCA());
+            String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), fqdn);
+            taskomaticApi.scheduleSingleRootCaCertUpdate(filename, data.getRootCA());
         }
     }
 
@@ -796,10 +795,6 @@ public class HubManager {
         hubFactory.saveToken(fqdn, token, TokenType.CONSUMED, parsedToken.getExpirationTime());
     }
 
-    private static String computeRootCaFileName(IssRole role, String serverFqdn) {
-        return String.format(ROOT_CA_FILENAME_TEMPLATE, role.getLabel(), serverFqdn);
-    }
-
     private IssServer lookupServerByFqdnAndRole(String serverFqdn, IssRole role) {
         return switch (role) {
             case HUB -> hubFactory.lookupIssHubByFqdn(serverFqdn).orElse(null);
@@ -816,7 +811,8 @@ public class HubManager {
 
     private IssServer createServer(IssRole role, String serverFqdn, String rootCA, String gpgKey, User user)
             throws TaskomaticApiException {
-        taskomaticApi.scheduleSingleRootCaCertUpdate(computeRootCaFileName(role, serverFqdn), rootCA);
+        String filename = CertificateUtils.computeRootCaFileName(role.getLabel(), serverFqdn);
+        taskomaticApi.scheduleSingleRootCaCertUpdate(filename, rootCA);
         return switch (role) {
             case HUB -> {
                 IssHub hub = new IssHub(serverFqdn, rootCA);

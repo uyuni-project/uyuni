@@ -49,10 +49,22 @@ public final class CertificateUtils {
 
     private static final Path CUSTOMER_GPG_RING = CUSTOMER_GPG_DIR.resolve("customer-build-keys.gpg");
 
+    private static final String ROOT_CA_FILENAME_TEMPLATE = "%s_%s_root_ca.pem";
+
     private static final Logger LOG = LogManager.getLogger(CertificateUtils.class);
 
     private CertificateUtils() {
         // Prevent instantiation
+    }
+
+    /**
+     * Compute a file name for a root certificate authority of the specified server
+     * @param prefix a prefix, defining the role of the server
+     * @param serverFqdn the server owning the root ca
+     * @return the full file path where the root ca can be store and retrieved
+     */
+    public static String computeRootCaFileName(String prefix, String serverFqdn) {
+        return ROOT_CA_FILENAME_TEMPLATE.formatted(prefix, serverFqdn);
     }
 
     /**
