@@ -15,6 +15,7 @@
 }
 
 .page-selector {
+  background-color: black;
   border: 0;
   font-weight: 600;
   background-color: transparent;
@@ -27,7 +28,7 @@
     font-size: 12px;
     color: $eos-bc-green-900;
     margin: 0;
-  }
+}
 }
 
 .table-input-search {
@@ -74,7 +75,10 @@ tbody tr td,
 }
 
 .selected-row-details {
-  background-color: $eos-bc-cerulean-100;
-  padding: 8px 15px;
-  margin: 5px -10px 0px;
+  background-color: rgba(179, 232, 246, 0.5);
+  padding: 0px 15px;
+
+  .btn {
+    padding: 4px 6px;
+  }
 }
