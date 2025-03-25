@@ -15,6 +15,8 @@ import com.redhat.rhn.domain.iss.IssSlave;
 
 import com.suse.manager.model.hub.IssPeripheral;
 
+import java.util.function.UnaryOperator;
+
 /**
  * Immutable class to represent an item to be processed by the migration process from ISSv1 to ISSv3.
  * @param slave the ISSv1 slave
@@ -36,6 +38,14 @@ public record MigrationItem(
      */
     public MigrationItem(IssSlave slaveIn, SlaveMigrationData migrationDataIn) {
         this(slaveIn, migrationDataIn, null, true);
+    }
+
+    /**
+     * Create an item for the migration process.
+     * @param migrationDataIn the data needed for the migration
+     */
+    public MigrationItem(SlaveMigrationData migrationDataIn) {
+        this(null, migrationDataIn, null, true);
     }
 
     /**
@@ -78,5 +88,18 @@ public record MigrationItem(
      */
     public MigrationItem fail() {
         return new MigrationItem(slave, migrationData, peripheral, false);
+    }
+
+    /**
+     * Execute the specified action if this item is failed
+     * @param action a unary operation that receives this item, perform the needed operations in case of failure and
+     * returns a possibly updated version of this item.
+     */
+    public MigrationItem ifFailed(UnaryOperator<MigrationItem> action) {
+        if (success) {
+            return this;
+        }
+
+        return action.apply(this);
     }
 }

@@ -108,8 +108,6 @@ public class IssMigrator {
                 result.addMessage(MigrationMessageLevel.WARN, "Slave %s does not exist".formatted(fqdn));
             });
 
-
-        // Process all the extracted slaves in parallel.
         // The migration item is immutable so each step returns the updated version
         List<MigrationItem> migratedItems = slavesMap.values().stream()
             // Step 1 - Create a migration item from the slave
@@ -122,6 +120,38 @@ public class IssMigrator {
             .map(item -> setupChannelConfiguration(item))
             // Last step - Cleanup the data that is no longer needed
             .map(item -> cleanupDanglingData(item))
+            // Collect all the migrated items for determining the final result
+            .toList();
+
+        // Adjust the result code
+        result.setResultCode(computeResultCode(migratedItems));
+
+        return result;
+    }
+
+    /**
+     * Migrate ISSv2 peripherals and configure them as ISSv3 peripheral servers
+     * @param migrationData a map containing the mandatory information for migrating an existing ISSv2 peripheral
+     * @return the migration result
+     */
+    public MigrationResult migrateFromV2(List<SlaveMigrationData> migrationData) {
+        // initialize the result
+        result = new MigrationResult();
+
+        // Load and cache all the available channels
+        localChannelsMap = ChannelFactory.listAllChannels().stream()
+            .collect(Collectors.toMap(Channel::getLabel, Function.identity()));
+
+        // The migration item is immutable so each step returns the updated version
+        List<MigrationItem> migratedItems = migrationData.stream()
+            // Step 1 - Create a migration item from the ISSv2 peripheral
+            .map(data -> new MigrationItem(data))
+            // Step 2 - Register as ISSv3 peripheral
+            .map(item -> registerPeripheral(item))
+            // Step 4 - Configure the channels comparing what the peripheral has with the hub
+            .map(item -> setupChannelConfiguration(item))
+            // Last step - Remove the peripheral if the migration failed
+            .map(item -> item.ifFailed(this::rollbackPeripheral))
             // Collect all the migrated items for determining the final result
             .toList();
 
@@ -164,13 +194,17 @@ public class IssMigrator {
             return item.fail();
         }
 
+        return registerPeripheral(item);
+    }
+
+    private MigrationItem registerPeripheral(MigrationItem item) {
         try {
-            LOGGER.debug("Registering slave {} as peripheral", item.slave());
+            LOGGER.debug("Registering {} as peripheral", item.slave());
             var peripheral = hubManager.register(user, item.fqdn(), item.token(), item.rootCA());
             return item.withPeripheral(peripheral);
         }
         catch (Exception ex) {
-            LOGGER.error("Unable to migrate slave {}", item.slave(), ex);
+            LOGGER.error("Unable to register server {}", item.fqdn(), ex);
 
             String message = "Unable to migrate %s: %s";
             result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));
@@ -206,7 +240,7 @@ public class IssMigrator {
             hubManager.syncPeripheralChannels(user, item.fqdn());
         }
         catch (Exception ex) {
-            LOGGER.error("Unable to configure channels for peripheral {}", item.slave(), ex);
+            LOGGER.error("Unable to configure channels for peripheral {}", item.peripheral(), ex);
 
             String message = "Unable to configure channels for peripheral %s: %s";
             result.addMessage(MigrationMessageLevel.ERROR, message.formatted(item.fqdn(), ex.getMessage()));

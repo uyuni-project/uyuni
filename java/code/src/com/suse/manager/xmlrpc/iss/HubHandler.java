@@ -695,7 +695,7 @@ public class HubHandler extends BaseHandler {
      * Migrate the existing ISSv1 slaves to Hub Online Synchronization peripherals.
      *
      * @param loggedInUser The current user
-     * @param migrationData         A list of peripheral migration data
+     * @param migrationData A list of peripheral migration data
      * @return the migration result
      *
      * @apidoc.doc Migrate the existing ISSv1 slaves to Hub Online Synchronization peripherals.
@@ -705,12 +705,13 @@ public class HubHandler extends BaseHandler {
      *     #struct_begin("slave_migration_data")
      *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote slave server.")
      *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
-     *       #prop_desc("string", "root_ca", "The root ca neeed to establish a secure connection to the remote server.")
+     *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the
+     *       remote server.")
      *     #struct_end()
      *   #array_end()
      * @apidoc.returntype $MigrationResultSerializer
      */
-    public MigrationResult migrateIssSlaves(User loggedInUser, List<Map<String, String>> migrationData) {
+    public MigrationResult migrateFromISSv1(User loggedInUser, List<Map<String, String>> migrationData) {
         ensureSatAdmin(loggedInUser);
 
         if (CollectionUtils.isEmpty(migrationData)) {
@@ -730,5 +731,47 @@ public class HubHandler extends BaseHandler {
 
         return migratorFactory.createFor(loggedInUser)
             .migrateFromV1(migrationDataMap);
+    }
+
+    /**
+     * Migrate the existing ISSv2 peripherals to Hub Online Synchronization peripherals.
+     *
+     * @param loggedInUser The current user
+     * @param migrationData A list of peripheral migration data
+     * @return the migration result
+     *
+     * @apidoc.doc Migrate the existing ISSv2 peripherals to Hub Online Synchronization peripherals.
+     * @apidoc.param #session_key()
+     * @apidoc.param
+     *   #array_begin("migration_data")
+     *     #struct_begin("peripheral_migration_data")
+     *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote peripheral server.")
+     *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
+     *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the
+     *       remote server.")
+     *     #struct_end()
+     *   #array_end()
+     * @apidoc.returntype $MigrationResultSerializer
+     */
+    public MigrationResult migrateFromISSv2(User loggedInUser, List<Map<String, String>> migrationData) {
+        ensureSatAdmin(loggedInUser);
+
+        if (CollectionUtils.isEmpty(migrationData)) {
+            throw new InvalidParameterException("migration data must not be empty");
+        }
+
+        List<SlaveMigrationData> migrationDataList;
+
+        try {
+            migrationDataList = migrationData.stream()
+                .map(SlaveMigrationData::new)
+                .toList();
+        }
+        catch (NullPointerException ex) {
+            throw new InvalidParameterException("Migration data is not valid: %s".formatted(ex.getMessage()));
+        }
+
+        return migratorFactory.createFor(loggedInUser)
+            .migrateFromV2(migrationDataList);
     }
 }
