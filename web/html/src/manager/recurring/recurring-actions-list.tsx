@@ -96,6 +96,9 @@ class RecurringActionsList extends React.Component<Props, State> {
     const { isFilteredList } = this.props;
     const disableCreate = !isFilteredList;
     const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
+    console.log('disableCreate', disableCreate)
+
+    console.log('isFilteredList', this.props)
     const buttons = [
       <div className="btn-group pull-right">
         <Button
@@ -156,8 +159,6 @@ class RecurringActionsList extends React.Component<Props, State> {
             )}
           />
           <Column
-            columnClass="text-center"
-            headerClass="text-center"
             columnKey={isFilteredList ? "scheduleName" : "schedule_name"}
             comparator={Utils.sortByText}
             header={t("Schedule Name")}
@@ -195,8 +196,8 @@ class RecurringActionsList extends React.Component<Props, State> {
             cell={(row) => row.actionTypeDescription}
           />
           <Column
-            columnClass="text-right"
-            headerClass="text-right"
+            columnClass="text-center"
+            headerClass="text-center"
             header={t("Actions")}
             cell={(row) => (
               <div className="btn-group">
