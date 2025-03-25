@@ -23,7 +23,7 @@ mgrpxy_installed:
     - contents: |
         server: {{ pillar['server'] }}
         ca_crt: |
-          {{ pillar['ca_crt'] | replace('\\n', '\n') | indent(12) }}
+          {{ pillar['ca_crt'] | replace('\\n', '\n') | indent(10) }}
         proxy_fqdn: {{ pillar['proxy_fqdn'] }}
         max_cache_size_mb: {{ pillar['max_cache_size_mb']|int }}
         server_version: "{{ pillar['server_version'] }}"
