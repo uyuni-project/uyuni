@@ -1,7 +1,5 @@
 import * as React from "react";
 
-import styles from "./SearchPanel.module.scss";
-
 type SearchPanelPropss = {
   /** number representing the number of the first displayed item */
   fromItem: number;
@@ -30,21 +28,24 @@ export function SelectedRowDetails(props: SearchPanelPropss) {
   return (
     <>
       {props.selectable && props.selectedCount > 0 && (
-        <div className={`selected-row-details ${styles.pagination}`}>
+        <div className="selected-row-details">
           <span>
             {props.selectedCount === props.itemCount ? (
               <>
                 {t("All {totalCount} items are selected.", { totalCount: props.itemCount })}&nbsp;
-                <a href="#" onClick={props.onClear}>{t("Clear")}</a>
+                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
               </>
             ) : (
               <>
-                {t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}&nbsp;
-                <a href="#" onClick={props.onSelectAll}>
+                {/* {t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}&nbsp; */}
+                {props.selectedCount === 1
+                  ? t("1 item selected.")
+                  : t("{selectedCount} items selected.", { selectedCount: props.selectedCount })}
+                <button className="btn btn-tertiary" onClick={props.onSelectAll}>
                   {t("Select All {totalCount} items", { totalCount: props.itemCount })}
-                </a>
-                &nbsp;/&nbsp;
-                <a href="#" onClick={props.onClear}>{t("Clear")}</a>
+                </button>
+                &nbsp;|&nbsp;
+                <button className="btn btn-tertiary" onClick={props.onClear}>{t("Clear")}</button>
               </>
             )}
           </span>

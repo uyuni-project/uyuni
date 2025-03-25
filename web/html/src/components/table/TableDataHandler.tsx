@@ -318,6 +318,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const isEmpty = itemCount === 0;
+    const isTableHeaderEmpty = !this.props.titleButtons && !this.props.searchField;
 
     if (this.props.selectable) {
       const isSelectable =
@@ -392,28 +393,30 @@ export class TableDataHandler extends React.Component<Props, State> {
       <div className="spacewalk-list">
         <div className="panel panel-default">
           {this.props.initialItemsPerPage !== 0 ? (
-            <div className="panel-heading">
-              <div className="spacewalk-list-head-addons align-items-center">
-
-                <SearchPanel
-                  fromItem={fromItem}
-                  toItem={toItem}
-                  itemCount={itemCount}
-                  criteria={this.state.criteria}
-                  field={this.state.field}
-                  onSearch={this.onSearch}
-                  onSearchField={this.onSearchField}
-                  onClear={handleSearchPanelClear}
-                  onSelectAll={handleSearchPanelSelectAll}
-                  selectedCount={selectedItems.length}
-                  selectable={isSelectable}
-                >
-                  {this.props.searchField}
-                  {this.props.additionalFilters}
-                </SearchPanel>
-                <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                  {this.props.titleButtons}
+            <>
+              <div className={`panel-heading ${isTableHeaderEmpty ? "p-0" : ""}`}>
+                <div className="spacewalk-list-head-addons align-items-center">
+                  <SearchPanel
+                    fromItem={fromItem}
+                    toItem={toItem}
+                    itemCount={itemCount}
+                    criteria={this.state.criteria}
+                    field={this.state.field}
+                    onSearch={this.onSearch}
+                    onSearchField={this.onSearchField}
+                    onClear={handleSearchPanelClear}
+                    onSelectAll={handleSearchPanelSelectAll}
+                    selectedCount={selectedItems.length}
+                    selectable={isSelectable}
+                  >
+                    {this.props.searchField}
+                    {this.props.additionalFilters}
+                  </SearchPanel>
+                  <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
+                    {this.props.titleButtons}
+                  </div>
                 </div>
+
               </div>
               <SelectedRowDetails
                 fromItem={fromItem}
@@ -424,8 +427,7 @@ export class TableDataHandler extends React.Component<Props, State> {
                 selectable={isSelectable}
                 selectedCount={selectedItems.length}
               />
-            </div>
-
+            </>
           ) : null}
           {this.state.loading ? (
             <Loading text={this.props.loadingText} />
@@ -468,7 +470,7 @@ export class TableDataHandler extends React.Component<Props, State> {
             </div>
           ) : null}
         </div>
-      </div>
+      </div >
     );
   }
 }
