@@ -79,6 +79,13 @@ public class HubFactory extends HibernateFactory {
         removeObject(hubIn);
     }
 
+    /**
+     * Remove a {@link IssPeripheralChannels} object
+     * @param issPeripheralChannelsIn object to remove
+     */
+    public void remove(IssPeripheralChannels issPeripheralChannelsIn) {
+        removeObject(issPeripheralChannelsIn);
+    }
 
     /**
      * Retrieves a {@link IssHub} by id
@@ -178,6 +185,23 @@ public class HubFactory extends HibernateFactory {
     public Optional<IssPeripheral> lookupIssPeripheralByFqdn(String fqdnIn) {
         return getSession().createQuery("FROM IssPeripheral WHERE fqdn = :fqdn", IssPeripheral.class)
                 .setParameter("fqdn", fqdnIn)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * List {@link IssPeripheralChannels} objects which reference
+     * the given {@link IssPeripheral} server and {@link Channel}
+     * @param peripheralIn the peripheral server
+     * @param channelIn    the channel
+     * @return return {@link IssPeripheralChannels} or empty
+     */
+    public Optional<IssPeripheralChannels> lookupIssPeripheralChannelsByFqdnAndChannel(IssPeripheral peripheralIn,
+                                                                                       Channel channelIn) {
+        return getSession()
+                .createQuery("FROM IssPeripheralChannels WHERE peripheral = :peripheral AND channel = :channel",
+                        IssPeripheralChannels.class)
+                .setParameter("peripheral", peripheralIn)
+                .setParameter("channel", channelIn)
                 .uniqueResultOptional();
     }
 

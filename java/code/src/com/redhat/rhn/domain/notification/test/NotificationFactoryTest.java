@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,15 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.redhat.rhn.domain.notification.test;
 
-import static java.util.Optional.empty;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
@@ -55,7 +50,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg);
 
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
@@ -71,7 +66,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(
                 new StateApplyFailed("minion1", 10000010000L, 42L));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg);
 
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
@@ -88,7 +83,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg);
 
         assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
@@ -102,8 +97,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(
-                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN));
 
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
@@ -116,7 +110,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         UserNotificationFactory.setMailer(mailer);
         assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg);
 
         List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(user);
 
@@ -148,8 +142,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create a notification
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(
-                msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.singleton(RoleFactory.CHANNEL_ADMIN));
 
         msg = TestUtils.reload(msg);
 
@@ -177,7 +170,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // Create notifications
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
-        UserNotificationFactory.storeNotificationMessageFor(msg, Collections.emptySet(), empty());
+        UserNotificationFactory.storeNotificationMessageFor(msg);
 
         // There should be one present
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());

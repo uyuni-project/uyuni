@@ -1558,47 +1558,52 @@ public class ChannelFactory extends HibernateFactory {
      *                                   channel is a custom channel. Vendor channels stay on Org NULL on the peripheral
      * @param forcedOriginalChannelLabel an optional string setting the original of a cloned channel,
      *                                   instead of the pristine one
-     * @return ChannelInfoDetailsJson the converted info of the channel
+     * @return CreateChannelInfoJson the converted info of the channel
      */
     public static ChannelInfoDetailsJson toChannelInfo(Channel channel, Long peripheralOrgId,
                                                        Optional<String> forcedOriginalChannelLabel) {
+
         ChannelInfoDetailsJson channelInfo = new ChannelInfoDetailsJson(channel.getLabel());
+
         if (channel.getOrg() == null) {
             channelInfo.setPeripheralOrgId(null);
         }
         else {
             channelInfo.setPeripheralOrgId(peripheralOrgId);
         }
+
         String parentChannelLabel = (null == channel.getParentChannel()) ? null :
                 channel.getParentChannel().getLabel();
         channelInfo.setParentChannelLabel(parentChannelLabel);
+
         String channelArchLabel = (null == channel.getChannelArch()) ? null :
                 channel.getChannelArch().getLabel();
         channelInfo.setChannelArchLabel(channelArchLabel);
+
         channelInfo.setBaseDir(channel.getBaseDir());
         channelInfo.setName(channel.getName());
         channelInfo.setSummary(channel.getSummary());
         channelInfo.setDescription(channel.getDescription());
+
         String productNameLabel = (null == channel.getProductName()) ? null :
                 channel.getProductName().getLabel();
         channelInfo.setProductNameLabel(productNameLabel);
+
         channelInfo.setGpgCheck(channel.isGPGCheck());
         channelInfo.setGpgKeyUrl(channel.getGPGKeyUrl());
         channelInfo.setGpgKeyId(channel.getGPGKeyId());
         channelInfo.setGpgKeyFp(channel.getGPGKeyFp());
+
         channelInfo.setEndOfLifeDate(channel.getEndOfLife());
         channelInfo.setChecksumTypeLabel(channel.getChecksumTypeLabel());
-        // Set product information only when both values are available
-        // This prevents database NOT NULL constraint violations
-        if (channel.getProduct() != null) {
-            String channelProductProduct = channel.getProduct().getProduct();
-            String channelProductVersion = channel.getProduct().getVersion();
-            // Only set these values if neither is null to maintain database constraints
-            if (channelProductProduct != null && channelProductVersion != null) {
-                channelInfo.setChannelProductProduct(channelProductProduct);
-                channelInfo.setChannelProductVersion(channelProductVersion);
-            }
-        }
+
+        String channelProductProduct = (null == channel.getProduct()) ? null :
+                channel.getProduct().getProduct();
+        channelInfo.setChannelProductProduct(channelProductProduct);
+        String channelProductVersion = (null == channel.getProduct()) ? null :
+                channel.getProduct().getVersion();
+        channelInfo.setChannelProductVersion(channelProductVersion);
+
         channelInfo.setChannelAccess(channel.getAccess());
         channelInfo.setMaintainerName(channel.getMaintainerName());
         channelInfo.setMaintainerEmail(channel.getMaintainerEmail());
@@ -1606,26 +1611,23 @@ public class ChannelFactory extends HibernateFactory {
         channelInfo.setSupportPolicy(channel.getSupportPolicy());
         channelInfo.setUpdateTag(channel.getUpdateTag());
         channelInfo.setInstallerUpdates(channel.isInstallerUpdates());
+
         String originalChannelLabel = channel.asCloned()
                 .flatMap(clonedChannel -> forcedOriginalChannelLabel)
                 .orElse(null);
         channelInfo.setOriginalChannelLabel(originalChannelLabel);
+
         // obtain repository info
         String hostname = ConfigDefaults.get().getJavaHostname();
         String channelLabel = channel.getLabel();
+
         Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channelLabel);
         if (tokenString.isPresent()) {
-            SCCRepositoryJson repositoryInfo;
-            if (channel.getOrg() != null) {
-                repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get());
-            }
-            else {
-                repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
-                        .map(ct -> SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString.get()))
-                        .orElse(SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get()));
-            }
-            channelInfo.setRepositoryInfo(repositoryInfo);
+            SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
+                    tokenString.get());
+            customChannelInfo.setRepositoryInfo(repositoryInfo);
         }
+
         return channelInfo;
     }
 
@@ -1704,7 +1706,12 @@ public class ChannelFactory extends HibernateFactory {
         channel.setSummary(channelInfo.getSummary());
         channel.setDescription(channelInfo.getDescription());
 
-        channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        if (StringUtils.isNotEmpty(channelInfo.getProductNameLabel())) {
+            channel.setProductName(MgrSyncUtils.findOrCreateProductName(channelInfo.getProductNameLabel()));
+        }
+        else {
+            channel.setProductName(null);
+        }
 
         channel.setGPGCheck(channelInfo.isGpgCheck());
         channel.setGPGKeyUrl(channelInfo.getGpgKeyUrl());
@@ -1714,8 +1721,11 @@ public class ChannelFactory extends HibernateFactory {
         channel.setEndOfLife(channelInfo.getEndOfLifeDate());
         channel.setChecksumType(checksumType);
 
-        channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
-                channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        if (StringUtils.isNotEmpty(channelInfo.getChannelProductProduct()) &&
+                StringUtils.isNotEmpty(channelInfo.getChannelProductVersion())) {
+            channel.setProduct(MgrSyncUtils.findOrCreateChannelProduct(
+                    channelInfo.getChannelProductProduct(), channelInfo.getChannelProductVersion()));
+        }
 
         channel.setAccess(channelInfo.getChannelAccess());
         channel.setMaintainerName(channelInfo.getMaintainerName());

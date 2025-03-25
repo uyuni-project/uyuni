@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023--2024 SUSE LLC
+ * Copyright (c) 2023--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.notification.types.test;
 
@@ -27,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.util.download.DownloadException;
-import com.redhat.rhn.domain.notification.NotificationMessage;
+import com.redhat.rhn.domain.notification.types.NotificationSeverity;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
 
@@ -71,11 +67,16 @@ public class UpdateAvailableTest {
             public String getReleaseNotes() {
                 return String.format(RELEASE_NOTES_HTML_ELEMENT, "5.3.2");
             }
+
+            @Override
+            public NotificationType getType() {
+                return NotificationType.UPDATE_AVAILABLE;
+            }
         };
 
         assertTrue(updateAvailable.hasUpdateAvailable());
-        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals(NotificationType.UPDATE_AVAILABLE, updateAvailable.getType());
+        assertEquals(NotificationSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
@@ -116,11 +117,16 @@ public class UpdateAvailableTest {
             public String getReleaseNotes() {
                 return String.format(RELEASE_NOTES_HTML_ELEMENT, "2024.08");
             }
+
+            @Override
+            public NotificationType getType() {
+                return NotificationType.UPDATE_AVAILABLE;
+            }
         };
 
         assertTrue(updateAvailable.hasUpdateAvailable());
-        assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
+        assertEquals(NotificationType.UPDATE_AVAILABLE, updateAvailable.getType());
+        assertEquals(NotificationSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017--2020 SUSE LLC
+ * Copyright (c) 2017--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,15 +7,10 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.notification.NotificationMessage;
 
 import java.util.Optional;
 
@@ -56,25 +51,8 @@ public class OnboardingFailed implements NotificationData {
      * {@inheritDoc}
      */
     @Override
-    public NotificationMessage.NotificationMessageSeverity getSeverity() {
-        return NotificationMessage.NotificationMessageSeverity.ERROR;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public NotificationType getType() {
-        return NotificationType.OnboardingFailed;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getSummary() {
-        return LocalizationService.getInstance().
-                getMessage("notification.onboardingfailed", getMinionId());
+        return LocalizationService.getInstance().getMessage("notification.onboardingfailed", getMinionId());
     }
 
     /**
@@ -83,8 +61,13 @@ public class OnboardingFailed implements NotificationData {
     @Override
     public String getDetails() {
         if (details != null) {
-            return String.format("<pre>%s</pre>", details.replaceAll("\\\\n", "\n"));
+            return String.format("<pre>%s</pre>", details.replace("\\\\n", "\n"));
         }
         return "";
+    }
+
+    @Override
+    public boolean isActionable() {
+        return true;
     }
 }

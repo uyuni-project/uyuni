@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025 SUSE LLC
  * Copyright (c) 2010--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -36,11 +37,10 @@ import org.quartz.impl.matchers.GroupMatcher;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -611,8 +611,7 @@ public class TaskoXmlRpcHandler {
     public int createBootstrapRepoFailedNotification(String identifier, String details) {
         NotificationMessage notificationMessage = UserNotificationFactory.createNotificationMessage(
                 new CreateBootstrapRepoFailed(identifier, details));
-        UserNotificationFactory.storeNotificationMessageFor(notificationMessage,
-                Collections.singleton(RoleFactory.SAT_ADMIN), Optional.empty());
+        UserNotificationFactory.storeNotificationMessageFor(notificationMessage, Set.of(RoleFactory.SAT_ADMIN));
         return 1;
     }
 }

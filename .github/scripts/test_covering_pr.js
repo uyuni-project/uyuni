@@ -1,8 +1,7 @@
 const Redis = require('ioredis');
-const fs = require('fs').promises;
 
 const main = async () => {
-    const changedFiles = process.argv.slice(2)
+    const changedFiles = process.argv.slice(2);
     const redis = new Redis({
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,
@@ -10,21 +9,29 @@ const main = async () => {
         password: process.env.REDIS_PASS,
         enableReadyCheck: false
     });
-    let tests = new Set();
 
     /**
      * Loop over all the files changed in the PR and check if it's covered by a test
      **/
-    for (const filepath of changedFiles) {
-        var classpath = filepath.replace('java/code/src/', '');
-        await redis.smembers(classpath, function(err, test_names) {
-            test_names.forEach(function(test) {
-                tests.add(test);
-            });
-        });
-    }
+    try {
+        const tests = new Set();
 
-    console.log('<details><summary>Suggested tests to cover this Pull Request</summary><ul><li>%s</li></ul></details><!-- suggested_tests -->', Array.from(tests).join('</li><li>'));
-    process.exit(0);
-}
-main();
+        for (const filepath of changedFiles) {
+            const classpath = filepath.replace('java/code/src/', '');
+            const testNames = await redis.smembers(classpath);
+            testNames.forEach(test => tests.add(test));
+        }
+
+        console.log(Array.from(tests).join(','));
+    } catch (error) {
+        console.error('Error:', error);
+        process.exitCode = 1;
+    } finally {
+        await redis.quit();
+    }
+};
+
+main().catch(error => {
+    console.error('Unexpected error:', error);
+    process.exitCode = 1;
+});

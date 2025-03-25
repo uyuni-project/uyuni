@@ -98,4 +98,12 @@ public interface HubInternalClient {
      */
     void scheduleProductRefresh() throws IOException;
 
+    /**
+     * Synchronizes all channels on the remote peripheral server
+     *
+     * @param channelInfo a list of {@link ChannelInfoDetailsJson} objects
+     * @throws IOException when the communication fails
+     */
+    void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException;
+
 }
