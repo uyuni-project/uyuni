@@ -66,10 +66,12 @@ import com.suse.manager.webui.utils.token.Token;
 import com.suse.utils.Exceptions;
 
 import org.jmock.Expectations;
+import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
@@ -145,39 +147,122 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
     }
 
-    @Test
-    @DisplayName("Migrate successfully existing slaves with correct data")
-    public void migrateSuccessfullyExistingSlaves() throws Exception {
-        // Setup some slaves and create the migration data
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
+    private static SlaveMigrationData createMigrationData(String slaveFqdn) {
+        Token accessToken = Exceptions.handleByWrapping(
+            () -> new IssTokenBuilder(LOCAL_SERVER_FQDN).usingServerSecret().build(),
+            ex -> new IllegalStateException("Unable to create a fake token issued by " + slaveFqdn, ex)
+        );
+
+        return new SlaveMigrationData(slaveFqdn, accessToken.getSerializedForm(), TestUtils.randomString(16));
+    }
+
+    private static Channel createCustomChannel(String label, Org org) {
+        ChannelFamily cfam = org.getPrivateChannelFamily();
+        ChannelArch arch = ChannelFactory.lookupArchByName("x86_64");
+
+        return ChannelFactoryTest.createTestChannel(label, label, org, arch, cfam);
+    }
+
+    private static ChannelInfoJson createChannelInfo(long id, String label, Long orgId) {
+        return new ChannelInfoJson(id, label, label, TestUtils.randomString(16), orgId, null);
+    }
+
+    @Nested
+    @DisplayName("ISSv1 Tests")
+    class ISSv1Test {
+        // Not used, but needs to be repeated otherwise jmock won't find the context
+        protected final Mockery parentMockery = context();
+
+        @Test
+        @DisplayName("Migrate successfully existing slaves with correct data")
+        public void migrateSuccessfullyExistingSlaves() throws Exception {
+            // Setup some slaves and create the migration data
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
                 createSlave(ALPHA),
                 createSlave(BETA),
                 createSlave(GAMMA)
             ).collect(Collectors.toMap(IssSlave::getSlave, slave -> createMigrationData(slave.getSlave())));
 
-        // Expect a successful migration for all the slaves and set up the mock accordingly
-        checking(new MigrationExpectations() {{
-            expectMigrated(migrationData.get(ALPHA));
-            expectMigrated(migrationData.get(BETA));
-            expectMigrated(migrationData.get(GAMMA));
-        }});
+            // Expect a successful migration for all the slaves and set up the mock accordingly
+            checking(new MigrationExpectations() {{
+                expectMigratedFromV1(migrationData.get(ALPHA));
+                expectMigratedFromV1(migrationData.get(BETA));
+                expectMigratedFromV1(migrationData.get(GAMMA));
+            }});
 
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
 
-        // Verify everything succeeded
-        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
-        assertEquals(Set.of(), migrationResult.getMessages());
+            // Verify everything succeeded
+            assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+            assertEquals(Set.of(), migrationResult.getMessages());
 
-        // Ensure the slaves has been removed
-        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
-        assertTrue(issSlaves.isEmpty());
+            // Ensure the slaves has been removed
+            List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+            assertTrue(issSlaves.isEmpty());
 
-        // Ensure the peripheral have been created
-        List<IssPeripheral> peripherals = hubFactory.listPeripherals();
-        assertEquals(3, peripherals.size());
+            // Ensure the peripheral have been created
+            List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+            assertEquals(3, peripherals.size());
 
-        // Verify if everything was configured successfully
-        for (var data : migrationData.values()) {
+            // Verify if everything was configured successfully
+            for (var data : migrationData.values()) {
+                IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
+                    .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
+                assertEquals(data.rootCA(), issPeripheral.getRootCa());
+
+                IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(data.fqdn());
+                assertNotNull(issAccessToken);
+                assertEquals(data.token(), issAccessToken.getToken());
+
+                Server server = ServerFactory.findByFqdn(data.fqdn())
+                    .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
+
+                assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
+            }
+        }
+
+        @Test
+        @DisplayName("Skip slaves if they are disabled or missing migration data")
+        public void skipSlavesWhenDisabledOrMissingMigrationData() throws Exception {
+            // Setup some slaves and create the migration data
+            createSlave(ALPHA);
+            createSlave(BETA);
+            createSlave(GAMMA, false); // Disabled
+
+            // Omit the data for alpha
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
+                    createMigrationData(BETA),
+                    createMigrationData(GAMMA)
+                )
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+            // Expect a successful migration for all the slaves and set up the mock accordingly
+            context().checking(new MigrationExpectations() {{
+                expectSkipped(migrationData.get(ALPHA));
+                expectMigratedFromV1(migrationData.get(BETA));
+                expectSkipped(migrationData.get(GAMMA));
+            }});
+
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+
+            // Verify everything succeeded
+            assertEquals(MigrationResultCode.PARTIAL, migrationResult.getResultCode());
+            assertEquals(Set.of(
+                MigrationMessage.info("Slave alpha.unit-test.local has no migration data and will not be migrated"),
+                MigrationMessage.warn("Slave gamma.unit-test.local is currently disabled and will not be migrated")
+            ), migrationResult.getMessages());
+
+            // Ensure only one slave has been removed
+            List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+            assertEquals(2, issSlaves.size());
+
+            // Ensure the peripheral have been created
+            List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+            assertEquals(1, peripherals.size());
+
+            // Verify if everything was configured successfully for beta.unit-test.local
+            SlaveMigrationData data = migrationData.get(BETA);
+
             IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
                 .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
             assertEquals(data.rootCA(), issPeripheral.getRootCa());
@@ -190,319 +275,379 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
 
             assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
+            assertNull(IssFactory.lookupSlaveByName(data.fqdn()));
+        }
+
+        @Test
+        @DisplayName("Warn when invalid data is present in migration data")
+        public void warnsAboutInvalidDataInTheMigrationData() throws Exception {
+            // Setup some slaves and create the migration data
+            createSlave(ALPHA);
+
+            // Omit the data for alpha
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
+                    createMigrationData(ALPHA),
+                    createMigrationData(BETA)
+                )
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+            // Expect a successful migration for all the slaves and set up the mock accordingly
+            context().checking(new MigrationExpectations() {{
+                expectMigratedFromV1(migrationData.get(ALPHA));
+            }});
+
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+
+            // Verify everything succeeded
+            assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+            assertEquals(Set.of(
+                MigrationMessage.warn("Slave beta.unit-test.local does not exist")
+            ), migrationResult.getMessages());
+
+            // Ensure only one slave has been removed
+            List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+            assertEquals(0, issSlaves.size());
+
+            // Ensure the peripheral have been created
+            List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+            assertEquals(1, peripherals.size());
+
+            // Verify if everything was configured successfully for beta.unit-test.local
+            SlaveMigrationData data = migrationData.get(ALPHA);
+
+            IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
+                .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
+            assertEquals(data.rootCA(), issPeripheral.getRootCa());
+
+            IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(data.fqdn());
+            assertNotNull(issAccessToken);
+            assertEquals(data.token(), issAccessToken.getToken());
+
+            Server server = ServerFactory.findByFqdn(data.fqdn())
+                .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
+
+            assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
+            assertNull(IssFactory.lookupSlaveByName(data.fqdn()));
+        }
+
+        @Test
+        @DisplayName("Fails when there are no slaves to migrate")
+        public void failsWhenThereAreNoSlavesToMigrate() {
+            MigrationResult migrationResult = migrator.migrateFromV1(Map.of());
+            assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
+            assertNotNull(migrationResult.getMessages());
+            assertEquals(Set.of(
+                MigrationMessage.error("This server does not have any ISSv1 slave")
+            ), migrationResult.getMessages());
+        }
+
+
+        @Test
+        @DisplayName("Fails when all slave fail to migrate")
+        public void failsWhenAllSlavesFailToMigrate() throws Exception {
+            // Setup some slaves and create the migration data
+            createSlave(ALPHA);
+            createSlave(BETA);
+
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
+                    createMigrationData(ALPHA),
+                    createMigrationData(BETA)
+                )
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+            // Expect a successful migration for all the slaves and set up the mock accordingly
+            context().checking(new MigrationExpectations() {{
+                expectFailureAtRegistration(migrationData.get(ALPHA));
+                expectFailureAtRegistration(migrationData.get(BETA));
+            }});
+
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
+            assertNotNull(migrationResult.getMessages());
+            assertEquals(Set.of(
+                MigrationMessage.error("Unable to migrate alpha.unit-test.local: Remote failure"),
+                MigrationMessage.error("Unable to migrate beta.unit-test.local: Remote failure")
+            ), migrationResult.getMessages());
+        }
+
+        @Test
+        @DisplayName("Rollback is correctly performed when migration fails after peripheral registration")
+        public void rollbacksChangesIfProcessFailsAfterPeripheralRegistration() throws Exception {
+            createSlave(ALPHA);
+            createSlave(BETA);
+
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
+                    createMigrationData(ALPHA),
+                    createMigrationData(BETA)
+                )
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+            // Expect a successful migration for the first one, ad a failure after the peripheral has been
+            // registered for the second
+            context().checking(new MigrationExpectations() {{
+                expectMigratedFromV1(migrationData.get(ALPHA));
+                expectFailureAtChannelConfiguration(migrationData.get(BETA));
+            }});
+
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            assertEquals(MigrationResultCode.PARTIAL, migrationResult.getResultCode());
+            assertNotNull(migrationResult.getMessages());
+            assertEquals(Set.of(
+                MigrationMessage.error("Unable to configure channels for peripheral " + BETA + ": Remote failure")
+            ), migrationResult.getMessages());
+
+            assertNull(IssFactory.lookupSlaveByName(ALPHA), "Slave " + ALPHA + "has not been removed");
+            hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+                .orElseThrow(() -> new AssertionFailedError("Cannot find peripheral with fqdn " + ALPHA));
+
+            // Ensure the failed slave is still there and the partially created peripheral has been removed
+            assertNotNull(IssFactory.lookupSlaveByName(BETA));
+            hubFactory.lookupIssPeripheralByFqdn(BETA)
+                .ifPresent(ph -> fail("Peripheral " + BETA + " has not been removed"));
+        }
+
+        @Test
+        @DisplayName("Migrate channel and configure the channel synchronization setup")
+        public void migrationChannelsAndConfigureChannelSyncSetup() throws Exception {
+            createSlave(ALPHA);
+            createSlave(BETA);
+
+            Map<String, SlaveMigrationData> migrationData = Stream.of(
+                    createMigrationData(ALPHA),
+                    createMigrationData(BETA)
+                )
+                .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+
+            Channel slesChannel = createCustomChannel("sles-15sp6", user.getOrg());
+            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", user.getOrg());
+            Channel prodChannel = createCustomChannel("custom-channel-prod", user.getOrg());
+            Channel stageChanngel = createCustomChannel("custom-channel-stage", user.getOrg());
+
+            context().checking(new MigrationExpectations() {{
+                expectMigratedFromV1(migrationData.get(ALPHA), List.of(
+                    createChannelInfo(1L, "sles-15sp6", 1L),
+                    createChannelInfo(2L, "sle15sp6-obs-tools", 1L),
+                    createChannelInfo(3L, "custom-channel-prod", 2L)
+                ));
+                expectMigratedFromV1(migrationData.get(BETA), List.of(
+                    createChannelInfo(1L, "ubuntu-2004", 7L),
+                    createChannelInfo(2L, "ubuntu-2004security", 7L),
+                    createChannelInfo(3L, "custom-channel-stage", 5L)
+                ));
+            }});
+
+            MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+            assertEquals(Set.of(), migrationResult.getMessages());
+
+            // Flush and clear hibernate sessions to ensure we get fresh results
+            clearSession();
+
+            // Ensure the slaves has been removed
+            List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
+            assertTrue(issSlaves.isEmpty());
+
+            // Ensure the peripheral have been created
+            assertEquals(2L, hubFactory.countPeripherals());
+
+            // Verify the channels have been correctly configured
+            IssPeripheral alphaPeripheral = hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+                .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + ALPHA));
+
+            assertNotNull(alphaPeripheral.getPeripheralChannels());
+            assertEquals(2, alphaPeripheral.getPeripheralChannels().size());
+            assertEquals(Set.of(
+                new IssPeripheralChannels(alphaPeripheral, slesChannel, 1L),
+                new IssPeripheralChannels(alphaPeripheral, prodChannel, 2L)
+            ), new HashSet<>(alphaPeripheral.getPeripheralChannels()));
+
+            IssPeripheral betaPeripheral = hubFactory.lookupIssPeripheralByFqdn(BETA)
+                .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + BETA));
+
+            assertNotNull(betaPeripheral.getPeripheralChannels());
+            assertEquals(2, betaPeripheral.getPeripheralChannels().size());
+            assertEquals(Set.of(
+                new IssPeripheralChannels(betaPeripheral, ubuntuChannel, 7L),
+                new IssPeripheralChannels(betaPeripheral, stageChanngel, 5L)
+            ), new HashSet<>(betaPeripheral.getPeripheralChannels()));
+        }
+
+        private static IssSlave createSlave(String slaveName) {
+            return createSlave(slaveName, true);
+        }
+
+        private static IssSlave createSlave(String slaveName, boolean enabled) {
+            IssSlave slave = new IssSlave();
+            slave.setSlave(slaveName);
+            slave.setEnabled(enabled ? "Y" : "N");
+            // Migration does not take into account organizations
+            slave.setAllowAllOrgs("Y");
+
+            IssFactory.save(slave);
+            return slave;
         }
     }
 
-    @Test
-    @DisplayName("Skip slaves if they are disabled or missing migration data")
-    public void skipSlavesWhenDisabledOrMissingMigrationData() throws Exception {
-        // Setup some slaves and create the migration data
-        createSlave(ALPHA);
-        createSlave(BETA);
-        createSlave(GAMMA, false); // Disabled
+    @Nested
+    @DisplayName("ISSv2 Tests")
+    class ISSv2Test {
+        // Not used, but needs to be repeated otherwise the test won't find the mockery context
+        protected final Mockery parentMockery = context();
 
-        // Omit the data for alpha
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
+        @Test
+        @DisplayName("Migrate successfully with correct data")
+        public void migrateSuccessfullyExistingSlaves() throws Exception {
+            // Create the migration data
+            List<SlaveMigrationData> migrationData = List.of(
+                createMigrationData(ALPHA),
                 createMigrationData(BETA),
                 createMigrationData(GAMMA)
-            )
-            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+            );
 
-        // Expect a successful migration for all the slaves and set up the mock accordingly
-        context().checking(new MigrationExpectations() {{
-            expectSkipped(migrationData.get(ALPHA));
-            expectMigrated(migrationData.get(BETA));
-            expectSkipped(migrationData.get(GAMMA));
-        }});
+            // Expect a successful migration for all the slaves and set up the mock accordingly
+            checking(new MigrationExpectations() {{
+                expectMigratedFromV2(migrationData.get(0));
+                expectMigratedFromV2(migrationData.get(1));
+                expectMigratedFromV2(migrationData.get(2));
+            }});
 
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            MigrationResult migrationResult = migrator.migrateFromV2(migrationData);
 
-        // Verify everything succeeded
-        assertEquals(MigrationResultCode.PARTIAL, migrationResult.getResultCode());
-        assertEquals(Set.of(
-            MigrationMessage.info("Slave alpha.unit-test.local has no migration data and will not be migrated"),
-            MigrationMessage.warn("Slave gamma.unit-test.local is currently disabled and will not be migrated")
-        ), migrationResult.getMessages());
+            // Verify everything succeeded
+            assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+            assertEquals(Set.of(), migrationResult.getMessages());
 
-        // Ensure only one slave has been removed
-        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
-        assertEquals(2, issSlaves.size());
+            // Ensure the peripheral have been created
+            List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+            assertEquals(3, peripherals.size());
 
-        // Ensure the peripheral have been created
-        List<IssPeripheral> peripherals = hubFactory.listPeripherals();
-        assertEquals(1, peripherals.size());
+            // Verify if everything was configured successfully
+            for (var data : migrationData) {
+                IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
+                    .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
+                assertEquals(data.rootCA(), issPeripheral.getRootCa());
 
-        // Verify if everything was configured successfully for beta.unit-test.local
-        SlaveMigrationData data = migrationData.get(BETA);
+                IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(data.fqdn());
+                assertNotNull(issAccessToken);
+                assertEquals(data.token(), issAccessToken.getToken());
 
-        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
-            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
-        assertEquals(data.rootCA(), issPeripheral.getRootCa());
+                Server server = ServerFactory.findByFqdn(data.fqdn())
+                    .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
 
-        IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(data.fqdn());
-        assertNotNull(issAccessToken);
-        assertEquals(data.token(), issAccessToken.getToken());
+                assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
+            }
+        }
 
-        Server server = ServerFactory.findByFqdn(data.fqdn())
-            .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
-
-        assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
-        assertNull(IssFactory.lookupSlaveByName(data.fqdn()));
-    }
-
-    @Test
-    @DisplayName("Warn when invalid data is present in migration data")
-    public void warnsAboutInvalidDataInTheMigrationData() throws Exception {
-        // Setup some slaves and create the migration data
-        createSlave(ALPHA);
-
-        // Omit the data for alpha
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
+        @Test
+        @DisplayName("Migrate channel and configure the channel synchronization setup")
+        public void migrationChannelsAndConfigureChannelSyncSetup() throws Exception {
+            List<SlaveMigrationData> migrationData = List.of(
                 createMigrationData(ALPHA),
                 createMigrationData(BETA)
-            )
-            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+            );
 
-        // Expect a successful migration for all the slaves and set up the mock accordingly
-        context().checking(new MigrationExpectations() {{
-            expectMigrated(migrationData.get(ALPHA));
-        }});
+            Channel slesChannel = createCustomChannel("sles-15sp6", user.getOrg());
+            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", user.getOrg());
+            Channel prodChannel = createCustomChannel("custom-channel-prod", user.getOrg());
+            Channel stageChanngel = createCustomChannel("custom-channel-stage", user.getOrg());
 
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
+            context().checking(new MigrationExpectations() {{
+                expectMigratedFromV2(migrationData.get(0), List.of(
+                    createChannelInfo(1L, "sles-15sp6", 1L),
+                    createChannelInfo(2L, "sle15sp6-obs-tools", 1L),
+                    createChannelInfo(3L, "custom-channel-prod", 2L)
+                ));
+                expectMigratedFromV2(migrationData.get(1), List.of(
+                    createChannelInfo(1L, "ubuntu-2004", 7L),
+                    createChannelInfo(2L, "ubuntu-2004security", 7L),
+                    createChannelInfo(3L, "custom-channel-stage", 5L)
+                ));
+            }});
 
-        // Verify everything succeeded
-        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
-        assertEquals(Set.of(
-            MigrationMessage.warn("Slave beta.unit-test.local does not exist")
-        ), migrationResult.getMessages());
+            MigrationResult migrationResult = migrator.migrateFromV2(migrationData);
+            assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+            assertEquals(Set.of(), migrationResult.getMessages());
 
-        // Ensure only one slave has been removed
-        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
-        assertEquals(0, issSlaves.size());
+            // Flush and clear hibernate sessions to ensure we get fresh results
+            clearSession();
 
-        // Ensure the peripheral have been created
-        List<IssPeripheral> peripherals = hubFactory.listPeripherals();
-        assertEquals(1, peripherals.size());
+            // Ensure the peripheral have been created
+            assertEquals(2L, hubFactory.countPeripherals());
 
-        // Verify if everything was configured successfully for beta.unit-test.local
-        SlaveMigrationData data = migrationData.get(ALPHA);
+            // Verify the channels have been correctly configured
+            IssPeripheral alphaPeripheral = hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+                .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + ALPHA));
 
-        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(data.fqdn())
-            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + data.fqdn()));
-        assertEquals(data.rootCA(), issPeripheral.getRootCa());
+            assertNotNull(alphaPeripheral.getPeripheralChannels());
+            assertEquals(2, alphaPeripheral.getPeripheralChannels().size());
+            assertEquals(Set.of(
+                new IssPeripheralChannels(alphaPeripheral, slesChannel, 1L),
+                new IssPeripheralChannels(alphaPeripheral, prodChannel, 2L)
+            ), new HashSet<>(alphaPeripheral.getPeripheralChannels()));
 
-        IssAccessToken issAccessToken = hubFactory.lookupAccessTokenFor(data.fqdn());
-        assertNotNull(issAccessToken);
-        assertEquals(data.token(), issAccessToken.getToken());
+            IssPeripheral betaPeripheral = hubFactory.lookupIssPeripheralByFqdn(BETA)
+                .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + BETA));
 
-        Server server = ServerFactory.findByFqdn(data.fqdn())
-            .orElseThrow(() -> new AssertionFailedError("Cannot find server with fqdn " + data.fqdn()));
+            assertNotNull(betaPeripheral.getPeripheralChannels());
+            assertEquals(2, betaPeripheral.getPeripheralChannels().size());
+            assertEquals(Set.of(
+                new IssPeripheralChannels(betaPeripheral, ubuntuChannel, 7L),
+                new IssPeripheralChannels(betaPeripheral, stageChanngel, 5L)
+            ), new HashSet<>(betaPeripheral.getPeripheralChannels()));
+        }
 
-        assertEquals(Set.of(EntitlementManager.FOREIGN), server.getEntitlements());
-        assertNull(IssFactory.lookupSlaveByName(data.fqdn()));
-    }
-
-    @Test
-    @DisplayName("Fails when there are no slaves to migrate")
-    public void failsWhenThereAreNoSlavesToMigrate() {
-        MigrationResult migrationResult = migrator.migrateFromV1(Map.of());
-        assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
-        assertNotNull(migrationResult.getMessages());
-        assertEquals(Set.of(
-            MigrationMessage.error("This server does not have any ISSv1 slave")
-        ), migrationResult.getMessages());
-    }
-
-
-    @Test
-    @DisplayName("Fails when all slave fail to migrate")
-    public void failsWhenAllSlavesFailToMigrate() throws Exception {
-        // Setup some slaves and create the migration data
-        createSlave(ALPHA);
-        createSlave(BETA);
-
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
+        @Test
+        @DisplayName("Rollback is correctly performed when migration fails after peripheral registration")
+        public void rollbacksChangesIfProcessFailsAfterPeripheralRegistration() throws Exception {
+            List<SlaveMigrationData> migrationData = List.of(
                 createMigrationData(ALPHA),
                 createMigrationData(BETA)
-            )
-            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
+            );
 
-        // Expect a successful migration for all the slaves and set up the mock accordingly
-        context().checking(new MigrationExpectations() {{
-            expectFailureAtRegistration(migrationData.get(ALPHA));
-            expectFailureAtRegistration(migrationData.get(BETA));
-        }});
+            // Expect a failures for both
+            context().checking(new MigrationExpectations() {{
+                expectFailureAtChannelConfiguration(migrationData.get(0));
+                expectFailureAtChannelConfiguration(migrationData.get(1));
+            }});
 
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
-        assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
-        assertNotNull(migrationResult.getMessages());
-        assertEquals(Set.of(
-            MigrationMessage.error("Unable to migrate alpha.unit-test.local: Remote failure"),
-            MigrationMessage.error("Unable to migrate beta.unit-test.local: Remote failure")
-        ), migrationResult.getMessages());
-    }
+            MigrationResult migrationResult = migrator.migrateFromV2(migrationData);
+            assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
+            assertNotNull(migrationResult.getMessages());
+            assertEquals(Set.of(
+                MigrationMessage.error("Unable to configure channels for peripheral " + ALPHA + ": Remote failure"),
+                MigrationMessage.error("Unable to configure channels for peripheral " + BETA + ": Remote failure")
+            ), migrationResult.getMessages());
 
-    @Test
-    @DisplayName("Rollback is correctly performed when migration fails after peripheral registration")
-    public void rollbacksChangesIfProcessFailsAfterPeripheralRegistration() throws Exception {
-        createSlave(ALPHA);
-        createSlave(BETA);
-
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
-                createMigrationData(ALPHA),
-                createMigrationData(BETA)
-            )
-            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
-
-        // Expect a successful migration for the first one, ad a failure after the peripheral has been registered for
-        // the second
-        context().checking(new MigrationExpectations() {{
-            expectMigrated(migrationData.get(ALPHA));
-            expectFailureAtChannelConfiguration(migrationData.get(BETA));
-        }});
-
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
-        assertEquals(MigrationResultCode.PARTIAL, migrationResult.getResultCode());
-        assertNotNull(migrationResult.getMessages());
-        assertEquals(Set.of(
-            MigrationMessage.error("Unable to configure channels for peripheral " + BETA + ": Remote failure")
-        ), migrationResult.getMessages());
-
-        assertNull(IssFactory.lookupSlaveByName(ALPHA), "Slave " + ALPHA + "has not been removed");
-        hubFactory.lookupIssPeripheralByFqdn(ALPHA)
-            .orElseThrow(() -> new AssertionFailedError("Cannot find peripheral with fqdn " + ALPHA));
-
-        // Ensure the failed slave is still there and the partially created peripheral has been removed
-        assertNotNull(IssFactory.lookupSlaveByName(BETA));
-        hubFactory.lookupIssPeripheralByFqdn(BETA)
-            .ifPresent(ph -> fail("Peripheral " + BETA + " has not been removed"));
-    }
-
-    @Test
-    @DisplayName("Migrate channel and configure the channel syncronization setup")
-    public void migrationChannelsAndConfigureChannelSyncSetup() throws Exception {
-        createSlave(ALPHA);
-        createSlave(BETA);
-
-        Map<String, SlaveMigrationData> migrationData = Stream.of(
-                createMigrationData(ALPHA),
-                createMigrationData(BETA)
-            )
-            .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
-
-        Channel slesChannel = createCustomChannel("sles-15sp6");
-        Channel ubuntuChannel = createCustomChannel("ubuntu-2004");
-        Channel prodChannel = createCustomChannel("custom-channel-prod");
-        Channel stageChanngel = createCustomChannel("custom-channel-stage");
-
-        context().checking(new MigrationExpectations() {{
-            expectMigrated(migrationData.get(ALPHA), List.of(
-                createChannelInfo(1L, "sles-15sp6", 1L),
-                createChannelInfo(2L, "sle15sp6-obs-tools", 1L),
-                createChannelInfo(3L, "custom-channel-prod", 2L)
-            ));
-            expectMigrated(migrationData.get(BETA), List.of(
-                createChannelInfo(1L, "ubuntu-2004", 7L),
-                createChannelInfo(2L, "ubuntu-2004security", 7L),
-                createChannelInfo(3L, "custom-channel-stage", 5L)
-            ));
-        }});
-
-        MigrationResult migrationResult = migrator.migrateFromV1(migrationData);
-        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
-        assertEquals(Set.of(), migrationResult.getMessages());
-
-        // Flush and clear hibernate sessions to ensure we get fresh results
-        clearSession();
-
-        // Ensure the slaves has been removed
-        List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
-        assertTrue(issSlaves.isEmpty());
-
-        // Ensure the peripheral have been created
-        assertEquals(2L, hubFactory.countPeripherals());
-
-        // Verify the channels have been correctly configured
-        IssPeripheral alphaPeripheral = hubFactory.lookupIssPeripheralByFqdn(ALPHA)
-            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + ALPHA));
-
-        assertNotNull(alphaPeripheral.getPeripheralChannels());
-        assertEquals(2, alphaPeripheral.getPeripheralChannels().size());
-        assertEquals(Set.of(
-            new IssPeripheralChannels(alphaPeripheral, slesChannel, 1L),
-            new IssPeripheralChannels(alphaPeripheral, prodChannel, 2L)
-        ), new HashSet<>(alphaPeripheral.getPeripheralChannels()));
-
-        IssPeripheral betaPeripheral = hubFactory.lookupIssPeripheralByFqdn(BETA)
-            .orElseThrow(() -> new AssertionFailedError("Cannot find ISS Peripheral with fqdn " + BETA));
-
-        assertNotNull(betaPeripheral.getPeripheralChannels());
-        assertEquals(2, betaPeripheral.getPeripheralChannels().size());
-        assertEquals(Set.of(
-            new IssPeripheralChannels(betaPeripheral, ubuntuChannel, 7L),
-            new IssPeripheralChannels(betaPeripheral, stageChanngel, 5L)
-        ), new HashSet<>(betaPeripheral.getPeripheralChannels()));
-    }
-
-    private static IssSlave createSlave(String slaveName) {
-        return createSlave(slaveName, true);
-    }
-
-    private static IssSlave createSlave(String slaveName, boolean enabled) {
-        IssSlave slave = new IssSlave();
-        slave.setSlave(slaveName);
-        slave.setEnabled(enabled ? "Y" : "N");
-        // Migration does not take into account organizations
-        slave.setAllowAllOrgs("Y");
-
-        IssFactory.save(slave);
-        return slave;
-    }
-
-    private static SlaveMigrationData createMigrationData(String slaveFqdn) {
-        Token accessToken = Exceptions.handleByWrapping(
-            () -> new IssTokenBuilder(LOCAL_SERVER_FQDN).usingServerSecret().build(),
-            ex -> new IllegalStateException("Unable to create a fake token issued by " + slaveFqdn, ex)
-        );
-
-        return new SlaveMigrationData(slaveFqdn, accessToken.getSerializedForm(), TestUtils.randomString(16));
-    }
-
-    private Channel createCustomChannel(String label) {
-        Org org = user.getOrg();
-
-        ChannelFamily cfam = org.getPrivateChannelFamily();
-        ChannelArch arch = ChannelFactory.lookupArchByName("x86_64");
-
-        return ChannelFactoryTest.createTestChannel(label, label, org, arch, cfam);
-    }
-
-    private ChannelInfoJson createChannelInfo(long id, String label, Long orgId) {
-        return new ChannelInfoJson(id, label, label, TestUtils.randomString(16), orgId, null);
-    }
-
-    private record PeripheralChannel(IssPeripheral peripheral, Long peripheralOrgId, Channel channel) {
-
-        PeripheralChannel(IssPeripheralChannels ph) {
-            this(ph.getPeripheral(), ph.getPeripheralOrgId(), ph.getChannel());
+            // Check the peripheral are not there
+            hubFactory.lookupIssPeripheralByFqdn(ALPHA)
+                .ifPresent(ph -> fail("Peripheral " + ALPHA + " has not been removed"));
+            hubFactory.lookupIssPeripheralByFqdn(BETA)
+                .ifPresent(ph -> fail("Peripheral " + BETA + " has not been removed"));
         }
     }
 
     private class MigrationExpectations extends Expectations {
 
-        protected void expectMigrated(SlaveMigrationData data)
+        protected void expectMigratedFromV1(SlaveMigrationData data)
             throws TaskomaticApiException, CertificateException, IOException {
-            expectMigrated(data, List.of());
+            allowMigration(data, List.of(), 1);
         }
 
-        protected void expectMigrated(SlaveMigrationData data, List<ChannelInfoJson> channelInfos)
+        protected void expectMigratedFromV1(SlaveMigrationData data, List<ChannelInfoJson> channelInfos)
             throws TaskomaticApiException, CertificateException, IOException {
 
-            HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
+            allowMigration(data, channelInfos, 1);
+        }
 
-            allowRegistration(data, internalClientMock);
-            allowChannelSetup(data, internalClientMock, channelInfos);
-            allowIssV1Removal(internalClientMock);
+        protected void expectMigratedFromV2(SlaveMigrationData data)
+            throws TaskomaticApiException, CertificateException, IOException {
+            allowMigration(data, List.of(), 2);
+        }
+
+        protected void expectMigratedFromV2(SlaveMigrationData data, List<ChannelInfoJson> channelInfos)
+            throws TaskomaticApiException, CertificateException, IOException {
+
+            allowMigration(data, channelInfos, 2);
         }
 
         protected void expectSkipped(SlaveMigrationData data) {
@@ -527,6 +672,18 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             allowRegistration(data, internalClientMock);
             failChannelSetup(data, internalClientMock);
             allowingRollback(internalClientMock);
+        }
+
+        private void allowMigration(SlaveMigrationData data, List<ChannelInfoJson> channelInfos, int version)
+            throws TaskomaticApiException, CertificateException, IOException {
+            HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
+
+            allowRegistration(data, internalClientMock);
+            allowChannelSetup(data, internalClientMock, channelInfos);
+
+            if (version == 1) {
+                allowIssV1Removal(internalClientMock);
+            }
         }
 
         private void allowRegistration(SlaveMigrationData data, HubInternalClient internalClientMock)
