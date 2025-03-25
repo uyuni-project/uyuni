@@ -157,6 +157,9 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             server.getFqdns().addAll(fqdns.stream()
                     .filter(fqdn -> !fqdn.contains("*"))
                     .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
+
+            systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
+
             return server;
         }
         Server server = ServerFactory.createServer();
@@ -191,6 +194,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         // No need to call `updateSystemOverview`
         // It will be called inside the method setBaseEntitlement. If we remove this line we need to manually call it
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.FOREIGN);
+        systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
         return server;
     }
 

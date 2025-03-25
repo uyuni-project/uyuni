@@ -12,9 +12,9 @@
     </rhn-tab>
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies()"/>
     <rhn-tab name="Proxy" acl="system_has_proxy_entitlement()">
-      <rhn-tab-url>/rhn/manager/systems/details/proxy-config</rhn-tab-url>
-      <rhn-tab name="Configuration" url="/rhn/manager/systems/details/proxy-config"/>
+      <rhn-tab-url>/rhn/systems/details/ProxyClients.do</rhn-tab-url>
       <rhn-tab name="Clients" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy()"/>
+      <rhn-tab name="Configuration" url="/rhn/manager/systems/details/proxy-config" acl="system_has_salt_entitlement()"/>
     </rhn-tab>
     <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
     <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="system_feature(ftr_agent_smith)"/>

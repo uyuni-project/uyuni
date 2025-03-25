@@ -45,6 +45,17 @@ WHERE NOT EXISTS (
         AND addon_id = lookup_sg_type('proxy_entitled')
 );
 
+INSERT INTO rhnSGTypeBaseAddonCompat(base_id, addon_id)
+SELECT
+    lookup_sg_type('foreign_entitled'),
+    lookup_sg_type('proxy_entitled')
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM rhnSGTypeBaseAddonCompat
+    WHERE base_id = lookup_sg_type('foreign_entitled')
+        AND addon_id = lookup_sg_type('proxy_entitled')
+);
+
 
 --------------------------------------------------------------------------------
 -- rhnServerServerGroupArchCompat ----------------------------------------------
