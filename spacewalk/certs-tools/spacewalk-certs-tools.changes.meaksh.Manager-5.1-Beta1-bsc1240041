@@ -1,0 +1,2 @@
+- Enhance mgr-ssl-cert-tool to allow generating container setup
+  from CLI (bsc#1240041)
