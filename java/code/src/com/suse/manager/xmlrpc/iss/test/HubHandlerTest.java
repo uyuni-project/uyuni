@@ -411,7 +411,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
             will(returnValue(new MigrationResult()));
         }});
 
-        MigrationResult migrationResult = hubHandler.migrateIssSlaves(satAdmin, List.of(
+        MigrationResult migrationResult = hubHandler.migrateFromISSv1(satAdmin, List.of(
             Map.of("fqdn", "first-slave.dev.local", "token", "one", "root_ca", "dummy"),
             mapWithNull("fqdn", "second-slave.dev.local", "token", "two", "root_ca", null)
         ));
@@ -422,15 +422,54 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     @Test
     public void migrateIssV1CorrectlyThrows() {
         var illegalParameter = assertThrows(InvalidParameterException.class,
-            () -> hubHandler.migrateIssSlaves(satAdmin, List.of()));
+            () -> hubHandler.migrateFromISSv1(satAdmin, List.of()));
         assertEquals("migration data must not be empty", illegalParameter.getMessage());
 
         illegalParameter = assertThrows(InvalidParameterException.class,
-            () -> hubHandler.migrateIssSlaves(satAdmin, null));
+            () -> hubHandler.migrateFromISSv1(satAdmin, null));
         assertEquals("migration data must not be empty", illegalParameter.getMessage());
 
         illegalParameter = assertThrows(InvalidParameterException.class,
-            () -> hubHandler.migrateIssSlaves(satAdmin, List.of(Map.of("fqdn", "slave.dev.local"))));
+            () -> hubHandler.migrateFromISSv1(satAdmin, List.of(Map.of("fqdn", "slave.dev.local"))));
+        assertEquals("Migration data is not valid: Missing access token for slave.dev.local",
+            illegalParameter.getMessage());
+    }
+
+    @Test
+    public void canMigrateIssV2Servers() {
+        context.checking(new Expectations() {{
+            IssMigrator migrator = context.mock(IssMigrator.class);
+
+            allowing(migratorFactoryMock).createFor(satAdmin);
+            will(returnValue(migrator));
+
+            allowing(migrator).migrateFromV2(List.of(
+                new SlaveMigrationData("first-slave.dev.local", "one", "dummy"),
+                new SlaveMigrationData("second-slave.dev.local", "two", null)
+            ));
+            will(returnValue(new MigrationResult()));
+        }});
+
+        MigrationResult migrationResult = hubHandler.migrateFromISSv2(satAdmin, List.of(
+            Map.of("fqdn", "first-slave.dev.local", "token", "one", "root_ca", "dummy"),
+            mapWithNull("fqdn", "second-slave.dev.local", "token", "two", "root_ca", null)
+        ));
+        assertEquals(MigrationResultCode.SUCCESS, migrationResult.getResultCode());
+        assertEquals(Set.of(), migrationResult.getMessages());
+    }
+
+    @Test
+    public void migrateIssV2CorrectlyThrows() {
+        var illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateFromISSv2(satAdmin, List.of()));
+        assertEquals("migration data must not be empty", illegalParameter.getMessage());
+
+        illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateFromISSv2(satAdmin, null));
+        assertEquals("migration data must not be empty", illegalParameter.getMessage());
+
+        illegalParameter = assertThrows(InvalidParameterException.class,
+            () -> hubHandler.migrateFromISSv2(satAdmin, List.of(Map.of("fqdn", "slave.dev.local"))));
         assertEquals("Migration data is not valid: Missing access token for slave.dev.local",
             illegalParameter.getMessage());
     }
