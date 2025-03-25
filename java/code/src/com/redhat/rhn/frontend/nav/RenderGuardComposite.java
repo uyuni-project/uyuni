@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class RenderGuardComposite implements RenderGuard {
 
-    private List guards;
+    private List<RenderGuard> guards;
 
     /**
      * Constructor
@@ -43,8 +43,8 @@ public class RenderGuardComposite implements RenderGuard {
     public boolean canRender(NavNode node, int depth) {
         boolean flag = true;
 
-        for (Iterator itr = guards.iterator(); itr.hasNext() && flag;) {
-            RenderGuard guard = (RenderGuard) itr.next();
+        for (Iterator<RenderGuard> itr = guards.iterator(); itr.hasNext() && flag;) {
+            RenderGuard guard = itr.next();
             if (guard != null) {
                 flag = guard.canRender(node, depth);
             }

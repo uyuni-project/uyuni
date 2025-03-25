@@ -18,6 +18,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.configuration.ConfigActionHelper;
+import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.BaseSetListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -42,7 +43,7 @@ public class ChannelFileDeploySetup extends BaseSetListAction {
     }
 
     @Override
-    protected DataResult getDataResult(RequestContext rctx, PageControl pc) {
+    protected DataResult<ConfigFileDto> getDataResult(RequestContext rctx, PageControl pc) {
         User usr = rctx.getCurrentUser();
         ConfigChannel cc = ConfigActionHelper.getChannel(rctx.getRequest());
         return ConfigurationManager.getInstance().listCurrentFiles(usr, cc, pc);

@@ -38,7 +38,7 @@ public class ListFilterHelper {
      * @param filterValue the value to filter on
      * @return the filtered list
      */
-    public static List filter(List dataSet,
+    public static List<String> filter(List<String> dataSet,
                               ListFilter filter, String filterBy, String filterValue) {
 
         // If we're not filtering, just return the whole set
