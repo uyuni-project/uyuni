@@ -66,6 +66,9 @@ def get(cmd_args: str = "", **kwargs) -> Dict[str, Any]:
     elif "RedHat" in __grains__["os_family"]:
         if os.path.exists(sosreport_path):
             cmd = [sosreport_path, "--batch", "--tmp-dir", output_dir]
+    elif "Debian" in __grains__["os_family"]:
+        if os.path.exists("/usr/bin/sosreport"):
+            cmd = ["/usr/bin/sosreport", "--batch", "--tmp-dir", output_dir]
     else:
         error = "Getting supportdata not supported for " + __grains__["os"]
         returncode = 1
