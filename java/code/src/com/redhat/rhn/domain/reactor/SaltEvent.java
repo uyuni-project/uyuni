@@ -70,7 +70,7 @@ public class SaltEvent {
      * @param minionIdIn the new id
      */
     public void setMinionId(String minionIdIn) {
-        this.minionId = minionId;
+        this.minionId = minionIdIn;
     }
 
     /**
