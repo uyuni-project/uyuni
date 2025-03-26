@@ -137,6 +137,7 @@ public class ChannelOverview extends BaseDto implements Comparable {
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("name", name)
                 .toString();
