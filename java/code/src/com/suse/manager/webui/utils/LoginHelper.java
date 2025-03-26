@@ -348,7 +348,7 @@ public class LoginHelper {
         String osrelease = FileUtils.readStringFromFile("/etc/os-release");
         for (String line : osrelease.split("\\r?\\n")) {
             String[] resultKV = line.split("=", 2);
-            if (resultKV[0].toUpperCase().equals("VERSION_ID")) {
+            if (resultKV[0].equalsIgnoreCase("VERSION_ID")) {
                 try {
                     osVersion = Double.valueOf(resultKV[1].replaceAll("\"", ""));
                 }
@@ -356,7 +356,7 @@ public class LoginHelper {
                     log.error("Unable to parse OS versionnumber {}", resultKV[1]);
                 }
             }
-            else if (resultKV[0].toUpperCase().equals("PRETTY_NAME")) {
+            else if (resultKV[0].equalsIgnoreCase("PRETTY_NAME")) {
                 osName = resultKV[1].replaceAll("\"", "'");
             }
         }
