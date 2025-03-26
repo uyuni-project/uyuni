@@ -197,16 +197,16 @@ def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
     try:
         mgr_ssl_cmd = [
             "mgr-ssl-cert-setup",
-            "-r",
+            "--root-ca-file",
             str(root_ca),
-            "-s",
+            "--server-cert-file",
             str(server_crt),
-            "-k",
+            "--server-key-file",
             str(server_key),
             "--show-container-setup",
         ]
         if intermediate_cas:
-            mgr_ssl_cmd.extend(["-i", str(intermediate_cas)])
+            mgr_ssl_cmd.extend(["--intermediate-ca-file", str(intermediate_cas)])
         result = subprocess.run(
             mgr_ssl_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
