@@ -20,8 +20,8 @@ export default () => {
   };
 
   const onSubmit: OnSubmit<typeof initialValues> = async (values, helpers) => {
-    console.log("onSubmit:");
-    console.log(values);
+    Loggerhead.info("onSubmit:");
+    Loggerhead.info(values);
   };
 
   return (

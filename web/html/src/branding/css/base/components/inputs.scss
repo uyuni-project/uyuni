@@ -111,14 +111,6 @@ select[size] {
   height: auto;
 }
 
-.form-multi-input-row {
-  min-height: $input-height;
-  display: flex;
-  gap: 8px;
-
-  // TODO: Implement
-}
-
 // We need to manually handle these cases to fix legacy DOM structures
 .input-group {
   --bs-border-width: 1px;
