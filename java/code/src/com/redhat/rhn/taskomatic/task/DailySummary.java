@@ -495,7 +495,7 @@ public class DailySummary extends RhnJavaJob {
         args[6] = OrgFactory.EMAIL_ACCOUNT_INFO.getValue();
 
         if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
-            args[7] = String.format("%s\n", ls.getMessage("dailysummary.email.notpaygcompliant"));
+            args[7] = String.format("%s%n", ls.getMessage("dailysummary.email.notpaygcompliant"));
         }
         else {
             args[7] = "";
