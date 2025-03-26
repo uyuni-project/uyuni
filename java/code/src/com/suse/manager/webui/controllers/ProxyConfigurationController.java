@@ -34,7 +34,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
-import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.proxy.get.ProxyConfigGetFacade;
@@ -69,7 +68,6 @@ public class ProxyConfigurationController {
     public static final String REGISTRY_URL_TAG = "registryUrl";
 
     private final SystemManager systemManager;
-    private final SaltApi saltApi;
     private final ProxyConfigUpdateFacade proxyConfigUpdateFacade;
     private final ProxyConfigGetFacade proxyConfigGetFacade;
 
@@ -83,12 +81,10 @@ public class ProxyConfigurationController {
      * Create a new controller instance with default facades implementations
      *
      * @param systemManagerIn the system manager
-     * @param saltApiIn       the salt API
      */
-    public ProxyConfigurationController(SystemManager systemManagerIn, SaltApi saltApiIn) {
+    public ProxyConfigurationController(SystemManager systemManagerIn) {
         this(
                 systemManagerIn,
-                saltApiIn,
                 new ProxyConfigUpdateFacadeImpl(),
                 new ProxyConfigGetFacadeImpl()
         );
@@ -98,18 +94,15 @@ public class ProxyConfigurationController {
      * Create a new controller instance
      *
      * @param systemManagerIn the system manager
-     * @param saltApiIn the salt API
      * @param proxyConfigUpdateFacadeIn the proxy config update facade
      * @param proxyConfigGetFacadeIn the proxy config get facade
      */
     public ProxyConfigurationController(
             SystemManager systemManagerIn,
-            SaltApi saltApiIn,
             ProxyConfigUpdateFacade proxyConfigUpdateFacadeIn,
             ProxyConfigGetFacade proxyConfigGetFacadeIn
     ) {
         this.systemManager = systemManagerIn;
-        this.saltApi = saltApiIn;
         this.proxyConfigUpdateFacade = proxyConfigUpdateFacadeIn;
         this.proxyConfigGetFacade = proxyConfigGetFacadeIn;
     }

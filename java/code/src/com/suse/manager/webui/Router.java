@@ -143,7 +143,7 @@ public class Router implements SparkApplication {
         ConfidentialComputingController confidentialComputingController =
                 new ConfidentialComputingController(attestationManager);
         ProxyConfigurationController proxyConfigurationController =
-                new ProxyConfigurationController(systemManager, saltApi);
+                new ProxyConfigurationController(systemManager);
 
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
