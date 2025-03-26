@@ -1,4 +1,4 @@
-# Copyright (c) 2018-2023 SUSE LLC
+# Copyright (c) 2018-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # Skip if container because action chains fail on containers
@@ -52,9 +52,10 @@ Feature: Action chains on several systems at once
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Pre-requisite: remove all action chains before testing on several systems
-    When I delete all action chains
-    And I cancel all scheduled actions
+  Scenario: Create a custom action chain for two systems
+    When I call actionchain.create_chain() with chain label "two_systems_action_chain"
+    And I follow the left menu "Schedule > Action Chains"
+    Then I should see a "two_systems_action_chain" text
 
   Scenario: Add an action chain using system set manager for SSH minion and SLE minion
     When I follow the left menu "Systems > System List > All"
@@ -86,13 +87,13 @@ Feature: Action chains on several systems at once
 
   Scenario: Verify action chain for two systems
     Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Schedule"
+    And I follow "Schedule"
     And I follow "Action Chains"
-    And I follow "new action chain"
+    And I follow "two_systems_action_chain"
     And I should see a "1. Install or update andromeda-dummy on 2 systems" text
     And I should see a "2. Run a remote command on 2 systems" text
     And I click on "Save and Schedule"
-    Then I should see a "Action Chain new action chain has been scheduled for execution." text
+    Then I should see a "Action Chain two_systems_action_chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain from the system set manager was executed successfully
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
