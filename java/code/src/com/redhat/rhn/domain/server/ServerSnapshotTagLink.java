@@ -90,7 +90,9 @@ public class ServerSnapshotTagLink extends BaseDomainHelper implements Serializa
      */
     @Override
     public boolean equals(Object obj) {
-        ServerSnapshotTagLink link = (ServerSnapshotTagLink) obj;
+        if (!(obj instanceof ServerSnapshotTagLink link)) {
+            return false;
+        }
         EqualsBuilder build = new EqualsBuilder();
 
         return build.append(this.getServer(), link.getServer()).

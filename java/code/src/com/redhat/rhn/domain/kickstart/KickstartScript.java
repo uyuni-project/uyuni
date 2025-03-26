@@ -133,7 +133,7 @@ public class KickstartScript extends BaseDto implements Comparable<KickstartScri
      * @return true if the script is run in a chrooted environment
      */
     public boolean thisScriptIsChroot() {
-        return !this.chroot.toLowerCase().equals("n");
+        return !this.chroot.equalsIgnoreCase("n");
     }
 
     /**

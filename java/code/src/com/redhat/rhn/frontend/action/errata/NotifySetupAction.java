@@ -14,26 +14,9 @@
  */
 package com.redhat.rhn.frontend.action.errata;
 
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * NotifySetupAction
  */
 public class NotifySetupAction extends BaseErrataSetupAction {
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public ActionForward execute(ActionMapping mapping,
-                                 ActionForm formIn,
-                                 HttpServletRequest request,
-                                 HttpServletResponse response) {
-        return super.execute(mapping, formIn, request, response);
-    }
 }
