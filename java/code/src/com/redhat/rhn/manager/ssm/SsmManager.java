@@ -377,7 +377,8 @@ public class SsmManager {
     private static Set<Channel> getChildChannelsForChange(User user, Server server, ChannelChangeDto change,
                                                            Channel newBaseChannel) {
         List<Channel> accessibleChildren = ChannelFactory.getAccessibleChildChannels(newBaseChannel, user);
-        // TODO ChannelManager.verifyChannelSubscribe() for base and children ?
+        Set<Channel> availableChildChannels = server.getChildChannels();
+
         Set<Channel> result = new HashSet<>();
         change.getChildChannelActions().forEach((cid, action) -> {
             final long childId = cid;
@@ -394,7 +395,7 @@ public class SsmManager {
                 }
             }
             else if (action == ChannelChangeDto.ChannelAction.NO_CHANGE) {
-                server.getChildChannels().stream()
+                availableChildChannels.stream()
                         .filter(cc -> cc.getId() == childId)
                         .findFirst()
                         .ifPresent(result::add);
