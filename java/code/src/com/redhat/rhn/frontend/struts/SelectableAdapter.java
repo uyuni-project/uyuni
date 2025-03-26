@@ -21,11 +21,6 @@ package com.redhat.rhn.frontend.struts;
 public abstract class SelectableAdapter implements Selectable {
     private boolean selected;
     private boolean disabled = false;
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public abstract String getSelectionKey();
 
     /**
      * This says whether this object is selectable on a page with a set The
