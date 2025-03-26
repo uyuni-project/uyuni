@@ -56,8 +56,6 @@ export default () => {
                 { label: t("Two"), value: "two" },
                 { label: t("Three"), value: "three" },
               ]}
-              openOption
-              inline
               as={Field.Radio}
             />
 
