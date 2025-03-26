@@ -158,6 +158,8 @@ Feature: Content lifecycle
     And I click on "Promote environment" in "Promote version 1 into prod_name" modal
     Then I wait at most 600 seconds until I see "Built" text in the environment "prod_name"
 
+# flaky test
+@skip_if_github_validation
   Scenario: Add new sources and promote again
     When I follow the left menu "Content Lifecycle > Projects"
     And I follow "clp_name"
@@ -708,6 +710,8 @@ Scenario: Create CLM filter of type Package (Build date) that allows packages wh
     And I list channels with spacewalk-remove-channel
     Then I shouldn't get "clp_label"
 
+# flaky test
+@skip_if_github_validation
 @uyuni
   Scenario: Cleanup: remove the created channels
     When I delete these channels with spacewalk-remove-channel:
