@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -47,7 +47,7 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.1.5
+Version:        5.1.6
 Release:        0
 Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
 License:        GPL-2.0-only
@@ -206,6 +206,7 @@ BuildRequires:  systemd-rpm-macros
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
+Requires:       python3-looseversion
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools

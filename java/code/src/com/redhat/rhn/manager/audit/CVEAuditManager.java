@@ -519,7 +519,7 @@ public class CVEAuditManager {
 
                     // ...if it has a target with that base product...
                     List<SUSEProductDto> targets = findAllTargetProducts(suseProductID);
-                    if (log.isDebugEnabled() && targets.size() <= 0) {
+                    if (log.isDebugEnabled() && targets.isEmpty()) {
                         log.debug("No target products found for {}", suseProductID);
                     }
                     for (SUSEProductDto target : targets) {
@@ -552,7 +552,7 @@ public class CVEAuditManager {
 
                     // ...if it has a source with that base product...
                     List<SUSEProductDto> sources = findAllSourceProducts(suseProductID);
-                    if (log.isDebugEnabled() && sources.size() <= 0) {
+                    if (log.isDebugEnabled() && sources.isEmpty()) {
                         log.debug("No source products found for {}", suseProductID);
                     }
                     for (SUSEProductDto source : sources) {

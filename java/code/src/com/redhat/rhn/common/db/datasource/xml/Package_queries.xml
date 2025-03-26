@@ -12,7 +12,8 @@
     -->
   <query params="sid">
 SELECT * FROM
-(SELECT distinct pn.name AS NAME,
+(SELECT distinct avl.package_id AS package_id,
+        pn.name AS NAME,
         pn.name || '-' || evr_t_as_vre_simple(avl.evr) AS NVRE,
         pn.name || '-' || evr_t_as_vre_simple(avl.evr) || '.' || avl.arch_label AS NVREA,
         pn.id || '|' || lookup_evr((avl.evr).epoch, (avl.evr).version, (avl.evr).release, (avl.evr).type) || '|' || avl.arch_id AS ID_COMBO,
@@ -22,7 +23,8 @@ SELECT * FROM
              ELSE NULL
         END AS locked
   FROM  (
-         SELECT  p.name_id name_id, max(pe.evr) evr, pe.id evr_id,
+         SELECT  p.id package_id,
+                 p.name_id name_id, max(pe.evr) evr, pe.id evr_id,
                  pa.label as arch_label, pa.id as arch_id
            FROM  rhnPackageEVR PE, rhnPackage P,
                  suseChannelPackageRetractedStatusView CP, rhnServerChannel SC,
@@ -34,7 +36,7 @@ SELECT * FROM
             AND  p.package_arch_id = pa.id
             AND  NOT CP.is_retracted
             AND  NOT EXISTS (SELECT 1 FROM suseServerAppStreamHiddenPackagesView WHERE sid = :sid AND pid = p.id)
-       GROUP BY  p.name_id, pa.label, pa.id, pe.id
+       GROUP BY  p.id, p.name_id, pa.label, pa.id, pe.id
 ) avl
        left join rhnpackagename pn on pn.id = avl.name_id
        left join rhnpackage pkg on pkg.name_id = avl.name_id and pkg.evr_id = avl.evr_id and pkg.package_arch_id = avl.arch_id
@@ -537,24 +539,33 @@ ORDER BY UPPER(X.nvre)
 
 <mode name="system_installed_pkgs_non_suse_locking" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
-SELECT PN.name as NAME,
-       PN.name || '-' || evr_t_as_vre_simple(SPE.evr) AS NVRE,
-       PN.name || '-' || evr_t_as_vre_simple(SPE.evr) || '.' || PA.label AS NVREA,
-       PN.id || '|' || lookup_evr((SPE.evr).epoch, (SPE.evr).version, (SPE.evr).release, (SPE.evr).type) || '|' || PA.id AS ID_COMBO,
-       PA.label AS ARCH,
-       lck.pending,
-       CASE WHEN lck.server_id IS NOT NULL THEN 'Y' ELSE NULL END AS locked
-  FROM rhnServerPackage SP
-  JOIN rhnPackageName PN ON SP.name_id = PN.id
-  JOIN rhnPackageEVR SPE ON SP.evr_id = SPE.id
-  LEFT JOIN rhnPackageArch PA ON SP.package_arch_id = PA.id
-  LEFT JOIN rhnArchType AT ON AT.id = PA.arch_type_id
-  LEFT JOIN rhnlockedpackages lck ON lck.name_id = SP.name_id
-                                 AND lck.evr_id = SP.evr_id
-                                 AND lck.arch_id = SP.package_arch_id
-                                 AND lck.server_id = SP.server_id
- WHERE SP.server_id = :sid
- ORDER BY locked ASC NULLS LAST, NAME
+    SELECT (SELECT p.id
+              FROM rhnPackage p
+              join rhnChannelPackage cp on p.id = cp.package_id
+              join rhnServerChannel sc on sc.channel_id = cp.channel_id
+             where sc.server_id = SP.server_id
+               AND p.name_id = SP.name_id
+               AND p.evr_id = SP.evr_id
+               AND p.package_arch_id = SP.package_arch_id
+    ) AS package_id,
+    PN.name as NAME,
+    PN.name || '-' || evr_t_as_vre_simple(SPE.evr) AS NVRE,
+    PN.name || '-' || evr_t_as_vre_simple(SPE.evr) || '.' || PA.label AS NVREA,
+    PN.id || '|' || lookup_evr((SPE.evr).epoch, (SPE.evr).version, (SPE.evr).release, (SPE.evr).type) || '|' || PA.id AS ID_COMBO,
+    PA.label AS ARCH,
+    lck.pending,
+    CASE WHEN lck.server_id IS NOT NULL THEN 'Y' ELSE NULL END AS locked
+    FROM rhnServerPackage SP
+    JOIN rhnPackageName PN ON SP.name_id = PN.id
+    JOIN rhnPackageEVR SPE ON SP.evr_id = SPE.id
+    LEFT JOIN rhnPackageArch PA ON SP.package_arch_id = PA.id
+    LEFT JOIN rhnArchType AT ON AT.id = PA.arch_type_id
+    LEFT JOIN rhnlockedpackages lck ON (lck.name_id = SP.name_id
+                                    AND lck.evr_id = SP.evr_id
+                                    AND lck.arch_id = SP.package_arch_id
+                                    AND lck.server_id = SP.server_id)
+    WHERE SP.server_id = :sid
+    ORDER BY locked ASC NULLS LAST, NAME
   </query>
 </mode>
 

@@ -44,9 +44,10 @@ Feature: Salt SSH action chain
     Then I should see a "bunch was scheduled" text
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
-  Scenario: Pre-requisite: remove all action chains before testing on SSH minion
-    When I delete all action chains
-    And I cancel all scheduled actions
+  Scenario: Create a custom action chain for the SSH minion
+    When I create an action chain with label "minssh_action_chain" via API  
+    And I follow the left menu "Schedule > Action Chains"
+    Then I should see a "minssh_action_chain" text
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
@@ -128,7 +129,6 @@ Feature: Salt SSH action chain
     And I check radio button "schedule-by-action-chain"
     And I click on "Apply Highstate"
 
-@skip_if_github_validation
   Scenario: Add a reboot action to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow first "Schedule System Reboot"
@@ -150,32 +150,39 @@ Feature: Salt SSH action chain
 
   Scenario: Verify the action chain list on SSH minion
     When I follow the left menu "Schedule > Action Chains"
-    And I follow "new action chain"
+    And I follow "minssh_action_chain"
     Then I should see a "1. Apply patch(es) andromeda-dummy-6789 on 1 system" text
     And I should see a "2. Remove milkyway-dummy from 1 system" text
     And I should see a "3. Install or update virgo-dummy on 1 system" text
     And I should see a text like "4. Deploy.*/etc/action-chain.cnf.*to 1 system"
     And I should see a "5. Apply Highstate" text
-    And I should see a "Run a remote command on 1 system" text
+    And I should see a "6. Reboot 1 system" text
+    And I should see a "7. Run a remote command on 1 system" text
 
   Scenario: Check that a different user cannot see the action chain for SSH minion
     Given I am authorized as "testing" with password "testing"
     When I follow the left menu "Schedule > Action Chains"
-    Then I should not see a "new action chain" link
+    Then I should not see a "minssh_action_chain" link
 
   Scenario: Execute the action chain from the web UI on SSH minion
     Given I am authorized for the "Admin" section
     When I follow the left menu "Schedule > Action Chains"
-    And I wait until I see "new action chain" text
-    And I follow "new action chain"
+    And I wait until I see "minssh_action_chain" text
+    And I follow "minssh_action_chain"
     Then I click on "Save and Schedule"
-    And I should see a "Action Chain new action chain has been scheduled for execution." text
+    And I should see a "Action Chain minssh_action_chain has been scheduled for execution." text
 
   Scenario: Verify that the action chain was executed successfully
     When I wait for "virgo-dummy" to be installed on "ssh_minion"
     And I wait at most 300 seconds until file "/tmp/action_chain_one_system_done" exists on "ssh_minion"
 
-  Scenario: Add a remote command to the new action chain on SSH minion
+  # previous, completed, action chain will no longer be available
+  Scenario: Create a custom action chain for the SSH minion
+    When I create an action chain with label "minssh_action_chain_to_delete" via API 
+    And I follow the left menu "Schedule > Action Chains"
+    Then I should see a "minssh_action_chain_to_delete" text
+
+  Scenario: Add a remote command to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Remote Command"
     And I enter as remote command this script in
@@ -189,7 +196,7 @@ Feature: Salt SSH action chain
 
   Scenario: Delete the action chain for SSH minion
     When I follow the left menu "Schedule > Action Chains"
-    And I follow "new action chain"
+    And I follow "minssh_action_chain_to_delete"
     And I follow "delete action chain" in the content area
     Then I click on "Delete"
 
@@ -217,30 +224,30 @@ Feature: Salt SSH action chain
     And I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINISHED" in its first rows
 
   Scenario: Add operations to the action chain via API for SSH minions
-    And I want to operate on this "ssh_minion"
-    When I call actionchain.create_chain() with chain label "throwaway_chain"
-    And I call actionchain.add_package_install()
-    And I call actionchain.add_package_removal()
-    And I call actionchain.add_package_upgrade()
-    And I call actionchain.add_script_run() with the script "exit 1;"
-    Then I should be able to see all these actions in the action chain
-    When I call actionchain.remove_action() on each action within the chain
+    Given I want to operate on this "ssh_minion"
+    When I create an action chain with label "minssh_api_chain" via API
+    And I add a package install to the action chain via API
+    And I add a package removal to the action chain via API
+    And I add a package upgrade to the action chain via API
+    And I add the script "exit 1;" to the action chain via API
+    Then I should be able to see all these actions in the action chain via API
+    When I remove each action within the chain via API
     Then the current action chain should be empty
-    When I delete the action chain
+    And I delete the action chain via API
 
   Scenario: Run an action chain via API on SSH minion
     And I want to operate on this "ssh_minion"
-    When I call actionchain.create_chain() with chain label "multiple_scripts"
-    And I call actionchain.add_script_run() with the script "echo -n 1 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "echo -n 2 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "echo -n 3 >> /tmp/action_chain.log"
-    And I call actionchain.add_script_run() with the script "touch /tmp/action_chain_done"
-    Then I should be able to see all these actions in the action chain
-    When I schedule the action chain
-    Then I wait until there are no more action chains
+    When I create an action chain with label "minssh_multiple_scripts" via API
+    And I add the script "echo -n 1 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "echo -n 2 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "echo -n 3 >> /tmp/action_chain.log" to the action chain via API
+    And I add the script "touch /tmp/action_chain_done" to the action chain via API
+    Then I should be able to see all these actions in the action chain via API
+    When I schedule the action chain via API
+    Then I wait until there are no more action chains listed via API
     When I wait until file "/tmp/action_chain_done" exists on "ssh_minion"
     Then file "/tmp/action_chain.log" should contain "123" on "ssh_minion"
-    When I wait until there are no more scheduled actions
+    When I wait until there are no more scheduled actions listed via API
 
   Scenario: Cleanup: remove SSH minion from configuration channel
     When I follow the left menu "Configuration > Channels"
