@@ -683,7 +683,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             if (srvrs.isEmpty()) {
                 continue;
             }
-            else if (toId != null && toId == -1L) {
+            if (toId != null && toId == -1L) {
                 am = new ActionMessage("basesub.jsp.success-default", srvrs.size());
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
             }
@@ -697,7 +697,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             if (srvrs.isEmpty()) {
                 continue;
             }
-            else if (toId != null && toId == -1L) {
+            if (toId != null && toId == -1L) {
                 am = new ActionMessage("basesub.jsp.skip-default", srvrs.size());
                 msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
             }

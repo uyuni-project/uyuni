@@ -1021,6 +1021,7 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         /**
          * @return return the message localized - if it was translated
          */
+        @Override
         public String getLocalizedMessage() {
             if (messageId.isEmpty()) {
                 return getMessage();
