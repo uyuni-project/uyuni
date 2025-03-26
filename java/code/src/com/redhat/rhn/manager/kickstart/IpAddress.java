@@ -154,7 +154,7 @@ public class IpAddress {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof IpAddress)) {
+        if (!(o instanceof IpAddress)) {
             return false;
         }
         IpAddress other = (IpAddress)o;
