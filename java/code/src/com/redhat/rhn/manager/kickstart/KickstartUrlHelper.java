@@ -300,7 +300,7 @@ public class KickstartUrlHelper {
         // /ks/dist/session/
         // 94xe86321bae3cb74551d995e5eafa065c0/ks-rhel-i386-as-4-u2
         String file = getLongMediaPath(session);
-        TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
+        TinyUrl turl = CommonFactory.createTinyUrl(file,
                 date);
         CommonFactory.saveTinyUrl(turl);
         if (log.isDebugEnabled()) {
@@ -329,7 +329,7 @@ public class KickstartUrlHelper {
         // /ks/dist/session/
         // 94xe86321bae3cb74551d995e5eafa065c0/ks-rhel-i386-as-4-u2
         String file = getLongMediaPath(session);
-        TinyUrl turl = CommonFactory.createTinyUrl(file.toString(),
+        TinyUrl turl = CommonFactory.createTinyUrl(file,
                 new Date());
         CommonFactory.saveTinyUrl(turl);
         if (log.isDebugEnabled()) {

@@ -296,11 +296,10 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * @param packageName the name of the package to add
      * @param s the system to associate with the package
      * @param c The channel to which to add the package
-     * @throws Exception something bad happened
      * @return the new package
      */
     public static Package addPackageToSystemAndChannel(String packageName,
-            Server s, Channel c) throws Exception {
+            Server s, Channel c) {
         Package retval = addPackageToChannel(packageName, c);
         PackageManagerTest.associateSystemToPackage(s, retval);
         return retval;
@@ -433,10 +432,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
      * Add a kickstart package with the given name to the given channel.
      * @param packageName the name of the package to add
      * @param channel the channel to add the package to
-     * @throws Exception something bad happened
      */
-    public static void addKickstartPackageToChannel(String packageName, Channel channel)
-    throws Exception {
+    public static void addKickstartPackageToChannel(String packageName, Channel channel) {
         PackageCapability kickstartCapability =  findOrCreateKickstartCapability();
         Package kickstartPkg =
             PackageManagerTest.addPackageToChannel(packageName, channel);
@@ -457,9 +454,8 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     /**
      * Find the kickstart package capability if it exists, create it otherwise.
      * @return The kickstart package capability.
-     * @throws Exception
      */
-    private static PackageCapability findOrCreateKickstartCapability() throws Exception {
+    private static PackageCapability findOrCreateKickstartCapability() {
         Session session = HibernateFactory.getSession();
         Query query = session.createQuery(
                 "from PackageCapability where name = :capability");

@@ -200,7 +200,7 @@ public abstract class CobblerCommand {
      */
     protected SystemRecord lookupExisting(Server server) {
         if (server.getCobblerId() != null) {
-            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), server.getCobblerId());
+            SystemRecord rec = SystemRecord.lookupById(getCobblerConnection(user), server.getCobblerId());
             if (rec != null) {
                 return rec;
             }
@@ -211,7 +211,7 @@ public abstract class CobblerCommand {
         if (sysmap != null) {
             log.debug("getSystemHandleByMAC.found match.");
             String uid = (String) sysmap.get("uid");
-            SystemRecord rec = SystemRecord.lookupById(this.getCobblerConnection(user), uid);
+            SystemRecord rec = SystemRecord.lookupById(getCobblerConnection(user), uid);
             if (rec != null) {
                 return rec;
             }
