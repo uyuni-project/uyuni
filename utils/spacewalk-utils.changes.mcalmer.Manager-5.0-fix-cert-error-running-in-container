@@ -1,0 +1,2 @@
+- Fix SSL error when connecting to localhost in the container
+  (bsc#1240023)
