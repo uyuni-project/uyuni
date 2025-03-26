@@ -46,8 +46,8 @@ public class RpmVersionComparator implements Comparator<String> {
             return 0;
         }
 
-        String str1 = (String) o1;
-        String str2 = (String) o2;
+        String str1 = o1;
+        String str2 = o2;
         int b1 = 0;
         int b2 = 0;
 
