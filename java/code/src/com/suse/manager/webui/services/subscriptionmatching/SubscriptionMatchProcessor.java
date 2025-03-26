@@ -59,7 +59,7 @@ public class SubscriptionMatchProcessor {
         Date latestEnd = latestRun == null ? null : latestRun.getEndTime();
         if (input.isPresent() && output.isPresent()) {
             Map<String, Product> products = products(input.get(), output.get());
-            MatcherUiData matcherUiData = new MatcherUiData(true,
+            return new MatcherUiData(true,
                     latestStart,
                     latestEnd,
                     messages(input.get(), output.get()),
@@ -68,7 +68,6 @@ public class SubscriptionMatchProcessor {
                     unmatchedProductIds(products),
                     pinnedMatches(input.get(), output.get()),
                     systems(input.get(), output.get()));
-            return matcherUiData;
         }
         else {
             return new MatcherUiData(latestStart, latestEnd);

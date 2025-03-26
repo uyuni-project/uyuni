@@ -1068,7 +1068,7 @@ public class CVEAuditManager {
                 .filter(r -> r.isPackageInstalled())
                 .max(evrComparator);
 
-        Optional<CVEPatchStatus> result = latestInstalled.map(li -> {
+        return latestInstalled.map(li -> {
             // Found a result entry which suggests that the affected package is patched
             // (This check initially excludes old products. They should be considered
             // patched only if there are no newer products offering a patch. If the only
@@ -1081,16 +1081,15 @@ public class CVEAuditManager {
             // In some rare cases, a CVE is covered by multiple patches. When a system is assigned snapshot clone
             // channels, they might be partly patched. To cover this case, check if a newer patch is available in the
             // same channel, or the original channel if this is a clone.
-            Optional<CVEPatchStatus> newerPatch = packageResults.stream()
+
+            // Return the newer patch, or Optional.empty if the latest is already installed
+            return packageResults.stream()
                     .filter(r -> instChannel.getId().equals(r.getChannelId().get()) || (instChannel.isCloned() &&
                             instChannel.asCloned().map(ClonedChannel::getOriginal)
                                     .map(Channel::getId)
                                     .stream().anyMatch(id -> id.equals(r.getChannelId().get()))))
                     .filter(r -> li.getPackageEvr().get().compareTo(r.getPackageEvr().get()) < 0)
                     .max(evrComparator);
-
-            // Return the newer patch, or Optional.empty if the latest is already installed
-            return newerPatch;
         }).orElse(
                 // The CVE is not patched against
                 // Compare channel ranks to find the top channel. Assigned channels come first.
@@ -1103,7 +1102,6 @@ public class CVEAuditManager {
                         .thenComparingLong(r -> r.getChannelRank().orElse(0L))
                 )
         );
-        return result;
     }
 
     /**

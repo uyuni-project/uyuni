@@ -64,9 +64,8 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     public StringBuffer getRequestURL() {
         try {
             URL u = new URL(super.getRequestURL().toString());
-            StringBuffer sb = new StringBuffer(new URL(getProtocol(),
+            return new StringBuffer(new URL(getProtocol(),
                     getServerName(), u.getPort(), u.getFile()).toExternalForm());
-            return sb;
         }
         catch (MalformedURLException e) {
             throw new IllegalArgumentException("Bad argument when creating URL");

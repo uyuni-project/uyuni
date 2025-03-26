@@ -1720,12 +1720,11 @@ public class SaltUtils {
         // name and EVR are never null due to DB constraints
         // see schema/spacewalk/common/tables/rhnServerPackage.sql
 
-        String sb = p.getName().getName() +
+        return p.getName().getName() +
                 "-" +
                 p.getEvr().toUniversalEvrString() +
                 "." +
                 Optional.ofNullable(p.getArch()).map(PackageArch::toUniversalArchString).orElse("unknown");
-        return sb;
     }
 
     /**

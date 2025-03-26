@@ -246,8 +246,7 @@ public class SaltActionChainGeneratorService {
                 args.put("current_action_id", actionId));
         rebootRequired.ifPresent(refs ->
                 args.put("reboot_required", refs));
-        SaltModuleRun modRun = new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
-        return modRun;
+        return new SaltModuleRun("schedule_next_chunk", "mgractionchains.clean", args);
     }
 
     private SaltState stopIfPreviousFailed(Optional<Pair<String, String>> lastRef) {
@@ -259,10 +258,8 @@ public class SaltActionChainGeneratorService {
             onFailedList.add(onFailedEntry);
             args.put("onfail", onFailedList);
         });
-        SaltModuleRun modRun =
-                new SaltModuleRun("clean_action_chain_if_previous_failed",
-                        "mgractionchains.clean", args);
-        return modRun;
+        return new SaltModuleRun("clean_action_chain_if_previous_failed",
+                "mgractionchains.clean", args);
     }
 
     private SaltState checkSaltUpgradeChunk(SaltState state) {

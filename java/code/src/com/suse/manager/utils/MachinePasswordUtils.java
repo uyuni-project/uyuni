@@ -42,8 +42,7 @@ public class MachinePasswordUtils {
       try {
          MessageDigest instance = MessageDigest.getInstance("SHA-256");
          instance.update(minionServer.getSecret().getBytes());
-         byte[] digest = instance.digest(minionServer.getMachineId().getBytes());
-         return digest;
+          return instance.digest(minionServer.getMachineId().getBytes());
       }
       catch (NoSuchAlgorithmException e) {
          throw new RuntimeException(e);

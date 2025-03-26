@@ -612,10 +612,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             throw new RepomdRuntimeException(e);
         }
 
-        RepomdIndexData updateinfoData = new RepomdIndexData(updateinfoFile
+        return new RepomdIndexData(updateinfoFile
                 .getCompressedChecksum(), updateinfoFile
                 .getUncompressedChecksum(), channel.getLastModified());
-        return updateinfoData;
     }
 
     /**
@@ -650,10 +649,9 @@ public class RpmRepositoryWriter extends RepositoryWriter {
             return null;
         }
 
-        RepomdIndexData productsData = new RepomdIndexData(
+        return new RepomdIndexData(
                 StringUtil.getHexString(productsFile.getMessageDigest().digest()),
                 StringUtil.getHexString(productsFile.getMessageDigest().digest()),
                 channel.getLastModified());
-        return productsData;
     }
 }

@@ -211,7 +211,7 @@ public class ChannelsJson {
      */
     public void setChildrenWithRecommendedAndArch(Stream<Channel> childrenIn, Map<Long, Boolean> recommendedFlags) {
         this.children = childrenIn.map((c) -> {
-            ChannelJson channelWithArch = new ChannelJson(
+            return new ChannelJson(
                     c.getId(),
                     c.getLabel(),
                     c.getName(),
@@ -222,7 +222,6 @@ public class ChannelsJson {
                     recommendedFlags.get(c.getId()),
                     null
             );
-            return channelWithArch;
         }).collect(Collectors.toList());
     }
 
