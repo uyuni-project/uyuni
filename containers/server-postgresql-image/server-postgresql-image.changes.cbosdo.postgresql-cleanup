@@ -1,2 +1,3 @@
 - Use correct variables in the initialization scripts
 - Log to STDERR instead of the log file
+- Remove custom entrypoint
