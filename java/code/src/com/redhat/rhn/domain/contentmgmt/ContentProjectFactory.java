@@ -318,7 +318,7 @@ public class ContentProjectFactory extends HibernateFactory {
                 .orElse(false);
 
         if (hasDistributions) {
-            log.error("The target " + target + " is being used in an autoinstallation profile. Cannot remove.");
+            log.error("The target %s is being used in an autoinstallation profile. Cannot remove.", target);
             throw new ContentManagementException(LocalizationService.getInstance().getMessage(
                     "contentmanagement.used_in_autoinstallation_profile"
             ));
