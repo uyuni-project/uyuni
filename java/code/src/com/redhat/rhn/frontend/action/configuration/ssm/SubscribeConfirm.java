@@ -159,7 +159,7 @@ public class SubscribeConfirm extends RhnAction {
                     request);
         }
         else {
-            String[] params = {Integer.valueOf(successes).toString()};
+            String[] params = {Integer.toString(successes)};
             getStrutsDelegate().saveMessage("ssm.config.subscribeconfirm.jsp.success",
                     params, request);
         }
