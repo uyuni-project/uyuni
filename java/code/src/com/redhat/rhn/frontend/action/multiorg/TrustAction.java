@@ -307,8 +307,8 @@ public class TrustAction extends FormDispatcher {
         Org usrOrg = OrgFactory.lookupById(userorg);
         String[] strings = request.getParameterValues("oid");
         Long[] oid = { Long.valueOf(strings[0]), Long.valueOf(strings[1]) };
-        Org orgA = OrgFactory.lookupById(Long.valueOf(oid[0]));
-        Org orgB = OrgFactory.lookupById(Long.valueOf(oid[1]));
+        Org orgA = OrgFactory.lookupById(oid[0]);
+        Org orgB = OrgFactory.lookupById(oid[1]);
         request.setAttribute("orgA", orgA);
         request.setAttribute("orgB", orgB);
         DataResult<Map<String, Object>> dr =
