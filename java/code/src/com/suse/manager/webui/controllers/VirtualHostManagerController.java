@@ -188,7 +188,7 @@ public class VirtualHostManagerController {
         String module = request.params("name");
         Optional<GathererModule> gathererModule = getGathererModules()
                 .entrySet().stream()
-                .filter(e -> module.toLowerCase().equals(e.getKey().toLowerCase()))
+                .filter(e -> module.equalsIgnoreCase(e.getKey()))
                 .map(Map.Entry::getValue)
                 .findFirst();
         return result(response,

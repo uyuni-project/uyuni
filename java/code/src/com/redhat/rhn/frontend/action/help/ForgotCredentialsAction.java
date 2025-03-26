@@ -118,8 +118,7 @@ public class ForgotCredentialsAction extends RhnAction {
         try {
             User foundUser = UserFactory.lookupByLogin(login);
             // Check if email and login agrees
-            if (foundUser.getEmail().toUpperCase().equals(
-                    email.toUpperCase())) {
+            if (foundUser.getEmail().equalsIgnoreCase(email)) {
                 ResetPassword rp = ResetPasswordFactory.createNewEntryFor(foundUser);
                 String link = ResetPasswordFactory.generateLink(rp);
 

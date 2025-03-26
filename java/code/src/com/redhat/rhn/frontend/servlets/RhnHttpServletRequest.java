@@ -24,7 +24,6 @@ import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Vector;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -83,14 +82,6 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
         }
 
         return "http";
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean isSecure() {
-        return super.isSecure();
     }
 
     /**
@@ -193,15 +184,6 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
     @Override
     public Enumeration<Locale> getLocales() {
         return this.locales.elements();
-    }
-
-    /**
-     *
-     * {@inheritDoc}
-     */
-    @Override
-    public Cookie[] getCookies() {
-        return super.getCookies();
     }
 
     /**

@@ -82,7 +82,9 @@ public class ErrataCacheDto {
      */
     @Override
     public boolean equals(Object obj) {
-        ErrataCacheDto ecd = (ErrataCacheDto) obj;
+        if (!(obj instanceof ErrataCacheDto ecd)) {
+            return false;
+        }
 
         return new EqualsBuilder().append(getErrataId(), ecd.getErrataId())
                                   .append(getPackageId(), ecd.getPackageId())
