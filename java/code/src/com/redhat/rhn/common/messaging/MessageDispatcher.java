@@ -82,20 +82,18 @@ public class MessageDispatcher implements Runnable {
         while (!isStopped) {
             try {
                 ActionExecutor actionHandler = MessageQueue.popEventMessage();
-                if (actionHandler == null) {
-                    continue;
-                }
-                else if (actionHandler.canRunConcurrently()) {
-                    log.info("Executing in thread pool: {}", actionHandler);
-                    threadPool.execute(actionHandler);
-                }
-                else {
-                    actionHandler.run();
+                if (actionHandler != null) {
+                    if (actionHandler.canRunConcurrently()) {
+                        log.info("Executing in thread pool: {}", actionHandler);
+                        threadPool.execute(actionHandler);
+                    }
+                    else {
+                        actionHandler.run();
+                    }
                 }
             }
             catch (InterruptedException e) {
                 log.error("Error occurred in the MessageQueue", e);
-                return;
             }
             catch (Throwable t) {
                 // better log this puppy to let folks know we have a problem

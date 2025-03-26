@@ -694,16 +694,15 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
             // Skipped messages
             srvrs = skipped.get(toId);
-            if (srvrs.isEmpty()) {
-                continue;
-            }
-            else if (toId != null && toId == -1L) {
-                am = new ActionMessage("basesub.jsp.skip-default", srvrs.size());
-                msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
-            }
-            else {
-                am = new ActionMessage("basesub.jsp.skip", srvrs.size(), c.getName());
-                msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
+            if (!srvrs.isEmpty()) {
+                if (toId != null && toId == -1L) {
+                    am = new ActionMessage("basesub.jsp.skip-default", srvrs.size());
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
+                }
+                else {
+                    am = new ActionMessage("basesub.jsp.skip", srvrs.size(), c.getName());
+                    msgs.add(ActionMessages.GLOBAL_MESSAGE, am);
+                }
             }
         }
         return msgs;
