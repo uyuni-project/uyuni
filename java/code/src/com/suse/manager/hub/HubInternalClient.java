@@ -86,13 +86,6 @@ public interface HubInternalClient {
     String replaceTokens(String newHubToken) throws IOException;
 
     /**
-     * Sync a list of vendor channels by label
-     * @param channelsIn the list of channels
-     * @throws IOException when the communication fails
-     */
-    void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException;
-
-    /**
      * Schedule a product refresh on the remote peripheral server
      * @throws IOException when the communication fails
      */

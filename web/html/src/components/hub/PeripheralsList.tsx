@@ -29,7 +29,12 @@ export class PeripheralsList extends React.Component<Props> {
         defaultSearchField="fqdn"
         searchField={<SearchField filter={this.searchData} placeholder={t("Filter by FQDN")} />}
       >
-        <Column columnKey="fqdn" comparator={Utils.sortByText} header={t("Peripheral FQDN")} cell={(row) => row.fqdn} />
+        <Column
+          columnKey="fqdn"
+          comparator={Utils.sortByText}
+          header={t("Peripheral FQDN")}
+          cell={(row) => this.renderDetailsLink(row)}
+        />
         <Column
           columnKey="nChannelsSync"
           header={t("N. of synced channels")}
@@ -56,6 +61,11 @@ export class PeripheralsList extends React.Component<Props> {
     return (
       <LargeTextAttachment value={row.rootCA} filename={row.fqdn + "_CA.pem"} editable={false} hideMessage={true} />
     );
+  }
+
+  private renderDetailsLink(row: PeripheralListData): React.ReactNode {
+    const detailsUrl = "/rhn/manager/api/admin/hub/peripherals/" + row.id;
+    return <a href={detailsUrl}>{row.fqdn}</a>;
   }
 
   private renderDeregister(row: PeripheralListData): React.ReactNode {

@@ -1623,9 +1623,16 @@ public class ChannelFactory extends HibernateFactory {
 
         Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channelLabel);
         if (tokenString.isPresent()) {
-            SCCRepositoryJson repositoryInfo = SCCEndpoints.buildCustomRepoJson(customChannelLabel, hostname,
-                    tokenString.get());
-            customChannelInfo.setRepositoryInfo(repositoryInfo);
+            SCCRepositoryJson repositoryInfo;
+            if (channel.getOrg() != null) {
+                repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get());
+            }
+            else {
+                repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
+                        .map(ct -> SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString.get()))
+                        .orElse(SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get()));
+            }
+            channelInfo.setRepositoryInfo(repositoryInfo);
         }
 
         return channelInfo;

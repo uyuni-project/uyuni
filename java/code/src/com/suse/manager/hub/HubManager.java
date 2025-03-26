@@ -41,6 +41,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
 import com.suse.manager.model.hub.ChannelInfoDetailsJson;
+import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssAccessToken;
 import com.suse.manager.model.hub.IssHub;
@@ -992,6 +993,26 @@ public class HubManager {
     }
 
     /**
+     * Remotely collect data about peripheral channels
+     *
+     * @param user The current user
+     * @param peripheralFqdn the remote peripheral server FQDN
+     * @return return list of {@link ChannelInfoJson}
+     */
+    public List<ChannelInfoJson> getAllPeripheralChannels(User user, String peripheralFqdn)
+            throws IOException, CertificateException {
+        ensureSatAdmin(user);
+
+        IssPeripheral issPeripheral = hubFactory.lookupIssPeripheralByFqdn(peripheralFqdn).orElseThrow(() ->
+                new IllegalStateException(peripheralFqdn + " is not registered as peripheral"));
+
+        IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
+        var internalClient = clientFactory.newInternalClient(issPeripheral.getFqdn(), accessToken.getToken(),
+                issPeripheral.getRootCa());
+        return internalClient.getAllPeripheralChannels();
+    }
+
+    /**
      * Get the Peripheral Channels
      * @param user the SatAdmin
      * @param peripheralId the Peripheral ID
@@ -1392,6 +1413,17 @@ public class HubManager {
         client.syncChannels(channelInfoList);
         // Update peripheral with the new associations
         updatePeripheralChannels(peripheral, newAssociations);
+    }
+
+    /**
+     * Collect data about all channels
+     *
+     * @param accessToken the accesstoken
+     * @return return list of {@link Channel}
+     */
+    public List<Channel> collectAllChannels(IssAccessToken accessToken) {
+        ensureValidToken(accessToken);
+        return ChannelFactory.listAllChannels();
     }
 
     /**
