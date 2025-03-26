@@ -21,3 +21,19 @@ jobs:
           pytest test_pillar_suma_minion.py
           cd ../src/tests
           pytest
+  susemanager_sls_unit_tests_python311:
+    runs-on: ubuntu-latest
+    container:
+      image: registry.opensuse.org/systemsmanagement/saltstack/products/testing/containers/leap15.6/python311/containers/salt-testsuite-github:leap15.6
+      options: --hostname=salt-test-container
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
+      - name: Fix the Salt version in _version.txt file
+        run: mkdir $GITHUB_WORKSPACE/salt && rpm -q python311-salt-testsuite --queryformat '%{VERSION}' > $GITHUB_WORKSPACE/salt/_version.txt
+      - name: Run susemanager-sls unit tests
+        run: |
+          cd susemanager-utils/susemanager-sls/test/
+          pytest test_pillar_suma_minion.py
+          cd ../src/tests
+          pytest
