@@ -7014,70 +7014,70 @@ organization. You may grant or remove the organization administrator role in the
       <!--- System groups pages -->
       <trans-unit id="ssm.groups.manage.title" xml:space="preserve">
         <source>Alter System Group Memberships</source>
-        <target/>
+        <target state="translated">Zmeniť členstvo systémových skupín</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.summary" xml:space="preserve">
         <source>Below is a listing of the system groups for your organization.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémových skupín pre vašu organizáciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item1" xml:space="preserve">
         <source>To add the selected systems to a group, check &lt;strong&gt;Add&lt;/strong&gt; for that group.</source>
-        <target/>
+        <target state="translated">Ak chcete pridať vybrané systémy do skupiny, začiarknite &lt;strong&gt;Pridať&lt;/strong&gt; pre túto skupinu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item2" xml:space="preserve">
         <source>To remove the selected systems from a group, check &lt;strong&gt;Remove&lt;/strong&gt; for that group.</source>
-        <target/>
+        <target state="translated">Ak chcete odstrániť vybrané systémy zo skupiny, začiarknite &lt;strong&gt;Odstrániť&lt;/strong&gt; pre túto skupinu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item3" xml:space="preserve">
         <source>Check &lt;strong&gt;No Change&lt;/strong&gt; to leave the selected systems unaffected relative to that group.</source>
-        <target/>
+        <target state="translated">Začiarknite &lt;strong&gt;Žiadna zmena&lt;/strong&gt;, ak chcete, aby vybrané systémy neboli ovplyvnené vzhľadom k tejto skupine.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.add" xml:space="preserve">
         <source>Add</source>
-        <target/>
+        <target state="translated">Pridať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.remove" xml:space="preserve">
         <source>Remove</source>
-        <target/>
+        <target state="translated">Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.nochange" xml:space="preserve">
         <source>No Change</source>
-        <target/>
+        <target state="translated">Žiadna zmena</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.button" xml:space="preserve">
         <source>Alter Membership</source>
-        <target/>
+        <target state="translated">Zmeniť členstvo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added" xml:space="preserve">
         <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected will be added to the following groups:</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0} systémy&lt;/strong&gt;, ktoré ste vybrali, sa pridajú do nasledujúcich skupín:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
