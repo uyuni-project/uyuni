@@ -519,7 +519,7 @@ public class BaseHandler implements XmlRpcInvocationHandler {
             if (!validKeys.contains(key)) {
                 // user passed an invalid key...
                 if (errors == null) {
-                    errors = new String(key);
+                    errors = key;
                 }
                 else {
                     errors += ", " + key;
