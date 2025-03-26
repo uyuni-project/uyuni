@@ -75,8 +75,19 @@ module.exports = {
     "no-restricted-imports": [
       "error",
       {
-        name: "node-gettext",
-        message: "Please import from `core/intl/node-gettext` instead.",
+        paths: [
+          {
+            name: "node-gettext",
+            message: "Please import from `core/intl/node-gettext` instead.",
+          },
+          // TODO: List everything we want to limit once the implementation is done
+          // {
+          //   name: "formik",
+          //   importNames: ["Field", "Form"],
+          //   // TODO: Update message once we move the directory to where it should be
+          //   message: "Please import from `components/formik` instead.",
+          // },
+        ],
       },
     ],
     ...(process.env.NODE_ENV === "production" ? productionRules : {}),

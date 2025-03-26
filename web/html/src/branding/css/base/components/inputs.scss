@@ -1,5 +1,3 @@
-$input-height: 35px;
-
 @at-root {
   :root {
     --bs-border-color: #{$input-border-color};
@@ -10,6 +8,7 @@ $input-height: 35px;
 div.form-control,
 .form-control,
 .form-control--react-select > div:first-of-type {
+  --bs-border-width: 1px;
   color: $eos-bc-gray-1000;
   height: $input-height;
   max-width: 100%;
@@ -41,7 +40,8 @@ div.form-control,
 }
 
 .form-control {
-  padding: 8px !important;
+  --padding: 8px;
+  padding: var(--padding) !important;
 
   &:focus {
     border: 1px solid $eos-bc-blue-500 !important;
@@ -91,6 +91,10 @@ div.form-control {
   }
 }
 
+.form-check-input {
+  --bs-border-width: 1px;
+}
+
 // TODO: Bind this class to the react-select control once we upgrade react-select, see https://react-select.com/styles#the-classnames-prop
 .form-control--react-select > div:first-of-type {
   outline: none !important;
@@ -105,6 +109,14 @@ textarea.form-control,
 select[multiple],
 select[size] {
   height: auto;
+}
+
+.form-multi-input-row {
+  min-height: $input-height;
+  display: flex;
+  gap: 8px;
+
+  // TODO: Implement
 }
 
 // We need to manually handle these cases to fix legacy DOM structures
