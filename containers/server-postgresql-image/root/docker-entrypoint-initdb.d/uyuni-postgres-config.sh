@@ -3,18 +3,11 @@
 # This is run automatically at the first start of the container
 # or it can be run manually later.
 
-POSTGRESQL=/var/lib/pgsql/data/postgresql.conf
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
 
-postgres_reconfig() {
-    echo "Setting $1 = $2"
-    if test $(sed -n "/^$1[[:space:]]*=/p" $POSTGRESQL | wc -l) -ne 0; then
-        sed -i "s|^$1[[:space:]]*=.*|$1 = $2|" $POSTGRESQL
-    else
-        echo "$1 = $2" >> $POSTGRESQL
-    fi
-}
+chmod +x /usr/local/bin/postgres_utils.sh
+source /usr/local/bin/postgres_utils.sh
 
 # Get total memory in KB
 TOTAL_MEM_KB=$(sed -n -e '/MemTotal:/{s|MemTotal:[[:space:]]*\([0-9]*\).*|\1| p}' /proc/meminfo)

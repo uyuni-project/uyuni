@@ -32,5 +32,7 @@ LABEL org.uyuni.version="${PRODUCT_VERSION}"
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+RUN chmod +x /usr/local/bin/uyuni-entrypoint.sh
+
+ENTRYPOINT ["/usr/local/bin/uyuni-entrypoint.sh"]
 CMD ["postgres"]
