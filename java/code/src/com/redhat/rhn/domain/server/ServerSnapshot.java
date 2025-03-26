@@ -264,7 +264,9 @@ public class ServerSnapshot extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object obj) {
-        ServerSnapshot other = (ServerSnapshot) obj;
+        if (!(obj instanceof ServerSnapshot other)) {
+            return false;
+        }
         return new EqualsBuilder().append(reason.hashCode(), other.reason.hashCode())
                                   .append(channels.hashCode(), other.channels.hashCode())
                                   .append(configChannels.hashCode(),
