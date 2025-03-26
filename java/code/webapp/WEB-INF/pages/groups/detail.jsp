@@ -101,10 +101,16 @@
 <div class="col-md-6">
 <div class="panel panel-default">
 <div class="panel-heading">
-  <h3><bean:message key="systemgroup.details.properties"/>
+  <h3><bean:message key="systemgroup.details.properties" />
   <rhn:require acl="user_role(system_group_admin)">
-    (<a href="/rhn/groups/EditGroup.do?sgid=${id}" class="js-spa"><bean:message key="systemgroup.details.editproperties"/></a>)
-  </rhn:require></h3>
+    <a href="/rhn/groups/EditGroup.do?sgid=${id}"
+      title="<bean:message key='systemgroup.details.editproperties' />"
+      role="button"
+      class="js-spa btn btn-tertiary pull-right">
+        <rhn:icon type="item-edit" />
+    </a>
+  </rhn:require>
+  </h3>
 </div>
 
 <div class="panel-body">

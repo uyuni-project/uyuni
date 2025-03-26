@@ -1,3 +1,5 @@
+import { Button } from "components/buttons";
+
 import { AppStreamModule, Channel } from "./appstreams.type";
 import { getStreamName } from "./utils";
 
@@ -42,9 +44,9 @@ export const ChannelAppStreams = ({
           <tr key={`${moduleStream.name}_${moduleStream.stream}`} className={changedStatus ? "changed" : ""}>
             {streamIdx === 0 && <td rowSpan={streams.length}>{moduleName}</td>}
             <td>
-              <button className={"btn btn-link"} onClick={() => showPackages && showPackages(stream)}>
+              <Button className={"btn-tertiary"} handler={() => showPackages && showPackages(stream)}>
                 {enabled ? <strong>{stream}</strong> : stream}
-              </button>
+              </Button>
             </td>
             <td>
               <div className="form-group">

@@ -134,7 +134,7 @@ class ImageStores extends React.Component<Props, State> {
             icon="fa-trash"
             className="btn-default"
             text={t("Delete")}
-            title={t("Delete selected")}
+            title={t("Delete Store Profile")}
             target="delete-selected-modal"
           />
         )}
@@ -144,8 +144,8 @@ class ImageStores extends React.Component<Props, State> {
             id="create"
             icon="fa-plus"
             className="btn-primary"
-            title={t("Create")}
-            text={t("Create")}
+            title={t("Create Store Profile")}
+            text={t("Create Store Profile")}
             href="/rhn/manager/cm/imagestores/create"
           />
         )}

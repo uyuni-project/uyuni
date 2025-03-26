@@ -15,7 +15,13 @@
     <rl:listset name="errataSet">
     <rhn:csrf />
     <rhn:submitted />
-
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <rl:csv dataset="pageList"
+                name="packageList"
+                exportColumns="id, advisory, advisoryType, advisorySynopsis, updateDate" />
+        </div>
+    </div>
     <rhn:hidden name="cid" value="${cid}" />
 
         <rl:list dataset="pageList"
@@ -100,12 +106,7 @@
                         ${current.updateDate}
                 </rl:column>
 
-
         </rl:list>
-
-        <rl:csv dataset="pageList"
-                        name="packageList"
-                        exportColumns="id, advisory, advisoryType, advisorySynopsis, updateDate" />
 
     </rl:listset>
 
