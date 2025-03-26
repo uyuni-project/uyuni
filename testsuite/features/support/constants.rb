@@ -787,10 +787,12 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         el9-manager-tools-pool-x86_64-rocky
         el9-manager-tools-updates-x86_64-rocky
       ],
-    'rockylinux8' =>
+    'rockylinux8' => # CHECKED
       %w[
         rockylinux-8-x86_64
         rockylinux-8-appstream-x86_64
+        res8-manager-tools-pool-x86_64-rocky
+        res8-manager-tools-updates-x86_64-rocky
       ],
     'rockylinux9' => # CHECKED
       %w[
@@ -1565,11 +1567,13 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'res7-suse-manager-tools-x86_64' => 300,
   'res-7-suse-manager-tools-x86_64-lbt7' => 120,
   'res7-x86_64' => 21_000,
+  'res8-manager-tools-pool-x86_64-rocky' => 60,
+  'res8-manager-tools-updates-x86_64-rocky' => 60,
   'rhel-x86_64-server-7' => 60,
   'rocky-8-iso' => 600,
-  'rockylinux8-uyuni-client-devel-x86_64' => 60,
-  'rockylinux8-x86_64' => 600,
-  'rockylinux8-x86_64-appstream' => 1260,
+  'rockylinux8-uyuni-client-devel-x86_64' => 120,
+  'rockylinux8-x86_64' => 660,
+  'rockylinux8-x86_64-appstream' => 1560,
   'rockylinux8-x86_64-extras' => 420,
   'rockylinux9-appstream-x86_64' => 480,
   'rockylinux9-uyuni-client-devel-x86_64' => 60,
