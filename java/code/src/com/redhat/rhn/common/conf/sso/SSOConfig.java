@@ -41,11 +41,11 @@ public final class SSOConfig {
     private SSOConfig() {
 
         final Map<String, Object> samlData = new HashMap<>();
-        Config.get().getNamespaceProperties(ConfigDefaults.get().SINGLE_SIGN_ON_ENABLED).forEach((k, v) -> {
-            if (k.toString().startsWith(ConfigDefaults.get().SINGLE_SIGN_ON_ENABLED + ".")) {
+        Config.get().getNamespaceProperties(ConfigDefaults.SINGLE_SIGN_ON_ENABLED).forEach((k, v) -> {
+            if (k.toString().startsWith(ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".")) {
                 LOG.info("putting {} into SAML configuration", k);
                 samlData.put(k.toString().replace(
-                        ConfigDefaults.get().SINGLE_SIGN_ON_ENABLED + ".", ""),
+                                ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".", ""),
                         Config.get().getString((String) k));
             }
             final SettingsBuilder builder = new SettingsBuilder();
