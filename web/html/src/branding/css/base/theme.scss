@@ -176,6 +176,8 @@ section {
 }
 
 .navbar-collapse {
+  animation: none !important;
+  transition: none !important;
   display: flex;
   flex-direction: column;
 
@@ -196,14 +198,6 @@ section {
         margin: 0 !important;
       }
     }
-  }
-
-  &.in {
-    display: flex !important;
-  }
-
-  &.collapse {
-    display: none !important;
   }
 }
 
