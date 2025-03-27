@@ -71,6 +71,5 @@ insert into rhnActionType values (506, 'channels.subscribe', 'Subscribe to chann
 insert into rhnActionType values (521, 'ansible.playbook', 'Execute an Ansible playbook', 'N', 'N', 'N');
 insert into rhnActionType values (523, 'coco.attestation', 'Confidential Compute Attestation', 'N', 'N', 'N');
 insert into rhnActionType values (524, 'appstreams.configure', 'Configure AppStreams in a system', 'N', 'N', 'N');
-insert into rhnActionType values (525, 'proxy_configuration.apply', 'Apply a proxy configuration to a system', 'N', 'N', 'N');
 commit;
 insert into rhnActionType values (525, 'ansible.inventory', 'Refresh Ansible inventories', 'N', 'N', 'N');
