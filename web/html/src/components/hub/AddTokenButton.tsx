@@ -84,7 +84,7 @@ export class AddTokenButton extends React.Component<Props, State> {
             text={t("Add token")}
             icon="fa-plus"
             title={t("Add a new access token")}
-            className="btn btn-primary"
+            className="btn-primary"
             items={[
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
