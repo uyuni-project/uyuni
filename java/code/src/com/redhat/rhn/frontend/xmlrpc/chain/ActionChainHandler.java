@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014 SUSE LLC
+ * Copyright (c) 2014--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -581,6 +582,34 @@ public class ActionChainHandler extends BaseHandler {
 
         return addScriptRun(
                 loggedInUser, sid, chainLabel, null, uid, gid, timeout, scriptBody);
+    }
+
+    /**
+     * Adds an action to apply highstate on the system.
+     *
+     * @param loggedInUser The current user
+     * @param sid          System ID
+     * @param chainLabel   Label of the action chain.
+     * @return True or false in XML-RPC representation (1 or 0 respectively)
+     * @apidoc.doc Adds an action to apply highstate on the system to an Action Chain.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "System ID")
+     * @apidoc.param #param_desc("string", "chainLabel", "Label of the chain")
+     * @apidoc.returntype #param_desc("int", "actionId", "The id of the action or throw an exception")
+     */
+    public Integer addApplyHighstate(User loggedInUser, Integer sid, String chainLabel) {
+        ActionChain chain = this.acUtil.getActionChainByLabel(loggedInUser, chainLabel);
+        List<Long> systems = List.of((long) sid);
+
+        try {
+            return ActionChainManager
+                    .scheduleApplyStates(loggedInUser, systems, Optional.empty(), new Date(), chain)
+                    .stream().findFirst().map(action -> action.getId().intValue())
+                    .orElseThrow(() -> new TaskomaticApiException("Unable to add apply highstate"));
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
     }
 
     /**
