@@ -27,7 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -38,7 +38,7 @@ public class AccessGroup {
     private Long id;
     private String label;
     private String description;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "org_id")
     private Org org;
     @ManyToMany

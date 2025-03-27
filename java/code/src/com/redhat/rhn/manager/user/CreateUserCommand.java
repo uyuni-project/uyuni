@@ -149,6 +149,7 @@ public class CreateUserCommand {
         }
         user.setUsePamAuthentication(usePam); //set it back
         UserManager.resetTemporaryRoles(user, temporaryRoles);
+        UserFactory.IMPLIEDROLES.forEach(roleIn -> user.addPermanentRole(roleIn));
         if (org.getOrgConfig().isCreateDefaultSg()) {
             ManagedServerGroup sg = ServerGroupFactory.lookupByNameAndOrg(
                     user.getLogin(), user.getOrg());
