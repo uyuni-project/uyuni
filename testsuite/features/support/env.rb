@@ -58,8 +58,7 @@ $current_password = 'admin'
 $chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
 $chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
 $timeout_failure_counter = 0
-$timeout_threshold = 10  # Set the threshold for stopping the suite
-
+$timeout_threshold = 10 # Set the threshold for stopping the suite
 # maximal wait before giving up
 # the tests return much before that delay in case of success
 $stdout.sync = true
@@ -177,14 +176,15 @@ def web_session_is_active?
   page.has_selector?('header') || page.has_selector?('#username-field')
 end
 
+# Check if the consecutive timeout threshold is reached
 def check_read_timeout_threshold
-  # Check if the consecutive timeout threshold is reached
-  if $timeout_failure_counter >= $timeout_threshold
-    warn "Timeout failure threshold reached, stopping test suite."
-    exit(1)
-  end
+  return unless $timeout_failure_counter >= $timeout_threshold
+
+  warn 'Timeout failure threshold reached, stopping test suite.'
+  exit(1)
 end
 
+# Increase read timeout count
 def increase_read_timeout_count
   $timeout_failure_counter += 1
 
