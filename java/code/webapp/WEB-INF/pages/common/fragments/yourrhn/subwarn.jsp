@@ -5,14 +5,7 @@
 
 
 <c:if test="${requestScope.subscriptionwarning}">
-  <div class="panel panel-warning">
-    <div class="panel-heading">
-      <h3 class="panel-title">
-        <bean:message key="notification.subscriptionwarning.summary" />
-      </h3>
-  </div>
-  <div class="panel panel-body">
+  <div class="alert alert-warning">
     <bean:message key="notification.subscriptionwarning.detail" />
   </div>
-  <div class="panel-footer"></div>
 </c:if>
