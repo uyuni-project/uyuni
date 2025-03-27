@@ -20,9 +20,9 @@ on:
 env:
   UYUNI_PROJECT: uyuni-project
   UYUNI_VERSION: master
-  NO_AUTH_REGISTRY: no_auth_registry
+  NO_AUTH_REGISTRY: "noauthregistry.lab"
   CUCUMBER_PUBLISH_TOKEN: ${{ secrets.CUCUMBER_PUBLISH_TOKEN }}
-  AUTH_REGISTRY: "auth_registry"
+  AUTH_REGISTRY: "authregistry.lab"
   AUTH_REGISTRY_CREDENTIALS: "cucutest|cucutest"
 
 jobs:
@@ -48,7 +48,7 @@ jobs:
               - '!testsuite/features/build_validation/**'
   tests:
     name: Run
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     needs: filter-paths
     steps:
       - name: Skipping tests
@@ -59,7 +59,7 @@ jobs:
           echo "The job will be marked as success, but the steps will be skipped."
       - name: Install Podman
         if: ${{ !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        run: sudo apt install podman=3.4.4+ds1-1ubuntu1 --allow-downgrades
+        run: sudo apt install podman
 
       - name: Install Python dependencies
         if: ${{ !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
