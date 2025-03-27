@@ -82,14 +82,15 @@ public class MessageDispatcher implements Runnable {
         while (!isStopped) {
             try {
                 ActionExecutor actionHandler = MessageQueue.popEventMessage();
-                if (actionHandler != null) {
-                    if (actionHandler.canRunConcurrently()) {
-                        log.info("Executing in thread pool: {}", actionHandler);
-                        threadPool.execute(actionHandler);
-                    }
-                    else {
-                        actionHandler.run();
-                    }
+                if (actionHandler == null) {
+                    continue;
+                }
+                if (actionHandler.canRunConcurrently()) {
+                    log.info("Executing in thread pool: {}", actionHandler);
+                    threadPool.execute(actionHandler);
+                }
+                else {
+                    actionHandler.run();
                 }
             }
             catch (InterruptedException e) {
