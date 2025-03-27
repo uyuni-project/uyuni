@@ -10,7 +10,7 @@
 
 <div class="header-content container-fluid">
   <div class="navbar-header d-flex flex-row">
-    <a href="#" class="navbar-toggle">
+    <a class="navbar-toggle" data-bs-toggle="collapse" href="#spacewalk-aside">
       <i class="fa fa-bars" aria-hidden="true"></i>
     </a>
     <div id="breadcrumb">
