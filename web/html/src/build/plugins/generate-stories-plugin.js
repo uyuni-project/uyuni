@@ -47,7 +47,7 @@ module.exports = class GenerateStoriesPlugin {
     const files = await fs.readdir(webHtmlSrc, { recursive: true });
     const storyFilePaths = files
       .filter(
-        (item) => !item.startsWith("node_modules") && (item.endsWith(".stories.ts") || item.endsWith(".stories.tsx"))
+        (item) => !item.startsWith("node_modules") && (item.endsWith(".example.ts") || item.endsWith(".example.tsx"))
       )
       .sort();
 
