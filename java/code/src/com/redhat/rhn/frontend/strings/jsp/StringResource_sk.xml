@@ -7014,7 +7014,7 @@ organization. You may grant or remove the organization administrator role in the
       <!--- System groups pages -->
       <trans-unit id="ssm.groups.manage.title" xml:space="preserve">
         <source>Alter System Group Memberships</source>
-        <target state="translated">Zmeniť členstvo systémových skupín</target>
+        <target state="translated">Zmeniť členstvá v systémových skupinách</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
@@ -7084,70 +7084,70 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added.empty" xml:space="preserve">
         <source>No systems will be added to any groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémy nebudú pridané do žiadnych skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed" xml:space="preserve">
         <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected that are subscribed to the following groups will be removed from them:</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0} systémy&lt;/strong&gt;, ktoré ste vybrali a ktoré sú prihlásené do nasledujúcich skupín, budú z nich odstránené:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed.empty" xml:space="preserve">
         <source>No systems will be removed from any groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémy nebudú odstránené zo žiadnych skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.noGroups.nonadmin" xml:space="preserve">
         <source>No System Groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.noGroups" xml:space="preserve">
         <source>No System Groups. To add System Groups this system, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny. Ak chcete pridať systémové skupiny tomuto systému, navštívte kartu &lt;a href="{0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.add.jsp.noGroups" xml:space="preserve">
         <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this system.</source>
-        <target/>
+        <target state="translated">Nie sú k dispozícii žiadne systémové skupiny na pridanie. Už ste pridali všetky dostupné systémové skupiny (&lt;a href="{0}"&gt;Zobraziť systémové skupiny&lt;/a&gt;) tomuto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.summary.nonadmin" xml:space="preserve">
         <source>Below are all the system groups that have been added to this system.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémové skupiny, ktoré boli pridané tomuto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.summary" xml:space="preserve">
         <source>Below are all the system groups that have been added to this system. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémové skupiny, ktoré boli pridané do tohto systému. Ak chcete odstrániť členstvo v systémovej skupine, začiarknite jej začiarkavacie políčko a po dokončení zmien kliknite na tlačidlo "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.add.jsp.summary" xml:space="preserve">
         <source>Below is a list of system groups available to this system. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémových skupín dostupných pre tento systém. Ak chcete pripojiť systémovú skupinu, začiarknite jej začiarkavacie políčko. Uistite sa, že ste po dokončení zmien klikli na tlačidlo "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.title" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target state="translated">Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
