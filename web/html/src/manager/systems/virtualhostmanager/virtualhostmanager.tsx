@@ -172,7 +172,7 @@ class VirtualHostManager extends React.Component<Props, State> {
             text={t("Create")}
             icon="fa-plus"
             title={t("Add a virtual host manager")}
-            className="btn btn-primary"
+            className="btn-primary"
             items={this.state.availableModules.map((name) => (
               <a key={name.toLocaleLowerCase()} data-senna-off href={"#/create/" + name.toLocaleLowerCase()}>
                 {this.getLocalizedModuleName(name.toLocaleLowerCase())}

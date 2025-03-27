@@ -13,7 +13,7 @@ const PaginationBlock = (props: PaginationBlockProps) => {
   const currentPage = props.currentPage;
   const lastPage = props.lastPage;
   const onPageChange = props.onPageChange;
-
+  const doubleLeft = <svg viewBox="0 0 448 512" fill="currentColor" aria-hidden="true" role="img" width="1em" height="1em"><path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34zm192-34l-136-136c-9.4-9.4-24.6-9.4-33.9 0l-22.6 22.6c-9.4 9.4-9.4 24.6 0 33.9l96.4 96.4-96.4 96.4c-9.4 9.4-9.4 24.6 0 33.9l22.6 22.6c9.4 9.4 24.6 9.4 33.9 0l136-136c9.4-9.2 9.4-24.4 0-33.8z"></path></svg>
   const pagination =
     lastPage > 1 ? (
       <div className="spacewalk-list-pagination">
@@ -21,7 +21,7 @@ const PaginationBlock = (props: PaginationBlockProps) => {
           <PaginationButton
             onClick={() => onPageChange(1)}
             disabled={DEPRECATED_unsafeEquals(currentPage, 1)}
-            icon="fa-angle-double-left "
+            icon="fa-angle-double-left"
           />
           <PaginationButton
             onClick={() => onPageChange(currentPage - 1)}
@@ -54,13 +54,13 @@ type PaginationButtonProps = {
   disabled?: boolean;
   onClick: (...args: any[]) => any;
   text?: React.ReactNode;
-  icon?: string
+  icon?: React.ReactNode;
 };
 const PaginationButton = (props: PaginationButtonProps) => {
   return (
 
-    <button type="button" className="btn btn-default" disabled={props.disabled} onClick={props.onClick}>
-      {<i className={"fa " + props.icon} />}{props.text}
+    <button type="button" className="btn btn-tertiary" disabled={props.disabled} onClick={props.onClick}>
+      <i className={`pagination-icon fa ${props.icon}`} />{props.text}
     </button>
   )
 };
