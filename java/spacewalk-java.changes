@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 27 16:56:36 CET 2025 - rosuna@suse.com
+
+- version 5.0.22-0
+  * Add support for OVAL CVE analyzes on Ubuntu
+
+-------------------------------------------------------------------
 Fri Mar 21 08:42:46 CET 2025 - rosuna@suse.com
 
 - version 5.0.21-0
