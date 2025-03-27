@@ -32,7 +32,6 @@ public class OrgConfig extends BaseDomainHelper {
     private boolean stagingContentEnabled;
     private boolean errataEmailsEnabled;
     private boolean scapfileUploadEnabled;
-    private Long scapFileSizelimit;
     private Long scapRetentionPeriodDays;
     private boolean createDefaultSg;
     private boolean clmSyncPatches;
@@ -93,22 +92,6 @@ public class OrgConfig extends BaseDomainHelper {
      */
     public void setScapfileUploadEnabled(boolean scapfileUploadEnabledIn) {
         scapfileUploadEnabled = scapfileUploadEnabledIn;
-    }
-
-    /**
-     * Get the org-wide SCAP file size limit.
-     * @return Returns the org-wide scap file size limit.
-     */
-    public Long getScapFileSizelimit() {
-        return scapFileSizelimit;
-    }
-
-    /**
-     * Set the org-wide SCAP file size limit.
-     * @param sizeLimitIn The org-wide SCAP file size limit to set.
-     */
-    public void setScapFileSizelimit(Long sizeLimitIn) {
-        scapFileSizelimit = sizeLimitIn;
     }
 
     /**
