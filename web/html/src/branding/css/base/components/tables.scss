@@ -14,23 +14,6 @@
   align-items: center;
 }
 
-.page-selector {
-  background-color: black;
-  border: 0;
-  font-weight: 600;
-  background-color: transparent;
-
-  &:hover {
-    border: 0!important;
-  }
-
-  & ~ ul.dropdown-menu i {
-    font-size: 12px;
-    color: $eos-bc-green-900;
-    margin: 0;
-}
-}
-
 .table-input-search {
   display: block;
   width: 100%;
@@ -38,7 +21,7 @@
 }
 
 thead tr {
-  background: transparent !important;
+  background:$eos-bc-gray-100 !important;
   color: $eos-bc-gray-900 !important;
 
   .btn-link {
@@ -81,4 +64,23 @@ tbody tr td,
   .btn {
     padding: 4px 6px;
   }
+}
+
+.page-selector {
+  border: 0;
+  font-weight: 600;
+  padding: 4px;
+  gap: 0.2em;
+  background-color: transparent;
+
+  & ~ ul.dropdown-menu i {
+    font-size: 12px;
+    color: $eos-bc-green-900;
+    margin: 0;
+  }
+}
+
+.pagination-icon {
+  font-size: 18px;
+  font-weight: bolder;
 }

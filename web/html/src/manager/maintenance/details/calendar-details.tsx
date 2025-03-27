@@ -88,7 +88,7 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
   return (
     <div>
       <BootstrapPanel title={t("Calendar Details")}>
-        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} initialItemsPerPage={0}>
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hidHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>

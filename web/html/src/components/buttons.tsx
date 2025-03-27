@@ -265,7 +265,7 @@ export class DropdownButton extends _ButtonBase<DropdownProps> {
           id={this.props.id}
           type="button"
           title={this.props.title}
-          className={"dropdown-toggle " + this.props.className}
+          className={"dropdown-toggle btn " + this.props.className}
           onClick={this.props.handler}
           data-bs-toggle="dropdown"
           disabled={this.props.disabled}

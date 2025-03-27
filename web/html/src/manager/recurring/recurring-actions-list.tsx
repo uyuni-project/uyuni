@@ -96,9 +96,7 @@ class RecurringActionsList extends React.Component<Props, State> {
     const { isFilteredList } = this.props;
     const disableCreate = !isFilteredList;
     const emptyListText = `No schedules created.${disableCreate ? "" : " Use Create to add a schedule."}`;
-    console.log('disableCreate', disableCreate)
 
-    console.log('isFilteredList', this.props)
     const buttons = [
       <div className="btn-group pull-right">
         <Button
@@ -140,11 +138,11 @@ class RecurringActionsList extends React.Component<Props, State> {
           selectable={false}
           data={isFilteredList ? this.state.schedules : "/rhn/manager/api/recurringactions"}
           identifier={(action) => action.recurringActionId}
-          /* Using 0 to hide table header/footer */
           initialItemsPerPage={disableCreate ? pageSize : 0}
           emptyText={t(emptyListText)}
           searchField={<RecurringActionsSearch />}
           ref={this.tableRef}
+          hidHeaderFooter="header"
         >
           <Column
             columnKey="active"
