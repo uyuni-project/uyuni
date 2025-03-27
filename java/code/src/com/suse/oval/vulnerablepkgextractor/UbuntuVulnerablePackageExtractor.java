@@ -105,18 +105,20 @@ public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor
 
     @Override
     protected boolean test(BaseCriteria criteria) {
-        if (!(criteria instanceof CriterionType)) {
+        if (!(criteria instanceof CriterionType criterionType)) {
             return false;
         }
 
-        CriterionType criterionType = (CriterionType) criteria;
         return AFFECTED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment()) ||
                 PATCHED_PACKAGE_REGEX.asMatchPredicate().test(criterionType.getComment());
     }
 
     @Override
-    public void assertDefinitionIsValid(DefinitionType definitionIn) {
-        assert definitionIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
-        assert definitionIn.getOsFamily() == OsFamily.UBUNTU;
+    public boolean isValidDefinition(DefinitionType definitionIn) {
+
+        boolean isDebianOVAL = definitionIn.getOsFamily() == OsFamily.UBUNTU;
+        boolean isVulnerabilityDefinition = definitionIn.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY;
+
+        return super.isValidDefinition(definitionIn) && isDebianOVAL && isVulnerabilityDefinition;
     }
 }
