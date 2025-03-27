@@ -1,2 +1,0 @@
-- mgrutil runner: use mgr-ssl-cert-tool CLI to generate container
-  configuration (bsc#1240041)
