@@ -43,7 +43,7 @@ Source1:        node-modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
-BuildRequires:  nodejs >= 20
+BuildRequires:  (nodejs >= 22 with nodejs < 23)
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
