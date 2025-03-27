@@ -4,7 +4,7 @@ set -Eeo pipefail
 declare -g DATABASE_ALREADY_EXISTS
 : "${DATABASE_ALREADY_EXISTS:=}"
 # look specifically for PG_VERSION, as it is expected in the DB dir
-PGDATA="/var/lib/pgsql/data/"
+PGDATA="/var/lib/pgsql/data/data"
 if [ -s "$PGDATA/PG_VERSION" ]; then
         DATABASE_ALREADY_EXISTS='true'
 fi
