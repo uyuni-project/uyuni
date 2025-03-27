@@ -773,15 +773,15 @@ class ContentSource:
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
-            if rhnLog.LOG and rhnLog.LOG.level >= 1:
+            if rhnLog.LOG and rhnLog.LOG.level >= 2:
                 # pylint: disable-next=consider-using-f-string
-                msg = "ERROR[%s/%s]: Mirror list download failed: %s - %s%s" % (
+                msg = "DEBUG[%s/%s]: Mirror list download failed: %s - %s%s" % (
                     exc.errno,
                     exc.code if hasattr(exc, "code") else "-",
                     url,
                     exc.strerror,
                     # pylint: disable-next=consider-using-f-string
-                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 2 else "",
+                    ": %s" % (traceback.format_exc()) if rhnLog.LOG.level >= 3 else "",
                 )
                 msg = msg.replace(url, repl_url)
                 log(0, msg)
@@ -1456,7 +1456,7 @@ password={passwd}
                 log(0, msg)
             if rhnLog.LOG and rhnLog.LOG.level >= 1:
                 # pylint: disable-next=consider-using-f-string
-                msg = "ERROR[%s/%s]: Media product file download failed: %s - %s%s" % (
+                msg = "DEBUG[%s/%s]: Media product file download failed: %s - %s%s" % (
                     exc.errno,
                     exc.code if hasattr(exc, "code") else "-",
                     url,
