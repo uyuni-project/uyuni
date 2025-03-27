@@ -221,7 +221,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
                 <NewAnsiblePath
                   title={t("Add an Inventory file")}
                   pathType="inventory"
-                  newInventoryPath={this.state.newInventoryPath}
+                  newPathValue={this.state.newInventoryPath}
                   placeholder={t("e.g., /etc/ansible/testing/hosts")}
                   newPath={(path: string) => this.newPath("inventory", path)}
                   savePath={() => this.savePath("inventory")}
