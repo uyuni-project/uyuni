@@ -18,7 +18,11 @@ package com.redhat.rhn.domain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 
 /**
@@ -46,13 +50,16 @@ import java.util.Date;
  * @see com.redhat.rhn.domain.server.VirtualInstanceType
  *
  */
-public abstract class Label implements Labeled {
-
+@MappedSuperclass
+public abstract class Label extends BaseDomainHelper implements Labeled {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
-    private String name;
-    private String label;
-    private Date created;
-    private Date modified;
+    @Column(name = "name", length = 128, nullable = false)
+    private String name = "";
+    @Column(name = "label", length = 128, nullable = false)
+    private String label = "";
 
     /**
      * Returns the primary key.
@@ -92,32 +99,6 @@ public abstract class Label implements Labeled {
 
     private void setLabel(String newLabel) {
         label = newLabel;
-    }
-
-    /**
-     * Get the date on which this label was created.
-     *
-     * @return The date on which this label was created.
-     */
-    public Date getCreated() {
-        return created;
-    }
-
-    private void setCreated(Date date) {
-        created = date;
-    }
-
-    /**
-     * Get the date of last modification.
-     *
-     * @return The date of last modification.
-     */
-    public Date getModified() {
-        return modified;
-    }
-
-    private void setModified(Date date) {
-        modified = date;
     }
 
     /**
