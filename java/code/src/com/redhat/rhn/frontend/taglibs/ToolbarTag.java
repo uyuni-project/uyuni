@@ -584,8 +584,7 @@ public class ToolbarTag extends TagSupport {
     private String renderIcon() {
         if (assertNotEmpty(getIcon())) {
             IconTag i = new IconTag(getIcon());
-            String result = i.render();
-            return result;
+            return i.render();
         }
         return "";
     }

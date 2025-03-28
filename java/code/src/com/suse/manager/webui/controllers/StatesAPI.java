@@ -483,10 +483,9 @@ public class StatesAPI {
                     (serverId) -> {
                         MinionServer server = getEntityIfExists(MinionServerFactory.lookupById(json.getTargetId()));
                         checkUserHasPermissionsOnServer(server, user);
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 Arrays.asList(json.getTargetId()), json.getStates(),
                                 getScheduleDate(json));
-                        return action;
                     },
                     (groupId) -> {
                         ServerGroup group = getEntityIfExists(
@@ -504,11 +503,9 @@ public class StatesAPI {
                             states = Arrays.asList(state);
                         }
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, states,
                                 getScheduleDate(json));
-
-                        return action;
                     },
                     (orgId) -> {
                         Org org = getEntityIfExists(OrgFactory.lookupById(json.getTargetId()));
@@ -518,10 +515,8 @@ public class StatesAPI {
                                 .map(MinionServer::getId)
                                 .collect(Collectors.toList());
 
-                        ApplyStatesAction action = ActionManager.scheduleApplyStates(user,
+                        return ActionManager.scheduleApplyStates(user,
                                 minionServerIds, json.getStates(), getScheduleDate(json));
-
-                        return action;
                     }
             );
 

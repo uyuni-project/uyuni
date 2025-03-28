@@ -519,7 +519,6 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         certs.put("/etc/pki/rhui/product/repo-2.crt", "CLIENT CERTIFICATE 2");
         certs.put("/etc/pki/rhui/repo-2.key", "CLIENT PRIVATE KEY 2");
 
-        PaygInstanceInfo info = new PaygInstanceInfo(headerAuth, certs, repositories);
-        return info;
+        return new PaygInstanceInfo(headerAuth, certs, repositories);
     }
 }

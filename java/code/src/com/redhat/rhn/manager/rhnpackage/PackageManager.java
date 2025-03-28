@@ -601,8 +601,7 @@ public class PackageManager extends BaseManager {
                 "server_packages_needing_update");
         DataResult dr = m.execute(params);
         if (!dr.isEmpty()) {
-            Long id = (Long) ((Map) dr.get(0)).get("id");
-            return id;
+            return (Long) ((Map) dr.get(0)).get("id");
         }
         return null;
     }

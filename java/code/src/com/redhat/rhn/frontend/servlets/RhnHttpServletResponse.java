@@ -93,8 +93,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
      */
     @Override
     public String encodeRedirectUrl(String arg0) {
-        String rc = super.encodeRedirectUrl(arg0);
-        return rc;
+        return super.encodeRedirectUrl(arg0);
     }
 
     /**
@@ -102,8 +101,7 @@ public class RhnHttpServletResponse extends HttpServletResponseWrapper {
      */
     @Override
     public String encodeRedirectURL(String arg0) {
-        String rc = super.encodeRedirectURL(arg0);
-        return rc;
+        return super.encodeRedirectURL(arg0);
     }
 
     /**
