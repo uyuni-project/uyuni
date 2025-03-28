@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-14 14:16+0100\n"
+"POT-Creation-Date: 2025-03-28 14:30+0100\n"
 "PO-Revision-Date: 2025-02-28 09:19+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/spacecmd/ca/"
@@ -30,7 +30,8 @@ msgstr "ús: clau d'activacióaddpackages <PACKAGE ...>"
 
 #: ../src/spacecmd/activationkey.py:86
 msgid "activationkey_removepackages: Remove packages from an activation key"
-msgstr "activationkeyremovepackages: Elimina els paquets d'una clau d'activació"
+msgstr ""
+"activationkeyremovepackages: Elimina els paquets d'una clau d'activació"
 
 #: ../src/spacecmd/activationkey.py:88
 msgid "usage: activationkey_removepackages KEY <PACKAGE ...>"
@@ -445,8 +446,8 @@ msgstr ""
 "<KEY>.json\n"
 "                      si s'exporta una única clau, akeys.json per a "
 "múltiples claus,\n"
-"                      o akeyall.json si no s'ha especificat cap CLAU ("
-"exportA ALL)\n"
+"                      o akeyall.json si no s'ha especificat cap CLAU "
+"(exportA ALL)\n"
 "\n"
 "Nota: la llista de CLAUS és opcional, per defecte és exportar TOTES les "
 "claus "
@@ -482,7 +483,8 @@ msgstr "No s'han pogut desar les claus exportades al fitxer: {}"
 
 #: ../src/spacecmd/activationkey.py:1339
 msgid "activationkey_import: import activation key(s) from JSON file(s)"
-msgstr "activationkeyimport: importa les claus d'activació des d'un fitxer JSON"
+msgstr ""
+"activationkeyimport: importa les claus d'activació des d'un fitxer JSON"
 
 #: ../src/spacecmd/activationkey.py:1340
 msgid "usage: activationkey_import <JSONFILE ...>"
@@ -1015,7 +1017,8 @@ msgstr "Es requereix un nom"
 
 #: ../src/spacecmd/configchannel.py:503
 msgid "Only [normal/state] values are acceptable for --type parameter"
-msgstr "Només els valors [normal/state] són acceptables per al paràmetre --type"
+msgstr ""
+"Només els valors [normal/state] són acceptables per al paràmetre --type"
 
 #: ../src/spacecmd/configchannel.py:518
 msgid "configchannel_delete: Delete a configuration channel"
@@ -1348,7 +1351,8 @@ msgstr "S'està exportant el cc %s a %s"
 
 #: ../src/spacecmd/configchannel.py:1264
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
-msgstr "El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
+msgstr ""
+"El fitxer «{}» existeix, confirmeu la sobreescriptura del fitxer? (s/n)"
 
 #: ../src/spacecmd/configchannel.py:1268
 #, python-format
@@ -1729,8 +1733,8 @@ msgstr ""
 "  -n NOM\n"
 "  -p camí a l'arbre\n"
 "  -b canal base per associar-se\n"
-"  -t instal·la el tipus [fedora18]rhel6/7/"
-"8]sles12generic|sles15generic]suse...genericrpm......]"
+"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|"
+"sles15generic]suse...genericrpm......]"
 
 #: ../src/spacecmd/distribution.py:67
 msgid "The name of the distribution is required"
@@ -1849,8 +1853,8 @@ msgstr ""
 "opcions:\n"
 "  -p camí a l'arbre\n"
 "  -b canal base per associar-se\n"
-"  -t instal·la el tipus [fedora18]rhel6/7/"
-"8]sles12generic|sles15generic]suse...genericrpm......]"
+"  -t instal·la el tipus [fedora18]rhel6/7/8]sles12generic|"
+"sles15generic]suse...genericrpm......]"
 
 #: ../src/spacecmd/errata.py:49
 msgid "errata_list: List all patches"
@@ -2297,8 +2301,8 @@ msgstr "S'està actualitzant la descripció del grup: %s"
 #: ../src/spacecmd/group.py:409
 msgid "Update formula data from backup? [y/N]:"
 msgstr ""
-"Voleu actualitzar les dades de la fórmula des de la còpia de seguretat? [s/N]"
-":"
+"Voleu actualitzar les dades de la fórmula des de la còpia de seguretat? [s/"
+"N]:"
 
 #: ../src/spacecmd/group.py:416
 #, python-format
@@ -2390,7 +2394,8 @@ msgstr "ús: groupaddconfigchannels <GROUP> <CHANNEL ...>"
 
 #: ../src/spacecmd/group.py:620
 msgid "group_removeconfigchannels: Remove config channels from a group"
-msgstr "groupremoveconfigchannels: Elimina els canals de configuració d'un grup"
+msgstr ""
+"groupremoveconfigchannels: Elimina els canals de configuració d'un grup"
 
 #: ../src/spacecmd/group.py:621
 msgid "usage: group_removeconfigchannels <GROUP> <CHANNEL ...>"
@@ -3459,8 +3464,8 @@ msgid ""
 msgstr ""
 "Les dates poden ser les següents:\n"
 "Data límit:\n"
-"Les dates es poden expressar com a cadenes de data explícites a YYYYMMDD"
-"[HHMMSS]\n"
+"Les dates es poden expressar com a cadenes de data explícites a "
+"YYYYMMDD[HHMMSS]\n"
 "format.  Es requereix l'any, el mes i el dia, mentre que les hores i\n"
 "els minuts no ho són; les hores i els minuts per defecte seran 0000 si no\n"
 "Es proporcionen valors.\n"
@@ -4258,18 +4263,18 @@ msgstr ""
 "PEM\n"
 "\n"
 "opcions:\n"
-"  -o, --output Path on crear la configuració generada. Per defecte: "
-"'config.tar.gz'\n"
-"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per defecte:"
-" 8022\n"
+"  -o, --output Path on crear la configuració generada. Per defecte: 'config."
+"tar.gz'\n"
+"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per "
+"defecte: 8022\n"
 "  -i, --intermediate-ca Camí a una CA intermèdia utilitzada per signar el "
 "servidor intermediari\n"
-"            certifica en format PEM. Es poden proporcionar diverses vegades."
-"\n"
+"            certifica en format PEM. Es poden proporcionar diverses "
+"vegades.\n"
 "\n"
 "exemples:\n"
-"  proxycontainerconfig -o config.zip proxy.lab server.lab 1024 "
-"proxy.acme.org rootca.crt proxy.crt proxy.key\n"
+"  proxycontainerconfig -o config.zip proxy.lab server.lab 1024 proxy.acme."
+"org rootca.crt proxy.crt proxy.key\n"
 
 #: ../src/spacecmd/proxy.py:89
 msgid ""
@@ -4336,10 +4341,10 @@ msgstr ""
 "  E-MAIL el correu de l'administrador del servidor intermediari\n"
 "\n"
 "opcions:\n"
-"  -o, --output Path on crear la configuració generada. Per defecte: "
-"'config.tar.gz'\n"
-"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per defecte:"
-" 8022\n"
+"  -o, --output Path on crear la configuració generada. Per defecte: 'config."
+"tar.gz'\n"
+"  -p, --ssh-port SSH port el servidor intermediari n'escolta un. Per "
+"defecte: 8022\n"
 "  --ca-crt camí al certificat de la CA a utilitzar per a generar un "
 "certificat intermediari nou.\n"
 "           Utilitzant /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT per defecte.\n"
@@ -4360,8 +4365,8 @@ msgstr ""
 "  --ssl-org el nom de l'organització a establir al certificat. Si s'omet, "
 "s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
 "  --ssl-org-unit el nom de la unitat d'organització a establir al "
-"certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-tool."
-"\n"
+"certificat. Si s'omet, s'utilitzaran els valors per defecte de mgr-ssl-"
+"tool.\n"
 "  --ssl-email el correu electrònic a establir en el certificat. Si s'omet, "
 "s'utilitzaran els valors per defecte de mgr-ssl-tool.\n"
 "\n"
@@ -4643,7 +4648,8 @@ msgstr "No s'ha trobat cap errata per a «{}»"
 
 #: ../src/spacecmd/report.py:183
 msgid "report_ipaddresses: List the hostname and IP of each system"
-msgstr "reportipaddresses: Llista el nom de l'ordinador i la IP de cada sistema"
+msgstr ""
+"reportipaddresses: Llista el nom de l'ordinador i la IP de cada sistema"
 
 #: ../src/spacecmd/report.py:184
 msgid "usage: report_ipaddresses [<SYSTEMS>]"
@@ -5232,7 +5238,8 @@ msgstr ""
 
 #: ../src/spacecmd/softwarechannel.py:113
 msgid "                                        manageable by current user"
-msgstr "                                        gestionable per l'usuari actual"
+msgstr ""
+"                                        gestionable per l'usuari actual"
 
 #: ../src/spacecmd/softwarechannel.py:114
 msgid ""
@@ -5886,8 +5893,8 @@ msgid ""
 msgstr ""
 "ús: softwarechannelclonetree [opcions])\n"
 "             e.g softwarechannelclonetree foobasechannel -p \"my\"\n"
-"                    softwarechannelclonetree foobasechannel -x \"s/foo/bar\""
-"\n"
+"                    softwarechannelclonetree foobasechannel -x \"s/foo/"
+"bar\"\n"
 "                    softwarechannelclonetree foobasechannel -x \"s/\"/my\"\n"
 "\n"
 "opcions:\n"
@@ -7463,7 +7470,8 @@ msgstr "ús: systemlistcustomvalues <SYSTEMS>"
 
 #: ../src/spacecmd/system.py:2156
 msgid "system_addcustomvalue: Set a custom value for a system"
-msgstr "systemaddcustomvalue: estableix un valor personalitzat per a un sistema"
+msgstr ""
+"systemaddcustomvalue: estableix un valor personalitzat per a un sistema"
 
 #: ../src/spacecmd/system.py:2157
 msgid "usage: system_addcustomvalue KEY VALUE <SYSTEMS>"
@@ -7796,8 +7804,8 @@ msgstr ""
 "especificada. [Per defecte: retorna tots els esdeveniments]\n"
 "  -o OFFSET omet els primers esdeveniments. S'ignora si -l no s'especifica "
 "també. [Per defecte: 0]\n"
-"  -l LÍMIT limita els resultats al nombre d'esdeveniments especificat. "
-"[Per defecte: sense límit]"
+"  -l LÍMIT limita els resultats al nombre d'esdeveniments especificat. [Per "
+"defecte: sense límit]"
 
 #: ../src/spacecmd/system.py:3249
 msgid "Invalid offset"
@@ -8005,7 +8013,8 @@ msgstr "S'ha creat el perfil del paquet «%s»"
 #: ../src/spacecmd/system.py:3690
 msgid ""
 "system_comparepackageprofile: Compare a system against a package profile"
-msgstr "systemcomparepackageprofile: Compara un sistema amb un perfil de paquet"
+msgstr ""
+"systemcomparepackageprofile: Compara un sistema amb un perfil de paquet"
 
 #: ../src/spacecmd/system.py:3691
 msgid "usage: system_comparepackageprofile <SYSTEMS> PROFILE"
@@ -8288,8 +8297,8 @@ msgstr ""
 "    Opcions: \n"
 "        -s HORA D'INICI \n"
 "        -d passa aquesta bandera, si vols fer una cursa seca \n"
-"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes ("
-"sense espais))"
+"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes "
+"(sense espais))"
 
 #: ../src/spacecmd/system.py:4472
 msgid ""
@@ -8327,8 +8336,8 @@ msgstr ""
 "canvi del proveïdor \n"
 "        -r passa aquesta bandera si voleu eliminar productes que no tenen "
 "successors \n"
-"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes ("
-"sense espais))"
+"        -c CHILDCHANNELS (etiquetes de canals infantils separades per comes "
+"(sense espais))"
 
 #: ../src/spacecmd/system.py:4527
 msgid "Cannot find system "
@@ -8624,7 +8633,8 @@ msgstr "ús: useraddgroup USER <GROUP ...>"
 
 #: ../src/spacecmd/user.py:451
 msgid "user_adddefaultgroup: Add a default group to an user account"
-msgstr "useradddefaultgroup: Afegeix un grup predeterminat a un compte d'usuari"
+msgstr ""
+"useradddefaultgroup: Afegeix un grup predeterminat a un compte d'usuari"
 
 #: ../src/spacecmd/user.py:452
 msgid "usage: user_adddefaultgroup USER <GROUP ...>"
