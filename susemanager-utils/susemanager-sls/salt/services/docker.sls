@@ -10,13 +10,21 @@ mgr_install_docker:
     {%- if grains['osmajorrelease'] == 12 %}
       - python3-docker-py: '>=1.6.0'
     {%- else %}
+      {%- if grains['os_family'] == 'Suse' and grains['pythonversion'][1] > 6 %}
+      - python3{{ grains['pythonversion'][1] }}-docker: '>=1.6.0'
+      {%- else %}
       - python3-docker: '>=1.6.0'
+      {%- endif %}
     {%- endif %}
 {%- else %}
       - python-docker-py: '>=1.6.0'
 {%- endif %}
 {%- if grains['saltversioninfo'][0] >= 2018 %}
+      {%- if grains['os_family'] == 'Suse' and grains['pythonversion'][1] > 6 %}
+      - python3{{ grains['pythonversion'][1] }}-salt
+      {%- else %}
       - python3-salt
+      {%- endif %}
     {%- if grains['saltversioninfo'][0] < 3002 and salt['pkg.info_available']('python-Jinja2', 'python2-Jinja2') and salt['pkg.info_available']('python', 'python2') and salt['pkg.info_available']('python2-salt') %}
       - python2-salt
     {%- endif %}
