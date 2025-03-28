@@ -170,7 +170,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Linux Micro 6.1" as a product
+    And I select "SUSE Linux Micro 6.1 x86_64" as a product
     And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" as a product
     Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64 (BETA)" selected
     When I click the Add Product button
@@ -205,7 +205,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Micro 6.1" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Linux Micro 6.1" as a product
+    And I select "SUSE Linux Micro 6.1 x86_64" as a product
     And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" as a product
     Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64 (BETA)" selected
     When I click the Add Product button
