@@ -139,7 +139,7 @@ public class RpmRepositoryWriter extends RepositoryWriter {
                 FileUtils.copyFile(sourceFile, finalFile);
             }
             catch (IOException e) {
-                throw new RuntimeException(MessageFormat.format("Cannot copy '{0}' file, cancelling",
+                throw new RuntimeException(MessageFormat.format("Cannot copy {0} file, cancelling",
                         finalFilename), e);
             }
 

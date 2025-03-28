@@ -28,13 +28,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public abstract class BaseDto extends SelectableAdapter implements Identifiable {
 
     /**
-     * Returns id to be stored in RhnSet.
-     * @return id to be stored in RhnSet.
-     */
-    @Override
-    public abstract Long getId();
-
-    /**
      * Adds the id of this object to a given set. For adding IdCombos to a set,
      * @see com.redhat.rhn.frontend.dto.IdComboDto
      * @param set The set to which we are adding an element.

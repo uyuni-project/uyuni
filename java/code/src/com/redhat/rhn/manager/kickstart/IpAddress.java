@@ -154,10 +154,9 @@ public class IpAddress {
      */
     @Override
     public boolean equals(Object o) {
-        if (o == null || !(o instanceof IpAddress)) {
+        if (!(o instanceof IpAddress other)) {
             return false;
         }
-        IpAddress other = (IpAddress)o;
         return new EqualsBuilder().append(this.getOctets(), other.getOctets())
                                   .append(this.getNumber(), other.getNumber())
                                   .isEquals();

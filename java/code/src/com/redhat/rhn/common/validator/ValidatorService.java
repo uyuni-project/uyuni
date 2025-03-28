@@ -98,8 +98,7 @@ public class ValidatorService {
             List<String> constraintNames) {
 
         ValidatorResult result = new ValidatorResult();
-        for (Object oIn : validatorIn.getConstraints()) {
-            Constraint c = (Constraint) oIn;
+        for (Constraint c : validatorIn.getConstraints()) {
             if (constraintNames != null) {
                 if (!constraintNames.contains(c.getIdentifier())) {
                     continue;

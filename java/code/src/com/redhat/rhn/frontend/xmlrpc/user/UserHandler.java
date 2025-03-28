@@ -1005,8 +1005,7 @@ public class UserHandler extends BaseHandler {
         // prevent adding a bunch of valid groups and then throwing an exception
         // when coming across one that doesn't exist.
         List<ManagedServerGroup> groups = new LinkedList<>();
-        for (Object sgNameIn : sgNames) {
-            String serverGroupName = (String) sgNameIn;
+        for (String serverGroupName : sgNames) {
 
             // Make sure the server group exists:
             ManagedServerGroup group;

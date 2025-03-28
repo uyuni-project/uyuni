@@ -129,7 +129,7 @@ public class ServerGroupHandler extends BaseHandler {
             if ((user != null) && ((user.hasRole(RoleFactory.SAT_ADMIN) ||
                 (user.hasRole(RoleFactory.ORG_ADMIN))))) {
                 if (admins == null) {
-                    admins = new String(login);
+                    admins = login;
                 }
                 else {
                     admins += ", " + login;

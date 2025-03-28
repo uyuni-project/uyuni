@@ -65,8 +65,7 @@ public class SessionStatusAction extends RhnAction {
         // Add the history items as "TRUE" values
         // to the request so the display can render or not
         // if this status has occurred.
-        for (Object oIn : kss.getHistory()) {
-            KickstartSessionHistory hist = (KickstartSessionHistory) oIn;
+        for (KickstartSessionHistory hist : kss.getHistory()) {
             request.setAttribute(hist.getState().getLabel(), Boolean.TRUE);
         }
 
