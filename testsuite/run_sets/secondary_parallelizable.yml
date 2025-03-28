@@ -48,7 +48,7 @@
 
 - features/secondary/min_rhlike_salt_install_package_and_patch.feature
 - features/secondary/min_rhlike_monitoring.feature
-- features/secondary/minssh_salt_install_package.feature
+- features/secondary/minssh_salt_install_package_and_patch.feature
 - features/secondary/minssh_ansible_control_node.feature
 - features/secondary/min_deblike_monitoring.feature
 - features/secondary/min_deblike_salt_install_with_staging.feature
