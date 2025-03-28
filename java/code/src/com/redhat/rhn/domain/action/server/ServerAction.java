@@ -203,17 +203,6 @@ public class ServerAction extends ActionChild implements Serializable {
     }
 
     /**
-    *
-    * Sets the parent Action associated with this ServerAction record.
-    *
-    * @param parentActionIn The parentAction to set.
-    */
-    @Override
-    public void setParentAction(Action parentActionIn) {
-        super.setParentAction(parentActionIn);
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override

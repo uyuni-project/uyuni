@@ -318,10 +318,9 @@ public class ErrataTestUtils {
      * @param channel the channel in which the new package is to be published
      * @param arch the package architecture label
      * @return the newly created patch
-     * @throws Exception if anything goes wrong
      */
     public static Package createTestPackage(User user, Channel channel,
-            String arch) throws Exception {
+            String arch) {
         return createTestPackage(user, null, channel, arch);
     }
 

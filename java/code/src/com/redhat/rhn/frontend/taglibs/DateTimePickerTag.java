@@ -85,14 +85,6 @@ public class DateTimePickerTag extends TagSupport {
        return super.doEndTag();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int doStartTag() throws JspException {
-        return super.doStartTag();
-    }
-
     private HtmlTag createInputAddonTag(String type, String icon) {
         HtmlTag dateAddon = new HtmlTag("span");
         dateAddon.setAttribute("class", "input-group-addon input-group-text text");

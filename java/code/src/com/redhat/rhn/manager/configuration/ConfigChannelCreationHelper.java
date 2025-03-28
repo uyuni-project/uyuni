@@ -195,9 +195,8 @@ public class ConfigChannelCreationHelper {
      */
     public void update(ConfigChannel cc, String name,
                             String label, String description) {
-        ConfigurationManager cm = ConfigurationManager.getInstance();
         if (!label.equals(cc.getLabel()) &&
-                cm.conflictingChannelExists(label, cc.getConfigChannelType(), cc.getOrg())) {
+                ConfigurationManager.conflictingChannelExists(label, cc.getConfigChannelType(), cc.getOrg())) {
             ValidatorException.raiseException("channelOverview.error.labelexists",
                     label);
         }

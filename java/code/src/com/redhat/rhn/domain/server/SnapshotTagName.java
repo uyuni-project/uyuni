@@ -71,7 +71,9 @@ public class SnapshotTagName extends BaseDomainHelper {
      */
     @Override
     public boolean equals(Object obj) {
-        SnapshotTagName other = (SnapshotTagName) obj;
+        if (!(obj instanceof SnapshotTagName other)) {
+            return false;
+        }
         return new EqualsBuilder().append(name, other.name)
                                   .isEquals();
     }

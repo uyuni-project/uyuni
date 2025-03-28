@@ -150,7 +150,7 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
             String msgKey = getSetDecl().getLabel() + ".removed";
 
             Object[] args = new Object[1];
-            args[0] = Integer.valueOf(removed.size()).toString();
+            args[0] = Integer.toString(removed.size());
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
         }
 
@@ -158,7 +158,7 @@ public abstract class BaseSetOperateOnDiffAction extends RhnSetAction {
             String msgKey = getSetDecl().getLabel() + ".added";
 
             Object[] args = new Object[1];
-            args[0] = Integer.valueOf(added.size()).toString();
+            args[0] = Integer.toString(added.size());
             msg.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(msgKey, args));
         }
 
