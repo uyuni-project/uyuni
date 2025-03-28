@@ -78,7 +78,7 @@ jobs:
 
       - name: Cache jar files
         if: ${{ !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf #v4.2.2
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 #v4.2.3
         with:
           path: java/buildconf/ivy/repository/
           key: ${{ runner.os }}-build-cache-uyuni-jars-${{ hashFiles('**/java/buildconf/ivy/*.xml') }}
@@ -87,7 +87,7 @@ jobs:
 
       - name: Cache obs-to-maven files
         if: ${{ !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf #v4.2.2
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 #v4.2.3
         with:
           path: java/.obs-to-maven-cache
           key: ${{ runner.os }}-build-cache-uyuni-obs-to-maven-${{ hashFiles('**/java/buildconf/ivy/obs-maven-config.yaml') }}
@@ -96,7 +96,7 @@ jobs:
 
       - name: Cache NodeJS modules
         if: ${{ !inputs.skip_tests && needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
-        uses: actions/cache@d4323d4df104b026a6aa633fdb11d772146be0bf #v4.2.2
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 #v4.2.3
         with:
           path: web/html/src/node_modules
           key: ${{ runner.os }}-build-cache-uyuni-nodejs-${{ hashFiles('**/web/html/src/yarn.lock') }}
