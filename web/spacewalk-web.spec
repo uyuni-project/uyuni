@@ -162,7 +162,7 @@ make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
 pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-node build/yarn/yarn-1.22.17.js build:novalidate
+NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node build.js --check-spec=false
 popd
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
