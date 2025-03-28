@@ -116,7 +116,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
         ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
 
-        SystemUnentitler unentitler = new SystemUnentitler(monitoringManager, groupManager);
+        SystemUnentitler unentitler = new SystemUnentitler(saltApi, monitoringManager, groupManager);
         SystemEntitler entitler = new SystemEntitler(saltApi, monitoringManager, groupManager);
 
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(unentitler, entitler);

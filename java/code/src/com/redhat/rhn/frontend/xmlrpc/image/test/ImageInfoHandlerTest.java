@@ -114,7 +114,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltServiceMock);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltServiceMock);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltServiceMock, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltServiceMock, monitoringManager, serverGroupManager)
         );
         handler = new ImageInfoHandler(saltServiceMock);
