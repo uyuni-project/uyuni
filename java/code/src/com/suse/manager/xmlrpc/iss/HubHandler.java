@@ -28,7 +28,6 @@ import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.IssPeripheralChannels;
 import com.suse.manager.model.hub.IssRole;
-import com.suse.manager.model.hub.UpdatableServerData;
 import com.suse.manager.model.hub.ManagerInfoJson;
 import com.suse.manager.model.hub.OrgInfoJson;
 import com.suse.manager.model.hub.UpdatableServerData;
