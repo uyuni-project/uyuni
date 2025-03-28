@@ -18,7 +18,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-02-11 09:51+0100\n"
-"PO-Revision-Date: 2025-03-24 00:56+0000\n"
+"PO-Revision-Date: 2025-03-28 04:56+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web-4-3/ko/>"
 "\n"
@@ -916,7 +916,6 @@ msgstr "SUSE Manager 서버 모니터링을 설정하십시오."
 #: ../html/src/manager/virtualization/guests/properties/guest-properties-traditional.tsx:53
 #: ../html/src/manager/virtualization/nets/network-properties.tsx:219
 #: ../html/src/manager/virtualization/pools/pool-properties.tsx:240
-#, fuzzy
 msgid "General"
 msgstr "일반"
 
@@ -3479,7 +3478,6 @@ msgstr "선택한 이미지를 삭제하시겠습니까?({count}개 이미지 �
 
 #: ../html/src/manager/images/image-view.tsx:789
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:55
-#, fuzzy
 msgid "Overview"
 msgstr "개요"
 
