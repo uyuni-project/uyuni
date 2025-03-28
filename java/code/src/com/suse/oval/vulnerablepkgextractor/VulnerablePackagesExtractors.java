@@ -59,6 +59,8 @@ public class VulnerablePackagesExtractors {
                     throw new IllegalArgumentException(
                             "Only VULNERABILITY and PATCH definitions are allowed for RedHat OVALs");
                 }
+            case UBUNTU:
+                return new UbuntuVulnerablePackageExtractor(definition);
             default:
                 throw new IllegalArgumentException(
                         "Cannot find any vulnerable packages extractor implementation for " + osFamily);

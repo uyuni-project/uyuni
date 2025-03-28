@@ -146,12 +146,19 @@ After do |scenario|
       print_server_logs
     end
   end
-  page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
+  page.instance_variable_set(:@touched, false) if capybara_session_created?
 end
 
-# Test is web session is open
+# Test if capybara session instance was created
+def capybara_session_created?
+  return false if Capybara::Session.nil?
+
+  Capybara::Session.instance_created?
+end
+
+# Test if web session is open
 def web_session_is_active?
-  return false unless Capybara::Session.instance_created?
+  return false unless capybara_session_created?
 
   page.has_selector?('header') || page.has_selector?('#username-field')
 end
@@ -239,7 +246,7 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  next unless Capybara::Session.instance_created?
+  next unless capybara_session_created?
 
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end

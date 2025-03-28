@@ -237,7 +237,9 @@ public class StrutsDelegate {
      * @param result the validator result object..
      */
     public void saveMessages(HttpServletRequest request, ValidatorResult result) {
-        saveMessages(request, result.getErrors(), result.getWarnings());
+        if (null != result) {
+            saveMessages(request, result.getErrors(), result.getWarnings());
+        }
     }
 
     /**
@@ -341,7 +343,8 @@ public class StrutsDelegate {
         //if it is not there, then that means we should always evaluate the
         //date picker.  Otherwise, we evaluate if it tells us to do so.
         if (!form.getMap().containsKey(DatePicker.SCHEDULE_TYPE) ||
-                StringUtils.isEmpty(String.valueOf(form.get(DatePicker.SCHEDULE_TYPE))) ||
+                form.get(DatePicker.SCHEDULE_TYPE) == null ||
+                String.valueOf(form.get(DatePicker.SCHEDULE_TYPE)).isEmpty() ||
                 form.get(DatePicker.SCHEDULE_TYPE).equals(DatePicker.ScheduleType.DATE.asString())) {
             DatePicker p = getDatePicker(name, yearDirection);
             p.readForm(form);
