@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,9 +12,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.domain.notification.types;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -26,19 +28,35 @@ import java.util.Objects;
  * significance.
  * Only versions of the same type can be compared to each other.
  */
-public class Version implements Comparable<Version> {
+public class ManagerVersion implements Comparable<ManagerVersion>, Serializable {
     private final boolean isUyuni;
     private final int major;
     private final int minor;
     private final int patch;
 
     /**
-     * Base constructor
+     * Default constructor
+     */
+    public ManagerVersion() {
+        this(ConfigDefaults.get().getProductVersion(), ConfigDefaults.get().isUyuni());
+    }
+
+    /**
+     * Custom product version constructor
+     *
+     * @param versionStringIn the version string
+     */
+    public ManagerVersion(String versionStringIn) {
+        this(versionStringIn, ConfigDefaults.get().isUyuni());
+    }
+
+    /**
+     * Full constructor
      *
      * @param versionStringIn the version string
      * @param isUyuniIn       true if the version is in Uyuni format
      */
-    public Version(String versionStringIn, boolean isUyuniIn) {
+    public ManagerVersion(String versionStringIn, boolean isUyuniIn) {
         this.isUyuni = isUyuniIn;
         if (versionStringIn == null || versionStringIn.isEmpty()) {
             throw new IllegalArgumentException("Version string cannot be null");
@@ -67,7 +85,7 @@ public class Version implements Comparable<Version> {
 
 
     @Override
-    public int compareTo(Version o) {
+    public int compareTo(ManagerVersion o) {
         if (this.isUyuni != o.isUyuni) {
             throw new IllegalArgumentException("Cannot compare Uyuni and SUMA versions");
         }
@@ -93,7 +111,7 @@ public class Version implements Comparable<Version> {
         if (oIn == null || getClass() != oIn.getClass()) {
             return false;
         }
-        Version other = (Version) oIn;
+        ManagerVersion other = (ManagerVersion) oIn;
         if (this.isUyuni != other.isUyuni) {
             return false;
         }
@@ -111,7 +129,7 @@ public class Version implements Comparable<Version> {
      * @param o the version to compare to
      * @return true if this version is newer
      */
-    public boolean isNewerThan(Version o) {
+    public boolean isNewerThan(ManagerVersion o) {
         return this.compareTo(o) > 0;
     }
 

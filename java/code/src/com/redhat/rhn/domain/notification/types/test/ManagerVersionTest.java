@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.notification.types.Version;
+import com.redhat.rhn.domain.notification.types.ManagerVersion;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,19 +30,19 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-public class VersionTest {
+public class ManagerVersionTest {
 
     @Test
     public void testVersionValidating() {
-        assertThrows(IllegalArgumentException.class, () -> new Version("", true));
-        assertThrows(IllegalArgumentException.class, () -> new Version("  ", true));
-        assertThrows(IllegalArgumentException.class, () -> new Version(null, true));
+        assertThrows(IllegalArgumentException.class, () -> new ManagerVersion("", true));
+        assertThrows(IllegalArgumentException.class, () -> new ManagerVersion("  ", true));
+        assertThrows(IllegalArgumentException.class, () -> new ManagerVersion(null, true));
     }
 
     @Test
     public void testVersionParsing() {
         final String versionUyuni = "4.3.13";
-        Version v1 = new Version(versionUyuni, false);
+        ManagerVersion v1 = new ManagerVersion(versionUyuni, false);
         assertEquals(4, v1.getMajor());
         assertEquals(3, v1.getMinor());
         assertEquals(13, v1.getPatch());
@@ -50,7 +50,7 @@ public class VersionTest {
         assertFalse(v1.isUyuni());
 
         final String versionSuma = "2024.07";
-        Version v2 = new Version(versionSuma, true);
+        ManagerVersion v2 = new ManagerVersion(versionSuma, true);
         assertEquals(2024, v2.getMajor());
         assertEquals(7, v2.getMinor());
         assertEquals(-1, v2.getPatch());
@@ -67,8 +67,8 @@ public class VersionTest {
             boolean isNewer,
             boolean isEquals
     ) {
-        Version v1 = new Version(version1, true);
-        Version v2 = new Version(version2, true);
+        ManagerVersion v1 = new ManagerVersion(version1, true);
+        ManagerVersion v2 = new ManagerVersion(version2, true);
         assertEquals(compareResult, v1.compareTo(v2));
         assertEquals(isNewer, v1.isNewerThan(v2));
         assertEquals(isEquals, v1.equals(v2));
@@ -83,8 +83,8 @@ public class VersionTest {
             boolean isNewer,
             boolean isEquals
     ) {
-        Version v1 = new Version(version1, false);
-        Version v2 = new Version(version2, false);
+        ManagerVersion v1 = new ManagerVersion(version1, false);
+        ManagerVersion v2 = new ManagerVersion(version2, false);
         assertEquals(compareResult, v1.compareTo(v2));
         assertEquals(isNewer, v1.isNewerThan(v2));
         assertEquals(isEquals, v1.equals(v2));
@@ -126,7 +126,7 @@ public class VersionTest {
     @ParameterizedTest
     @MethodSource("invalidVersionData")
     public void testInvalidVersionFormat(String versionString, boolean isUyuni) {
-        assertThrows(IllegalArgumentException.class, () -> new Version(versionString, isUyuni));
+        assertThrows(IllegalArgumentException.class, () -> new ManagerVersion(versionString, isUyuni));
     }
 
     static Stream<Arguments> invalidVersionData() {
@@ -142,12 +142,12 @@ public class VersionTest {
 
     @Test
     public void testEqualityAndEquivalence() {
-        Version vSuma = new Version("4.3.13", false);
-        Version vUyuni = new Version("2024.08", true);
+        ManagerVersion vSuma = new ManagerVersion("4.3.13", false);
+        ManagerVersion vUyuni = new ManagerVersion("2024.08", true);
 
         assertNotEquals(vSuma, vUyuni, "Versions should not be equals as they belong to different products");
-        assertEquals(vSuma, new Version("4.3.13", false));
-        assertEquals(vUyuni, new Version("2024.08", true));
+        assertEquals(vSuma, new ManagerVersion("4.3.13", false));
+        assertEquals(vUyuni, new ManagerVersion("2024.08", true));
     }
 }
 

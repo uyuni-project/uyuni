@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023--2024 SUSE LLC
+ * Copyright (c) 2023--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,9 +15,6 @@
 package com.redhat.rhn.domain.notification.types.test;
 
 
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_NAME;
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_MGR;
-import static com.redhat.rhn.common.conf.ConfigDefaults.PRODUCT_VERSION_UYUNI;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -25,35 +22,41 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.download.DownloadException;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.types.NotificationType;
 import com.redhat.rhn.domain.notification.types.UpdateAvailable;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
+import org.jmock.Expectations;
+import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-public class UpdateAvailableTest {
+public class UpdateAvailableTest extends MockObjectTestCase {
     private static final String FAILED_TO_EXTRACT_VERSION_MESSAGE_PREFIX =
             "Failed to extract version from release notes from";
     private static final String RELEASE_NOTES_HTML_ELEMENT =
             "<html>Release Notes for v<span id=\"current_version\">%s</span>.</html>";
-    private static final String SUMA = "SUSE Manager";
-    private static final String UYUNI = "Uyuni";
 
-    /**
-     * Set up the test environment.
-     * Used to avoid property product_name overriding web.product_name.
-     */
+    private final ConfigDefaults configDefaults = ConfigDefaults.get();
+
     @BeforeEach
-    public void setUp() {
-        Config.get().remove("product_name");
+    public void setUp()  {
+        setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+    }
+
+    @AfterEach
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -61,9 +64,8 @@ public class UpdateAvailableTest {
      */
     @Test
     public void testSuccessSumaWhenUpdateAvailable() {
-        // Set current product version
-        Config.get().setString(PRODUCT_NAME, SUMA);
-        Config.get().setString(PRODUCT_VERSION_MGR, "5.0.1");
+        // Set current product version to suma version 5.0.1
+        mockConfigDefaults(false, "5.0.1");
 
         // "Mock" the release notes to contain a newer version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -75,7 +77,7 @@ public class UpdateAvailableTest {
 
         assertTrue(updateAvailable.hasUpdateAvailable());
         assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.warning, updateAvailable.getSeverity());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
@@ -87,8 +89,7 @@ public class UpdateAvailableTest {
         final String currentVersion = "5.0.1";
 
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, SUMA);
-        Config.get().setString(PRODUCT_VERSION_MGR, currentVersion);
+        mockConfigDefaults(false, currentVersion);
 
         // "Mock" the release notes to contain the same version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -107,8 +108,7 @@ public class UpdateAvailableTest {
     @Test
     public void testSuccessUyuniWhenUpdateAvailable() {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
         // "Mock" the release notes to contain a newer version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -120,7 +120,7 @@ public class UpdateAvailableTest {
 
         assertTrue(updateAvailable.hasUpdateAvailable());
         assertEquals(NotificationType.UpdateAvailable, updateAvailable.getType());
-        assertEquals(NotificationMessage.NotificationMessageSeverity.warning, updateAvailable.getSeverity());
+        assertEquals(NotificationMessage.NotificationMessageSeverity.WARNING, updateAvailable.getSeverity());
         assertEquals("Updates are available.", updateAvailable.getSummary());
     }
 
@@ -132,8 +132,7 @@ public class UpdateAvailableTest {
         final String currentVersion = "2024.07";
 
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, currentVersion);
+        mockConfigDefaults(true, "2024.07");
 
         // "Mock" the release notes to the same version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -152,8 +151,7 @@ public class UpdateAvailableTest {
     @Test
     public void testFailureUyuniWhenWrongReleaseNotesRetrieved() {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
         // "Mock" the release notes to retrieve a SUMA version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
@@ -243,8 +241,7 @@ public class UpdateAvailableTest {
     @MethodSource("validHtmlData")
     public void testSuccessWhenValidHtml(String releaseNotesHtml) {
         // Set current product version
-        Config.get().setString(PRODUCT_NAME, UYUNI);
-        Config.get().setString(PRODUCT_VERSION_UYUNI, "2024.07");
+        mockConfigDefaults(true, "2024.07");
 
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
@@ -264,6 +261,42 @@ public class UpdateAvailableTest {
                         "style=\"display:none\">2025.03</span></div>"),
                 Arguments.of("<span id=\"current_version\">2025.04</span><span id=\"current_version\">2025.05</span>")
         );
+    }
+
+
+    @SuppressWarnings({"java:S117", "java:S359"})
+    private void mockConfigDefaults(boolean expectedIsUyuni, String expectedProductVersion) {
+        ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
+
+        context.checking(new Expectations() {{
+            allowing(mockConfigDefaults).isUyuni();
+            will(returnValue(expectedIsUyuni));
+            allowing(mockConfigDefaults).getProductVersion();
+            will(returnValue(expectedProductVersion));
+            allowing(mockConfigDefaults).getDefaultLocale();
+            will(returnValue("en_US"));
+        }});
+
+        try {
+            setConfigDefaultsInstance(mockConfigDefaults);
+        }
+        catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Overrides the ConfigDefaults instance
+     * @param configDefaultsIn the ConfigDefaults instance
+     * @throws NoSuchFieldException if a field with the specified name is not found.
+     * @throws IllegalAccessException if the field is not accessible.
+     */
+    @SuppressWarnings("java:S3011")
+    private static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field field = ConfigDefaults.class.getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, configDefaultsIn);
     }
 
 }
