@@ -1,6 +1,6 @@
 import { SubmitButton } from "components/buttons";
+import { Text } from "components/input";
 
-import { Text } from "../text/Text";
 import { Form } from "./Form";
 
 export default () => {
