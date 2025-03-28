@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ## Exit codes
 
 EXIT_VALIDATION_ERROR=1
@@ -35,10 +37,9 @@ fi
 
 TMPDIR="/var/spacewalk/tmp"
 
-SETUP_ENV="/root/setup_env.sh"
 MANAGER_COMPLETE="/root/.MANAGER_SETUP_COMPLETE"
 
-LOCAL_DB=1
+REPORT_DB_CA_CERT="/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
 
 function help() {
     echo "
@@ -62,139 +63,121 @@ setup_mail () {
     # No need to enable postfix: it already is
 }
 
-exists_db() {
-    PGNAME=$1
-    if [ $EXTERNALDB = 0 ]; then
-        EXISTS=$(runuser postgres -c 'psql -t -c "select datname from pg_database where datname='"'$PGNAME'"';"')
-    else
-        EXISTS=$(echo "select datname from pg_database where datname='$PGNAME';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
-    fi
-    if [ "x$EXISTS" == "x $PGNAME" ] ; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-exists_user() {
-    if [ $EXTERNALDB = 0 ] ; then
-        EXISTS=$(runuser postgres -c 'psql -t -c "select usename from pg_user where usename='"'$MANAGER_USER'"';"')
-    else
-        EXISTS=$(echo "select usename from pg_user where usename='$MANAGER_USER';" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
-    fi
-    if [ "x$EXISTS" == "x $MANAGER_USER" ] ; then
-        return 0
-    else
-        return 1
-    fi
-}
-
 db_schema_exists() {
-    # Assumption, if web_customer table exists then schema exists:
-    if [ $EXTERNALDB = 0 ] ; then
-        EXISTS=$(runuser postgres -c 'psql -t -c "SELECT tablename from pg_tables where schemaname='"'public'"' and tablename='"'web_customer'"';"')
-    else
-        QUERY="SELECT tablename from pg_tables where schemaname='public' and tablename='web_customer';"
-        EXISTS=$(echo "$QUERY" | (export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -t -U $EXTERNALDB_ADMIN_USER -h $MANAGER_DB_HOST))
+    DBNAME=$1
+    TABLE="web_customer"
+    if test "$DBNAME" == "$REPORT_DB_NAME"; then
+        TABLE="systemhistory"
     fi
-    if [ "x$EXISTS" == "x web_customer" ] ; then
+
+    # Assumption, if web_customer table exists then schema exists:
+    QUERY="SELECT tablename from pg_tables where schemaname='public' and tablename='$TABLE';"
+    EXISTS=$(echo "$QUERY" | (PGPASSWORD=$MANAGER_PASS psql -t -U $MANAGER_USER -h $MANAGER_DB_HOST $DBNAME))
+    if [ "x$EXISTS" == "x $TABLE" ] ; then
         return 0
     else
         return 1
     fi
+}
+
+run_sql() {
+    local DBNAME=$1
+    shift 
+    local USER=$MANAGER_USER
+    local PASS=$MANAGER_PASS
+    local HOST=$MANAGER_DB_HOST
+    local PORT=$MANAGER_DB_PORT
+    if test "$DBNAME" == "$REPORT_DB_NAME"; then
+        USER=$REPORT_DB_USER
+        PASS=$REPORT_DB_PASS
+        HOST=$REPORT_DB_HOST
+        PORT=$REPORT_DB_PORT
+    fi
+
+    PGPASSWORD=$PASS psql -U $USER -h $HOST -p $PORT -d $DBNAME -v ON_STOP_ERROR=ON "$@"
 }
 
 db_clear() {
-    cat >/tmp/clear_schema.sql <<EOF
-drop schema if exists rpm cascade;
-drop schema if exists rhn_exception cascade;
-drop schema if exists rhn_config cascade;
-drop schema if exists rhn_server cascade;
-drop schema if exists rhn_entitlements cascade;
-drop schema if exists rhn_bel cascade;
-drop schema if exists rhn_cache cascade;
-drop schema if exists rhn_channel cascade;
-drop schema if exists rhn_config_channel cascade;
-drop schema if exists rhn_org cascade;
-drop schema if exists rhn_user cascade;
-drop schema if exists logging cascade ;'    
-EOF
-
-    if [[ -n $EXTERNALDB_PROVIDER && "${EXTERNALDB_PROVIDER,,}" == "aws" ]] ; then
-        echo "drop schema if exists public cascade; create schema public authorization postgres;" >>/tmp/clear_schema.sql
-    fi
-
-    if [ $EXTERNALDB = 0 ] ; then
-        PGPASSWORD=$MANAGER_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-            runuser postgres -c "psql -U $MANAGER_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -v ON_STOP_ERROR=ON -q -b </tmp/clear_schema.sql"
-    else
-        PGPASSWORD=$EXTERNALDB_ADMIN_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-            exec psql -U $EXTERNALDB_ADMIN_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -h $MANAGER_DB_HOST -v ON_STOP_ERROR=ON -q -b </tmp/clear_schema.sql
-    fi
+    for schema in `echo "SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname NOT LIKE 'information_schema';" | run_sql $MANAGER_DB_NAME -t`;
+    do
+        echo "DROP SCHEMA IF EXISTS $schema CASCADE;" | run_sql $MANAGER_DB_NAME;
+    done
 }
 
 setup_db_postgres() {
-    if [ $EXTERNALDB = 0 ]; then
-        POSTGRESQLSERVICE=postgresql
-        DATADIR=$(runuser -l postgres -c env | grep PGDATA | cut -f2- -d=)
-        systemctl enable postgresql.service
-        # Define POSTGRES_LANG in system wide config. (Used during any DB creation)
-        . /etc/sysconfig/postgresql
-        if [ -z $POSTGRES_LANG ]; then
-            grep "^POSTGRES_LANG" /etc/sysconfig/postgresql > /dev/null 2>&1
-            if [ $? = 0 ]; then
-                sed -i -e "s/^POSTGRES_LANG.*$/POSTGRES_LANG=\"en_US.UTF-8\"/" /etc/sysconfig/postgresql
-            else
-                echo "POSTGRES_LANG=\"en_US.UTF-8\"" >> /etc/sysconfig/postgresql
-            fi
-        fi
-        su postgres -c "/usr/share/postgresql/postgresql-script start"
-        if ! exists_db $MANAGER_DB_NAME; then
-            su postgres -c "createdb -E UTF8 $MANAGER_DB_NAME ; echo \"CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;\" | psql"
-
-            INT_NET=$(ip -o -4 addr show up scope global | head -1 | awk '{print $4}')
-            echo "local $MANAGER_DB_NAME postgres peer
-    local $MANAGER_DB_NAME $MANAGER_USER scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER 127.0.0.1/32 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER ::1/128 scram-sha-256
-    host $MANAGER_DB_NAME $MANAGER_USER $INT_NET scram-sha-256" > "${DATADIR}/pg_hba.conf.new"
-            cat "${DATADIR}/pg_hba.conf" >> "${DATADIR}/pg_hba.conf.new"
-            mv "${DATADIR}/pg_hba.conf" "${DATADIR}/pg_hba.conf.bak"
-            mv "${DATADIR}/pg_hba.conf.new" "${DATADIR}/pg_hba.conf"
-            chmod 600 "${DATADIR}/pg_hba.conf"
-            chown postgres:postgres "${DATADIR}/pg_hba.conf"
-            su postgres -c "/usr/share/postgresql/postgresql-script reload"
-        else
-            echo "Database exists. Preparing for resetup. All data will be removed."
-        fi
-    else
-        if ! exists_db $MANAGER_DB_NAME; then
-            echo "CREATE DATABASE $MANAGER_DB_NAME ENCODING = UTF8 ;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
-        fi
-        if ! exists_user $MANAGER_USER; then
-            if [[ -n $EXTERNALDB_PROVIDER && "${EXTERNALDB_PROVIDER,,}" == "aws" ]] ; then
-                echo "CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS'  NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
-                echo "GRANT rds_superuser to $MANAGER_USER;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
-                echo "GRANT create on database $MANAGER_DB_NAME to $MANAGER_USER;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
-            else
-                echo "CREATE ROLE $MANAGER_USER PASSWORD '$MANAGER_PASS' SUPERUSER NOCREATEDB NOCREATEROLE INHERIT LOGIN;" | ( export PGPASSWORD=$EXTERNALDB_ADMIN_PASS; exec psql -h $MANAGER_DB_HOST -U $EXTERNALDB_ADMIN_USER)
-            fi
-        fi
-    fi
-
-    if db_schema_exists; then
+    if db_schema_exists $MANAGER_DB_NAME; then
         echo "Clearing the database"
         db_clear
     fi
 
     echo "Populating the database"
-    if [ $EXTERNALDB = 0 ] ; then
-        PGPASSWORD=$MANAGER_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-            runuser postgres -c "psql -U $MANAGER_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -v ON_STOP_ERROR=ON -q -b </usr/share/susemanager/db/postgres/main.sql"
-    else
-        PGPASSWORD=$EXTERNALDB_ADMIN_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
-            exec psql -U $EXTERNALDB_ADMIN_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -h $MANAGER_DB_HOST -v ON_STOP_ERROR=ON -q -b </usr/share/susemanager/db/postgres/main.sql
+    PGPASSWORD=$MANAGER_PASS PGOPTIONS='--client-min-messages=error -c standard_conforming_strings=on' \
+        psql -U $MANAGER_USER -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME -h $MANAGER_DB_HOST -v ON_STOP_ERROR=ON -q -b </usr/share/susemanager/db/postgres/main.sql
+
+    # Some tools in the setup call spacewalk-sql and require the db to be defined in rhn.conf at an early stage
+    cat >>/etc/rhn/rhn.conf <<EOF
+db_backend=postgresql
+db_host=$MANAGER_DB_HOST
+db_port=$MANAGER_DB_PORT
+db_name=$MANAGER_DB_NAME
+db_user=$MANAGER_USER
+db_password=$MANAGER_PASS
+db_ssl_enabled=
+EOF
+
+    # Can go away with ISSv1
+    cat >>/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf <<EOF
+db_backend=postgresql
+db_host=$MANAGER_DB_HOST
+db_port=$MANAGER_DB_PORT
+db_name=$MANAGER_DB_NAME
+db_user=$MANAGER_USER
+db_password=$MANAGER_PASS
+db_ssl_enabled=
+EOF
+}
+
+report_db_clear() {
+    echo "Clearing the report database"
+    for schema in `echo "SELECT nspname FROM pg_namespace WHERE nspname NOT LIKE 'pg_%' AND nspname NOT LIKE 'information_schema';" | run_sql $REPORT_DB_NAME -t`;
+    do
+        echo "DROP SCHEMA IF EXISTS $schema CASCADE;" | run_sql $REPORT_DB_NAME;
+    done
+    echo "Report database cleared"
+}
+
+setup_reportdb() {
+    if db_schema_exists $REPORT_DB_NAME; then
+        report_db_clear
     fi
+
+    # Some tools in the setup call spacewalk-sql and require the db to be defined in rhn.conf at an early stage
+    cat >>/etc/rhn/rhn.conf <<EOF
+report_db_backend=postgresql
+report_db_host=$REPORT_DB_HOST
+report_db_port=$REPORT_DB_PORT
+report_db_name=$REPORT_DB_NAME
+report_db_user=$REPORT_DB_USER
+report_db_password=$REPORT_DB_PASS
+report_db_ssl_enabled=1
+report_db_sslrootcert=$REPORT_DB_CA_CERT
+EOF
+
+    # Can go away with ISSv1
+    cat >>/var/lib/rhn/rhn-satellite-prep/satellite-local-rules.conf <<EOF
+report_db_backend=postgresql
+report_db_host=$REPORT_DB_HOST
+report_db_port=$REPORT_DB_PORT
+report_db_name=$REPORT_DB_NAME
+report_db_user=$REPORT_DB_USER
+report_db_password=$REPORT_DB_PASS
+report_db_ssl_enabled=1
+report_db_sslrootcert=$REPORT_DB_CA_CERT
+EOF
+
+    echo "Populating the report database"
+    run_sql $REPORT_DB_NAME </usr/share/susemanager/db/reportdb/main.sql
+    echo "Report database set up and populated"
 }
 
 check_re_install() {
@@ -206,21 +189,17 @@ fi
 
 setup_spacewalk() {
     # Deploy the SSL certificates
-    ssl_args=""
-    for intermediate in /ssl/intermediate*.crt; do
-        if test -f "$intermediate"; then
-            ssl_args="$ssl_args --intermediate-ca-file $intermediate"
-        fi
-    done
-    /usr/bin/mgr-ssl-cert-setup --skip-db --root-ca-file /ssl/ca.crt \
-        --server-cert-file /ssl/server.crt \
-        --server-key-file /ssl/server.key $ssl_args
+    if [ "$NO_SSL" == "Y" ]; then
+        /usr/bin/spacewalk-setup-httpd --no-ssl
+    else
+        /usr/bin/spacewalk-setup-httpd
+    fi
+    /usr/sbin/update-ca-certificates
+    /usr/bin/rhn-ssl-dbstore --ca-cert /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
 
     if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
         /usr/sbin/mgr-package-rpm-certificate-osimage
     fi
-
-    REPORT_DB_CA_CERT="/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT"
 
     echo "admin-email = $MANAGER_ADMIN_EMAIL
 ssl-config-sslvhost = Y
@@ -230,10 +209,6 @@ db-password=$MANAGER_PASS
 db-name=$MANAGER_DB_NAME
 db-host=$MANAGER_DB_HOST
 db-port=$MANAGER_DB_PORT
-db-protocol=$MANAGER_DB_PROTOCOL
-externaldb=$EXTERNALDB
-externaldb-admin-user=$EXTERNALDB_ADMIN_USER
-externaldb-admin-password=$EXTERNALDB_ADMIN_PASS
 db-ca-cert=$MANAGER_DB_CA_CERT
 report-db-ca-cert=$REPORT_DB_CA_CERT
 externaldb-provider=$EXTERNALDB_PROVIDER
@@ -285,43 +260,31 @@ scc-pass = $SCC_PASS
 }
 
 do_setup() {
-    if [ -f $SETUP_ENV ]; then
-        . $SETUP_ENV
-    else
-        # ask for the needed values if the setup_env file does not exist
-        ask_input MANAGER_USER
-        ask_input MANAGER_PASS
-        ask_input MANAGER_ADMIN_EMAIL
-        ask_input LOCAL_DB
-        ask_input MANAGER_DB_NAME
-        ask_input MANAGER_DB_HOST
-        ask_input MANAGER_DB_PORT
-        ask_input MANAGER_DB_CA_CERT
-        ask_input MANAGER_DB_PROTOCOL
-        ask_input MANAGER_ENABLE_TFTP
-        ask_input EXTERNALDB_ADMIN_USER
-        ask_input EXTERNALDB_ADMIN_PASS
-        ask_input EXTERNALDB_PROVIDER
-        ask_input SCC_USER
-        ask_input SCC_PASS
-        ask_input ISS_PARENT
-        ask_input ACTIVATE_SLP
-        ask_input REPORT_DB_NAME
-        ask_input REPORT_DB_HOST
-        ask_input REPORT_DB_PORT
-        ask_input REPORT_DB_USER
-        ask_input REPORT_DB_PASS
-        ask_input REPORT_DB_CA_CERT
-        ask_input UYUNI_FQDN
-    fi;
+    # ask for the needed values if the setup_env file does not exist
+    ask_input MANAGER_USER
+    ask_input MANAGER_PASS
+    ask_input MANAGER_ADMIN_EMAIL
+    ask_input MANAGER_DB_NAME
+    ask_input MANAGER_DB_HOST
+    ask_input MANAGER_DB_PORT
+    ask_input MANAGER_DB_CA_CERT
+    ask_input MANAGER_ENABLE_TFTP
+    ask_input EXTERNALDB_PROVIDER
+    ask_input SCC_USER
+    ask_input SCC_PASS
+    ask_input ISS_PARENT
+    ask_input REPORT_DB_NAME
+    ask_input REPORT_DB_HOST
+    ask_input REPORT_DB_PORT
+    ask_input REPORT_DB_USER
+    ask_input REPORT_DB_PASS
+    ask_input REPORT_DB_CA_CERT
+    ask_input UYUNI_FQDN
     if [ -z "$MANAGER_DB_NAME" ]; then
         MANAGER_DB_NAME="susemanager"
     fi
     if [ -z "$REPORT_DB_NAME" ]; then
         REPORT_DB_NAME="reportdb"
-    fi
-    if [ -z "$REPORT_DB_HOST" ]; then
-        REPORT_DB_HOST="localhost"
     fi
     if [ -z "$REPORT_DB_PORT" ]; then
         REPORT_DB_PORT="5432"
@@ -329,16 +292,6 @@ do_setup() {
     if [ -z "$REPORT_DB_USER" ]; then
         REPORT_DB_USER="pythia_susemanager"
     fi
-    if [ -z "$MANAGER_DB_HOST" ]; then
-        MANAGER_DB_HOST="localhost"
-    fi
-
-    case $MANAGER_DB_HOST in
-        "localhost"|"")
-            EXTERNALDB=0 ;;
-        *)
-            EXTERNALDB=1 ;;
-    esac
 
     if [ -z "$NO_SSL" ]; then
         NO_SSL=
@@ -351,6 +304,7 @@ do_setup() {
     echo "Do not delete this file unless you know what you are doing!" > $MANAGER_COMPLETE
     setup_mail
     setup_db_postgres
+    setup_reportdb
 
     setup_spacewalk
 
@@ -404,9 +358,6 @@ done
 
 do_setup
 
-if [ "$EXTERNALDB" = "0" ]; then
-    /usr/bin/smdba system-check autotuning --max_connections=400
-fi
 systemctl --quiet enable spacewalk-diskcheck.timer 2>&1
 
 # vim: set expandtab:

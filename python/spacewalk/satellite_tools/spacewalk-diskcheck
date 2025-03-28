@@ -39,7 +39,7 @@ function parseConfiguration {
         EMAIL_ADDRESS="root@localhost"
     fi
     if [ "$SPACECHECKDIRS" = "" ]; then
-        SPACECHECKDIRS="/var/lib/pgsql /var/spacewalk /var/cache /srv"
+        SPACECHECKDIRS="/var/spacewalk /var/cache /srv"
     fi
     if [ "$SPACECHECKALERT" = "" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
         SPACECHECKALERT=10
@@ -173,8 +173,8 @@ do
 done
 
 if [ "$CHECKONLY" = false ] && [ "$STOPCHECK" = "1" ] && [ "$SPACECHECKSHUTDOWN" = true ]; then
-    spacewalk-service stop ; systemctl stop postgresql.service
-    logger "SPACECHECK CRITICAL: spacewalk shutted down"
+    spacewalk-service stop
+    logger "SPACECHECK CRITICAL: spacewalk shut down"
 fi
 
 exit $CHECKSEVERITY

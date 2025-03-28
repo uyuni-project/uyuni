@@ -39,19 +39,17 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/testsuite:/testsuite \
     -v ${src_dir}/schema/spacewalk/upgrade/:/usr/share/susemanager/db/schema-upgrade/ \
     -v ${src_dir}/schema/reportdb/upgrade/:/usr/share/susemanager/db/reportdb-schema-upgrade/ \
+    -v ${src_dir}/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb-user:/usr/bin/uyuni-setup-reportdb-user \
     -v ${src_dir}/web:/web \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
     -v ${src_dir}/susemanager-utils:/susemanager-utils \
     -v ${src_dir}/susemanager:/susemanager \
-    -v ${src_dir}/susemanager/bin/mgr-setup:/usr/lib/susemanager/bin/mgr-setup \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts.conf:/etc/tomcat/conf.d/tomcat_java_opts.conf \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
     -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
-    -v ${src_dir}/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb:/usr/bin/uyuni-setup-reportdb \
-    -v ${src_dir}/spacewalk/setup/bin/spacewalk-setup:/usr/bin/spacewalk-setup \
-    -v ${src_dir}/spacewalk/setup/lib/Spacewalk/Setup.pm:${setup_pm_path} \
+    -v ${src_dir}/python/billingdataservice/billing-data-service.service:/usr/lib/systemd/system/billing-data-service.service \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
     --cgroupns=host \

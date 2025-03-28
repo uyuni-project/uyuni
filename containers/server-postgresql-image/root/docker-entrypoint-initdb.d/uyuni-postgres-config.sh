@@ -79,6 +79,10 @@ postgres_reconfig "wal_buffers" "16MB"
 postgres_reconfig "constraint_exclusion" "off"
 postgres_reconfig "max_connections" "$MAX_CONNECTIONS"
 
+# log to the stderr instead of the log file
+postgres_reconfig "logging_collector" "off"
+postgres_reconfig "log_destination" "stderr"
+
 if [ "$IS_SSD" -eq 1 ]; then
     postgres_reconfig "random_page_cost" "1.1"
     postgres_reconfig "effective_io_concurrency" "200"
@@ -90,8 +94,6 @@ fi
 postgres_reconfig jit off
 
 if [ -f $SSL_KEY ] ; then
-    chown postgres $SSL_KEY
-    chmod 400 $SSL_KEY
     postgres_reconfig "ssl" "on"
     postgres_reconfig "ssl_cert_file" "'$SSL_CERT'"
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
