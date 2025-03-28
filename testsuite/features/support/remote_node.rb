@@ -3,6 +3,7 @@
 
 require 'timeout'
 require_relative 'network_utils'
+require_relative 'system'
 
 # The RemoteNode class represents a remote node.
 # It is used to interact with the remote node through SSH.
@@ -360,5 +361,13 @@ class RemoteNode
     os_version.gsub!('.', '-SP') if os_family.match(/^sles/)
     $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
     [os_version, os_family]
+  end
+
+  def host
+    @host_system ||= System.new(local_os_family)
+  end
+
+  def container
+    @container_system ||= System.new(os_family)
   end
 end
