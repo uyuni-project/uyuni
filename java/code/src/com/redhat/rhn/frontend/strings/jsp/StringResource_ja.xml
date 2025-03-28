@@ -13830,8 +13830,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている SUSE Linux のバージョンに対応する SUSE Manager へ登録できるようになります。ここでは、特定の SUSE 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は SUSE Manager のデフォルトチャンネルが指定されます。</target>
+        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation">&lt;strong&gt;{0}&lt;/strong&gt; を選択すると、システムがインストールされている SUSE Linux のバージョンに対応する SUSE Manager へ登録できるようになります。ここでは、特定の SUSE 提供のチャンネルまたはカスタムベースチャンネルを選択できますが、このキーを使用しているシステムが選択したチャンネルとの互換性がない場合は SUSE Manager のデフォルトチャンネルが指定されます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13973,8 +13973,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-        <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
-        <target>注意: 選択した "SUSE Manager default" ベースチャンネルの子チャンネルのサブスクライブを実施します。</target>
+        <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
+        <target state="needs-adaptation">注意: 選択した "SUSE Manager default" ベースチャンネルの子チャンネルのサブスクライブを実施します。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24834,11 +24834,11 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <target>ログインエラー</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
-        <target>このエラーは、中断されたログアウトや別のブラウザタブからのログインによって引き起こされた可能性があります。問題が解消されない場合は、 SUSE Manager の管理者に問い合わせてください。</target>
+        <target state="needs-adaptation">このエラーは、中断されたログアウトや別のブラウザタブからのログインによって引き起こされた可能性があります。問題が解消されない場合は、 SUSE Manager の管理者に問い合わせてください。</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.currentlyLoggedInAs" xml:space="preserve">
         <source>Currently logged in as: {0}</source>
@@ -27349,11 +27349,11 @@ given channel.</source>
         <target>選択しているバンチのスケジュールはここで設定できます。</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより SUSE Manager の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
+        <target state="needs-adaptation">本当にスケジュールを削除してもよいですか? 関連付けられているバンチがスケジュールされなくなります。これにより SUSE Manager の機能性に多大な影響を及ぼす可能性があります。削除による影響をよく理解した上で続行してください。</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -28893,7 +28893,7 @@ given channel.</source>
         <source>Subscriptions related to these credentials</source>
         <target>これらの資格情報に関連するサブスクリプション</target>
       </trans-unit>
-      <trans-unit id="mirror-credentials.jsp.iss-slave" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="mirror-credentials.jsp.iss-slave" xml:space="preserve">
         <source>This server is configured as a Peripheral server in a Hub configuration. Credentials can only be managed on the Hub server.</source>
         <target state="final">このサーバはハブ設定で周辺機器サーバとして設定されています。資格情報はハブサーバでのみ管理することができます。</target>
       </trans-unit>
@@ -28942,8 +28942,8 @@ given channel.</source>
         <target state="final">Copyright (c) 2011 - 2021 SUSE LLC.</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-        <target>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER ライセンス同意&lt;/a&gt;</target>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+        <target state="needs-adaptation">&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER ライセンス同意&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -29017,15 +29017,15 @@ given channel.</source>
         <target>チャンネルラベル</target>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target state="translated">Salt minion に対して、 SUSE Manager は minion にインストールされた固有の設定をクリーンアップします。
+        <target state="needs-adaptation">Salt minion に対して、 SUSE Manager は minion にインストールされた固有の設定をクリーンアップします。
               この処理にはしばらくの時間がかかります。</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target state="translated">選択したプロファイルには Salt システムが含まれています。 SUSE Manager では Salt システムからの固有の設定を削除しようとします。
+        <target state="needs-adaptation">選択したプロファイルには Salt システムが含まれています。 SUSE Manager では Salt システムからの固有の設定を削除しようとします。
             対象のシステムが動作していて、到達可能であることをご確認ください。到達不可能な状態である場合、エラーになってしまいます。</target>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
@@ -29765,11 +29765,11 @@ given channel.</source>
         <target state="final">セキュリティ更新が不明で、設定で無効になっています。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="final">SUSE Manager PAYGの管理対象クライアントのデータを収集</target>
+        <target state="needs-adaptation">SUSE Manager PAYGの管理対象クライアントのデータを収集</target>
       </trans-unit>
       <trans-unit approved="yes" id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
