@@ -13781,8 +13781,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target/>
+          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13924,8 +13924,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-          <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
-        <target/>
+          <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24762,8 +24762,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
-        <target/>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -27191,8 +27191,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
-        <target/>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -28749,8 +28749,8 @@ given channel.</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-        <target/>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28817,14 +28817,14 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -29473,11 +29473,11 @@ given channel.</source>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>
