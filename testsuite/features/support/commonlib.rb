@@ -100,6 +100,8 @@ end
 def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, report_result: false, dont_raise: false)
   begin
     last_result = nil
+    # When we run the code coverage tracking tool together with our server, its performance decreases.
+    timeout *= 2 if $code_coverage_mode
     Timeout.timeout(timeout) do
       # HACK: Timeout.timeout might not raise Timeout::Error depending on the yielded code block
       # Pitfalls with this method have been long known according to the following articles:
