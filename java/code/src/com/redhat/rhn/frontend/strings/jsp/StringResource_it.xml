@@ -13736,8 +13736,8 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target>Selezionate "&lt;strong&gt;{0}&lt;/strong&gt;" per permettere al sistema di eseguire una registrazione sul canale predefinito fornito da Red Hat, il quale corrisponde alla versione installata di Red Hat Enterprise Linux. È possibile scegliere qui i canali forniti da Red Hat oppure i canali di base personalizzati, ma è da tener presente che se il sistema che utilizza questa chiave non è compatibile con il canale selezionato, esso ritornerà al proprio canale predefinito di Red Hat.</target>
+          <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation">Selezionate "&lt;strong&gt;{0}&lt;/strong&gt;" per permettere al sistema di eseguire una registrazione sul canale predefinito fornito da Red Hat, il quale corrisponde alla versione installata di Red Hat Enterprise Linux. È possibile scegliere qui i canali forniti da Red Hat oppure i canali di base personalizzati, ma è da tener presente che se il sistema che utilizza questa chiave non è compatibile con il canale selezionato, esso ritornerà al proprio canale predefinito di Red Hat.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13879,10 +13879,11 @@ la &lt;strong&gt;Red Hat Enterprise Linux System Administration Guide.&lt;/stron
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-          <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
+          <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.blurb" xml:space="preserve">
           <source>The following child channels of &lt;strong&gt;{0}&lt;/strong&gt; can be associated with this activation key.</source>
@@ -24668,11 +24669,11 @@ versione di Red Hat Enterprise Linux.&lt;br/&gt;&lt;br/&gt;
         <target>Errore di login.</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
-        <target>Questo errore potrebbe essere causato da un logout interrotto o da un login eseguito da un altra tabella del browser. Contattare l'amministratore di Satellite se i problemi persistono.</target>
+        <target state="needs-adaptation">Questo errore potrebbe essere causato da un logout interrotto o da un login eseguito da un altra tabella del browser. Contattare l'amministratore di Satellite se i problemi persistono.</target>
       </trans-unit>
       <trans-unit id="login.jsp.error.currentlyLoggedInAs" xml:space="preserve">
         <source>Currently logged in as: {0}</source>
@@ -27099,11 +27100,11 @@ caratteri.</target>
         <target>Qui è possibile impostare una programmazione del gruppo selezionato.</target>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
-        <target>Siete sicuri di voler cancellare la programmazione? Così facendo non sarà più possibile eseguire una programmazione del gruppo associato. Questa operazione avrà un impatto molto grande sulla funzionalità di satellite. Procedere solo se siete sicuri.</target>
+        <target state="needs-adaptation">Siete sicuri di voler cancellare la programmazione? Così facendo non sarà più possibile eseguire una programmazione del gruppo associato. Questa operazione avrà un impatto molto grande sulla funzionalità di satellite. Procedere solo se siete sicuri.</target>
       </trans-unit>
       <trans-unit id="schedule.jsp.schedulenameinuse" xml:space="preserve">
         <source>Schedule name {0} is already in use. Please choose another one.</source>
@@ -28589,7 +28590,8 @@ caratteri.</target>
       <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28645,12 +28647,14 @@ caratteri.</target>
         <source>Channel Label</source>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
+      <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -29345,11 +29349,11 @@ caratteri.</target>
       <target state="new"/>
   </trans-unit>
       <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
             <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
+      <target state="needs-adaptation"/>
   </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>

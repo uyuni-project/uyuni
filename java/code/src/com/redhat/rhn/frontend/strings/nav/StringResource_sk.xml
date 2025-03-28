@@ -482,14 +482,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.list_scans" xml:space="preserve">
-          <source>List Scans</source>
+        <source>List Scans</source>
         <target>Zoznam skenov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.system.audit.schedule" xml:space="preserve">
-          <source>Schedule</source>
+        <source>Schedule</source>
         <target>Plán</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
@@ -497,77 +497,77 @@
       </trans-unit>
       <!-- SDC Config file navigation-->
       <trans-unit id="nav.sdc.config.overview" xml:space="preserve">
-          <source>Overview</source>
+        <source>Overview</source>
         <target>Prehľad</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_modify_files" xml:space="preserve">
-          <source>View/Modify Files</source>
+        <source>View/Modify Files</source>
         <target>Zobraziť/Upraviť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.view_files" xml:space="preserve">
-          <source>View Files</source>
+        <source>View Files</source>
         <target>Zobraziť súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.compare_files" xml:space="preserve">
-          <source>Compare Files</source>
+        <source>Compare Files</source>
         <target>Porovnať súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.manage_channels" xml:space="preserve">
-          <source>Manage Configuration Channels</source>
+        <source>Manage Configuration Channels</source>
         <target>Spravovať konfiguračné kanály</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.list_unsubscribe_channels" xml:space="preserve">
-          <source>List/Unsubscribe from Channels</source>
+        <source>List/Unsubscribe from Channels</source>
         <target>Zoznam/Odhlásiť sa z kanálov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.subscribe_channels" xml:space="preserve">
-          <source>Subscribe to Channels</source>
+        <source>Subscribe to Channels</source>
         <target>Prihlásiť sa ku kanálom</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.rank_channels" xml:space="preserve">
-          <source>View/Modify Rankings</source>
+        <source>View/Modify Rankings</source>
         <target>Zobraziť/Upraviť poradia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.centrally_managed_files" xml:space="preserve">
-          <source>Centrally-Managed Files</source>
+        <source>Centrally-Managed Files</source>
         <target>Centrálne spravované súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.locally_managed_files" xml:space="preserve">
-          <source>Locally-Managed Files</source>
+        <source>Locally-Managed Files</source>
         <target>Lokálne spravované súbory</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="nav.sdc.config.sandbox_managed_files" xml:space="preserve">
-          <source>Local Sandbox</source>
+        <source>Local Sandbox</source>
         <target>Miestny sandbox</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
@@ -575,14 +575,14 @@
       </trans-unit>
       <!-- END config file nav -->
       <trans-unit id="system.detail.nav.list" xml:space="preserve">
-          <source>List</source>
+        <source>List</source>
         <target>Zoznam</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="system.detail.nav.remove" xml:space="preserve">
-          <source>List / Remove</source>
+        <source>List / Remove</source>
         <target>Zoznam / Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Navigation Menu</context>
@@ -1150,44 +1150,44 @@
       </trans-unit>
       <!-- SSM NAV -->
       <trans-unit id="Child Channels" xml:space="preserve">
-          <source>Child Channels</source>
+        <source>Child Channels</source>
         <target>Kanály potomkov</target>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Chat" xml:space="preserve">
-          <source>Chat</source>
+        <source>Chat</source>
         <target>Debata</target>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/help/about.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/help/about.do</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="Base Channels" xml:space="preserve">
-          <source>Base Channels</source>
+        <source>Base Channels</source>
         <target>Základné kanály</target>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/channel/ssm/ChildSubscriptions.do</context>
+        </context-group>
       </trans-unit>
       <!-- Activation Keys nav -->
       <trans-unit id="activation-keys.nav.activated_systems" xml:space="preserve">
-          <source>Activated Systems</source>
+        <source>Activated Systems</source>
         <target>Aktivované systémy</target>
         <context-group name="ctx">
-            <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
-          </context-group>
+          <context context-type="sourcefile">/rhn/activationkeys/Edit.do</context>
+        </context-group>
       </trans-unit>
       <!-- Main nav -->
       <trans-unit id="manage" xml:space="preserve">
-          <source>Manage</source>
+        <source>Manage</source>
         <target>Spravovať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
         </context-group>
       </trans-unit>
       <trans-unit id="clear" xml:space="preserve">
-          <source>Clear</source>
+        <source>Clear</source>
         <target>Vyčistiť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Title bar</context>
@@ -1255,34 +1255,34 @@
         <source>List Attestations</source>
         <target state="translated">Zoznam atestácií</target>
       </trans-unit>
-    <trans-unit id="Hub Configuration" xml:space="preserve">
+      <trans-unit id="Hub Configuration" xml:space="preserve">
         <source>Hub Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Konfigurácia pre hub</target>
+      </trans-unit>
       <trans-unit id="Hub Details" xml:space="preserve">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Podrobnosti pre hub</target>
+      </trans-unit>
       <trans-unit id="Peripherals Configuration" xml:space="preserve">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Konfigurácia periférií</target>
+      </trans-unit>
       <trans-unit id="Access Tokens" xml:space="preserve">
         <source>Access Tokens</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Prístupové tokeny</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
