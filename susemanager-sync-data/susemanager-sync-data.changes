@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Mar 27 16:57:54 CET 2025 - rosuna@suse.com
+
+- version 5.0.11-0
+  * Add OVAL data download location for Ubuntu
+
+-------------------------------------------------------------------
 Tue Mar 11 15:21:38 CET 2025 - rosuna@suse.com
 
 - version 5.0.10-0
