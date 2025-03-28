@@ -890,7 +890,7 @@ public class ContentManager {
                 .orElseGet(() -> {
                     CloneChannelCommand cloneCmd = new CloneChannelCommand(EMPTY, sourceChannel);
                     cloneCmd.setUser(user);
-                    cloneCmd.setName(channelLabelInEnvironment(sourceChannel.getName(), env));
+                    cloneCmd.setName(channelNameInEnvironment(sourceChannel.getName(), env));
                     cloneCmd.setLabel(targetLabel);
                     cloneCmd.setSummary(channelLabelInEnvironment(sourceChannel.getSummary(), env));
                     cloneCmd.setStripModularMetadata(stripModularMetadata);
@@ -904,6 +904,22 @@ public class ContentManager {
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(env, targetChannel);
         env.addTarget(target);
         return target;
+    }
+
+    /**
+     * Create a channel name in given {@link ContentEnvironment} based on {@link Channel} name in previous
+     *
+     * @param srcChannelName the source Channel name
+     * @param env the Environment
+     * @return the prefixed channel label
+     */
+    public static String channelNameInEnvironment(String srcChannelName, ContentEnvironment env) {
+        String envPrefix = prefixString(env);
+        String name = channelLabelInEnvironment(srcChannelName, env);
+        if (!name.startsWith(envPrefix)) {
+            name = envPrefix + name;
+        }
+        return name;
     }
 
     /**
