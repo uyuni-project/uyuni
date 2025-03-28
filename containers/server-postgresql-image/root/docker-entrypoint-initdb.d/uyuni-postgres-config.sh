@@ -69,7 +69,7 @@ WORK_MEM=$(bin_rnd $(((TOTAL_MEM_KB - SHARED_BUFFERS) / (3 * MAX_CONNECTIONS))))
 MAINTENANCE_WORK_MEM=$(bin_rnd $(( TOTAL_MEM_KB / 16 < 1048576 ? TOTAL_MEM_KB / 16 : 1048576 ))) # 1GB
 
 # Apply configurations
-postgres_reconfig "listen_addresses" "\'*\'"
+postgres_reconfig "listen_addresses" "'*'"
 postgres_reconfig "shared_buffers" "$(to_mb $SHARED_BUFFERS)"
 postgres_reconfig "effective_cache_size" "$(to_mb $EFFECTIVE_CACHE_SIZE)"
 postgres_reconfig "work_mem" "$(to_mb $WORK_MEM)"
