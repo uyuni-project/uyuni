@@ -1,0 +1,1 @@
+- Do not log debug messages as errors (bsc#1240124)
