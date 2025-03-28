@@ -1,0 +1,22 @@
+# SPDX-FileCopyrightText: 2023 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+apiVersion: 1
+datasources:
+- name: Loki
+  type: loki
+  access: proxy 
+  orgId: 1
+  url: http://health_check_loki:3100
+  basicAuth: false
+  isDefault: true
+  version: 1
+  timeout: '120'
+  editable: true
+
+- name: infinity-ds
+  type: yesoreyeram-infinity-datasource
+  orgId: 1
+  uid: infinity
+

@@ -1,0 +1,46 @@
+# SPDX-FileCopyrightText: 2023 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+[project]
+name = "health-check"
+description = "Show Uyuni server health metrics and logs"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "Click",
+    "rich",
+    "requests",
+    "Jinja2",
+    "PyYAML",
+    "tomli",
+]
+maintainers = [
+    {name = "Pablo Suárez Hernández", email = "psuarezhernandez@suse.com"},
+]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/uyuni-project/uyuni"
+tracker =  "https://github.com/uyuni-project/uyuni/issues"
+
+[project.scripts]
+mgr-health-check = "health_check.main:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "setuptools_scm[toml]",
+    "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "health_check.__version__"}

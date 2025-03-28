@@ -1,0 +1,163 @@
+server:
+  http_listen_port: 9081
+  grpc_listen_port: 0
+
+limits_config:
+  max_line_size: 0
+  max_line_size_truncate: false
+
+clients:
+  - url: http://health_check_loki:3100/loki/api/v1/push
+
+scrape_configs:
+- job_name: reposync
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: reposync
+      __path__: {{ rhn_logs_path }}/reposync/*.log
+  pipeline_stages:
+  - regex:
+      expression: '^(?P<time>\d{4}/\d{2}/\d{2}\s\d{2}:\d{2}:\d{2}\s[+-]\d{2}:\d{2})'
+  - timestamp:
+      source: time
+      format: '2006/01/02 15:04:05 -07:00'
+- job_name: cobbler
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: cobbler
+      __path__: {{ cobbler_logs_file }}
+  pipeline_stages:
+  - multiline:
+      firstline: '^\[.*\] [\dT:-]+ - [A-Z]+ | '
+  - regex:
+      expression: '^\[.*\] (?P<time>[\dT:-]+) '
+  - timestamp:
+      source: time
+      format: '2006-01-02T15:04:05'
+- job_name: postgresql
+  decompression:
+    enabled: true
+    initial_delay: 2s
+    format: gz
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: postgresql
+      __path__: {{ postgresql_logs_path }}/postgresql*.log*
+  pipeline_stages:
+    - multiline:
+        firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3} \S+ '
+        max_wait_time: 3s
+        # default is 128, we might need more depending on the size of the query
+        max_lines: 256
+    - regex:
+        # yamllint disable-line rule:line-length
+        expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}) '
+    - timestamp:
+        source: time
+        format: '2006-01-02 15:04:05.000'
+- job_name: salt
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: salt
+      __path__: {{ salt_logs_path }}{api,master}
+  pipeline_stages:
+  - multiline:
+      firstline: '^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(,)\d{3} '
+  - replace:
+      expression: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(,)'
+      replace: '.'
+  - regex:
+      expression: '^(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}) '
+  - timestamp:
+      source: time
+      format: '2006-01-02 15:04:05.000'
+- job_name: rhn
+  pipeline_stages:
+  - drop:
+      expression: '^\d{2}:\d{2}:\d{2} \D'
+      drop_counter_reason: reposync_output
+  - drop:
+      expression: 'Legacy Hibernate behavior was to ignore the @DiscriminatorColumn|org\.hibernate\.orm\.deprecation'
+      drop_counter_reason: hibernate_deprecation
+  - multiline:
+      firstline: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(,)\d{3}\]? '
+  - replace:
+      expression: '^\[?\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(,)'
+      replace: '.'
+  - regex:
+      expression: '^\[?(?P<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]? '
+  - timestamp:
+      source: time
+      format: '2006-01-02 15:04:05.000'
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: rhn
+      component: tomcat
+      __path__: {{ rhn_logs_path }}rhn_{salt,web}_*log
+  - targets:
+      - localhost
+    labels:
+      job: rhn
+      component: taskomatic
+      __path__: {{ rhn_logs_path }}rhn_taskomatic_*log
+- job_name: apache
+  static_configs:
+  - targets:
+      - localhost
+    labels:
+      job: apache
+      component: error_log
+      __path__: {{ apache2_logs_path }}error_log*
+  - targets:
+      - localhost
+    labels:
+      job: apache
+      component: access_log
+      __path__: {{ apache2_logs_path }}access_log*
+  - targets:
+      - localhost
+    labels:
+      job: apache
+      component: ssl_request_log
+      __path__: {{ apache2_logs_path }}ssl_request_log*
+  pipeline_stages:
+  - match:
+      selector: '{job="apache",component="error_log"} |~ "^\\[[A-Z][a-z]{2} "'
+      stages:
+      - drop:
+          expression: ' for stapling|ssl_stapling_init_cert'
+      - regex:
+          expression: '^\[(?P<time>[\d :.A-Za-z]+)\]'
+      - timestamp:
+          source: time
+          format: 'Mon Jan 02 15:04:05.000000 2006'
+  - match:
+      selector: '{job="apache",component="ssl_request_log"} |~ "^\\[\\d{2}/[A-Z][a-z]{2}/"'
+      stages:
+      - regex:
+          expression: '^\[(?P<time>[\d A-Za-z:/+-]+)\] (?P<ip>[^ ]+)'
+      - timestamp:
+          source: time
+          format: '02/Jan/2006:15:04:05 -0700'
+      - labels:
+          ip:
+  - match:
+      selector: '{job="apache",component="access_log"} |~ "^[A-Fa-f\\d:.]+ - - \\[[\\d A-Za-z:/+-]+\\]"'
+      stages:
+      - regex:
+          expression: '^(?P<ip>[^ ]+) - - \[(?P<time>[\d A-Za-z:/+-]+)\]'
+      - timestamp:
+          source: time
+          format: '02/Jan/2006:15:04:05 -0700'
+      - labels:
+          ip:

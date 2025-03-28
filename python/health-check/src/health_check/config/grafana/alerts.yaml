@@ -1,0 +1,2075 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: alert-eval
+      folder: alerts
+      interval: 1m
+      rules:
+        - uid: be6llqu083474c
+          title: Likely Salt Performance issues - SaltReqTimeout
+          condition: B
+          data:
+            - refId: A
+              queryType: range
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                direction: backward
+                editorMode: builder
+                expr: sum(count_over_time({job="salt"} |~ `(?i)SaltReqTimeoutError` [$__auto]))
+                intervalMs: 1000
+                legendFormat: ""
+                maxDataPoints: 43200
+                queryType: range
+                refId: A
+                step: ""
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: We detected more than 10 `SaltReqTimeout` errors in the logs in the past 1 month. This is likely indicative of Salt performance issues.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: ee6lmldzgwf0gd
+          title: Issues that potentially degrade Salt performance
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: builder
+                expr: sum(count_over_time({job="salt"} |~ `(?i)an extra return was detected|the public keys did not match|Event with bad payload received|Received minion error from` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 150
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: "We found more than 150 of \"an extra return was detected\", \"the public keys did not match\", \"Event with bad payload received\", or \"Received minion error from\" messages in the logs over the past month. \n\nThese issues might be decreasing Salt performance."
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: ce6i8dhdhj400e
+          title: More worker threads than CPUs
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_configuration[name="worker_threads"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $B - $A < 0
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          isPaused: false
+        - uid: de95ua0ku5zb4f
+          title: Insufficient RAM (master)
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 15000000 > $A && $B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below minimum spec of 16GB for a master server.
+          for: 0s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: cz95ua0ku5zb4f
+          title: Insufficient RAM (proxy)
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 1800000 > $A && $B
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below minimum spec of 16GB for a proxy server.
+          for: 0s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: ee95ufv80exa8d
+          title: Recommended RAM increase (master)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 30000000 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below recommended value of 32GB for a master server.
+          for: 0s
+          labels:
+            component: hw
+            issue: recommended_spec
+          isPaused: false
+        - uid: cz95ufv80exa8d
+          title: Recommended RAM increase (proxy)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="mem_total"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 7700000 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The total RAM is below recommended value of 8GB for a proxy server.
+          for: 0s
+          labels:
+            component: hw
+            issue: recommended_spec
+          isPaused: false
+        - uid: ae9894nnvkqv4b
+          title: 'Parameter might be incorrect: java.salt_batch_size '
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: java_config[name="java.salt_batch_size"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                computed_columns:
+                    - selector: ""
+                      text: ""
+                      type: string
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $B > 2000 && $A <= 200
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: "When client count reaches several thousands and actions are not executed quickly enough, increase the java.salt_batch_size property. \n\nSee the performance tuning guide for more information."
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ce990bqf5pptsc
+          title: 'Parameter might be incorrect: MaxRequestWorkers'
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: builder
+                expr: sum(count_over_time({job="apache", component="error_log"} |~ `(?i)AH00161|server reached MaxRequestWorkers setting` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                There are more requests than the maximum number of HTTP requests served simultaneously by Apache httpd.
+
+                Increase MaxClients and ServerLimit, and check maxThreads for adjustment.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: be993esk1xcsgb
+          title: 'Parameter might be incorrect: ServerLimit'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: apache[name="server_limit"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: apache[name="max_clients"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A != $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                The MaxClients and ServerLimit properties should have identical values. If you adjusted one, adjust the other one property to the same value.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: fe993ydrpflkwf
+          title: 'Parameter might be incorrect: maxThreads'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: java_config[name="maxThreads"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: apache[name="max_clients"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A != $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                The number of Tomcat threads dedicated to serving HTTP requests should be the same as the Apache httpd MaxClients configuration.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: fe99cq18qd79cc
+          title: 'Parameter might be incorrect: connectionTimeout, keepAliveTimeout'
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="apache", component="error_log"} |~ `(?i)AH00992|AH00877|AH01030` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                The connectionTimeout and keepAliveTimeout properties might be incorrectly set.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ce99oh1p6d43kc
+          title: 'Parameter might be incorrect: java.salt_event_thread_pool_size'
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: misc[name="queued_salt_events"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                The number of queued Salt events is greater than 10. Tweaking java.salt_event_thread_pool_size might help to process the queue faster.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: de99r430f6rk0b
+          title: 'Parameter might be incorrect: java.salt_presence_ping_timeout, java.salt_presence_ping_gather_job_timeout'
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="rhn"} |~ `(?i)minion did not respond in time` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 100
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                Salt clients do not respond in time before timeout. Increasing the java.salt_presence_ping_timeout and java.salt_presence_ping_gather_job_timeout properties can give slower clients enough time to respond.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: de9afny52qtxcc
+          title: 'Parameter might be incorrect: java.taskomatic_channel_repodata_workers'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: misc[name="num_of_channels"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: java_config[name="java.taskomatic_channel_repodata_workers"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 50 && $B <= 2
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                The channel count might be too high for the number of available repodata workers. Increasing the  java.taskomatic_channel_repodata_workers property might speed up channel operations.
+
+                Note that you might need to increase taskomatic.java.maxmemory as well.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: fe9agiv82vrpcf
+          title: 'Parameter might be incorrect: org.quartz.threadPool.threadCount'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: java_config[name="org.quartz.threadPool.threadCount"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B <= 20
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                Increasing the number of Taskomatic worker threads allows Taskomatic to serve more clients in parallel. Consider increasing the org.quartz.threadPool.threadCount property.
+
+                Afterwards, check hibernate.c3p0.max_size and thread_pool for adjustment.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ae9ah5xuadibkd
+          title: 'Parameter might be incorrect: org.quartz.scheduler.idleWaitTime'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: java_config[name="org.quartz.scheduler.idleWaitTime"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B >= 5000
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                Cycle time for Taskomatic. Consider decreasing org.quartz.scheduler.idleWaitTime to lower the latency of Taskomatic.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9ankkff1lvka
+          title: 'Parameter might be incorrect: taskomatic.minion_action_executor.parallel_threads'
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: salt_keys[name="accepted"].length
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: java_config[name="taskomatic.minion_action_executor.parallel_threads"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 2000 && $B < 2
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                In large installations (client count in the thousands), consider increasing the taskomatic.minion_action_executor.parallel_threads parameter. This is the number of Taskomatic threads dedicated to sending commands to Salt clients as a result of actions being executed.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9cmuqik1ou8a
+          title: 'Parameter might be incorrect: shared_buffers'
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: postgresql[name="shared_buffers_to_mem_ratio"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0.2
+                            - 0
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                shared_buffers controls the amount of memory reserved for PostgreSQL shared buffers, which contain caches of database tables and index data.
+
+                Consider increasing the value for PostgreSQL performance in large deployments.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: de9d6jzllyw3kb
+          title: 'Parameter might be incorrect: thread_pool'
+          condition: D
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                computed_columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: java_config[name = "java.message_queue_thread_pool_size"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: java_config[name = "org.quartz.threadPool.threadCount"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: C
+                root_selector: salt_configuration[name = "thread_pool"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: D
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $C < ($A + $B)
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: D
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                thread_pool is the number of worker threads serving Salt API HTTP requests.
+
+                Current value is smaller than the sum of java.message_queue_thread_pool_size and org.quartz.threadPool.threadCount. Consider increasing this value.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: config
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9dqrz2j0dmoa
+          title: 'Parameter might be incorrect: worker_threads'
+          condition: B
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="salt"} |~ `(?i)SaltReqTimeoutError|Message timed out` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 20
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: OK
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                worker_threads configures the number of salt-master worker threads that process commands and replies from minions and the Salt API. Consider increasing this value.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: ee9dsa45or8jka
+          title: 'Parameter might be incorrect: pub_hwm'
+          condition: C
+          data:
+            - refId: A
+              queryType: instant
+              relativeTimeRange:
+                from: 2592000
+                to: 0
+              datasourceUid: P8E80F9AEF21F6940
+              model:
+                editorMode: code
+                expr: sum(count_over_time({job="salt"} |~ `(?i)Salt request timed out` [$__auto]))
+                intervalMs: 1000
+                maxDataPoints: 43200
+                queryType: instant
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: salt_configuration[name="pub_hwm"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: $A > 5 && $B < 10000
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: OK
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                pub_hwm sets the maximum number of outstanding messages sent by salt-master. If more than this number of messages need to be sent concurrently, communication with clients slows down, potentially resulting in timeout errors during load peaks.
+
+                See the performance tuning guide for more information.
+          labels:
+            component: salt
+            issue: performance_issue
+          isPaused: false
+        - uid: be9hmkdpeksn4d
+          title: 'Insufficient memory: check minimal file mount size requirements'
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="fs_mount_insufficient"]
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: |-
+                One or multiple of the memory partitions might not meet minimal requirements.
+
+                Consult the Hardware Requirements section of the Installation and Upgrade guide for more information.
+          labels:
+            component: config
+            issue: min_spec
+          isPaused: false
+        - uid: fe9hmsfdz5udce
+          title: Filesystem partition(s) running out of space
+          condition: B
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: memory[name="fs_mount_out_of_space"]
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: A
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: B
+                type: threshold
+          noDataState: NoData
+          execErrState: Error
+          for: 0s
+          annotations:
+            summary: The utilization of one or multiple of memory partitions is above 90%.
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: de95uybcn1ji8a
+          title: Insufficient CPU count (master)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="master"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 4 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The CPU count is below minimum value of 4 for a master server.
+          for: 0s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
+        - uid: cz95uybcn1ji8a
+          title: Insufficient CPU count (proxy)
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: A
+                root_selector: hw[name="cpu_count"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: B
+              relativeTimeRange:
+                from: 600
+                to: 0
+              datasourceUid: infinity
+              model:
+                columns: []
+                datasource:
+                    type: yesoreyeram-infinity-datasource
+                    uid: infinity
+                filters: []
+                format: table
+                global_query_id: ""
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                parser: backend
+                refId: B
+                root_selector: misc[name="proxy"].value
+                source: url
+                type: json
+                url: http://health_check_supportconfig_exporter:9000/metrics.json
+                url_options:
+                    data: ""
+                    method: GET
+            - refId: C
+              datasourceUid: __expr__
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 0
+                            - 0
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params: []
+                      reducer:
+                        params: []
+                        type: avg
+                      type: query
+                datasource:
+                    name: Expression
+                    type: __expr__
+                    uid: __expr__
+                expression: 2 > $A && $B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: math
+          noDataState: NoData
+          execErrState: Error
+          annotations:
+            summary: The CPU count is below minimum value of 2 for a proxy server.
+          for: 0s
+          labels:
+            component: hw
+            issue: min_spec
+          isPaused: false
