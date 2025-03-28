@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.manager.satellite.CobblerSyncCommand;
 
 import org.cobbler.SystemRecord;
 
@@ -47,7 +46,6 @@ public class CobblerSystemRemoveCommand extends CobblerCommand {
         SystemRecord sr = lookupExisting(server);
         if (sr != null) {
             sr.remove();
-            return new CobblerSyncCommand(user).store();
         }
         return null;
     }
