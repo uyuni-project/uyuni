@@ -1255,28 +1255,28 @@
         <source>List Attestations</source>
         <target state="final">認証を一覧にする</target>
       </trans-unit>
-      <trans-unit id="Hub Configuration" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Hub Configuration" xml:space="preserve">
         <source>Hub Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">ハブ設定</target>
       </trans-unit>
-      <trans-unit id="Hub Details" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Hub Details" xml:space="preserve">
         <source>Hub Details</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">ハブの詳細</target>
       </trans-unit>
-      <trans-unit id="Peripherals Configuration" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Peripherals Configuration" xml:space="preserve">
         <source>Peripherals Configuration</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">周辺機器の設定</target>
       </trans-unit>
-      <trans-unit id="Access Tokens" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Access Tokens" xml:space="preserve">
         <source>Access Tokens</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
