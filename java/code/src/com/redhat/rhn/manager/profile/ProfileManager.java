@@ -222,7 +222,7 @@ public class ProfileManager extends BaseManager {
             if (plist == null) {
                 // No packages in profile with same name.  We know its only in the System
                 for (PackageListItem packageListItemIn : syslist) {
-                    PackageListItem syspkgitem = (PackageListItem) packageListItemIn;
+                    PackageListItem syspkgitem = packageListItemIn;
                     PackageMetadata pm = createPackageMetadata(syspkgitem,
                             null, PackageMetadata.KEY_THIS_ONLY, param);
                     log.debug("plist is null - adding KEY_THIS_ONLY: {}", pm.getSystem().getVersion());
@@ -238,10 +238,10 @@ public class ProfileManager extends BaseManager {
                 if (syslist.size() > 1 || plist.size() > 1) {
                     Map<String, PackageMetadata> compareMap = new HashMap<>();
                     for (PackageListItem packageListItemIn : syslist) {
-                        PackageListItem syspkgitem = (PackageListItem) packageListItemIn;
+                        PackageListItem syspkgitem = packageListItemIn;
                         for (int j = 0; j < plist.size(); j++) {
 
-                            PackageListItem profpkgitem = (PackageListItem) plist.get(j);
+                            PackageListItem profpkgitem = plist.get(j);
 
                             if (skipPkg.contains(profpkgitem.getNevra())) {
                                 // this package was evaluated on a previous pass through
@@ -323,8 +323,8 @@ public class ProfileManager extends BaseManager {
                 // Else the system and profile list just have one rev so we
                 // can do a standard compare
                 else {
-                    PackageListItem syspkgitem = (PackageListItem) syslist.get(0);
-                    PackageListItem profpkgitem = (PackageListItem) plist.get(0);
+                    PackageListItem syspkgitem = syslist.get(0);
+                    PackageListItem profpkgitem = plist.get(0);
 
                     if (compareArch(syspkgitem.getArch(), profpkgitem.getArch()) != 0) {
 
@@ -363,7 +363,7 @@ public class ProfileManager extends BaseManager {
                 // No packages in system with same name.  We know its only in the Profile
                 for (PackageListItem packageListItemIn : plist) {
                     PackageMetadata pm = createPackageMetadata(null,
-                            (PackageListItem) packageListItemIn, PackageMetadata.KEY_OTHER_ONLY,
+                            packageListItemIn, PackageMetadata.KEY_OTHER_ONLY,
                             param);
 
                     result.add(pm);
@@ -371,7 +371,7 @@ public class ProfileManager extends BaseManager {
             }
             else {
                 for (PackageListItem packageListItemIn : plist) {
-                    PackageListItem profpkgitem = (PackageListItem) packageListItemIn;
+                    PackageListItem profpkgitem = packageListItemIn;
 
                     if (!skipPkg.contains(profpkgitem.getNevra())) {
 
@@ -620,7 +620,7 @@ public class ProfileManager extends BaseManager {
             if (log.isDebugEnabled()) {
                 log.debug("  rse, fetching: {}", pkgIdCombo);
             }
-            PackageMetadata pm = (PackageMetadata) profilesMap.get(pkgIdCombo);
+            PackageMetadata pm = profilesMap.get(pkgIdCombo);
             if (pm != null) {
                 pm.updateActionStatus();
                 packagesToSync.add(pm);
