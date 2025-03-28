@@ -516,7 +516,7 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
     outstream.close()
     sslerrmsg = (
         "non-zero exitcode.\n"
-        "If you ran configure-proxy.sh, try copying again the certs from the SUSE Manager Server\n"
+        "If you ran configure-proxy.sh, try copying again the certs from the SUSE Multi-Linux Manager Server\n"
         f"exit-code: {ret}\n"
         f"error: {sstr(errstream.read())}\n"
     )

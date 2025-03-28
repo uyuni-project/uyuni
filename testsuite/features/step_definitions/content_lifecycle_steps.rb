@@ -66,6 +66,26 @@ When(/^I click the "([^"]*)" item (.*?) button$/) do |name, action|
   raise ScriptError, "xpath: #{action} button not found" unless button_element.click
 end
 
+When(/^I click the "([^"]*)" item (.*?) button if exists$/) do |name, action|
+  button =
+    case action
+    when /details/ then 'i[contains(@class, \'fa-list\')]'
+    when /edit/ then 'i[contains(@class, \'fa-edit\')]'
+    when /delete/ then 'i[contains(@class, \'fa-trash\')]'
+    else raise ScriptError, "Unknown element with description '#{action}'"
+    end
+
+  begin
+    td_element = find(:xpath, "//td[contains(text(), '#{name}')]")
+    raise ScriptError, "xpath: #{name} item not found" unless td_element
+
+    button_element = td_element.find(:xpath, "./ancestor::tr/td/button/#{button} | ./ancestor::tr/td/div/button/#{button}")
+    raise ScriptError, "xpath: #{action} button not found" unless button_element.click
+  rescue Capybara::ElementNotFound
+    # ignored - pending actions cannot be found
+  end
+end
+
 When(/^I backup the SSH authorized_keys file of host "([^"]*)"$/) do |host|
   # authorized_keys paths on the client
   auth_keys_path = '/root/.ssh/authorized_keys'

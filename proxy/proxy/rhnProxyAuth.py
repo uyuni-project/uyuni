@@ -51,6 +51,7 @@ else:
 # To avoid doing unnecessary work, keep ProxyAuth object global
 __PROXY_AUTH = None
 UP2DATE_CONFIG = config.Config('/etc/sysconfig/rhn/up2date')
+PRODUCT_NAME = "SUSE Multi-Linux Manager"
 
 
 def get_proxy_auth(hostname=None):
@@ -88,23 +89,23 @@ class ProxyAuth:
             mtime = statinfo.st_mtime
             if statinfo.st_size == 0:
                 raise_with_tb(rhnFault(1000,
-                    _("SUSE Manager Proxy is not configured, systemid file is empty. "
+                    _(f"{PRODUCT_NAME} Proxy is not configured, systemid file is empty. "
                       "Please contact your system administrator.")), sys.exc_info()[2])
 
         except FileNotFoundError as e:
             raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy is not configured, systemid file is missing. "
+                                   _(f"{PRODUCT_NAME} Proxy is not configured, systemid file is missing. "
                                      "Please contact your system administrator.")), sys.exc_info()[2])
         except IOError as e:
             log_error("unable to stat %s: %s" % (ProxyAuth.__systemid_filename, repr(e)))
             raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                   _(f"{PRODUCT_NAME} Proxy error ({PRODUCT_NAME} Proxy systemid has wrong permissions?). "
                                      "Please contact your system administrator.")), sys.exc_info()[2])
 
         if not os.access(ProxyAuth.__systemid_filename, os.R_OK):
             log_error("unable to access %s" % ProxyAuth.__systemid_filename)
             raise rhnFault(1000,
-                           _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                           _(f"{PRODUCT_NAME} Proxy error ({PRODUCT_NAME} Proxy systemid has wrong permissions?). "
                              "Please contact your system administrator."))
 
 
@@ -122,7 +123,7 @@ class ProxyAuth:
         except IOError as e:
             log_error("unable to read %s" % ProxyAuth.__systemid_filename)
             raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy error (SUSE Manager Proxy systemid has wrong permissions?). "
+                                   _(f"{PRODUCT_NAME} Proxy error ({PRODUCT_NAME} Proxy systemid has wrong permissions?). "
                                      "Please contact your system administrator.")), sys.exc_info()[2])
 
         # get serverid
@@ -182,7 +183,7 @@ problems, isn't running, or the token is somehow corrupt.
 """) % self.__serverid
             Traceback("ProxyAuth.set_cached_token", extra=text)
             raise_with_tb(rhnFault(1000,
-                                   _("SUSE Manager Proxy error (auth caching issue). "
+                                   _(f"{PRODUCT_NAME} Proxy error (auth caching issue). "
                                      "Please contact your system administrator.")), sys.exc_info()[2])
         log_debug(4, "successfully returning")
         return token
@@ -201,7 +202,7 @@ problems, isn't running, or the token is somehow corrupt.
             pass
 
     def login(self):
-        """ Login and fetch new token (proxy token).
+        f""" Login and fetch new token (proxy token).
 
             How it works in a nutshell.
             Only the broker component uses this. We perform a xmlrpc request
@@ -212,8 +213,8 @@ problems, isn't running, or the token is somehow corrupt.
 
             DESIGN NOTES:  what is the proxy auth token?
             -------------------------------------------
-            An SUSE Manager Proxy auth token is a token fetched upon login from
-            SUSE Manager Server or hosted.
+            An {PRODUCT_NAME} Proxy auth token is a token fetched upon login from
+            {PRODUCT_NAME} Server or hosted.
 
             It has this format:
                'S:U:ST:EO:SIG'
@@ -225,18 +226,18 @@ problems, isn't running, or the token is somehow corrupt.
                SIG = signature
                H   = hostname (important later)
 
-            Within this function within the SUSE Manager Proxy Broker we also tag on
+            Within this function within the {PRODUCT_NAME} Proxy Broker we also tag on
             the hostname to the end of the token. The token as described above
             is enough for authentication purposes, but we need a to identify
-            the exact hostname (as the SUSE Manager Proxy sees it). So now the token
+            the exact hostname (as the {PRODUCT_NAME} Proxy sees it). So now the token
             becomes (token:hostname):
                'S:U:ST:EO:SIG:H'
 
             DESIGN NOTES:  what is X-RHN-Proxy-Auth?
             -------------------------------------------
-            This is where we use the auth token beyond SUSE Manager Proxy login
+            This is where we use the auth token beyond {PRODUCT_NAME} Proxy login
             purposes. This a header used to track request routes through
-            a hierarchy of SUSE Manager Proxies.
+            a hierarchy of {PRODUCT_NAME} Proxies.
 
             X-RHN-Proxy-Auth is a header that passes proxy authentication
             information around in the form of an ordered list of tokens. This
@@ -319,12 +320,12 @@ problems, isn't running, or the token is somehow corrupt.
                     # coming through")
                     raise_with_tb(rhnFault(e.faultCode, e.faultString), sys.exc_info()[2])
                 # ok... it's some other fault
-                Traceback("ProxyAuth.login (Fault) - SUSE Manager Proxy not "
+                Traceback(f"ProxyAuth.login (Fault) - {PRODUCT_NAME} Proxy not "
                           "able to log in.")
                 # And raise a Proxy Error - the server made its point loud and
                 # clear
                 raise_with_tb(rhnFault(1000,
-                                       _("SUSE Manager Proxy error (during proxy login). "
+                                       _(f"{PRODUCT_NAME} Proxy error (during proxy login). "
                                          "Please contact your system administrator.")), sys.exc_info()[2])
             except Exception as e: # pylint: disable=broad-except
                 token = None
@@ -339,11 +340,11 @@ problems, isn't running, or the token is somehow corrupt.
             if error:
                 if error[0] in ('xmlrpclib.ProtocolError', 'socket.error', 'socket'):
                     raise rhnFault(1000,
-                                   _("SUSE Manager Proxy error (error: %s). "
+                                   _(f"{PRODUCT_NAME} Proxy error (error: %s). "
                                      "Please contact your system administrator.") % error[0])
                 if error[0] in ('rhn.SSL.SSL.SSLError', 'socket.sslerror'):
                     raise rhnFault(1000,
-                                   _("SUSE Manager Proxy error (SSL issues? Error: %s). "
+                                   _(f"{PRODUCT_NAME} Proxy error (SSL issues? Error: %s). "
                                      "Please contact your system administrator.") % error[0])
                 raise rhnFault(1002, err_text='%s' % e)
             raise rhnFault(1001)
@@ -421,9 +422,9 @@ problems, isn't running, or the token is somehow corrupt.
             if not os.access(CFG.CA_CHAIN, os.R_OK):
                 log_error('ERROR: missing or cannot access (for ca_chain): %s' % CFG.CA_CHAIN)
                 raise rhnFault(1000,
-                               _("SUSE Manager Proxy error (file access issues). "
+                               _(f"{PRODUCT_NAME} Proxy error (file access issues). "
                                  "Please contact your system administrator. "
-                                 "Please refer to SUSE Manager Proxy logs."))
+                                 "Please refer to {PRODUCT_NAME} Proxy logs."))
             serverObj.add_trusted_cert(CFG.CA_CHAIN)
         serverObj.add_header('X-RHN-Client-Version', 2)
         return serverObj

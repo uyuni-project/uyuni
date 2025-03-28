@@ -59,7 +59,7 @@
     <header class="navbar-pf navbar">
       <div class="header-content container-fluid">
         <div class="navbar-header d-flex flex-row">
-          <a href="#" class="navbar-toggle">
+          <a class="navbar-toggle" data-bs-toggle="collapse" href="#spacewalk-aside">
             <i class="fa fa-bars" aria-hidden="true"></i>
           </a>
           <div id="breadcrumb">
@@ -71,8 +71,8 @@
                   </a>
                 </c:when>
                 <c:otherwise>
-                  <a href="/" class="navbar-brand js-spa" target="" title="SUSE Manager homepage">
-                    <span>SUSE<i class="fa fa-registered"></i>Manager</span>
+                  <a href="/" class="navbar-brand js-spa" target="" title="SUSE Multi-Linux Manager homepage">
+                    <span>SUSE<i class="fa fa-registered"></i> Multi-Linux Manager</span>
                   </a>
                 </c:otherwise>
               </c:choose>
@@ -82,7 +82,7 @@
     </header>
 
     <div class="spacewalk-main-column-layout">
-      <aside id="spacewalk-aside" class="navbar-collapse in">
+      <aside id="spacewalk-aside" class="navbar-collapse collapse collapse-horizontal show">
         <div id="nav">
           <nav class="collapsed">
             <ul class="level1">

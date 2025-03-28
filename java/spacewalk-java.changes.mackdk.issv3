@@ -1,3 +1,0 @@
-- Added API for registering ISS hub/peripherals
-- Added basic API for token authentication
-- Added entities to handle token authentication

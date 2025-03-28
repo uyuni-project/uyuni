@@ -1,2 +1,0 @@
-- Fix possible errors replacing IP addresses and FQDNs for
-  proxies on pxe and grub files (bsc#1236601)

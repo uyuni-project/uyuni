@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-backend
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -16,6 +16,8 @@
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
@@ -47,9 +49,9 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.1.4
+Version:        5.1.6
 Release:        0
-Summary:        Common programs needed to be installed on the Spacewalk servers/proxies
+Summary:        Common programs needed to be installed on the %{productprettyname} servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
@@ -86,11 +88,11 @@ BuildRequires:  python3-rpm-macros
 BuildRequires:  python3-uyuni-common-libs
 
 %description
-Generic program files needed by the Spacewalk server machines.
+Generic program files needed by the %{productprettyname} server machines.
 This package includes the common code required by all servers/proxies.
 
 %package sql
-Summary:        Core functions providing SQL connectivity for the Spacewalk backend modules
+Summary:        Core functions providing SQL connectivity for the %{productprettyname} backend modules
 Group:          System/Management
 Requires(pre):  %{name} = %{version}-%{release}
 Requires:       %{name} = %{version}-%{release}
@@ -98,20 +100,20 @@ Requires:       %{name}-sql-virtual = %{version}-%{release}
 
 %description sql
 This package contains the basic code that provides SQL connectivity for
-the Spacewalk backend modules.
+the %{productprettyname} backend modules.
 
 %package sql-postgresql
-Summary:        Postgresql backend for Spacewalk
+Summary:        Postgresql backend for %{productprettyname}
 Group:          System/Management
 Requires:       python3-psycopg2 >= 2.8.4
 Provides:       %{name}-sql-virtual = %{version}-%{release}
 
 %description sql-postgresql
-This package contains provides PostgreSQL connectivity for the Spacewalk
+This package contains provides PostgreSQL connectivity for the %{productprettyname}
 backend modules.
 
 %package server
-Summary:        Basic code that provides Spacewalk Server functionality
+Summary:        Basic code that provides %{productprettyname} Server functionality
 Group:          System/Management
 Requires(pre):  %{name}-sql = %{version}-%{release}
 Requires:       %{name}-sql = %{version}-%{release}
@@ -185,7 +187,7 @@ Requires:       %{name}-server = %{version}-%{release}
 Listener for rhnpush (non-XMLRPC version)
 
 %package tools
-Summary:        Spacewalk Services Tools
+Summary:        %{productprettyname} Services Tools
 Group:          System/Management
 Requires:       %{name}
 Requires:       %{name}-app = %{version}-%{release}
@@ -206,6 +208,7 @@ BuildRequires:  systemd-rpm-macros
 Requires:       python3-rhn-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
+Requires:       python3-looseversion
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
@@ -225,10 +228,10 @@ Requires:       python3-requests
 Requires:       python3-rhnlib  >= 2.5.57
 
 %description tools
-Various utilities for the Spacewalk Server.
+Various utilities for the %{productprettyname} Server.
 
 %package xml-export-libs
-Summary:        Spacewalk XML data exporter
+Summary:        %{productprettyname} XML data exporter
 Group:          System/Management
 Requires:       %{name}-server = %{version}-%{release}
 
@@ -248,7 +251,7 @@ do
 done
 
 %if !0%{?is_opensuse} && 0%{?sle_version}
-sed -i 's/PRODUCT_NAME = "Uyuni"/PRODUCT_NAME = "SUSE Manager"/' common/rhnConfig.py
+sed -i "s/PRODUCT_NAME = \"Uyuni\"/PRODUCT_NAME = \"%{productprettyname}\"/" common/rhnConfig.py
 %endif
 
 %install

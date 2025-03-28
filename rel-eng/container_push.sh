@@ -36,7 +36,7 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
   NAME="${PKG_NAME%%-image}"
   # check which endpoint we are using to match the product
   if [ "${OSCAPI}" == "https://api.suse.de" ]; then
-    # SUSE Manager settings
+    # SUSE Multi-Linux Manager settings
     VERSION=$(echo ${PRODUCT_VERSION} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
     ARCH=
     # OBS cannot find the dependencies with a placeholder or %_arch from the project config.
@@ -45,17 +45,17 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
     if [ "${NAME}" != "init" ]; then
         ARCH="\/%ARCH%"
     fi
-    sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}${ARCH}/g" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^#\!BuildTag:/s/uyuni/multi-linux-manager\/${VERSION}${ARCH}/g" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^\(LABEL org.opensuse.reference=\)\"\([^:]\+:\)\([^%]\+\)%RELEASE%\"/\1\"\2${PRODUCT_VERSION}.%RELEASE%\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.manager/" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.multilinuxmanager/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Multi-Linux Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "s/^LABEL org\.opensuse\.reference=\"\${REFERENCE_PREFIX}/LABEL org.opensuse.reference=\"\${REFERENCE_PREFIX}${ARCH}/" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
     sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    NAME="suse\/manager\/${VERSION}${ARCH}\/${NAME}"
+    NAME="multi-linux-manager\/${VERSION}${ARCH}\/${NAME}"
   else
     NAME="uyuni\/${NAME}"
   fi

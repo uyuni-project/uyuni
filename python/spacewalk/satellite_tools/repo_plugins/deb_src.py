@@ -24,7 +24,6 @@ import fnmatch
 import requests
 import logging
 from functools import cmp_to_key
-from salt.utils.versions import LooseVersion
 from uyuni.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common.rhnConfig import cfg_component
@@ -33,6 +32,8 @@ from spacewalk.satellite_tools.repo_plugins import ContentPackage, CACHE_DIR
 from spacewalk.satellite_tools.syncLib import log2
 from spacewalk.server import rhnSQL
 from spacewalk.common import repo
+
+import looseversion
 
 try:
     #  python 2
@@ -217,9 +218,11 @@ class DebRepo:
 
         :return:
         """
-        if not repo.DpkgRepo(
+        dpkg_repo = repo.DpkgRepo(
             self.url, self._get_proxies(), self.gpg_verify, self.timeout
-        ).verify_packages_index():
+        )
+        log.debug("DebRepo.verify() dpkg_repo=%s", dpkg_repo)
+        if not dpkg_repo.verify_packages_index():
             raise repo.GeneralRepoException("Package index checksum failure")
 
     def _get_proxies(self):
@@ -469,6 +472,7 @@ class ContentSource:
     def list_packages(self, filters, latest):
         """list packages"""
 
+        log.debug("ContentSource.list_packages(filters=%s, latest=%s)", filters, latest)
         pkglist = self.repo.get_package_list()
         self.num_packages = len(pkglist)
         if latest:
@@ -477,9 +481,9 @@ class ContentSource:
                 # pylint: disable-next=consider-using-f-string
                 ident = "{}.{}".format(pkg.name, pkg.arch)
                 # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or LooseVersion(
+                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
                     pkg.evr()
-                ) > LooseVersion(latest_pkgs[ident].evr()):
+                ) > looseversion.LooseVersion(latest_pkgs[ident].evr()):
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
         pkglist.sort(key=cmp_to_key(self._sort_packages))
@@ -505,8 +509,11 @@ class ContentSource:
                     pack.name, pack.version, pack.release, pack.epoch, pack.arch
                 )
             except ValueError as e:
-                log(0, "WARNING: package contains incorrect metadata. SKIPPING!")
-                log(0, e)
+                log.error(
+                    "Skipping package %s. Package contains incorrect metadata.\n%s",
+                    new_pack,
+                    e,
+                )
                 continue
             new_pack.unique_id = pack
             new_pack.checksum_type = pack.checksum_type

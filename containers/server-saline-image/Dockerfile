@@ -14,17 +14,17 @@ RUN groupadd -r --gid 10554 salt && \
 
 # Main packages
 RUN zypper ref -f && zypper --non-interactive up
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution --download-only saline python3-saline
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution --download-only saline python311-saline
 RUN find /var/cache/zypp/packages/ -type f -name '*.rpm'
 RUN rpm -ivh --nodeps $(find /var/cache/zypp/packages/ -type f \
     -name update-alternatives.rpm -o \
-    -name python3-base.rpm -o -name 'libpython3*.rpm' -o -name 'libopenssl1*.rpm' -o -name libexpat1.rpm -o \
-    -name salt.rpm -o -name python3-salt.rpm -o -name python3-tornado.rpm -o \
-    -name python3-contextvars.rpm -o -name python3-immutables.rpm -o -name python3-looseversion.rpm -o \
-    -name python3-packaging.rpm -o -name python3-distro.rpm -o \
-    -name python3-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name python3-Jinja2.rpm -o -name python3-MarkupSafe.rpm -o \
-    -name python3-msgpack.rpm -o -name python3-more-itertools.rpm -o \
-    -name saline.rpm -o -name python3-saline.rpm -o -name python3-python-dateutil.rpm -o -name python3-six.rpm)
+    -name python311-base.rpm -o -name 'libpython3_11*.rpm' -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
+    -name salt.rpm -o -name python311-salt.rpm -o -name python311-tornado.rpm -o \
+    -name python311-contextvars.rpm -o -name python311-immutables.rpm -o -name python311-looseversion.rpm -o \
+    -name python311-packaging.rpm -o -name python311-distro.rpm -o \
+    -name python311-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name python311-Jinja2.rpm -o -name python311-MarkupSafe.rpm -o \
+    -name python311-msgpack.rpm -o -name python311-more-itertools.rpm -o \
+    -name saline.rpm -o -name python311-saline.rpm -o -name python311-python-dateutil.rpm -o -name python311-six.rpm)
 RUN zypper clean --all
 
 RUN mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/
@@ -38,7 +38,7 @@ LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
 LABEL org.opencontainers.image.name=server-saline-image
-LABEL org.opencontainers.image.version=5.1.2
+LABEL org.opencontainers.image.version=5.1.4
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/salt-saline:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

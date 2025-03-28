@@ -65,6 +65,7 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
         context().checking(new Expectations() {{
             // Auth routes are added in all cases
             oneOf(helper).addPostRoute(with("/manager/api/auth/login"), with(any(Route.class)));
+            oneOf(helper).addPostRoute(with("/manager/api/auth/logout"), with(any(Route.class)));
             oneOf(helper).addGetRoute(with("/manager/api/auth/logout"), with(any(Route.class)));
 
             // Test routes

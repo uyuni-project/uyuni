@@ -73,6 +73,7 @@ public class MatcherJsonIO {
 
     /** Architecture strings **/
     private static final String AMD64_ARCH_STR = "amd64";
+    private static final String ARM64_ARCH_STR = "arm64";
     private static final String S390_ARCH_STR = "s390";
     private static final String PPC64LE_ARCH_STR = "ppc64le";
 
@@ -149,6 +150,7 @@ public class MatcherJsonIO {
 
         monitoringProductByArch = Map.of(
             AMD64_ARCH_STR, 1201L,      // SUSE Manager Monitoring Single
+            ARM64_ARCH_STR, 1201L,      // SUSE Manager Monitoring Single
             S390_ARCH_STR, 1203L,       // SUSE Manager Monitoring Unlimited Virtual Z
             PPC64LE_ARCH_STR, 1201L     // SUSE Manager Monitoring Single
         );

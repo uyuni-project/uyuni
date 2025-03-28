@@ -1,2 +1,0 @@
-- Create a task (root-ca-cert-update) in taskomatic to store
-  ca-certificates in the trusted certificate path

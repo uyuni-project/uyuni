@@ -1411,7 +1411,10 @@ public class SystemManager extends BaseManager {
         elabParams.put("sid", sid);
         elabParams.put("user_id", user.getId());
 
-        return makeDataResultNoPagination(params, elabParams, m);
+        DataResult<ErrataOverview> dr = makeDataResultNoPagination(params, elabParams, m);
+        //elaborate the data result to get the detailed information.
+        dr.elaborate(elabParams);
+        return dr;
     }
 
     /**
@@ -2327,7 +2330,7 @@ public class SystemManager extends BaseManager {
         Map<String, Object> params = new HashMap<>();
         params.put("uid", user.getId());
         params.put("sid", sid);
-        return m.execute(params).size() >= 1;
+        return !m.execute(params).isEmpty();
     }
 
     /**
@@ -3842,8 +3845,7 @@ public class SystemManager extends BaseManager {
      */
     public static void updateSystemOverview(Long sid) {
         // We need the server to be already in the database to update it
-        if (sid != null &&
-                TaskFactory.lookup(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid) == null) {
+        if (sid != null) {
             TaskFactory.createTask(OrgFactory.getSatelliteOrg(), SystemsOverviewUpdateDriver.TASK_NAME, sid);
         }
     }

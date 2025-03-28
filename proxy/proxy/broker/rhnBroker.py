@@ -325,18 +325,18 @@ class BrokerHandler(SharedHandler):
 
             # Expired/invalid auth token; go through the loop once again
             if error == '1003': # invalid token
-                msg = "SUSE Manager Proxy Session Token INVALID -- bad!"
+                msg = "SUSE Multi-Linux Manager Proxy Session Token INVALID -- bad!"
                 log_error(msg)
                 log_debug(0, msg)
             elif error == '1004':
                 log_debug(2,
-                          "SUSE Manager Proxy Session Token expired, acquiring new one.")
+                          "SUSE Multi-Linux Manager Proxy Session Token expired, acquiring new one.")
             else: # this should never happen.
-                msg = "SUSE Manager Proxy login failed, error code is %s" % error
+                msg = "SUSE Multi-Linux Manager Proxy login failed, error code is %s" % error
                 log_error(msg)
                 log_debug(0, msg)
                 raise rhnFault(1000,
-                               _("SUSE Manager Proxy error (issues with proxy login). "
+                               _("SUSE Multi-Linux Manager Proxy error (issues with proxy login). "
                                  "Please contact your system administrator."))
 
             # Forced refresh of the proxy token
@@ -345,7 +345,7 @@ class BrokerHandler(SharedHandler):
             # The token could not be aquired
             log_debug(0, "Unable to acquire proxy authentication token")
             raise rhnFault(1000,
-                           _("SUSE Manager Proxy error (unable to acquire proxy auth token). "
+                           _("SUSE Multi-Linux Manager Proxy error (unable to acquire proxy auth token). "
                              "Please contact your system administrator."))
 
         # Support for yum byte-range
@@ -622,7 +622,7 @@ class BrokerHandler(SharedHandler):
         f = rep.get_function(funct)
         if not f:
             raise rhnFault(1000,
-                           _("SUSE Manager Proxy configuration error: invalid function %s") % funct)
+                           _("SUSE Multi-Linux Manager Proxy configuration error: invalid function %s") % funct)
 
         log_debug(3, "Calling %s(%s)" % (funct, params))
         if params is None:

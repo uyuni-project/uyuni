@@ -387,11 +387,11 @@ class UploadClass(uploadLib.UploadClass):
             # compare checksums for existance check
             if server_digest == digest and not self.options.force:
                 channel_packages.append(pkgs_info[pkg_key])
-                self.warn(1, "Package %s already exists on the SUSE Manager Server-- Skipping Upload...." % pkg)
+                self.warn(1, "Package %s already exists on the SUSE Multi-Linux Manager Server-- Skipping Upload...." % pkg)
                 continue
 
             elif server_digest == ():
-                self.warn(1,"Package %s Not Found on SUSE Manager Server -- Uploading" % pkg)
+                self.warn(1,"Package %s Not Found on SUSE Multi-Linux Manager Server -- Uploading" % pkg)
 
             elif server_digest == "on-disk" and not self.options.force:
                 channel_packages.append(pkgs_info[pkg_key])

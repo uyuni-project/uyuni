@@ -1150,7 +1150,7 @@ public class ConfigDefaults {
      * @return the name of the theme for the webUI
      */
     public String getDefaultWebTheme() {
-        return Config.get().getString(WEB_THEME, "susemanager-light");
+        return Config.get().getString(WEB_THEME, "suse-light");
     }
 
     /**

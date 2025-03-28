@@ -25,7 +25,6 @@ Feature: Sanity checks
     And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
-    And files on container volumes should all have the proper SELinux label
 
 @proxy
   Scenario: The proxy is healthy
@@ -370,20 +369,6 @@ Feature: Sanity checks
     And "ubuntu2404_ssh_minion" should communicate with the server using public interface
     And the clock from "ubuntu2404_ssh_minion" should be exact
 
-@debian11_minion
-  Scenario: The Debian 11 minion is healthy
-    Then "debian11_minion" should have a FQDN
-    And reverse resolution should work for "debian11_minion"
-    And "debian11_minion" should communicate with the server using public interface
-    And the clock from "debian11_minion" should be exact
-
-@debian11_ssh_minion
-  Scenario: The Debian 11 Salt SSH minion is healthy
-    Then "debian11_ssh_minion" should have a FQDN
-    And reverse resolution should work for "debian11_ssh_minion"
-    And "debian11_ssh_minion" should communicate with the server using public interface
-    And the clock from "debian11_ssh_minion" should be exact
-
 @debian12_minion
   Scenario: The Debian 12 minion is healthy
     Then "debian12_minion" should have a FQDN
@@ -398,28 +383,14 @@ Feature: Sanity checks
     And "debian12_ssh_minion" should communicate with the server using public interface
     And the clock from "debian12_ssh_minion" should be exact
 
-@opensuse155arm_minion
-  Scenario: The openSUSE 15.5 ARM minion is healthy
-    Then "opensuse155arm_minion" should have a FQDN
-    And reverse resolution should work for "opensuse155arm_minion"
-    And "opensuse155arm_minion" should communicate with the server using public interface
-    And the clock from "opensuse155arm_minion" should be exact
-
-@opensuse155arm_ssh_minion
-  Scenario: The openSUSE 15.5 ARM SSH minion is healthy
-    Then "opensuse155arm_ssh_minion" should have a FQDN
-    And reverse resolution should work for "opensuse155arm_ssh_minion"
-    And "opensuse155arm_ssh_minion" should communicate with the server using public interface
-    And the clock from "opensuse155arm_ssh_minion" should be exact
-
-  @opensuse156arm_minion
+@opensuse156arm_minion
   Scenario: The openSUSE 15.6 ARM minion is healthy
     Then "opensuse156arm_minion" should have a FQDN
     And reverse resolution should work for "opensuse156arm_minion"
     And "opensuse156arm_minion" should communicate with the server using public interface
     And the clock from "opensuse156arm_minion" should be exact
 
-  @opensuse156arm_ssh_minion
+@opensuse156arm_ssh_minion
   Scenario: The openSUSE 15.6 ARM SSH minion is healthy
     Then "opensuse156arm_ssh_minion" should have a FQDN
     And reverse resolution should work for "opensuse156arm_ssh_minion"

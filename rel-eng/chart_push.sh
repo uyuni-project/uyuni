@@ -33,15 +33,15 @@ if [ -f "${SRPM_PKG_DIR}/Chart.yaml" ]; then
     if [ "${OSCAPI}" == "https://api.suse.de" ]; then
         # SUSE Manager settings
         VERSION=$(echo ${PRODUCT_VERSION} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
-        sed "/^#\!BuildTag:/s/uyuni/suse\/manager\/${VERSION}/g" -i ${SRPM_PKG_DIR}/Chart.yaml
-        sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/suse-manager\//" -i ${SRPM_PKG_DIR}/Chart.yaml
+        sed "/^#\!BuildTag:/s/uyuni/multi-linux-manager\/${VERSION}/g" -i ${SRPM_PKG_DIR}/Chart.yaml
+        sed "s/^home: .*$/home: https:\/\/www.suse.com\/products\/multi-linux-manager\//" -i ${SRPM_PKG_DIR}/Chart.yaml
         CHART_TAR=$(ls ${SRPM_PKG_DIR}/*.tar)
         mkdir ${SRPM_PKG_DIR}/tar
         tar xf $CHART_TAR -C ${SRPM_PKG_DIR}/tar
-        sed "s/^repository: .\+$/repository: registry.suse.com\/suse\/manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
+        sed "s/^repository: .\+$/repository: registry.suse.com\/multi-linux-manager\/${VERSION}/" -i ${SRPM_PKG_DIR}/tar/values.yaml
         tar cf $CHART_TAR -C ${SRPM_PKG_DIR}/tar .
         rm -rf ${SRPM_PKG_DIR}/tar
-        NAME="suse\/manager\/${VERSION}\/${NAME}"
+        NAME="multi-linux-manager\/${VERSION}\/${NAME}"
     else
         NAME="uyuni\/${NAME}"
     fi

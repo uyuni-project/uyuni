@@ -67,7 +67,7 @@ def fetch_github_issues(organization, project_number, column, headers)
         nodes = items['nodes']
         nodes.each do |item|
           status_field = item['fieldValueByName']
-          next if status_field['name'] != column
+          next if status_field.nil? || status_field['name'] != column
 
           if status_field && status_field['item'] && status_field['item']['content']
             issue_title = status_field['item']['content']['title']

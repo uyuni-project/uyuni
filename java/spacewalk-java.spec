@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-java
 #
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2025 SUSE LLC
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -15,6 +15,9 @@
 
 # Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
+
+## The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
+%{!?productprettyname: %global productprettyname Uyuni}
 
 #!BuildIgnore:  udev-mini libudev-mini1
 
@@ -57,9 +60,9 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.1.8
+Version:        5.1.10
 Release:        0
-Summary:        Java web application files for Spacewalk
+Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
@@ -258,7 +261,7 @@ BuildRequires:  translate-toolkit
 %endif
 
 %description
-This package contains the code for the Java version of the Spacewalk Web Site.
+This package contains the code for the Java version of the %{productprettyname} Web Site.
 
 %package config
 Summary:        Configuration files for Spacewalk Java
@@ -269,7 +272,7 @@ Requires(post): salt-master
 Requires(post): tomcat
 
 %description config
-This package contains the configuration files for the Spacewalk Java web
+This package contains the configuration files for the %{productprettyname} Java web
 application and taskomatic process.
 
 %package lib
@@ -279,7 +282,7 @@ Group:          Applications/Internet
 Requires:       /usr/bin/sudo
 
 %description lib
-This package contains the jar files for the Spacewalk Java web application
+This package contains the jar files for the %{productprettyname} Java web application
 and taskomatic process.
 
 %package postgresql
@@ -291,7 +294,7 @@ Requires:       tomcat >= 7
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
-This package contains PostgreSQL database backend files for the Spacewalk Java.
+This package contains PostgreSQL database backend files for the %{productprettyname} Java.
 
 %if ! 0%{?omit_tests} > 0
 %package tests
@@ -422,10 +425,7 @@ done
 sed -i 's/apache2.service/%{apache2}.service/' scripts/taskomatic.service
 
 %build
-PRODUCT_NAME="SUSE Manager"
-%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
-PRODUCT_NAME="Uyuni"
-%endif
+PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
@@ -488,10 +488,7 @@ if [[ ! `java --list-modules | grep com.sun.xml.bind` ]]; then
 fi
 
 %install
-PRODUCT_NAME="SUSE Manager"
-%if !0%{?sle_version} || 0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora}
-PRODUCT_NAME="Uyuni"
-%endif
+PRODUCT_NAME="%{productprettyname}"
 
 %if 0%{?rhel}
 export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/

@@ -31,7 +31,7 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.1.6
+Version:        5.1.8
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
@@ -43,7 +43,7 @@ Source1:        node-modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
-BuildRequires:  nodejs >= 20
+BuildRequires:  (nodejs >= 22 with nodejs < 23)
 BuildRequires:  spacewalk-backend
 BuildRequires:  uyuni-base-common
 BuildRequires:  perl(ExtUtils::MakeMaker)
@@ -205,7 +205,7 @@ popd
 
 # Adjust default theme for SUSE Manager
 %if 0%{?sle_version} && ! (0%{?is_opensuse} || 0%{?rhel} || 0%{?fedora})
-sed -i -e 's/^web.theme_default =.*$/web.theme_default = susemanager-light/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf
+sed -i -e 's/^web.theme_default =.*$/web.theme_default = suse-light/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf
 %endif
 
 %find_lang spacewalk-web

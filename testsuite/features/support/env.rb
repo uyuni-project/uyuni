@@ -67,6 +67,7 @@ DEFAULT_TIMEOUT = ENV['DEFAULT_TIMEOUT'] ? ENV['DEFAULT_TIMEOUT'].to_i : 250
 $is_cloud_provider = ENV['PROVIDER'].include? 'aws'
 $is_gh_validation = ENV['PROVIDER'].include? 'podman'
 $is_containerized_server = %w[k3s podman].include? ENV.fetch('CONTAINER_RUNTIME', '')
+$is_transactional_server = transactional_system?('server', runs_in_container: false)
 $is_using_build_image = ENV.fetch('IS_USING_BUILD_IMAGE', false)
 $is_using_scc_repositories = (ENV.fetch('IS_USING_SCC_REPOSITORIES', 'False') != 'False')
 $catch_timeout_message = (ENV.fetch('CATCH_TIMEOUT_MESSAGE', 'False') == 'True')
@@ -147,12 +148,19 @@ After do |scenario|
       print_server_logs
     end
   end
-  page.instance_variable_set(:@touched, false) if Capybara::Session.instance_created?
+  page.instance_variable_set(:@touched, false) if capybara_session_created?
 end
 
-# Test is web session is open
+# Test if capybara session instance was created
+def capybara_session_created?
+  return false if Capybara::Session.nil?
+
+  Capybara::Session.instance_created?
+end
+
+# Test if web session is open
 def web_session_is_active?
-  return false unless Capybara::Session.instance_created?
+  return false unless capybara_session_created?
 
   page.has_selector?('header') || page.has_selector?('#username-field')
 end
@@ -211,11 +219,17 @@ def process_code_coverage
   $code_coverage.push_feature_coverage(feature_filename)
 end
 
-# Dump feature code coverage into a Redis DB
-After do |scenario|
+# Dump feature code coverage into a Redis DB before we run next feature
+Before do |scenario|
   next unless $code_coverage_mode
-  next unless $feature_path != scenario.location.file
 
+  # Initialize $feature_path if that's the first feature
+  $feature_path ||= scenario.location.file
+
+  # Skip if still in the same feature file
+  next if $feature_path == scenario.location.file
+
+  # Runs only if a new feature file starts
   process_code_coverage
   $feature_path = scenario.location.file
 end
@@ -240,7 +254,7 @@ After('@scope_cobbler') do |scenario|
 end
 
 AfterStep do
-  next unless Capybara::Session.instance_created?
+  next unless capybara_session_created?
 
   log 'Timeout: Waiting AJAX transition' if has_css?('.senna-loading', wait: 0) && !has_no_css?('.senna-loading', wait: 30)
 end
@@ -389,14 +403,6 @@ Before('@ubuntu2404_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['ubuntu2404_ssh_minion']
 end
 
-Before('@debian11_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_minion']
-end
-
-Before('@debian11_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian11_ssh_minion']
-end
-
 Before('@debian12_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['debian12_minion']
 end
@@ -451,14 +457,6 @@ end
 
 Before('@sle15sp6_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_ssh_minion']
-end
-
-Before('@opensuse155arm_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_minion']
-end
-
-Before('@opensuse155arm_ssh_minion') do
-  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['opensuse155arm_ssh_minion']
 end
 
 Before('@opensuse156arm_minion') do
@@ -680,6 +678,16 @@ end
 # do test only if we have a containerized server
 Before('@containerized_server') do
   skip_this_scenario unless $is_containerized_server
+end
+
+# skip tests if the server runs on a transactional base OS
+Before('@skip_if_transactional_server') do
+  skip_this_scenario if $is_transactional_server
+end
+
+# do tests only if the server runs on a transactional base OS
+Before('@transactional_server') do
+  skip_this_scenario unless $is_transactional_server
 end
 
 # only test for excessive SCC accesses if SCC access is being logged

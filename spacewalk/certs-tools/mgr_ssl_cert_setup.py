@@ -110,6 +110,7 @@ def processCommandline():
         "-k", "--server-key-file", help="Path to the Server Private Key"
     )
     parser.add_argument("--check-only", "-c", action="store_true")
+    parser.add_argument("--show-container-setup", action="store_true")
     parser.add_argument("--verbose", "-v", action="count", default=0)
     parser.add_argument("--skip-db", action="store_true")
 
@@ -683,6 +684,17 @@ def _main():
     """main routine"""
 
     options = processCommandline()
+
+    if options.show_container_setup:
+        container_setup = getContainersSetup(
+            options.root_ca_file,
+            options.intermediate_ca_file,
+            options.server_cert_file,
+            options.server_key_file,
+        )
+        sys.stdout.write(container_setup)
+        sys.exit(0)
+
     checkOptions(
         options.root_ca_file,
         options.server_cert_file,

@@ -18,6 +18,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -70,6 +71,20 @@ public class ImageInspectActionResult implements Serializable {
          */
         public void setServerId(Long serverIdIn) {
             serverId = serverIdIn;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (!(obj instanceof ImageInspectActionResultId that)) {
+                return false;
+            }
+            return Objects.equals(getServerId(), that.getServerId()) &&
+                    Objects.equals(getActionImageInspectId(), that.getActionImageInspectId());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(getServerId(), getActionImageInspectId());
         }
     }
 

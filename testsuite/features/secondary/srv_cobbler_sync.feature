@@ -42,5 +42,7 @@ Feature: Run Cobbler Sync via WebUI
     And I follow the left menu "Admin > Task Engine Status > Last Execution Times"
     Then I should see the correct timestamp for task "Cobbler Sync:"
 
+# flaky test
+@skip_if_github_validation
   Scenario: Check for errors in Cobbler monitoring
     Then the local logs for Cobbler should not contain errors

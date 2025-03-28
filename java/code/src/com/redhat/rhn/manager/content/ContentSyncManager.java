@@ -366,7 +366,7 @@ public class ContentSyncManager {
      */
     public List<MgrSyncProductDto> listProducts() {
         if (!(ConfigDefaults.get().isUyuni() || hasToolsChannelSubscription() || canSyncToolsChannelViaCloudRMT())) {
-            LOG.warn("No SUSE Manager Server Subscription available. " +
+            LOG.warn("No SUSE Multi-Linux Manager Server Subscription available. " +
                     "Products requiring Client Tools Channel will not be shown.");
         }
         return HibernateFactory.doWithoutAutoFlushing(this::listProductsImpl);
@@ -1109,7 +1109,11 @@ public class ContentSyncManager {
             return null;
         }
         String prdArch = parts[6];
-        String archStr = prdArch.equals("amd64") ? prdArch + "-deb" : prdArch;
+        String archStr = switch (prdArch) {
+            case "amd64" -> prdArch + "-deb";
+            case "arm64" -> prdArch + "-deb";
+            default -> prdArch;
+        };
 
         SCCRepository repo = new SCCRepository();
         repo.setSigned(isRepoSigned(true));
@@ -1334,7 +1338,7 @@ public class ContentSyncManager {
         List<String> urls = new LinkedList<>();
 
         // Debian repo
-        if (repo.getDistroTarget() != null && repo.getDistroTarget().equals("amd64")) {
+        if (repo.getDistroTarget() != null && (List.of("amd64", "arm64").contains(repo.getDistroTarget()))) {
             // There is not only 1 file we can test.
             // https://wiki.debian.org/DebianRepository/Format
             relFiles.add("Packages.xz");

@@ -1,4 +1,27 @@
 -------------------------------------------------------------------
+Mon Mar 24 11:46:11 CET 2025 - marina.latini@suse.com
+
+- version 5.1.6-0
+  * Remove import of Salt code that might be shipped for a different
+    Python version (bsc#1239859)
+
+-------------------------------------------------------------------
+Fri Feb 28 11:47:44 CET 2025 - rosuna@suse.com
+
+- version 5.1.5-0
+  * Implement module to get configuration values from the database
+  * Allow translation to wrap strings as weblate forces it
+  * Make ISSv1 timezone independent (bsc#1221505)
+  * Cast float pkg metadata to int (gh#uyuni-project/uyuni#9613)
+  * Allow spacewalk-repo-sync filtering using NEVRA
+    instead of package name only (bsc#1234226)
+  * Fix `AttributeError: ENABLE_NVREA` for reposyncing (bsc#1226273)
+  * Fix wrong timestamp when importing packages
+    with rhnpush (bsc#1235970)
+  * New password policy impl, removal of old defaults
+  * Always parse versions from rhn config as strings
+
+-------------------------------------------------------------------
 Fri Jan 24 14:57:56 CET 2025 - marina.latini@suse.com
 
 - version 5.1.4-0
