@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2025-03-08 21:56+0000\n"
+"PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.10.2\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
@@ -1042,10 +1042,8 @@ msgid "Name"
 msgstr "Nom"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "Mínim 4 caràcters"
+msgstr "Ha de tenir un mínim de 4 caràcters"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:26
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
@@ -1805,20 +1803,20 @@ msgid "Server Monitoring"
 msgstr "Seguiment del servidor"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:154
-#, fuzzy
-#| msgid " exporters to expose metrics about your environment."
 msgid ""
 "The server uses <link>Prometheus</link> exporters to expose metrics about "
 "your environment."
-msgstr " exportadors per exposar mètriques sobre el vostre entorn."
+msgstr ""
+"El servidor usa exportadors <link>Prometheus</link> per exposar mètriques "
+"sobre el vostre entorn."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:163
-#, fuzzy
-#| msgid " to learn how to consume these metrics."
 msgid ""
 "Refer to the <link>documentation</link> to learn how to consume these "
 "metrics."
-msgstr " aprendre a consumir aquestes mètriques."
+msgstr ""
+"Consulteu la <link>documentació</link> per saber com consumir aquestes "
+"mètriques."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:254
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:274
@@ -1835,14 +1833,12 @@ msgid "Disable"
 msgstr "Desactiva"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:338
-#, fuzzy
-#| msgid "SUSE Manager Configuration - Monitoring"
 msgid "{productName} Configuration - Monitoring"
-msgstr "Configuració del gestor de SUSE - Seguiment"
+msgstr "Configuració per a {productName} - Supervisió"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:345
 msgid "Set up monitoring for your {productName} server."
-msgstr ""
+msgstr "Configureu la supervisió per al servidor {productName}."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "General"
@@ -2156,15 +2152,11 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operació no correcta: Resposta buida del servidor"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-#, fuzzy
-#| msgid ""
-#| "No SUSE Manager Server Subscription available. Products requiring Client "
-#| "Tools Channel will not be shown."
 msgid ""
 "No SUSE Multi-Linux Manager Server Subscription available. Products "
 "requiring Client Tools Channel will not be shown."
 msgstr ""
-"No hi ha disponible cap subscripció al servidor SUSE Manager. No es "
+"No hi ha disponible cap subscripció al servidor SUSE MultiLinux. No es "
 "mostraran els productes que requereixin el canal Eines del client."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
@@ -2773,17 +2765,12 @@ msgid "Match data status"
 msgstr "Concorda amb l'estat de les dades"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-#, fuzzy
-#| msgid ""
-#| "Could not start a matching run. Please contact your SUSE Manager "
-#| "administrator to make sure the task scheduler is running."
 msgid ""
 "Could not start a matching run. Please contact your administrator to make "
 "sure the task scheduler is running."
 msgstr ""
 "No s'ha pogut iniciar una execució coincident. Contacteu amb l'administrador "
-"del SUSE Manager per assegurar-vos que el programador de tasques s'està "
-"executant."
+"per assegurar-vos que el programador de tasques s'està executant."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -4392,10 +4379,8 @@ msgstr "Mostra el resum del clúster"
 #: ../html/src/manager/images/image-view-overview.tsx:247
 #: ../html/src/manager/images/image-view-overview.tsx:249
 #: ../html/src/manager/images/image-view.tsx:528
-#, fuzzy
-#| msgid "All instances are consistent with SUSE Manager"
 msgid "All instances are consistent with {productName}"
-msgstr "Totes les instàncies són coherents amb el gestor SUSE"
+msgstr "Totes les instàncies són coherents amb {productName}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:262
 #: ../html/src/manager/images/image-view-overview.tsx:263
@@ -4555,20 +4540,16 @@ msgid "Loading runtime information..."
 msgstr "S'està carregant la informació del temps d'execució..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
-#, fuzzy
-#| msgid "Instance is consistent with SUSE Manager"
 msgid "Instance is consistent with {productName}"
-msgstr "La instància és coherent amb el gestor de SUSE"
+msgstr "La instància és coherent amb {productName}"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
 msgstr "La instància està desactualitzada"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
-#, fuzzy
-#| msgid "Cluster is consistent with SUSE Manager"
 msgid "Cluster is consistent with {productName"
-msgstr "El Cluster és coherent amb el gestor de SUSE"
+msgstr "El clúster és coherent amb {productName}"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
@@ -4688,22 +4669,16 @@ msgstr ""
 "contacte amb l'administrador del sistema per afegir més espai al disc."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
-#| msgid ""
-#| "SUSE Manager PAYG instances must forward registration data to SCC when "
-#| "credentials are provided. Data will be sent independently of the "
-#| "configuration setting. To hide this warning please set "
-#| "'forward_registration = 1' in rhn.conf."
 msgid ""
 "SUSE Multi-Linux Manager PAYG instances must forward registration data to "
 "SCC when credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"Les instàncies SUSE Manager PAYG han de reenviar les dades de registre a SCC "
-"quan es proporcionen credencials. Les dades s'enviaran independentment de la "
-"configuració. Per ocultar aquest avís, establiu 'registre previ . 1' a rhn."
-"conf."
+"Les instàncies de SUSE MultiLinux PAYG han de reenviar les dades de registre "
+"a SCC quan es proporcionen credencials. Les dades s'enviaran independentment "
+"de la configuració. Per ocultar aquest avís, establiu 'registre previ . 1' a "
+"rhn.conf."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -6035,10 +6010,8 @@ msgid "Uyuni homepage"
 msgstr "Pàgina d'inici d'Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.tsx:259
-#, fuzzy
-#| msgid "SUSE Manager homepage"
 msgid "SUSE Multi-Linux Manager homepage"
-msgstr "Pàgina d'inici del gestor de SUSE"
+msgstr "Pàgina d'inici del gestor de SUSE MultiLinux"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -6057,10 +6030,8 @@ msgid "Config channel"
 msgstr "Canal de configuració"
 
 #: ../html/src/manager/state/highstate-summary.tsx:27
-#, fuzzy
-#| msgid "{productName} release {versionNumber}"
 msgid "{productName} internal"
-msgstr "{productName} publica {versionNumber}"
+msgstr "{productName} intern"
 
 #: ../html/src/manager/state/highstate-summary.tsx:37
 msgid "Internal states"
@@ -6112,7 +6083,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
-msgstr ""
+msgstr "{productName} predeterminat"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
 msgid "Loading child channels.."
