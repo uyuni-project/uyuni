@@ -83,4 +83,4 @@ export type FlatChannel = {
   parentChannelLabel: string | null; // if null or undefined, this is a root channel
   originalChannelLabel: string | null; // the id of the channel that this is a clone of
   childrenIds: string[];
-}
+};

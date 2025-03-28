@@ -217,7 +217,6 @@ export class HierarchicalChannelTable extends React.Component<
     }
 
     if (visitedLabels.has(channel.originalChannelLabel)) {
-      console.warn(`Circular reference detected in original channel chain at: ${channel.channelLabel}`);
       return channel.channelLabel;
     }
 
