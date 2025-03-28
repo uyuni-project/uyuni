@@ -148,7 +148,7 @@ section {
 
   /* fixing margins in the 1st and last columns */
   section {
-    padding: $content-area-padding;
+    padding: 0 $content-area-padding-side $content-area-padding-bottom;
     float: right;
   }
 }
