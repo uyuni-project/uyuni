@@ -20,13 +20,11 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Represents a version of a SUMA or Uyuni instance.
- * Versioning in Uyuni and SUMA follows different formats:
- * SUMA versions are in format X.Y.Z - representing major, minor and patch
- * Uyuni versions are in the format X.Y - representing year and month.
- * In both formats, the version number is compared from left to right, with each component having a hierarchical
- * significance.
- * Only versions of the same type can be compared to each other.
+ * Represents the manager version, which can be in one of two formats:
+ * - Semantic versioning (X.Y.Z): where X is the major version, Y is the minor version, and Z is the patch version.
+ * - Date-based versioning (X.Y): where X represents the year and Y represents the month.
+ * Both formats are compared left to right, with each component having hierarchical significance.
+ * Only versions of the same format can be compared to each other.
  */
 public class ManagerVersion implements Comparable<ManagerVersion>, Serializable {
     private final boolean isUyuni;
@@ -64,18 +62,20 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
 
         String[] parts = versionStringIn.split("\\.");
         if (isUyuni) {
-            // Uyuni format XXXX.YY
             if (parts.length != 2) {
-                throw new IllegalArgumentException("Invalid Uyuni version format");
+                throw new IllegalArgumentException(
+                        String.format("Invalid %s version format", ConfigDefaults.get().getProductName())
+                );
             }
             this.major = Integer.parseInt(parts[0]);
             this.minor = Integer.parseInt(parts[1]);
-            this.patch = -1;  // NA for Uyuni
+            this.patch = -1;  // neutral value for comparing this format
         }
         else {
-            // SUMA format X.Y.Z
             if (parts.length != 3) {
-                throw new IllegalArgumentException("Invalid SUMA version format");
+                throw new IllegalArgumentException(
+                        String.format("Invalid %s version format", ConfigDefaults.get().getProductName())
+                );
             }
             this.major = Integer.parseInt(parts[0]);
             this.minor = Integer.parseInt(parts[1]);
@@ -87,7 +87,7 @@ public class ManagerVersion implements Comparable<ManagerVersion>, Serializable 
     @Override
     public int compareTo(ManagerVersion o) {
         if (this.isUyuni != o.isUyuni) {
-            throw new IllegalArgumentException("Cannot compare Uyuni and SUMA versions");
+            throw new IllegalArgumentException("Cannot compare different version formats");
         }
 
         int majorCompare = Integer.compare(this.major, o.major);

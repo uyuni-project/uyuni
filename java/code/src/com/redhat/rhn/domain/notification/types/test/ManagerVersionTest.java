@@ -41,26 +41,26 @@ public class ManagerVersionTest {
 
     @Test
     public void testVersionParsing() {
-        final String versionUyuni = "4.3.13";
-        ManagerVersion v1 = new ManagerVersion(versionUyuni, false);
+        final String semanticVersion = "4.3.13";
+        ManagerVersion v1 = new ManagerVersion(semanticVersion, false);
         assertEquals(4, v1.getMajor());
         assertEquals(3, v1.getMinor());
         assertEquals(13, v1.getPatch());
-        assertEquals(versionUyuni, v1.toString());
+        assertEquals(semanticVersion, v1.toString());
         assertFalse(v1.isUyuni());
 
-        final String versionSuma = "2024.07";
-        ManagerVersion v2 = new ManagerVersion(versionSuma, true);
+        final String dataDrivenVersion = "2024.07";
+        ManagerVersion v2 = new ManagerVersion(dataDrivenVersion, true);
         assertEquals(2024, v2.getMajor());
         assertEquals(7, v2.getMinor());
         assertEquals(-1, v2.getPatch());
-        assertEquals(versionSuma, v2.toString());
+        assertEquals(dataDrivenVersion, v2.toString());
         assertTrue(v2.isUyuni());
     }
 
     @ParameterizedTest
-    @MethodSource("uyuniVersionComparisonData")
-    public void testUyuniVersionComparison(
+    @MethodSource("dataDrivenVersionComparisonData")
+    public void testDataDrivenVersionComparison(
             String version1,
             String version2,
             int compareResult,
@@ -75,8 +75,8 @@ public class ManagerVersionTest {
     }
 
     @ParameterizedTest
-    @MethodSource("sumaVersionComparisonData")
-    public void testSumaVersionComparison(
+    @MethodSource("semanticVersionComparisonData")
+    public void testSemanticVersionComparison(
             String version1,
             String version2,
             int compareResult,
@@ -91,7 +91,7 @@ public class ManagerVersionTest {
     }
 
 
-    static Stream<Arguments> uyuniVersionComparisonData() {
+    static Stream<Arguments> dataDrivenVersionComparisonData() {
         return Stream.of(
                 // same year
                 Arguments.of("2024.08", "2024.08", 0, false, true),
@@ -104,7 +104,7 @@ public class ManagerVersionTest {
         );
     }
 
-    static Stream<Arguments> sumaVersionComparisonData() {
+    static Stream<Arguments> semanticVersionComparisonData() {
         return Stream.of(
                 // same major and minor version
                 Arguments.of("4.3.12", "4.3.13", -1, false, false),
@@ -131,23 +131,24 @@ public class ManagerVersionTest {
 
     static Stream<Arguments> invalidVersionData() {
         return Stream.of(
-                Arguments.of("2024.08.01", true),  // Invalid Uyuni format
+                Arguments.of("2024.08.01", true),  // Invalid data driven format
                 Arguments.of("2024-08", true),     // Invalid separator
 
-                Arguments.of("1.2", false),        // Incomplete suma version
+                Arguments.of("1.2", false),        // Incomplete semantic version
                 Arguments.of("4.3.12.4", false),    // Extra version part
-                Arguments.of("abc.def.ghi", false) // Non-numeric suma version
+                Arguments.of("abc.def.ghi", false) // Non-numeric semantic version
         );
     }
 
     @Test
     public void testEqualityAndEquivalence() {
-        ManagerVersion vSuma = new ManagerVersion("4.3.13", false);
-        ManagerVersion vUyuni = new ManagerVersion("2024.08", true);
+        ManagerVersion semanticVersion = new ManagerVersion("4.3.13", false);
+        ManagerVersion dataDrivenVersion = new ManagerVersion("2024.08", true);
 
-        assertNotEquals(vSuma, vUyuni, "Versions should not be equals as they belong to different products");
-        assertEquals(vSuma, new ManagerVersion("4.3.13", false));
-        assertEquals(vUyuni, new ManagerVersion("2024.08", true));
+        assertNotEquals(semanticVersion, dataDrivenVersion,
+                "Versions should not be equals as they belong to different products");
+        assertEquals(semanticVersion, new ManagerVersion("4.3.13", false));
+        assertEquals(dataDrivenVersion, new ManagerVersion("2024.08", true));
     }
 }
 

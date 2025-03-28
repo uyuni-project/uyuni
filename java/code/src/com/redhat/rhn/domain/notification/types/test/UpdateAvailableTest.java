@@ -60,11 +60,11 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
     /**
-     * Test hasUpdateAvailable when a new version of SUMA is available.
+     * Test hasUpdateAvailable when a new semantic version is available.
      */
     @Test
-    public void testSuccessSumaWhenUpdateAvailable() {
-        // Set current product version to suma version 5.0.1
+    public void testSuccessHasUpdateAvailableWhenNewSemanticVersion() {
+        // Set product version to version 5.0.1
         mockConfigDefaults(false, "5.0.1");
 
         // "Mock" the release notes to contain a newer version
@@ -82,10 +82,10 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
     /**
-     * Test hasUpdateAvailable when no new version of SUMA is available.
+     * Test hasUpdateAvailable when no new semantic version is available.
      */
     @Test
-    public void testSuccessSumaWhenNoUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNoNewSemanticVersion() {
         final String currentVersion = "5.0.1";
 
         // Set current product version
@@ -103,10 +103,10 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
     /**
-     * Test hasUpdateAvailable when a new version of Uyuni is available.
+     * Test hasUpdateAvailable when a new data driven version is available.
      */
     @Test
-    public void testSuccessUyuniWhenUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNewDataDrivenVersion() {
         // Set current product version
         mockConfigDefaults(true, "2024.07");
 
@@ -125,10 +125,10 @@ public class UpdateAvailableTest extends MockObjectTestCase {
     }
 
     /**
-     * Test the success of the method hasUpdateAvailable when no new version of Uyuni is available.
+     * Test hasUpdateAvailable when no new data driven version is available.
      */
     @Test
-    public void testSuccessUyuniWhenNoUpdateAvailable() {
+    public void testSuccessHasUpdateAvailableWhenNoNewDataDrivenVersion() {
         final String currentVersion = "2024.07";
 
         // Set current product version
@@ -149,11 +149,11 @@ public class UpdateAvailableTest extends MockObjectTestCase {
      * Test the failure of the method hasUpdateAvailable when the retrieved released notes belong to another product.
      */
     @Test
-    public void testFailureUyuniWhenWrongReleaseNotesRetrieved() {
+    public void testFailureHasUpdateAvailableWhenDifferentProductReleaseNotes() {
         // Set current product version
         mockConfigDefaults(true, "2024.07");
 
-        // "Mock" the release notes to retrieve a SUMA version
+        // "Mock" the release notes to retrieve a semantic version
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -170,7 +170,7 @@ public class UpdateAvailableTest extends MockObjectTestCase {
      * Test the failure of the method hasUpdateAvailable when no version was extracted.
      */
     @Test
-    public void testFailureUyuniWhenNoVersionDetected() {
+    public void testFailureHasUpdateAvailableWhenNoVersionDetected() {
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -219,7 +219,7 @@ public class UpdateAvailableTest extends MockObjectTestCase {
      * Test the failure of the method hasUpdateAvailable when no version was extracted.
      */
     @Test
-    public void testFailureUyuniWhenDownloadFails() {
+    public void testFailureHasUpdateAvailableWhenDownloadFails() {
         UpdateAvailable updateAvailable = new UpdateAvailable() {
             @Override
             public String getReleaseNotes() {
@@ -269,6 +269,8 @@ public class UpdateAvailableTest extends MockObjectTestCase {
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
 
         context.checking(new Expectations() {{
+            allowing(mockConfigDefaults).getProductName();
+            will(returnValue(expectedIsUyuni ? "Uyuni" : "SUSE Manager"));
             allowing(mockConfigDefaults).isUyuni();
             will(returnValue(expectedIsUyuni));
             allowing(mockConfigDefaults).getProductVersion();
