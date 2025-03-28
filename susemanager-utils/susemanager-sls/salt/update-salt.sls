@@ -12,7 +12,11 @@ mgr_keep_salt_up2date:
       - salt-common
 {%- else %}
       - salt
+      {%- if grains['os_family'] == "Suse" and grains['osrelease'] == '15.7' %}
+      - python311-salt
+      {%- else %}
       - python3-salt
+      {%- endif %}
 {%- endif %}
 {%- endif %}
 {%- if salt['pkg.version']('venv-salt-minion') %}
