@@ -120,7 +120,7 @@ public class ConfigFile extends BaseDomainHelper {
         int maxSize = Config.get().getInt(ConfigDefaults.CONFIG_REVISION_MAX_SIZE,
                                           ConfigDefaults.DEFAULT_CONFIG_REVISION_MAX_SIZE);
         if (maxSize > 0x100000) {
-            ConfigFile.log.warn("SUSE Manager does not support config files upload bigger" +
+            ConfigFile.log.warn("SUSE Multi-Linux Manager does not support config files upload bigger" +
                     " than 1MB. Please refer to the documentation for more details.");
         }
 

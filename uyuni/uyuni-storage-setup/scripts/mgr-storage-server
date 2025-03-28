@@ -40,7 +40,7 @@ if [ ! $UID = 0 ];then
 fi
 
 if [ ! -x /usr/bin/mgradm ]; then
-    die "$0 support only SUSE Manager 5.0 or later"
+    die "$0 support only SUSE Multi-Linux Manager 5.1 or later"
 fi
 
 storage_disk=$(linux_device $1)
@@ -101,7 +101,7 @@ if [ "$database_disk" != "$storage_disk" ]; then
     mount_storage $database_disk $database_location_tmp
 fi
 
-info "Syncing SUSE Manager Server directories to storage disk(s)"
+info "Syncing SUSE Multi-Linux Manager Server directories to storage disk(s)"
 move_storage /var/lib/containers/storage/volumes/ $storage_location_tmp
 if [ "$database_disk" != "$storage_disk" ]; then
     move_storage $storage_location_tmp/var-pgsql/ $database_location_tmp
@@ -119,7 +119,7 @@ if [ "$database_disk" != "$storage_disk" ]; then
 fi
 
 if [ "$spacewalk_running" ]; then
-    info "Start SUSE Manager services"
+    info "Start SUSE Multi-Linux Manager services"
     mgradm start
 fi
 

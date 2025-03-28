@@ -17,7 +17,7 @@ if [ ! -f ${PRODUCTRING} ]; then
     PRODUCTRING=${ALTPRODUCTRING}
 fi
 
-echo -n "importing SUSE Manager build key to rpm keyring... "
+echo -n "importing SUSE Multi-Linux Manager build key to rpm keyring... "
 TF=`mktemp /tmp/gpg.XXXXXX`
 if [ -z "$TF" ]; then
   echo "import-suma-build-keys: cannot make temporary file. Fatal error."
@@ -52,7 +52,7 @@ else
 fi
 
 # we need to trust them, otherwise the verify will fail
-echo -n "Trusting SUSE Manager build keys... "
+echo -n "Trusting SUSE Multi-Linux Manager build keys... "
 TF=`mktemp /tmp/gpg.XXXXXX`
 if [ -z "$TF" ]; then
   echo "import-suma-build-keys: cannot make temporary file. Fatal error."

@@ -63,7 +63,7 @@ try:
     from spacewalk.common.rhnConfig import PRODUCT_NAME
 # pylint: disable-next=bare-except
 except:
-    PRODUCT_NAME = "SUSE Manager"
+    PRODUCT_NAME = "SUSE Multi-Linux Manager"
 
 ## GLOBALS
 if os.path.exists("/usr/share/rhn/proxy") or os.path.exists("/var/www/rhns/proxy"):
@@ -775,7 +775,12 @@ def generateBootstrapScript(options):
     # would print as such)
     newScript.append(
         getHeader(
-            MY_PRODUCT_NAME, options, orgCACert, pubname, DEFAULT_APACHE_PUB_DIRECTORY
+            # pylint: disable-next=possibly-used-before-assignment
+            MY_PRODUCT_NAME,
+            options,
+            orgCACert,
+            pubname,
+            DEFAULT_APACHE_PUB_DIRECTORY,
         )
     )
 
