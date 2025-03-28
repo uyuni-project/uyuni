@@ -11278,11 +11278,11 @@ Per a una anàlisi detallada, consulteu els fitxers de registre.
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients del centre de dades heu de configurar les credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització.</target>
+        <target state="translated">S'ha rebutjat el registre de {0} al servidor @@PRODUCT_NAME@@. \nPer gestionar els clients del centre de dades, heu de configurar les credencials SCC a Admin =&gt; Assistent de configuració =&gt; Credencials de l'organització.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients BYOS (Bring-your-own-Subscription) heu de configurar Credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització. \n\nSi la instància que s'està incorporant és PAYG, assegureu-vos que el paquet .python-instance-billing-flavor-check. està instal·lat i torneu-ho a provar.</target>
+        <target state="translated">S'ha rebutjat el registre de {0} al servidor @@PRODUCT_NAME@@. \nPer gestionar els clients BYOS (Bring-your-your-own-subscription) heu de configurar les credencials SCC a Admin =&gt; Assistent de configuració =&gt; Credencials de l'organització. \n\nSi la instància que s'incorpora és PAYG, assegureu-vos que el paquet python-instance-billing-flavor-check estigui instal·lat i torneu-ho a provar.</target>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
