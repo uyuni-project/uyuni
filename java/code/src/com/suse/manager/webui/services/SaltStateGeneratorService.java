@@ -224,7 +224,7 @@ public enum SaltStateGeneratorService {
                 bootImage.getKernel().getFilename());
 
         bootImagePillarSync.put("local_path", bootLocalPath);
-        if (isBundle) {
+        if (Boolean.TRUE.equals(isBundle)) {
             bootImagePillarSync.put("kernel_link", "../../" + systemLocalPath + '/' +
                     bootImage.getKernel().getFilename());
             bootImagePillarSync.put("initrd_link", "../../" + systemLocalPath + '/' +

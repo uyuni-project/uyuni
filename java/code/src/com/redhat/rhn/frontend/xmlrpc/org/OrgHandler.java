@@ -175,7 +175,7 @@ public class OrgHandler extends BaseHandler {
         cmd.setPrefix(prefix);
 
         String pamAuthService = Config.get().getString(ConfigDefaults.WEB_PAM_AUTH_SERVICE);
-        if (usePamAuth) {
+        if (Boolean.TRUE.equals(usePamAuth)) {
             if (pamAuthService != null && !pamAuthService.trim().isEmpty()) {
                 cmd.setUsePam(usePamAuth);
             }
@@ -218,7 +218,7 @@ public class OrgHandler extends BaseHandler {
             throw new ValidationException(e.getMessage());
         }
 
-        if (!usePamAuth && StringUtils.isEmpty(password)) {
+        if (Boolean.FALSE.equals(usePamAuth) && StringUtils.isEmpty(password)) {
             throw new FaultException(-501, "passwordRequiredOrUsePam",
                     "Password is required if not using PAM authentication");
         }
@@ -657,7 +657,8 @@ public class OrgHandler extends BaseHandler {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         OrgConfig orgConfig = verifyOrgExists(orgId).getOrgConfig();
         if (newSettings.containsKey("enabled")) {
-            if ((Boolean) newSettings.get("enabled")) {
+            Boolean enabled = (Boolean) newSettings.get("enabled");
+            if (Boolean.TRUE.equals(enabled)) {
                 orgConfig.setScapRetentionPeriodDays(90L);
             }
             else {
@@ -826,7 +827,7 @@ public class OrgHandler extends BaseHandler {
                                      Boolean enable) {
         ensureUserRole(loggedInUser, RoleFactory.SAT_ADMIN);
         Org org = verifyOrgExists(orgId);
-        if (enable) {
+        if (Boolean.TRUE.equals(enable)) {
             org.getOrgConfig().setStagingContentEnabled(enable);
         }
         else {

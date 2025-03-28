@@ -70,8 +70,8 @@ public class SlaveHandler extends BaseHandler {
 
         IssSlave slave = new IssSlave();
         slave.setSlave(slaveFqdn);
-        slave.setEnabled(isEnabled ? "Y" : "N");
-        slave.setAllowAllOrgs(allowAllOrgs ? "Y" : "N");
+        slave.setEnabled(Boolean.TRUE.equals(isEnabled) ? "Y" : "N");
+        slave.setAllowAllOrgs(Boolean.TRUE.equals(allowAllOrgs) ? "Y" : "N");
         IssFactory.save(slave);
         slave = HibernateFactory.reload(slave);
         return slave;

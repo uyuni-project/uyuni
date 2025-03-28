@@ -899,7 +899,7 @@ public class UserHandler extends BaseHandler {
             String login, List<String> sgNames, Boolean setDefault) {
         ensureUserRole(loggedInUser, RoleFactory.ORG_ADMIN);
 
-        if (setDefault) {
+        if (Boolean.TRUE.equals(setDefault)) {
             removeDefaultSystemGroups(loggedInUser, login, sgNames);
          }
 
@@ -1023,7 +1023,7 @@ public class UserHandler extends BaseHandler {
         UserManager.grantServerGroupPermission(targetUser.getId(), groupIds);
 
         // Follow up with a call to addDefaultSystemGroups if setDefault is true:
-        if (setDefault) {
+        if (Boolean.TRUE.equals(setDefault)) {
             addDefaultSystemGroups(loggedInUser, login, sgNames);
         }
 
@@ -1106,12 +1106,12 @@ public class UserHandler extends BaseHandler {
                 loggedInUser, login);
 
         if (!targetUser.isReadOnly()) {
-            if (readOnly && targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
+            if (Boolean.TRUE.equals(readOnly) && targetUser.hasRole(RoleFactory.ORG_ADMIN) &&
                     targetUser.getOrg().numActiveOrgAdmins() < 2) {
                 throw new InvalidOperationException("error.readonly_org_admin",
                         targetUser.getOrg().getName());
             }
-            if (readOnly && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
+            if (Boolean.TRUE.equals(readOnly) && targetUser.hasRole(RoleFactory.SAT_ADMIN) &&
                     SatManager.getActiveSatAdmins().size() < 2) {
                 throw new InvalidOperationException("error.readonly_sat_admin");
             }

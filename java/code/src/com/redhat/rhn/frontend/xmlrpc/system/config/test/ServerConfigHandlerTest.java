@@ -320,7 +320,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
             data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
             String start = "#@";
             String end = "@#";
-            if (!isDir) {
+            if (Boolean.FALSE.equals(isDir)) {
                 data.put(ConfigRevisionSerializer.CONTENTS, contents);
                 data.put(ConfigRevisionSerializer.MACRO_START, start);
                 data.put(ConfigRevisionSerializer.MACRO_END, end);

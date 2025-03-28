@@ -101,7 +101,8 @@ public class OrgConfigAction extends RhnAction {
             if (StringUtils.isNotEmpty(request.getParameter(SCAP_RETENTION_PERIOD))) {
                 org.getOrgConfig().setScapRetentionPeriodDays(newScapRetentionPeriod);
             }
-            if (!getOptionScapRetentionPeriodSet(request)) {
+            Boolean isSet = getOptionScapRetentionPeriodSet(request);
+            if (!Boolean.TRUE.equals(isSet)) {
                 org.getOrgConfig().setScapRetentionPeriodDays(null);
             }
 

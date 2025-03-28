@@ -306,7 +306,7 @@ public class SystemDetailsHandler extends BaseHandler {
         }
 
         command.setTimezone(locale);
-        if (useUtc) {
+        if (Boolean.TRUE.equals(useUtc)) {
             command.useUtc();
         }
         else {

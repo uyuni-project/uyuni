@@ -129,7 +129,8 @@ public class ConfigRevisionSerializer extends ApiResponseSerializer<ConfigRevisi
     protected void addFileContent(ConfigRevision rev, SerializationBuilder builder) {
         if (!rev.getConfigContent().isBinary()) {
             String content = rev.getConfigContent().getContentsString();
-            if (!StringUtil.containsInvalidXmlChars2(content)) {
+            Boolean valid = StringUtil.containsInvalidXmlChars2(content);
+            if (Boolean.FALSE.equals(valid)) {
                 builder.add(CONTENTS, content);
                 builder.add(CONTENTS_ENC64, Boolean.FALSE);
             }

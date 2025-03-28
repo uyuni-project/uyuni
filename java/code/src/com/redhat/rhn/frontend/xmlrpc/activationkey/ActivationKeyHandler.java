@@ -460,8 +460,8 @@ public class ActivationKeyHandler extends BaseHandler {
 
         // Check if we need to override the usage_limit and set to unlimited:
         if (details.containsKey("unlimited_usage_limit")) {
-            Boolean unlimited = (Boolean)details.get("unlimited_usage_limit");
-            if (unlimited) {
+            Boolean unlimited = (Boolean) details.get("unlimited_usage_limit");
+            if (Boolean.TRUE.equals(unlimited)) {
                 aKey.setUsageLimit(null);
             }
         }
@@ -1078,13 +1078,13 @@ public class ActivationKeyHandler extends BaseHandler {
          List<ConfigChannel> channels = configHelper.
                               lookupGlobals(loggedInUser, configChannelLabels);
          ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
-         if (addToTop) {
+         if (Boolean.TRUE.equals(addToTop)) {
              Collections.reverse(channels);
          }
 
          for (ActivationKey key : activationKeys) {
              for (ConfigChannel chan : channels) {
-                 if (addToTop) {
+                 if (Boolean.TRUE.equals(addToTop)) {
                      proc.add(key.getConfigChannelsFor(loggedInUser), chan, 0);
                  }
                  else {

@@ -84,7 +84,7 @@ public class TreeDeleteOperation extends BaseTreeEditOperation {
 
         if (profiles != null && !profiles.isEmpty()) {
 
-            if (deleteProfiles) {
+            if (Boolean.TRUE.equals(deleteProfiles)) {
                 for (KickstartData profile : profiles) {
                     KickstartDeleteCommand cmd = new KickstartDeleteCommand(
                         profile.getId(), this.user);

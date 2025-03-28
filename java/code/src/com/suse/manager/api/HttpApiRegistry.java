@@ -94,7 +94,7 @@ public class HttpApiRegistry {
             methodsByName.forEach((groupKey, methodList) -> {
                 String path = HTTP_API_ROOT + namespace.replace('.', '/') + '/' + groupKey.getLeft();
                 Route route = routeFactory.createRoute(methodList, handler);
-                if (groupKey.getRight()) {
+                if (Boolean.TRUE.equals(groupKey.getRight())) {
                     registrationHelper.addGetRoute(path, route);
                 }
                 else {
@@ -108,7 +108,7 @@ public class HttpApiRegistry {
                             groupKey.getLeft(),
                             methodList.size() > 1 ?
                                     MessageFormat.format(" ({0} overloads)", methodList.size()) : "",
-                            groupKey.getRight() ? " (Read-only)" : ""));
+                            Boolean.TRUE.equals(readOnly) ? " (Read-only)" : ""));
                 }
                 methodCount[0] += 1;
             });

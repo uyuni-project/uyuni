@@ -215,7 +215,7 @@ public class ServerGroupHandler extends BaseHandler {
 
         List servers = xmlRpcSystemHelper.lookupServers(loggedInUser, serverIds);
 
-        if (add) {
+        if (Boolean.TRUE.equals(add)) {
             serverGroupManager.addServers(group, servers, loggedInUser);
         }
         else {

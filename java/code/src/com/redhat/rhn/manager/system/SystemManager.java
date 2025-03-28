@@ -3528,7 +3528,7 @@ public class SystemManager extends BaseManager {
             params = new HashMap<>();
             params.put("user_id", user.getId());
             params.put("pref", preference);
-            params.put("value", value ? 1 : 0);
+            params.put("value", Boolean.TRUE.equals(value) ? 1 : 0);
             mode.execute(params, new HashMap<>());
         }
     }
@@ -3556,7 +3556,7 @@ public class SystemManager extends BaseManager {
                 "set_auto_update_bulk");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
-        params.put("value", value ? "Y" : "N");
+        params.put("value", Boolean.TRUE.equals(value) ? "Y" : "N");
         mode.execute(params, new HashMap<>());
     }
 

@@ -134,7 +134,7 @@ public class KickstartOptionsCommand  extends BaseKickstartCommand {
             v.setEnabled(mapIn.containsKey(name));
 
             String[] s = (String[]) mapIn.get(name + "_txt");
-            if ((s != null) && (v.getEnabled())) {
+            if (s != null && Boolean.TRUE.equals(v.getEnabled())) {
                 v.setArg(s[0]);
             }
 
