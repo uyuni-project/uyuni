@@ -98,7 +98,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post("/rhn/manager/api/systems/details/ansible/paths/save", {
       minionServerId: editPath?.minionServerId,
       type: editPath?.type,
-      path: editPath?.path,
+      path: editPath?.path?.trim(),
       id: editPath?.id,
     }).then((blob) => {
       if (blob.success) {
@@ -130,7 +130,7 @@ export class AnsibleControlNode extends React.Component<PropsType, StateType> {
     Network.post("/rhn/manager/api/systems/details/ansible/paths/save", {
       minionServerId: this.state.minionServerId,
       type: type,
-      path: newPath,
+      path: newPath?.trim(),
     }).then((blob) => {
       if (blob.success) {
         const newAnsiblePath = {

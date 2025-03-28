@@ -19,6 +19,8 @@ import static com.suse.manager.webui.services.SaltConstants.SCRIPTS_DIR;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
@@ -40,6 +42,10 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionStatus;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.InventoryAction;
+import com.redhat.rhn.domain.action.ansible.InventoryActionDetails;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -57,8 +63,6 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageRemoveAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageUpdateAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.PlaybookAction;
-import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectAction;
@@ -212,6 +216,7 @@ public class SaltServerActionService {
     private static final String SYSTEM_REBOOT = "system.reboot";
     private static final String KICKSTART_INITIATE = "bootloader.autoinstall";
     private static final String ANSIBLE_RUNPLAYBOOK = "ansible.runplaybook";
+    private static final String ANSIBLE_INVENTORIES = "ansible.targets";
     private static final String COCOATTEST_REQUESTDATA = "cocoattest.requestdata";
     public static final String APPSTREAMS_CONFIGURE = "appstreams.configure";
     public static final String PARAM_APPSTREAMS_ENABLE = "param_appstreams_enable";
@@ -350,6 +355,9 @@ public class SaltServerActionService {
         }
         else if (ActionFactory.TYPE_PLAYBOOK.equals(actionType)) {
             return singletonMap(executePlaybookActionCall((PlaybookAction) actionIn), minions);
+        }
+        else if (ActionFactory.TYPE_INVENTORY.equals(actionType)) {
+            return singletonMap(executeInventoryActionCall((InventoryAction) actionIn), minions);
         }
         else if (ActionFactory.TYPE_COCO_ATTESTATION.equals(actionType)) {
             return cocoAttestationAction(minions);
@@ -1737,8 +1745,17 @@ public class SaltServerActionService {
         pillarData.put("inventory_path", inventoryPath);
         pillarData.put("rundir", rundir);
         pillarData.put("flush_cache", details.isFlushCache());
+        pillarData.put("extra_vars", details.getExtraVarsContents());
         return State.apply(singletonList(ANSIBLE_RUNPLAYBOOK), Optional.of(pillarData), Optional.of(true),
                 Optional.of(details.isTestMode()));
+    }
+
+    private LocalCall<?> executeInventoryActionCall(InventoryAction action) {
+        InventoryActionDetails details = action.getDetails();
+        String inventoryPath = details.getInventoryPath();
+
+        return new LocalCall<>(ANSIBLE_INVENTORIES, empty(), of(Map.of("inventory", inventoryPath)),
+                new TypeToken<>() { });
     }
 
     private Map<LocalCall<?>, List<MinionSummary>> cocoAttestationAction(List<MinionSummary> minionSummaries) {

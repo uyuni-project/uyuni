@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.ansible.PlaybookAction;
+import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.appstream.AppStreamAction;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -31,8 +33,6 @@ import com.redhat.rhn.domain.action.config.ConfigAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionDetails;
-import com.redhat.rhn.domain.action.salt.PlaybookAction;
-import com.redhat.rhn.domain.action.salt.PlaybookActionDetails;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildAction;
 import com.redhat.rhn.domain.action.salt.build.ImageBuildActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
@@ -842,10 +842,12 @@ public class ActionChainManager {
      * @param earliest action will not be executed before this date
      * @param testMode true if the playbook shall be executed in test mode
      * @param flushCache true if --flush-cache flag is to be set
+     * @param extraVars the extra vars to set
      * @return the action object
      */
     public static PlaybookAction scheduleExecutePlaybook(User scheduler, Long controlNodeId, String playbookPath,
-            String inventoryPath, ActionChain actionChain, Date earliest, boolean testMode, boolean flushCache)
+                                                         String inventoryPath, ActionChain actionChain, Date earliest,
+                                                         boolean testMode, boolean flushCache, String extraVars)
             throws TaskomaticApiException {
         String playbookName = FileUtils.getFile(playbookPath).getName();
 
@@ -860,6 +862,7 @@ public class ActionChainManager {
         details.setInventoryPath(inventoryPath);
         details.setTestMode(testMode);
         details.setFlushCache(flushCache);
+        details.setExtraVars(extraVars.getBytes());
         action.setDetails(details);
         ActionFactory.save(action);
         taskoScheduleActions(result, scheduler, actionChain);

@@ -47,8 +47,6 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
@@ -63,7 +61,6 @@ import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.services.SaltActionChainGeneratorService;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.MinionPendingRegistrationService;
@@ -133,11 +130,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         systemQuery = systemQueryIn;
         cloudPaygManager = paygMgrIn;
         attestationManager = attMgrIn;
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, groupManager),
-                new SystemEntitler(saltApi, monitoringManager, groupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
     }
 

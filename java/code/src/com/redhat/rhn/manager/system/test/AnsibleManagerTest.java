@@ -29,9 +29,7 @@ import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
-import com.redhat.rhn.manager.formula.FormulaMonitoringManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
-import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -39,7 +37,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.manager.webui.services.iface.MonitoringManager;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.utils.salt.custom.AnsiblePlaybookSlsResult;
 import com.suse.salt.netapi.calls.LocalCall;
@@ -89,7 +86,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = new InventoryPath(minion);
         path.setPath(Path.of("/tmp/test1"));
-        path = AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+        path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(path);
@@ -110,7 +107,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         path.setPath(Path.of("/tmp/test1"));
 
         try {
-            AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", chuck);
+            ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", chuck);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -118,7 +115,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         }
 
         // now save with allowed user
-        path = AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+        path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         try {
             AnsibleManager.lookupAnsiblePathById(path.getId(), chuck);
@@ -143,7 +140,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testUpdateNonExistingAnsiblePath() {
         try {
-            AnsibleManager.updateAnsiblePath(-12345, "/tmp/test", user);
+            ansibleManager.updateAnsiblePath(-12345, "/tmp/test", user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -159,8 +156,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testUpdateAnsiblePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-        path = AnsibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+        path = ansibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().evict(path);
         AnsiblePath updated = AnsibleManager.lookupAnsiblePathById(path.getId(), user).get();
@@ -172,7 +169,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
 
         try {
-            AnsibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+            ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
             fail("An exception should have been thrown.");
         }
         catch (LookupException e) {
@@ -189,7 +186,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     public void testSaveAnsibleRelativePath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
-            AnsibleManager.createAnsiblePath("inventory", minion.getId(), "relative/path", user);
+            ansibleManager.createAnsiblePath("inventory", minion.getId(), "relative/path", user);
             fail("An exception should have been thrown.");
         }
         catch (ValidatorException e) {
@@ -217,7 +214,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFetchPlaybookAbsolutePath() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
         try {
             ansibleManager.fetchPlaybookContents(path.getId(), "/absolute", user);
@@ -234,7 +231,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFetchPlaybook() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -252,7 +249,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFetchPlaybookSaltNoResult() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -277,7 +274,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     public void testSchedulePlaybookBlankPath() throws Exception {
         MinionServer minion = createAnsibleControlNode(user);
         try {
-            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, false, new Date(),
+            AnsibleManager.schedulePlaybook("   ", "/etc/ansible/hosts", minion.getId(), false, false, "", new Date(),
                     Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
@@ -294,7 +291,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testSchedulePlaybookNonexistingMinion() throws Exception {
         try {
-            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, false, new Date(),
+            AnsibleManager.schedulePlaybook("/test/site.yml", "/etc/ansible/hosts", -1234, false, false, "", new Date(),
                     Optional.empty(), user);
             fail("An exception should have been thrown.");
         }
@@ -311,7 +308,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDiscoverPlaybooks() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
 
         Map<String, Map<String, AnsiblePlaybookSlsResult>> expected = Map.of("/tmp/test", Map.of("site.yml",
                 new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts")));
@@ -334,7 +331,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDiscoverPlaybooksSaltError() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -373,7 +370,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDiscoverPlaybooksInInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+        AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
         try {
             ansibleManager.discoverPlaybooks(inventoryPath.getId(), user);
@@ -390,7 +387,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testIntrospectInventory() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+        AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
         Map<String, Map<String, Map<String, List<String>>>> expected =
@@ -412,7 +409,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testIntrospectInventorySaltError() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath inventoryPath = AnsibleManager.createAnsiblePath(
+        AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
                 "inventory", controlNode.getId(), "/tmp/test/hosts", user);
 
         context.checking(new Expectations() {{
@@ -451,7 +448,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testIntrospectInventoryInPlaybook() throws Exception {
         MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = AnsibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
         try {
             ansibleManager.introspectInventory(playbookPath.getId(), user);
             fail("An exception should have been thrown.");
@@ -462,11 +459,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
     }
 
     private MinionServer createAnsibleControlNode(User user) throws Exception {
-        MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
-        ServerGroupManager groupManager = new ServerGroupManager(saltApi);
         SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, groupManager),
-                new SystemEntitler(saltApi, monitoringManager, groupManager)
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
 
         context.checking(new Expectations() {{

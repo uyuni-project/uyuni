@@ -97,4 +97,12 @@ insert into rhnServerGroupType ( id, label, name, permanent, is_base)
       'N', 'N'
    );
 
+-- ansible_managed type -----------------------------------------------------
+
+insert into rhnServerGroupType ( id, label, name, permanent, is_base)
+   values ( sequence_nextval('rhn_servergroup_type_seq'),
+      'ansible_managed', 'Ansible Managed Servers',
+      'N', 'N'
+   );
+
 commit;
