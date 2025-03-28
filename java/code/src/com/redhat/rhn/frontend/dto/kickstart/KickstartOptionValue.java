@@ -76,7 +76,7 @@ public class KickstartOptionValue implements Comparable<KickstartOptionValue> {
      */
     public String getArg() {
         if (arg != null) {
-            return arg.replaceAll("\"", "&quot;");
+            return arg.replace("\"", "&quot;");
         }
         return arg;
     }
