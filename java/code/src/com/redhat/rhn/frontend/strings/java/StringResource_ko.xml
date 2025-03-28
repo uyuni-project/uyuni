@@ -11275,12 +11275,12 @@ For a detailed analysis, please refer to the log files.
         <target state="final">미니언 ID와 시스템 ID가 충돌하는 시스템이 발견되었습니다({0}, {1}). 온보딩이 중단되었습니다. 충돌하는 시스템을 먼저 제거하십시오({2}, {3}).</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \n데이터 센터 클라이언트를 관리하려면 관리자 =&gt; 설정 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \n데이터 센터 클라이언트를 관리하려면 관리자 =&gt; 설정 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="final">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">SUSE Manager 서버에서 '{0}' 등록이 거부되었습니다. \nBYOS(Bring-your-own-Subscription) 클라이언트를 관리하려면 관리자 =&gt; 설치 마법사 =&gt; 조직 자격 증명에서 SCC 자격 증명을 구성해야 합니다. \n\n온보딩 중인 인스턴스가 PAYG인 경우 'python-instance-billing-flavor-check' 패키지가 설치되어 있는지 확인하고 다시 시도하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11518,14 +11518,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;옵트아웃 사유를 공유하여 서비스 개선에 도움을 주십시오.&lt;/a&gt;
         </target>
       </trans-unit>
-      <trans-unit id="Password Policy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Password Policy" xml:space="preserve">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">암호 정책</target>
       </trans-unit>
-      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11533,7 +11533,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">{0} 필드는 0보다 작거나 같을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11541,7 +11541,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">{0} 필드는 {1} 필드보다 크거나 같을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11549,136 +11549,136 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">암호의 최대 허용 문자 발생 횟수는 0보다 작거나 같을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="error.spacesinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에 탭 또는 개행 문자가 포함되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에 연속 문자가 포함되어 있습니다.</target>
       </trans-unit>
-      <trans-unit id="error.nodigitspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에는 한 자리 이상의 숫자가 포함되어야 합니다.</target>
       </trans-unit>
-      <trans-unit id="error.nouppercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에는 대문자를 하나 이상 포함해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="error.nolowercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에는 소문자를 하나 이상 포함해야 합니다.</target>
       </trans-unit>
-      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호에는 특수 문자를 하나 이상 포함해야 하며 허용되는 특수 문자는 {0}입니다.</target>
       </trans-unit>
-      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">암호의 문자 발생 횟수가 허용되는 최대치인 {0}번을 초과했습니다.</target>
       </trans-unit>
-      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
         <target state="final">원격 서버 {0}을(를) 호출할 수 없음</target>
       </trans-unit>
-      <trans-unit id="hub.tokenType.issued" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
         <target state="final">발급됨</target>
       </trans-unit>
-      <trans-unit id="hub.tokenType.consumed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
         <target state="final">사용됨</target>
       </trans-unit>
-      <trans-unit id="hub.register_peripheral_success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
         <target state="final">{0} 서버를 주변기기로 등록했습니다.</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_request" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
         <target state="final">작업 수행 요청이 거부되었습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_root_ca" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
         <target state="final">제공된 인증서가 유효한 PEM 형식이 아닙니다.&lt;br/&gt;인증서가 Base64로 인코딩된 ASCII 파일로 올바르게 인코딩되어 있고 &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; 및 &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; 태그로 묶여 있는지 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
         <target state="final">루트 인증서를 처리하는 동안 예기치 않은 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_issue_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
         <target state="final">원격 서버에 대한 토큰을 발급할 수 없습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_parse_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
         <target state="final">원격 서버로부터 수신된 토큰이 유효하지 않습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
         <target state="final">원격 서버와의 보안 연결을 설정할 수 없습니다. 올바른 루트 인증서를 제공하고 있는지 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_remote_response" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
         <target state="final">원격 서버에서 잘못된 응답을 받았습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.error_connecting_remote" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
         <target state="final">원격 서버에 등록을 시도하는 동안 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unexpected_error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
         <target state="final">예기치 않은 오류로 인해 원격 서버 등록에 실패했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_token_id" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
         <target state="final">지정된 액세스 토큰이 없습니다.</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_token_state" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
         <target state="final">지정된 액세스 토큰이 유효하지 않은 상태입니다.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_delete_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
         <target state="final">지정된 id로 토큰을 삭제할 수 없음</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
         <target state="final">지정된 서버에 대한 새 토큰을 발급할 수 없습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
         <target state="final">제공된 토큰을 구문 분석할 수 없습니다. 토큰이 올바르며 이 서버용으로 생성되었는지 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_store_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
         <target state="final">토큰을 저장할 수 없습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit id="hub.cannot_find_server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
         <target state="final">지정한 id의 원격 서버를 찾을 수 없습니다.</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_deregister" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="final">등록을 취소할 수 없음: 원격 서버에 연결하는 동안 예기치 않은 오류가 발생했습니다. 서버 로그를 확인하십시오.</target>
       </trans-unit>

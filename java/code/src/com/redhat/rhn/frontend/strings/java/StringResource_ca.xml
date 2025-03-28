@@ -11277,12 +11277,12 @@ Per a una anàlisi detallada, consulteu els fitxers de registre.
         <target state="translated">S'han trobat sistemes amb ID de minion i ID de màquina conflictius ({0}, {1}). S'ha interromput l'entrada. Si us plau, elimineu primer els sistemes conflictius ({2}, {3})</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="translated">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients del centre de dades heu de configurar les credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients del centre de dades heu de configurar les credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="translated">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients BYOS (Bring-your-own-Subscription) heu de configurar Credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització. \n\nSi la instància que s'està incorporant és PAYG, assegureu-vos que el paquet .python-instance-billing-flavor-check. està instal·lat i torneu-ho a provar.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients BYOS (Bring-your-own-Subscription) heu de configurar Credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització. \n\nSi la instància que s'està incorporant és PAYG, assegureu-vos que el paquet .python-instance-billing-flavor-check. està instal·lat i torneu-ho a provar.</target>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
