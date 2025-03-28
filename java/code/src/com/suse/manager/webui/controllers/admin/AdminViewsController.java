@@ -97,7 +97,7 @@ public class AdminViewsController {
         get("/manager/admin/hub/peripherals/register",
                 withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
         get("/manager/admin/hub/peripherals/:id",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::updateISSv3Peripheral))), jade);
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::detailsISSv3Peripheral))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
@@ -161,7 +161,7 @@ public class AdminViewsController {
      * @param user current user
      * @return the view to showp
      */
-    public static ModelAndView updateISSv3Peripheral(Request request, Response response, User user) {
+    public static ModelAndView detailsISSv3Peripheral(Request request, Response response, User user) {
         Map<String, Object> data = new HashMap<>();
         List<String> errors = new ArrayList<>();
         try {

@@ -124,7 +124,6 @@ public class DefaultHubInternalClient implements HubInternalClient {
     @Override
     public void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException {
         // Use a TypeToken to preserve the generic type information
-        Type type = new TypeToken<List<ChannelInfoDetailsJson>>() { }.getType();
         invokePost("hub", "syncChannels", channelsIn);
     }
 
