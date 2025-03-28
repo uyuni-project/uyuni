@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2025-03-15 14:29+0000\n"
+"PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1032,10 +1032,8 @@ msgid "Name"
 msgstr "Názov"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
-#, fuzzy
-#| msgid "Minimum 4 characters"
 msgid "Must be at least 4 characters"
-msgstr "Minimálne 4 znaky"
+msgstr "Musia byť aspoň 4 znaky"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:26
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
@@ -1789,20 +1787,20 @@ msgid "Server Monitoring"
 msgstr "Monitorovanie servera"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:154
-#, fuzzy
-#| msgid " exporters to expose metrics about your environment."
 msgid ""
 "The server uses <link>Prometheus</link> exporters to expose metrics about "
 "your environment."
-msgstr " exportéri pre ukázanie metriky o vašom prostredí."
+msgstr ""
+"Server používa exportéry <link>Prometheus</link> na zobrazenie metrík o "
+"vašom prostredí."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:163
-#, fuzzy
-#| msgid " to learn how to consume these metrics."
 msgid ""
 "Refer to the <link>documentation</link> to learn how to consume these "
 "metrics."
-msgstr " naučiť sa, ako tieto metriky využívať."
+msgstr ""
+"Informácie o tom, ako tieto metriky používať, nájdete v "
+"<link>dokumentácii</link>."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:254
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:274
@@ -1819,14 +1817,12 @@ msgid "Disable"
 msgstr "Zakázať"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:338
-#, fuzzy
-#| msgid "SUSE Manager Configuration - Monitoring"
 msgid "{productName} Configuration - Monitoring"
-msgstr "Konfigurácia SUSE Manager - Monitorovanie"
+msgstr "Konfigurácia {productName} - Monitorovanie"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:345
 msgid "Set up monitoring for your {productName} server."
-msgstr ""
+msgstr "Nastavte monitorovanie pre váš server {productName}."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:351
 msgid "General"
@@ -2136,16 +2132,12 @@ msgid "Operation not successful: Empty reply from the server"
 msgstr "Operácia nebola úspešná: Prázdna odpoveď zo servera"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:132
-#, fuzzy
-#| msgid ""
-#| "No SUSE Manager Server Subscription available. Products requiring Client "
-#| "Tools Channel will not be shown."
 msgid ""
 "No SUSE Multi-Linux Manager Server Subscription available. Products "
 "requiring Client Tools Channel will not be shown."
 msgstr ""
-"Nie je k dispozícii predplatné servera SUSE Manager. Produkty vyžadujúce "
-"kanál nástrojov klienta sa nebudú zobrazovať."
+"Nie je k dispozícii predplatné servera SUSE Multi-Linux Manager. Produkty "
+"vyžadujúce kanál nástrojov klienta sa nebudú zobrazovať."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:179
 msgid "The product catalog refresh is running..."
@@ -2745,16 +2737,12 @@ msgid "Match data status"
 msgstr "Stav údajov priradenia"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:88
-#, fuzzy
-#| msgid ""
-#| "Could not start a matching run. Please contact your SUSE Manager "
-#| "administrator to make sure the task scheduler is running."
 msgid ""
 "Could not start a matching run. Please contact your administrator to make "
 "sure the task scheduler is running."
 msgstr ""
 "Nepodarilo sa spustiť beh priraďovania. Prosím, kontaktujte svojho "
-"administrátora SUSE Manager a uistite sa, že je spustený plánovač úloh."
+"administrátora a uistite sa, že je spustený plánovač úloh."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:97
 msgid "No match data is currently available."
@@ -4349,10 +4337,8 @@ msgstr "Zobraziť súhrn klastrov"
 #: ../html/src/manager/images/image-view-overview.tsx:247
 #: ../html/src/manager/images/image-view-overview.tsx:249
 #: ../html/src/manager/images/image-view.tsx:528
-#, fuzzy
-#| msgid "All instances are consistent with SUSE Manager"
 msgid "All instances are consistent with {productName}"
-msgstr "Všetky inštancie sú v súlade so SUSE Manager"
+msgstr "Všetky inštancie sú v súlade s {productName}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:262
 #: ../html/src/manager/images/image-view-overview.tsx:263
@@ -4512,20 +4498,16 @@ msgid "Loading runtime information..."
 msgstr "Načítavajú sa behové informácie..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
-#, fuzzy
-#| msgid "Instance is consistent with SUSE Manager"
 msgid "Instance is consistent with {productName}"
-msgstr "Inštancia je v súlade so SUSE Manager"
+msgstr "Inštancia je v súlade s {productName}"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
 msgstr "Inštancia je zastaraná"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
-#, fuzzy
-#| msgid "Cluster is consistent with SUSE Manager"
 msgid "Cluster is consistent with {productName"
-msgstr "Klaster je v súlade so SUSE Manager"
+msgstr "Klaster je v súlade s {productName"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
@@ -4642,22 +4624,16 @@ msgstr ""
 "svojho systémového administrátora, aby pridal viac miesta na disku."
 
 #: ../html/src/manager/login/messages.tsx:53
-#, fuzzy
-#| msgid ""
-#| "SUSE Manager PAYG instances must forward registration data to SCC when "
-#| "credentials are provided. Data will be sent independently of the "
-#| "configuration setting. To hide this warning please set "
-#| "'forward_registration = 1' in rhn.conf."
 msgid ""
 "SUSE Multi-Linux Manager PAYG instances must forward registration data to "
 "SCC when credentials are provided. Data will be sent independently of the "
 "configuration setting. To hide this warning please set 'forward_registration "
 "= 1' in rhn.conf."
 msgstr ""
-"PAYG inštancie SUSE Manager musia po poskytnutí prihlasovacích údajov "
-"postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od nastavenia "
-"konfigurácie. Ak chcete toto upozornenie skryť, nastavte v rhn.conf "
-"'forward_registration = 1'."
+"PAYG inštancie SUSE Multi-Linux Manager musia po poskytnutí prihlasovacích "
+"údajov postúpiť registračné údaje do SCC. Údaje sa odošlú nezávisle od "
+"nastavenia konfigurácie. Ak chcete toto upozornenie skryť, nastavte v "
+"rhn.conf 'forward_registration = 1'."
 
 #: ../html/src/manager/login/messages.tsx:63
 msgid "Signing in ..."
@@ -5975,10 +5951,8 @@ msgid "Uyuni homepage"
 msgstr "Domovská stránka Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.tsx:259
-#, fuzzy
-#| msgid "SUSE Manager homepage"
 msgid "SUSE Multi-Linux Manager homepage"
-msgstr "Domovská stránka SUSE Manager"
+msgstr "Domovská stránka SUSE Multi-Linux Manager"
 
 #: ../html/src/manager/state/display-highstate.tsx:9
 msgid "State Summary for {name}"
@@ -5997,10 +5971,8 @@ msgid "Config channel"
 msgstr "Konfiguračný kanál"
 
 #: ../html/src/manager/state/highstate-summary.tsx:27
-#, fuzzy
-#| msgid "{productName} release {versionNumber}"
 msgid "{productName} internal"
-msgstr "{productName} vydanie {versionNumber}"
+msgstr "{productName} interné"
 
 #: ../html/src/manager/state/highstate-summary.tsx:37
 msgid "Internal states"
@@ -6052,7 +6024,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:35
 msgid "{productName} Default"
-msgstr ""
+msgstr "{productName} Predvolené"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:65
 msgid "Loading child channels.."
