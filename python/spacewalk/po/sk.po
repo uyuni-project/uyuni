@@ -9,16 +9,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2022-08-11 16:13+0000\n"
+"PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
-"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/"
-">\n"
+"Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/backend/sk/>"
+"\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -86,11 +86,12 @@ msgid "Server \"%s\" is not enabled for ISS."
 msgstr "Server \"%s\" nie je povolený pre ISS."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
-#| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+#, python-format
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Služba SUSE Manager Proxy nie je povolená pre profil servera: \"%s\""
+msgstr ""
+"Služba SUSE Multi-Linux Manager Proxy nie je povolená pre profil servera: "
+"\"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
@@ -449,15 +450,7 @@ msgid "Invalid value for entry."
 msgstr "Neplatná hodnota pre položku."
 
 #: ../common/rhnException.py:88
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "     This system does not have a valid entitlement for SUSE Manager.\n"
-#| "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-#| "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-#| "     select \"Subscription Management\" to enable the service for this "
-#| "system.\n"
-#| "     "
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Multi-Linux "
@@ -469,7 +462,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Tento systém nemá platné oprávnenie pre SUSE Manager.\n"
+"     Tento systém nemá platné oprávnenie pre SUSE Multi-Linux Manager.\n"
 "     Prosím navštívte https://%(hostname)s/rhn/systems/SystemEntitlements."
 "do\n"
 "     alebo sa prihláste na https://%(hostname)s a z karty \"Prehľad\" "
@@ -623,12 +616,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:154
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     The --force mgrpush option is disabled on this server.\n"
-#| "     Please contact your SUSE Manager administrator for more help.\n"
-#| "     "
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -638,7 +625,8 @@ msgid ""
 msgstr ""
 "\n"
 "     Na tomto serveri je zakázaná voľba --force mgrpush.\n"
-"     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Manager.\n"
+"     Pre ďalšiu pomoc kontaktujte svojho administrátora SUSE Multi-Linux "
+"Manager.\n"
 "     "
 
 #: ../common/rhnException.py:161
@@ -695,10 +683,9 @@ msgid "You can not unsubscribe from base channel."
 msgstr "Nemôžete sa odhlásiť zo základného kanála."
 
 #: ../common/rhnException.py:183
-#, fuzzy
-#| msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr "Nie je možné prihlásiť sa k SUSE Manager alebo Proxy kanálu."
+msgstr ""
+"Nie je možné prihlásiť sa k SUSE Multi-Linux Manager alebo Proxy kanálu."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -762,25 +749,14 @@ msgstr "Názov systému nesmie mať menej ako 1 znak"
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
-#, fuzzy
-#| msgid "SUSE Manager Proxy error."
 msgid "SUSE Multi-Linux Manager Proxy error."
-msgstr "Chyba SUSE Manager Proxy."
+msgstr "Chyba SUSE Multi-Linux Manager Proxy."
 
 #: ../common/rhnException.py:207
-#, fuzzy
-#| msgid "SUSE Manager Proxy unable to login."
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
-msgstr "SUSE Manager Proxy sa nemôže prihlásiť."
+msgstr "SUSE Multi-Linux Manager Proxy sa nemôže prihlásiť."
 
 #: ../common/rhnException.py:210
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     SUSE Manager Proxy system ID does not match a Spacewalk Proxy "
-#| "Server\n"
-#| "     in the database.\n"
-#| "     "
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
@@ -789,21 +765,18 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     ID systému SUSE Manager Proxy nezodpovedá Spacewalk Proxy Server\n"
+"     ID systému SUSE Multi-Linux Manager Proxy nezodpovedá Spacewalk Proxy "
+"Server\n"
 "     v databáze.\n"
 "     "
 
 #: ../common/rhnException.py:215
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token is invalid."
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr "Token sedenia SUSE Manager Proxy je neplatný."
+msgstr "Token sedenia SUSE Multi-Linux Manager Proxy je neplatný."
 
 #: ../common/rhnException.py:216
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token has expired."
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr "Platnosť tokenu sedenia SUSE Manager Proxy vypršala."
+msgstr "Platnosť tokenu sedenia SUSE Multi-Linux Manager Proxy vypršala."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -818,12 +791,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:226
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     This SUSE Manager server is not allowed to use Inter Server Sync on "
-#| "this server\n"
-#| "     "
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
@@ -831,23 +798,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Tento server SUSE Manager nemá povolenie na tomto serveri používať "
-"Inter Server Sync\n"
+"     Tento server SUSE Multi-Linux Manager nemá povolenie na tomto serveri "
+"používať Inter Server Sync\n"
 "     "
 
 #: ../common/rhnException.py:231
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
-#| "     "
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
 "     "
 msgstr ""
 "\n"
-"     Inter Server Sync je zakázaný na tomto SUSE Manager Server.\n"
+"     Inter Server Sync je zakázaný na tomto SUSE Multi-Linux Manager Server."
+"\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1118,12 +1081,7 @@ msgstr ""
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "ERROR: you are not entitled to sync a channel in this set of channels.\n"
-#| "Please contact your SUSE Manager contact\n"
-#| "%s"
+#, python-format
 msgid ""
 "\n"
 "ERROR: you are not entitled to sync a channel in this set of channels.\n"
@@ -1132,7 +1090,7 @@ msgid ""
 msgstr ""
 "\n"
 "CHYBA: nemáte právo synchronizovať kanál v tejto skupine kanálov.\n"
-"Obráťte sa na svoj kontakt pre SUSE Manager\n"
+"Obráťte sa na svoj kontakt pre SUSE Multi-Linux Manager\n"
 "%s"
 
 #: ../satellite_tools/messages.py:77
@@ -1305,20 +1263,19 @@ msgstr ""
 "tohto kroku alebo opravte obsah tak, aby obsahoval dáta balíkov."
 
 #: ../satellite_tools/satsync.py:479
-#, fuzzy
-#| msgid "The SUSE Manager master does not support syncing orgs data."
 msgid "The SUSE Multi-Linux Manager master does not support syncing orgs data."
-msgstr "SUSE Manager master nepodporuje synchronizáciu údajov organizácií."
+msgstr ""
+"SUSE Multi-Linux Manager master nepodporuje synchronizáciu údajov "
+"organizácií."
 
 #: ../satellite_tools/satsync.py:481
 msgid "Skipping..."
 msgstr "Preskakovanie..."
 
 #: ../satellite_tools/satsync.py:523
-#, fuzzy, python-format
-#| msgid "SUSE Manager Inter Server sync. report from %s"
+#, python-format
 msgid "SUSE Multi-Linux Manager Inter Server sync. report from %s"
-msgstr "Správa synchronizácie pre SUSE Manager Inter Server od %s"
+msgstr "Správa synchronizácie pre SUSE Multi-Linux Manager Inter Server od %s"
 
 #: ../satellite_tools/satsync.py:611
 msgid " - file-system synchronization"
@@ -1354,10 +1311,8 @@ msgid "   debug/output level: %s"
 msgstr "   ladiaca/výstupná úroveň: %s"
 
 #: ../satellite_tools/satsync.py:661
-#, fuzzy
-#| msgid "ERROR: this server must be registered with SUSE Manager."
 msgid "ERROR: this server must be registered with SUSE Multi-Linux Manager."
-msgstr "CHYBA: tento server musí byť zaregistrovaný v SUSE Manager."
+msgstr "CHYBA: tento server musí byť zaregistrovaný v SUSE Multi-Linux Manager."
 
 #: ../satellite_tools/satsync.py:687
 #, python-format
@@ -1737,10 +1692,8 @@ msgid "alternative http proxy password"
 msgstr "heslo alternatívneho http proxy"
 
 #: ../satellite_tools/satsync.py:2788
-#, fuzzy
-#| msgid "parent SUSE Manager to import content from"
 msgid "parent SUSE Multi-Linux Manager to import content from"
-msgstr "rodičovský SUSE Manager, z ktorého sa má importovať obsah"
+msgstr "rodičovský SUSE Multi-Linux Manager, z ktorého sa má importovať obsah"
 
 #: ../satellite_tools/satsync.py:2794
 msgid "list all available channels and exit"
@@ -1978,16 +1931,12 @@ msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "  16 - server.bod_pripojenia nie je nastavené v konfiguračnom súbore"
 
 #: ../satellite_tools/satsync.py:3149
-#, fuzzy
-#| msgid ""
-#| "  17 - SQL error during retrieving the channels already imported in the "
-#| "SUSE Manager database"
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Multi-Linux Manager database"
 msgstr ""
 "  17 - chyba SQL počas získavania kanálov už importovaných v databáze SUSE "
-"Manager"
+"Multi-Linux Manager"
 
 #: ../satellite_tools/satsync.py:3151
 msgid "  18 - Wrong db connection string in rhn.conf"
