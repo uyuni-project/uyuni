@@ -109,7 +109,7 @@ def parse_arguments():
     args = parser.parse_args()
     if not args.user or not args.password:
         try:
-            creds_path = "%s/.oscrc" % expanduser('~')
+            creds_path = (expanduser('~/.config/osc/oscrc')) or (expanduser('~/.oscrc'))
             creds = ConfigParser()
             creds.read(creds_path)
             args.user = creds.get(args.apiurl, 'user')
