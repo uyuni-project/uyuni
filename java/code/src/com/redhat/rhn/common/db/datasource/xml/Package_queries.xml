@@ -532,7 +532,7 @@ ORDER BY UPPER(X.nvre)
 
 <mode name="system_installed_pkgs_non_suse_locking" class="com.redhat.rhn.frontend.dto.PackageListItem">
   <query params="sid">
-    SELECT (SELECT p.id
+    SELECT (SELECT distinct p.id
               FROM rhnPackage p
               join rhnChannelPackage cp on p.id = cp.package_id
               join rhnServerChannel sc on sc.channel_id = cp.channel_id
