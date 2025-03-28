@@ -11277,12 +11277,12 @@ Ak chcete získať podrobnú analýzu, pozrite si súbory záznamov.
         <target state="translated">Boli nájdené systémy s konfliktným ID minion a ID stroja ({0}, {1}). Začlenenie sa bolo prerušené. Prosím, najskôr odstráňte konfliktné systémy ({2}, {3})</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov dátového centra, musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="translated">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">Registrácia '{0}' na serveri SUSE Manager zamietnutá. \nAk chcete spravovať klientov BYOS (Bring-your-own-Subscription), musíte nakonfigurovať prihlasovacie údaje SCC v Admin =&gt; Sprievodca nastavením =&gt; prihlasovacie údaje organizácie. \n\nAk je začleňovaná inštancia PAYG, uistite sa, že je nainštalovaný balík `python-instance-billing-flavor-check`, a skúste to znova.</target>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>

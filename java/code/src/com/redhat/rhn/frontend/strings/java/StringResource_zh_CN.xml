@@ -1865,7 +1865,7 @@
         </context-group>
         <target state="translated">地址记录：</target>
       </trans-unit>
-      <trans-unit id="message.defaultSystemGroups" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.defaultSystemGroups" xml:space="preserve">
         <source>Default system groups updated for &lt;strong&gt;{0}&lt;/strong&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/AssignedSystemGroups</context>
@@ -7276,7 +7276,7 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target state="translated">已 ping 通 &lt;strong&gt;{0}&lt;/strong&gt;。OSA 状态将立即更新。</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.applet.scheduled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.details.overview.applet.scheduled" xml:space="preserve">
         <source>RHN Applet @@PRODUCT_NAME@@ activation &lt;a href="{0}"&gt;scheduled&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
@@ -10119,7 +10119,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
         <target>&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;已安排&lt;/a&gt;将此系统迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。</target>
       </trans-unit>
-      <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
         <target state="final">已安排将此系统试行迁移到 &lt;strong&gt;{2}&lt;/strong&gt;。成功完成该操作后，即可在&lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;此处&lt;/a&gt;安排完整迁移</target>
       </trans-unit>
@@ -10346,7 +10346,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Stores</source>
         <target>存储区</target>
       </trans-unit>
-      <trans-unit id="message.channel.deleted.state.scheduled" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="message.channel.deleted.state.scheduled" xml:space="preserve">
         <source>An automatic application of the channel state has been &lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;scheduled successfully&lt;/a&gt;</source>
         <target state="final">&lt;a href="/rhn/schedule/ActionDetails.do?aid={0}"&gt;已成功安排&lt;/a&gt;通道状态自动应用</target>
         <context-group name="ctx">
@@ -10496,7 +10496,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Error generating bootstrap repo for: {0}</source>
         <target>为 {0} 生成引导储存库时出错</target>
       </trans-unit>
-      <trans-unit id="notification.stateapplyfailed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="notification.stateapplyfailed" xml:space="preserve">
         <source>Error running state.apply on: &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt;</source>
         <target state="final">在 &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;{2}&lt;/a&gt; 上运行 state.apply 时出错</target>
       </trans-unit>
@@ -11277,12 +11277,12 @@ For a detailed analysis, please refer to the log files.
         <target state="final">发现具有冲突受控端 ID 和计算机 ID的系统（{0}、{1}）。已中止初始配置。请先去除冲突的系统（{2}、{3}）</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理数据中心客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="final">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">在 SUSE Manager 服务器上注册 "{0}" 的请求已被拒绝。\n要管理 BYOS（自带订阅）客户端，您必须在 "管理" =&gt; "安装向导" =&gt; "组织身份凭证" 中配置 SCC 身份凭证。\n\n如果初始配置的实例为 PAYG，请确保已安装 `python-instance-billing-flavor-check` 软件包，然后重试。</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11520,14 +11520,14 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;告知我们您选择停用的原因，从而帮助改进我们的服务&lt;/a&gt;
         </target>
       </trans-unit>
-      <trans-unit id="Password Policy" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="Password Policy" xml:space="preserve">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
         <target state="final">口令策略</target>
       </trans-unit>
-      <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11535,7 +11535,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">字段 "{0}" 的值不能小于或等于零。</target>
       </trans-unit>
-      <trans-unit id="error.illegal_min_max_fields" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11543,7 +11543,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">字段 "{0}" 的值不能大于或等于字段 "{1}" 的值。</target>
       </trans-unit>
-      <trans-unit id="error.illegal_max_occurrences" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
@@ -11551,136 +11551,136 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">口令允许的重复字符数上限不能小于或等于 0。</target>
       </trans-unit>
-      <trans-unit id="error.spacesinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令包含制表符或换行符。</target>
       </trans-unit>
-      <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令包含连续的字符。</target>
       </trans-unit>
-      <trans-unit id="error.nodigitspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令必须至少包含 1 个数字。</target>
       </trans-unit>
-      <trans-unit id="error.nouppercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令必须至少包含 1 个大写字符。</target>
       </trans-unit>
-      <trans-unit id="error.nolowercasepassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令必须至少包含 1 个小写字符。</target>
       </trans-unit>
-      <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令必须至少包含 1 个特殊字符，允许使用的特殊字符包括 {0}。</target>
       </trans-unit>
-      <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
         <target state="final">口令包含的重复字符数超出允许的上限 {0}。</target>
       </trans-unit>
-      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
         <target state="final">无法调用远程服务器 {0}</target>
       </trans-unit>
-      <trans-unit id="hub.tokenType.issued" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
         <target state="final">已颁发</target>
       </trans-unit>
-      <trans-unit id="hub.tokenType.consumed" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
         <target state="final">已使用</target>
       </trans-unit>
-      <trans-unit id="hub.register_peripheral_success" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
         <target state="final">服务器 {0} 已成功注册为外设</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_request" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
         <target state="final">执行该操作的请求已被拒绝。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_root_ca" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
         <target state="final">提供的证书未采用有效的 PEM 格式。&lt;br/&gt;请确保证书为采用正确 Base64 编码的 ASCII 文件，且证书内容包含在 &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; 和 &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; 标记中。</target>
       </trans-unit>
-      <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
         <target state="final">处理根证书时发生意外错误。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_issue_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
         <target state="final">无法为远程服务器颁发令牌。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_parse_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
         <target state="final">从远程服务器收到的令牌无效。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
         <target state="final">无法与远程服务器建立安全连接。请确保您提供的根证书正确无误。</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_remote_response" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
         <target state="final">从远程服务器收到的响应无效。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.error_connecting_remote" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
         <target state="final">尝试注册到远程服务器时发生错误。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.unexpected_error" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
         <target state="final">由于发生意外错误，远程服务器注册失败。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_token_id" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
         <target state="final">指定的访问令牌不存在。</target>
       </trans-unit>
-      <trans-unit id="hub.invalid_token_state" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
         <target state="final">所指定访问令牌的状态无效。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_delete_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
         <target state="final">无法删除指定 ID 对应的令牌</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_issue_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
         <target state="final">无法为指定服务器颁发新令牌。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_parse_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
         <target state="final">无法分析提供的令牌。请确保令牌正确无误且是为此服务器生成。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_store_token" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
         <target state="final">无法存储令牌。请查看服务器日志。</target>
       </trans-unit>
-      <trans-unit id="hub.cannot_find_server" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
         <target state="final">找不到指定 ID 对应的远程服务器。</target>
       </trans-unit>
-      <trans-unit id="hub.unable_to_deregister" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
         <target state="final">无法取消注册：联系远程服务器时发生意外错误。请查看服务器日志。</target>
       </trans-unit>
