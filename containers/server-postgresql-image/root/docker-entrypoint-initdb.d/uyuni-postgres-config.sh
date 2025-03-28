@@ -4,6 +4,7 @@
 # or it can be run manually later.
 
 POSTGRESQL=/var/lib/pgsql/data/postgresql.conf
+HBA_FILE=/var/lib/pgsql/data/pg_hba.conf
 SSL_CERT=/etc/pki/tls/certs/spacewalk.crt
 SSL_KEY=/etc/pki/tls/private/pg-spacewalk.key
 
@@ -68,6 +69,7 @@ WORK_MEM=$(bin_rnd $(((TOTAL_MEM_KB - SHARED_BUFFERS) / (3 * MAX_CONNECTIONS))))
 MAINTENANCE_WORK_MEM=$(bin_rnd $(( TOTAL_MEM_KB / 16 < 1048576 ? TOTAL_MEM_KB / 16 : 1048576 ))) # 1GB
 
 # Apply configurations
+postgres_reconfig "listen_addresses" "'*'"
 postgres_reconfig "shared_buffers" "$(to_mb $SHARED_BUFFERS)"
 postgres_reconfig "effective_cache_size" "$(to_mb $EFFECTIVE_CACHE_SIZE)"
 postgres_reconfig "work_mem" "$(to_mb $WORK_MEM)"
@@ -100,3 +102,11 @@ if [ -f $SSL_KEY ] ; then
 fi
 
 echo "postgresql.conf updated"
+
+rm /var/lib/pgsql/data/pg_hba.conf
+
+chmod +x /usr/local/bin/docker-entrypoint.sh
+source /usr/local/bin/docker-entrypoint.sh
+pg_setup_hba_conf "$@"
+
+echo "pg_hba.conf updated"
