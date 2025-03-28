@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-11 10:07+0100\n"
+"POT-Creation-Date: 2025-03-28 14:20+0100\n"
 "PO-Revision-Date: 2025-02-02 16:54+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web-5-0/de/"
@@ -29,11 +29,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Generator: Weblate 5.9.2\n"
 
-#: ../html/javascript/spacewalk-essentials.js:446
+#: ../html/javascript/spacewalk-essentials.js:407
 msgid "remaining"
 msgstr "übrig"
 
-#: ../html/javascript/spacewalk-essentials.js:466
+#: ../html/javascript/spacewalk-essentials.js:427
 msgid ""
 "The browser Internet Explorer is not supported. Try using Firefox, Chrome or "
 "Edge"
@@ -298,7 +298,7 @@ msgstr ""
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:144
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:196
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:17
-#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:23
+#: ../html/src/manager/minion/ansible/new-ansible-path.tsx:35
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Save"
 msgstr "Speichern"
@@ -429,12 +429,12 @@ msgstr "Abbrechen"
 msgid "Delete"
 msgstr "Löschen"
 
-#: ../html/src/components/dialog/delete.stories.tsx:14
+#: ../html/src/components/dialog/delete.example.tsx:14
 #, fuzzy
 msgid "Delete project"
 msgstr "Projekt löschen"
 
-#: ../html/src/components/dialog/delete.stories.tsx:17
+#: ../html/src/components/dialog/delete.example.tsx:17
 #, fuzzy
 msgid "Are you sure you want to delete project "
 msgstr "Sind sie sicher, dass sie das Projekt löschen wollen "
@@ -483,14 +483,14 @@ msgstr "Sichtbarkeit des Abschnitts umschalten"
 #: ../html/src/components/input/InputBase.test.tsx:43
 #: ../html/src/components/input/InputBase.test.tsx:69
 #: ../html/src/components/input/InputBase.test.tsx:97
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:49
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:58
-#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:47
-#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:58
-#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:66
-#: ../html/src/components/input/form/Form.stories.tsx:25
-#: ../html/src/components/input/text/Text.stories.tsx:25
-#: ../html/src/components/input/text/Text.stories.tsx:34
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:49
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:58
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:66
+#: ../html/src/components/input/form/Form.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:25
+#: ../html/src/components/input/text/Text.example.tsx:34
 msgid "Minimum 2 characters"
 msgstr "Mindestens 2 Zeichen"
 
@@ -498,26 +498,26 @@ msgstr "Mindestens 2 Zeichen"
 msgid "required"
 msgstr "notwendig"
 
-#: ../html/src/components/input/check/Check.stories.tsx:22
-#: ../html/src/components/input/datetime/DateTime.stories.tsx:25
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:66
-#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:55
-#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:75
-#: ../html/src/components/input/form/Form.stories.tsx:30
-#: ../html/src/components/input/password/Password.stories.tsx:30
-#: ../html/src/components/input/radio/horizontal-open.stories.tsx:37
-#: ../html/src/components/input/radio/horizontal.stories.tsx:36
-#: ../html/src/components/input/radio/vertical-open.stories.tsx:36
-#: ../html/src/components/input/radio/vertical.stories.tsx:35
-#: ../html/src/components/input/range/Range.stories.tsx:24
-#: ../html/src/components/input/select/simple.stories.tsx:32
-#: ../html/src/components/input/text/Text.stories.tsx:38
+#: ../html/src/components/input/check/Check.example.tsx:22
+#: ../html/src/components/input/datetime/DateTime.example.tsx:25
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:66
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:55
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:75
+#: ../html/src/components/input/form/Form.example.tsx:30
+#: ../html/src/components/input/password/Password.example.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:37
+#: ../html/src/components/input/radio/horizontal.example.tsx:36
+#: ../html/src/components/input/radio/vertical-open.example.tsx:36
+#: ../html/src/components/input/radio/vertical.example.tsx:35
+#: ../html/src/components/input/range/Range.example.tsx:24
+#: ../html/src/components/input/select/simple.example.tsx:32
+#: ../html/src/components/input/text/Text.example.tsx:38
 #: ../html/src/manager/virtualization/guests/console/MessagePopUp.tsx:24
 #: ../html/src/manager/virtualization/nets/network-properties.test.tsx:45
 msgid "Submit"
 msgstr "Einreichen"
 
-#: ../html/src/components/input/datetime/DateTime.stories.tsx:24
+#: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
 msgstr "Zeit"
 
@@ -525,29 +525,29 @@ msgstr "Zeit"
 msgid "Remove"
 msgstr "Löschen"
 
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:24
-#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:24
-#: ../html/src/components/input/form-multi-input/table-fields.stories.tsx:32
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:24
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
+#: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:47
-#: ../html/src/components/input/text/Text.stories.tsx:23
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:47
+#: ../html/src/components/input/text/Text.example.tsx:23
 msgid "First Name"
 msgstr "Vorname"
 
-#: ../html/src/components/input/form-multi-input/multiple-fields.stories.tsx:56
+#: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:56
 #, fuzzy
 msgid "Last Name"
 msgstr "Vorname"
 
-#: ../html/src/components/input/form-multi-input/single-field.stories.tsx:45
+#: ../html/src/components/input/form-multi-input/single-field.example.tsx:45
 #: ../html/src/manager/login/uyuni/login.tsx:78
 msgid "Login"
 msgstr "Login"
 
 #. ref={nameInputRef}
-#: ../html/src/components/input/form/Form.stories.tsx:23
+#: ../html/src/components/input/form/Form.example.tsx:23
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:391
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:100
@@ -569,7 +569,7 @@ msgstr "Login"
 msgid "Name"
 msgstr ""
 
-#: ../html/src/components/input/password/Password.stories.tsx:23
+#: ../html/src/components/input/password/Password.example.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:77
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:27
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
@@ -582,41 +582,43 @@ msgstr ""
 msgid "Password"
 msgstr "Passwort"
 
-#: ../html/src/components/input/password/Password.stories.tsx:25
-msgid "Minimum 4 characters"
+#: ../html/src/components/input/password/Password.example.tsx:25
+#, fuzzy
+#| msgid "Minimum 4 characters"
+msgid "Must be at least 4 characters"
 msgstr "Mindestens 4 Zeichen"
 
-#: ../html/src/components/input/radio/horizontal-open.stories.tsx:26
-#: ../html/src/components/input/radio/horizontal.stories.tsx:26
-#: ../html/src/components/input/radio/vertical-open.stories.tsx:25
-#: ../html/src/components/input/radio/vertical.stories.tsx:25
-#: ../html/src/components/input/select/async.stories.tsx:44
-#: ../html/src/components/input/select/simple.stories.tsx:26
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:26
+#: ../html/src/components/input/radio/horizontal.example.tsx:26
+#: ../html/src/components/input/radio/vertical-open.example.tsx:25
+#: ../html/src/components/input/radio/vertical.example.tsx:25
+#: ../html/src/components/input/select/async.example.tsx:44
+#: ../html/src/components/input/select/simple.example.tsx:26
 msgid "Level"
 msgstr "Niveau"
 
-#: ../html/src/components/input/radio/horizontal-open.stories.tsx:32
-#: ../html/src/components/input/radio/horizontal.stories.tsx:31
-#: ../html/src/components/input/radio/vertical-open.stories.tsx:31
-#: ../html/src/components/input/radio/vertical.stories.tsx:30
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:32
+#: ../html/src/components/input/radio/horizontal.example.tsx:31
+#: ../html/src/components/input/radio/vertical-open.example.tsx:31
+#: ../html/src/components/input/radio/vertical.example.tsx:30
 msgid "Beginner"
 msgstr "Anfänger"
 
-#: ../html/src/components/input/radio/horizontal-open.stories.tsx:33
-#: ../html/src/components/input/radio/horizontal.stories.tsx:32
-#: ../html/src/components/input/radio/vertical-open.stories.tsx:32
-#: ../html/src/components/input/radio/vertical.stories.tsx:31
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:33
+#: ../html/src/components/input/radio/horizontal.example.tsx:32
+#: ../html/src/components/input/radio/vertical-open.example.tsx:32
+#: ../html/src/components/input/radio/vertical.example.tsx:31
 msgid "Normal"
 msgstr "Normal"
 
-#: ../html/src/components/input/radio/horizontal-open.stories.tsx:34
-#: ../html/src/components/input/radio/horizontal.stories.tsx:33
-#: ../html/src/components/input/radio/vertical-open.stories.tsx:33
-#: ../html/src/components/input/radio/vertical.stories.tsx:32
+#: ../html/src/components/input/radio/horizontal-open.example.tsx:34
+#: ../html/src/components/input/radio/horizontal.example.tsx:33
+#: ../html/src/components/input/radio/vertical-open.example.tsx:33
+#: ../html/src/components/input/radio/vertical.example.tsx:32
 msgid "Expert"
 msgstr "Experte"
 
-#: ../html/src/components/input/range/Range.stories.tsx:23
+#: ../html/src/components/input/range/Range.example.tsx:23
 msgid "Port range"
 msgstr ""
 
@@ -625,7 +627,7 @@ msgid "Both values need to be positive integers"
 msgstr "Beide Werte müssen eine positive Zahl sein"
 
 #: ../html/src/components/input/select/Select.test.tsx:58
-#: ../html/src/components/input/select/custom.stories.tsx:34
+#: ../html/src/components/input/select/custom.example.tsx:34
 msgid "Start typing..."
 msgstr ""
 
@@ -637,11 +639,11 @@ msgstr "Keine Variante"
 msgid "No options"
 msgstr "Keine Optionen"
 
-#: ../html/src/components/input/select/custom.stories.tsx:32
+#: ../html/src/components/input/select/custom.example.tsx:32
 msgid "Flavor"
 msgstr "Variante"
 
-#: ../html/src/components/input/select/custom.stories.tsx:35
+#: ../html/src/components/input/select/custom.example.tsx:35
 msgid "No flavors"
 msgstr "Keine Varianten"
 
@@ -1110,7 +1112,7 @@ msgstr "Ungültige Daten"
 msgid "No data"
 msgstr "Keine Daten"
 
-#: ../html/src/components/utils/HelpIcon.stories.tsx:4
+#: ../html/src/components/utils/HelpIcon.example.tsx:4
 msgid "Text to display on hover"
 msgstr ""
 
@@ -1132,8 +1134,8 @@ msgstr "Hilfe"
 msgid "Loading..."
 msgstr "Laden..."
 
-#: ../html/src/components/utils/loading/text-border.stories.tsx:7
-#: ../html/src/components/utils/loading/text.stories.tsx:7
+#: ../html/src/components/utils/loading/text-border.example.tsx:7
+#: ../html/src/components/utils/loading/text.example.tsx:7
 #, fuzzy
 msgid "Loading text"
 msgstr "Laden..."
@@ -5428,11 +5430,11 @@ msgstr ""
 msgid "Create Recurring"
 msgstr ""
 
-#: ../html/src/manager/storybook/storybook.tsx:47
+#: ../html/src/manager/storybook/storybook.tsx:48
 msgid "Development debugging page"
 msgstr ""
 
-#: ../html/src/manager/storybook/storybook.tsx:49
+#: ../html/src/manager/storybook/storybook.tsx:50
 msgid ""
 "This is a hidden page used by developers, if you found it by accident, good "
 "job!"
