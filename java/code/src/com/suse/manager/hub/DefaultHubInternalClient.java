@@ -122,8 +122,9 @@ public class DefaultHubInternalClient implements HubInternalClient {
     }
 
     @Override
-    public void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException {
-        invokePost("hub", "syncChannels", channelInfo);
+    public void syncChannels(List<ChannelInfoDetailsJson> channelsIn) throws IOException {
+        // Use a TypeToken to preserve the generic type information
+        invokePost("hub", "syncChannels", channelsIn);
     }
 
     private <R> R invokeGet(String namespace, String apiMethod, Type responseType)

@@ -17,6 +17,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdm
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
@@ -26,6 +27,7 @@ import com.redhat.rhn.manager.setup.ProxySettingsManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import com.suse.manager.admin.PaygAdminManager;
+import com.suse.manager.hub.HubManager;
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
 import com.suse.manager.webui.controllers.ECMAScriptDateAdapter;
@@ -36,6 +38,9 @@ import com.suse.manager.webui.utils.FlashScopeHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +66,9 @@ public class AdminViewsController {
     private static final PaygAdminManager PAYG_ADMIN_MANAGER = new PaygAdminManager(new TaskomaticApi());
 
     private static final HubFactory HUB_FACTORY = new HubFactory();
+    private static final HubManager HUB_MANAGER = new HubManager();
+
+    private static final LocalizationService LOC = LocalizationService.getInstance();
 
     private AdminViewsController() { }
 
@@ -70,7 +78,7 @@ public class AdminViewsController {
      */
     public static void initRoutes(JadeTemplateEngine jade) {
         get("/manager/admin/config/monitoring",
-            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
+                withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
         get("/manager/admin/setup/payg",
@@ -87,7 +95,9 @@ public class AdminViewsController {
         get("/manager/admin/hub/peripherals",
             withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showISSv3Peripherals))), jade);
         get("/manager/admin/hub/peripherals/register",
-            withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+                withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::registerPeripheral))), jade);
+        get("/manager/admin/hub/peripherals/:id",
+            withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::detailsISSv3Peripheral))), jade);
         get("/manager/admin/hub/access-tokens",
             withUserPreferences(withCsrfToken(withProductAdmin(AdminViewsController::listAccessTokens))), jade);
     }
@@ -143,6 +153,33 @@ public class AdminViewsController {
     public static ModelAndView showISSv3Peripherals(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/list_peripherals.jade");
     }
+
+    /**
+     * Show iss peripheral tab.
+     * @param request http request
+     * @param response http response
+     * @param user current user
+     * @return the view to showp
+     */
+    public static ModelAndView detailsISSv3Peripheral(Request request, Response response, User user) {
+        Map<String, Object> data = new HashMap<>();
+        List<String> errors = new ArrayList<>();
+        try {
+            long peripheralId = Long.parseLong(request.params("id"));
+            data.put("channelsSyncData", GSON.toJson(HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId)));
+        }
+        catch (CertificateException eIn) {
+            errors.add(LOC.getMessage("hub.invalid_root_ca"));
+        }
+        catch (IOException eIn) {
+            errors.add(LOC.getMessage("hub.error_connecting_remote"));
+        }
+        if (!errors.isEmpty()) {
+            data.put("errors", errors);
+        }
+        return new ModelAndView(data, "controllers/admin/templates/peripheral_details.jade");
+    }
+
 
     /**
      * show list of saved payg ssh connection data

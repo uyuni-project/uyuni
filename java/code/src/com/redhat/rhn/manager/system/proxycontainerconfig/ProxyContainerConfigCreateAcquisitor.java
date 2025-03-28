@@ -38,14 +38,10 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.runner.MgrUtilRunner;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
-import java.security.SecureRandom;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Acquires and validates all necessary data for the Proxy container configuration creation files.
@@ -156,7 +152,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             // Add the FQDNs as some may not be already known
             server.getFqdns().addAll(fqdns.stream()
                     .filter(fqdn -> !fqdn.contains("*"))
-                    .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
+                    .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
             return server;
         }
         Server server = ServerFactory.createServer();
@@ -164,21 +160,9 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         server.setHostname(proxyName);
         server.getFqdns().addAll(fqdns.stream()
                 .filter(fqdn -> !fqdn.contains("*"))
-                .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
+                .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
         server.setOrg(creator.getOrg());
-        server.setCreator(creator);
-
-        String uniqueId = SystemManagerUtils.createUniqueId(List.of(proxyName));
-        server.setDigitalServerId(uniqueId);
-        server.setMachineId(uniqueId);
-        server.setOs("(unknown)");
-        server.setRelease("(unknown)");
-        server.setSecret(RandomStringUtils.random(64, 0, 0, true, true,
-                null, new SecureRandom()));
-        server.setAutoUpdate("N");
-        server.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
-        server.setLastBoot(System.currentTimeMillis() / 1000);
-        server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+        ServerFactory.buildServerInfo(creator, proxyName, server);
         server.updateServerInfo();
         ServerFactory.save(server);
 

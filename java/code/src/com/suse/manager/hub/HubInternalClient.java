@@ -98,4 +98,5 @@ public interface HubInternalClient {
      * @throws IOException when the communication fails
      */
     void syncChannels(List<ChannelInfoDetailsJson> channelInfo) throws IOException;
+
 }

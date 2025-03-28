@@ -56,3 +56,31 @@ export type HubDetailData = {
   created: Date;
   modified: Date;
 };
+
+export type Org = {
+  orgId: number;
+  orgName: string;
+};
+
+export type Channel = {
+  channelId: number;
+  channelName: string;
+  channelLabel: string;
+  channelArch: string;
+  channelOrg: Org | null;
+  parentChannelLabel: string | null; // if null or undefined, this is a root channel
+  children: Channel[]; // for easy hierarchical references
+  originalChannelLabel: string | null; // the id of the channel that this is a clone of
+  synced: boolean;
+};
+
+export type FlatChannel = {
+  channelId: number;
+  channelName: string;
+  channelLabel: string;
+  channelArch: string;
+  channelOrg: Org | null;
+  parentChannelLabel: string | null; // if null or undefined, this is a root channel
+  originalChannelLabel: string | null; // the id of the channel that this is a clone of
+  childrenIds: string[];
+};
