@@ -6,16 +6,16 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-03-28 14:30+0100\n"
-"PO-Revision-Date: 2022-04-01 18:12+0000\n"
+"PO-Revision-Date: 2025-03-28 15:56+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
-"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/"
-">\n"
+"Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/backend/ca/>"
+"\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.10.3\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -84,12 +84,11 @@ msgid "Server \"%s\" is not enabled for ISS."
 msgstr "El servidor \"%s\" no està habilitat per a l'ISS."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
-#| msgid "SUSE Manager Proxy service not enabled for server profile: \"%s\""
+#, python-format
 msgid ""
 "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
 msgstr ""
-"El servei d'intermediari de SUSE Manager no està habilitat per al perfil del "
+"El servei d'intermediari de MultiLinux no està habilitat per al perfil del "
 "servidor: %s"
 
 #: ../server/handlers/xmlrpc/proxy.py:94
@@ -452,15 +451,7 @@ msgid "Invalid value for entry."
 msgstr "Valor no vàlid per a l'entrada."
 
 #: ../common/rhnException.py:88
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "     This system does not have a valid entitlement for SUSE Manager.\n"
-#| "     Please visit https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
-#| "     or login at https://%(hostname)s, and from the \"Overview\" tab,\n"
-#| "     select \"Subscription Management\" to enable the service for this "
-#| "system.\n"
-#| "     "
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Multi-Linux "
@@ -472,7 +463,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Aquest sistema no té un dret vàlid per a SUSE Manager.\n"
+"     Aquest sistema no té un dret vàlid per a SUSE MultiLinux .\n"
 "     Visiteu https://%(hostname)s/rhn/systems/SystemEntitlements.do\n"
 "     o inicieu sessió a https://%(hostname)s i des de la pestanya Visió "
 "general,\n"
@@ -630,12 +621,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:154
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     The --force mgrpush option is disabled on this server.\n"
-#| "     Please contact your SUSE Manager administrator for more help.\n"
-#| "     "
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -645,8 +630,8 @@ msgid ""
 msgstr ""
 "\n"
 "     L'opció --force mgrpush està desactivada en aquest servidor.\n"
-"     Poseu-vos en contacte amb l'administrador de SUSE Manager per obtenir "
-"més ajuda.\n"
+"     Poseu-vos en contacte amb l'administrador de SUSE MultiLinux per "
+"obtenir més ajuda.\n"
 "     "
 
 #: ../common/rhnException.py:161
@@ -704,10 +689,8 @@ msgid "You can not unsubscribe from base channel."
 msgstr "No us podeu de-subscriure del canal base."
 
 #: ../common/rhnException.py:183
-#, fuzzy
-#| msgid "SUSE Manager or Proxy channel can not be subscribed."
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr "No es pot subscriure al canal SUSE Manager o Proxy."
+msgstr "No es pot subscriure al canal SUSE MultiLinux o Proxy."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -771,25 +754,14 @@ msgstr "El nom del sistema no pot tenir menys d'1 caràcter."
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
-#, fuzzy
-#| msgid "SUSE Manager Proxy error."
 msgid "SUSE Multi-Linux Manager Proxy error."
-msgstr "Error del servidor intermediari de SUSE Manager."
+msgstr "Error del servidor intermediari de SUSE MultiLinux."
 
 #: ../common/rhnException.py:207
-#, fuzzy
-#| msgid "SUSE Manager Proxy unable to login."
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
-msgstr "L'intermediari de SUSE Manager no pot iniciar la sessió."
+msgstr "L'intermediari de SUSE MultiLinux no pot iniciar la sessió."
 
 #: ../common/rhnException.py:210
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     SUSE Manager Proxy system ID does not match a Spacewalk Proxy "
-#| "Server\n"
-#| "     in the database.\n"
-#| "     "
 msgid ""
 "\n"
 "     SUSE Multi-Linux Manager Proxy system ID does not match a Spacewalk "
@@ -798,22 +770,19 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     L'identificador del sistema de l'intermediari de SUSE Manager no "
+"     L'identificador del sistema de l'intermediari de SUSE MultiLinux no "
 "coincideix\n"
 "     amb un servidor intermediari Spacewalk a la base de dades.\n"
 "     "
 
 #: ../common/rhnException.py:215
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token is invalid."
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
-msgstr "El testimoni de sessió de l'intermediari de SUSE Manager no és vàlid."
+msgstr ""
+"El testimoni de sessió de l'intermediari de SUSE MultiLinux no és vàlid."
 
 #: ../common/rhnException.py:216
-#, fuzzy
-#| msgid "SUSE Manager Proxy session token has expired."
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
-msgstr "El testimoni de sessió de l'intermediari de SUSE Manager ha caducat."
+msgstr "El testimoni de sessió de l'intermediari de SUSE MultiLinux ha caducat."
 
 #: ../common/rhnException.py:220
 msgid ""
@@ -829,12 +798,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:226
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     This SUSE Manager server is not allowed to use Inter Server Sync on "
-#| "this server\n"
-#| "     "
 msgid ""
 "\n"
 "     This SUSE Multi-Linux Manager server is not allowed to use Inter Server "
@@ -842,16 +805,11 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Aquest servidor de SUSE Manager no pot usar Inter Server Sync en aquest "
-"servidor.\n"
+"     Aquest servidor de SUSE MultiLinux no pot usar Inter Server Sync en "
+"aquest servidor.\n"
 "     "
 
 #: ../common/rhnException.py:231
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "     Inter Server Sync is disabled on this SUSE Manager Server.\n"
-#| "     "
 msgid ""
 "\n"
 "     Inter Server Sync is disabled on this SUSE Multi-Linux Manager Server.\n"
@@ -859,7 +817,7 @@ msgid ""
 msgstr ""
 "\n"
 "     La sincronització entre servidors està desactivada en aquest servidor "
-"de SUSE Manager.\n"
+"de SUSE MultiLinux.\n"
 "     "
 
 #. 3000-3999: XML dumper errors:
@@ -1135,12 +1093,7 @@ msgstr ""
 "       %s\n"
 
 #: ../satellite_tools/messages.py:71
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "ERROR: you are not entitled to sync a channel in this set of channels.\n"
-#| "Please contact your SUSE Manager contact\n"
-#| "%s"
+#, python-format
 msgid ""
 "\n"
 "ERROR: you are not entitled to sync a channel in this set of channels.\n"
@@ -1149,7 +1102,7 @@ msgid ""
 msgstr ""
 "\n"
 "ERROR: no teniu dret a sincronitzar un canal en aquest conjunt de canals.\n"
-"Poseu-vos en contacte amb el gestor de SUSE.\n"
+"Poseu-vos en contacte amb el gestor de MultiLinux de SUSE.\n"
 "%s"
 
 #: ../satellite_tools/messages.py:77
@@ -1324,11 +1277,9 @@ msgstr ""
 "aquest pas o corregiu el contingut per incloure dades del paquet."
 
 #: ../satellite_tools/satsync.py:479
-#, fuzzy
-#| msgid "The SUSE Manager master does not support syncing orgs data."
 msgid "The SUSE Multi-Linux Manager master does not support syncing orgs data."
 msgstr ""
-"El mestre de SUSE Manager no admet la sincronització de dades de "
+"El mestre de SUSE MultiLinux no admet la sincronització de dades de "
 "l'organització."
 
 #: ../satellite_tools/satsync.py:481
@@ -1336,10 +1287,9 @@ msgid "Skipping..."
 msgstr "S'omet..."
 
 #: ../satellite_tools/satsync.py:523
-#, fuzzy, python-format
-#| msgid "SUSE Manager Inter Server sync. report from %s"
+#, python-format
 msgid "SUSE Multi-Linux Manager Inter Server sync. report from %s"
-msgstr "Informe de sincronització entre servidors de SUSE Manager de %s"
+msgstr "Informe de sincronització entre servidors de SUSE MultiLinux de %s"
 
 #: ../satellite_tools/satsync.py:611
 msgid " - file-system synchronization"
@@ -1375,10 +1325,8 @@ msgid "   debug/output level: %s"
 msgstr "   nivell de depuració / sortida: %s"
 
 #: ../satellite_tools/satsync.py:661
-#, fuzzy
-#| msgid "ERROR: this server must be registered with SUSE Manager."
 msgid "ERROR: this server must be registered with SUSE Multi-Linux Manager."
-msgstr "ERROR: aquest servidor ha d'estar registrat amb SUSE Manager."
+msgstr "ERROR: aquest servidor ha d'estar registrat amb SUSE MultiLinux."
 
 #: ../satellite_tools/satsync.py:687
 #, python-format
@@ -1762,10 +1710,8 @@ msgid "alternative http proxy password"
 msgstr "contrasenya alternativa de l'intermediari http"
 
 #: ../satellite_tools/satsync.py:2788
-#, fuzzy
-#| msgid "parent SUSE Manager to import content from"
 msgid "parent SUSE Multi-Linux Manager to import content from"
-msgstr "SUSE Manager principal per importar-ne contingut"
+msgstr "SUSE MultiLinux principal per importar-ne contingut"
 
 #: ../satellite_tools/satsync.py:2794
 msgid "list all available channels and exit"
@@ -2006,16 +1952,12 @@ msgid "  16 - server.mount_point not set in the configuration file"
 msgstr "  16 - server.mount_point no establert al fitxer de configuració"
 
 #: ../satellite_tools/satsync.py:3149
-#, fuzzy
-#| msgid ""
-#| "  17 - SQL error during retrieving the channels already imported in the "
-#| "SUSE Manager database"
 msgid ""
 "  17 - SQL error during retrieving the channels already imported in the SUSE "
 "Multi-Linux Manager database"
 msgstr ""
 "  17 - Error SQL durant la recuperació dels canals ja importats a la base de "
-"dades de SUSE Manager"
+"dades de SUSE MultiLinux"
 
 #: ../satellite_tools/satsync.py:3151
 msgid "  18 - Wrong db connection string in rhn.conf"
