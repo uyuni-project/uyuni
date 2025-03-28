@@ -82,6 +82,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1137,53 +1138,36 @@ public class HubManager {
                 .map(IssV3ChannelResponse::getChannelLabel)
                 .collect(Collectors.toSet());
         Map<String, String> childToParentMap = buildChildToParentMap(hubChannels);
-        // Identify channels that have parents in the hub set
+        // Identify channels that are children in the hub set
         Set<String> childLabels = hubChannels.stream()
                 .filter(ch -> ch.getParentChannelLabel() != null)
                 .map(IssV3ChannelResponse::getChannelLabel)
                 .collect(Collectors.toSet());
-        List<IssV3ChannelResponse> result = new ArrayList<>();
-        // Only process top-level channels and filter their hierarchies
-        for (IssV3ChannelResponse channel : hubChannels) {
-            // Skip if this is a child channel (will be handled by parent)
-            if (childLabels.contains(channel.getChannelLabel())) {
-                continue;
-            }
-            // Skip if already synced
-            if (syncedLabels.contains(channel.getChannelLabel())) {
-                continue;
-            }
-            // Skip if any ancestor is synced
-            if (hasAncestorSynced(channel.getChannelLabel(), syncedLabels, childToParentMap)) {
-                continue;
-            }
-            // Create a filtered version with only unsynced children
-            IssV3ChannelResponse filteredChannel = cloneChannelWithUnsyncedChildren(channel, syncedLabels);
-            result.add(filteredChannel);
-        }
-        // Also add standalone channels that have no parent in the hub
-        for (IssV3ChannelResponse channel : hubChannels) {
-            String parentLabel = channel.getParentChannelLabel();
-            // If it has a parent but that parent isn't in our hub set
-            // This is an edge case that shouldn't happen, we still check for it because if it happens you are stuck.
-            if (parentLabel != null && !childToParentMap.containsValue(parentLabel)) {
-                // Skip if already synced
-                if (syncedLabels.contains(channel.getChannelLabel())) {
-                    continue;
-                }
-                // Skip if already processed as a top-level channel
-                if (result.stream().anyMatch(c -> c.getChannelLabel().equals(channel.getChannelLabel()))) {
-                    continue;
-                }
-                // Skip if any ancestor is synced
-                if (hasAncestorSynced(channel.getChannelLabel(), syncedLabels, childToParentMap)) {
-                    continue;
-                }
-                // Create a filtered version with only unsynced children
-                IssV3ChannelResponse filteredChannel = cloneChannelWithUnsyncedChildren(channel, syncedLabels);
-                result.add(filteredChannel);
-            }
-        }
+        // Common predicates for filtering
+        Predicate<IssV3ChannelResponse> isNotSynced =
+                channel -> !syncedLabels.contains(channel.getChannelLabel());
+        Predicate<IssV3ChannelResponse> hasNoSyncedAncestor =
+                channel -> !hasAncestorSynced(channel.getChannelLabel(), syncedLabels, childToParentMap);
+        List<IssV3ChannelResponse> result = hubChannels.stream()
+                .filter(channel -> !childLabels.contains(channel.getChannelLabel()))
+                .filter(isNotSynced)
+                .filter(hasNoSyncedAncestor)
+                .map(channel -> cloneChannelWithUnsyncedChildren(channel, syncedLabels))
+                .collect(Collectors.toList());
+        Set<String> processedLabels = result.stream()
+                .map(IssV3ChannelResponse::getChannelLabel)
+                .collect(Collectors.toSet());
+        List<IssV3ChannelResponse> orphanedChildren = hubChannels.stream()
+                .filter(channel -> {
+                    String parentLabel = channel.getParentChannelLabel();
+                    return parentLabel != null && !childToParentMap.containsValue(parentLabel);
+                })
+                .filter(isNotSynced)
+                .filter(hasNoSyncedAncestor)
+                .filter(channel -> !processedLabels.contains(channel.getChannelLabel()))
+                .map(channel -> cloneChannelWithUnsyncedChildren(channel, syncedLabels))
+                .toList();
+        result.addAll(orphanedChildren);
         return result;
     }
 
