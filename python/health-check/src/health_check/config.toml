@@ -1,0 +1,19 @@
+[podman]
+network_name = "health-check-network"
+
+[promtail]
+container_name = "health_check_promtail"
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-promtail:latest"
+
+[loki]
+container_name = "health_check_loki"
+jobs = ["cobbler", "postgresql", "rhn", "apache"]
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-loki:latest"
+
+[exporter]
+container_name = "health_check_supportconfig_exporter"
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-supportconfig-exporter:latest"
+
+[grafana]
+container_name = "health-check-grafana"
+image = "registry.opensuse.org/systemsmanagement/uyuni/master/containers/uyuni/health-check-grafana:latest"
