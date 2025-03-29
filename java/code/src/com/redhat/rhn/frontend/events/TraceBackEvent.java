@@ -58,9 +58,9 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
             out.println(ls.getBasicDate());
             out.print(ls.getMessage("headers", getUserLocale()));
             out.println(":");
-            Enumeration e = request.getHeaderNames();
+            Enumeration<String> e = request.getHeaderNames();
             while (e.hasMoreElements()) {
-                String headerName = (String) e.nextElement();
+                String headerName = e.nextElement();
                 out.print("  ");
                 out.print(headerName);
                 out.print(": ");
@@ -75,9 +75,9 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
                     request.getMethod().equals("POST")) {
                 out.print(ls.getMessage("form variables", getUserLocale()));
                 out.println(":");
-                Enumeration ne = request.getParameterNames();
+                Enumeration<String> ne = request.getParameterNames();
                 while (ne.hasMoreElements()) {
-                    String paramName = (String) ne.nextElement();
+                    String paramName = ne.nextElement();
                     out.print("  ");
                     out.print(paramName);
                     out.print(": ");

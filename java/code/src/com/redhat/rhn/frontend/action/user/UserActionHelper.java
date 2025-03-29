@@ -38,9 +38,9 @@ public class UserActionHelper {
      * @return List of possible user prefixes
      * get the list of prefixes to populate the prefixes drop-down box.
      * package protected, because nothing outside of actions should need this.*/
-    public static List getPrefixes() {
+    public static List<LabelValueBean> getPrefixes() {
         // SETUP Prefix list
-        List preselct = new LinkedList<>();
+        List<LabelValueBean> preselct = new LinkedList<>();
 
         for (String keyval : LocalizationService.getInstance().availablePrefixes()) {
             String display = LocalizationService.getInstance().getMessage("user prefix " + keyval);
@@ -52,13 +52,13 @@ public class UserActionHelper {
     /**
      * get the list of countries to populate the countries drop-down box.
      * package protected, because nothing outside of actions should need this.*/
-    static List getCountries() {
-        Map cmap = LocalizationService.getInstance().availableCountries();
-        Iterator i = cmap.keySet().iterator();
-        List countries = new LinkedList<>();
+    static List<LabelValueBean> getCountries() {
+        Map<String, String> cmap = LocalizationService.getInstance().availableCountries();
+        Iterator<String> i = cmap.keySet().iterator();
+        List<LabelValueBean> countries = new LinkedList<>();
         while (i.hasNext()) {
-            String name = (String) i.next();
-            String code = (String) cmap.get(name);
+            String name = i.next();
+            String code = cmap.get(name);
             countries.add(new LabelValueBean(name, code));
         }
         return countries;

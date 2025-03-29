@@ -155,7 +155,7 @@ public class AddPackagesAction extends RhnAction implements Listable<PackageOver
             "any_channel"));
 
         Org org = user.getOrg();
-        Set channels = org.getOwnedChannels();
+        Set<Channel> channels = org.getOwnedChannels();
 
         // Loop through the channels and see if the channel name is in the list of
         // subscribable channels. If so, add it to the viewoptions list.

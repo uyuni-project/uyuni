@@ -67,7 +67,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  */
-public class SchedulePackageUpgradeAction extends RhnAction implements Listable, MaintenanceWindowsAware {
+public class SchedulePackageUpgradeAction extends RhnAction implements Listable<Row>, MaintenanceWindowsAware {
 
     private static Logger log = LogManager.getLogger(SchedulePackageUpgradeAction.class);
 

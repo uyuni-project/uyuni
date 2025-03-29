@@ -19,6 +19,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFormatter;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.ActionedSystem;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -59,7 +60,7 @@ public abstract class ActionSystemsSetupAction extends RhnListAction {
                 String.valueOf(action.getPrerequisite() == null));
 
         clampListBounds(pc, request, user);
-        DataResult dr = getDataResult(user, action, pc);
+        DataResult<ActionedSystem> dr = getDataResult(user, action, pc);
         ActionFormatter af = action.getFormatter();
 
         request.setAttribute("actionname", af.getName());
@@ -82,7 +83,7 @@ public abstract class ActionSystemsSetupAction extends RhnListAction {
      * @param pc The page control for the page
      * @return Returns the DataResult for the page.
      */
-    protected abstract DataResult getDataResult(User user, Action action, PageControl pc);
+    protected abstract DataResult<ActionedSystem> getDataResult(User user, Action action, PageControl pc);
 
     /**
      * The declaration of the set we are working with, must be one of the

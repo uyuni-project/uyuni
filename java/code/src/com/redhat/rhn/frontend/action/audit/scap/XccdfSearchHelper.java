@@ -76,7 +76,7 @@ public class XccdfSearchHelper extends RhnAction {
             identIds.add(id);
         }
 
-        Map<String, Object> params = new HashMap<String, Object>();
+        Map<String, Object> params = new HashMap<>();
         params.put("user_id", context.getCurrentUser().getId());
         if (SYSTEM_LIST.equals(whereToSearch)) {
             params.put("slabel", SYSTEM_LIST);

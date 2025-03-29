@@ -58,7 +58,7 @@ public class SubscribeSetup extends RhnListAction {
         pc.setFilter(true);
         pc.setFilterColumn("name");
 
-        DataResult dr = getDataResult(user, pc);
+        DataResult<ConfigChannelDto> dr = getDataResult(user, pc);
         request.setAttribute(RequestContext.PAGE_LIST, dr);
 
         if (!isSubmitted((DynaActionForm) formIn)) {

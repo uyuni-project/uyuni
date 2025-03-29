@@ -18,6 +18,7 @@ import com.redhat.rhn.domain.kickstart.KickstartCommand;
 import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.kickstart.KickstartOptionValue;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -76,7 +77,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             new KickstartOptionsCommand(ctx.getRequiredParam(RequestContext.KICKSTART_ID),
                                         ctx.getCurrentUser());
 
-        List displayList = new LinkedList<>();
+        List<KickstartOptionValue> displayList = new LinkedList<>();
 
         //Display message if this kickstart profile's channel is inadequate.
         User user = new RequestContext(request).getCurrentUser();
@@ -102,7 +103,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
             // store to the db
             if (messages.isEmpty()) {
-                Set s = new HashSet<>();
+                Set<KickstartCommand> s = new HashSet<>();
 
                 for (Object oIn : cmd.getAvailableOptions()) {
 
@@ -142,7 +143,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
 
                 //set custom options
                 String customOps = request.getParameter(CUSTOM_OPTIONS);
-                LinkedHashSet customSet = new LinkedHashSet<>();
+                LinkedHashSet<KickstartCommand> customSet = new LinkedHashSet<>();
                 log.debug("Adding custom options");
                 if (customOps != null) {
                     for (StringTokenizer strtok = new StringTokenizer(
@@ -182,7 +183,7 @@ public class KickstartAdvancedOptionsAction extends RhnAction {
             displayList = cmd.getDisplayOptions();
         }
         Collections.sort(displayList);
-        LinkedHashSet displaySet = new LinkedHashSet<>();
+        LinkedHashSet<KickstartCommand> displaySet = new LinkedHashSet<>();
         Iterator<KickstartCommand> iter;
         iter = cmd.getKickstartData().getCustomOptions().iterator();
         while (iter.hasNext()) {

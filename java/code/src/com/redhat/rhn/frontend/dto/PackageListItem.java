@@ -49,8 +49,8 @@ public class PackageListItem extends IdComboDto {
     private String packageType;
     private String path;
     private String arch;
-    private List channelName;
-    private List channelId;
+    private List<String> channelName;
+    private List<Long> channelId;
     private String evr;
     private String evra;
     private String summary;
@@ -195,25 +195,25 @@ public class PackageListItem extends IdComboDto {
     /**
      * @return Returns the channelId.
      */
-    public List getChannelId() {
+    public List<Long> getChannelId() {
         return channelId;
     }
     /**
      * @param channelIdIn The channelId to set.
      */
-    public void setChannelId(List channelIdIn) {
+    public void setChannelId(List<Long> channelIdIn) {
         this.channelId = channelIdIn;
     }
     /**
      * @return Returns the channelName.
      */
-    public List getChannelName() {
+    public List<String> getChannelName() {
         return channelName;
     }
     /**
      * @param channelNameIn The channelName to set.
      */
-    public void setChannelName(List channelNameIn) {
+    public void setChannelName(List<String> channelNameIn) {
         this.channelName = channelNameIn;
     }
     /**

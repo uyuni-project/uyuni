@@ -83,7 +83,7 @@ public class RankChannelsAction  extends RhnAction {
     private void setupWidget(RequestContext context,
                                      DynaActionForm form,
                                      Set<String> set) {
-        LinkedHashSet labelValues = new LinkedHashSet<>();
+        LinkedHashSet<LabelValueBean> labelValues = new LinkedHashSet<>();
         populateWidgetLabels(labelValues, context);
         for (String id : set) {
             Long ccid = Long.valueOf(id);
@@ -96,7 +96,7 @@ public class RankChannelsAction  extends RhnAction {
         form.set(POSSIBLE_CHANNELS, labelValues);
         if (!labelValues.isEmpty()) {
             if (form.get(SELECTED_CHANNEL) == null) {
-                String selected = ((LabelValueBean)labelValues.iterator().next())
+                String selected = (labelValues.iterator().next())
                                                         .getValue();
                 form.set(SELECTED_CHANNEL, selected);
             }
@@ -111,7 +111,7 @@ public class RankChannelsAction  extends RhnAction {
      *                   their new  rankings.
      */
     private List<Long> getChannelIds(DynaActionForm form) {
-        List channels = new ArrayList<>();
+        List<Long> channels = new ArrayList<>();
         String rankedValues = (String)form.get(RANKED_VALUES);
         if (StringUtils.isNotBlank(rankedValues)) {
             String [] values = rankedValues.split(",");
@@ -228,7 +228,7 @@ public class RankChannelsAction  extends RhnAction {
      *
      * {@inheritDoc}
      */
-    private void populateWidgetLabels(LinkedHashSet labelValues,
+    private void populateWidgetLabels(LinkedHashSet<LabelValueBean> labelValues,
                                             RequestContext context) {
 
         ActivationKey key = context.lookupAndBindActivationKey();

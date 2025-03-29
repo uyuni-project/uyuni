@@ -25,6 +25,7 @@ import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.struts.RhnValidationHelper;
 import com.redhat.rhn.frontend.struts.StrutsDelegate;
 import com.redhat.rhn.manager.acl.AclManager;
+import com.redhat.rhn.manager.kickstart.IpAddressRange;
 import com.redhat.rhn.manager.kickstart.KickstartIpCommand;
 import com.redhat.rhn.manager.kickstart.KickstartUrlHelper;
 
@@ -132,7 +133,7 @@ public class KickstartIpRangeAction extends RhnAction {
             setupFormValues(form);
         }
 
-        List displayList = new LinkedList<>();
+        List<IpAddressRange> displayList = new LinkedList<>();
         displayList = cmd.getDisplayRanges();
 
         //Create the kickstart urls to display

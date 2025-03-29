@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.SelectableChannel;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.frontend.dto.PackageOverview;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.list.ListTagHelper;
@@ -107,7 +108,7 @@ public class ChannelPackagesCompareAction extends ChannelPackagesBaseAction {
         //Add Red Hat Base Channels, and custom base channels to the list, and if one
         //      is selected, select it
         List<SelectableChannel> chanList = findChannels(user, scid);
-        DataResult result = null;
+        DataResult<PackageOverview> result = null;
 
 
         if (scid != 0) {

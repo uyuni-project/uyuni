@@ -100,15 +100,15 @@ public class TreeFilter implements ResultsFilter {
                 !StringUtils.isBlank(filterColumn)) {
             positions = new HashSet<>();
             filtered = new LinkedList<>();
-            Iterator it = dr.iterator();
-            NodeInfo current = NodeInfo.instance((DepthAware)it.next(),
+            Iterator<DepthAware> it = dr.iterator();
+            NodeInfo current = NodeInfo.instance(it.next(),
                     0);
             while (it.hasNext()) {
                 if (matcher.include(current.node, filterData, filterColumn)) {
                     addMatchedPath(current, dr);
                 }
 
-                NodeInfo successor = NodeInfo.instance((DepthAware) it.next(),
+                NodeInfo successor = NodeInfo.instance(it.next(),
                         current.position + 1);
                 if (successor.node.depth() == current.node.depth()) {
                     successor.parent = current.parent;
@@ -149,7 +149,7 @@ public class TreeFilter implements ResultsFilter {
      * @param result the main data result passed in the input.
      */
     private void addMatchedPath(NodeInfo current, DataResult result) {
-        LinkedList path = new LinkedList<>();
+        LinkedList<Object> path = new LinkedList<>();
         if (!positions.contains(current.position)) {
             positions.add(current.position);
             path.addFirst(result.get(current.position));
