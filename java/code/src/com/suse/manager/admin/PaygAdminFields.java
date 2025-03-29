@@ -15,19 +15,19 @@
 package com.suse.manager.admin;
 
 public enum PaygAdminFields {
-    description(true),
-    host(false),
-    port(true),
-    username(true),
-    password(true),
-    key(true),
-    key_password(true),
-    bastion_host(true),
-    bastion_port(true),
-    bastion_username(true),
-    bastion_password(true),
-    bastion_key(true),
-    bastion_key_password(true);
+    DESCRIPTION(true),
+    HOST(false),
+    PORT(true),
+    USERNAME(true),
+    PASSWORD(true),
+    KEY(true),
+    KEY_PASSWORD(true),
+    BASTION_HOST(true),
+    BASTION_PORT(true),
+    BASTION_USERNAME(true),
+    BASTION_PASSWORD(true),
+    BASTION_KEY(true),
+    BASTION_KEY_PASSWORD(true);
 
     private boolean editable;
     PaygAdminFields(boolean editableIn) {
