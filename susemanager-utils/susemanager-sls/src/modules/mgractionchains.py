@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-SUSE Manager Action Chains module for Salt
+SUSE Multi-Linux Manager Action Chains module for Salt
 
 """
 from __future__ import absolute_import
@@ -176,10 +176,10 @@ def _persist_next_ac_chunk(next_chunk):
 
 def start(actionchain_id):
     """
-    Start the execution of the given SUSE Manager Action Chain
+    Start the execution of the given SUSE Multi-Linux Manager Action Chain
 
     actionchain_id
-        The SUSE Manager Actionchain ID to execute on this minion.
+        The SUSE Multi-Linux Manager Actionchain ID to execute on this minion.
 
     CLI Example:
 
@@ -201,7 +201,7 @@ def start(actionchain_id):
     target_sls = _calculate_sls(actionchain_id, __grains__["machine_id"], 1)
     log.debug(
         # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-        "Starting execution of SUSE Manager Action Chains ID "
+        "Starting execution of SUSE Multi-Linux Manager Action Chains ID "
         "'{0}' -> Target SLS: {1}".format(actionchain_id, target_sls)
     )
     try:
@@ -291,7 +291,7 @@ def get_pending_resume():
 
 def resume():
     """
-    Continue the execution of a SUSE Manager Action Chain.
+    Continue the execution of a SUSE Multi-Linux Manager Action Chain.
     This will trigger the execution of the next chunk SLS file stored on '_mgractionchains.conf'
 
     This method is called by the Salt Reactor as a response to the 'minion/start/event'.
@@ -311,7 +311,7 @@ def resume():
     next_chunk = ac_resume_info.get("next_chunk")
     log.debug(
         # pylint: disable-next=logging-format-interpolation,consider-using-f-string
-        "Resuming execution of SUSE Manager Action Chain -> Target SLS: "
+        "Resuming execution of SUSE Multi-Linux Manager Action Chain -> Target SLS: "
         "{0}".format(next_chunk)
     )
 

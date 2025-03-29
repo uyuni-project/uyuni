@@ -39,7 +39,7 @@
 %endif
 
 Name:           susemanager-sls
-Version:        5.1.6
+Version:        5.1.8
 Release:        0
 Summary:        Static Salt state files for %{productprettyname}
 URL:            https://github.com/uyuni-project/uyuni
@@ -57,6 +57,8 @@ BuildRequires:  %{use_python}-salt
 BuildRequires:  python3-spacewalk-certs-tools
 # Different package names for SUSE and RHEL:
 Requires:       (python3-PyYAML >= 5.1 or python3-pyyaml >= 5.1)
+
+Requires:       %{use_python}-psycopg2
 %else
 BuildRequires:  python-mock
 BuildRequires:  python-pytest

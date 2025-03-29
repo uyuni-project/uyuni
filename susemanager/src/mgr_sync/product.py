@@ -129,7 +129,7 @@ class Product(object):
 
 def parse_products(data, log):
     """
-    Parses the data returned by SUSE Manager list products API.
+    Parses the data returned by SUSE Multi-Linux Manager list products API.
     Returns a list of the Products.
     """
     log.info("Parsing products...")

@@ -6823,35 +6823,35 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="duplicate.jsp.message" xml:space="preserve">
         <source>Inactive systems are listed below.</source>
-        <target/>
+        <target state="translated">Neaktívne systémy sú uvedené nižšie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Delete Selected" xml:space="preserve">
         <source>Delete Selected</source>
-        <target/>
+        <target state="translated">Vymazať vybrané</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.delete.confirm.message" xml:space="preserve">
         <source> There may be system profiles selected for deletion below that were not selected on the Duplicate System Profiles page. Please check the list below carefully to prevent accidental deletion of profiles that may have been in the System Set Manager.</source>
-        <target/>
+        <target state="translated"> Nižšie môžu byť vybrané systémové profily na vymazanie, ktoré neboli vybrané na stránke Duplicitné systémové profily. Pozorne skontrolujte nasledujúci zoznam, aby ste zabránili náhodnému vymazaniu profilov, ktoré sa mohli nachádzať v Správcovi sád systémov.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.systems.delete.confirmmessage" xml:space="preserve">
         <source>Selected systems have been queued for deletion.</source>
-        <target/>
+        <target state="translated">Vybrané systémy boli zaradené na vymazanie.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Compare Systems" xml:space="preserve">
         <source>Compare Systems</source>
-        <target/>
+        <target state="translated">Porovnať systémy</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateIPList.do pages</context>
         </context-group>
@@ -6859,105 +6859,105 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--- System Duplicates Compare pages -->
       <trans-unit id="duplicate.compare.jsp.header" xml:space="preserve">
         <source>Duplicate System Compare</source>
-        <target/>
+        <target state="translated">Porovnanie duplicitných systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.compares.jsp.message" xml:space="preserve">
         <source>The systems below are potential duplicates of one another. You may select a combination of &lt;strong&gt;{0} systems at once&lt;/strong&gt; for detailed comparison</source>
-        <target/>
+        <target state="translated">Nižšie uvedené systémy sú navzájom možnými duplikátmi. Môžete vybrať kombináciu &lt;strong&gt;{0} systémov naraz&lt;/strong&gt; na podrobné porovnanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="duplicate.compares.max_limit.message" xml:space="preserve">
         <source>You have selected more than {0} system profiles for comparison. Please select a combination of &lt;strong&gt;{0} systems or less&lt;/strong&gt; to compare and select &lt;strong&gt;{1}&lt;/strong&gt;</source>
-        <target/>
+        <target state="translated">Na porovnanie ste vybrali viac ako {0} systémových profilov. Vyberte kombináciu &lt;strong&gt;{0} systémov alebo menej&lt;/strong&gt; na porovnanie a vyberte &lt;strong&gt;{1}&lt;/strong&gt;</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Delete System Profile" xml:space="preserve">
         <source>Delete System Profile</source>
-        <target/>
+        <target state="translated">Vymazať systémový profil</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Refresh Comparison" xml:space="preserve">
         <source>Refresh Comparison</source>
-        <target/>
+        <target state="translated">Obnoviť porovnanie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Comparison" xml:space="preserve">
         <source>System Comparison</source>
-        <target/>
+        <target state="translated">Porovnanie systémov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Identity Properties" xml:space="preserve">
         <source>System Identity Properties</source>
-        <target/>
+        <target state="translated">Vlastnosti systémovej identity</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System Content" xml:space="preserve">
         <source>System Content</source>
-        <target/>
+        <target state="translated">Obsah systému</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Extended System Identity Properties" xml:space="preserve">
         <source>Extended System Identity Properties</source>
-        <target/>
+        <target state="translated">Rozšírené vlastnosti systémovej identity</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Click Here To Hide" xml:space="preserve">
         <source>Click Here To Hide</source>
-        <target/>
+        <target state="translated">Kliknutím sem skryjete</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Click Here To Show" xml:space="preserve">
         <source>Click Here To Show</source>
-        <target/>
+        <target state="translated">Kliknutím sem zobrazíte</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Registration Date" xml:space="preserve">
         <source>Registration Date</source>
-        <target/>
+        <target state="translated">Dátum registrácie</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="System ID" xml:space="preserve">
         <source>System ID</source>
-        <target/>
+        <target state="translated">Systémové ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Child Software Channels" xml:space="preserve">
         <source>Child Software Channels</source>
-        <target/>
+        <target state="translated">Softvérové kanály potomkov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Software Entitlements" xml:space="preserve">
         <source>Software Entitlements</source>
-        <target/>
+        <target state="translated">Softvérové oprávnenia</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
@@ -6965,140 +6965,140 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       <!--- System groups pages -->
       <trans-unit id="ssm.groups.manage.title" xml:space="preserve">
         <source>Alter System Group Memberships</source>
-        <target/>
+        <target state="translated">Zmeniť členstvá v systémových skupinách</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.summary" xml:space="preserve">
         <source>Below is a listing of the system groups for your organization.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémových skupín pre vašu organizáciu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item1" xml:space="preserve">
         <source>To add the selected systems to a group, check &lt;strong&gt;Add&lt;/strong&gt; for that group.</source>
-        <target/>
+        <target state="translated">Ak chcete pridať vybrané systémy do skupiny, začiarknite &lt;strong&gt;Pridať&lt;/strong&gt; pre túto skupinu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item2" xml:space="preserve">
         <source>To remove the selected systems from a group, check &lt;strong&gt;Remove&lt;/strong&gt; for that group.</source>
-        <target/>
+        <target state="translated">Ak chcete odstrániť vybrané systémy zo skupiny, začiarknite &lt;strong&gt;Odstrániť&lt;/strong&gt; pre túto skupinu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.item3" xml:space="preserve">
         <source>Check &lt;strong&gt;No Change&lt;/strong&gt; to leave the selected systems unaffected relative to that group.</source>
-        <target/>
+        <target state="translated">Začiarknite &lt;strong&gt;Žiadna zmena&lt;/strong&gt;, ak chcete, aby vybrané systémy neboli ovplyvnené vzhľadom k tejto skupine.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.add" xml:space="preserve">
         <source>Add</source>
-        <target/>
+        <target state="translated">Pridať</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.remove" xml:space="preserve">
         <source>Remove</source>
-        <target/>
+        <target state="translated">Odstrániť</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.nochange" xml:space="preserve">
         <source>No Change</source>
-        <target/>
+        <target state="translated">Žiadna zmena</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.manage.button" xml:space="preserve">
         <source>Alter Membership</source>
-        <target/>
+        <target state="translated">Zmeniť členstvo</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added" xml:space="preserve">
         <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected will be added to the following groups:</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0} systémy&lt;/strong&gt;, ktoré ste vybrali, sa pridajú do nasledujúcich skupín:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.added.empty" xml:space="preserve">
         <source>No systems will be added to any groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémy nebudú pridané do žiadnych skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed" xml:space="preserve">
         <source>The &lt;strong&gt;{0} systems&lt;/strong&gt; you have selected that are subscribed to the following groups will be removed from them:</source>
-        <target/>
+        <target state="translated">&lt;strong&gt;{0} systémy&lt;/strong&gt;, ktoré ste vybrali a ktoré sú prihlásené do nasledujúcich skupín, budú z nich odstránené:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ssm.groups.confirm.removed.empty" xml:space="preserve">
         <source>No systems will be removed from any groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémy nebudú odstránené zo žiadnych skupín.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.noGroups.nonadmin" xml:space="preserve">
         <source>No System Groups.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.noGroups" xml:space="preserve">
         <source>No System Groups. To add System Groups this system, please visit the &lt;a href="{0}"&gt;{1}&lt;/a&gt; tab.</source>
-        <target/>
+        <target state="translated">Žiadne systémové skupiny. Ak chcete pridať systémové skupiny tomuto systému, navštívte kartu &lt;a href="{0}"&gt;{1}&lt;/a&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.add.jsp.noGroups" xml:space="preserve">
         <source>No system groups are available to add. You have already added all the system groups available (&lt;a href="{0}"&gt;View System Groups&lt;/a&gt;) to this system.</source>
-        <target/>
+        <target state="translated">Nie sú k dispozícii žiadne systémové skupiny na pridanie. Už ste pridali všetky dostupné systémové skupiny (&lt;a href="{0}"&gt;Zobraziť systémové skupiny&lt;/a&gt;) tomuto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.summary.nonadmin" xml:space="preserve">
         <source>Below are all the system groups that have been added to this system.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémové skupiny, ktoré boli pridané tomuto systému.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.summary" xml:space="preserve">
         <source>Below are all the system groups that have been added to this system. To remove a system group membership, check its checkbox and make sure you click the "{0}" button when you are finished with your changes.</source>
-        <target/>
+        <target state="translated">Nižšie sú uvedené všetky systémové skupiny, ktoré boli pridané do tohto systému. Ak chcete odstrániť členstvo v systémovej skupine, začiarknite jej začiarkavacie políčko a po dokončení zmien kliknite na tlačidlo "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.add.jsp.summary" xml:space="preserve">
         <source>Below is a list of system groups available to this system. To join a system group, check its checkbox. Make sure you click the "{0}" button when you are finished with your changes.</source>
-        <target/>
+        <target state="translated">Nižšie je uvedený zoznam systémových skupín dostupných pre tento systém. Ak chcete pripojiť systémovú skupinu, začiarknite jej začiarkavacie políčko. Uistite sa, že ste po dokončení zmien klikli na tlačidlo "{0}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systems.groups.jsp.title" xml:space="preserve">
         <source>System Groups</source>
-        <target/>
+        <target state="translated">Systémové skupiny</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -13801,8 +13801,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.jsp.edit-basechannel-tooltip" xml:space="preserve">
-        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default SUSE Manager provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its SUSE Manager Default channel.</source>
-        <target/>
+        <source>Choose "&lt;strong&gt;{0}&lt;/strong&gt;" to allow systems to register to the default @@PRODUCT_NAME@@ provided channel that corresponds to the installed SUSE Linux version. Instead of the default, you may choose a particular SUSE provided channel or a custom base channel, but if a system using this key is not compatible with the selected channel, it will fall back to its @@PRODUCT_NAME@@ Default channel.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
@@ -13944,8 +13944,8 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
         </context-group>
       </trans-unit>
       <trans-unit id="activation-key.childchannels.jsp.note" xml:space="preserve">
-        <source>NOTE: Selected child channels of the "SUSE Manager default" Base channel will be subscribed.</source>
-        <target/>
+        <source>NOTE: Selected child channels of the "@@PRODUCT_NAME@@ default" Base channel will be subscribed.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/childchannels/* pages</context>
         </context-group>
@@ -24775,8 +24775,8 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
       </trans-unit>
       <trans-unit id="login.jsp.error.message" xml:space="preserve">
-        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your SUSE Manager administrator if the problem persists.</source>
-        <target/>
+        <source>This error may have been caused by an interrupted logout or by logging in from another browser tab. Please contact your @@PRODUCT_NAME@@ administrator if the problem persists.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">loginerror.jsp</context>
         </context-group>
@@ -27204,8 +27204,8 @@ given channel.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="schedule.delete.jsp.introparagraph" xml:space="preserve">
-        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on SUSE Manager functionality. Proceed only if you know what you're doing.</source>
-        <target/>
+        <source>Are you sure you want to delete the schedule? Associated bunch won't get scheduled any more. This can have a huge impact on @@PRODUCT_NAME@@ functionality. Proceed only if you know what you're doing.</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/DeleteSchedule.do</context>
         </context-group>
@@ -28762,8 +28762,8 @@ given channel.</source>
         <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.urlagreement" xml:space="preserve">
-        <source>&lt;a href="/rhn/help/Eula.do"&gt;SUSE MANAGER LICENSE AGREEMENT&lt;/a&gt;</source>
-        <target/>
+        <source>&lt;a href="/rhn/help/Eula.do"&gt;@@PRODUCT_NAME@@ License Agreement&lt;/a&gt;</source>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="copyright.jsp.body.uyuni" xml:space="preserve">
         <source>
@@ -28830,14 +28830,14 @@ given channel.</source>
         <target/>
       </trans-unit>
       <trans-unit id="delete_confirm.jsp.summary.sshpush" xml:space="preserve">
-        <source>For Salt minions SUSE Manager will also cleanup any specific configuration installed on the minion.
+        <source>For Salt minions @@PRODUCT_NAME@@ will also cleanup any specific configuration installed on the minion.
               This might take a few extra seconds.</source>
-        <target/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup" xml:space="preserve">
-        <source>The selected profiles include Salt systems. SUSE Manager can try to remove the specific configuration from the Salt systems.
+        <source>The selected profiles include Salt systems. @@PRODUCT_NAME@@ can try to remove the specific configuration from the Salt systems.
             In order for this to work the systems must be up and running and reachable. If a system is not reachable it will result in an error.</source>
-        <target/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="ssm.delete.systems.salt.cleanup.type" xml:space="preserve">
         <source>Please chose how to handle Salt minions cleanup and delete:</source>
@@ -29490,11 +29490,11 @@ given channel.</source>
         <target state="new"/>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.payg-dimension-computation-bunch" xml:space="preserve">
-        <source>Collect data of managed clients for SUSE Manager PAYG</source>
+        <source>Collect data of managed clients for @@PRODUCT_NAME@@ PAYG</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="task.status.payg-dimension-computation" xml:space="preserve">
         <source>PAYG Computation</source>

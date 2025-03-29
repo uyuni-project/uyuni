@@ -158,7 +158,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         for (PaygSshData outPaygData : PaygSshDataFactory.lookupPaygSshData()) {
             switch (outPaygData.getHost()) {
                 case "localhost":
-                    assertEquals("SUSE Manager PAYG", outPaygData.getDescription());
+                    assertEquals("SUSE Multi-Linux Manager PAYG", outPaygData.getDescription());
                     assertEquals("root", outPaygData.getUsername());
                     Optional<CloudRMTCredentials> creds = outPaygData.getCredentials()
                         .castAs(CloudRMTCredentials.class);

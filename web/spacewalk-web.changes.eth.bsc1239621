@@ -1,0 +1,2 @@
+- Fix sticky toolbar hiding notification messages on packages page 
+  (bsc#1239621)

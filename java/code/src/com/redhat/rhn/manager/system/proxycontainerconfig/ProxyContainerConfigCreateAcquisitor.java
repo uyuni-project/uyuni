@@ -204,7 +204,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
     private String getServerSshPublicKey(User user, String serverFqdn) {
         String localManagerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
         if (isAbsent(localManagerFqdn)) {
-            raiseAndLog(this, "Could not determine the local SUSE Manager FQDN.").get();
+            raiseAndLog(this, "Could not determine the local SUSE Multi-Linux Manager FQDN.").get();
         }
 
         if (localManagerFqdn.equals(serverFqdn)) {

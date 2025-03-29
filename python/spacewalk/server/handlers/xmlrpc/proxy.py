@@ -67,7 +67,9 @@ class rhnProxyHandler(rhnHandler):
             log_error("Server not entitled for Proxy", self.server_id)
             raise rhnFault(
                 1002,
-                _('SUSE Manager Proxy service not enabled for server profile: "%s"')
+                _(
+                    'SUSE Multi-Linux Manager Proxy service not enabled for server profile: "%s"'
+                )
                 % server.server["name"],
             )
         # we're fine...
@@ -109,7 +111,6 @@ class rhnProxyHandler(rhnHandler):
 
 
 class Proxy(rhnProxyHandler):
-
     """this is the XML-RPC receiver for proxy calls"""
 
     def __init__(self):

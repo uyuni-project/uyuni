@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-SUSE Manager master_tops module
+SUSE Multi-Linux Manager master_tops module
 -------------------------------
 
-This module provides the base states top information from SUSE Manager.
+This module provides the base states top information from SUSE Multi-Linux Manager.
 
 The top information returned by this module is merged by Salt with the
 user custom data provided in /srv/salt/top.sls file.
@@ -49,13 +49,13 @@ def __virtual__():
 
 def top(**kwargs):
     """
-    Returns the SUSE Manager top state information of a minion
+    Returns the SUSE Multi-Linux Manager top state information of a minion
     for the `base` salt environment.
     """
     env = kwargs["opts"].get("environment") or kwargs["opts"].get("saltenv")
     if env in [None, "base"]:
         log.debug(
-            'Loading SUSE Manager TOP state information for the "base" environment'
+            'Loading SUSE Multi-Linux Manager TOP state information for the "base" environment'
         )
         return {"base": MANAGER_BASE_TOP}
     return None

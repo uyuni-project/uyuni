@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Retrieve SUSE Manager pillar data for a minion_id.
-- Adds generated SUSE Manager pillar data.
+Retrieve SUSE Multi-Linux Manager pillar data for a minion_id.
+- Adds generated SUSE Multi-Linux Manager pillar data.
 - Adds formula pillar data.
 
 .. code-block:: yaml
@@ -27,7 +27,7 @@ try:
 except ImportError:
     HAS_POSTGRES = False
 
-# SUSE Manager formulas paths:
+# SUSE Multi-Linux Manager formulas paths:
 MANAGER_FORMULAS_METADATA_MANAGER_PATH = "/usr/share/susemanager/formulas/metadata"
 MANAGER_FORMULAS_METADATA_STANDALONE_PATH = "/usr/share/salt-formulas/metadata"
 CUSTOM_FORMULAS_METADATA_PATH = "/srv/formula_metadata"

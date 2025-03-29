@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Watch RPM or DPkg database via cookies and fire
-an event to the SUSE Manager if that has been changed.
+an event to the SUSE Multi-Linux Manager if that has been changed.
 
 Author: Bo Maryniuk <bo@suse.de>
 """

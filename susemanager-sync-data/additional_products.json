@@ -1,5 +1,437 @@
 [
     {
+        "id" : -50,
+        "name" : "openEuler",
+        "identifier" : "openEuler-Client",
+        "former_identifier" : "",
+        "version" : "24.03-SP1",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "openEuler 24.03-LTS-SP1 (Tech Preview)",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -660,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/OS/aarch64/",
+                "name" : "openeuler2403-sp1-pool",
+                "distro_target" : "aarch64",
+                "description" : "openEuler 24.03-SP1 Pool for aarch64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -661,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/update/aarch64/",
+                "name" : "openeuler2403-sp1-updates",
+                "distro_target" : "aarch64",
+                "description" : "openEuler 24.03-SP1 Updates for aarch64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -662,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/everything/aarch64/",
+                "name" : "openeuler2403-sp1-everything",
+                "distro_target" : "aarch64",
+                "description" : "openEuler 24.03-SP1 Everything for aarch64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -663,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/EPOL/main/aarch64/",
+                "name" : "openeuler2403-sp1-epol",
+                "distro_target" : "aarch64",
+                "description" : "openEuler 24.03-SP1 EPOL for aarch64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -664,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/EPOL/update/main/aarch64",
+                "name" : "openeuler2403-sp1-epol-updates",
+                "distro_target" : "aarch64",
+                "description" : "openEuler 24.03-SP1 EPOL Updates for aarch64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -49,
+        "name" : "openEuler",
+        "identifier" : "openEuler-Client",
+        "former_identifier" : "",
+        "version" : "24.03-SP1",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "openEuler 24.03-LTS-SP1 (Tech Preview)",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -652,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/OS/x86_64/",
+                "name" : "openeuler2403-sp1-pool",
+                "distro_target" : "x86_64",
+                "description" : "openEuler 24.03-SP1 Pool for x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -653,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/update/x86_64/",
+                "name" : "openeuler2403-sp1-updates",
+                "distro_target" : "x86_64",
+                "description" : "openEuler 24.03-SP1 Updates for x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -654,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/everything/x86_64/",
+                "name" : "openeuler2403-sp1-everything",
+                "distro_target" : "x86_64",
+                "description" : "openEuler 24.03-SP1 Everything for x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -655,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/EPOL/main/x86_64/",
+                "name" : "openeuler2403-sp1-epol",
+                "distro_target" : "x86_64",
+                "description" : "openEuler 24.03-SP1 EPOL for x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -656,
+                "url" : "https://repo.openeuler.org/openEuler-24.03-LTS-SP1/EPOL/update/main/x86_64/",
+                "name" : "openeuler2403-sp1-epol-updates",
+                "distro_target" : "x86_64",
+                "description" : "openEuler 24.03-SP1 EPOL Updates for x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -48,
+        "name" : "RaspberryPiOS",
+        "identifier" : "RaspberryPi-Client",
+        "former_identifier" : "",
+        "version" : "12",
+        "release_type" : null,
+        "arch" : "arm64",
+        "friendly_name" : "Raspberry Pi OS 12 (Tech Preview)",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -635,
+                "url" : "https://deb.debian.org/debian/dists/bookworm/main/binary-arm64/",
+                "name" : "raspberrypios-12-pool",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) main for ARM64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -636,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-updates/main/binary-arm64/",
+                "name" : "raspberrypios-12-main-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -637,
+                "url" : "https://deb.debian.org/debian-security/dists/bookworm-security/updates/main/binary-arm64/",
+                "name" : "raspberrypios-12-main-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -638,
+                "url" : "https://deb.debian.org/debian/dists/bookworm/contrib/binary-arm64/",
+                "name" : "raspberrypios-12-contrib",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Contrib",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -639,
+                "url" : "https://deb.debian.org/debian/dists/bookworm/non-free/binary-arm64/",
+                "name" : "raspberrypios-12-non-free",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -640,
+                "url" : "https://deb.debian.org/debian/dists/bookworm/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-firmware",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free-firmware",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -641,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-updates/contrib/binary-arm64/",
+                "name" : "raspberrypios-12-contrib-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Contrib Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -642,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-updates/non-free/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -643,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-updates/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-firmware-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free-firmware Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -644,
+                "url" : "https://deb.debian.org/debian-security/dists/bookworm-security/updates/contrib/binary-arm64/",
+                "name" : "raspberrypios-12-contrib-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Contrib Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -645,
+                "url" : "https://deb.debian.org/debian-security/dists/bookworm-security/updates/non-free/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -646,
+                "url" : "https://deb.debian.org/debian-security/dists/bookworm-security/updates/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-firmware-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free-firmware Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -647,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-backports/main/binary-arm64/",
+                "name" : "raspberrypios-12-main-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Main Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -648,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-backports/contrib/binary-arm64/",
+                "name" : "raspberrypios-12-contrib-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Contrib Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -649,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-backports/non-free/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -650,
+                "url" : "https://deb.debian.org/debian/dists/bookworm-backports/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-12-non-free-firmware-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Non-free-firmware Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -651,
+                "url" : "https://archive.raspberrypi.com/debian/dists/bookworm/main/binary-arm64/",
+                "name" : "raspberrypios-12-raspberry",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 12 (bookworm) ARM64 Raspberry",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            }
+        ]
+    },
+    {
         "id" : -47,
         "name" : "Amazon Linux",
         "identifier" : "amazonlinux",
