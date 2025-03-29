@@ -115,8 +115,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
             />
           </form>
 
-          <div className={styles.loginFooter} role="contentinfo">
-            <a href="/rhn/help/Copyright.do">{t("Copyright Notice")}</a>
+          <div className={styles.loginFooter}>
             <span>
               {t("{productName} release {versionNumber}", {
                 productName,
