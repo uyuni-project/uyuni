@@ -9,10 +9,9 @@ import os
 import os.path
 import shutil
 import salt.utils
+import subprocess
 import tempfile
 from salt.utils.minions import CkMinions
-
-import certs.mgr_ssl_cert_setup
 
 
 log = logging.getLogger(__name__)
@@ -196,11 +195,23 @@ def check_ssl_cert(root_ca, server_crt, server_key, intermediate_cas):
     Check that the provided certificates are valid and return the certificate and key to deploy.
     """
     try:
-        cert = certs.mgr_ssl_cert_setup.getContainersSetup(
-            root_ca, intermediate_cas, server_crt, server_key
+        mgr_ssl_cmd = [
+            "mgr-ssl-cert-setup",
+            "--root-ca-file",
+            str(root_ca),
+            "--server-cert-file",
+            str(server_crt),
+            "--server-key-file",
+            str(server_key),
+            "--show-container-setup",
+        ]
+        if intermediate_cas:
+            mgr_ssl_cmd.extend(["--intermediate-ca-file", str(intermediate_cas)])
+        result = subprocess.run(
+            mgr_ssl_cmd, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE
         )
-        return {"cert": cert}
-    except certs.mgr_ssl_cert_setup.CertCheckError as err:
+        return {"cert": result.stdout.decode()}
+    except subprocess.CalledProcessError as err:
         return {"error": str(err)}
 
 

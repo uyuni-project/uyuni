@@ -41,7 +41,7 @@ class SMConnect:
 
 class ScenarioRunner(SMConnect):
     """
-    Admin scenario for the SUSE Manager, utilizing Action Chains.
+    Admin scenario for the SUSE Multi-Linux Manager, utilizing Action Chains.
     """
     def example_01(self):
         server = self.findServerByHostname("pig.suse.de")

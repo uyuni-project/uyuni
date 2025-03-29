@@ -35,7 +35,7 @@ def test_send():
 
     expected_body = textwrap.dedent(
         f"""\
-    Subject: SUSE Manager System Mail From {dummy_uname.nodename}
+    Subject: SUSE Multi-Linux Manager System Mail From {dummy_uname.nodename}
     Content-Type: text/plain; charset=utf-8
     To: admin@example.com
 

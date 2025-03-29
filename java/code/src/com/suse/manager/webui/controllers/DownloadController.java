@@ -691,7 +691,7 @@ public class DownloadController {
      */
     private void validatePaygCompliant() {
         if (!cloudPaygManager.isCompliant()) {
-            LOG.info("Forbidden: SUSE Manager PAYG Server is not compliant");
+            LOG.info("Forbidden: SUSE Multi-Linux Manager PAYG Server is not compliant");
             halt(HttpStatus.SC_FORBIDDEN, "Server is not compliant. Please check the logs");
         }
     }

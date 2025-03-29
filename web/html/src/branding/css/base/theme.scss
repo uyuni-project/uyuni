@@ -148,7 +148,7 @@ section {
 
   /* fixing margins in the 1st and last columns */
   section {
-    padding: $content-area-padding;
+    padding: 0 $content-area-padding-side $content-area-padding-bottom;
     float: right;
   }
 }
@@ -176,6 +176,8 @@ section {
 }
 
 .navbar-collapse {
+  animation: none !important;
+  transition: none !important;
   display: flex;
   flex-direction: column;
 
@@ -196,14 +198,6 @@ section {
         margin: 0 !important;
       }
     }
-  }
-
-  &.in {
-    display: flex !important;
-  }
-
-  &.collapse {
-    display: none !important;
   }
 }
 

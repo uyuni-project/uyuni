@@ -102,10 +102,12 @@
                           </c:choose>
             </c:if>
             <c:if test="${current.bugFix}">
-                <rhn:icon type="errata-bugfix" />
+                <rhn:icon type="errata-bugfix"
+                title="erratalist.jsp.bugadvisory" />
             </c:if>
             <c:if test="${current.productEnhancement}">
-                <rhn:icon type="errata-enhance" />
+                <rhn:icon type="errata-enhance"
+                title="erratalist.jsp.productenhancementadvisory" />
             </c:if>
             <c:if test="${current.rebootSuggested}">
                 <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />

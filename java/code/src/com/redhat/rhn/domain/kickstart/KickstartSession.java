@@ -443,13 +443,22 @@ public class KickstartSession {
      * @param messageIn to fill into into the History field
      */
     public void markFailed(String messageIn) {
+        markFailed(messageIn, true);
+    }
+
+    /**
+     * Mark this KickstartSession as failed.
+     * @param messageIn to fill into into the History field
+     * @param removeAction remove the corresponding serverAction
+     */
+    public void markFailed(String messageIn, boolean removeAction) {
         if (this.action != null) {
             Action parentAction = this.action;
             while (parentAction.getPrerequisite() != null) {
                 parentAction = parentAction.getPrerequisite();
             }
             Server currentServer = this.currentServer();
-            if (currentServer != null) {
+            if (currentServer != null && removeAction) {
                 ActionFactory.removeActionForSystem(parentAction.getId(), currentServer.getId());
             }
         }

@@ -70,7 +70,7 @@ class Channel(object):  # pylint: disable=too-many-instance-attributes
 
 def parse_channels(data, log):
     """
-    Parses the data returned by SUSE Manager list channels API.
+    Parses the data returned by SUSE Multi-Linux Manager list channels API.
     Returns a dictionary where keys are the base channels labels and values
     are instances of Channel. Each instance is a base channel with all its
     "child" channels associated.

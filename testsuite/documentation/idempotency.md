@@ -47,7 +47,7 @@ are created by core features.
 
 Typical workflow for testing patches:
 
-1) enable the BuildRepo
+1) enable the repository of the fake packages
 2) downgrade a package by reinstalling it, or remove a package
 3) schedule a taskomatic run and wait for it to finish (to retrieve available patches)
 4) make test with patch (install it etc)

@@ -11277,12 +11277,12 @@ Per a una anàlisi detallada, consulteu els fitxers de registre.
         <target state="translated">S'han trobat sistemes amb ID de minion i ID de màquina conflictius ({0}, {1}). S'ha interromput l'entrada. Si us plau, elimineu primer els sistemes conflictius ({2}, {3})</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-        <target state="translated">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients del centre de dades heu de configurar les credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
+        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients del centre de dades heu de configurar les credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització.</target>
       </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
-        <source>Registration of '{0}' on SUSE Manager Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-        <target state="translated">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients BYOS (Bring-your-own-Subscription) heu de configurar Credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització. \n\nSi la instància que s'està incorporant és PAYG, assegureu-vos que el paquet .python-instance-billing-flavor-check. està instal·lat i torneu-ho a provar.</target>
+        <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
+        <target state="needs-adaptation">S'ha rebutjat el registre de «{0}» al servidor SUSE Manager. \nPer gestionar clients BYOS (Bring-your-own-Subscription) heu de configurar Credencials SCC a l'administrador gtgt; Auxiliar de configuració .gt; Credencials d'organització. \n\nSi la instància que s'està incorporant és PAYG, assegureu-vos que el paquet .python-instance-billing-flavor-check. està instal·lat i torneu-ho a provar.</target>
       </trans-unit>
       <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
@@ -11525,7 +11525,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">Política de contrasenyes</target>
+        <target state="translated">Política per a les contrasenyes</target>
       </trans-unit>
       <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
@@ -11533,7 +11533,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-        <target state="translated">El camp {0} no pot ser igual ni inferior a zero.</target>
+        <target state="translated">El camp {0} no pot ser igual o superior a zero.</target>
       </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
@@ -11541,7 +11541,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-        <target state="translated">El camp {0} no pot ser superior o igual que el camp {1}.</target>
+        <target state="translated">El camp {0} no pot ser més gran que el camp {1} ni igual.</target>
       </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
@@ -11549,7 +11549,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-        <target state="translated">El nombre màxim d'ocurrències de caràcters permeses per contrasenya no pot ser inferior ni igual a 0.</target>
+        <target state="translated">El nombre màxim d'ocurrències de caràcters permeses per contrasenya no poden ser inferiors ni iguals a 0.</target>
       </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
@@ -11591,7 +11591,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-        <target state="translated">Les contrasenyes han de contenir almenys un caràcter especial. Els caràcters especials permesos són aquests: {0}.</target>
+        <target state="translated">Les contrasenyes han de contenir almenys un caràcter especial. Els caràcters especials permesos són els següents: {0}.</target>
       </trans-unit>
       <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
@@ -11600,90 +11600,90 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         </context-group>
         <target state="translated">Els caràcters de la contrasenya han superat el màxim permès: {0}.</target>
       </trans-unit>
-    <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
+      <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot invocar el servidor remot {0}</target>
+      </trans-unit>
       <trans-unit id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Emès</target>
+      </trans-unit>
       <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Consumit</target>
+      </trans-unit>
       <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El servidor {0} s'ha registrat correctament com a perifèric</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">La sol·licitud per fer l'operació s'ha rebutjat. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El certificat proporcionat no té un format de PEM vàlid.&lt;br/&gt;Assegureu-vos que el certificat estigui codificat correctament com a fitxer ASCII codificat en Base64 i inclòs dins de les etiquetes &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; i &lt;codi&gt;-----END CERTIFICATE-----&lt;/code&gt;.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Error inesperat en processar el certificat d'arrel. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot emetre un testimoni per al servidor remot. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El testimoni rebut del servidor remot no és vàlid. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot establir una connexió segura amb el servidor remot. Assegureu-vos que proporcioneu el certificat d'arrel correcte.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Resposta no vàlida rebuda del servidor remot. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Hi ha hagut un error en intentar el registre amb el servidor remot. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El registre del servidor remot ha fallat a causa d'un error inesperat. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El testimoni d'accés especificat no existeix.</target>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">El testimoni d'accés especificat té un estat no vàlid.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot suprimir un testimoni amb l'identificador especificat</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot emetre un testimoni nou per al servidor especificat. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot analitzar el testimoni proporcionat. Si us plau, assegureu-vos que el testimoni sigui correcte i que s'hagi generat per a aquest servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot desar el testimoni. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
       <trans-unit id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">No es pot trobar cap servidor remot amb l'identificador especificat.</target>
+      </trans-unit>
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">No es pot donar de baixa: s'ha produït un error inesperat en contactar amb el servidor remot. Si us plau, comproveu els registres del servidor.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

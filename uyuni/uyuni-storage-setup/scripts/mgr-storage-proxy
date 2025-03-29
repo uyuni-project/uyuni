@@ -37,7 +37,7 @@ if [ ! $UID = 0 ];then
 fi
 
 if [ ! -x /usr/bin/mgrpxy ]; then
-    die "$0 support only SUSE Manager 5.0 or later"
+    die "$0 support only SUSE Multi-Linux Manager 5.1 or later"
 fi
 
 storage_disk=$(linux_device $1)
@@ -70,7 +70,7 @@ if systemctl -q is-active uyuni-proxy-httpd.service >/dev/null ; then
     mgrpxy stop
 fi
 
-info "Syncing SUSE Manager Proxy directories to storage disk"
+info "Syncing SUSE Multi-Linux Manager Proxy directories to storage disk"
 move_storage /var/lib/containers/storage/volumes/ $storage_location_tmp
 
 remount_storage $storage_disk $storage_location_tmp $storage_location
