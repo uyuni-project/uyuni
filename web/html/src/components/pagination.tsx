@@ -68,6 +68,7 @@ type ItemsPerPageSelectorProps = {
 
 const ItemsPerPageSelector = (props: ItemsPerPageSelectorProps) => (
   <select
+    name="pageSize"
     className="display-number"
     defaultValue={props.currentValue}
     onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
@@ -93,6 +94,7 @@ const PageSelector = (props: PageSelectorProps) => {
         {t("Page <dropdown></dropdown> of {total}", {
           dropdown: () => (
             <select
+              name="pageNumber"
               className="display-number small-select"
               value={props.currentValue}
               onChange={(e) => props.onChange(parseInt(e.target.value, 10))}
