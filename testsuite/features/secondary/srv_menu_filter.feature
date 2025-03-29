@@ -26,8 +26,8 @@ Feature: Left Menu Filter
   Scenario: Search a word and expect several results
     When I enter "SUSE" as the left menu search field
     Then I should see a "SUSE" text
-    And I should see a "SUSE Manager Server" text
-    And I should see a "SUSE Manager Proxy" text
+    And I should see a "SUSE Multi-Linux Manager Server" text
+    And I should see a "SUSE Multi-Linux Manager Proxy" text
 
 @uyuni
   Scenario: Search a word and expect several results

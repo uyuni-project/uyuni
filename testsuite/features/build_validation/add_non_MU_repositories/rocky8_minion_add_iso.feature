@@ -4,7 +4,7 @@
 @rocky8_minion
 Feature: Add the Rocky 8 distribution custom repositories
   In order to use Rocky 8 channels with Red Hat "modules"
-  As a SUSE Manager administrator
+  As a SUSE Multi-Linux Manager administrator
   I want to filter them out to remove the modules information
 
   Scenario: Download the iso of Rocky 8 DVD and mount it on the server
