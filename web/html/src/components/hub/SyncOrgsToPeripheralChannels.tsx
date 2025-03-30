@@ -10,17 +10,16 @@ import { showSuccessToastr, showWarningToastr } from "components/toastr";
 
 import Network from "utils/network";
 
-import { FlatChannel, flattenChannels } from "./ChannelFlatteningUtils";
-import { HierarchicalChannelTable } from "./HierarchicalChannelTable";
-import { Channel, Org } from "./types";
+import ChannelHierarchicalTable from "./HierarchicalChannelTable";
+import { FlatChannel, Org } from "./types";
 
 type SyncPeripheralsProps = {
   peripheralId: number;
   availableOrgs: Org[];
-  availableCustomChannels: Channel[];
-  availableVendorChannels: Channel[];
-  syncedCustomChannels: Channel[];
-  syncedVendorChannels: Channel[];
+  availableCustomChannels: FlatChannel[];
+  availableVendorChannels: FlatChannel[];
+  syncedCustomChannels: FlatChannel[];
+  syncedVendorChannels: FlatChannel[];
 };
 
 type State = {
@@ -32,6 +31,7 @@ type State = {
   selectedChannels: FlatChannel[];
   selectedOrg: Org | null;
   loading: boolean;
+  syncStatus: Record<number, boolean>;
 };
 
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
@@ -39,9 +39,20 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
 
   constructor(props: SyncPeripheralsProps) {
     super(props);
-    // Convert hierarchical channels to flat channels
-    const syncedChannels = flattenChannels([...props.syncedCustomChannels, ...props.syncedVendorChannels]);
-    const availableChannels = flattenChannels([...props.availableCustomChannels, ...props.availableVendorChannels]);
+    // Get the synced and available channels
+    const syncedChannels = [...props.syncedCustomChannels, ...props.syncedVendorChannels];
+    const availableChannels = [...props.availableCustomChannels, ...props.availableVendorChannels];
+
+    // Initialize sync status for each channel
+    const syncStatus: Record<number, boolean> = {};
+    syncedChannels.forEach((channel) => {
+      syncStatus[channel.channelId] = true;
+    });
+    availableChannels.forEach((channel) => {
+      if (syncStatus[channel.channelId] === undefined) {
+        syncStatus[channel.channelId] = false;
+      }
+    });
 
     this.state = {
       peripheralId: props.peripheralId,
@@ -52,6 +63,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       selectedChannels: [],
       selectedOrg: null,
       loading: false,
+      syncStatus,
     };
   }
 
@@ -67,14 +79,26 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   }
 
   private setStateFromApiProps(props: SyncPeripheralsProps) {
-    const syncedChannels = flattenChannels([...props.syncedCustomChannels, ...props.syncedVendorChannels]);
-    const availableChannels = flattenChannels([...props.availableCustomChannels, ...props.availableVendorChannels]);
+    const syncedChannels = [...props.syncedCustomChannels, ...props.syncedVendorChannels];
+    const availableChannels = [...props.availableCustomChannels, ...props.availableVendorChannels];
+
+    // Update sync status for each channel
+    const syncStatus: Record<number, boolean> = { ...this.state.syncStatus };
+    syncedChannels.forEach((channel) => {
+      syncStatus[channel.channelId] = true;
+    });
+    availableChannels.forEach((channel) => {
+      if (syncStatus[channel.channelId] === undefined) {
+        syncStatus[channel.channelId] = false;
+      }
+    });
 
     this.setState({
       syncedChannels,
       availableOrgs: props.availableOrgs,
       availableChannels,
       loading: false,
+      syncStatus,
     });
   }
 
@@ -82,21 +106,43 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     this.setState({ selectedOrg: null, syncModalOpen: isOpen });
   }
 
-  handleSelectedChannels = (selectedItems: FlatChannel[]) => {
+  handleSyncStatusChange = (channelId: number, synced: boolean) => {
+    // When a channel's sync status changes, update selectedChannels accordingly
+    const { syncStatus, selectedChannels, syncedChannels, availableChannels } = this.state;
+
+    // Update the sync status
+    const newSyncStatus = {
+      ...syncStatus,
+      [channelId]: synced,
+    };
+
+    // Find the channel from our available channels
+    const allChannels = [...syncedChannels, ...availableChannels];
+    const channel = allChannels.find((c) => c.channelId === channelId);
+
+    if (!channel) return;
+
+    let newSelectedChannels = [...selectedChannels];
+
+    if (synced) {
+      // If it was selected, add it to selectedChannels if not already there
+      if (!newSelectedChannels.some((c) => c.channelId === channelId)) {
+        newSelectedChannels.push(channel);
+      }
+    } else {
+      // If it was unselected, remove it from selectedChannels
+      newSelectedChannels = newSelectedChannels.filter((c) => c.channelId !== channelId);
+    }
+
     this.setState({
-      selectedChannels: selectedItems,
+      syncStatus: newSyncStatus,
+      selectedChannels: newSelectedChannels,
     });
   };
 
-  handleUnselectedChannels = (unselectedItems: FlatChannel[]) => {
-    const { selectedChannels } = this.state;
-    const unselectedIds = new Set(unselectedItems.map((item) => item.channelId));
-
-    const updatedSelectedChannels = selectedChannels.filter((channel) => !unselectedIds.has(channel.channelId));
-
-    this.setState({
-      selectedChannels: updatedSelectedChannels,
-    });
+  handleChannelSelect = (channel: FlatChannel) => {
+    // Handle channel details view or other actions
+    console.log(`Selected channel for details: ${channel.channelLabel}`);
   };
 
   onChannelDesyncConfirm = () => {
@@ -111,7 +157,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     if (!selectedOrg) {
       return;
     }
-    // Get channel IDs for the API call
+    // Get channel labels for the API call
     const channelsLabels: string[] = selectedChannels.map((channel) => channel.channelLabel);
     if (channelsLabels.length === 0) {
       return;
@@ -155,9 +201,12 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   render() {
-    const { syncedChannels, availableChannels, selectedChannels, syncModalOpen, availableOrgs, loading } = this.state;
-    // Combine available and synced channels for the full list
+    const { syncedChannels, availableChannels, selectedChannels, syncModalOpen, availableOrgs, loading, syncStatus } =
+      this.state;
+
+    // Combine all channels for the hierarchical table
     const allChannels = [...availableChannels, ...syncedChannels];
+
     const searchData = (row, criteria) => {
       const keysToSearch = ["channelName", "channelLabel"];
       if (criteria) {
@@ -248,13 +297,13 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       <div className="container mt-4">
         <h3>{t("Sync Channels from Hub to Peripheral")}</h3>
 
-        {/* HierarchicalChannelTable with proper handlers */}
-        <HierarchicalChannelTable
+        {/* Use our improved ChannelHierarchicalTable component */}
+        <ChannelHierarchicalTable
           channels={allChannels}
-          peripheralId={this.props.peripheralId}
+          onSyncStatusChange={this.handleSyncStatusChange}
+          onChannelSelect={this.handleChannelSelect}
           loading={loading}
-          handleSelectedItems={this.handleSelectedChannels}
-          handleUnselectedItems={this.handleUnselectedChannels}
+          initialSyncStates={syncStatus}
         />
 
         {/* Button to Open the Channel Selection Modal */}

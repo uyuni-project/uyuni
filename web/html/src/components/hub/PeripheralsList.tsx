@@ -64,7 +64,7 @@ export class PeripheralsList extends React.Component<Props> {
   }
 
   private renderDetailsLink(row: PeripheralListData): React.ReactNode {
-    const detailsUrl = "/rhn/manager/api/admin/hub/peripherals/" + row.id;
+    const detailsUrl = "/rhn/manager/admin/hub/peripherals/" + row.id;
     return <a href={detailsUrl}>{row.fqdn}</a>;
   }
 

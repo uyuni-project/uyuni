@@ -68,10 +68,8 @@ export type Channel = {
   channelLabel: string;
   channelArch: string;
   channelOrg: Org | null;
-  parentChannelLabel: string | null; // if null or undefined, this is a root channel
+  parentChannelLabel: string | null; // if null, this is a root channel
   children: Channel[]; // for easy hierarchical references
-  originalChannelLabel: string | null; // the id of the channel that this is a clone of
-  synced: boolean;
 };
 
 export type FlatChannel = {
@@ -80,7 +78,6 @@ export type FlatChannel = {
   channelLabel: string;
   channelArch: string;
   channelOrg: Org | null;
-  parentChannelLabel: string | null; // if null or undefined, this is a root channel
-  originalChannelLabel: string | null; // the id of the channel that this is a clone of
-  childrenIds: string[];
+  parentChannelLabel: string | null; // if null, this is a root channel
+  childrenLabels: string[]; // for easy lookup if needed
 };
