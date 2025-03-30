@@ -37,7 +37,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SystemGroupConfigAction extends RhnAction {
 
-    private final String CREATE_DEFAULT_SG = "create_default";
+    private static final String CREATE_DEFAULT_SG = "create_default";
 
     /** {@inheritDoc} */
     @Override

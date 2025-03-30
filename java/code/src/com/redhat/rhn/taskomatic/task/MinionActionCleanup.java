@@ -28,7 +28,7 @@ import java.io.IOException;
  */
 public class MinionActionCleanup extends RhnJavaJob {
 
-    private final MinionActionUtils minionActionUtils = GlobalInstanceHolder.MINION_ACTION_UTILS;
+    private static final MinionActionUtils MINION_ACTION_UTILS = GlobalInstanceHolder.MINION_ACTION_UTILS;
 
     @Override
     public String getConfigNamespace() {
@@ -47,11 +47,11 @@ public class MinionActionCleanup extends RhnJavaJob {
 
         // Measure time and calculate the total duration
         long start = System.currentTimeMillis();
-        minionActionUtils.cleanupMinionActions();
+        MINION_ACTION_UTILS.cleanupMinionActions();
 
         // Delete script files for script actions that have completed
         try {
-            minionActionUtils.cleanupScriptActions();
+            MINION_ACTION_UTILS.cleanupScriptActions();
         }
         catch (IOException e) {
             log.error("Could not cleanup script files: {}", e.getMessage(), e);

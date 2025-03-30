@@ -38,11 +38,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class PopularChannelTreeAction extends BaseChannelTreeAction {
 
-    private final Long DEFAULT_COUNT = 10L;
-    private final Long[] preSetCounts = {1L, 10L, 50L, 100L, 250L, 500L, 1000L};
+    private static final Long DEFAULT_COUNT = 10L;
+    private static final Long[] PRE_SET_COUNTS = {1L, 10L, 50L, 100L, 250L, 500L, 1000L};
 
-    private final String SERVER_COUNT = "server_count";
-    private final String COUNTS = "counts";
+    private static final String SERVER_COUNT = "server_count";
+    private static final String COUNTS = "counts";
 
     /** {@inheritDoc} */
     @Override
@@ -72,7 +72,7 @@ public class PopularChannelTreeAction extends BaseChannelTreeAction {
         }
 
         List<Map<String, Object>> preSetList = new ArrayList<>();
-        for (Long l : preSetCounts) {
+        for (Long l : PRE_SET_COUNTS) {
             Map<String, Object> countMap = new HashMap<>();
             countMap.put("count", l);
             countMap.put("selected", l.equals(count));
