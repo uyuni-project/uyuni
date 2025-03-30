@@ -53,7 +53,7 @@ public class SystemMigrateAction extends RhnAction {
     public static final String SID = "sid";
     public static final String ORG = "to_org";
 
-    private final MigrationManager migrationManager = GlobalInstanceHolder.MIGRATION_MANAGER;
+    private static final MigrationManager MIGRATION_MANAGER = GlobalInstanceHolder.MIGRATION_MANAGER;
 
 
     /** {@inheritDoc} */
@@ -174,7 +174,7 @@ public class SystemMigrateAction extends RhnAction {
         List<Server> serverList = new ArrayList<>();
         serverList.add(s);
 
-        List<Long> serversMigrated = migrationManager.migrateServers(user,
+        List<Long> serversMigrated = MIGRATION_MANAGER.migrateServers(user,
                 toOrg, serverList);
 
         Iterator it = serversMigrated.iterator();

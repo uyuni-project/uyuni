@@ -75,7 +75,7 @@ public class DailySummary extends RhnJavaJob {
     private static final String ERRATA_INDENTION = StringUtils.repeat(" ", ERRATA_SPACER);
 
     private static final BaseProductManager END_OF_LIFE_MANAGER = new BaseProductManager();
-    private final CloudPaygManager cloudPaygManager = GlobalInstanceHolder.PAYG_MANAGER;
+    private static final CloudPaygManager CLOUD_PAYG_MANAGER = GlobalInstanceHolder.PAYG_MANAGER;
 
     @Override
     public String getConfigNamespace() {
@@ -147,7 +147,7 @@ public class DailySummary extends RhnJavaJob {
         }
 
         // This notification will be process only if SUMA is PAYG but is not compliant
-        if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
+        if (CLOUD_PAYG_MANAGER.isPaygInstance() && !CLOUD_PAYG_MANAGER.isCompliant()) {
             NotificationMessage notificationMessage =
                     UserNotificationFactory.createNotificationMessage(
                             new PaygNotCompliantWarning());
@@ -494,7 +494,7 @@ public class DailySummary extends RhnJavaJob {
         args[5] = OrgFactory.EMAIL_FOOTER.getValue();
         args[6] = OrgFactory.EMAIL_ACCOUNT_INFO.getValue();
 
-        if (cloudPaygManager.isPaygInstance() && !cloudPaygManager.isCompliant()) {
+        if (CLOUD_PAYG_MANAGER.isPaygInstance() && !CLOUD_PAYG_MANAGER.isCompliant()) {
             args[7] = String.format("%s%n", ls.getMessage("dailysummary.email.notpaygcompliant"));
         }
         else {

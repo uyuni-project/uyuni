@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AddGroupsAction extends RhnAction implements Listable<ManagedServerGroup> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -66,8 +66,8 @@ public class AddGroupsAction extends RhnAction implements Listable<ManagedServer
             servers.add(server);
 
             for (String id : helper.getSet()) {
-                ServerGroup group = serverGroupManager.lookup(Long.valueOf(id), user);
-                serverGroupManager.addServers(group, servers, user);
+                ServerGroup group = SERVER_GROUP_MANAGER.lookup(Long.valueOf(id), user);
+                SERVER_GROUP_MANAGER.addServers(group, servers, user);
             }
             helper.destroy();
             getStrutsDelegate().saveMessage(
@@ -94,7 +94,7 @@ public class AddGroupsAction extends RhnAction implements Listable<ManagedServer
             getManagedServerGroups();
         List<ManagedServerGroup> ret = new LinkedList<>();
         for (ManagedServerGroup group : all) {
-            if (!serverGroups.contains(group) && serverGroupManager.canAccess(
+            if (!serverGroups.contains(group) && SERVER_GROUP_MANAGER.canAccess(
                         context.getCurrentUser(), group)) {
                 ret.add(group);
             }

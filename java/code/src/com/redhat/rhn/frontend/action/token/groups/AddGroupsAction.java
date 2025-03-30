@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AddGroupsAction extends BaseListAction<ManagedServerGroup> {
     private static final String ACCESS_MAP = "accessMap";
 
-    private final ServerGroupManager sgm = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SGM = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -60,7 +60,7 @@ public class AddGroupsAction extends BaseListAction<ManagedServerGroup> {
         User user = context.getCurrentUser();
         for (String id : helper.getSet()) {
             Long sgid = Long.valueOf(id);
-            key.addServerGroup(sgm.lookup(sgid, user));
+            key.addServerGroup(SGM.lookup(sgid, user));
         }
         getStrutsDelegate().saveMessage(
                     "activation-key.groups.jsp.added",

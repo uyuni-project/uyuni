@@ -37,7 +37,7 @@ import java.util.stream.Stream;
  */
 public class TokenCleanup extends RhnJavaJob {
 
-    private final SaltApi saltApi = GlobalInstanceHolder.SALT_API;
+    private static final SaltApi SALT_API = GlobalInstanceHolder.SALT_API;
 
     @Override
     public String getConfigNamespace() {
@@ -72,7 +72,7 @@ public class TokenCleanup extends RhnJavaJob {
 
             List<String> changedMinionIds = changedMinions.map(MinionServer::getMinionId).collect(Collectors.toList());
             if (Config.get().getBoolean(ConfigDefaults.TOKEN_REFRESH_AUTO_DEPLOY)) {
-                saltApi.deployChannels(changedMinionIds);
+                SALT_API.deployChannels(changedMinionIds);
             }
             else {
                 if (log.isWarnEnabled()) {

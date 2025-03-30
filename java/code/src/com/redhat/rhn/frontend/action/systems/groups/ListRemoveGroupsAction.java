@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveGroupsAction extends BaseListAction implements Listable<ManagedServerGroup> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -83,8 +83,8 @@ public class ListRemoveGroupsAction extends BaseListAction implements Listable<M
 
         for (String id : set) {
             Long sgid = Long.valueOf(id);
-            ServerGroup group = serverGroupManager.lookup(sgid, user);
-            serverGroupManager.removeServers(group, servers, user);
+            ServerGroup group = SERVER_GROUP_MANAGER.lookup(sgid, user);
+            SERVER_GROUP_MANAGER.removeServers(group, servers, user);
         }
         helper.destroy();
         getStrutsDelegate().saveMessage(
