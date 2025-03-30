@@ -43,13 +43,13 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class DeleteCustomDataAction extends RhnAction {
 
-    private final String CIKID_PARAM = "cikid";
-    private final String LABEL_PARAM = "label";
-    private final String DESC_PARAM = "description";
-    private final String CREATOR_PARAM = "creator";
-    private final String CREATED_PARAM = "created";
-    private final String MODIFIED_PARAM = "modified";
-    private final String LAST_MODIFIER_PARAM = "lastModifier";
+    private static final String CIKID_PARAM = "cikid";
+    private static final String LABEL_PARAM = "label";
+    private static final String DESC_PARAM = "description";
+    private static final String CREATOR_PARAM = "creator";
+    private static final String CREATED_PARAM = "created";
+    private static final String MODIFIED_PARAM = "modified";
+    private static final String LAST_MODIFIER_PARAM = "lastModifier";
 
     /** {@inheritDoc} */
     @Override

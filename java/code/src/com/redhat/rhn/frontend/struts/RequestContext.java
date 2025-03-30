@@ -106,7 +106,7 @@ public class RequestContext {
     public static final String MODE = "mode";
     public static final String POST = "POST";
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /**
      * Names of pagination elements (and their corresponding attributes).
@@ -353,7 +353,7 @@ public class RequestContext {
         if (request.getAttribute(SERVER_GROUP) == null) {
             Long id = getRequiredParam(SERVER_GROUP_ID);
             User user = getCurrentUser();
-            ManagedServerGroup sg = serverGroupManager.lookup(id, user);
+            ManagedServerGroup sg = SERVER_GROUP_MANAGER.lookup(id, user);
             if (sg == null) {
                 String msg = "No server group with id = [%s] found.";
                 throw new IllegalArgumentException(String.format(msg, id));

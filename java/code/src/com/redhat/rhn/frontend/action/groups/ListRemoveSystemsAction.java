@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ListRemoveSystemsAction extends BaseListAction<SystemOverview> {
 
-    private final ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+    private static final ServerGroupManager SERVER_GROUP_MANAGER = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -62,7 +62,7 @@ public class ListRemoveSystemsAction extends BaseListAction<SystemOverview> {
             Long sid = Long.valueOf(id);
             servers.add(SystemManager.lookupByIdAndUser(sid, user));
         }
-        serverGroupManager.removeServers(sg, servers, user);
+        SERVER_GROUP_MANAGER.removeServers(sg, servers, user);
         getStrutsDelegate().saveMessage(
                     "systemgroup.systems.removed",
                         new String [] {String.valueOf(set.size()),
