@@ -123,7 +123,7 @@ public class RhnHttpServletRequest extends HttpServletRequestWrapper {
         if (isRequestedSessionIdFromCookie()) {
             retval.append("Requested Session Id came from Cookie\n");
         }
-        else if (isRequestedSessionIdFromUrl()) {
+        else if (isRequestedSessionIdFromURL()) {
             retval.append("Requested Session Id came from Url\n");
         }
 
