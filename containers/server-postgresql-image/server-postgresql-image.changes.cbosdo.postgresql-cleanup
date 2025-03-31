@@ -1,3 +1,2 @@
-- Use correct variables in the initialization scripts
-- Log to STDERR instead of the log file
-- Remove custom entrypoint
+- Adapt db container to work with mgradm database configuration
+- Database container now logs to the journald/podman logs
