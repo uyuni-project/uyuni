@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.controllers.contentmanagement.handlers;
 
-import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -24,11 +24,6 @@ import com.redhat.rhn.manager.contentmgmt.ContentManager;
 
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectBuildRequest;
 import com.suse.manager.webui.controllers.contentmanagement.request.ProjectPromoteRequest;
-import com.suse.manager.webui.utils.gson.ResultJson;
-
-import com.google.gson.Gson;
-
-import org.apache.http.HttpStatus;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +36,6 @@ import spark.Response;
  */
 public class ProjectActionsApiController {
 
-    private static final Gson GSON = ControllerApiUtils.GSON;
     private static final ContentManager CONTENT_MGR = ControllerApiUtils.CONTENT_MGR;
 
     private ProjectActionsApiController() {
@@ -80,7 +74,7 @@ public class ProjectActionsApiController {
         ProjectBuildRequest projectLabelRequest = ProjectActionsHandler.getProjectBuildRequest(req);
         List<String> requestErrors = ProjectActionsHandler.validateProjectBuildRequest(projectLabelRequest);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
+            return badRequest(res, requestErrors.toArray(new String[0]));
         }
 
         String projectLabel = projectLabelRequest.getProjectLabel();
@@ -100,7 +94,7 @@ public class ProjectActionsApiController {
         ProjectPromoteRequest projectPromoteReq = ProjectActionsHandler.getProjectPromoteRequest(req);
         List<String> requestErrors = ProjectActionsHandler.validateProjectPromoteRequest(projectPromoteReq);
         if (!requestErrors.isEmpty()) {
-            return json(GSON, res, HttpStatus.SC_BAD_REQUEST, ResultJson.error(requestErrors));
+            return badRequest(res, requestErrors.toArray(new String[0]));
         }
 
         String projectLabel = projectPromoteReq.getProjectLabel();

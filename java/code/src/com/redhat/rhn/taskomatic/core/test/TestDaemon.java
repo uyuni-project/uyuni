@@ -17,6 +17,8 @@ package com.redhat.rhn.taskomatic.core.test;
 import com.redhat.rhn.taskomatic.core.TaskomaticDaemon;
 
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
 
 public class TestDaemon extends TaskomaticDaemon {
 
@@ -34,6 +36,41 @@ public class TestDaemon extends TaskomaticDaemon {
     public static void main(String[] argv) {
         TestDaemon td = new TestDaemon();
         td.registerImplementation(argv);
+
+        optionListPseudoTest(td);
+    }
+
+    public static void optionListPseudoTest(TestDaemon td) {
+        Options options = td.buildOptionsList();
+        System.out.println(options.getOptions().size() == 9);
+        Option opt = options.getOption("debug");
+        System.out.println(opt.toString()
+                .equals("[ option: debug debug  :: turn on debug mode :: class java.lang.String ]"));
+        opt = options.getOption("daemon");
+        System.out.println(opt.toString()
+                .equals("[ option: daemon daemon  :: turn on daemon mode :: class java.lang.String ]"));
+        opt = options.getOption("single");
+        System.out.println(opt.toString()
+                .equals("[ option: single single  :: run a single task and exit :: class java.lang.String ]"));
+        opt = options.getOption("help");
+        System.out.println(opt.toString()
+                .equals("[ option: help help  :: prints out help screen :: class java.lang.String ]"));
+        opt = options.getOption("pidfile");
+        System.out.println(opt.toString()
+                .equals("[ option: pidfile pidfile  [ARG] :: use PID file <pidfile> :: class java.lang.String ]"));
+        opt = options.getOption("task");
+        System.out.println(opt.toString()
+                .equals("[ option: task task  [ARG] " +
+                        ":: run this task (may be specified multiple times) :: class java.lang.String ]"));
+        opt = options.getOption("dburl");
+        System.out.println(opt.toString()
+                .equals("[ option: dburl dburl  [ARG] :: jdbcurl :: class java.lang.String ]"));
+        opt = options.getOption("dbuser");
+        System.out.println(opt.toString()
+                .equals("[ option: dbuser dbuser  [ARG] :: database username :: class java.lang.String ]"));
+        opt = options.getOption("dbpassword");
+        System.out.println(opt.toString()
+                .equals("[ option: dbpassword dbpassword  [ARG] :: database password :: class java.lang.String ]"));
     }
 
     class DaemonLogic implements Runnable {

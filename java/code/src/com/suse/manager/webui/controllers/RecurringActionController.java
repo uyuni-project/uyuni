@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.notFound;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
@@ -375,7 +376,7 @@ public class RecurringActionController {
             String errMsg = LocalizationService.getInstance().getMessage("recurring_action.not_in_maint_mode");
             Spark.halt(HttpStatus.SC_BAD_REQUEST, GSON.toJson(ResultJson.error(errMsg)));
         }
-        return json(response, ResultJson.success());
+        return success(response);
     }
 
     private static RecurringAction createOrGetAction(User user, RecurringActionScheduleJson json) {

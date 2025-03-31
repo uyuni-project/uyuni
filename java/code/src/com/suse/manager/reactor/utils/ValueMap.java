@@ -14,7 +14,6 @@
  */
 package com.suse.manager.reactor.utils;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,6 +22,7 @@ import java.text.DecimalFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -154,7 +154,7 @@ public class ValueMap {
         }
         else {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Value '{}' could not be converted to string.", ObjectUtils.toString(value));
+                LOG.warn("Value '{}' could not be converted to string.", value);
             }
             return Optional.empty();
         }
@@ -187,7 +187,7 @@ public class ValueMap {
         }
         else {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Value '{}' could not be converted to long.", ObjectUtils.toString(value));
+                LOG.warn("Value '{}' could not be converted to long.", Objects.toString(value, ""));
             }
             return Optional.empty();
         }
@@ -206,7 +206,7 @@ public class ValueMap {
         }
         else {
             if (LOG.isWarnEnabled()) {
-                LOG.warn("Value '{}' could not be converted to Boolean.", ObjectUtils.toString(value));
+                LOG.warn("Value '{}' could not be converted to Boolean.", Objects.toString(value, ""));
             }
             return Optional.empty();
         }

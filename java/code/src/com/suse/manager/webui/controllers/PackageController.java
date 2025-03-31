@@ -15,8 +15,9 @@
 package com.suse.manager.webui.controllers;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.forbidden;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
-import static com.suse.manager.webui.utils.SparkApplicationHelper.jsonError;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
@@ -217,10 +218,10 @@ public class PackageController {
             PackageManager.deletePackages(ids, user);
         }
         catch (PermissionException e) {
-            return jsonError(response, HttpStatus.SC_FORBIDDEN, e.getLocalizedMessage());
+            return forbidden(response, e.getLocalizedMessage());
         }
         catch (RhnRuntimeException e) {
-            return jsonError(response, HttpStatus.SC_INTERNAL_SERVER_ERROR, e.getLocalizedMessage());
+            return internalServerError(response, e.getLocalizedMessage());
         }
 
         return json(response, "success");
