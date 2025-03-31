@@ -102,18 +102,18 @@ export function ProxyConfig() {
       const extraData =
         model.sslMode === SSLMode.CreateSSL
           ? Object.assign(
-            {},
-            {
-              caPassword: model.caPassword,
-              country: model.country,
-              state: model.state,
-              city: model.city,
-              org: model.org,
-              orgUnit: model.orgUnit,
-              sslEmail: model.sslEmail,
-            },
-            cnamesData
-          )
+              {},
+              {
+                caPassword: model.caPassword,
+                country: model.country,
+                state: model.state,
+                city: model.city,
+                org: model.org,
+                orgUnit: model.orgUnit,
+                sslEmail: model.sslEmail,
+              },
+              cnamesData
+            )
           : {};
       const formData = unflattenModel(Object.assign({}, commonData, extraData, ...values));
       Network.post("/rhn/manager/api/proxy/container-config", formData).then(
@@ -383,12 +383,7 @@ export function ProxyConfig() {
 
         <div className="col-md-offset-3 offset-md-3 col-md-6">
           <SubmitButton id="submit-btn" className="btn-primary me-3" text={t("Generate")} disabled={!isValidated} />
-          <AsyncButton
-            id="clear-btn"
-            defaultType="btn-default"
-            text={t("Clear fields")}
-            action={clearFields}
-          />
+          <AsyncButton id="clear-btn" defaultType="btn-default" text={t("Clear fields")} action={clearFields} />
         </div>
       </Form>
     </TopPanel>

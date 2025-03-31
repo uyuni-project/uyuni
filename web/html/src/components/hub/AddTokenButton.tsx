@@ -92,14 +92,18 @@ export class AddTokenButton extends React.Component<Props, State> {
                 key="issue"
                 href="#"
                 onClick={() => this.setState({ createRequest: { type: TokenType.ISSUED } })}
-              >{t("Issue a new token")}</a>,
+              >
+                {t("Issue a new token")}
+              </a>,
               // eslint-disable-next-line jsx-a11y/anchor-is-valid
               <a
                 id="store-btn-link"
                 key="store"
                 href="#"
                 onClick={() => this.setState({ createRequest: { type: TokenType.CONSUMED } })}
-              >{t("Store an external token")}</a>,
+              >
+                {t("Store an external token")}
+              </a>,
             ]}
           />
         );
