@@ -84,3 +84,16 @@ tbody tr td,
   font-size: 18px;
   font-weight: bolder;
 }
+
+.table-page-information {
+  padding: 8px 15px;
+  border-right: 1px solid $eos-bc-gray-300;
+  font-weight: 600;
+  padding-right: 35px;
+
+  > .small-select {
+    background-color: transparent;
+    color: $eos-bc-gray-1000;
+    font-weight: 600;
+  }
+}
