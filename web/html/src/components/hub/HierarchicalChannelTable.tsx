@@ -31,8 +31,6 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
 }) => {
   // Sync status state
   const [syncedChannels, setSyncedChannels] = useState<Record<number, boolean>>(initialSyncStates);
-  // Search state
-  const [searchCriteria, setSearchCriteria] = useState<string>("");
   // Architecture filtering state
   const [selectedArchs, setSelectedArchs] = useState<string[]>([]);
 
@@ -59,39 +57,6 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
       };
     });
   }, [channels, syncedChannels]);
-
-  // Filter data based on search criteria and architecture
-  const filteredData = useMemo(() => {
-    // Helper function to add an item and all its ancestors to the includedIds set
-    const addWithAncestors = (includedIds: Set<number>, channel: ChannelWithHierarchy) => {
-      includedIds.add(channel.channelId);
-      // Add ancestors recursively
-      if (channel.parentId) {
-        const parent = hierarchicalData.find((c) => c.channelId === channel.parentId);
-        if (parent) {
-          addWithAncestors(includedIds, parent);
-        }
-      }
-    };
-    // If no filters are applied, return all data
-    if (!searchCriteria && selectedArchs.length === 0) {
-      return hierarchicalData;
-    }
-    // Apply filter for name
-    let matchingItems = hierarchicalData;
-    if (searchCriteria) {
-      const searchTerm = searchCriteria.toLowerCase();
-      matchingItems = matchingItems.filter((channel) => channel.channelName.toLowerCase().includes(searchTerm));
-    }
-    // Apply architecture filter
-    if (selectedArchs.length > 0) {
-      matchingItems = matchingItems.filter((channel) => selectedArchs.includes(channel.channelArch));
-    }
-    // Include ancestors of matching items
-    const includedIds = new Set<number>();
-    matchingItems.forEach((channel) => addWithAncestors(includedIds, channel));
-    return hierarchicalData.filter((channel) => includedIds.has(channel.channelId));
-  }, [hierarchicalData, searchCriteria, selectedArchs]);
 
   // Initialize sync statuses if needed
   useEffect(() => {
@@ -128,11 +93,6 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
   const handleArchFilterChange = useCallback((selectedOptions: any) => {
     const selectedValues = Array.isArray(selectedOptions) ? selectedOptions.map((option) => option.value) : [];
     setSelectedArchs(selectedValues);
-  }, []);
-
-  // Handle search change
-  const handleSearchChange = useCallback((criteria: string) => {
-    setSearchCriteria(criteria);
   }, []);
 
   // Render the organization name - memoized
@@ -200,9 +160,7 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
             placeholder={t("Filter by architecture")}
             options={getDistinctArchsFromData(channels)}
             isMulti={true}
-            onChange={(_, selectedValues) => {
-              // This will be handled by the table's internal filtering
-            }}
+            onChange={handleArchFilterChange}
           />
         </Form>
       </div>
@@ -218,7 +176,11 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
         filter={(row, criteria) => {
           if (!criteria) return true;
           const searchTerm = criteria.toLowerCase();
-          return row.channelName.toLowerCase().includes(searchTerm);
+          if (selectedArchs.length === 0) {
+            return row.channelLabel.toLowerCase().includes(searchTerm);
+          } else {
+            return selectedArchs.indexOf(row.channelArch) !== -1 && row.channelLabel.toLowerCase().includes(searchTerm);
+          }
         }}
       />
     ),
@@ -229,7 +191,7 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
     <div className="channel-hierarchy-container">
       {/* Search field outside the table */}
       <HierarchicalTable
-        data={filteredData}
+        data={hierarchicalData}
         identifier={identifier}
         expandColumnKey="channelLabel"
         initiallyExpanded={true}
