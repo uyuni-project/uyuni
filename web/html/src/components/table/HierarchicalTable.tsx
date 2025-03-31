@@ -80,8 +80,7 @@ export const HierarchicalTable = React.forwardRef<TableRef, HierarchicalTablePro
     // First pass: map all items by their IDs and initialize level to 0
     items.forEach((item) => {
       const itemId = identifier(item);
-      const clonedItem = { ...item, level: 0, isLeaf: true };
-      itemMap[itemId] = clonedItem;
+      itemMap[itemId] = { ...item, level: 0, isLeaf: true };
     });
     // Second pass: identify parent-child relationships and mark non-leaves
     items.forEach((item) => {

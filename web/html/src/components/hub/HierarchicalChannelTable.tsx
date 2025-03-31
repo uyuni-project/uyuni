@@ -155,16 +155,6 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
     [syncedChannels]
   );
 
-  // Memoize the channel selection handler
-  const handleChannelSelect = useCallback(
-    (row: any) => {
-      if (onChannelSelect) {
-        onChannelSelect(row as FlatChannel);
-      }
-    },
-    [onChannelSelect]
-  );
-
   // Render channel label cell (required to fix type issues)
   const renderChannelLabelCell = useCallback((row: any) => {
     const channel = row as ChannelWithHierarchy;
