@@ -248,6 +248,7 @@ end
 
 # Dump feature code coverage into a Redis DB before we run next feature
 Before do |scenario|
+  check_read_timeout_threshold
   next unless $code_coverage_mode
 
   # Initialize $feature_path if that's the first feature
