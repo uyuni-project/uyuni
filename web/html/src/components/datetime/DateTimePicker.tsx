@@ -26,9 +26,10 @@ type Props = {
   legacyId?: string;
   value: moment.Moment;
   onChange: (value: moment.Moment) => void;
+  disabled?: boolean;
   hideDatePicker?: boolean;
   hideTimePicker?: boolean;
-  // By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead.
+  /** By default date times are shown in the user's configured time zone. Setting this property will default to the server time zone instead. */
   serverTimeZone?: boolean;
 };
 
@@ -57,10 +58,16 @@ export const DateTimePicker = (props: Props) => {
     : undefined;
 
   const openDatePicker = () => {
+    if (props.disabled) {
+      return;
+    }
     datePickerRef.current?.setOpen(true);
   };
 
   const openTimePicker = () => {
+    if (props.disabled) {
+      return;
+    }
     timePickerRef.current?.setOpen(true);
   };
 
@@ -160,6 +167,7 @@ export const DateTimePicker = (props: Props) => {
               previousYearButtonLabel={previousYear}
               nextYearAriaLabel={nextYear}
               nextYearButtonLabel={nextYear}
+              disabled={props.disabled}
             />
           </>
         )}
@@ -225,6 +233,7 @@ export const DateTimePicker = (props: Props) => {
                   data-testid="time-picker"
                 />
               }
+              disabled={props.disabled}
             />
           </>
         )}

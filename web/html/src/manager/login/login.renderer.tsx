@@ -11,7 +11,6 @@ export const renderer = (
     validationErrors,
     schemaUpgradeRequired,
     webVersion,
-    productName,
     customHeader,
     customFooter,
     legalNote,
