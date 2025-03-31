@@ -113,18 +113,19 @@ public class ErrataHandler extends BaseHandler {
      *          #prop("string", "issue_date")
      *          #prop("string", "update_date")
      *          #prop_desc("string", "last_modified_date", "last time the erratum was modified.")
-     *          #prop("string", "synopsis")
      *          #prop("int", "release")
      *          #prop("string", "advisory_status")
      *          #prop("string", "vendor_advisory")
-     *          #prop("string", "type")
      *          #prop("string", "product")
      *          #prop("string", "errataFrom")
-     *          #prop("string", "topic")
+     *          #prop("string", "solution")
      *          #prop("string", "description")
+     *          #prop("string", "synopsis")
+     *          #prop("string", "topic")
      *          #prop("string", "references")
      *          #prop("string", "notes")
-     *          #prop("string", "solution")
+     *          #prop("string", "type")
+     *          #prop("string", "severity")
      *          #prop_desc("boolean", "reboot_suggested", "A boolean flag signaling whether a system reboot is
      *          advisable following the application of the errata. Typical example is upon kernel update.")
      *          #prop_desc("boolean", "restart_suggested", "A boolean flag signaling a weather reboot of
@@ -144,24 +145,45 @@ public class ErrataHandler extends BaseHandler {
                     LocalizationService.getInstance()
                     .formatShortDate(errata.getIssueDate()));
         }
+        else {
+            errataMap.put("issue_date", "");
+        }
+
         if (errata.getUpdateDate() != null) {
             errataMap.put("update_date",
                     LocalizationService.getInstance()
                     .formatShortDate(errata.getUpdateDate()));
         }
+        else {
+            errataMap.put("update_date", "");
+        }
+
         if (errata.getLastModified() != null) {
             errataMap.put("last_modified_date", errata.getLastModified().toString());
         }
+        else {
+            errataMap.put("last_modified_date", "");
+        }
+
         if (errata.getAdvisoryRel() != null) {
             errataMap.put("release", errata.getAdvisoryRel());
         }
+        else {
+            errataMap.put("release", "");
+        }
+
         if (errata.getAdvisoryStatus() != null) {
-            errataMap.put("advisory_status", errata.getAdvisoryStatus().getMetadataValue());
+            errataMap.put("advisory_status",
+                    StringUtils.defaultString(errata.getAdvisoryStatus().getMetadataValue()));
+        }
+        else {
+            errataMap.put("advisory_status", "");
         }
 
         try {
             final VendorSpecificErrataParser parser = ErrataParserFactory.getParser(errata);
-            errataMap.put("vendor_advisory", parser.getAdvisoryUri(errata).toString());
+            errataMap.put("vendor_advisory",
+                    StringUtils.defaultString(parser.getAdvisoryUri(errata).toString()));
         }
         catch (ErrataParsingException ex) {
             errataMap.put("vendor_advisory", "");
@@ -186,7 +208,10 @@ public class ErrataHandler extends BaseHandler {
         errataMap.put("type",
                 StringUtils.defaultString(errata.getAdvisoryType()));
         if (errata.getSeverity() != null) {
-            errataMap.put("severity", errata.getSeverity().getLocalizedLabel());
+            errataMap.put("severity", StringUtils.defaultString(errata.getSeverity().getLocalizedLabel()));
+        }
+        else {
+            errataMap.put("severity", "");
         }
 
         errataMap.put("reboot_suggested", errata.hasKeyword(Keyword.REBOOT_SUGGESTED));
