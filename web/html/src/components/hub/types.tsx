@@ -80,4 +80,5 @@ export type FlatChannel = {
   channelOrg: Org | null;
   parentChannelLabel: string | null; // if null, this is a root channel
   childrenLabels: string[]; // for easy lookup if needed
+  synced: boolean; // no need for another class that tells us if the channel is synced or not
 };

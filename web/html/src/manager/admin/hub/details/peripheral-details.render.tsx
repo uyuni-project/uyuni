@@ -20,7 +20,7 @@ type ChannelSyncProps = {
  * @param channels - An array of hierarchical Channel objects
  * @returns An array of FlatChannel objects
  */
-function flattenChannels(channels: Channel[]): FlatChannel[] {
+function flattenChannels(channels: Channel[], isSynced: boolean): FlatChannel[] {
   const flatChannels: FlatChannel[] = [];
 
   /**
@@ -40,11 +40,11 @@ function flattenChannels(channels: Channel[]): FlatChannel[] {
       channelOrg: channel.channelOrg,
       parentChannelLabel: channel.parentChannelLabel,
       childrenLabels: childrenLabels,
+      synced: isSynced,
     };
 
     // Add the flat channel to our result array
     flatChannels.push(flatChannel);
-
     // Process all children recursively
     channel.children.forEach((child) => processChannel(child));
   };
@@ -60,10 +60,10 @@ export const renderer = (id: string, channelsSyncData: ChannelSyncProps) => {
   const pathname = window.location.pathname;
   const segments = pathname.split("/").filter(Boolean);
   const peripheralId = Number(segments[segments.length - 1]);
-  const flatAvailableCustom = flattenChannels(channelsSyncData.availableCustomChannels);
-  const flatAvailableVendor = flattenChannels(channelsSyncData.availableVendorChannels);
-  const flatSyncedCustom = flattenChannels(channelsSyncData.syncedPeripheralCustomChannels);
-  const flatSyncedVendor = flattenChannels(channelsSyncData.syncedPeripheralVendorChannels);
+  const flatAvailableCustom = flattenChannels(channelsSyncData.availableCustomChannels, false);
+  const flatAvailableVendor = flattenChannels(channelsSyncData.availableVendorChannels, false);
+  const flatSyncedCustom = flattenChannels(channelsSyncData.syncedPeripheralCustomChannels, true);
+  const flatSyncedVendor = flattenChannels(channelsSyncData.syncedPeripheralVendorChannels, true);
   SpaRenderer.renderNavigationReact(
     <RolesProvider>
       <MessagesContainer />
