@@ -27,5 +27,10 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VE
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-ENTRYPOINT ["/usr/local/bin/uyuni-entrypoint.sh"]
+# Hard code the postgres UID / GID to the upstream image value and what was in the big container
+# The files are chown'ed in the entrypoint
+RUN /usr/sbin/groupmod -g 999 postgres && \
+    /usr/sbin/usermod -u 999 -g 999 postgres
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["postgres"]
