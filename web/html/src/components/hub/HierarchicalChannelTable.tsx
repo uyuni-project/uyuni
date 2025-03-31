@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Form, Select } from "components/input";
 import { Column } from "components/table/Column";
 import { HierarchicalRow, HierarchicalTable } from "components/table/HierarchicalTable";
 import { SearchField } from "components/table/SearchField";
@@ -32,6 +33,9 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
   const [syncedChannels, setSyncedChannels] = useState<Record<number, boolean>>(initialSyncStates);
   // Search state
   const [searchCriteria, setSearchCriteria] = useState<string>("");
+  // Architecture filtering state
+  const [selectedArchs, setSelectedArchs] = useState<string[]>([]);
+
   // Process channels to have proper hierarchical structure, useMemo to avoid recalculation
   const hierarchicalData = useMemo(() => {
     // Build lookup map by channel label
@@ -56,35 +60,38 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
     });
   }, [channels, syncedChannels]);
 
-  // Filter data based on search criteria
+  // Filter data based on search criteria and architecture
   const filteredData = useMemo(() => {
-    if (!searchCriteria) return hierarchicalData;
-    // First, find items that match directly
-    const matchingItems = hierarchicalData.filter((channel) => {
-      const searchTerm = searchCriteria.toLowerCase();
-      return (
-        channel.channelName.toLowerCase().includes(searchTerm) ||
-        channel.channelLabel.toLowerCase().includes(searchTerm) ||
-        channel.channelArch.toLowerCase().includes(searchTerm) ||
-        (channel.channelOrg?.orgName || "SUSE").toLowerCase().includes(searchTerm)
-      );
-    });
-    // Create a set of IDs for matching items and their ancestors
-    const includedIds = new Set<number>();
     // Helper function to add an item and all its ancestors to the includedIds set
-    const addWithAncestors = (channel: ChannelWithHierarchy) => {
+    const addWithAncestors = (includedIds: Set<number>, channel: ChannelWithHierarchy) => {
       includedIds.add(channel.channelId);
       // Add ancestors recursively
       if (channel.parentId) {
         const parent = hierarchicalData.find((c) => c.channelId === channel.parentId);
         if (parent) {
-          addWithAncestors(parent);
+          addWithAncestors(includedIds, parent);
         }
       }
     };
-    matchingItems.forEach(addWithAncestors);
+    // If no filters are applied, return all data
+    if (!searchCriteria && selectedArchs.length === 0) {
+      return hierarchicalData;
+    }
+    // Apply filter for name
+    let matchingItems = hierarchicalData;
+    if (searchCriteria) {
+      const searchTerm = searchCriteria.toLowerCase();
+      matchingItems = matchingItems.filter((channel) => channel.channelName.toLowerCase().includes(searchTerm));
+    }
+    // Apply architecture filter
+    if (selectedArchs.length > 0) {
+      matchingItems = matchingItems.filter((channel) => selectedArchs.includes(channel.channelArch));
+    }
+    // Include ancestors of matching items
+    const includedIds = new Set<number>();
+    matchingItems.forEach((channel) => addWithAncestors(includedIds, channel));
     return hierarchicalData.filter((channel) => includedIds.has(channel.channelId));
-  }, [hierarchicalData, searchCriteria]);
+  }, [hierarchicalData, searchCriteria, selectedArchs]);
 
   // Initialize sync statuses if needed
   useEffect(() => {
@@ -116,6 +123,12 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
     },
     [onSyncStatusChange]
   );
+
+  // Handle architecture filter changes
+  const handleArchFilterChange = useCallback((selectedOptions: any) => {
+    const selectedValues = Array.isArray(selectedOptions) ? selectedOptions.map((option) => option.value) : [];
+    setSelectedArchs(selectedValues);
+  }, []);
 
   // Handle search change
   const handleSearchChange = useCallback((criteria: string) => {
@@ -167,12 +180,54 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
     return channel.channelArch;
   }, []);
 
+  // Function to get distinct architectures from channels
+  const getDistinctArchsFromData = useCallback((channels: FlatChannel[]) => {
+    const archSet = new Set<string>();
+    channels.forEach((channel) => archSet.add(channel.channelArch));
+    return Array.from(archSet).map((arch) => ({
+      value: arch,
+      label: arch,
+    }));
+  }, []);
+
+  // Architecture filter component
+  const archFilter = useMemo(
+    () => (
+      <div className="multiple-select-wrapper table-input-search">
+        <Form>
+          <Select
+            name="channel-arch-filter"
+            placeholder={t("Filter by architecture")}
+            options={getDistinctArchsFromData(channels)}
+            isMulti={true}
+            onChange={(_, selectedValues) => {
+              // This will be handled by the table's internal filtering
+            }}
+          />
+        </Form>
+      </div>
+    ),
+    [channels, getDistinctArchsFromData]
+  );
+
+  // Create a searchField with filter for channels
+  const searchField = useMemo(
+    () => (
+      <SearchField
+        placeholder={t("Search channels...")}
+        filter={(row, criteria) => {
+          if (!criteria) return true;
+          const searchTerm = criteria.toLowerCase();
+          return row.channelName.toLowerCase().includes(searchTerm);
+        }}
+      />
+    ),
+    []
+  );
+
   return (
     <div className="channel-hierarchy-container">
       {/* Search field outside the table */}
-      <div className="spacewalk-list-head-addons">
-        <SearchField placeholder={t("Search channels...")} onSearch={handleSearchChange} />
-      </div>
       <HierarchicalTable
         data={filteredData}
         identifier={identifier}
@@ -181,6 +236,8 @@ const ChannelHierarchicalTable: React.FC<ChannelTableProps> = ({
         cssClassFunction={rowClass}
         initialSortColumnKey="channelLabel"
         initialSortDirection={1}
+        searchField={searchField}
+        additionalFilters={[archFilter]}
       >
         <Column columnKey="synced" header={t("Sync")} cell={renderSyncCell} width="60px" />
         <Column columnKey="channelLabel" header={t("Channel Label")} cell={renderChannelLabelCell} sortable={true} />

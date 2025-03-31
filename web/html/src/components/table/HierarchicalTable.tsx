@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useState } from "react";
 
+import { SearchField } from "./SearchField";
 import { Table, TableRef } from "./Table";
 
 export type HierarchicalRow = {
@@ -20,6 +21,12 @@ type HierarchicalTableProps = {
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: HierarchicalRow) => string | number;
+
+  /** The search field to show on the table  */
+  searchField?: React.ReactComponentElement<typeof SearchField>;
+
+  /** Other filter fields */
+  additionalFilters?: Array<React.ReactNode>;
 
   /** Function to determine which column has expand/collapse controls */
   expandColumnKey?: string;
