@@ -122,7 +122,7 @@ def log_server_response_time
     Net::HTTP.get_response(uri)
     response_time = Time.now - start_time
     log "Server response time: #{response_time} seconds"
-  rescue => e
+  rescue StandardError => e
     warn "Error checking server response time: #{e.message}"
   end
 end
