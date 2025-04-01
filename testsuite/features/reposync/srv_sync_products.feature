@@ -104,9 +104,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     # When I kill running spacewalk-repo-sync for "sles15-sp4"
 
 @uyuni
-  Scenario: Add openSUSE Leap 15.6 product, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "leap15.6-x86_64"
+  Scenario: Partially add openSUSE Leap 15.6 product, only including the required packages to generate the bootstrap repository
+    When I use spacewalk-repo-sync to sync channel "opensuse_leap15_6-x86_64" including "python3-ply dmidecode libunwind venv-salt-minion" packages
     And I use spacewalk-common-channel to add all "leap15.6-client-tools" channels with arch "x86_64"
     And I wait until all synchronized channels for "leap15.6-client-tools-x86_64" have finished
 
