@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2024 SUSE LLC.
+# Copyright (c) 2022-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 # Channel namespace
@@ -73,20 +73,20 @@ class NamespaceChannelSoftware
     @test = api_test
   end
 
-  # Creates a new repository.
+  # Creates a new channel.
   #
-  # @param label [String] The label of the repository.
-  # @param name [String] The name of the repository.
-  # @param summary [String] A short description of the repository.
+  # @param label [String] The label of the channel.
+  # @param name [String] The name of the channel.
+  # @param summary [String] A short description of the channel.
   # @param arch [String] The architecture of the packages in the repo.
-  # @param parent [Object] The parent of the new repository. This is a Repository object.
+  # @param parent [Object] The parent of the new channel. This is a Channel object.
   def create(label, name, summary, arch, parent)
     @test.call('channel.software.create', sessionKey: @test.token, label: label, name: name, summary: summary, archLabel: arch, parentLabel: parent)
   end
 
-  # Deletes the repository with the given label.
+  # Deletes the channel with the given label.
   #
-  # @param label [String] The label of the repository to delete.
+  # @param label [String] The label of the channel to delete.
   def delete(label)
     @test.call('channel.software.delete', sessionKey: @test.token, channelLabel: label)
   end
@@ -95,8 +95,8 @@ class NamespaceChannelSoftware
   #
   # @param label [String] The name of the repository.
   # @param url [String] The URL of the repository.
-  def create_repo(label, url)
-    @test.call('channel.software.createRepo', sessionKey: @test.token, label: label, type: 'yum', url: url)
+  def create_repo(label, url, type = 'yum')
+    @test.call('channel.software.createRepo', sessionKey: @test.token, label: label, type: type, url: url)
   end
 
   # Associates a repository with a channel.
