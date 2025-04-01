@@ -285,7 +285,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       }
       // Get the mapped org ID for this channel, if any
       const selectedOrgId = channelOrgMapping[channel.channelId];
-      if (selectedOrgId !== undefined) {
+      if (selectedOrgId !== undefined || selectedOrgId !== null) {
         // Find the org name from the available orgs
         const selectedOrg = availableOrgs.find((org) => org.orgId === selectedOrgId);
         return <span>{selectedOrg ? selectedOrg.orgName : "Unknown"}</span>;
@@ -316,7 +316,9 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
             </Table>
             {/* Display a warning if any non-vendor channel doesn't have an org mapping */}
             {channelsToAddData.some(
-              (channel) => channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === undefined
+              (channel) =>
+                (channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === undefined) ||
+                (channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === null)
             ) && (
               <div className="alert alert-warning">
                 <span className="fa fa-exclamation-triangle"></span>{" "}
