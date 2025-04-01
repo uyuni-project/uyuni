@@ -30,6 +30,7 @@ type State = {
   channelsToAdd: number[];
   channelsToRemove: number[];
   loading: boolean;
+  channelOrgMapping: Record<number, number>;
 };
 
 export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripheralsProps, State> {
@@ -61,6 +62,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       channelsToAdd: [],
       channelsToRemove: [],
       loading: false,
+      channelOrgMapping: {},
     };
   }
 
@@ -88,6 +90,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       channelsToAdd: [],
       channelsToRemove: [],
     });
+    this.tableRef.current?.refresh();
   }
 
   private openCloseModalState(isOpen: boolean) {
@@ -138,21 +141,54 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
   };
 
   handleOrgSelect = (channelId: number, orgId?: number) => {
-    // Handle Org selection here
-    // Put into a record for channelid and orgid
+    const { channelOrgMapping } = this.state;
+    const updatedMapping = { ...channelOrgMapping };
+    if (orgId !== undefined) {
+      // If an org is selected, update the mapping
+      updatedMapping[channelId] = orgId;
+    } else {
+      // If no org is selected (cleared), remove the mapping if it exists
+      if (channelId in updatedMapping) {
+        delete updatedMapping[channelId];
+      }
+    }
+    // Update the state with the new mapping
+    this.setState({ channelOrgMapping: updatedMapping });
   };
 
   onChannelSyncConfirm = () => {
-    const { peripheralId, channelsToAdd, channelsToRemove } = this.state;
+    const { peripheralId, channelsToAdd, channelsToRemove, channelOrgMapping } = this.state;
     // Get channels to add based on channelsToAdd IDs
     const allChannels = [...this.state.syncedChannels, ...this.state.availableChannels];
-    const channelsToAddLabels = channelsToAdd
+    // Check if all non-vendor channels have an org selected
+    const missingOrgChannels = channelsToAdd
+      .map((id) => allChannels.find((c) => c.channelId === id))
+      .filter((channel) => channel && channel.channelOrg && channelOrgMapping[channel.channelId] === undefined);
+
+    if (missingOrgChannels.length > 0) {
+      showWarningToastr(t("Please select an organization for all custom channels before confirming"));
+      return;
+    }
+    // Create a structure to hold channel labels and their mapped orgs
+    const channelsToAddWithOrgs = channelsToAdd
       .map((id) => {
         const channel = allChannels.find((c) => c.channelId === id);
-        return channel ? channel.channelLabel : null;
+        if (!channel) return null;
+        // For vendor channels (no channelOrg), no need to specify orgId
+        if (!channel.channelOrg) {
+          return {
+            channelLabel: channel.channelLabel,
+            orgId: null,
+          };
+        }
+        // Get the org ID for this channel from our mapping
+        const orgId = channelOrgMapping[id];
+        return {
+          channelLabel: channel.channelLabel,
+          orgId: orgId,
+        };
       })
-      .filter(Boolean);
-    // Get channels to remove based on channelsToRemove IDs
+      .filter(Boolean); // Get channels to remove based on channelsToRemove IDs
     const channelsToRemoveLabels = channelsToRemove
       .map((id) => {
         const channel = allChannels.find((c) => c.channelId === id);
@@ -160,7 +196,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       })
       .filter(Boolean);
     // If nothing to sync or unsync, show warning
-    if (channelsToAddLabels.length === 0 && channelsToRemoveLabels.length === 0) {
+    if (channelsToAddWithOrgs.length === 0 && channelsToRemoveLabels.length === 0) {
       showWarningToastr(t("No changes to apply"));
       return;
     }
@@ -168,7 +204,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     // Prepare payload
     const payload = {
       // Include channels to add for sync
-      channelsLabelsToAdd: channelsToAddLabels,
+      channelsLabelsToAdd: channelsToAddWithOrgs,
       // Include channels to remove from sync
       channelsLabelsToRemove: channelsToRemoveLabels,
     };
@@ -240,35 +276,61 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     const renderChannelHubOrg = (channel: Channel): JSX.Element => (
       <span>{channel.channelOrg ? channel.channelOrg.orgName : "SUSE"}</span>
     );
-    const renderChannelSyncOrg = (channel: Channel): JSX.Element => (
-      // Check if the channel has a selected org and is not a vendor channel
-      <span>{channel.channelOrg ? channel.channelOrg.orgName : "SUSE"}</span>
-    );
+
+    const renderChannelSyncOrg = (channel: Channel): JSX.Element => {
+      const { channelOrgMapping, availableOrgs } = this.state;
+      // For vendor channels (no channelOrg), always show "SUSE"
+      if (!channel.channelOrg) {
+        return <span>SUSE</span>;
+      }
+      // Get the mapped org ID for this channel, if any
+      const selectedOrgId = channelOrgMapping[channel.channelId];
+      if (selectedOrgId !== undefined) {
+        // Find the org name from the available orgs
+        const selectedOrg = availableOrgs.find((org) => org.orgId === selectedOrgId);
+        return <span>{selectedOrg ? selectedOrg.orgName : "Unknown"}</span>;
+      } else {
+        // If no org is explicitly selected for syncing, show "Not set"
+        return <span className="text-warning">Not set</span>;
+      }
+    };
 
     // Table for channels to add in the modal
     const channelsToAddTable = (
       <>
         <h4 className="mt-4">{t("Channels to Add")}</h4>
         {channelsToAddData.length > 0 ? (
-          <Table
-            data={channelsToAddData}
-            identifier={(row: FlatChannel) => row.channelId}
-            selectable={false}
-            initialSortColumnKey="channelName"
-            searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
-          >
-            <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
-            <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
-            <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
-            <Column columnKey="orgName" header={t("Hub Org")} cell={renderChannelHubOrg} />
-            <Column columnKey="orgName" header={t("Sync Org")} cell={renderChannelSyncOrg} />
-          </Table>
+          <>
+            <Table
+              data={channelsToAddData}
+              identifier={(row: FlatChannel) => row.channelId}
+              selectable={false}
+              initialSortColumnKey="channelName"
+              searchField={<SearchField filter={searchData} placeholder={t("Filter by Name")} />}
+            >
+              <Column columnKey="channelName" header={t("Name")} cell={renderChannelName} />
+              <Column columnKey="channelLabel" header={t("Label")} cell={renderChannelLabel} />
+              <Column columnKey="channelArch" header={t("Arch")} cell={renderChannelArch} />
+              <Column columnKey="orgName" header={t("Hub Org")} cell={renderChannelHubOrg} />
+              <Column columnKey="orgName" header={t("Sync Org")} cell={renderChannelSyncOrg} />
+            </Table>
+            {/* Display a warning if any non-vendor channel doesn't have an org mapping */}
+            {channelsToAddData.some(
+              (channel) => channel.channelOrg && this.state.channelOrgMapping[channel.channelId] === undefined
+            ) && (
+              <div className="alert alert-warning">
+                <span className="fa fa-exclamation-triangle"></span>{" "}
+                {t(
+                  "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
+                )}
+              </div>
+            )}
+          </>
         ) : (
           <p>{t("No channels selected to add")}</p>
         )}
       </>
     );
-
     // Table for channels to remove in the modal
     const channelsToRemoveTable = (
       <>

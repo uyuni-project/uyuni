@@ -79,12 +79,12 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   }, []);
 
   // Handle architecture filter changes
-  const handleArchFilterChange = useCallback((selectedOptions: any) => {
+  const handleArchFilterChange = useCallback((_, selectedOptions: any) => {
     const selectedValues = Array.isArray(selectedOptions) ? selectedOptions.map((option) => option.value) : [];
     setSelectedArchs(selectedValues);
   }, []);
 
-  // Row class based on sync status and change tracking - memoized
+  // Row class based on sync status and change tracking
   const rowClass = useCallback((row: any) => {
     const channel = row as ChannelWithHierarchy;
     const isCurrentlySynced = channel.synced;
@@ -92,7 +92,7 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     return className;
   }, []);
 
-  // Render the sync checkbox - memoized
+  // Render the sync checkbox
   const renderSyncCell = useCallback((row: ChannelWithHierarchy) => {
     const channelId = row.channelId;
     const isCurrentlySynced = row.synced;
@@ -124,9 +124,13 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     return row.channelOrg ? row.channelOrg.orgName : "SUSE";
   }, []);
 
+  const orgMapping = availableOrgs.map((org) => ({
+    value: org.orgId,
+    label: org.orgName,
+  }));
+
   const renderSyncOrgCell = useCallback(
     (row: ChannelWithHierarchy) => {
-      // Only show select field if hub org is not null
       if (!row.channelOrg) {
         return <span>SUSE</span>; // Vendor channels can't sync orgs
       }
@@ -135,13 +139,11 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
           <Select
             name={`org-select-${row.channelId}`}
             placeholder={t("Select Organization")}
-            options={availableOrgs.map((org) => ({
-              value: org.orgId,
-              label: org.orgName,
-            }))}
-            onChange={(selectedOrgId) => {
+            isClearable={true}
+            options={orgMapping}
+            onChange={(_, orgId) => {
               if (onOrgSelect) {
-                onOrgSelect(row.channelId, selectedOrgId);
+                onOrgSelect(row.channelId, orgId);
               }
             }}
           />
@@ -149,7 +151,9 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
       );
     },
     [availableOrgs, onOrgSelect]
-  ); // Function to get distinct architectures from channels
+  );
+
+  // Function to get distinct architectures from channels
   const getDistinctArchsFromData = useCallback((channels: FlatChannel[]) => {
     const archSet = new Set<string>();
     channels.forEach((channel) => archSet.add(channel.channelArch));
