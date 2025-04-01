@@ -766,6 +766,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         managertools-sle12-pool-x86_64-sp5
         managertools-sle12-updates-x86_64-sp5
         sles12-sp5-installer-updates-x86_64
+        sles12-sp5-ltss-updates-x86_64
       ],
     'sles15-sp3' => # CHECKED
       %w[
@@ -1103,6 +1104,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sles12-sp5-installer-updates-x86_64
         sles12-sp5-pool-x86_64
         sles12-sp5-updates-x86_64
+        sles12-sp5-ltss-updates-x86_64
         sles12-sp5-uyuni-client-devel-x86_64
       ],
     'sles15-sp3' => # CHECKED
@@ -1562,6 +1564,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-server-applications15-sp6-updates-x86_64' => 60,
   'sle-module-server-applications15-sp7-pool-x86_64' => 60,
   'sle-module-server-applications15-sp7-updates-x86_64' => 60,
+  'sles12-sp5-ltss-updates-x86_64' => 1620,
   'sle-product-sles15-sp3-ltss-updates-x86_64' => 960,
   'sle-product-sles15-sp3-pool-x86_64' => 60,
   'sle-product-sles15-sp3-updates-x86_64' => 60,
