@@ -9,7 +9,7 @@ import { SearchField } from "components/table/SearchField";
 import { FlatChannel, Org } from "./types";
 
 // Extended type that includes HierarchicalRow requirements
-type ChannelWithHierarchy = FlatChannel & HierarchicalRow;
+type ChannelWithHierarchy = FlatChannel & HierarchicalRow & { markedForOperation: boolean };
 
 type ChannelTableProps = {
   channels: FlatChannel[];
@@ -96,13 +96,13 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
   const renderSyncCell = useCallback((row: ChannelWithHierarchy) => {
     const channelId = row.channelId;
     const isCurrentlySynced = row.synced;
-    return (
+    const markedForOperation = row.markedForOperation;
+    // The checkbox should be checked if:
+    // 1. The channel is currently synced AND NOT marked for operation, OR
+    // 2. The channel is NOT currently synced BUT marked for operation
+    const checked = (isCurrentlySynced && !markedForOperation) || (!isCurrentlySynced && markedForOperation);    return (
       <div className="sync-checkbox-container">
-        <input
-          type="checkbox"
-          checked={isCurrentlySynced}
-          onChange={(e) => onChannelSelect(channelId, e.target.checked)}
-        />
+        <input type="checkbox" checked={checked} onChange={(e) => onChannelSelect(channelId, e.target.checked)} />
       </div>
     );
   }, []);
