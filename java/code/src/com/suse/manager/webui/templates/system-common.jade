@@ -14,8 +14,8 @@ else
 
 .spacewalk-toolbar-h1
   .spacewalk-toolbar
-    if !server.isConvertibleToProxy()
-      a(href="/rhn/manager/proxy/container-config/#{server.id}")
+    if server.isConvertibleToProxy()
+      a(href="/rhn/manager/systems/details/proxy-config?sid=#{server.id}")
           i.fa.fa-arrow-up(title='Convert to Proxy')
           | #{l.t("Convert to Proxy")}
     a(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
