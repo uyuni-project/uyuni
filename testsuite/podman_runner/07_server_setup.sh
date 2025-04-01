@@ -10,6 +10,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --tmpfs /run \
     -v root:/root:z \
     -v ${src_dir}/testsuite:/testsuite \
+    -v /tmp/testing:/tmp \
     -v /tmp/ssl:/ssl:z \
     --name=ssl-generator \
     --network network \
