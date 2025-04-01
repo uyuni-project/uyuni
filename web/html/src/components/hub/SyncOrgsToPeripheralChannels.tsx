@@ -169,26 +169,31 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       showWarningToastr(t("Please select an organization for all custom channels before confirming"));
       return;
     }
-    // Create a structure to hold channel labels and their mapped orgs
-    const channelsToAddWithOrgs = channelsToAdd
-      .map((id) => {
-        const channel = allChannels.find((c) => c.channelId === id);
-        if (!channel) return null;
-        // For vendor channels (no channelOrg), no need to specify orgId
-        if (!channel.channelOrg) {
-          return {
-            channelLabel: channel.channelLabel,
-            orgId: null,
-          };
-        }
-        // Get the org ID for this channel from our mapping
-        const orgId = channelOrgMapping[id];
-        return {
-          channelLabel: channel.channelLabel,
+    const channelsGroupedByOrg = channelsToAdd.reduce((groups, id) => {
+      const channel = allChannels.find((c) => c.channelId === id);
+      if (!channel) return groups;
+
+      // Determine the orgId - null for vendor channels, otherwise use the mapping
+      const orgId = channel.channelOrg ? channelOrgMapping[id] || null : null;
+
+      // Convert orgId to string for use as an object key
+      // Note: we use a special string "__null__" to represent null orgId
+      const orgKey = orgId === null ? "__null__" : orgId.toString();
+
+      // Initialize the group if it doesn't exist
+      if (!groups[orgKey]) {
+        groups[orgKey] = {
           orgId: orgId,
+          channelLabels: [],
         };
-      })
-      .filter(Boolean); // Get channels to remove based on channelsToRemove IDs
+      }
+      // Add this channel's label to the group
+      groups[orgKey].channelLabels.push(channel.channelLabel);
+
+      return groups;
+    }, {});
+    // Convert the grouped object to an array
+    const channelsToAddByOrg = Object.values(channelsGroupedByOrg);
     const channelsToRemoveLabels = channelsToRemove
       .map((id) => {
         const channel = allChannels.find((c) => c.channelId === id);
@@ -196,7 +201,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
       })
       .filter(Boolean);
     // If nothing to sync or unsync, show warning
-    if (channelsToAddWithOrgs.length === 0 && channelsToRemoveLabels.length === 0) {
+    if (channelsToAddByOrg.length === 0 && channelsToRemoveLabels.length === 0) {
       showWarningToastr(t("No changes to apply"));
       return;
     }
@@ -204,7 +209,7 @@ export class SyncOrgsToPeripheralChannel extends React.Component<SyncPeripherals
     // Prepare payload
     const payload = {
       // Include channels to add for sync
-      channelsLabelsToAdd: channelsToAddWithOrgs,
+      channelsLabelsToAdd: channelsToAddByOrg,
       // Include channels to remove from sync
       channelsLabelsToRemove: channelsToRemoveLabels,
     };

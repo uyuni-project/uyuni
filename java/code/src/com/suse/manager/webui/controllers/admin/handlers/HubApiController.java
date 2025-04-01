@@ -62,7 +62,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.Date;
@@ -116,8 +115,6 @@ public class HubApiController {
                 withProductAdmin(this::getPeripheralChannelSyncStatus));
         post("/manager/api/admin/hub/peripherals/:id/sync-channels",
                 withProductAdmin(this::syncChannelsToPeripheral));
-        delete("/manager/api/admin/hub/peripherals/:id/sync-channels",
-                withProductAdmin(this::desyncChannelsFromPeripheral));
 
         // Hub management
         delete("/manager/api/admin/hub/:id", withProductAdmin(this::deleteHub));
@@ -179,47 +176,85 @@ public class HubApiController {
     }
 
     /**
-     * Model for sync channel operations
+     * Model for sync channel operations with unified structure
      */
-    private static class SyncChannelModel {
-        private List<String> channelsLabels;
-        private Long selectedOrgId;
+    private static class SyncChannelRequest {
+        private List<ChannelOrgGroup> channelsToAdd;
+        private List<String> channelsToRemove;
 
-        public Long getSelectedOrgId() {
-            return selectedOrgId;
+        public List<ChannelOrgGroup> getChannelsToAdd() {
+            return channelsToAdd;
         }
 
-        public void setSelectedOrgId(Long selectedOrgIdIn) {
-            selectedOrgId = selectedOrgIdIn;
+        public void setChannelsToAdd(List<ChannelOrgGroup> channelsToAddIn) {
+            this.channelsToAdd = channelsToAddIn;
         }
 
-        public List<String> getChannelsLabels() {
-            return channelsLabels;
+        public List<String> getChannelsToRemove() {
+            return channelsToRemove;
         }
 
-        public void setChannelsLabels(List<String> channelsLabelsIn) {
-            channelsLabels = channelsLabelsIn;
+        public void setChannelsToRemove(List<String> channelsToRemoveIn) {
+            this.channelsToRemove = channelsToRemoveIn;
         }
     }
 
     /**
-     * Sync channels to a peripheral with organization ID
+     * Model for a group of channels associated with a specific organization
+     */
+    private static class ChannelOrgGroup {
+        private List<String> channelLabels;
+        private Long orgId;
+
+        public Long getOrgId() {
+            return orgId;
+        }
+
+        public void setOrgId(Long orgIdIn) {
+            this.orgId = orgIdIn;
+        }
+
+        public List<String> getChannelLabels() {
+            return channelLabels;
+        }
+
+        public void setChannelLabels(List<String> channelLabelsIn) {
+            this.channelLabels = channelLabelsIn;
+        }
+    }
+
+    /**
+     * Unified method to sync and desync channels to/from a peripheral
      */
     private String syncChannelsToPeripheral(Request request, Response response, User satAdmin) {
         try {
             long peripheralId = Long.parseLong(request.params("id"));
-            SyncChannelModel opRequest = GSON.fromJson(request.body(), SyncChannelModel.class);
-            if (opRequest == null || opRequest.getChannelsLabels() == null || opRequest.getChannelsLabels().isEmpty()) {
+            SyncChannelRequest syncRequest = GSON.fromJson(request.body(), SyncChannelRequest.class);
+            if (syncRequest == null) {
                 return badRequest(response, LOC.getMessage("hub.invalid_request"));
             }
-            // Execute the sync operation with org ID
-            hubManager.syncChannelsByLabelForPeripheral(
-                    satAdmin,
-                    peripheralId,
-                    opRequest.getSelectedOrgId(),
-                    opRequest.getChannelsLabels()
-            );
-
+            // Process channels to add (grouped by org)
+            if (syncRequest.getChannelsToAdd() != null && !syncRequest.getChannelsToAdd().isEmpty()) {
+                for (ChannelOrgGroup group : syncRequest.getChannelsToAdd()) {
+                    if (group.getChannelLabels() != null && !group.getChannelLabels().isEmpty()) {
+                        // Execute the sync operation with org ID for each group
+                        hubManager.syncChannelsByLabelForPeripheral(
+                                satAdmin,
+                                peripheralId,
+                                group.getOrgId(), // This can be null for vendor channels
+                                group.getChannelLabels()
+                        );
+                    }
+                }
+            }
+            // Process channels to remove
+            if (syncRequest.getChannelsToRemove() != null && !syncRequest.getChannelsToRemove().isEmpty()) {
+                hubManager.desyncChannelsByLabelForPeripheral(
+                        satAdmin,
+                        peripheralId,
+                        syncRequest.getChannelsToRemove()
+                );
+            }
             return success(response);
         }
         catch (NumberFormatException e) {
@@ -234,29 +269,6 @@ public class HubApiController {
             LOGGER.error("Error while attempting to connect to peripheral server {}",
                     request.params("id"), e);
             return internalServerError(response, LOC.getMessage("hub.error_connecting_remote"));
-        }
-    }
-
-    /**
-     * Desync channels from a peripheral
-     */
-    private String desyncChannelsFromPeripheral(Request request, Response response, User satAdmin) {
-        try {
-            long peripheralId = Long.parseLong(request.params("id"));
-            Type listType = new TypeToken<List<String>>() { }.getType();
-            List<String> channelsLabels = GSON.fromJson(request.body(), listType);
-            if (channelsLabels == null || channelsLabels.isEmpty()) {
-                return badRequest(response, LOC.getMessage("hub.invalid_request"));
-            }
-            hubManager.desyncChannelsByLabelForPeripheral(
-                    satAdmin,
-                    peripheralId,
-                    channelsLabels
-            );
-            return success(response);
-        }
-        catch (NumberFormatException e) {
-            return badRequest(response, LOC.getMessage("hub.invalid_id"));
         }
     }
 
