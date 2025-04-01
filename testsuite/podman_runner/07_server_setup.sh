@@ -18,6 +18,9 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
 
 # Generate the Secret for the SSL certificates and the DB credentials
 sudo -i podman secret create uyuni-ca /tmp/ssl/ca.crt
+sudo -i podman secret create uyuni-db-ca /tmp/ssl/ca.crt
+sudo -i podman secret create uyuni-cert /tmp/ssl/server.crt
+sudo -i podman secret create uyuni-key /tmp/ssl/server.key
 sudo -i podman secret create uyuni-db-cert /tmp/ssl/reportdb.crt
 sudo -i podman secret create uyuni-db-key /tmp/ssl/reportdb.key
 echo -n "admin" | sudo -i podman secret create uyuni-db-user -
@@ -36,8 +39,8 @@ sudo -i podman run \
     --hostname uyuni-db.mgr.internal \
     --network-alias db \
     --network-alias reportdb \
-    --secret uyuni-ca,type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
-    --secret uyuni-db-key,type=mount,mode=0400,target=/etc/pki/tls/private/pg-spacewalk.key \
+    --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
+    --secret uyuni-db-key,type=mount,uid=999,mode=0400,target=/etc/pki/tls/private/pg-spacewalk.key \
     --secret uyuni-db-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
     --secret uyuni-db-admin-user,type=env,target=POSTGRES_USER \
     --secret uyuni-db-admin-pass,type=env,target=POSTGRES_PASSWORD \
@@ -82,34 +85,32 @@ python_path=${certs_py_path%%certs*}
 
 sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --tmpfs /run \
-    -v var-cobbler:/var/lib/cobbler:z \
-    -v var-search:/var/lib/rhn/search:z \
-    -v var-salt:/var/lib/salt:z \
-    -v var-cache:/var/cache:z \
-    -v var-spacewalk:/var/spacewalk:z \
-    -v var-log:/var/log:z \
-    -v srv-salt:/srv/salt:z \
-    -v srv-www:/srv/www/:z \
-    -v srv-tftpboot:/srv/tftpboot:z \
-    -v srv-formulametadata:/srv/formula_metadata:z \
-    -v srv-pillar:/srv/pillar:z \
-    -v srv-susemanager:/srv/susemanager:z \
-    -v srv-spacewalk:/srv/spacewalk:z \
-    -v root:/root:z \
-    -v ca-cert:/etc/pki/trust/anchors/:z \
-    -v run-salt-master:/run/salt/master:z \
-    -v etc-tls:/etc/pki/tls:z \
-    -v etc-rhn:/etc/rhn:z \
-    -v tls-key:/etc/pki/spacewalk-tls:z \
-    -v etc-apache2:/etc/apache2:z \
-    -v etc-systemd-multi:/etc/systemd/system/multi-user.target.wants:z \
-    -v etc-systemd-sockets:/etc/systemd/system/sockets.target.wants:z \
-    -v etc-salt:/etc/salt:z \
-    -v etc-tomcat:/etc/tomcat:z \
-    -v etc-cobbler:/etc/cobbler:z \
-    -v etc-sysconfig:/etc/sysconfig:z \
-    -v etc-postfix:/etc/postfix:z \
-    -v etc-sssd:/etc/sssd:z \
+    -v var-cobbler:/var/lib/cobbler \
+    -v var-search:/var/lib/rhn/search \
+    -v var-salt:/var/lib/salt \
+    -v var-cache:/var/cache \
+    -v var-spacewalk:/var/spacewalk \
+    -v var-log:/var/log \
+    -v srv-salt:/srv/salt \
+    -v srv-www:/srv/www \
+    -v srv-tftpboot:/srv/tftpboot \
+    -v srv-formulametadata:/srv/formula_metadata \
+    -v srv-pillar:/srv/pillar \
+    -v srv-susemanager:/srv/susemanager \
+    -v srv-spacewalk:/srv/spacewalk \
+    -v root:/root \
+    -v ca-cert:/etc/pki/trust/anchors/ \
+    -v run-salt-master:/run/salt/master \
+    -v etc-rhn:/etc/rhn \
+    -v etc-apache2:/etc/apache2 \
+    -v etc-systemd-multi:/etc/systemd/system/multi-user.target.wants \
+    -v etc-systemd-sockets:/etc/systemd/system/sockets.target.wants \
+    -v etc-salt:/etc/salt \
+    -v etc-tomcat:/etc/tomcat \
+    -v etc-cobbler:/etc/cobbler \
+    -v etc-sysconfig:/etc/sysconfig \
+    -v etc-postfix:/etc/postfix \
+    -v etc-sssd:/etc/sssd \
     -v ${src_dir}:/manager \
     -v ${src_dir}/schema/spacewalk/spacewalk-schema-upgrade:/usr/bin/spacewalk-schema-upgrade \
     -v ${src_dir}/testsuite:/testsuite \
@@ -134,6 +135,12 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     --secret uyuni-db-pass,type=env,target=MANAGER_PASS \
     --secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \
     --secret uyuni-reportdb-pass,type=env,target=REPORT_DB_PASS \
+    --secret uyuni-ca,type=mount,target=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT \
+    --secret uyuni-ca,type=mount,target=/usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT \
+    --secret uyuni-ca,type=mount,target=/srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT \
+    --secret uyuni-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
+    --secret uyuni-key,type=mount,target=/etc/pki/tls/private/spacewalk.key \
+    --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
     -e UYUNI_FQDN="server"  \
     -e MANAGER_ADMIN_EMAIL="a@b.com"  \
     -e MANAGER_MAIL_FROM="a@b.com"  \
