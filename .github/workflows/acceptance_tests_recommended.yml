@@ -1,13 +1,5 @@
 name: Recommended Tests
 on:
-  workflow_call:
-    inputs:
-      skip_tests:
-        required: true
-        type: boolean
-      recommended_tests:
-        required: true
-        type: string
   repository_dispatch:
     types: [run-recommended-tests]
 
@@ -18,5 +10,5 @@ jobs:
     with:
       tests: "20_run_recommended_tests.sh"
       server_id: "recommended"
-      recommended_tests: ${{ inputs.recommended_tests }}
-      skip_tests: ${{ inputs.skip_tests == true }}
+      recommended_tests: ${{ github.event.client_payload.recommended_tests }}
+      skip_tests: ${{ github.event.client_payload.skip_tests == 'true' }}
