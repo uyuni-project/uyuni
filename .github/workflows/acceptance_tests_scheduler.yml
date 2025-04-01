@@ -3,24 +3,26 @@ name: Scheduled Acceptance Tests
 on:
   schedule:
     - cron: '0 */12 * * *'  # Every 12 hours
-  workflow_dispatch: # Allow manual triggering
 
 jobs:
-  scheduled_run:
-    name: Run Acceptance and Additional Tests
+  scheduled-acceptance-tests:
     if: github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Trigger Acceptance Tests
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: run-acceptance-tests
-          repository: ${{ github.repository }}
+    name: Scheduled Acceptance Tests
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "18_run_secondary_tests.sh"
+      server_id: "acceptance"
+      skip_tests: false
 
-      - name: Trigger Additional Tests
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: run-additional-tests
-          repository: ${{ github.repository }}
+  scheduled-additional-tests:
+    if: github.repository == 'uyuni-project/uyuni' && github.ref == 'refs/heads/master'
+    name: Scheduled Additional tests - ${{ matrix.set }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "additional_${{ matrix.set }}"
+      skip_tests: false

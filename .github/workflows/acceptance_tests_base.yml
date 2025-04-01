@@ -1,4 +1,5 @@
-name: acceptance-tests-base
+name: Acceptance Tests
+
 on:
   workflow_call:
     inputs:

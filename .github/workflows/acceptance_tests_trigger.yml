@@ -1,0 +1,57 @@
+name: Trigger tests
+
+on:
+  issue_comment:
+    types:
+      - created
+
+jobs:
+  parse:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run ')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine which test suite to run
+        id: parse_comment
+        run: |
+          COMMENT="${{ github.event.comment.body }}"
+          if [[ "$COMMENT" == "/run all-tests" ]]; then
+            echo "test_suite=all" >> $GITHUB_ENV
+          elif [[ "$COMMENT" == "/run recommended-tests"* ]]; then
+            echo "test_suite=recommended" >> $GITHUB_ENV
+            echo "recommended_tests=${COMMENT#'/run recommended-tests '}" >> $GITHUB_ENV
+          fi
+    outputs:
+      test_suite: ${{ steps.parse_comment.outputs.test_suite }}
+      recommended_tests: ${{ steps.parse_comment.outputs.recommended_tests }}
+
+  recommended-tests:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run')
+    name: 0
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "20_run_recommended_tests.sh"
+      server_id: "recommended"
+      recommended_tests: ${{ github.job.trigger_tests.outputs.recommended_tests }}
+      skip_tests: ${{ github.job.trigger_tests.outputs.test_suite != 'recommended' }}
+
+  acceptance-tests:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run')
+    name: "0"
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    with:
+      tests: "18_run_secondary_tests.sh"
+      server_id: "acceptance"
+      skip_tests: ${{ github.job.trigger_tests.outputs.test_suite != 'all' }}
+
+  additional-tests:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '/run')
+    name: ${{ matrix.set }}
+    uses: ./.github/workflows/acceptance_tests_base.yml
+    strategy:
+      fail-fast: false
+      matrix:
+        set: ['1', '2', '3', '4', '5']
+    with:
+      tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
+      server_id: "additional_${{ matrix.set }}"
+      skip_tests: ${{ github.job.trigger_tests.outputs.test_suite != 'all' }}
