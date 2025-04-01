@@ -188,7 +188,5 @@ end
 # @param repo_url [String] The URL of the repository to check.
 # @return [Boolean] Returns true if the repository is a development repository, false otherwise.
 def devel_repo?(repo_url)
-  return false unless %w[download.suse.de download.opensuse.org downloadcontent.opensuse.org].include?(URI.parse(repo_url).host)
-
   repo_url.downcase.include?('devel') || repo_url.downcase.include?('systemsmanagement')
 end
