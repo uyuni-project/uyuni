@@ -12,7 +12,7 @@ package com.suse.manager.webui.controllers.admin.beans;
 
 import java.util.List;
 
-public class IssV3ChannelResponse {
+public class ChannelSyncDetail {
 
     private final Long channelId;
     private final String channelName;
@@ -21,8 +21,8 @@ public class IssV3ChannelResponse {
     private final ChannelOrgResponse channelOrg;
     private final String parentChannelLabel;
     private final String originalChannelLabel;
-    private final List<IssV3ChannelResponse> children;
-    private final List<IssV3ChannelResponse> clones;
+    private final List<ChannelSyncDetail> children;
+    private final List<ChannelSyncDetail> clones;
 
     /**
      * Response with the channel info to fill the channel sync section of the ui
@@ -36,7 +36,7 @@ public class IssV3ChannelResponse {
      * @param childrenIn the channel children
      * @param clonesIn the channel clones
      */
-    public IssV3ChannelResponse(
+    public ChannelSyncDetail(
             Long channelIdIn,
             String channelNameIn,
             String channelLabelIn,
@@ -44,8 +44,8 @@ public class IssV3ChannelResponse {
             ChannelOrgResponse channelOrgIn,
             String parentChannelLabelIn,
             String originalChannelLabelIn,
-            List<IssV3ChannelResponse> childrenIn,
-            List<IssV3ChannelResponse> clonesIn
+            List<ChannelSyncDetail> childrenIn,
+            List<ChannelSyncDetail> clonesIn
     ) {
         channelId = channelIdIn;
         channelName = channelNameIn;
@@ -86,11 +86,11 @@ public class IssV3ChannelResponse {
         return originalChannelLabel;
     }
 
-    public List<IssV3ChannelResponse> getChildren() {
+    public List<ChannelSyncDetail> getChildren() {
         return children;
     }
 
-    public List<IssV3ChannelResponse> getClones() {
+    public List<ChannelSyncDetail> getClones() {
         return clones;
     }
 
