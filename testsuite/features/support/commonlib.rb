@@ -306,7 +306,7 @@ end
 # @return [Boolean] true if the host name belongs to a Red Hat-like distribution, false otherwise
 def rh_host?(name)
   os_family = get_target(name).os_family
-  %w[rocky centos redhat alma oracle liberty].include? os_family
+  %w[rocky centos redhat alma oracle liberty almalinux ol rhel].include? os_family
 end
 
 # Determines if the given host name is a Debian-based host.
