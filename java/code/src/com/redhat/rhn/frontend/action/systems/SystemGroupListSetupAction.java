@@ -188,8 +188,6 @@ public class SystemGroupListSetupAction extends RhnAction
     @Override
     public List<SystemGroupOverview> getResult(RequestContext context) {
         User user = context.getCurrentUser();
-        DataResult<SystemGroupOverview> dr =
-                        SystemManager.groupListWithServerCount(user, null);
-        return dr;
+        return SystemManager.groupListWithServerCount(user, null);
     }
 }

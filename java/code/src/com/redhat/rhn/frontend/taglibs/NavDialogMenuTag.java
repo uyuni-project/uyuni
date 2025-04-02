@@ -145,9 +145,8 @@ public class NavDialogMenuTag extends TagSupport {
     /** {@inheritDoc} */
     protected String renderNav(NavTreeIndex navTreeIndex, Renderable renderable,
             RenderGuard guard, Map<String, String[]> params) {
-        String body = renderUtils.render(
+        return renderUtils.render(
                 navTreeIndex, renderable, guard, params);
-        return body;
     }
 
 }

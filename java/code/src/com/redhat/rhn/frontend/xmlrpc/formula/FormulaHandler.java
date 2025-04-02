@@ -275,9 +275,8 @@ public class FormulaHandler extends BaseHandler {
      */
     @ReadOnly
     public Map<String, Object> getGroupFormulaData(User loggedInUser, Integer groupId, String formulaName) {
-        Map<String, Object> savedData = formulaManager
+        return formulaManager
                 .getGroupFormulaData(loggedInUser, formulaName, groupId.longValue());
-        return savedData;
     }
 
     /**

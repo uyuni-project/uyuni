@@ -157,11 +157,9 @@ public class MgrK8sRunner {
         Map<String, Object> args = new LinkedHashMap<>();
         args.put("kubeconfig", kubeconfig);
         args.put("context", context);
-        RunnerCall<ContainersList> call =
-                new RunnerCall<>("mgrk8s.get_all_containers", Optional.of(args),
-                        new TypeToken<>() {
-                        });
-        return call;
+        return new RunnerCall<>("mgrk8s.get_all_containers", Optional.of(args),
+                new TypeToken<>() {
+                });
     }
 
 }
