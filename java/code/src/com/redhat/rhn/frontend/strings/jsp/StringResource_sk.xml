@@ -7385,70 +7385,70 @@ v časti "Roly" na karte "Podrobnosti" v profiloch jednotlivých používateľov
       </trans-unit>
       <trans-unit id="systemgroup.create.header" xml:space="preserve">
         <source>Create System Group</source>
-        <target/>
+        <target state="translated">Vytvoriť systémovú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.edit.header" xml:space="preserve">
         <source>Edit System Group</source>
-        <target/>
+        <target state="translated">Upraviť systémovú skupinu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.summary" xml:space="preserve">
         <source>Create a system group using the form provided. Note that the group will be empty until systems are joined to it. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Vytvorte systémovú skupinu pomocou poskytnutého formulára. Treba poznamenať, že skupina bude prázdna, kým sa do nej nepridajú systémy. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.summaryssm" xml:space="preserve">
         <source>This will create a new system group, and will place the selected systems into the new group. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Týmto sa vytvorí nová systémová skupina a vybrané systémy sa umiestnia do novej skupiny. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.edit.summary" xml:space="preserve">
         <source>Update group properties using the form provided. Entries marked with an asterisk (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) are &lt;strong&gt;required&lt;/strong&gt;.</source>
-        <target/>
+        <target state="translated">Aktualizujte vlastnosti skupiny pomocou poskytnutého formulára. Položky označené hviezdičkou (&lt;span class="required-form-field"&gt;*&lt;/span&gt;) sú &lt;strong&gt;povinné&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.requiredfield" xml:space="preserve">
         <source>Required Field</source>
-        <target/>
+        <target state="translated">Požadované pole</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.requirements" xml:space="preserve">
         <source>Both name and description are required for System Groups.</source>
-        <target/>
+        <target state="translated">Názov aj popis sa vyžadujú pre systémové skupiny.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.alreadyexists" xml:space="preserve">
         <source>That group name is already in use. Please choose another.</source>
-        <target/>
+        <target state="translated">Tento názov skupiny sa už používa. Vyberte si iný.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.name" xml:space="preserve">
         <source>Name</source>
-        <target/>
+        <target state="translated">Názov</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
       </trans-unit>
       <trans-unit id="systemgroup.create.description" xml:space="preserve">
         <source>Description</source>
-        <target/>
+        <target state="translated">Popis</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/groups/EditGroup.do</context>
         </context-group>
