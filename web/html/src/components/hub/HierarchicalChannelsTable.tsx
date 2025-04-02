@@ -100,7 +100,8 @@ const HierarchicalChannelsTable: React.FC<ChannelTableProps> = ({
     // The checkbox should be checked if:
     // 1. The channel is currently synced AND NOT marked for operation, OR
     // 2. The channel is NOT currently synced BUT marked for operation
-    const checked = (isCurrentlySynced && !markedForOperation) || (!isCurrentlySynced && markedForOperation);    return (
+    const checked = (isCurrentlySynced && !markedForOperation) || (!isCurrentlySynced && markedForOperation);
+    return (
       <div className="sync-checkbox-container">
         <input type="checkbox" checked={checked} onChange={(e) => onChannelSelect(channelId, e.target.checked)} />
       </div>
