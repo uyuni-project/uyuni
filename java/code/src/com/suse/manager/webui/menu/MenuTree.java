@@ -456,6 +456,8 @@ public class MenuTree {
                     .addChild(new MenuItem("Peripherals Configuration")
                             .withPrimaryUrl("/rhn/manager/admin/hub/peripherals")
                             .withAltUrl("/rhn/manager/admin/hub/peripherals/register")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v1")
+                            .withAltUrl("/rhn/manager/admin/hub/peripherals/migrate-from-v2")
                             .withVisibility(adminRoles.get("satellite")))
                 .addChild(new MenuItem("Hub Details").withPrimaryUrl("/rhn/manager/admin/hub/hub-details")
                     .withVisibility(adminRoles.get("satellite")))
