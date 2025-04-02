@@ -361,8 +361,8 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             assertEquals(MigrationResultCode.FAILURE, migrationResult.getResultCode());
             assertNotNull(migrationResult.getMessages());
             assertEquals(Set.of(
-                MigrationMessage.error("Unable to migrate alpha.unit-test.local: Remote failure"),
-                MigrationMessage.error("Unable to migrate beta.unit-test.local: Remote failure")
+                MigrationMessage.error("Unable to migrate server alpha.unit-test.local: Remote failure"),
+                MigrationMessage.error("Unable to migrate server beta.unit-test.local: Remote failure")
             ), migrationResult.getMessages());
         }
 
@@ -666,7 +666,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
 
             allowRegistration(data, internalClientMock);
-            failChannelSetup(data, internalClientMock);
+            failChannelSetup(internalClientMock);
             allowingRollback(internalClientMock);
         }
 
@@ -675,7 +675,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             HubInternalClient internalClientMock = mock(HubInternalClient.class, "internalClient_" + data.fqdn());
 
             allowRegistration(data, internalClientMock);
-            allowChannelSetup(data, internalClientMock, channelInfos);
+            allowChannelSetup(internalClientMock, channelInfos);
 
             if (version == 1) {
                 allowIssV1Removal(internalClientMock);
@@ -721,7 +721,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             will(throwException(new IOException("Remote failure")));
         }
 
-        private void allowChannelSetup(SlaveMigrationData data, HubInternalClient internalClientMock,
+        private void allowChannelSetup(HubInternalClient internalClientMock,
                                        List<ChannelInfoJson> channelInfos)
             throws IOException {
             allowing(internalClientMock).getAllPeripheralChannels();
@@ -730,7 +730,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             allowing(internalClientMock).syncChannels(with(any(List.class)));
         }
 
-        private void failChannelSetup(SlaveMigrationData data, HubInternalClient internalClientMock)
+        private void failChannelSetup(HubInternalClient internalClientMock)
             throws IOException {
             allowing(internalClientMock).getAllPeripheralChannels();
             will(throwException(new IOException("Remote failure")));
