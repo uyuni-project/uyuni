@@ -34,6 +34,7 @@ import com.suse.manager.api.HttpApiRegistry;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.hub.HubController;
 import com.suse.manager.hub.HubManager;
+import com.suse.manager.hub.migration.IssMigratorFactory;
 import com.suse.manager.kubernetes.KubernetesManager;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.AnsibleController;
@@ -315,7 +316,7 @@ public class Router implements SparkApplication {
         hubController.initRoutes();
 
         // API for the web interface
-        HubApiController hubApiController = new HubApiController(hubManager);
+        HubApiController hubApiController = new HubApiController(hubManager, new IssMigratorFactory());
         hubApiController.initRoutes();
     }
 }
