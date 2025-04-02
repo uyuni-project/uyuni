@@ -62,7 +62,8 @@ public class SCCEndpoints {
 
     /**
      * A Hub deliver custom repositories via organization/repositories SCC endpoint.
-     * We need a fake repo ID for it.
+     * We need a fake repo ID for it. And this is just a fake comment to
+     * try Sonar
      */
     public static final Long CUSTOM_REPO_FAKE_SCC_ID = Long.MIN_VALUE;
 
