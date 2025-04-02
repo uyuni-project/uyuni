@@ -183,10 +183,10 @@ mkdir -p %{buildroot}%{_sysconfdir}/cron.daily
 
 install -m 644 conf/rhn_web.conf %{buildroot}%{_datadir}/rhn/config-defaults
 
-if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Manager' >/dev/null; then
+if grep -F 'product_name' %{_datadir}/rhn/config-defaults/rhn.conf | grep 'SUSE Multi-Linux Manager' >/dev/null; then
   SUMA_REL=$(echo %{version} | awk -F. '{print $1"."$2}')
   SUMA_FULL_REL=$(sed -n 's/web\.version\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
-  echo "SUSE Manager release $SUMA_REL ($SUMA_FULL_REL)" > %{buildroot}%{_sysconfdir}/susemanager-release
+  echo "SUSE Multi-Linux Manager release $SUMA_REL ($SUMA_FULL_REL)" > %{buildroot}%{_sysconfdir}/susemanager-release
 else
   UYUNI_REL=$(sed -n 's/web\.version.uyuni\s*=\s*\(.*\)/\1/p' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_web.conf)
   echo "Uyuni release $UYUNI_REL" > %{buildroot}%{_sysconfdir}/uyuni-release
