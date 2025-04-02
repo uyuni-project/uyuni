@@ -106,7 +106,6 @@ public class UserManager extends BaseManager {
         }
         if (user.hasRole(RoleFactory.ORG_ADMIN)) {
             assignable.add(RoleFactory.ORG_ADMIN);
-            assignable.addAll(UserFactory.IMPLIEDROLES);
         }
         return assignable;
     }
@@ -449,6 +448,7 @@ public class UserManager extends BaseManager {
      }
 
     /**
+     * TODO: Review
     * Add and remove the specified roles from the user.
     *
     * @param usr The User who's Roles you want to update
@@ -722,6 +722,7 @@ public class UserManager extends BaseManager {
     }
 
     /**
+     * TODO: Review
      * Check role for the specified user.
      * @param uid The id of the user to lookup.
      * @param label Role to check.

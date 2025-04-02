@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.domain.org.Org;
 
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,11 +28,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "accessGroup", schema = "access")
+@NamedNativeQuery(name = "AccessGroup_lookup_by_labels_org",
+        query = "SELECT * FROM access.accessGroup a WHERE org_id = :org_id AND label IN :labels"
+)
 public class AccessGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,6 +70,7 @@ public class AccessGroup {
         label = labelIn;
         description = descriptionIn;
         org = orgIn;
+        namespaces = new HashSet<>();
     }
 
     public Long getId() {
