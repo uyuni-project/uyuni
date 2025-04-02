@@ -19,6 +19,15 @@
 <c:set var="pageList" value="${requestScope.pageList}" />
 
 <rl:listset name="disabledUserListSet">
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <rl:csv dataset="pageList"
+                name="disabledUserList"
+                exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn,changedByFirstName,changedByLastName,changeDate"/>
+                    
+            <input type="submit" class="btn btn-default" name="dispatch" value="<bean:message key='disabledlist.jsp.reactivate'/>" />
+        </div>
+    </div>
     <rhn:csrf />
     <rhn:submitted />
         <rl:list dataset="pageList"
@@ -57,16 +66,6 @@
                 sortattr="changeDate"/>
 
         </rl:list>
-        <div class="row">
-                <div class="col-6 col-xs-6 text-left">
-                        <input type="submit" class="btn btn-default" name="dispatch" value="<bean:message key='disabledlist.jsp.reactivate'/>" />
-                </div>
-                <div class="col-6 col-xs-6 text-right">
-                        <rl:csv dataset="pageList"
-                                name="disabledUserList"
-                                exportColumns="userLogin,userLastName,userFirstName,email,roleNames,lastLoggedIn,changedByFirstName,changedByLastName,changeDate"/>
-                </div>
-        </div>
 
 </rl:listset>
 

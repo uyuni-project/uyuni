@@ -41,7 +41,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Try to delete channel with clone
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-Base-Channel-SUSE-like"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-Base-Channel-SUSE-like" text
@@ -50,7 +50,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Delete channel without clones neither children
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Clone of Fake-Base-Channel-SUSE-like"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Clone of Fake-Base-Channel-SUSE-like" text
@@ -70,7 +70,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Try delete channel with child
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-Base-Channel-SUSE-like"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-Base-Channel-SUSE-like" text
@@ -80,7 +80,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Cleanup: remove cloned child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-RPM-SUSE-Channel"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-RPM-SUSE-Channel" text
@@ -89,7 +89,7 @@ Feature: Delete channels with child or clone is not allowed
   Scenario: Cleanup: remove cloned parent channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Clone of Fake-Base-Channel-SUSE-like"
-    And I follow "Delete software channel"
+    And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
     Then I should see a "Clone of Fake-Base-Channel-SUSE-like" text

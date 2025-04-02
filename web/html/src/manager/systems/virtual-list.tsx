@@ -33,7 +33,7 @@ export function VirtualSystems(props: Props) {
 
   return (
     <>
-      <h1>
+      <h1 className="mb-5">
         <IconTag type="header-system" />
         {t("Virtual Systems")}
         <a
@@ -44,7 +44,19 @@ export function VirtualSystems(props: Props) {
           <IconTag type="header-help" />
         </a>
       </h1>
-
+      <div className="spacewalk-section-toolbar">
+        <div className="action-button-wrapper">
+          <a
+            href="/rhn/manager/systems/csv/virtualSystems"
+            title="Download CSV"
+            className="btn btn-default"
+            data-senna-off="true"
+          >
+            <IconTag type="item-download-csv" />
+            {t("Download CSV")}
+          </a>
+        </div>
+      </div>
       <Table
         data="/rhn/manager/api/systems/list/virtual"
         identifier={(item) => item.virtualSystemId || item.uuid}
@@ -105,13 +117,6 @@ export function VirtualSystems(props: Props) {
           }}
         />
       </Table>
-
-      <div className="spacewalk-csv-download">
-        <a href="/rhn/manager/systems/csv/virtualSystems" className="btn btn-default" data-senna-off="true">
-          <IconTag type="item-download-csv" />
-          Download CSV
-        </a>
-      </div>
     </>
   );
 }
