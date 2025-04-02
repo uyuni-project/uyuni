@@ -28,7 +28,7 @@ import com.redhat.rhn.frontend.taglibs.list.decorators.PageSizeDecorator;
 import com.redhat.rhn.frontend.taglibs.list.helper.ListHelper;
 import com.redhat.rhn.frontend.taglibs.list.row.RowRenderer;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.StringWriter;

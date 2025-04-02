@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.HashSet;
 import java.util.Iterator;

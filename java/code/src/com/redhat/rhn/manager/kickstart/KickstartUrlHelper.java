@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;

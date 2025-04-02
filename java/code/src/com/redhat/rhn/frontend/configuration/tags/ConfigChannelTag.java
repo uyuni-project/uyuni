@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.configuration.tags;
 
 import com.redhat.rhn.frontend.taglibs.IconTag;
 
-import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.io.IOException;
 
