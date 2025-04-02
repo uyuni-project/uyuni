@@ -11,6 +11,9 @@ jobs:
   filter-paths:
     runs-on: ubuntu-latest
     outputs:
+      java: ${{ steps.filter.outputs.java }}
+      web: ${{ steps.filter.outputs.web }}
+      testsuite: ${{ steps.filter.outputs.testsuite }}
       require_acceptance_tests: ${{ steps.filter.outputs.java == 'true' || steps.filter.outputs.web == 'true' || steps.filter.outputs.testsuite == 'true' }}
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 #v4.2.2
@@ -34,7 +37,7 @@ jobs:
     needs: filter-paths
     steps:
       - name: debug
-        run: echo "java: ${{steps.filter.outputs.java}} web: ${{steps.filter.outputs.web}} testsuite: ${{steps.filter.outputs.testsuite}}"
+        run: echo "java: ${{needs.filter-paths.outputs.java}} web: ${{needs.filter-paths.outputs.web}} testsuite: ${{needs.filter-paths.outputs.testsuite}}"
       - name: Yes
         if: ${{ needs.filter-paths.outputs.require_acceptance_tests == 'true' }}
         run: echo Yes
