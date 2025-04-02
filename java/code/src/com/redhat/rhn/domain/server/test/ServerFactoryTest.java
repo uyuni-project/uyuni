@@ -155,7 +155,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     );
     private static final MonitoringManager MONITORING_MANAGER = new FormulaMonitoringManager(SALT_API);
     private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER = new SystemEntitlementManager(
-            new SystemUnentitler(MONITORING_MANAGER, SERVER_GROUP_MANAGER),
+            new SystemUnentitler(SALT_API, MONITORING_MANAGER, SERVER_GROUP_MANAGER),
             new SystemEntitler(SALT_API, MONITORING_MANAGER, SERVER_GROUP_MANAGER)
     );
 

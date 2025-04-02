@@ -207,7 +207,7 @@ public class SystemManager extends BaseManager {
         ServerGroupManager serverGroupManager = new ServerGroupManager(saltApiIn);
         MonitoringManager monitoringManager = new FormulaMonitoringManager(saltApi);
         systemEntitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(monitoringManager, serverGroupManager),
+                new SystemUnentitler(saltApiIn, monitoringManager, serverGroupManager),
                 new SystemEntitler(saltApiIn, monitoringManager, serverGroupManager)
         );
     }
