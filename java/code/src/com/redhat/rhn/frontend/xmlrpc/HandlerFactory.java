@@ -19,6 +19,7 @@ package com.redhat.rhn.frontend.xmlrpc;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
+import com.redhat.rhn.frontend.xmlrpc.access.AccessHandler;
 import com.redhat.rhn.frontend.xmlrpc.activationkey.ActivationKeyHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.configuration.AdminConfigurationHandler;
 import com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler;
@@ -84,6 +85,7 @@ import com.redhat.rhn.frontend.xmlrpc.user.UserHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.UserNotificationsHandler;
 import com.redhat.rhn.frontend.xmlrpc.user.external.UserExternalHandler;
 import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandler;
+import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.org.MigrationManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
@@ -144,6 +146,7 @@ public class HandlerFactory {
         SaltApi saltApi = GlobalInstanceHolder.SALT_API;
         SaltKeyUtils saltKeyUtils = GlobalInstanceHolder.SALT_KEY_UTILS;
         ServerGroupManager serverGroupManager = GlobalInstanceHolder.SERVER_GROUP_MANAGER;
+        AccessGroupManager accessGroupManager = GlobalInstanceHolder.ACCESS_GROUP_MANAGER;
         MigrationManager migrationManager = new MigrationManager(serverGroupManager);
 
         RegularMinionBootstrapper regularMinionBootstrapper = GlobalInstanceHolder.REGULAR_MINION_BOOTSTRAPPER;
@@ -160,7 +163,7 @@ public class HandlerFactory {
 
         OrgHandler orgHandler = new OrgHandler(migrationManager);
         ServerGroupHandler serverGroupHandler = new ServerGroupHandler(xmlRpcSystemHelper, serverGroupManager);
-        UserHandler userHandler = new UserHandler(serverGroupManager);
+        UserHandler userHandler = new UserHandler(serverGroupManager, accessGroupManager);
         ActivationKeyHandler activationKeyHandler = new ActivationKeyHandler(serverGroupManager);
         ChannelHandler channelHandler = new ChannelHandler();
         ChannelSoftwareHandler channelSoftwareHandler = new ChannelSoftwareHandler(taskomaticApi, xmlRpcSystemHelper);
@@ -168,6 +171,7 @@ public class HandlerFactory {
                                   orgHandler, serverGroupHandler, userHandler, activationKeyHandler,
                                   systemHandler, channelHandler, channelSoftwareHandler, saltApi);
 
+        factory.addHandler("access", new AccessHandler(accessGroupManager));
         factory.addHandler("actionchain", new ActionChainHandler());
         factory.addHandler("activationkey", activationKeyHandler);
         factory.addHandler("admin.configuration", adminConfigurationHandler);
