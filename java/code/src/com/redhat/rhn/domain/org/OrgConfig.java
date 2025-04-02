@@ -60,9 +60,6 @@ public class OrgConfig extends BaseDomainHelper {
     @Type(type = "yes_no")
     private boolean scapfileUploadEnabled;
 
-    @Column(name = "scap_file_sizelimit", nullable = false)
-    private Long scapFileSizelimit;
-
     @Column(name = "scap_retention_period_days")
     private Long scapRetentionPeriodDays;
 
@@ -146,22 +143,6 @@ public class OrgConfig extends BaseDomainHelper {
      */
     public void setScapfileUploadEnabled(boolean scapfileUploadEnabledIn) {
         scapfileUploadEnabled = scapfileUploadEnabledIn;
-    }
-
-    /**
-     * Get the org-wide SCAP file size limit.
-     * @return Returns the org-wide scap file size limit.
-     */
-    public Long getScapFileSizelimit() {
-        return scapFileSizelimit;
-    }
-
-    /**
-     * Set the org-wide SCAP file size limit.
-     * @param sizeLimitIn The org-wide SCAP file size limit to set.
-     */
-    public void setScapFileSizelimit(Long sizeLimitIn) {
-        scapFileSizelimit = sizeLimitIn;
     }
 
     /**
