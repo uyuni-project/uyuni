@@ -1,5 +1,4 @@
 class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
-
 ,/schedule/PendingActions.do,GET,W,t,schedule.pending,R
 ,/schedule/PendingActions.do,POST,W,t,schedule.pending,R
 ,/schedule/PendingActionsDeleteConfirm.do,GET,W,t,schedule.pending,W

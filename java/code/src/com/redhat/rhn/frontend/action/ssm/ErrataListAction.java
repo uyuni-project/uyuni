@@ -15,6 +15,9 @@
 
 package com.redhat.rhn.frontend.action.ssm;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.frontend.action.systems.ErrataSetupAction;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
@@ -63,6 +66,7 @@ public class ErrataListAction extends ErrataSetupAction implements Listable<Erra
         request.setAttribute("combo", getComboList(request));
 
         if (helper.isDispatched() && requestContext.wasDispatched("errata.jsp.apply")) {
+            ensureRoleBasedAccess(requestContext.getCurrentUser(), "systems.software.patches", Namespace.AccessMode.W);
             return handleConfirm(mapping, requestContext, helper);
         }
 

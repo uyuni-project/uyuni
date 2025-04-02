@@ -1,9 +1,6 @@
 class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
-# TODO: Download CSV
-
 # Channel List
-
 ,/software/channels/All.do,GET,W,t,software.list,R
 ,/software/channels/All.do,POST,W,t,software.list,R
 ,/software/channels/Vendor.do,GET,W,t,software.list,R
@@ -16,10 +13,8 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/software/channels/Shared.do,POST,W,t,software.list,R
 ,/software/channels/Retired.do,GET,W,t,software.list,R
 ,/software/channels/Retired.do,POST,W,t,software.list,R
-
 ,/channels/ChannelDetail.do,GET,W,t,software.details.overview,R
 ,/channels/ChannelDetail.do,POST,W,t,software.details.overview,W
-
 ,/channels/Managers.do,GET,W,t,software.details.managers,R
 ,/channels/Managers.do,POST,W,t,software.details.managers,R
 ,/channels/ChannelErrata.do,GET,W,t,software.details.patches,R
@@ -36,12 +31,10 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/AppStreams.do,POST,W,t,software.details.appstreams,R
 
 # Package Search
-
 ,/channels/software/Search.do,GET,W,t,software.search,R
 ,/channels/software/Search.do,POST,W,t,software.search,R
 
 # Manage
-
 ,/channels/manage/Manage.do,GET,W,t,software.manage.list,W
 ,/channels/manage/Manage.do,POST,W,t,software.manage.list,W
 ,/channels/manage/Edit.do,GET,W,t,software.manage.details,W
@@ -54,7 +47,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/manage/Clone.do,POST,W,t,software.manage.clone,W
 
 # Manage Channel Patches
-
 ,/channels/manage/errata/Errata.do,GET,W,t,software.manage.patches,W
 ,/channels/manage/errata/ListRemove.do,GET,W,t,software.manage.patches,W
 ,/channels/manage/errata/ListRemove.do,POST,W,t,software.manage.patches,W
@@ -74,7 +66,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/manage/errata/SyncErrata.do,POST,W,t,software.manage.patches,W
 
 # Manage Channel Packages
-
 ,/channels/manage/ChannelPackageMenu.do,GET,W,t,software.manage.packages,W
 ,/channels/manage/ChannelPackages.do,GET,W,t,software.manage.packages,W
 ,/channels/manage/ChannelPackages.do,POST,W,t,software.manage.packages,W
@@ -92,7 +83,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/manage/ChannelPackagesCompareMergeConfirm.do,POST,W,t,software.manage.packages,W
 
 # Manage Repositories
-
 ,/channels/manage/Repositories.do,GET,W,t,software.manage.repos,W
 ,/channels/manage/Repositories.do,POST,W,t,software.manage.repos,W
 ,/channels/manage/repos/RepoList.do,GET,W,t,software.manage.repos,W
@@ -107,7 +97,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/channels/manage/repos/RepoDelete.do,POST,W,t,software.manage.repos,W
 
 # Distro Channel Mapping
-
 ,/channels/manage/DistChannelMap.do,GET,W,t,software.distro,R
 ,/channels/manage/DistChannelMap.do,POST,W,t,software.distro,R
 ,/channels/manage/DistChannelMapEdit.do,GET,W,t,software.distro,W

@@ -12,7 +12,7 @@
     </rhn-tab>
     <rhn-tab name="Connection" url="/rhn/systems/details/Connection.do" acl="org_has_proxies(); authorized_for(systems.details.connection)"/>
     <rhn-tab name="Proxy" url="/rhn/systems/details/ProxyClients.do" acl="system_is_proxy(); authorized_for(systems.details.proxy)"/>
-    <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="system_is_mgr_server()"/>
+    <rhn-tab name="Peripheral Server" url="/rhn/manager/systems/details/mgr-server-info/${sid}" acl="authorized_for(systems.details.peripheral); system_is_mgr_server()"/>
     <rhn-tab name="Reactivation" url="/rhn/systems/details/Activation.do" acl="authorized_for(systems.details.activation); system_feature(ftr_agent_smith)"/>
     <rhn-tab name="Hardware" acl="authorized_for(systems.details.hardware); not system_has_foreign_entitlement() or not system_is_proxy()">
       <rhn-tab-url>/rhn/systems/details/SystemHardware.do</rhn-tab-url>
@@ -49,7 +49,7 @@
         <rhn-tab-url>/rhn/systems/details/packages/InstallPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/InstallConfirm.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="Verify" acl="system_feature(ftr_package_verify); client_capable(packges.verify) or client_capable(packages.verify)">
+      <rhn-tab name="Verify" acl="authorized_for(systems.software.packages, W); system_feature(ftr_package_verify); client_capable(packges.verify) or client_capable(packages.verify)">
         <rhn-tab-url>/rhn/systems/details/packages/VerifyPackages.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/packages/VerifyConfirm.do</rhn-tab-url>
       </rhn-tab>
@@ -141,7 +141,7 @@
     </rhn-tab>
   </rhn-tab>
 
-  <rhn-tab name="Provisioning" acl="authorized_for(systems.details.provisioning); system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)" url="/rhn/systems/details/kickstart/ScheduleWizard.do">
+  <rhn-tab name="Provisioning" acl="authorized_for(systems.autoinstallation.provisioning); system_feature(ftr_kickstart) or system_feature(ftr_snapshotting)" url="/rhn/systems/details/kickstart/ScheduleWizard.do">
 
     <rhn-tab name="Kickstart" url="/rhn/systems/details/kickstart/ScheduleWizard.do" acl="system_feature(ftr_kickstart)">
       <rhn-tab-directory>/rhn/systems/details/kickstart</rhn-tab-directory>
@@ -154,8 +154,8 @@
 
     <rhn-tab name="Power Management" url="/rhn/systems/details/kickstart/PowerManagement.do" acl="system_feature(ftr_kickstart)" node-id="power_management" />
 
-    <rhn-tab name="Snapshots" acl="client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)" url="/rhn/systems/details/history/snapshots/Index.do" showChildrenIfActive="0">
-      <rhn-tab name="Rollback" url="/rhn/systems/details/history/snapshots/Rollback.do" />
+    <rhn-tab name="Snapshots" acl="authoized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)" url="/rhn/systems/details/history/snapshots/Index.do" showChildrenIfActive="0">
+      <rhn-tab name="Rollback" acl="authoized_for(systems.snapshots, W); " url="/rhn/systems/details/history/snapshots/Rollback.do" />
       <rhn-tab name="Groups" url="/rhn/systems/details/history/snapshots/Groups.do" />
       <rhn-tab name="Channels" url="/rhn/systems/details/history/snapshots/Channels.do" />
       <rhn-tab name="Packages" url="/rhn/systems/details/history/snapshots/Packages.do">
@@ -167,7 +167,7 @@
         <rhn-tab-url>/rhn/systems/details/history/snapshots/SnapshotTagCreate.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
-    <rhn-tab name="Snapshot Tags" acl="client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)">
+    <rhn-tab name="Snapshot Tags" acl="authoized_for(systems.snapshots); client_capable(packages.runTransaction) or client_capable(configfiles.deploy); system_feature(ftr_snapshotting)">
       <rhn-tab-url>/rhn/systems/details/history/snapshots/Tags.do</rhn-tab-url>
       <rhn-tab-url>/rhn/systems/details/history/snapshots/TagCreate.do</rhn-tab-url>
     </rhn-tab>
@@ -178,8 +178,8 @@
     <rhn-tab name="Join" acl="authorized_for(systems.groups.join);" url="/rhn/systems/details/groups/Add.do"/>
   </rhn-tab>
 
-  <rhn-tab name="Audit" acl="authorized_for(systems.details.audit); system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
-    <rhn-tab name="OpenSCAP" url="/rhn/systems/details/audit/ListScap.do">
+  <rhn-tab name="Audit" acl="authorized_for(systems.audit); system_has_management_entitlement() or system_has_salt_entitlement_and_contact_method(default)" url="/rhn/systems/details/audit/ListScap.do">
+    <rhn-tab name="OpenSCAP" acl="authorized_for(systems.audit.openscap)" url="/rhn/systems/details/audit/ListScap.do">
       <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
       <rhn-tab name="nav.system.audit.list_scans">
         <rhn-tab-url>/rhn/systems/details/audit/ListScap.do</rhn-tab-url>
@@ -187,12 +187,12 @@
         <rhn-tab-url>/rhn/systems/details/audit/RuleDetails.do</rhn-tab-url>
         <rhn-tab-url>/rhn/systems/details/audit/XccdfDeleteConfirm.do</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab name="nav.system.audit.schedule">
+      <rhn-tab acl="authorized_for(systems.audit.openscap, W)" name="nav.system.audit.schedule">
         <rhn-tab-url>/rhn/systems/details/audit/ScheduleXccdf.do</rhn-tab-url>
       </rhn-tab>
     </rhn-tab>
 
-    <rhn-tab name="nav.system.coco" url="/rhn/manager/systems/details/coco/settings">
+    <rhn-tab name="nav.system.coco" acl="authorized_for(systems.audit.coco)" url="/rhn/manager/systems/details/coco/settings">
       <rhn-tab name="nav.system.coco.settings">
         <rhn-tab-url>/rhn/manager/systems/details/coco/settings</rhn-tab-url>
       </rhn-tab>

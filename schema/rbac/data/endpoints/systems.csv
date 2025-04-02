@@ -31,6 +31,34 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/systems/csv/all,GET,W,t,systems.list,R
 ,/manager/systems/csv/virtualSystems,GET,W,t,systems.list,R
 
+# Snapshots
+,/systems/details/history/snapshots/Index.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Index.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/SnapshotTags.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/SnapshotTags.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/SnapshotTagCreate.do,GET,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/SnapshotTagCreate.do,POST,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/Rollback.do,GET,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/Rollback.do,POST,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/Groups.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Groups.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Channels.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Channels.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Packages.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Packages.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/ConfigChannels.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/ConfigChannels.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/ConfigFiles.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/ConfigFiles.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/UnservablePackages.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/UnservablePackages.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Tags.do,GET,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/Tags.do,POST,W,t,systems.snapshots,R
+,/systems/details/history/snapshots/TagCreate.do,GET,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/TagCreate.do,POST,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/TagsDelete.do,GET,W,t,systems.snapshots,W
+,/systems/details/history/snapshots/TagsDelete.do,POST,W,t,systems.snapshots,W
+
 # System groups
 ,/systems/SystemGroupList.do,GET,W,t,systems.groups.list,R
 ,/systems/SystemGroupList.do,POST,W,t,systems.groups.list,R
@@ -83,8 +111,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
 
 # System details
-# TODO: systems/details/packages/VerifyPackages.do
-# TODO: systems/details/ptf/...
 ,/manager/systems/:id,GET,W,t,systems.details.overview,R
 ,/systems/details/Overview.do,GET,W,t,systems.details.overview,R
 ,/systems/details/Edit.do,GET,W,t,systems.details.overview,W
@@ -110,7 +136,8 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/api/systems/proxy,POST,W,t,systems.details.connection,W
 ,/systems/details/ProxyClients.do,GET,W,t,systems.details.proxy,R
 ,/systems/details/ProxyClients.do,POST,W,t,systems.details.proxy,R
-# TODO: Peripheral server (mgr-server-info)
+,/manager/systems/details/mgr-server-info/:sid,GET,W,t,systems.details.peripheral,R
+,/manager/api/systems/:sid/mgr-server-reportdb-newpw,POST,W,t,systems.details.peripheral,W
 ,/systems/details/Activation.do,GET,W,t,systems.details.activation,R
 ,/systems/details/Activation.do,POST,W,t,systems.details.activation,R
 ,/systems/details/SystemHardware.do,GET,W,t,systems.details.hardware,R
@@ -137,19 +164,23 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/packages/InstallPackages.do,POST,W,t,systems.software.packages,W
 ,/systems/details/packages/InstallConfirm.do,GET,W,t,systems.software.packages,W
 ,/systems/details/packages/InstallConfirm.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/VerifyPackages.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/VerifyPackages.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/VerifyConfirm.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/VerifyConfirm.do,POST,W,t,systems.software.packages,W
 ,/systems/details/packages/LockPackages.do,GET,W,t,systems.software.packages,W
 ,/systems/details/packages/LockPackages.do,POST,W,t,systems.software.packages,W
 ,/systems/details/packages/ExtraPackagesList.do,GET,W,t,systems.software.packages,R
 ,/systems/details/packages/ExtraPackagesList.do,POST,W,t,systems.software.packages,R
 ,/systems/details/packages/RemoveExtraConfirm.do,GET,W,t,systems.software.packages,W
 ,/systems/details/packages/RemoveExtraConfirm.do,POST,W,t,systems.software.packages,W
-,/systems/details/packages/profiles/ShowProfiles.do,GET,W,t,systems.software.packages.profiles,R
-,/systems/details/packages/profiles/ShowProfiles.do,POST,W,t,systems.software.packages.profiles,R
-,/systems/details/packages/profiles/CompareProfiles.do,GET,W,t,systems.software.packages.profiles,R
-,/systems/details/packages/profiles/Create.do,GET,W,t,systems.software.packages.profiles,W
-,/systems/details/packages/profiles/Create.do,POST,W,t,systems.software.packages.profiles,W
-,/systems/details/packages/profiles/DeleteProfile.do,GET,W,t,systems.software.packages.profiles,W
-,/systems/details/packages/profiles/DeleteProfile.do,POST,W,t,systems.software.packages.profiles,W
+,/systems/details/packages/profiles/ShowProfiles.do,GET,W,t,systems.software.packages,R
+,/systems/details/packages/profiles/ShowProfiles.do,POST,W,t,systems.software.packages,R
+,/systems/details/packages/profiles/CompareProfiles.do,GET,W,t,systems.software.packages,R
+,/systems/details/packages/profiles/Create.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/profiles/Create.do,POST,W,t,systems.software.packages,W
+,/systems/details/packages/profiles/DeleteProfile.do,GET,W,t,systems.software.packages,W
+,/systems/details/packages/profiles/DeleteProfile.do,POST,W,t,systems.software.packages,W
 ,/systems/details/ErrataList.do,GET,W,t,systems.software.patches,R
 ,/systems/details/ErrataList.do,POST,W,t,systems.software.patches,R
 ,/systems/details/ErrataConfirm.do,GET,W,t,systems.software.patches,W
@@ -163,12 +194,19 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/SPMigration.do,GET,W,t,systems.software.migration,W
 ,/systems/details/SPMigration.do,POST,W,t,systems.software.migration,W
 
+# AppStreams
 ,/manager/systems/details/appstreams,GET,W,t,systems.software.appstreams,R
 ,/manager/api/appstreams/:channelId/:appstream/packages,GET,W,t,systems.software.appstreams,R
 ,/manager/api/appstreams/save,POST,W,t,systems.software.appstreams,W
 
-# TODO: CSV download should be split and grouped together with the list namespaces(OR always allow CSV via list page)
-# ,/CSVDownloadAction.do,GET,W,t,?,?
+# PTF
+,/manager/systems/details/ptf/overview,GET,W,t,systems.software.ptf,R
+,/manager/systems/details/ptf/list,GET,W,t,systems.software.ptf,R
+,/manager/systems/details/ptf/install,GET,W,t,systems.software.ptf,W
+,/manager/api/systems/:sid/details/ptf/allowedActions,GET,W,t,systems.software.ptf,R
+,/manager/api/systems/:sid/details/ptf/installed,GET,W,t,systems.software.ptf,R
+,/manager/api/systems/:sid/details/ptf/available,GET,W,t,systems.software.ptf,W
+,/manager/api/systems/:sid/details/ptf/scheduleAction,POST,W,t,systems.software.ptf,W
 
 # System configuration
 ,/systems/details/configuration/Overview.do,GET,W,t,systems.config.overview,R
@@ -201,7 +239,25 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/groups/Add.do,GET,W,t,systems.groups.join,W
 ,/systems/details/groups/Add.do,POST,W,t,systems.groups.join,W
 
-# TODO: System audit (openSCAP, coco) ns:systems.details.audit
+# Audit
+,/systems/details/audit/ListScap.do,GET,W,t,systems.audit.openscap,R
+,/systems/details/audit/ListScap.do,POST,W,t,systems.audit.openscap,R
+,/systems/details/audit/XccdfDeleteConfirm.do,GET,W,t,systems.audit.openscap,W
+,/systems/details/audit/XccdfDeleteConfirm.do,POST,W,t,systems.audit.openscap,W
+,/systems/details/audit/XccdfDetails.do,GET,W,t,systems.audit.openscap,R
+,/systems/details/audit/ScapResultDownload.do,GET,W,t,systems.audit.openscap,R
+,/systems/details/audit/RuleDetails.do,GET,W,t,systems.audit.openscap,R
+,/systems/details/audit/ScheduleXccdf.do,GET,W,t,systems.audit.openscap,W
+,/systems/details/audit/ScheduleXccdf.do,POST,W,t,systems.audit.openscap,W
+
+# Confidential computing
+,/manager/systems/details/coco/settings,GET,W,t,systems.audit.coco,R
+,/manager/api/systems/:sid/details/coco/settings,GET,W,t,systems.audit.coco,R
+,/manager/api/systems/:sid/details/coco/settings,POST,W,t,systems.audit.coco,W
+
+,/manager/systems/details/coco/list,GET,W,t,systems.audit.coco,R
+,/manager/api/systems/:sid/details/coco/scheduleAction,POST,W,t,systems.audit.coco,W
+,/manager/api/systems/:sid/details/coco/listAttestations,GET,W,t,systems.audit.coco,W
 
 # System states
 ,/manager/systems/details/highstate,GET,W,t,systems.states.highstate,R
@@ -258,6 +314,8 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/details/history/History.do,POST,W,t,systems.events,R
 ,/systems/details/history/Event.do,GET,W,t,systems.events,R
 ,/systems/details/history/Event.do,POST,W,t,systems.events,W
+,/systems/details/history/FailEventConfirmation.do,GET,W,t,systems.events,W
+,/systems/details/history/FailEventConfirmation.do,POST,W,t,systems.events,W
 
 # Bootstrapping
 ,/manager/systems/bootstrap,GET,W,t,systems.bootstrap,W
@@ -312,7 +370,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/profiles/Delete.do,POST,W,t,systems.profiles,W
 
 # Custom keys
-# TODO: Download CSV action
 ,/systems/customdata/CustomDataList.do,GET,W,t,systems.custom_data,R
 ,/systems/customdata/CustomDataList.do,POST,W,t,systems.custom_data,R
 ,/systems/customdata/CreateCustomKey.do,GET,W,t,systems.custom_data,W
@@ -320,7 +377,115 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/systems/customdata/UpdateCustomKey.do,GET,W,t,systems.custom_data,W
 ,/systems/customdata/UpdateCustomKey.do,POST,W,t,systems.custom_data,W
 
-# TODO: Autoinstallation
+# Autoinstallation (Provisioning)
+,/kickstart/KickstartOverview.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/Kickstarts.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/Kickstarts.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/CreateProfileWizard.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/CreateProfileWizard.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/AdvancedModeCreate.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/AdvancedModeCreate.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/AdvancedModeEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/AdvancedModeEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartDeleteAdvanced.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartDeleteAdvanced.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartCloneAdvanced.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartCloneAdvanced.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartIpRangeEditAdvanced.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartIpRangeEditAdvanced.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/EditVariables.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/EditVariables.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartFileDownloadAdvanced.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartDelete.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartDelete.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartClone.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartClone.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartIpRanges.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartIpRanges.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/KickstartIpRangeEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartIpRangeEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartIpRangeDelete.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartIpRangeDelete.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartDetailsEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartDetailsEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartSoftwareEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartSoftwareEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartOptionsEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartOptionsEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/SystemDetailsEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/SystemDetailsEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/Locale.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/Locale.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartPartitionEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartPartitionEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartFilePreservationLists.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartFilePreservationLists.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/KickstartFilePreservationListsSubmit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartCryptoKeysList.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartCryptoKeysList.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/KickstartCryptoKeysListSubmit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/Troubleshooting.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/Troubleshooting.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartPackagesEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartPackagesEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/KickstartPackageProfileEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartPackageProfileEdit.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/ActivationKeys.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/ActivationKeys.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/ActivationKeysList.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/ActivationKeysList.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/ActivationKeysSubmit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/Scripts.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/Scripts.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/KickstartScriptCreate.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartScriptEdit.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartScriptOrder.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/KickstartFileDownload.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/KickstartFileDownload.do,POST,W,t,systems.autoinstallation,R
+,/keys/CryptoKeysList.do,GET,W,t,systems.autoinstallation,R
+,/keys/CryptoKeyCreate.do,GET,W,t,systems.autoinstallation,W
+,/keys/CryptoKeyCreate.do,POST,W,t,systems.autoinstallation,W
+,/keys/CryptoKeyEdit.do,GET,W,t,systems.autoinstallation,W
+,/keys/CryptoKeyEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/ViewTrees.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/ViewTrees.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/TreeCreate.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/TreeCreate.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/TreeEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/TreeEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/tree/EditVariables.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/tree/EditVariables.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/TreeDelete.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/TreeDelete.do,POST,W,t,systems.autoinstallation,W
+,/systems/provisioning/preservation/PreservationList.do,GET,W,t,systems.autoinstallation,R
+,/systems/provisioning/preservation/PreservationListCreate.do,GET,W,t,systems.autoinstallation,R
+,/systems/provisioning/preservation/PreservationListCreate.do,POST,W,t,systems.autoinstallation,R
+,/systems/provisioning/preservation/PreservationListDeleteSubmit.do,POST,W,t,systems.autoinstallation,R
+,/systems/provisioning/preservation/PreservationListDelete.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/cobbler/CustomSnippetList.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/CustomSnippetList.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/DefaultSnippetList.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/DefaultSnippetList.do,POST,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/CobblerSnippetList.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/CobblerSnippetView.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/CobblerSnippetCreate.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/cobbler/CobblerSnippetCreate.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/cobbler/CobblerSnippetEdit.do,GET,W,t,systems.autoinstallation,R
+,/kickstart/cobbler/CobblerSnippetEdit.do,POST,W,t,systems.autoinstallation,W
+,/kickstart/cobbler/CobblerSnippetDelete.do,GET,W,t,systems.autoinstallation,W
+,/kickstart/cobbler/CobblerSnippetDelete.do,POST,W,t,systems.autoinstallation,W
+
+# System provisioning
+,/systems/details/kickstart/ScheduleWizard.do,GET,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/ScheduleWizard.do,POST,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/SessionStatus.do,GET,W,t,systems.autoinstallation.provisioning,R
+,/systems/details/kickstart/SessionStatus.do,POST,W,t,systems.autoinstallation.provisioning,R
+,/systems/details/kickstart/SessionCancel.do,GET,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/SessionCancel.do,POST,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/Variables.do,GET,W,t,systems.autoinstallation.provisioning,R
+,/systems/details/kickstart/Variables.do,POST,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/PowerManagement.do,GET,W,t,systems.autoinstallation.provisioning,W
+,/systems/details/kickstart/PowerManagement.do,POST,W,t,systems.autoinstallation.provisioning,W
 
 ,/manager/vhms,GET,W,t,systems.vhms,R
 ,/manager/api/vhms,GET,W,t,systems.vhms,R
@@ -332,11 +497,5 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/manager/api/vhms/create,POST,W,t,systems.vhms,W
 ,/manager/api/vhms/update/:id,POST,W,t,systems.vhms,W
 ,/manager/api/vhms/delete/:id,DELETE,W,t,systems.vhms,W
-
-# TODO: Map these (k8s integration) (maybe into a child namespace 'systems.vhms.k8s'?):
-#,/manager/api/vhms/kubeconfig/validate
-#,/manager/api/vhms/create/kubernetes
-#,/manager/api/vhms/update/kubernetes
-#,/manager/api/vhms/kubeconfig/:id/contexts
 
 # TODO: upcoming-windows in datetimepicker (should require permission for maintenance windows) (maybe also for action chains?) ADD TO EVERY NEEDED NAMESPACE?

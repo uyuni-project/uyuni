@@ -1,0 +1,8 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# TODO
+# AdminViewsController
+# HubApiController
+# HubController (was SyncController)
+# DownloadController
+# ...

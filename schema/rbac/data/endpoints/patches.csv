@@ -1,9 +1,6 @@
 class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 
-# TODO: Download CSV
-
 # Patch List
-
 ,/errata/RelevantErrata.do,GET,W,t,patches.list,R
 ,/errata/RelevantErrata.do,POST,W,t,patches.list,R
 ,/errata/RelevantBugErrata.do,GET,W,t,patches.list,R
@@ -23,7 +20,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/errata/AllSecurityErrata.do,POST,W,t,patches.list,R
 
 # Patch Details
-
 ,/errata/details/Details.do,GET,W,t,patches.details.overview,R
 ,/errata/details/Packages.do,GET,W,t,patches.details.packages,R
 ,/errata/details/SystemsAffected.do,GET,W,t,patches.details.systems,R
@@ -32,15 +28,12 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/errata/details/ErrataConfirmSubmit.do,POST,W,t,patches.details.systems,W
 
 # Search
-
 ,/errata/Search.do,GET,W,t,patches.search,R
 ,/errata/Search.do,POST,W,t,patches.search,R
 
 # Manage Patches
-
 ,/errata/manage/Errata.do,GET,W,t,patches.manage.list,R
 ,/errata/manage/Errata.do,POST,W,t,patches.manage.list,R
-
 ,/errata/manage/Create.do,GET,W,t,patches.manage.details,W
 ,/errata/manage/CreateSubmit.do,POST,W,t,patches.manage.details,W
 ,/errata/manage/Edit.do,GET,W,t,patches.manage.details,R
@@ -53,11 +46,9 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/errata/manage/PublishedDeleteConfirmSubmit.do,POST,W,t,patches.manage.delete,W
 ,/errata/manage/Channels.do,GET,W,t,patches.manage.details,R
 ,/errata/manage/ChannelsSubmit.do,POST,W,t,patches.manage.details,R
-
 ,/errata/manage/Packages.do,GET,W,t,patches.manage.details,R
 ,/errata/manage/ListPackages.do,GET,W,t,patches.manage.details,R
 ,/errata/manage/ListPackages.do,POST,W,t,patches.manage.details,R
-
 ,/errata/manage/AddPackages.do,GET,W,t,patches.manage.details,W
 ,/errata/manage/AddPackages.do,POST,W,t,patches.manage.details,W
 ,/errata/manage/AddPackagesConfirm.do,GET,W,t,patches.manage.details,W
@@ -70,7 +61,6 @@ class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
 ,/errata/manage/AddChannelPackagePushSubmit.do,POST,W,t,patches.manage.details,W
 
 # Clone Patches
-
 ,/errata/manage/CloneErrata.do,GET,W,t,patches.clone,W
 ,/errata/manage/CloneErrata.do,POST,W,t,patches.clone,W
 ,/errata/manage/CloneConfirm.do,GET,W,t,patches.clone,W

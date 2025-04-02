@@ -14,6 +14,7 @@ com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.checkAuthToken,/manager/api/auth
 com.redhat.rhn.frontend.xmlrpc.auth.AuthHandler.getDuration,/manager/api/auth/getDuration,GET,A,f,,
 com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getVersion,/manager/api/api/getVersion,GET,A,f,,
 com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getApiCallList,/manager/api/api/getApiCallList,GET,A,f,,
+com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getApiNamespaceCallList,/manager/api/api/getApiNamespaceCallList,GET,A,f,,
 com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.systemVersion,/manager/api/api/systemVersion,GET,A,f,,
 com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.getApiNamespaces,/manager/api/api/getApiNamespaces,GET,A,f,,
 com.redhat.rhn.frontend.xmlrpc.api.ApiHandler.productName,/manager/api/api/productName,GET,A,f,,
@@ -24,3 +25,5 @@ com.redhat.rhn.frontend.xmlrpc.sync.master.MasterHandler.hasMaster,/manager/api/
 # SSM
 ,/manager/api/sets/:label,POST,W,f,,
 ,/manager/api/sets/:label/clear,POST,W,f,,
+
+,/CSVDownloadAction.do,GET,W,f,,

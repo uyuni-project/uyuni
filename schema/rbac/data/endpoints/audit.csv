@@ -1,0 +1,26 @@
+class_method,endpoint,http_method,scope,auth_required,namespace,access_mode
+
+# CVE Audit
+,/manager/audit/cve,GET,W,t,audit.cve,R
+,/manager/api/audit/cve,POST,W,t,audit.cve,R
+,/manager/api/audit/cve.csv,GET,W,t,audit.cve,R
+
+# openSCAP
+,/audit/ListXccdf.do,GET,W,t,audit.openscap,R
+,/audit/ListXccdf.do,POST,W,t,audit.openscap,R
+,/audit/scap/Diff.do,GET,W,t,audit.openscap,R
+,/audit/scap/DiffSubmit.do,GET,W,t,audit.openscap,R
+,/audit/scap/DiffSubmit.do,POST,W,t,audit.openscap,R
+,/audit/scap/Search.do,GET,W,t,audit.openscap,R
+,/audit/scap/Search.do,POST,W,t,audit.openscap,R
+
+,/audit/Overview.do,GET,W,t,audit.openscap,R
+,/audit/Overview.do,POST,W,t,audit.openscap,R
+,/audit/Machine.do,GET,W,t,audit.openscap,R
+,/audit/Machine.do,POST,W,t,audit.openscap,R
+,/audit/Search.do,GET,W,t,audit.openscap,R
+,/audit/Search.do,POST,W,t,audit.openscap,R
+
+# Confidential computing
+,/manager/audit/confidential-computing,GET,W,t,audit.coco,R
+,/manager/api/audit/confidential-computing/listAttestations,GET,W,t,audit.coco,R
