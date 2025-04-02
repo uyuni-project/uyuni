@@ -14,38 +14,44 @@
  */
 package com.redhat.rhn.domain.config;
 
+import com.redhat.rhn.domain.BaseDomainHelper;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Hibernate CodeGenerator
  */
-public class ConfigFileType implements Serializable {
+@Entity
+@Table(name = "RHNCONFIGFILETYPE")
+public class ConfigFileType extends BaseDomainHelper {
 
     /**
      * Comment for <code>serialVersionUID</code>
      */
     private static final long serialVersionUID = 3816155923541633076L;
 
-    /** identifier field */
-    private long           id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Equivalent to <generator class="native"/>
+    @Column(name = "ID")
+    private Long id;
 
-    /** persistent field */
-    private String         label;
+    @Column(name = "LABEL", length = 64, nullable = false)
+    private String label;
 
-    /** persistent field */
-    private String         name;
-
-    /** persistent field */
-    private java.util.Date created;
-
-    /** persistent field */
-    private java.util.Date modified;
+    @Column(name = "NAME", length = 256, nullable = false)
+    private String name;
 
     public static final String FILE = "file";
     public static final String DIR = "directory";
@@ -131,8 +137,8 @@ public class ConfigFileType implements Serializable {
             java.util.Date inCreated, java.util.Date inModified) {
         this.label = inLabel;
         this.name = inName;
-        this.created = inCreated;
-        this.modified = inModified;
+        this.setCreated(inCreated);
+        this.setModified(inModified);
     }
 
     /**
@@ -187,38 +193,6 @@ public class ConfigFileType implements Serializable {
      */
     public void setName(java.lang.String inName) {
         this.name = inName;
-    }
-
-    /**
-     * Get the created date
-     * @return Date of creation (~4800 BCE, I think)
-     */
-    public java.util.Date getCreated() {
-        return this.created;
-    }
-
-    /**
-     * Set creation date
-     * @param inCreated new creation date
-     */
-    public void setCreated(java.util.Date inCreated) {
-        this.created = inCreated;
-    }
-
-    /**
-     * Get last modified date
-     * @return time of last modification
-     */
-    public java.util.Date getModified() {
-        return this.modified;
-    }
-
-    /**
-     * Set date of last modification
-     * @param inModified modification date
-     */
-    public void setModified(java.util.Date inModified) {
-        this.modified = inModified;
     }
 
     /**

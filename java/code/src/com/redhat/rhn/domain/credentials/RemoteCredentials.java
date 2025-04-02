@@ -26,14 +26,13 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 public abstract class RemoteCredentials extends PasswordBasedCredentials {
-
+    @Column(name = "url")
     private String url;
 
     /**
      * Return the URL.
      * @return url
      */
-    @Column(name = "url")
     public String getUrl() {
         return url;
     }

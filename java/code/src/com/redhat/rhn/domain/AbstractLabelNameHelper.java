@@ -17,18 +17,27 @@ package com.redhat.rhn.domain;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 /**
  * AbstractLabelNameHelper - We have a set of tables in our schema
  * that are basic name/label pairs.  This class can be used by these tables
  * to represent them.
  *
  */
+@MappedSuperclass
 public class AbstractLabelNameHelper extends BaseDomainHelper {
 
+    @Transient
     private Long id;
-    private String label;
-    private String name;
 
+    @Column(name = "label", nullable = false)
+    private String label = new String();
+
+    @Column(name = "name", nullable = false)
+    private String name = new String();
 
     /**
      * @return Returns the id.
@@ -77,8 +86,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(this.getId())
-                                    .append(this.getName())
+        return new HashCodeBuilder().append(this.getName())
                                     .append(this.getLabel())
                                     .toHashCode();
     }
@@ -91,8 +99,7 @@ public class AbstractLabelNameHelper extends BaseDomainHelper {
         if (!(oth instanceof AbstractLabelNameHelper other)) {
             return false;
         }
-        return new EqualsBuilder().append(this.getId(), other.getId())
-                                  .append(this.getName(), other.getName())
+        return new EqualsBuilder().append(this.getName(), other.getName())
                                   .append(this.getLabel(), other.getLabel())
                                   .isEquals();
     }

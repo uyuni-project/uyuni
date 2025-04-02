@@ -41,8 +41,12 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     private CoCoEnvironmentType environmentType;
     private boolean attestOnBoot;
 
-    // Default empty constructor for hibernate
-    protected ServerCoCoAttestationConfig() {
+
+    /**
+     * Default Constructor
+     *
+     */
+    public ServerCoCoAttestationConfig() {
         this(false, null);
     }
 

@@ -25,7 +25,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Optional;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
@@ -37,23 +48,104 @@ import java.util.Optional;
  *    satellite does not have.
  *    This object is an instance of a package that is installed on a server
  */
+@Entity
+@Table(name = "rhnServerPackage")
 public class InstalledPackage implements Serializable, Comparable<InstalledPackage> {
+    @Embeddable
+    public static class InstalledPackageKey implements Serializable {
 
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JoinColumn(name = "server_id")
+        private Server server = new Server();
+
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JoinColumn(name = "evr_id")
+        private PackageEvr evr = new PackageEvr();
+
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JoinColumn(name = "name_id")
+        private PackageName name = new PackageName();
+
+        @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @JoinColumn(name = "package_arch_id")
+        private PackageArch arch = new PackageArch();
+
+        /**
+         *  Default Constructor
+         */
+        public InstalledPackageKey() {
+
+        }
+
+        public Server getServer() {
+            return server;
+        }
+
+        public void setServer(Server serverIn) {
+            this.server = serverIn;
+        }
+
+        public PackageEvr getEvr() {
+            return evr;
+        }
+
+        public void setEvr(PackageEvr evrIn) {
+            this.evr = evrIn;
+        }
+
+        public PackageName getName() {
+            return name;
+        }
+
+        public void setName(PackageName nameIn) {
+            this.name = nameIn;
+        }
+
+        public PackageArch getArch() {
+            return arch;
+        }
+
+        public void setArch(PackageArch archIn) {
+            this.arch = archIn;
+        }
+
+        @Override
+        public boolean equals(Object oIn) {
+            if (!(oIn instanceof InstalledPackageKey that)) {
+                return false;
+            }
+            return Objects.equals(server, that.server) &&
+                    Objects.equals(evr, that.evr) && Objects.equals(name, that.name) && Objects.equals(arch, that.arch);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(server, evr, name, arch);
+        }
+    }
     /**
      *
      */
     private static final long serialVersionUID = -6158622200264142583L;
-    private PackageEvr evr;
-    private PackageName name;
-    private PackageArch arch;
-    private Server server;
+
+    @EmbeddedId
+    private InstalledPackageKey id = new InstalledPackageKey();
+    @Column(name = "installtime")
     private Date installTime;
+
+    public InstalledPackageKey getId() {
+        return id;
+    }
+
+    public void setId(InstalledPackageKey idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the server.
      */
     public Server getServer() {
-        return server;
+        return id.getServer();
     }
 
 
@@ -61,49 +153,49 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
      * @param serverIn The server to set.
      */
     public void setServer(Server serverIn) {
-        this.server = serverIn;
+        this.id.setServer(serverIn);
     }
 
     /**
      * @return Returns the arch.
      */
     public PackageArch getArch() {
-        return arch;
+        return id.getArch();
     }
 
     /**
      * @param archIn The arch to set.
      */
     public void setArch(PackageArch archIn) {
-        this.arch = archIn;
+        this.id.setArch(archIn);
     }
 
     /**
      * @return Returns the evr.
      */
     public PackageEvr getEvr() {
-        return evr;
+        return id.getEvr();
     }
 
     /**
      * @param evrIn The evr to set.
      */
     public void setEvr(PackageEvr evrIn) {
-        this.evr = evrIn;
+        this.id.setEvr(evrIn);
     }
 
     /**
      * @return Returns the name.
      */
     public PackageName getName() {
-        return name;
+        return id.getName();
     }
 
     /**
      * @param nameIn The name to set.
      */
     public void setName(PackageName nameIn) {
-        this.name = nameIn;
+        this.id.setName(nameIn);
     }
 
     /**
@@ -128,13 +220,13 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
      */
     @Override
     public int hashCode() {
-        HashCodeBuilder builder =  new HashCodeBuilder().append(name.getName())
-                                    .append(evr.getEpoch())
-                                    .append(evr.getRelease())
-                                    .append(evr.getVersion())
-                                    .append(server.getId());
-        if (this.arch != null) {
-            builder.append(arch.getName());
+        HashCodeBuilder builder =  new HashCodeBuilder().append(this.getName().getName())
+                                    .append(this.getEvr().getEpoch())
+                                    .append(this.getEvr().getRelease())
+                                    .append(this.getEvr().getVersion())
+                                    .append(this.getServer().getId());
+        if (this.getArch() != null) {
+            builder.append(this.getArch().getName());
         }
         return builder.toHashCode();
 
@@ -196,10 +288,10 @@ public class InstalledPackage implements Serializable, Comparable<InstalledPacka
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-            .append("name", Optional.of(name).map(PackageName::getName).orElse(null))
-            .append("evr", evr)
-            .append("archLabel", Optional.of(arch).map(PackageArch::getLabel).orElse(null))
-            .append("serverId", Optional.of(server).map(Server::getId).orElse(null))
+            .append("name", Optional.of(this.getName()).map(PackageName::getName).orElse(null))
+            .append("evr", this.getArch())
+            .append("archLabel", Optional.of(this.getArch()).map(PackageArch::getLabel).orElse(null))
+            .append("serverId", Optional.of(this.getServer()).map(Server::getId).orElse(null))
             .toString();
     }
 }

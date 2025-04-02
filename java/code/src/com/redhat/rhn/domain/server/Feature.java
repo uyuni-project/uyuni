@@ -16,9 +16,61 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.AbstractLabelNameHelper;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import java.util.Objects;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 
 /**
  * Feature
  */
+@Entity
+@Table(name = "rhnFeature")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class Feature extends AbstractLabelNameHelper {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    protected Long id;
+
+    /**
+     * @return Returns the id.
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param i The id to set.
+     */
+    public void setId(Long i) {
+        this.id = i;
+    }
+
+    @Override
+    public boolean equals(Object oIn) {
+        if (!(oIn instanceof Feature feature)) {
+            return false;
+        }
+        if (!super.equals(oIn)) {
+            return false;
+        }
+        return Objects.equals(id, feature.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
+
 }

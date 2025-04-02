@@ -18,47 +18,89 @@ import com.redhat.rhn.domain.AbstractLabelNameHelper;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Cacheable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Class that represents the rhnServerGroupType table.
  *
  */
+@Entity
+@Table(name = "rhnServerGroupType")
+@Cacheable
+@Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 public class ServerGroupType extends AbstractLabelNameHelper {
-    private char permanent;
-    private char isBaseChar;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "servergroup_type_seq")
+    @SequenceGenerator(name = "servergroup_type_seq", sequenceName = "rhn_servergroup_type_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Long id = 0L;
+
+    @Column(name = "permanent", insertable = false, updatable = false)
+    @Type(type = "yes_no")
+    private boolean permanent = true;
+
+    @Column(name = "is_base", insertable = false, updatable = false)
+    @Type(type = "yes_no")
+    private boolean isBase = true;
+
+    @ManyToMany
+    @JoinTable(
+            name = "rhnServerGroupTypeFeature",
+            joinColumns = @JoinColumn(name = "server_group_type_id"),
+            inverseJoinColumns = @JoinColumn(name = "feature_id")
+    )
     private Set<Feature> features = new HashSet<>();
+
+    @Override
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long idIn) {
+        id = idIn;
+    }
 
     /**
      * @return Returns the isBase.
      */
-    public char getIsBaseChar() {
-        return isBaseChar;
+    public boolean isBase() {
+        return isBase;
     }
     /**
-     * @param isBaseCharIn The isBase to set.
+     * @param isBaseIn The isBase to set.
      */
-    public void setIsBaseChar(char isBaseCharIn) {
-        this.isBaseChar = isBaseCharIn;
+    public void setIsBase(boolean isBaseIn) {
+        this.isBase = isBaseIn;
     }
 
     /**
-     * @return true if this server group type is a base type, false otherwise
-     */
-    public boolean isBase() {
-        return getIsBaseChar() == 'Y';
-    }
-    /**
      * @return Returns the permanent.
      */
-    public char getPermanent() {
+    public boolean isPermanent() {
         return permanent;
     }
     /**
      * @param permanentIn The permanent to set.
      */
-    public void setPermanent(char permanentIn) {
+    public void setPermanent(boolean permanentIn) {
         this.permanent = permanentIn;
     }
 

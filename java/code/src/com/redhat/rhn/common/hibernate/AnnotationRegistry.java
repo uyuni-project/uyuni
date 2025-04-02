@@ -10,6 +10,8 @@
  */
 package com.redhat.rhn.common.hibernate;
 
+import com.redhat.rhn.domain.AbstractLabelNameHelper;
+import com.redhat.rhn.domain.Label;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.WebEndpoint;
@@ -39,6 +41,7 @@ import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.contentmgmt.ContentEnvironment;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.ContentProject;
@@ -79,6 +82,7 @@ import com.redhat.rhn.domain.kickstart.crypto.CryptoKeyType;
 import com.redhat.rhn.domain.kickstart.crypto.SslCryptoKey;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotification;
+import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgAdminManagement;
 import com.redhat.rhn.domain.org.OrgConfig;
@@ -125,6 +129,7 @@ import com.redhat.rhn.domain.server.ClientCapability;
 import com.redhat.rhn.domain.server.ClientCapabilityId;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
+import com.redhat.rhn.domain.server.Feature;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -132,13 +137,24 @@ import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ProxyInfo;
+import com.redhat.rhn.domain.server.Ram;
 import com.redhat.rhn.domain.server.SAPWorkload;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.server.ServerGroup;
+import com.redhat.rhn.domain.server.ServerGroupMember;
 import com.redhat.rhn.domain.server.ServerGroupType;
+import com.redhat.rhn.domain.server.ServerHistoryEvent;
+import com.redhat.rhn.domain.server.ServerInfo;
+import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerPath;
 import com.redhat.rhn.domain.server.ServerPathId;
+import com.redhat.rhn.domain.server.VirtualInstance;
+import com.redhat.rhn.domain.server.VirtualInstanceInfo;
+import com.redhat.rhn.domain.server.VirtualInstanceState;
+import com.redhat.rhn.domain.server.VirtualInstanceType;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
@@ -190,6 +206,7 @@ public class AnnotationRegistry {
 
     private static final List<Class<?>> ANNOTATION_CLASSES = List.of(
             // do not add class at the end, but keep the alphabetical order
+            AbstractLabelNameHelper.class,
             AccessGroup.class,
             AccessToken.class,
             ActionChain.class,
@@ -217,6 +234,7 @@ public class AnnotationRegistry {
             ConfigChannel.class,
             ConfigChannelType.class,
             ConfigFile.class,
+            ConfigFileType.class,
             ContentEnvironment.class,
             ContentFilter.class,
             ContentProject.class,
@@ -224,12 +242,15 @@ public class AnnotationRegistry {
             ContentProjectHistoryEntry.class,
             CryptoKey.class,
             CryptoKeyType.class,
+            CustomDataKey.class,
             CustomDataValue.class,
+            CustomDataValue.ServerCustomDataValueKey.class,
             DeltaImageInfo.class,
             DockerfileProfile.class,
             EntitlementServerGroup.class,
             EnvironmentTarget.class,
             ErrataFilter.class,
+            Feature.class,
             GroupRecurringAction.class,
             HubSCCCredentials.class,
             ImageFile.class,
@@ -253,6 +274,8 @@ public class AnnotationRegistry {
             IssPeripheral.class,
             IssPeripheralChannels.class,
             KiwiProfile.class,
+            Label.class,
+            ManagedServerGroup.class,
             MaintenanceCalendar.class,
             MaintenanceSchedule.class,
             ManagedServerGroup.class,
@@ -295,8 +318,10 @@ public class AnnotationRegistry {
             PlaybookPath.class,
             ProfileCustomDataValue.class,
             ProjectSource.class,
+            ProxyInfo.class,
             ProvisionState.class,
             PtfFilter.class,
+            Ram.class,
             RhnConfiguration.class,
             RecurringConfigChannel.class,
             RecurringHighstate.class,
@@ -326,8 +351,16 @@ public class AnnotationRegistry {
             ServerCoCoAttestationReport.class,
             ServerGroup.class,
             ServerGroupManager.class,
+            ServerGroupMember.class,
+            ServerGroupMember.ServerGroupMemberId.class,
             ServerGroupStateRevision.class,
             ServerGroupType.class,
+            ServerHistoryEvent.class,
+            ServerInfo.class,
+            ServerNetAddress4.class,
+            ServerNetAddress4.ServerNetAddress4Id.class,
+            ServerNetAddress6.class,
+            ServerNetAddress6.ServerNetAddress6Id.class,
             ServerPath.class,
             ServerPathId.class,
             ServerStateRevision.class,
@@ -351,6 +384,10 @@ public class AnnotationRegistry {
             UserInfo.class,
             UserNotification.class,
             VHMCredentials.class,
+            VirtualInstance.class,
+            VirtualInstanceState.class,
+            VirtualInstanceType.class,
+            VirtualInstanceInfo.class,
             VirtualHostManagerNodeInfo.class,
             XccdfTestResult.class,
             WebEndpoint.class
